@@ -8,11 +8,14 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.gloss
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
+import org.odpi.openmetadata.accessservices.subjectarea.utils.QueryBuilder;
+import org.odpi.openmetadata.accessservices.subjectarea.utils.QueryUtils;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GenericResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ResponseParameterization;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.ResolvableType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,8 +43,20 @@ public class GlossaryAuthorViewGlossaryClient implements GlossaryAuthorViewGloss
         this.client = new GlossaryAuthorViewRestClient(serverName, url);
     }
 
-    public static List<Glossary> find(String userId, FindRequest findRequest) {
-        return null;
+    public List<Glossary> find(String userId, FindRequest findRequest) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+
+        return find(userId, findRequest, false,true);
+        //GenericResponse<Glossary> response = this.client.findRESTCall(userId, getMethodInfo("find"), BASE_URL, getParameterizedType(), findRequest, exactValue, ignoreCase, maximumPageSizeOnRestCall);
+        //return response.results();
+    }
+
+    public List<Glossary> find(String userId, FindRequest findRequest, boolean exactValue, boolean ignoreCase) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        return find(userId, findRequest, exactValue, ignoreCase, null);
+    }
+    public List<Glossary> find(String userId, FindRequest findRequest, boolean exactValue, boolean ignoreCase, Integer maximumPageSizeOnRestCall) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+
+        GenericResponse<Glossary> response = client.findRESTCall(userId, getMethodInfo("find"), BASE_URL, getParameterizedType(), findRequest, exactValue, ignoreCase, maximumPageSizeOnRestCall);
+        return response.results();
     }
 
     @Override
@@ -85,6 +100,7 @@ public class GlossaryAuthorViewGlossaryClient implements GlossaryAuthorViewGloss
 
 
         GenericResponse<Glossary> response = client.putRESTCall(userId,
+                                                                guid,
                                                                 getMethodInfo("create"),
                                                                 BASE_URL,
                                                                 getParameterizedType(),
@@ -120,10 +136,11 @@ public class GlossaryAuthorViewGlossaryClient implements GlossaryAuthorViewGloss
     @Override
     public Glossary restore(String userId, String guid) throws PropertyServerException, InvalidParameterException, UserNotAuthorizedException {
 
+        String urnTemplate = BASE_URL +  "/%s";
         GenericResponse<Glossary> response = client.postRESTCall(userId,
                 getMethodInfo("restore"),
-                BASE_URL,
-                SubjectAreaOMASAPIResponse.class,
+                urnTemplate,
+                getParameterizedType(),
                 guid);
 
         return response.head().get();

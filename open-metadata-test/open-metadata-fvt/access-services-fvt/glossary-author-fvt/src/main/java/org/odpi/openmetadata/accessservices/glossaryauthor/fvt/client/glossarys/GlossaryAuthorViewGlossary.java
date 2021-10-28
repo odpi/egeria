@@ -15,13 +15,14 @@ import java.util.List;
 public interface GlossaryAuthorViewGlossary {
 
     /**
-     * Get the config.
+     * Create a Glossary.
      * <p>
-     * The result is the configuration
+     * The result is the Glossary object
      *
      * @param userId       userId under which the request is performed
+     * @param glossary     Glossary object to be created
      *
-     * @return The configuration
+     * @return The Glossary
      *
      * @throws PropertyServerException something went wrong with the REST call stack.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -30,17 +31,115 @@ public interface GlossaryAuthorViewGlossary {
 
     Glossary create(String userId, Glossary glossary) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException;
 
+    /**
+     * Update a Glossary.
+     * <p>
+     * The result is the updated Glossary object
+     *
+     * @param userId       userId under which the request is performed
+     * @param guid         guid of Glossary object to be updated
+     * @param glossary     Glossary object with updated values
+     *
+     * @return The updated Glossary
+     *
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     */
     Glossary update(String userId, String guid, Glossary glossary, boolean action) throws PropertyServerException, InvalidParameterException, UserNotAuthorizedException;
 
+    /**
+     * Get a Glossary.
+     * <p>
+     * The result is the requested Glossary object
+     *
+     * @param userId       userId under which the request is performed
+     * @param guid         guid of Glossary object to be retrieved
+     *
+     * @return The requested Glossary
+     *
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     */
     Glossary getByGUID(String userId, String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException;
-
+    /**
+     * Delete a Glossary.
+     * <p>
+     * The result Void object
+     *
+     * @param userId       userId under which the request is performed
+     * @param guid         guid of Glossary object to be retrieved
+     *
+     * @return void
+     *
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
     void delete(String userId, String guid) throws PropertyServerException;
 
-    Glossary restore(String userId, String guid) throws PropertyServerException, InvalidParameterException, UserNotAuthorizedException;
 
+    /**
+     * Get a Glossary's relationships
+     * <p>
+     * The result is a list of Relationships
+     *
+     * @param userId       userId under which the request is performed
+     * @param guid         guid of Glossary object to be retrieved
+     *
+     * @return The list of Glossary relationships
+     *
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     */
     List<Relationship> getAllRelationships(String userId, String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException;
 
+    /**
+     * Restore a soft-deleted Glossary.
+     * <p>
+     * The result is the restored Glossary object
+     *
+     * @param userId       userId under which the request is performed
+     * @param guid         guid of Glossary object to be restored
+     *
+     * @return The restored Glossary
+     *
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     */
+    Glossary restore(String userId, String guid) throws PropertyServerException, InvalidParameterException, UserNotAuthorizedException;
+
+    /**
+     * Restore a soft-deleted Glossary.
+     * <p>
+     * The result is the restored Glossary object
+     *
+     * @param userId       userId under which the request is performed
+     * @param glossaryGuid         guid of Glossary object
+     * @param findRequest         information object for find calls. This include pageSize to limit the number of elements returned.
+     * @param onlyTop         when only the top categories (those categories without parents) are returned.
+     *
+     * @return List of Categories associated with the Glossary
+     *
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     */
     List<Category> getCategories(String userId, String glossaryGuid, FindRequest findRequest, boolean onlyTop) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException;
 
-    List<Term> getTerms(String userId, String glossaryGuid, FindRequest findRequest) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException;
+    /**
+     * Extract terms within a glossary
+     *
+     * @param userId calling user
+     * @param glossaryGuid glossary GUID
+     * @param findRequest information object for find calls. This include pageSize to limit the number of elements returned.
+     *
+     * @return list of  terms
+     *
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+    */
+List<Term> getTerms(String userId, String glossaryGuid, FindRequest findRequest) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException;
 }

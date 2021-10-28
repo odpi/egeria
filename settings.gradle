@@ -417,6 +417,7 @@ include(':open-metadata-test:open-metadata-fvt:access-services-fvt:data-manager-
 include(':open-metadata-test:open-metadata-fvt:access-services-fvt:digital-architecture-fvt')
 include(':open-metadata-test:open-metadata-fvt:access-services-fvt:stewardship-action-fvt')
 include(':open-metadata-test:open-metadata-fvt:access-services-fvt:subject-area-fvt')
+include(':open-metadata-test:open-metadata-fvt:access-services-fvt:glossary-author-fvt')
 include(':open-metadata-test:open-metadata-fvt:access-services-fvt')
 include(':open-metadata-test:open-metadata-fvt:fvt-utilities')
 //TODO: restore tests once ready

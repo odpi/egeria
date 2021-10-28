@@ -45,7 +45,7 @@ public class RunAllFVT
         int initialSubjectAreaCount = SubjectAreaDefinitionCategoryFVT.getSubjectAreaCount(url, serverName, userId);
         int initialProjectCount = ProjectFVT.getProjectCount(url,serverName,userId);*/
 
-//        GlossaryFVT.runIt(url,serverName,userId);
+       GlossaryFVT.runIt(url,serverName,userId);
 //        TermFVT.runIt(url,serverName,userId);
 //        CategoryFVT.runIt(url,serverName,userId);
 //        CategoryHierarchyFVT.runIt(url,serverName,userId);

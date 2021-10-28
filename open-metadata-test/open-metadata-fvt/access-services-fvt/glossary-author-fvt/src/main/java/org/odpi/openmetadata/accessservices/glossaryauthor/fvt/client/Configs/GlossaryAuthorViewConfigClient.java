@@ -11,6 +11,9 @@ import org.odpi.openmetadata.accessservices.glossaryauthor.fvt.client.GlossaryAu
 
 import static org.odpi.openmetadata.accessservices.glossaryauthor.fvt.FVTConstants.GLOSSARY_AUTHOR_BASE_URL;
 
+/**
+ * The class acts as a wrapper class for calling the REST services for Glossary Author Config related services.
+ */
 
 public class GlossaryAuthorViewConfigClient implements GlossaryAuthorViewConfig, ResponseParameterization<Config> {
  //   public static final String GLOSSARY_AUTHOR_BASE_URL = "/servers/%s/open-metadata/view-services/glossary-author/users/%s/";
@@ -21,11 +24,24 @@ public class GlossaryAuthorViewConfigClient implements GlossaryAuthorViewConfig,
         this.client = client;
     }
 
+
     @Override
     public Class<? extends GenericResponse> responseType() {
         return SubjectAreaOMASAPIResponse.class;
     }
-
+    /**
+     * Get the config
+     <p>
+     * The result is the configuration
+     *
+     * @param userId       userId under which the request is performed
+     *
+     * @return The configuration
+     *
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     */
     @Override
     public Config getConfig(String userId) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         final String methodName = "getConfig";

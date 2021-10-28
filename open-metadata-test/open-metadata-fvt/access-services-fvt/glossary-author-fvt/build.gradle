@@ -3,7 +3,6 @@
  * Copyright Contributors to the ODPi Egeria project.
  */
 
-/* NOTE: THIS IS CURRENTlY DISABLED (Block Comments) - See #4903 */
 plugins {
     // Include plug-in for starting a new process
     id 'com.github.psxpaul.execfork'
@@ -14,17 +13,25 @@ apply plugin: "com.github.psxpaul.execfork"
 apply plugin: 'groovy'
 
 dependencies {
+    implementation 'org.slf4j:slf4j-api'
     implementation project(':open-metadata-implementation:view-services:glossary-author-view:glossary-author-view-server')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:view-services:glossary-author-view:glossary-author-view-server')
+    implementation project(':open-metadata-implementation:access-services:subject-area:subject-area-api')
+    implementation project(':open-metadata-implementation:access-services:subject-area:subject-area-client')
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
+
     testImplementation project(':open-metadata-distribution:open-metadata-assemblies')
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine'
     testImplementation localGroovy()
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.7.2")
+    implementation 'org.springframework:spring-core'
+    implementation 'org.springframework:spring-web'
+
+
+    testImplementation("org.junit.jupiter:junit-jupiter-params")
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
     testImplementation 'org.apache.commons:commons-lang3'
     testImplementation project(':open-metadata-test:open-metadata-fvt:fvt-utilities')
@@ -40,6 +47,7 @@ java {
 ext
         {
             distdir="../../../../../open-metadata-distribution/open-metadata-assemblies/build/unpacked/egeria-${project.version}-distribution.tar.gz"
+            gaport="10454"
         }
 
 
@@ -52,7 +60,7 @@ task startServer(dependsOn: ['cleanData',':open-metadata-distribution:open-metad
     // Start some external service
     executable = System.properties.'java.home' + '/bin/java'
     workingDir = "${buildDir}"
-    args = [ "-Dserver.port=10448",
+    args = [ "-Dserver.port=${gaport}",
              "-Dloader.path=${distdir}/server/lib",
              "-Dspringdoc.api-docs.enabled=false",
              "-Djavax.net.ssl.trustStore=${distdir}/truststore.p12",
@@ -64,7 +72,7 @@ task startServer(dependsOn: ['cleanData',':open-metadata-distribution:open-metad
     standardOutput = "${buildDir}/chassis.log"
     errorOutput = "${buildDir}/chassis-error.log"
     //stopAfter = verify
-    waitForPort = 10448
+    waitForPort = Integer.valueOf(gaport)
     timeout = 180
     //waitForOutput = 'has started'
 }
@@ -77,7 +85,7 @@ task configServer(dependsOn: ['startServer','classes'], type: JavaExec) {
     //TODO: These parms aren't currently correctly passed. We rely on defaults in the script
     systemProperties = [
             'name': 'Egeria chassis',
-            'baseURL': 'https://localhost:10448',
+            'baseURL': 'https://localhost:${gaport}',
             'servermem': 'serverinmem',
             'servergraph': 'servergraph',
             'delay': '10',
@@ -95,7 +103,7 @@ test {
     group = 'verification'
     outputs.upToDateWhen {return false}
     systemProperties = [
-            'fvt.url': 'https://localhost:10448'
+            'fvt.url': 'https://localhost:${gaport}'
     ]
     useJUnitPlatform()
     testLogging.showStandardStreams = true

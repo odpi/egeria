@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.gloss
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.utils.QueryBuilder;
+import org.odpi.openmetadata.accessservices.subjectarea.utils.QueryUtils;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GenericResponse;
@@ -108,20 +109,20 @@ public class GlossaryAuthorViewRestClient extends FFDCRESTClient {
     public <T> GenericResponse<T> postRESTCall(String userId,
                                                String methodName,
                                                String urlTemplate,
-                                               Class<SubjectAreaOMASAPIResponse> type,
+                                               ParameterizedTypeReference<GenericResponse<T>> type,
                                                String guid)
             throws PropertyServerException, InvalidParameterException, UserNotAuthorizedException {
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-
+        //SubjectAreaOMASAPIResponse<Glossary>
         GenericResponse<T> completeResponse = null;
         String expandedURL;
 
         expandedURL = String.format(serverPlatformURLRoot + urlTemplate, serverName, userId, guid);
-        completeResponse = callPostRESTCallNoParams(methodName,
+        completeResponse = callPostRESTCall(methodName,
                             type,
-                            urlTemplate,
+                            expandedURL,
                             null);
 
 
@@ -168,6 +169,7 @@ public class GlossaryAuthorViewRestClient extends FFDCRESTClient {
 
     //Replace
     public <T> GenericResponse<T> putRESTCall(String userId,
+                                               String guid,
                                                String methodName,
                                                String urnTemplate,
                                                ParameterizedTypeReference<GenericResponse<T>> parameterizedType,
@@ -179,7 +181,7 @@ public class GlossaryAuthorViewRestClient extends FFDCRESTClient {
             log.debug("==> Method: " + methodName + ",userId=" + userId );
         }
 
-        String guid = glossary.getSystemAttributes().getGUID();
+        //String guid = glossary.getSystemAttributes().getGUID();
         //String urlString = String.format(BASE_URL + "/%s",guid);
         String expandedURL = String.format(serverPlatformURLRoot + urnTemplate + "/%s", serverName, userId,guid);
 
@@ -189,7 +191,7 @@ public class GlossaryAuthorViewRestClient extends FFDCRESTClient {
 
         return callPutRESTCall( methodName,
                                 parameterizedType,
-                                urnTemplate,
+                                expandedURL,
                                 glossary,
                                 params);
     }
@@ -213,6 +215,169 @@ public class GlossaryAuthorViewRestClient extends FFDCRESTClient {
         return callDeleteRESTCall(methodName,
                                     parameterizedType,
                                     expandedURL);
+    }
+    // find query creator
+    /**
+     * Method for constructing a query (https://en.wikipedia.org/wiki/Query_string) using the information described in the findRequest
+     * page size and startingFrom need to set by the caller.
+     *
+     * @param methodName  name of the method being called.
+     * @param findRequest {@link FindRequest}
+     *
+     * @return query
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * */
+    public QueryBuilder createFindQuery(String methodName, FindRequest findRequest) throws InvalidParameterException {
+        return createFindQuery(methodName, findRequest, false,true);
+    }
+
+    public QueryBuilder createFindQuery(String methodName, FindRequest findRequest, boolean exactValue, boolean ignoreCase) throws InvalidParameterException {
+        QueryBuilder queryBuilder = new QueryBuilder();
+        SequencingOrder sequencingOrder = findRequest.getSequencingOrder();
+        if (sequencingOrder == null) {
+            sequencingOrder = SequencingOrder.ANY;
+        }
+        String sequencingOrderName = QueryUtils.encodeParams(methodName, "sequencingOrder", sequencingOrder.name());
+        queryBuilder.addParam("sequencingOrder", sequencingOrderName);
+        Integer pageSize = findRequest.getPageSize();
+        if (pageSize != null) {
+            queryBuilder.addParam("pageSize", pageSize);
+        }
+        queryBuilder.addParam("startingFrom",  findRequest.getStartingFrom());
+
+        String searchCriteria = findRequest.getSearchCriteria();
+        if (searchCriteria != null) {
+            searchCriteria = QueryUtils.encodeParams(methodName, "searchCriteria", searchCriteria);
+            queryBuilder.addParam("searchCriteria", searchCriteria);
+        }
+        String property = findRequest.getSequencingProperty();
+        if (property != null) {
+            property = QueryUtils.encodeParams(methodName, "sequencingProperty", property);
+            queryBuilder.addParam("sequencingProperty", property);
+        }
+        queryBuilder.addParam("exactValue", exactValue);
+        queryBuilder.addParam("ignoreCase", ignoreCase);
+        return queryBuilder;
+    }
+
+    //find
+    public <T> GenericResponse<T> findSearchRESTCALL(String userId,
+                                                     String methodName,
+                                                     String urnTemplate,
+                                                     ParameterizedTypeReference<GenericResponse<T>> type,
+                                                     FindRequest findRequest,
+                                                     boolean exactValue,
+                                                     boolean ignoreCase,
+                                                     Integer maximumPageSizeOnRestCall) throws InvalidParameterException,
+            PropertyServerException,
+            UserNotAuthorizedException {
+
+        if (log.isDebugEnabled()) {
+            log.debug("==> Method: " + methodName + ",userId=" + userId);
+        }
+        GenericResponse<T> completeResponse = null;
+        if (findRequest.getPageSize() == null) {
+            findRequest.setPageSize(invalidParameterHandler.getMaxPagingSize());
+        }
+
+        invalidParameterHandler.validatePaging(findRequest.getStartingFrom(), findRequest.getPageSize(), methodName);
+        int requestedPageSize = findRequest.getPageSize();
+        if (maximumPageSizeOnRestCall == null || maximumPageSizeOnRestCall < 1 || maximumPageSizeOnRestCall >= requestedPageSize) {
+            // Only need to make one call
+            String findUrlTemplate = String.format(serverPlatformURLRoot + urnTemplate, serverName, userId);
+            // the searchCriteria could contain utf-8 characters that could include % characters, that format would incorrectly interpret. So we add the query params after the format
+            String expandedURL = findUrlTemplate + createFindQuery(methodName, findRequest, exactValue, ignoreCase).toString();
+            completeResponse = callGetRESTCall(methodName, type, expandedURL);
+            exceptionHandler.detectAndThrowStandardExceptions(methodName, completeResponse);
+        } else {
+            completeResponse = getAccumulatedResponse(userId, methodName, urnTemplate, type, findRequest, maximumPageSizeOnRestCall, requestedPageSize);
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId=" + userId);
+        }
+        return completeResponse;
+    }
+
+
+    //find
+    public <T> GenericResponse<T> findRESTCall(String userId,
+                                               String methodName,
+                                               String urnTemplate,
+                                               ParameterizedTypeReference<GenericResponse<T>> type,
+                                               FindRequest findRequest,
+                                               boolean exactValue,
+                                               boolean ignoreCase,
+                                               Integer maximumPageSizeOnRestCall) throws InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException {
+
+        if (log.isDebugEnabled()) {
+            log.debug("==> Method: " + methodName + ",userId=" + userId);
+        }
+        GenericResponse<T> completeResponse = null;
+        if (findRequest.getPageSize() == null) {
+            findRequest.setPageSize(invalidParameterHandler.getMaxPagingSize());
+        }
+
+        invalidParameterHandler.validatePaging(findRequest.getStartingFrom(), findRequest.getPageSize(), methodName);
+        int requestedPageSize = findRequest.getPageSize();
+        if (maximumPageSizeOnRestCall == null || maximumPageSizeOnRestCall < 1 || maximumPageSizeOnRestCall >= requestedPageSize) {
+            // Only need to make one call
+            String findUrlTemplate = String.format(serverPlatformURLRoot + urnTemplate, serverName, userId);
+            // the searchCriteria could contain utf-8 characters that could include % characters, that format would incorrectly interpret. So we add the query params after the format
+            String expandedURL = findUrlTemplate + createFindQuery(methodName, findRequest, exactValue, ignoreCase).toString();
+            completeResponse = callGetRESTCall(methodName, type, expandedURL);
+            exceptionHandler.detectAndThrowStandardExceptions(methodName, completeResponse);
+        } else {
+            completeResponse = getAccumulatedResponse(userId, methodName, urnTemplate, type, findRequest, maximumPageSizeOnRestCall, requestedPageSize);
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId=" + userId);
+        }
+        return completeResponse;
+    }
+
+    private <T> GenericResponse<T> getAccumulatedResponse(String userId, String methodName, String urnTemplate, ParameterizedTypeReference<GenericResponse<T>> type, FindRequest findRequest, Integer maximumPageSizeOnRestCall, int requestedPageSize) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        // issue multiple calls to build up the requested page
+        GenericResponse<T> completeResponse = null;
+        int startingFrom = findRequest.getStartingFrom();
+        int totalNumberRetrieved = 0;
+        // while we have got less than the requested page size continuing getting more by issuing rest calls
+        while (totalNumberRetrieved < requestedPageSize) {
+            // set the page size to the maximum that the downstream server accepts.
+            findRequest.setPageSize(maximumPageSizeOnRestCall);
+            // we need to amend the startingFrom portions when issuing subsequent requests.
+            findRequest.setStartingFrom(startingFrom + totalNumberRetrieved);
+            // encode a url with the new find request
+            String findUrlTemplate = urnTemplate + createFindQuery(methodName, findRequest).toString();
+            String expandedURL = String.format(serverPlatformURLRoot + findUrlTemplate, serverName, userId);
+            // issue the get call
+            GenericResponse<T> responseForPart = callGetRESTCall(methodName, type, expandedURL);
+            exceptionHandler.detectAndThrowStandardExceptions(methodName, responseForPart);
+
+            int numberRetrieved = responseForPart.results().size();
+
+            if (getMore(numberRetrieved, maximumPageSizeOnRestCall, requestedPageSize)) {
+                // there are more to get
+                totalNumberRetrieved = totalNumberRetrieved + numberRetrieved;
+            } else {
+                // Don't get any more
+                totalNumberRetrieved = requestedPageSize;
+            }
+            // update the completeResponse
+            if (completeResponse == null) {
+                // first time in initialise the complete response
+                completeResponse = responseForPart;
+            } else {
+                // add the results from this get to the complete response
+                completeResponse.addAllResults(responseForPart.results());
+            }
+        }
+        return completeResponse;
+    }
+
+    boolean getMore(int numberRetrieved, int maximumPageSizeOnRestCall, int requestedPageSize) {
+        return  (numberRetrieved == maximumPageSizeOnRestCall) && (requestedPageSize > maximumPageSizeOnRestCall);
     }
 /*
 // Get Relationships
