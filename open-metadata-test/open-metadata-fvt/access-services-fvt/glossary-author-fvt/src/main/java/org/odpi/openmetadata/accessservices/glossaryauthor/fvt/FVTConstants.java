@@ -7,9 +7,9 @@ package org.odpi.openmetadata.accessservices.glossaryauthor.fvt;
  */
 public class FVTConstants
 {
-    public static final String USERID = "faith";
+    public static final String USERID = "garygeeke";
     public static final String DEFAULT_URL = "https://localhost:9443";
     public static final String SERVER_NAME1  = "cocoView1";
     public static final String SERVER_NAME2  = "cocoView2";
-    public static final String GLOSSARY_AUTHOR_BASE_URL = "/servers/%s/open-metadata/view-services/glossary-author/users/%s";
+    public static final String GLOSSARY_AUTHOR_BASE_URL = "/servers/%s/open-metadata/view-services/glossary-author/users/%s/";
 }

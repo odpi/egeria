@@ -43,8 +43,9 @@ public class GlossaryFVT {
 
     public GlossaryFVT(String url, String serverName, String userId) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         GlossaryAuthorViewRestClient client = new GlossaryAuthorViewRestClient(serverName, url);
-        GlossaryAuthorViewGlossaryClient glossaryAuthorViewGlossaryClient = new GlossaryAuthorViewGlossaryClient(client);
+       // GlossaryAuthorViewGlossaryClient glossaryAuthorViewGlossaryClient = new GlossaryAuthorViewGlossaryClient(client);
         //glossaryAuthorViewGlossaryClient = (GlossaryAuthorViewGlossaryClient)subjectAreaGlossary;
+        this.glossaryAuthorViewGlossaryClient = new GlossaryAuthorViewGlossaryClient(client);
         this.serverName = serverName;
         this.userId = userId;
         createdGlossariesSet = new HashSet<>();
@@ -260,7 +261,7 @@ public class GlossaryFVT {
     public List<Glossary> findGlossaries(String criteria) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         FindRequest findRequest = new FindRequest();
         findRequest.setSearchCriteria(criteria);
-        List<Glossary> glossaries = GlossaryAuthorViewGlossaryClient.find(this.userId, findRequest);
+        List<Glossary> glossaries = glossaryAuthorViewGlossaryClient.find(this.userId, findRequest);
         return glossaries;
     }
 

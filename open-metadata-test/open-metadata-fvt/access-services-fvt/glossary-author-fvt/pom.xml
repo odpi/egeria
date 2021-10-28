@@ -27,7 +27,7 @@
 
     <!-- TODO: Properties used for FVT tests. Note tests currently hardcoded, whilst exec plugin is not. Needs consolidation -->
     <properties>
-        <fvt.serverport>10448</fvt.serverport>
+        <fvt.serverport>10454</fvt.serverport>
         <fvt.servername>fvtserver</fvt.servername>
         <fvt.user>garygeeke</fvt.user>
         <fvt.maxwait>10</fvt.maxwait>
