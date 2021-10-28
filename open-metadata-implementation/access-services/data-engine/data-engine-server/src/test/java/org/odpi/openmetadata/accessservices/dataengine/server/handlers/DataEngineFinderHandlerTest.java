@@ -17,11 +17,16 @@ import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,11 +63,17 @@ class DataEngineFinderHandlerTest {
     @Mock
     private DataEngineCommonHandler dataEngineCommonHandler;
 
+    @Mock
+    private OMRSMetadataCollection omrsMetadataCollection;
+
     @InjectMocks
     private DataEngineFindHandler dataEngineFindHandler;
 
     @Test
-    void find() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    void find() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
+            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException,
+            org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
+            PropertyErrorException, TypeErrorException, PagingErrorException {
         mockRepositoryHelper();
         mockRepositoryHandler();
 
@@ -73,11 +84,9 @@ class DataEngineFinderHandlerTest {
 
         verify(repositoryHelper, times(1)).getExactMatchRegex(QUALIFIED_NAME, false);
         verify(repositoryHelper, times(1)).getTypeDefByName(USER, REFERENCEABLE_TYPE_NAME);
-        verify(repositoryHelper, times(1))
-                .getSearchPropertiesFromInstanceProperties(eq(USER), any(), eq(MatchCriteria.ALL));
 
-        verify(repositoryHandler, times(1)).findEntities(eq(USER), eq(REFERENCEABLE_TYPE_GUID), eq(null), any(), any(),
-                eq(null), eq(null), eq(null), any(), eq(0), eq(50), eq(METHOD));
+        verify(omrsMetadataCollection, times(1)).findEntitiesByProperty(eq(USER), eq(REFERENCEABLE_TYPE_GUID),
+                any(), eq(MatchCriteria.ANY), eq(0), any(), eq(null), eq(null), any(), any(), eq(50));
     }
 
     private void mockRepositoryHelper(){
@@ -86,15 +95,18 @@ class DataEngineFinderHandlerTest {
         TypeDef referenceableTypeDef = mock(TypeDef.class);
         when(referenceableTypeDef.getGUID()).thenReturn(REFERENCEABLE_TYPE_GUID);
         when(repositoryHelper.getTypeDefByName(USER, REFERENCEABLE_TYPE_NAME)).thenReturn(referenceableTypeDef);
-
-        when(repositoryHelper.getSearchPropertiesFromInstanceProperties(eq(USER), any(), eq(MatchCriteria.ALL)))
-                .thenReturn(mock(SearchProperties.class));
     }
 
-    private void mockRepositoryHandler() throws UserNotAuthorizedException, PropertyServerException {
+    private void mockRepositoryHandler() throws
+            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException,
+            org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
+            PropertyErrorException, TypeErrorException, PagingErrorException {
+
         List<EntityDetail> findResult = buildFindResult();
-        when(repositoryHandler.findEntities(eq(USER), eq(REFERENCEABLE_TYPE_GUID), eq(null), any(), any(),
-                eq(null), eq(null), eq(null), any(), eq(0), eq(50), eq(METHOD)))
+        when(repositoryHandler.getMetadataCollection()).thenReturn(omrsMetadataCollection);
+
+        when(omrsMetadataCollection.findEntitiesByProperty(eq(USER), eq(REFERENCEABLE_TYPE_GUID), any(), eq(MatchCriteria.ANY),
+                eq(0), any(), eq(null), eq(null), any(), any(), eq(50)))
                 .thenReturn(findResult);
     }
 

@@ -41,7 +41,7 @@ apply plugin: 'nebula-aggregate-javadocs'
 allprojects {
 
     group = 'org.odpi.egeria'
-    version = '3.3-SNAPSHOT'
+    version = '3.4-SNAPSHOT'
 
     // This enforces version checking but is slow to process
     //apply plugin: 'nebula.lint'
@@ -91,6 +91,7 @@ allprojects {
         springbootVersion = '2.5.5'
         httpcoreVersion = '4.4.14'
         jenaVersion = '4.1.0'
+        elasticsearchVersion = '7.15.0'
     }
 
     dependencies {
@@ -102,6 +103,7 @@ allprojects {
             implementation("com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}")
             implementation("com.fasterxml.jackson.core:jackson-core:${jacksonVersion}")
             implementation("com.fasterxml.jackson.core:jackson-datatype-jsr310:${jacksonVersion}")
+            implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${jacksonVersion}")
             implementation("com.fasterxml:classmate:1.5.1")
             implementation("com.github.jsonld-java:jsonld-java:0.13.3")
             implementation("com.google.crypto.tink:tink:1.6.1")
@@ -114,7 +116,7 @@ allprojects {
             implementation("commons-io:commons-io:2.11.0")
             implementation("commons-logging:commons-logging:1.2")
             implementation("org.apache.commons:commons-text:1.9")
-            implementation("io.github.classgraph:classgraph:4.8.121")
+            implementation("io.github.classgraph:classgraph:4.8.128")
             implementation("io.jsonwebtoken:jjwt:0.9.1")
             implementation('io.lettuce:lettuce-core:6.1.5.RELEASE')
             implementation("io.micrometer:micrometer-registry-prometheus:1.7.4")
@@ -157,7 +159,9 @@ allprojects {
             implementation("org.codehaus.groovy:groovy-jsr223:${groovyVersion}")
             implementation("org.codehaus.groovy:groovy-templates:${groovyVersion}")
             implementation("org.codehaus.groovy:groovysh:${groovyVersion}")
-            implementation("org.elasticsearch:elasticsearch:7.15.0")
+            compileOnly("org.elasticsearch:elasticsearch:${elasticsearchVersion}")
+            compileOnly("org.elasticsearch.client:elasticsearch-rest-high-level-client:${elasticsearchVersion}")
+            implementation("org.elasticsearch.client:elasticsearch-rest-client:${elasticsearchVersion}")
             implementation("org.codehaus.plexus:plexus-utils:3.4.1")
             implementation("org.hdrhistogram:HdrHistogram:2.1.12")
             implementation("org.janusgraph:janusgraph-core:${janusVersion}")
@@ -166,7 +170,7 @@ allprojects {
             implementation("org.javassist:3.27.0-GA")
             implementation("org.quartz-scheduler:quartz:2.3.2")
             implementation("org.reflections:reflections:0.9.12")
-            implementation("org.springdoc:springdoc-openapi-ui:1.5.10")
+            implementation("org.springdoc:springdoc-openapi-ui:1.5.12")
             implementation("org.slf4j:jcl-over-slf4j:1.7.32")
             implementation("org.slf4j:slf4j-api:1.7.32")
             implementation("org.springframework.boot:spring-boot-autoconfigure:${springbootVersion}")
@@ -226,7 +230,6 @@ allprojects {
             testImplementation("org.testng:testng:7.3.0")
             testImplementation("org.hamcrest:hamcrest:2.2")
             implementation("org.apache.thrift:libthrift:0.15.0")
-            implementation("org.elasticsearch.client:elasticsearch-rest-client:7.15.0")
         }
     }
 

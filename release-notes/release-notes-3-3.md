@@ -3,22 +3,23 @@
 
 # Release 3.3 (November 2021)
 
-* Open Metadata Type changes
-* Removed Function
-* Documentation Site
-* Known Issues
-* Further Help and Support
+Release 3.3 adds:
+  * Open Metadata Type changes
+  * New hand-on lab introducing **Lineage management**
 
 Details of these and other changes are in the sections that follow.
 
 ## Description of Changes
 
+**Lineage management** is new chapter in our hand-on labs describing different scenarios to capture, preserve and use lineage information. 
+[Open Lineage Lab](https://github.com/odpi/egeria/blob/master/open-metadata-resources/open-metadata-labs/asset-management-labs/open-lineage.ipynb) brings the first exercise focusing on design time lineage using Open Lineage Services.  
+
 ### Open Metadata Types
 
-### Removed Function
+The following changes have been made to the open metadata types:
 
-* The docker-compose environment was deprecated in release 3.1 and has now
-* been removed. Please use the Egeria Helm charts. See https://odpi.github.io/egeria-docs/guides/operations/kubernetes/intro/
+* New type **Incomplete** for classifying referencable entities used in special lineage cases. One example for such case is representing 'virtual asset' form IBM IGC external repository.  
+  See description in model [0790](https://odpi.github.io/egeria-docs/types/7/0790-Incomplete/).
 
 ## Beta documentation site
 

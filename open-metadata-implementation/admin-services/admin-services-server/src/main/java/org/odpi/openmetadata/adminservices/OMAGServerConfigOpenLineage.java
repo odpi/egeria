@@ -2,8 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices;
 
-import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
-import org.odpi.openmetadata.adminservices.configuration.properties.EventBusConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OLSSimplifiedAccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OpenLineageServerConfig;
@@ -15,7 +13,6 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 public class OMAGServerConfigOpenLineage {
     private final OMAGServerAdminStoreServices configStore = new OMAGServerAdminStoreServices();
@@ -43,7 +40,6 @@ public class OMAGServerConfigOpenLineage {
         try {
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
-            errorHandler.validatePropertyNotNull(openLineageServerConfig.getInTopicName(), "inTopicName", serverName, methodName);
             errorHandler.validatePropertyNotNull(openLineageServerConfig.getLineageGraphConnection(), "lineageGraphConnection", serverName, methodName);
             OLSSimplifiedAccessServiceConfig accessServiceConfig = openLineageServerConfig.getAccessServiceConfig();
             errorHandler.validatePropertyNotNull(accessServiceConfig, "accessServiceConfig", serverName, methodName);
@@ -51,19 +47,8 @@ public class OMAGServerConfigOpenLineage {
             errorHandler.validatePropertyNotNull(accessServiceConfig.getServerPlatformUrlRoot(), "accessServiceConfig.serverPlatformUrlRoot", serverName, methodName);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
             errorHandler.validateEventBusIsSet(serverName, serverConfig, methodName);
-
-            ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
-
-            EventBusConfig eventBusConfig = serverConfig.getEventBusConfig();
-                openLineageServerConfig.setInTopicConnection(
-                        connectorConfigurationFactory.getDefaultEventBusConnection(
-                                eventBusConfig.getConnectorProvider(),
-                                eventBusConfig.getTopicURLRoot(),
-                                openLineageServerConfig.getInTopicName(),
-                                UUID.randomUUID().toString(),
-                                eventBusConfig.getConfigurationProperties())
-                );
 
             serverConfig.setOpenLineageServerConfig(openLineageServerConfig);
             configStore.saveServerConfig(serverName, methodName, serverConfig);
@@ -82,7 +67,6 @@ public class OMAGServerConfigOpenLineage {
 
         return response;
     }
-
 
 
     /**
