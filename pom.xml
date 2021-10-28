@@ -22,7 +22,7 @@
 
     <groupId>org.odpi.egeria</groupId>
     <artifactId>egeria</artifactId>
-    <version>3.3-SNAPSHOT</version>
+    <version>3.3</version>
 
     <url>https://egeria.odpi.org</url>
 
@@ -300,6 +300,13 @@
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-core</artifactId>
+                <scope>compile</scope>
+                <version>${jackson.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.dataformat</groupId>
+                <artifactId>jackson-dataformat-yaml</artifactId>
                 <scope>compile</scope>
                 <version>${jackson.version}</version>
             </dependency>
