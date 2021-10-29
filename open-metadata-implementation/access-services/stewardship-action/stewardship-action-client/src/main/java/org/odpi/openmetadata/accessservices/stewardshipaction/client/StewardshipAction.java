@@ -7,8 +7,13 @@ import org.odpi.openmetadata.accessservices.stewardshipaction.api.DuplicateManag
 import org.odpi.openmetadata.accessservices.stewardshipaction.metadataelements.DuplicateElement;
 import org.odpi.openmetadata.accessservices.stewardshipaction.metadataelements.ElementStub;
 import org.odpi.openmetadata.accessservices.stewardshipaction.rest.DuplicatesRequestBody;
+import org.odpi.openmetadata.accessservices.stewardshipaction.rest.DuplicatesResponse;
+import org.odpi.openmetadata.accessservices.stewardshipaction.rest.ElementStubResponse;
+import org.odpi.openmetadata.accessservices.stewardshipaction.rest.ElementStubsResponse;
 import org.odpi.openmetadata.accessservices.stewardshipaction.rest.StewardshipActionRESTClient;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -24,12 +29,18 @@ import java.util.List;
  * This client is initialized with the URL and name of the server that is running the Asset Owner OMAS.
  * This server is responsible for locating and managing the asset owner's definitions exchanged with this client.
  */
-public class StewardshipAction extends ConnectedAssetClientBase implements DuplicateManagementInterface
+public class StewardshipAction implements DuplicateManagementInterface
 
 {
-    protected StewardshipActionRESTClient restClient;               /* Initialized in constructor */
+    protected String   serverName;               /* Initialized in constructor */
+    protected String   serverPlatformURLRoot;    /* Initialized in constructor */
+    protected AuditLog auditLog;                 /* Initialized in constructor */
 
-    private static final String  serviceURLName = "stewardship-action";
+    private static NullRequestBody nullRequestBody = new NullRequestBody();
+
+    private InvalidParameterHandler     invalidParameterHandler = new InvalidParameterHandler();
+    private StewardshipActionRESTClient restClient;               /* Initialized in constructor */
+
 
 
     /**
@@ -45,7 +56,13 @@ public class StewardshipAction extends ConnectedAssetClientBase implements Dupli
                              String   serverPlatformURLRoot,
                              AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, auditLog);
+        final String methodName = "Client Constructor";
+
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+
+        this.serverName = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.auditLog = auditLog;
 
         this.restClient = new StewardshipActionRESTClient(serverName, serverPlatformURLRoot, auditLog);
     }
@@ -62,7 +79,12 @@ public class StewardshipAction extends ConnectedAssetClientBase implements Dupli
     public StewardshipAction(String serverName,
                              String serverPlatformURLRoot) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot);
+        final String methodName = "Client Constructor";
+
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+
+        this.serverName = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
 
         this.restClient = new StewardshipActionRESTClient(serverName, serverPlatformURLRoot);
     }
@@ -87,7 +109,13 @@ public class StewardshipAction extends ConnectedAssetClientBase implements Dupli
                              String   password,
                              AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, auditLog);
+        final String methodName = "Client Constructor";
+
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+
+        this.serverName = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.auditLog = auditLog;
 
         this.restClient = new StewardshipActionRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
@@ -109,7 +137,12 @@ public class StewardshipAction extends ConnectedAssetClientBase implements Dupli
                              String userId,
                              String password) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot);
+        final String methodName = "Client Constructor";
+
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+
+        this.serverName = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
 
         this.restClient = new StewardshipActionRESTClient(serverName, serverPlatformURLRoot, userId, password);
     }
@@ -126,15 +159,21 @@ public class StewardshipAction extends ConnectedAssetClientBase implements Dupli
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public StewardshipAction(String               serverName,
-                             String               serverPlatformURLRoot,
+    public StewardshipAction(String                      serverName,
+                             String                      serverPlatformURLRoot,
                              StewardshipActionRESTClient restClient,
-                             int                  maxPageSize,
-                             AuditLog             auditLog) throws InvalidParameterException
+                             int                         maxPageSize,
+                             AuditLog                    auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, auditLog);
+        final String methodName = "Client Constructor";
 
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+
+        this.serverName = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.auditLog = auditLog;
+
+        this.invalidParameterHandler.setMaxPagingSize(maxPageSize);
 
         this.restClient = restClient;
     }
@@ -148,8 +187,8 @@ public class StewardshipAction extends ConnectedAssetClientBase implements Dupli
      */
 
     /**
-     * Create a simple relationship between two elements in an Asset description (typically the asset itself or
-     * attributes in their schema).
+     * Create a simple relationship between two elements.  These elements must be of the same type.  If the relationship already exists,
+     * the properties are updated.
      *
      * @param userId calling user
      * @param element1GUID unique identifier of first element
@@ -161,7 +200,7 @@ public class StewardshipAction extends ConnectedAssetClientBase implements Dupli
      * @param source source of the duplicate detection processing
      * @param notes notes for the steward
      *
-     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws InvalidParameterException one of the parameters is null or invalid, or the elements are of different types
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
@@ -182,7 +221,7 @@ public class StewardshipAction extends ConnectedAssetClientBase implements Dupli
 
         final String element1GUIDParameter = "element1GUID";
         final String element2GUIDParameter = "element2GUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/elements/{2}/duplicate-of/{3}";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/stewardship-action/users/{1}/elements/{2}/peer-duplicate-of/{3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(element1GUID, element1GUIDParameter, methodName);
@@ -229,7 +268,7 @@ public class StewardshipAction extends ConnectedAssetClientBase implements Dupli
 
         final String element1GUIDParameter = "element1GUID";
         final String element2GUIDParameter = "element2GUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/elements/{2}/duplicate-of/{3}/delete";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/stewardship-action/users/{1}/elements/{2}/peer-duplicate-of/{3}/delete";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(element1GUID, element1GUIDParameter, methodName);
@@ -246,6 +285,74 @@ public class StewardshipAction extends ConnectedAssetClientBase implements Dupli
 
 
     /**
+     * Classify an element as a known duplicate.  This will mean that it is included in duplicate processing during metadata retrieval requests.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid, or the elements are of different types
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public void  markElementAsKnownDuplicate(String userId,
+                                             String elementGUID) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
+    {
+        final String methodName = "markElementAsKnownDuplicate";
+
+        final String elementGUIDParameter = "elementGUID";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/stewardship-action/users/{1}/elements/{2}/known-duplicate";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameter, methodName);
+
+        
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformURLRoot + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        elementGUID);
+    }
+
+
+    /**
+     * Remove the classification that identifies this element as a known duplicate.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid or the elements are not linked as duplicates
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public void  unmarkElementAsKnownDuplicate(String userId,
+                                               String elementGUID) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
+        final String methodName = "unmarkElementAsKnownDuplicate";
+
+        final String elementGUIDParameter = "elementGUID";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/stewardship-action/users/{1}/elements/{2}/known-duplicate/delete";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameter, methodName);
+
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformURLRoot + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        elementGUID);
+    }
+
+
+    /**
      * List the elements that are linked as peer duplicates to the requested element.
      *
      * @param userId calling user
@@ -255,7 +362,7 @@ public class StewardshipAction extends ConnectedAssetClientBase implements Dupli
      *
      * @return list of linked duplicates
      *
-     * @throws InvalidParameterException one of the parameters is null or invalid or the elements are not linked as duplicates
+     * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
@@ -267,12 +374,29 @@ public class StewardshipAction extends ConnectedAssetClientBase implements Dupli
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException
     {
-        return null;
+        final String methodName        = "getPeerDuplicates";
+        final String guidParameterName = "elementGUID";
+        final String urlTemplate       = "/servers/{0}/open-metadata/access-services/stewardship-action/users/{1}/elements/{2}/peer-duplicates?startFrom={3}&pageSize={4}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
+
+        DuplicatesResponse restResult = restClient.callDuplicatesGetRESTCall(methodName,
+                                                                             serverPlatformURLRoot + urlTemplate,
+                                                                             serverName,
+                                                                             userId,
+                                                                             elementGUID,
+                                                                             startFrom,
+                                                                             pageSize);
+
+        return restResult.getElementList();
     }
 
 
     /**
-     * Mark an element as a consolidated duplicate and link it to the contributing elements.
+     * Mark an element as a consolidated duplicate (or update the properties if it is already marked as such).
+     * This method assumes that a standard create method has been used to create the element first using the values from contributing elements.
+     * It is just adding the ConsolidatedDuplicate classification to the element.
      *
      * @param userId calling user
      * @param consolidatedDuplicateGUID unique identifier of the element that contains the consolidated information from a collection of elements
@@ -283,7 +407,6 @@ public class StewardshipAction extends ConnectedAssetClientBase implements Dupli
      * @param stewardPropertyName property name used to identify steward
      * @param source source of the duplicate detection processing
      * @param notes notes for the steward
-     * @param contributingElementGUIDs list of unique identifiers of the elements that this consolidated element represents
      *
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws PropertyServerException problem accessing property server
@@ -297,50 +420,38 @@ public class StewardshipAction extends ConnectedAssetClientBase implements Dupli
                                              String       stewardTypeName,
                                              String       stewardPropertyName,
                                              String       source,
-                                             String       notes,
-                                             List<String> contributingElementGUIDs) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException
+                                             String       notes) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
     {
+        final String methodName = "markAsConsolidatedDuplicate";
 
+        final String element1GUIDParameter = "consolidatedDuplicateGUID";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/stewardship-action/users/{1}/elements/{2}/consolidated-duplicate";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(consolidatedDuplicateGUID, element1GUIDParameter, methodName);
+
+        DuplicatesRequestBody requestBody = new DuplicatesRequestBody();
+
+        requestBody.setStatusIdentifier(statusIdentifier);
+        requestBody.setSteward(steward);
+        requestBody.setStewardTypeName(stewardTypeName);
+        requestBody.setStewardPropertyName(stewardPropertyName);
+        requestBody.setSource(source);
+        requestBody.setNotes(notes);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformURLRoot + urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        consolidatedDuplicateGUID);
     }
 
 
     /**
-     * Update the stewardship properties of an element that is marked as a consolidated duplicate.
-     *
-     * @param userId calling user
-     * @param consolidatedDuplicateGUID unique identifier of the element that contains the consolidated information from a collection of elements
-     *                                  that are all duplicates of one another.
-     * @param statusIdentifier what is the status of this relationship (negative means untrusted, 0 means unverified and positive means trusted)
-     * @param steward identifier of the steward
-     * @param stewardTypeName type of element used to identify the steward
-     * @param stewardPropertyName property name used to identify steward
-     * @param source source of the duplicate detection processing
-     * @param notes notes for the steward
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    @Override
-    public void  updateConsolidatedDuplicate(String userId,
-                                             String consolidatedDuplicateGUID,
-                                             int    statusIdentifier,
-                                             String steward,
-                                             String stewardTypeName,
-                                             String stewardPropertyName,
-                                             String source,
-                                             String notes) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException
-    {
-
-    }
-
-
-    /**
-     * Remove the relationship between two elements that marks them as duplicates.
+     * Create a ConsolidatedDuplicateLink relationship between the consolidated duplicate element and one of its contributing element.
      *
      * @param userId calling user
      * @param consolidatedDuplicateGUID unique identifier of consolidated duplicate
@@ -353,18 +464,29 @@ public class StewardshipAction extends ConnectedAssetClientBase implements Dupli
     @Override
     public void  linkElementToConsolidatedDuplicate(String userId,
                                                     String consolidatedDuplicateGUID,
-                                                    int    statusIdentifier,
-                                                    String steward,
-                                                    String stewardTypeName,
-                                                    String stewardPropertyName,
-                                                    String source,
-                                                    String notes,
                                                     String contributingElementGUID) throws InvalidParameterException,
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
+        final String methodName = "linkElementToConsolidatedDuplicate";
 
+        final String element1GUIDParameter = "consolidatedDuplicateGUID";
+        final String element2GUIDParameter = "contributingElementGUID";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/stewardship-action/users/{1}/elements/consolidated-duplicate/{2}/contributing-element/{3}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(consolidatedDuplicateGUID, element1GUIDParameter, methodName);
+        invalidParameterHandler.validateGUID(contributingElementGUID, element2GUIDParameter, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformURLRoot + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        consolidatedDuplicateGUID,
+                                        contributingElementGUID);
     }
+
 
     /**
      * Remove the relationship between two elements that marks them as duplicates.
@@ -384,7 +506,23 @@ public class StewardshipAction extends ConnectedAssetClientBase implements Dupli
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
+        final String methodName = "unlinkElementFromConsolidatedDuplicate";
 
+        final String element1GUIDParameter = "consolidatedDuplicateGUID";
+        final String element2GUIDParameter = "contributingElementGUID";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/stewardship-action/users/{1}/elements/consolidated-duplicate/{2}/contributing-elements/{3}/delete";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(consolidatedDuplicateGUID, element1GUIDParameter, methodName);
+        invalidParameterHandler.validateGUID(contributingElementGUID, element2GUIDParameter, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformURLRoot + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        consolidatedDuplicateGUID,
+                                        contributingElementGUID);
     }
 
 
@@ -410,7 +548,22 @@ public class StewardshipAction extends ConnectedAssetClientBase implements Dupli
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
-        return null;
+        final String methodName        = "getContributingDuplicates";
+        final String guidParameterName = "consolidatedDuplicateGUID";
+        final String urlTemplate       = "/servers/{0}/open-metadata/access-services/stewardship-action/users/{1}/elements/consolidated-duplicate/{2}/contributing-elements?startFrom={3}&pageSize={4}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(consolidatedDuplicateGUID, guidParameterName, methodName);
+
+        ElementStubsResponse restResult = restClient.callElementStubsGetRESTCall(methodName,
+                                                                                 serverPlatformURLRoot + urlTemplate,
+                                                                                 serverName,
+                                                                                 userId,
+                                                                                 consolidatedDuplicateGUID,
+                                                                                 startFrom,
+                                                                                 pageSize);
+
+        return restResult.getElements();
     }
 
 
@@ -427,12 +580,25 @@ public class StewardshipAction extends ConnectedAssetClientBase implements Dupli
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public ElementStub getContributingDuplicates(String userId,
-                                                 String elementGUID) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
+    public ElementStub getConsolidatedDuplicate(String userId,
+                                                String elementGUID) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
-        return null;
+        final String methodName        = "getConsolidatedDuplicate";
+        final String guidParameterName = "elementGUID";
+        final String urlTemplate       = "/servers/{0}/open-metadata/access-services/stewardship-action/users/{1}/elements/{2}/consolidated-duplicate";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
+
+        ElementStubResponse restResult = restClient.callElementStubGetRESTCall(methodName,
+                                                                               serverPlatformURLRoot + urlTemplate,
+                                                                               serverName,
+                                                                               userId,
+                                                                               elementGUID);
+
+        return restResult.getElement();
     }
 
 
@@ -440,7 +606,7 @@ public class StewardshipAction extends ConnectedAssetClientBase implements Dupli
      * Remove the consolidated duplicate element and the links to the elements that contributed to its values.
      *
      * @param userId calling user
-     * @param elementGUID unique identifier of element to remove
+     * @param consolidatedDuplicateGUID unique identifier of element to remove
      *
      * @throws InvalidParameterException one of the parameters is null or invalid or the elements are not linked as duplicates
      * @throws PropertyServerException problem accessing property server
@@ -448,10 +614,23 @@ public class StewardshipAction extends ConnectedAssetClientBase implements Dupli
      */
     @Override
     public void  removeConsolidatedDuplicate(String userId,
-                                             String elementGUID) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+                                             String consolidatedDuplicateGUID) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
     {
+        final String methodName = "removeConsolidatedDuplicate";
 
+        final String element1GUIDParameter = "consolidatedDuplicateGUID";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/stewardship-action/users/{1}/elements/{2}/consolidated-duplicate/delete";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(consolidatedDuplicateGUID, element1GUIDParameter, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformURLRoot + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        consolidatedDuplicateGUID);
     }
 }
