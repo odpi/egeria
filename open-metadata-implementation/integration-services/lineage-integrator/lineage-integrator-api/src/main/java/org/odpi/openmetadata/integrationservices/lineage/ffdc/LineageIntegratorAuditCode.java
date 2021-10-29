@@ -35,7 +35,6 @@ public enum LineageIntegratorAuditCode implements AuditLogMessageSet
                                            "enabling the integration connector to synchronize open metadata with the third party technology's metadata",
                                    "Verify that this connector is being started with the correct configuration."),
 
-
     PERMITTED_SYNCHRONIZATION("OMIS-LINEAGE-INTEGRATOR-0003",
              OMRSAuditLogRecordSeverity.STARTUP,
              "The context for connector {0} has its permitted synchronization set to {1}",
@@ -50,6 +49,14 @@ public enum LineageIntegratorAuditCode implements AuditLogMessageSet
                  "The integration connector is running but does not have a context.  This is a timing issue in the integration daemon.",
                  "Gather information about the connector's configuration, the types of metadata it was integrating, the audit log messages " +
                          "from the integration daemon and its partner metadata server.  Then contact the Egeria community to get help."),
+
+    OPEN_LINEAGE_FORMAT_ERROR("OMIS-LINEAGE-INTEGRATOR-0005",
+                              OMRSAuditLogRecordSeverity.ERROR,
+                              "A {0} exception with message {1} occurred when parsing open lineage event: {2}",
+                              "The Lineage Integrator OMIS is unable to parse an incoming open lineage event into Egeria's OpenLineageRunEvent bean.  " +
+                                      "This may be due to either (1) an invalid open lineage event, or (2) Egeria's OpenLineageRunEvent not supporting an advancement in the open lineage standard.  " +
+                                      "The raw event is passed to the listening connectors with a null OpenLineageRunEvent bean.  The connector can use the open lineage standard server to process the event facet by facet.",
+                              "Verify the format of the open lineage event.  If incorrect, seek the source of the event.  If correct, look to enhance Egeria's OpenLineageRunEvent."),
     ;
 
 

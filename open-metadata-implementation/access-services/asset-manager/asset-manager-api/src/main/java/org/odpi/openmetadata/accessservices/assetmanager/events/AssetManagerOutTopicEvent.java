@@ -11,7 +11,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * AssetManagerEventHeader provides a common base for all events from the Asset Manager OMAS.
+ * AssetManagerOutTopicEvent provides The structure of the Asset Manager OMAS's OutTopic events.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -19,9 +19,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 public class AssetManagerOutTopicEvent implements java.io.Serializable
 {
-    private long                  eventVersionId = 1L;
-    private AssetManagerEventType eventType      = null;
-    private ElementHeader         elementHeader  = null;
+    private long                  eventVersionId     = 1L;
+    private AssetManagerEventType eventType          = null;
+    private ElementHeader         elementHeader      = null;
+    private String                classificationName = null;
 
 
     /**
@@ -115,6 +116,28 @@ public class AssetManagerOutTopicEvent implements java.io.Serializable
 
 
     /**
+     * Return the name of the classification if the event relates to classifications.
+     *
+     * @return string name
+     */
+    public String getClassificationName()
+    {
+        return classificationName;
+    }
+
+
+    /**
+     * Set up the name of the classification if the event relates to classifications.
+     *
+     * @param classificationName string name
+     */
+    public void setClassificationName(String classificationName)
+    {
+        this.classificationName = classificationName;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -123,10 +146,11 @@ public class AssetManagerOutTopicEvent implements java.io.Serializable
     public String toString()
     {
         return "AssetManagerOutTopicEvent{" +
-                "eventVersionId=" + eventVersionId +
-                ", eventType=" + eventType +
-                ", elementHeader=" + elementHeader +
-                '}';
+                       "eventVersionId=" + eventVersionId +
+                       ", eventType=" + eventType +
+                       ", elementHeader=" + elementHeader +
+                       ", classificationName='" + classificationName + '\'' +
+                       '}';
     }
 
 
@@ -149,8 +173,9 @@ public class AssetManagerOutTopicEvent implements java.io.Serializable
         }
         AssetManagerOutTopicEvent that = (AssetManagerOutTopicEvent) objectToCompare;
         return eventVersionId == that.eventVersionId &&
-                eventType == that.eventType &&
-                Objects.equals(elementHeader, that.elementHeader);
+                       eventType == that.eventType &&
+                       Objects.equals(elementHeader, that.elementHeader) &&
+                       Objects.equals(classificationName, that.classificationName);
     }
 
 
@@ -162,6 +187,6 @@ public class AssetManagerOutTopicEvent implements java.io.Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(eventVersionId, eventType, elementHeader);
+        return Objects.hash(eventVersionId, eventType, elementHeader, classificationName);
     }
 }

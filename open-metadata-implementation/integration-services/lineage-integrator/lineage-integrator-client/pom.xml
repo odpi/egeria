@@ -49,6 +49,11 @@
             <artifactId>lineage-integrator-api</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>io.openlineage</groupId>
+            <artifactId>openlineage-java</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>
