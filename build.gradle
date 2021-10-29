@@ -126,6 +126,11 @@ allprojects {
             implementation("io.netty:netty-all:${nettyVersion}")
             implementation("io.netty:netty-transport:${nettyVersion}")
             implementation("io.netty:netty-resolver:${nettyVersion}")
+            implementation("io.openlineage:openlineage-java:0.2.3")
+            {
+                exclude group: 'com.fasterxml.jackson.core'
+                exclude group: 'com.fasterxml.jackson.datatype'
+            }
             implementation("io.swagger.core.v3:swagger-annotations:2.1.10")
             implementation("jakarta.annotation:jakarta.annotation-api:1.3.5")
             implementation("jakarta.persistence:jakarta.persistence-api:2.2.3")
