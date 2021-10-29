@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
+import org.apache.commons.lang3.StringUtils;
 import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.model.FileFolder;
 import org.odpi.openmetadata.accessservices.dataengine.model.OwnerType;
@@ -80,6 +81,9 @@ public class DataEngineFolderHierarchyHandler {
                                       String userId, String methodName)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
+        if (StringUtils.isEmpty(pathName)) {
+            return;
+        }
         validateParameters(fileGuid, pathName, externalSourceGuid, externalSourceName, userId, methodName);
         List<FileFolder> folders = extractFolders(pathName, externalSourceName, methodName);
 
@@ -219,7 +223,6 @@ public class DataEngineFolderHierarchyHandler {
                                     String userId, String methodName)
             throws InvalidParameterException {
         invalidParameterHandler.validateObject(fileGuid, "fileGuid", methodName);
-        invalidParameterHandler.validateObject(pathName, "pathName", methodName);
         invalidParameterHandler.validateObject(externalSourceGuid, "externalSourceGuid", methodName);
         invalidParameterHandler.validateObject(externalSourceName, "externalSourceName", methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
