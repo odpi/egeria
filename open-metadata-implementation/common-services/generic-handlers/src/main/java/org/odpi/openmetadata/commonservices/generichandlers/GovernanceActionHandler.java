@@ -394,6 +394,10 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                       domainIdentifier,
                                                                       displayName,
                                                                       description,
+                                                                      governanceEngineGUID,
+                                                                      governanceEngineName,
+                                                                      requestType,
+                                                                      requestParameters,
                                                                       mandatoryGuards,
                                                                       receivedGuards,
                                                                       OpenMetadataAPIMapper.REQUESTED_GA_STATUS_ORDINAL,
@@ -547,23 +551,6 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                      requestParameters,
                                                                                      methodName);
             }
-
-            this.linkElementToElement(userId,
-                                      null,
-                                      null,
-                                      governanceActionGUID,
-                                      governanceActionGUIDParameterName,
-                                      OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME,
-                                      governanceEngineGUID,
-                                      governanceEngineGUIDParameterName,
-                                      OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME,
-                                      false,
-                                      false,
-                                      supportedZones,
-                                      OpenMetadataAPIMapper.GOVERNANCE_ACTION_EXECUTOR_TYPE_GUID,
-                                      OpenMetadataAPIMapper.GOVERNANCE_ACTION_EXECUTOR_TYPE_NAME,
-                                      executorProperties,
-                                      methodName);
 
 
             if ((mandatoryGuards == null) || ((receivedGuards != null) && (receivedGuards.containsAll(mandatoryGuards))))

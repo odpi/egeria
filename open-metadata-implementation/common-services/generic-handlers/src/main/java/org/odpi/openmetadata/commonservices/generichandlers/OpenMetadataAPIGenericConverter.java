@@ -4131,6 +4131,55 @@ public abstract class OpenMetadataAPIGenericConverter<B>
     }
 
 
+
+
+    /**
+     * Extract and delete the executorEngineGUID property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string
+     */
+    protected String removeExecutorEngineGUID(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeExecutorEngineGUID";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.EXECUTOR_ENGINE_GUID_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the executorEngineName property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string
+     */
+    protected String removeExecutorEngineName(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeExecutorEngineName";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.EXECUTOR_ENGINE_NAME_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+
     /**
      * Extract and delete the producedGuards property from the supplied instance properties.
      *

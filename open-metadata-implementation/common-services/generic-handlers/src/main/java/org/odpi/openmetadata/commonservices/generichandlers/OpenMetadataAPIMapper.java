@@ -1558,7 +1558,7 @@ public class OpenMetadataAPIMapper
     public static final String SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME    = "SupportedGovernanceService";
     /* End1 = GovernanceEngine; End 2 = GovernanceService */
 
-    public static final String REQUEST_TYPE_PROPERTY_NAME                = "requestType";               /* from SupportedGovernanceService relationship */
+    public static final String REQUEST_TYPE_PROPERTY_NAME                = "requestType";        /* from SupportedGovernanceService relationship */
     public static final String REQUEST_PARAMETERS_PROPERTY_NAME          = "requestParameters";  /* from SupportedGovernanceService relationship */
 
     public static final String GOVERNANCE_ACTION_PROCESS_TYPE_GUID       = "4d3a2b8d-9e2e-4832-b338-21c74e45b238";
@@ -1603,6 +1603,8 @@ public class OpenMetadataAPIMapper
     public static final String GOVERNANCE_ACTION_TYPE_NAME               = "GovernanceAction";
     /* Reference */
 
+    public static final String EXECUTOR_ENGINE_GUID_PROPERTY_NAME        = "executorEngineGUID";     /* from GovernanceAction entity */
+    public static final String EXECUTOR_ENGINE_NAME_PROPERTY_NAME        = "executorEngineName";     /* from GovernanceAction entity */
     public static final String MANDATORY_GUARDS_PROPERTY_NAME            = "mandatoryGuards";        /* from GovernanceAction entity */
     public static final String RECEIVED_GUARDS_PROPERTY_NAME             = "receivedGuards";         /* from GovernanceAction entity */
     public static final String START_DATE_PROPERTY_NAME                  = "startDate";              /* from GovernanceAction and Project entity */
