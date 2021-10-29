@@ -57,6 +57,17 @@ public class IntegrationServiceHandler
 
 
     /**
+     * Return the context manager for this service.  Each integration service has its own implementation.
+     *
+     * @return supplied context manager
+     */
+    public IntegrationContextManager getContextManager()
+    {
+        return contextManager;
+    }
+
+
+    /**
      * Create connector handlers for each of the connections listed in the configuration and
      * return them to the caller.  When the connector handlers are returned, the integration connectors
      * within them are fully initialized and have their context set.  They are ready to be called
