@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.accessservices.assetowner.fvt.assets;
+package org.odpi.openmetadata.accessservices.assetowner.fvt.duplicateprocessing;
 
 import org.odpi.openmetadata.accessservices.assetowner.client.AssetOwner;
 import org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient;
@@ -23,7 +23,7 @@ import java.util.Map;
  * CreateAssetTest calls the AssetOwnerClient to create an asset with with attachments
  * and then retrieve the results.
  */
-public class CreateAssetTest
+public class DuplicateAssetTest
 {
     private final static String testCaseName       = "CreateAssetTest";
 
@@ -65,7 +65,7 @@ public class CreateAssetTest
         results.incrementNumberOfTests();
         try
         {
-            CreateAssetTest.runIt(serverPlatformRootURL, serverName, userId, results.getAuditLogDestination());
+            DuplicateAssetTest.runIt(serverPlatformRootURL, serverName, userId, results.getAuditLogDestination());
             results.incrementNumberOfSuccesses();
         }
         catch (Exception error)
@@ -91,7 +91,7 @@ public class CreateAssetTest
                               String                 userId,
                               FVTAuditLogDestination auditLogDestination) throws FVTUnexpectedCondition
     {
-        CreateAssetTest thisTest = new CreateAssetTest();
+        DuplicateAssetTest thisTest = new DuplicateAssetTest();
 
         AuditLog auditLog = new AuditLog(auditLogDestination,
                                          AccessServiceDescription.ASSET_OWNER_OMAS.getAccessServiceCode(),
@@ -126,7 +126,7 @@ public class CreateAssetTest
 
             return new AssetOwner(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
         }
-        catch (Exception unexpectedError)
+        catch (Throwable unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -243,7 +243,7 @@ public class CreateAssetTest
         {
             throw testCaseError;
         }
-        catch (Exception unexpectedError)
+        catch (Throwable unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -289,7 +289,7 @@ public class CreateAssetTest
         {
             throw testCaseError;
         }
-        catch (Exception unexpectedError)
+        catch (Throwable unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
