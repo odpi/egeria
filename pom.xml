@@ -65,13 +65,12 @@
         <developer>
             <id>mandy-chessell</id>
             <name>Mandy Chessell</name>
-            <email>mandy_chessell@uk.ibm.com</email>
+            <email>mandy.e.chessell@gmail.com</email>
             <timezone>Europe/London</timezone>
             <roles>
                 <role>Project Leader</role>
                 <role>maintainer</role>
             </roles>
-            <organization>IBM Corporation</organization>
         </developer>
         <developer>
             <id>planetf1</id>
@@ -258,6 +257,7 @@
         <process-exec-plugin.version>0.9</process-exec-plugin.version>
         <groovy-plugin.version>2.1.1</groovy-plugin.version>
         <properties.plugin.version>1.0.0</properties.plugin.version>
+        <openlineage.version>0.2.3</openlineage.version>
 
         <!-- Configuration of sonar code scanning-->
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
@@ -317,7 +317,6 @@
                  <version>${jackson.version}</version>
              </dependency>
 
-
             <dependency>
                 <groupId>com.h2database</groupId>
                 <artifactId>h2</artifactId>
@@ -342,14 +341,14 @@
                 <artifactId>commons-collections4</artifactId>
                 <scope>compile</scope>
                 <version>${commons-collections4.version}</version>
-	    </dependency>
+	        </dependency>
 
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-text</artifactId>
                 <scope>compile</scope>
                 <version>${commons-text.version}</version>
-   	    </dependency>
+   	        </dependency>
 
             <dependency>
                 <groupId>org.apache.jena</groupId>
@@ -370,6 +369,13 @@
                 <artifactId>commons-io</artifactId>
                 <scope>compile</scope>
                 <version>${commons-io.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.openlineage</groupId>
+                <artifactId>openlineage-java</artifactId>
+                <scope>compile</scope>
+                <version>${openlineage.version}</version>
             </dependency>
 
             <dependency>
@@ -2433,6 +2439,27 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>kafka-integration-connector</artifactId>
+                <version>${open-metadata.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>openapi-integration-connector</artifactId>
+                <version>${open-metadata.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>openlineage-integration-connectors</artifactId>
+                <version>${open-metadata.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>subject-area-api</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
@@ -3117,7 +3144,6 @@
                 <scope>compile</scope>
             </dependency>
 
-
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>search-integrator-server</artifactId>
@@ -3142,13 +3168,13 @@
                 <version>${open-metadata.version}</version>
             </dependency>
 
-
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>elasticsearch-integration-connector</artifactId>
                 <version>${open-metadata.version}</version>
                 <scope>compile</scope>
             </dependency>
+
         </dependencies>
 
     </dependencyManagement>
