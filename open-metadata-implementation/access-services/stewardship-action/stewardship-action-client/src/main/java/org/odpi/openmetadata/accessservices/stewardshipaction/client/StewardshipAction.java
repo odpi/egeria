@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.accessservices.stewardshipaction;
+package org.odpi.openmetadata.accessservices.stewardshipaction.client;
 
 import org.odpi.openmetadata.accessservices.stewardshipaction.api.DuplicateManagementInterface;
 import org.odpi.openmetadata.accessservices.stewardshipaction.metadataelements.DuplicateElement;
@@ -10,9 +10,8 @@ import org.odpi.openmetadata.accessservices.stewardshipaction.rest.DuplicatesReq
 import org.odpi.openmetadata.accessservices.stewardshipaction.rest.DuplicatesResponse;
 import org.odpi.openmetadata.accessservices.stewardshipaction.rest.ElementStubResponse;
 import org.odpi.openmetadata.accessservices.stewardshipaction.rest.ElementStubsResponse;
-import org.odpi.openmetadata.accessservices.stewardshipaction.rest.StewardshipActionRESTClient;
+import org.odpi.openmetadata.accessservices.stewardshipaction.client.rest.StewardshipActionRESTClient;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -23,7 +22,7 @@ import java.util.List;
 
 
 /**
- * StewardshipAction provides the generic client-side interface for the Asset Owner Open Metadata Access Service (OMAS).
+ * StewardshipAction provides the generic client-side interface for the Stewardship Action Open Metadata Access Service (OMAS).
  * There are other clients that provide specialized methods for specific types of Asset.
  *
  * This client is initialized with the URL and name of the server that is running the Asset Owner OMAS.
@@ -32,9 +31,9 @@ import java.util.List;
 public class StewardshipAction implements DuplicateManagementInterface
 
 {
-    protected String   serverName;               /* Initialized in constructor */
-    protected String   serverPlatformURLRoot;    /* Initialized in constructor */
-    protected AuditLog auditLog;                 /* Initialized in constructor */
+    private String   serverName;               /* Initialized in constructor */
+    private String   serverPlatformURLRoot;    /* Initialized in constructor */
+    private AuditLog auditLog;                 /* Initialized in constructor */
 
     private static NullRequestBody nullRequestBody = new NullRequestBody();
 

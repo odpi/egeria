@@ -1,7 +1,10 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.stewardshipaction.rest;
+package org.odpi.openmetadata.accessservices.stewardshipaction.client.rest;
 
+import org.odpi.openmetadata.accessservices.stewardshipaction.rest.DuplicatesResponse;
+import org.odpi.openmetadata.accessservices.stewardshipaction.rest.ElementStubResponse;
+import org.odpi.openmetadata.accessservices.stewardshipaction.rest.ElementStubsResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;

@@ -2,8 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.stewardshipaction.server;
 
+import org.odpi.openmetadata.accessservices.stewardshipaction.converters.ElementStubConverter;
+import org.odpi.openmetadata.accessservices.stewardshipaction.metadataelements.ElementStub;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstanceHandler;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 
 /**
@@ -22,4 +28,66 @@ class StewardshipActionInstanceHandler extends OMASServiceInstanceHandler
 
         StewardshipActionRegistration.registerAccessService();
     }
+
+
+
+    /**
+     * Retrieve the specific converter for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return converter for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    ElementStubConverter<ElementStub> getElementStubConverter(String userId,
+                                                              String serverName,
+                                                              String serviceOperationName) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
+    {
+        StewardshipActionServicesInstance instance = (StewardshipActionServicesInstance)super.getServerServiceInstance(userId,
+                                                                                                                       serverName,
+                                                                                                                       serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getElementStubConverter();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    ReferenceableHandler<ElementStub> getReferenceableHandler(String userId,
+                                                              String serverName,
+                                                              String serviceOperationName) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
+    {
+        StewardshipActionServicesInstance instance = (StewardshipActionServicesInstance)super.getServerServiceInstance(userId,
+                                                                                                                       serverName,
+                                                                                                                       serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getReferenceableHandler();
+        }
+
+        return null;
+    }
+
 }
