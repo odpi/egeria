@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.governanceengine.converters;
 
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionElement;
 import org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceActionProperties;
-import org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceServiceProperties;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
@@ -91,6 +90,10 @@ public class GovernanceActionConverter<B> extends GovernanceEngineOMASConverter<
                     properties.setDomainIdentifier(this.removeDomainIdentifier(instanceProperties));
                     properties.setDisplayName(this.removeDisplayName(instanceProperties));
                     properties.setDescription(this.removeDescription(instanceProperties));
+                    properties.setRequestType(this.removeRequestType(instanceProperties));
+                    properties.setRequestParameters(this.removeRequestParameters(instanceProperties));
+                    properties.setGovernanceEngineGUID(this.removeExecutorEngineGUID(instanceProperties));
+                    properties.setGovernanceEngineName(this.removeExecutorEngineName(instanceProperties));
                     properties.setMandatoryGuards(this.removeMandatoryGuards(instanceProperties));
                     properties.setReceivedGuards(this.removeReceivedGuards(instanceProperties));
                     properties.setActionStatus(this.removeActionStatus(OpenMetadataAPIMapper.ACTION_STATUS_PROPERTY_NAME, instanceProperties));
@@ -114,16 +117,22 @@ public class GovernanceActionConverter<B> extends GovernanceEngineOMASConverter<
 
                                 if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataAPIMapper.GOVERNANCE_ACTION_EXECUTOR_TYPE_NAME))
                                 {
-                                    properties.setRequestType(this.removeRequestType(instanceProperties));
-                                    properties.setRequestParameters(this.removeRequestParameters(instanceProperties));
-
-                                    EntityProxy entityProxy = relationship.getEntityTwoProxy();
-
-                                    properties.setGovernanceEngineGUID(entityProxy.getGUID());
-
-                                    if (entityProxy.getUniqueProperties() != null)
+                                    if (properties.getRequestType() == null)
                                     {
-                                        properties.setGovernanceEngineName(this.getQualifiedName(entityProxy.getUniqueProperties()));
+                                        properties.setRequestType(this.removeRequestType(instanceProperties));
+                                        properties.setRequestParameters(this.removeRequestParameters(instanceProperties));
+                                    }
+
+                                    if (properties.getGovernanceEngineGUID() == null)
+                                    {
+                                        EntityProxy entityProxy = relationship.getEntityTwoProxy();
+
+                                        properties.setGovernanceEngineGUID(entityProxy.getGUID());
+
+                                        if (entityProxy.getUniqueProperties() != null)
+                                        {
+                                            properties.setGovernanceEngineName(this.getQualifiedName(entityProxy.getUniqueProperties()));
+                                        }
                                     }
                                 }
                                 else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataAPIMapper.TARGET_FOR_ACTION_TYPE_NAME))
@@ -187,7 +196,7 @@ public class GovernanceActionConverter<B> extends GovernanceEngineOMASConverter<
             }
             else
             {
-                handleUnexpectedBeanClass(beanClass.getName(), GovernanceServiceProperties.class.getName(), methodName);
+                handleUnexpectedBeanClass(beanClass.getName(), GovernanceActionProperties.class.getName(), methodName);
             }
 
             return returnBean;
