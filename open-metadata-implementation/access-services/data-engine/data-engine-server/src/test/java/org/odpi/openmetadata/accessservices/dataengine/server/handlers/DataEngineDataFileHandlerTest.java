@@ -231,7 +231,10 @@ class DataEngineDataFileHandlerTest {
     }
 
     private void mockDataEngineSchemaTypeHandler() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        when(dataEngineSchemaTypeHandler.upsertSchemaType(USER, getTabularSchema(), EXTERNAL_SOURCE_NAME)).thenReturn(SCHEMA_TYPE_GUID);
+        SchemaType schemaType = getTabularSchema();
+        List<Attribute> columns = getTabularColumns();
+        schemaType.setAttributeList(columns);
+        when(dataEngineSchemaTypeHandler.upsertSchemaType(USER, schemaType, EXTERNAL_SOURCE_NAME)).thenReturn(SCHEMA_TYPE_GUID);
     }
 
     private CSVFile getCsvFile() {
