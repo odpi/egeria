@@ -153,8 +153,7 @@ public class DataEngineProxyChangePoller implements Runnable {
             } catch (UserNotAuthorizedException e) {
                 this.auditLog.logMessage(methodName, DataEngineProxyAuditCode.USER_NOT_AUTHORIZED.getMessageDefinition("send changes"));
             } catch (InterruptedException e) {
-                throw new OCFRuntimeException(DataEngineProxyErrorCode.UNKNOWN_ERROR.getMessageDefinition(), this.getClass().getName(), methodName,
-                        e);
+                throw new OCFRuntimeException(DataEngineProxyErrorCode.UNKNOWN_ERROR.getMessageDefinition(), this.getClass().getName(), methodName, e);
             }
         }
 
@@ -168,10 +167,10 @@ public class DataEngineProxyChangePoller implements Runnable {
 
     private void upsertSchemaTypes(Date changesLastSynced,
                                    Date changesCutoff) throws
-                                                       InvalidParameterException,
-                                                       PropertyServerException,
-                                                       UserNotAuthorizedException,
-                                                       ConnectorCheckedException {
+            InvalidParameterException,
+            PropertyServerException,
+            UserNotAuthorizedException,
+            ConnectorCheckedException {
         final String methodName = "upsertSchemaTypes";
         final String type = "SchemaTypes";
         auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_START.getMessageDefinition(type));
@@ -186,14 +185,14 @@ public class DataEngineProxyChangePoller implements Runnable {
 
     private void upsertDataStores(Date changesLastSynced,
                                   Date changesCutoff) throws
-                                                      InvalidParameterException,
-                                                      PropertyServerException,
-                                                      UserNotAuthorizedException,
-                                                      ConnectorCheckedException {
+            InvalidParameterException,
+            PropertyServerException,
+            UserNotAuthorizedException,
+            ConnectorCheckedException {
         final String methodName = "upsertDataStores";
         final String type = "DataStores";
         auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_START.getMessageDefinition(type));
-        // get  list of virtual relational tables & data files
+        // get  list of incomplete relational tables & data files
         List<? super Referenceable> changedDataStores = connector.getChangedDataStores(changesLastSynced, changesCutoff);
         if (CollectionUtils.isNotEmpty(changedDataStores)) {
             for (Object changedDataSore : changedDataStores) {
@@ -212,10 +211,10 @@ public class DataEngineProxyChangePoller implements Runnable {
 
     private void upsertProcesses(Date changesLastSynced,
                                  Date changesCutoff) throws
-                                                     InvalidParameterException,
-                                                     PropertyServerException,
-                                                     UserNotAuthorizedException,
-                                                     ConnectorCheckedException {
+            InvalidParameterException,
+            PropertyServerException,
+            UserNotAuthorizedException,
+            ConnectorCheckedException {
         final String methodName = "upsertProcesses";
         final String type = "Processes";
         auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_START.getMessageDefinition(type));
@@ -239,10 +238,10 @@ public class DataEngineProxyChangePoller implements Runnable {
 
     private void upsertProcessHierarchies(Date changesLastSynced,
                                           Date changesCutoff) throws
-                                                              InvalidParameterException,
-                                                              PropertyServerException,
-                                                              UserNotAuthorizedException,
-                                                              ConnectorCheckedException {
+            InvalidParameterException,
+            PropertyServerException,
+            UserNotAuthorizedException,
+            ConnectorCheckedException {
         final String methodName = "upsertProcessHierarchies";
         final String type = "ProcessHierarchies";
         auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_START.getMessageDefinition(type));
@@ -257,10 +256,10 @@ public class DataEngineProxyChangePoller implements Runnable {
 
     private void upsertLineageMappings(Date changesLastSynced,
                                        Date changesCutoff) throws
-                                                           InvalidParameterException,
-                                                           PropertyServerException,
-                                                           UserNotAuthorizedException,
-                                                           ConnectorCheckedException {
+            InvalidParameterException,
+            PropertyServerException,
+            UserNotAuthorizedException,
+            ConnectorCheckedException {
         final String methodName = "upsertLineageMappings";
         final String type = "LineageMappings";
         auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_START.getMessageDefinition(type));
