@@ -169,7 +169,7 @@ allprojects {
             implementation("org.janusgraph:janusgraph-driver:${janusVersion}")
             implementation("org.javassist:3.27.0-GA")
             implementation("org.quartz-scheduler:quartz:2.3.2")
-            implementation("org.reflections:reflections:0.9.12")
+            implementation("org.reflections:reflections:0.10.2")
             implementation("org.springdoc:springdoc-openapi-ui:1.5.12")
             implementation("org.slf4j:jcl-over-slf4j:1.7.32")
             implementation("org.slf4j:slf4j-api:1.7.32")
