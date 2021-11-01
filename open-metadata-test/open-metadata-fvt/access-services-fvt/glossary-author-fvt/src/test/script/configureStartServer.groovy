@@ -1,4 +1,8 @@
 #!/usr/local/bin/groovy
+import groovy.json.JsonBuilder
+import groovy.json.JsonOutput
+//import org.odpi.openmetadata.adminservices.rest.ViewServiceRequestBody
+
 import javax.net.ssl.HttpsURLConnection
 
 // SPDX-License-Identifier: Apache-2.0
@@ -19,7 +23,7 @@ import java.security.cert.X509Certificate
 user=(properties["user"] ?: System.properties["user"]) ?: "garygeeke";
 baseURL=(properties["baseURL"] ?: System.properties["baseURL"]) ?: "https://localhost:9443";
 serverMem=(properties["servermem"] ?: System.properties["servermem"]) ?: "serverinmem";
-serverGraph=(properties["servergraph"] ?: System.properties["servergraph"]) ?: "servergraph";
+serverView=(properties["serverview"] ?: System.properties["serverview"]) ?: "serverview";
 retries=(properties["retries"] ?: System.properties["retries"]) ?: 12;
 delay=(properties["delay"] ?: System.properties["delay"]) ?: 10;
 
@@ -106,17 +110,28 @@ System.out.println("=== Starting server: " + serverMem + " ===");
 post3 = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverMem + "/instance" ).openConnection()
 post3.setRequestMethod("POST")
 post3.setRequestProperty("Content-Type", "application/json")
+
+/*
+ViewServiceRequestBody viewServiceRequestBody = new ViewServiceRequestBody()
+viewServiceRequestBody.setOMAGServerName(serverMem)
+viewServiceRequestBody.setOMAGServerPlatformRootURL(baseURL)
+viewServiceRequestBody.setViewServiceOptions(new HashMap<>())
+*/
+
+
+//post.getOutputStream().write(message.getBytes("UTF-8"));
 postRC3 = post3.getResponseCode();
 println(postRC3);
 if(postRC3.equals(200)) {
     println(post3.getInputStream().getText());
 }
 
-// -- Graph
+// -- View Server
 // --- Configure the platform - any errors here and we exit
-System.out.println("=== Configuring server: " + serverGraph + " ===");
-post1g = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverGraph + "/local-repository/mode/local-graph-repository" ).openConnection()
-post1g.setRequestMethod("POST")
+System.out.println("=== Configuring server: " + serverView + " ===");
+//post1g = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverView + "/local-repository/mode/local-graph-repository" ).openConnection()
+post1g = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverView + "/configuration" ).openConnection()
+post1g.setRequestMethod("GET")
 post1g.setRequestProperty("Content-Type", "application/json")
 postRC1g = post1g.getResponseCode();
 println(postRC1g);
@@ -124,28 +139,76 @@ if(postRC1g.equals(200)) {
     println(post1g.getInputStream().getText());
 }
 
-// --- Enable Subject Area OMAS - any errors here and we exit
-System.out.println("=== Enabling Subject Area OMAS: " + serverGraph + " ===");
-post2g = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverGraph + "/access-services/subject-area" ).openConnection()
+System.out.println("=== Configuring server: " + serverView + " to set localUrl===");
+//post1g = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverView + "/local-repository/mode/local-graph-repository" ).openConnection()
+//post1g = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverView + "/configuration" ).openConnection()
+post11g = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverView + "/server-url-root?url=" + baseURL).openConnection()
+post11g.setRequestMethod("POST")
+post11g.setRequestProperty("Content-Type", "application/json")
+postRC11g = post11g.getResponseCode();
+println(postRC11g);
+if(postRC11g.equals(200)) {
+    println(post11g.getInputStream().getText());
+}
+
+System.out.println("=== Configuring server: " + serverView + " ===");
+//post1g = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverView + "/local-repository/mode/local-graph-repository" ).openConnection()
+post1g = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverView + "/configuration" ).openConnection()
+post1g.setRequestMethod("GET")
+post1g.setRequestProperty("Content-Type", "application/json")
+postRC1g = post1g.getResponseCode();
+println(postRC1g);
+if(postRC1g.equals(200)) {
+    println(post1g.getInputStream().getText());
+}
+
+// --- Enable Glossary Author service - any errors here and we exit
+System.out.println("=== Enabling Glossary Author view Service   : " + serverView + " ===");
+//{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/cocoView1/view-services/glossary-author
+post2g = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverView + "/view-services/glossary-author" ).openConnection()
 post2g.setRequestMethod("POST")
 post2g.setRequestProperty("Content-Type", "application/json")
-postRC2g = post2.getResponseCode();
+
+
+post2g.setDoOutput(true)
+HashMap<String, String> viewServiceRequestBodyMap = new HashMap<>()
+viewServiceRequestBodyMap.put("class","ViewServiceConfig")
+viewServiceRequestBodyMap.put("omagserverName",serverMem)
+viewServiceRequestBodyMap.put("omagserverPlatformRootURL",baseURL)
+//JsonOutput.toJson()
+def jopt = JsonOutput.toJson(viewServiceRequestBodyMap)
+OutputStreamWriter requestBodyWriter = new OutputStreamWriter(post2g.getOutputStream())
+System.out.println("=== Request JSON is  " + jopt + " ===");
+requestBodyWriter.write(jopt)
+System.out.println(post2g.getURL())
+//post2g.
+
+
+
+postRC2g = post2g.getResponseCode();
 println(postRC2g);
 if(postRC2g.equals(200)) {
     println(post2g.getInputStream().getText());
+} else {
+    println(post2g.getErrorStream().getText())
 }
 
 
 // --- Launch the server - any errors here and we exit
-System.out.println("=== Starting server: " + serverGraph + " ===");
-post3g = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverGraph + "/instance" ).openConnection()
+System.out.println("=== Starting server: " + serverView + " ===");
+post3g = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverView + "/instance" ).openConnection()
 post3g.setRequestMethod("POST")
 post3g.setRequestProperty("Content-Type", "application/json")
+
+
 postRC3g = post3.getResponseCode();
 println(postRC3g);
 if(postRC3g.equals(200)) {
     println(post3g.getInputStream().getText());
 }
+
+
+
 
 // --- We're done
 System.out.println("=== Configuration complete ===")

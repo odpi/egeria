@@ -1,20 +1,19 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.accessservices.subjectarea.fvt.junit;
+package org.odpi.openmetadata.accessservices.glossaryauthor.fvt.junit;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.odpi.openmetadata.accessservices.glossaryauthor.fvt.RelationshipsFVT;
+import org.odpi.openmetadata.http.HttpHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.odpi.openmetadata.fvt.utilities.FVTConstants;
-import org.odpi.openmetadata.accessservices.glossaryauthor.fvt.TermFVT;
-import org.odpi.openmetadata.http.HttpHelper;
-
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-public class TermIT {
+public class RelationshipsIT {
     @BeforeAll
     public static void disableStrictSSL(){
         HttpHelper.noStrictSSL();
@@ -22,7 +21,7 @@ public class TermIT {
 
     @ParameterizedTest
     @ValueSource(strings = {"serverinmem","servergraph"})
-    public void testTerm(String server) {
-        assertDoesNotThrow(() -> TermFVT.runIt(StringUtils.defaultIfEmpty(System.getProperty("fvt.url"),FVTConstants.SERVER_PLATFORM_URL_ROOT), server, "garygeeke"));
+    public void testRelationships(String server) {
+        assertDoesNotThrow(() -> RelationshipsFVT.runIt(StringUtils.defaultIfEmpty(System.getProperty("fvt.url"),FVTConstants.SERVER_PLATFORM_URL_ROOT), server, "garygeeke"));
     }
 }
