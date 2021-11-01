@@ -71,7 +71,6 @@ public interface GlossaryAuthorViewGlossary {
      * @param userId       userId under which the request is performed
      * @param guid         guid of Glossary object to be retrieved
      *
-     * @return void
      *
      * @throws PropertyServerException something went wrong with the REST call stack.
      */

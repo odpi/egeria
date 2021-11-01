@@ -85,9 +85,9 @@ task configServer(dependsOn: ['startServer','classes'], type: JavaExec) {
     //TODO: These parms aren't currently correctly passed. We rely on defaults in the script
     systemProperties = [
             'name': 'Egeria chassis',
-            'baseURL': 'https://localhost:${gaport}',
+            'baseURL': 'https://localhost:' + gaport,
             'servermem': 'serverinmem',
-            'servergraph': 'servergraph',
+            'serverview': 'serverview',
             'delay': '10',
             'user': 'garygeeke'
     ]
@@ -103,7 +103,7 @@ test {
     group = 'verification'
     outputs.upToDateWhen {return false}
     systemProperties = [
-            'fvt.url': 'https://localhost:${gaport}'
+            'fvt.url': 'https://localhost:'+ gaport
     ]
     useJUnitPlatform()
     testLogging.showStandardStreams = true
