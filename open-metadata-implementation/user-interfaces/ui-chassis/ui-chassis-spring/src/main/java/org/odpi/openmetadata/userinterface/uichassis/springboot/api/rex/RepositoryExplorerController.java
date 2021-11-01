@@ -506,8 +506,6 @@ public class RepositoryExplorerController extends SecureController
 
         String userId = getUser(request);
 
-        TypeDefGallery typeDefGallery = null;
-
         try {
 
             /*
@@ -870,10 +868,7 @@ public class RepositoryExplorerController extends SecureController
 
             case "Annotation":
             case "AnnotationReview":
-                if (instanceTypeName != null) {
-                    label = instanceTypeName;  // use the local type name for anything under these types
-
-                }
+                label = instanceTypeName;  // use the local type name for anything under these types
                 break;
 
             default:
@@ -1010,88 +1005,66 @@ public class RepositoryExplorerController extends SecureController
         }
 
 
-        try {
+        /*
+         *  Switch between local and enterprise services clients depending
+         *  on enterprise option...
+         */
+        MetadataCollectionServicesClient repositoryServicesClient;
+        if (!enterpriseOption) {
+            repositoryServicesClient = this.getLocalRepositoryServicesClient(serverName, serverURLRoot);
+        }
+        else {
+            repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(serverName, serverURLRoot);
+        }
+
+        if (depth >0) {
+
+            return repositoryServicesClient.getEntityNeighborhood(
+                    userId,
+                    entityGUID,
+                    entityTypeGUIDs,
+                    relationshipTypeGUIDs,
+                    null,
+                    classificationNames,
+                    null,
+                    depth);
+        }
+
+
+        else {
 
             /*
-             *  Switch between local and enterprise services clients depending
-             *  on enterprise option...
+             * Since depth is 0 - use getEntityDetail instead of neighbourhood
              */
-            MetadataCollectionServicesClient repositoryServicesClient;
-            if (!enterpriseOption) {
-                repositoryServicesClient = this.getLocalRepositoryServicesClient(serverName, serverURLRoot);
+
+            EntityDetail entityDetail = metadataCollection.getEntityDetail(
+                    userId,
+                    entityGUID);
+
+            if (entityDetail != null) {
+
+                // Construct an InstanceGraph containing just the entityDetail
+                InstanceGraph instGraph = new InstanceGraph();
+
+                List<EntityDetail> entityDetailList = new ArrayList<>();
+                entityDetailList.add(entityDetail);
+                instGraph.setEntities(entityDetailList);
+
+                return instGraph;
+
             }
-            else {
-                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(serverName, serverURLRoot);
-            }
-
-            if (depth >0) {
-
-                InstanceGraph instGraph = repositoryServicesClient.getEntityNeighborhood(
-                        userId,
-                        entityGUID,
-                        entityTypeGUIDs,
-                        relationshipTypeGUIDs,
-                        null,
-                        classificationNames,
-                        null,
-                        depth);
-
-                if (instGraph != null) {
-
-                    return instGraph;
-                }
-                else {
-
-                    return null;
-                }
-            }
-
 
             else {
+                // Entity could not be found - should have already had an exception but just to be sure...
 
-                /*
-                 * Since depth is 0 - use getEntityDetail instead of neighbourhood
-                 */
+                final String parameterName = ENTITY_GUID;
 
-                EntityDetail entityDetail = metadataCollection.getEntityDetail(
-                        userId,
-                        entityGUID);
+                throw new InvalidParameterException(RexErrorCode.ENTITY_NOT_KNOWN.getMessageDefinition(entityGUID, methodName, serverName),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    parameterName);
 
-                if (entityDetail != null) {
-
-                    // Construct an InstanceGraph containing just the entityDetail
-                    InstanceGraph instGraph = new InstanceGraph();
-
-                    List<EntityDetail> entityDetailList = new ArrayList<>();
-                    entityDetailList.add(entityDetail);
-                    instGraph.setEntities(entityDetailList);
-
-                    return instGraph;
-
-                }
-
-                else {
-                    // Entity could not be found - should have already had an exception but just to be sure...
-
-                    final String parameterName = ENTITY_GUID;
-
-                    throw new InvalidParameterException(RexErrorCode.ENTITY_NOT_KNOWN.getMessageDefinition(entityGUID, methodName, serverName),
-                                                        this.getClass().getName(),
-                                                        methodName,
-                                                        parameterName);
-
-                }
             }
-        }
-        catch ( UserNotAuthorizedException |
-                EntityProxyOnlyException |
-                RepositoryErrorException   |
-                EntityNotKnownException |
-                TypeErrorException |
-                PropertyErrorException |
-                FunctionNotSupportedException |
-                InvalidParameterException e ) {
-            throw e;
         }
 
     }
@@ -1225,47 +1198,37 @@ public class RepositoryExplorerController extends SecureController
 
         }
 
-        try {
-
-            /*
-             *  Switch between local and enterprise services clients depending
-             *  on enterprise option...
-             */
-            MetadataCollectionServicesClient repositoryServicesClient;
-            if (!enterpriseOption) {
-                repositoryServicesClient = this.getLocalRepositoryServicesClient(serverName, serverURLRoot);
-            }
-            else {
-                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(serverName, serverURLRoot);
-            }
-
-            EntityDetail entityDetail = repositoryServicesClient.getEntityDetail(
-                    userId,
-                    entityGUID);
-
-            if (entityDetail != null) {
-
-                return entityDetail;
-
-            } else {
-
-                // Entity could not be found - should have already had an exception but just to be sure...
-
-                final String parameterName = ENTITY_GUID;
-
-                throw new InvalidParameterException(RexErrorCode.ENTITY_NOT_KNOWN.getMessageDefinition(entityGUID, methodName, serverName),
-                                                    this.getClass().getName(),
-                                                    methodName,
-                                                    parameterName);
-
-            }
+        /*
+         *  Switch between local and enterprise services clients depending
+         *  on enterprise option...
+         */
+        MetadataCollectionServicesClient repositoryServicesClient;
+        if (!enterpriseOption) {
+            repositoryServicesClient = this.getLocalRepositoryServicesClient(serverName, serverURLRoot);
         }
-        catch ( UserNotAuthorizedException |
-                EntityProxyOnlyException |
-                RepositoryErrorException   |
-                EntityNotKnownException |
-                InvalidParameterException e ) {
-            throw e;
+        else {
+            repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(serverName, serverURLRoot);
+        }
+
+        EntityDetail entityDetail = repositoryServicesClient.getEntityDetail(
+                userId,
+                entityGUID);
+
+        if (entityDetail != null) {
+
+            return entityDetail;
+
+        } else {
+
+            // Entity could not be found - should have already had an exception but just to be sure...
+
+            final String parameterName = ENTITY_GUID;
+
+            throw new InvalidParameterException(RexErrorCode.ENTITY_NOT_KNOWN.getMessageDefinition(entityGUID, methodName, serverName),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                parameterName);
+
         }
 
     }
@@ -1390,45 +1353,36 @@ public class RepositoryExplorerController extends SecureController
 
         }
 
-        try {
-
-            /*
-             *  Switch between local and enterprise services clients depending
-             *  on enterprise option...
-             */
-            MetadataCollectionServicesClient repositoryServicesClient;
-            if (!enterpriseOption) {
-                repositoryServicesClient = this.getLocalRepositoryServicesClient(serverName, serverURLRoot);
-            }
-            else {
-                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(serverName, serverURLRoot);
-            }
-
-            Relationship relationship = repositoryServicesClient.getRelationship(
-                    userId,
-                    relationshipGUID);
-
-            if (relationship != null) {
-
-                return relationship;
-
-            } else {
-
-                // Relationship could not be found - should have already had an exception but just to be sure...
-
-                final String parameterName = "relationshipGUID";
-
-                throw new InvalidParameterException(RexErrorCode.RELATIONSHIP_NOT_KNOWN.getMessageDefinition(relationshipGUID, methodName, serverName),
-                                                    this.getClass().getName(),
-                                                    methodName,
-                                                    parameterName);
-            }
+        /*
+         *  Switch between local and enterprise services clients depending
+         *  on enterprise option...
+         */
+        MetadataCollectionServicesClient repositoryServicesClient;
+        if (!enterpriseOption) {
+            repositoryServicesClient = this.getLocalRepositoryServicesClient(serverName, serverURLRoot);
         }
-        catch ( UserNotAuthorizedException |
-                RepositoryErrorException   |
-                RelationshipNotKnownException |
-                InvalidParameterException e ) {
-            throw e;
+        else {
+            repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(serverName, serverURLRoot);
+        }
+
+        Relationship relationship = repositoryServicesClient.getRelationship(
+                userId,
+                relationshipGUID);
+
+        if (relationship != null) {
+
+            return relationship;
+
+        } else {
+
+            // Relationship could not be found - should have already had an exception but just to be sure...
+
+            final String parameterName = "relationshipGUID";
+
+            throw new InvalidParameterException(RexErrorCode.RELATIONSHIP_NOT_KNOWN.getMessageDefinition(relationshipGUID, methodName, serverName),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                parameterName);
         }
 
     }
@@ -1588,52 +1542,30 @@ public class RepositoryExplorerController extends SecureController
                                                 parameterName);
         }
 
-        try {
-
-            /*
-             *  Switch between local and enterprise services clients depending
-             *  on enterprise option...
-             */
-            MetadataCollectionServicesClient repositoryServicesClient;
-            if (!enterpriseOption) {
-                repositoryServicesClient = this.getLocalRepositoryServicesClient(serverName, serverURLRoot);
-            }
-            else {
-                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(serverName, serverURLRoot);
-            }
-
-
-            List<EntityDetail> entityList = repositoryServicesClient.findEntitiesByPropertyValue(
-                    userId,
-                    entityTypeGUID,
-                    searchText,
-                    0,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    0);
-
-
-            if (entityList != null) {
-
-                return entityList;
-
-            } else {
-
-                // No entities could be found - this is OK...
-
-                return null;
-
-            }
+        /*
+         *  Switch between local and enterprise services clients depending
+         *  on enterprise option...
+         */
+        MetadataCollectionServicesClient repositoryServicesClient;
+        if (!enterpriseOption) {
+            repositoryServicesClient = this.getLocalRepositoryServicesClient(serverName, serverURLRoot);
         }
-        catch ( UserNotAuthorizedException |
-                RepositoryErrorException   |
-                PagingErrorException |
-                InvalidParameterException e ) {
-            throw e;
+        else {
+            repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(serverName, serverURLRoot);
         }
+
+
+        return repositoryServicesClient.findEntitiesByPropertyValue(
+                userId,
+                entityTypeGUID,
+                searchText,
+                0,
+                null,
+                null,
+                null,
+                null,
+                null,
+                0);
 
     }
 
@@ -1698,8 +1630,7 @@ public class RepositoryExplorerController extends SecureController
 
                 Map<String, RexRelationshipDigest> digestMap = new HashMap<>();
 
-                for (int e=0; e < relationships.size(); e++) {
-                    Relationship relationship = relationships.get(e);
+                for (Relationship relationship : relationships) {
                     String label = this.chooseLabelForRelationship(relationship);
 
                     RexRelationshipDigest relationshipDigest = new RexRelationshipDigest(
@@ -1796,49 +1727,40 @@ public class RepositoryExplorerController extends SecureController
                                                 parameterName);
         }
 
-        try {
-
-            /*
-             *  Switch between local and enterprise services clients depending
-             *  on enterprise option...
-             */
-            MetadataCollectionServicesClient repositoryServicesClient;
-            if (!enterpriseOption) {
-                repositoryServicesClient = this.getLocalRepositoryServicesClient(serverName, serverURLRoot);
-            }
-            else {
-                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(serverName, serverURLRoot);
-            }
-
-            List<Relationship> relationshipList = repositoryServicesClient.findRelationshipsByPropertyValue(
-                    userId,
-                    relationshipTypeGUID,
-                    searchText,
-                    0,
-                    null,
-                    null,
-                    null,
-                    null,
-                    0);
-
-
-            if (relationshipList != null) {
-
-                return relationshipList;
-
-            } else {
-
-                // No relationships could be found - this is OK...
-
-                return null;
-
-            }
+        /*
+         *  Switch between local and enterprise services clients depending
+         *  on enterprise option...
+         */
+        MetadataCollectionServicesClient repositoryServicesClient;
+        if (!enterpriseOption) {
+            repositoryServicesClient = this.getLocalRepositoryServicesClient(serverName, serverURLRoot);
         }
-        catch ( UserNotAuthorizedException |
-                RepositoryErrorException   |
-                PagingErrorException |
-                InvalidParameterException e ) {
-            throw e;
+        else {
+            repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(serverName, serverURLRoot);
+        }
+
+        List<Relationship> relationshipList = repositoryServicesClient.findRelationshipsByPropertyValue(
+                userId,
+                relationshipTypeGUID,
+                searchText,
+                0,
+                null,
+                null,
+                null,
+                null,
+                0);
+
+
+        if (relationshipList != null) {
+
+            return relationshipList;
+
+        } else {
+
+            // No relationships could be found - this is OK...
+
+            return null;
+
         }
 
     }
