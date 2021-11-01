@@ -13,7 +13,7 @@ Details of these and other changes are in the sections that follow.
 ## Description of Changes
 
 **Lineage management** is new chapter in our hand-on labs describing different scenarios to capture, preserve and use lineage information. 
-[Open Lineage Lab](https://github.com/odpi/egeria/blob/master/open-metadata-resources/open-metadata-labs/asset-management-labs/capturing-lineage.ipynb) brings the first exercise focusing on design time lineage using Open Lineage Services.  
+[Open Lineage Lab](https://github.com/odpi/egeria/blob/master/open-metadata-resources/open-metadata-labs/asset-management-labs/open-lineage.ipynb) brings the first exercise focusing on design time lineage using Open Lineage Services.  
 
 
 ### Open Metadata Types
