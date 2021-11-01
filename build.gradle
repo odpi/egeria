@@ -203,7 +203,7 @@ allprojects {
 	        implementation("org.apache.commons:commons-configuration2:2.7")
             // testng also used in our 'source' code to support unit tests
             implementation("org.testng:testng:7.4.0")
-            runtimeOnly("joda-time:joda-time:2.10.12")
+            runtimeOnly("joda-time:joda-time:2.10.13")
             implementation("org.yaml:snakeyaml:1.29")
             runtimeOnly("org.antlr:antlr-runtime:3.5.2")
             runtimeOnly("org.apache.jena:jena-arq:${jenaVersion}")
