@@ -9,7 +9,7 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
 
 /**
  * The ElasticsearchIntegrationConnectorAuditCode is used to define the message content for the OMRS Audit Log.
- *
+ * <p>
  * The 5 fields in the enum are:
  * <ul>
  *     <li>Log Message Id - to uniquely identify the message</li>
@@ -20,43 +20,47 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
  *     <li>UserAction - describes how a user should correct the situation</li>
  * </ul>
  */
-public enum ElasticsearchIntegrationConnectorAuditCode implements AuditLogMessageSet
-{
+public enum ElasticsearchIntegrationConnectorAuditCode implements AuditLogMessageSet {
 
 
     CONNECTOR_STOPPING("ELASTICSEARCH-INTEGRATION-CONNECTOR-0001",
             OMRSAuditLogRecordSeverity.INFO,
             "The {0} integration connector has stopped its monitoring and is shutting down",
             "The connector is disconnecting.",
-            "No action is required unless there are errors that follow indicating that there were problems shutting down.");
+            "No action is required unless there are errors that follow indicating that there were problems shutting down."),
 
-    private String                     logMessageId;
+
+    IO_EXCEPTION("ELASTICSEARCH-INTEGRATION-CONNECTOR-0002",
+            OMRSAuditLogRecordSeverity.ERROR,
+            "The {0} integration connector could not save data to Elasticsearch",
+            "The connector is disconnecting.",
+            "Verify the integrity of the ElasticSearch cluster and the client connection.");
+    private String logMessageId;
     private OMRSAuditLogRecordSeverity severity;
-    private String                     logMessage;
-    private String                     systemAction;
-    private String                     userAction;
+    private String logMessage;
+    private String systemAction;
+    private String userAction;
 
 
     /**
      * The constructor for ElasticsearchIntegrationConnectorAuditCode expects to be passed one of the enumeration rows defined in
      * ElasticsearchIntegrationConnectorAuditCode above.   For example:
-     *
-     *     ElasticsearchIntegrationConnectorAuditCode   auditCode = ElasticsearchIntegrationConnectorAuditCode.CONNECTOR_STOPPING;
-     *
+     * <p>
+     * ElasticsearchIntegrationConnectorAuditCode   auditCode = ElasticsearchIntegrationConnectorAuditCode.CONNECTOR_STOPPING;
+     * <p>
      * This will expand out to the 4 parameters shown below.
      *
-     * @param messageId - unique Id for the message
-     * @param severity - severity of the message
-     * @param message - text for the message
+     * @param messageId    - unique Id for the message
+     * @param severity     - severity of the message
+     * @param message      - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened
-     * @param userAction - instructions for resolving the situation, if any
+     * @param userAction   - instructions for resolving the situation, if any
      */
-    ElasticsearchIntegrationConnectorAuditCode(String                     messageId,
-                                             OMRSAuditLogRecordSeverity severity,
-                                             String                     message,
-                                             String                     systemAction,
-                                             String                     userAction)
-    {
+    ElasticsearchIntegrationConnectorAuditCode(String messageId,
+                                               OMRSAuditLogRecordSeverity severity,
+                                               String message,
+                                               String systemAction,
+                                               String userAction) {
         this.logMessageId = messageId;
         this.severity = severity;
         this.logMessage = message;
@@ -71,13 +75,12 @@ public enum ElasticsearchIntegrationConnectorAuditCode implements AuditLogMessag
      * @return message definition object.
      */
     @Override
-    public AuditLogMessageDefinition getMessageDefinition()
-    {
+    public AuditLogMessageDefinition getMessageDefinition() {
         return new AuditLogMessageDefinition(logMessageId,
-                                             severity,
-                                             logMessage,
-                                             systemAction,
-                                             userAction);
+                severity,
+                logMessage,
+                systemAction,
+                userAction);
     }
 
 
@@ -88,13 +91,12 @@ public enum ElasticsearchIntegrationConnectorAuditCode implements AuditLogMessag
      * @return message definition object.
      */
     @Override
-    public AuditLogMessageDefinition getMessageDefinition(String ...params)
-    {
+    public AuditLogMessageDefinition getMessageDefinition(String... params) {
         AuditLogMessageDefinition messageDefinition = new AuditLogMessageDefinition(logMessageId,
-                                                                                    severity,
-                                                                                    logMessage,
-                                                                                    systemAction,
-                                                                                    userAction);
+                severity,
+                logMessage,
+                systemAction,
+                userAction);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
@@ -106,8 +108,7 @@ public enum ElasticsearchIntegrationConnectorAuditCode implements AuditLogMessag
      * @return string of property names and values for this enum
      */
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "ElasticsearchIntegrationConnectorAuditCode{" +
                 "logMessageId='" + logMessageId + '\'' +
                 ", severity=" + severity +

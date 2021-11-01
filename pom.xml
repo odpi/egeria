@@ -22,7 +22,7 @@
 
     <groupId>org.odpi.egeria</groupId>
     <artifactId>egeria</artifactId>
-    <version>3.3-SNAPSHOT</version>
+    <version>3.4-SNAPSHOT</version>
 
     <url>https://egeria.odpi.org</url>
 
@@ -300,6 +300,13 @@
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-core</artifactId>
+                <scope>compile</scope>
+                <version>${jackson.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.dataformat</groupId>
+                <artifactId>jackson-dataformat-yaml</artifactId>
                 <scope>compile</scope>
                 <version>${jackson.version}</version>
             </dependency>
@@ -904,6 +911,14 @@
                 <scope>runtime</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-catalog-topic-connector</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
@@ -3097,6 +3112,26 @@
                 <artifactId>elasticsearch-rest-client</artifactId>
                 <version>${elasticsearch.version}</version>
                 <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.elasticsearch.client</groupId>
+                <artifactId>elasticsearch-rest-high-level-client</artifactId>
+                <version>${elasticsearch.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.elasticsearch</groupId>
+                <artifactId>elasticsearch</artifactId>
+                <version>${elasticsearch.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.elasticsearch</groupId>
+                <artifactId>elasticsearch-x-content</artifactId>
+                <version>${elasticsearch.version}</version>
             </dependency>
 
             <dependency>
