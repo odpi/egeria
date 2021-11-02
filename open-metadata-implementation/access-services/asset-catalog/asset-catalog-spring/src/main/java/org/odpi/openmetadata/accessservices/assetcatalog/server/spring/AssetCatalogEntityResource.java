@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchP
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.*;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.service.AssetCatalogRESTService;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
 import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -168,4 +169,11 @@ public class AssetCatalogEntityResource {
         return assetService.getSupportedTypes(serverName, userId, type);
     }
 
+    @GetMapping(path = "/topics/out-topic-connection/{callerId}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ConnectionResponse getOutTopicConnection(@PathVariable("serverName") String serverName,
+                                                    @PathVariable("userId") String userId,
+                                                    @PathVariable("callerId") String callerId) {
+        return assetService.getOutTopicConnection(serverName, userId, callerId);
+    }
 }

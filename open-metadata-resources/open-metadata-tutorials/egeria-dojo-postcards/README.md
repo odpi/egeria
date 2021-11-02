@@ -13,6 +13,7 @@ README file.
 
 * [From Mandy Chessell](From-Mandy-Chessell.md)
 * [From Rahul Akolkar](From-Rahul-Akolkar.md)
+* [From Theo Thomas](From-Theo-Thomas.md)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

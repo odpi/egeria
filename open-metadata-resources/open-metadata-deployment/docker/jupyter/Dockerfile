@@ -2,7 +2,7 @@
 # Copyright Contributors to the Egeria project.
 
 FROM docker.io/jupyter/base-notebook:latest
-ARG version=3.3-SNAPSHOT
+ARG version=3.4-SNAPSHOT
 ARG VCS_REF=unknown
 ARG VCS_ORIGIN=unknown
 ARG BUILD_TIME=unknown

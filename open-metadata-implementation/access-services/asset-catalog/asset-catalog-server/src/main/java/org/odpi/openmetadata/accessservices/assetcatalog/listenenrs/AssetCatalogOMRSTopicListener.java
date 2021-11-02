@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.assetcatalog.listenenrs;
 import org.odpi.openmetadata.accessservices.assetcatalog.auditlog.AssetCatalogAuditCode;
 import org.odpi.openmetadata.accessservices.assetcatalog.builders.AssetCatalogConverter;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogBean;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogEvent;
 import org.odpi.openmetadata.accessservices.assetcatalog.publishers.AssetCatalogSearchPublisher;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters.AssetConverter;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -103,7 +104,7 @@ public class AssetCatalogOMRSTopicListener extends OMRSTopicListenerBase
                 case NEW_RELATIONSHIP_EVENT :
                 case UPDATED_RELATIONSHIP_EVENT:
                 case DELETED_RELATIONSHIP_EVENT:
-                    processRelationshipEvent(relationship);
+//                    processRelationshipEvent(relationship);
                     break;
                 default: break;
             }
@@ -134,7 +135,8 @@ public class AssetCatalogOMRSTopicListener extends OMRSTopicListenerBase
                 AssetConverter assetConverter
                         = new AssetConverter(entityDetail, null, repositoryHelper, serviceName, serverName);
                 Asset assetBean = assetConverter.getAssetBean();
-
+                AssetCatalogEvent assetCatalogEvent = new AssetCatalogEvent();
+                assetCatalogEvent.setAsset(assetBean);
                 if (assetBean == null || !this.inTheZone(assetBean.getZoneMembership())) {
                     log.debug("Ignored instance event - Asset not in the supported zones!");
                     auditLog.logMessage(
@@ -142,7 +144,7 @@ public class AssetCatalogOMRSTopicListener extends OMRSTopicListenerBase
                             AssetCatalogAuditCode.EVENT_NOT_PROCESSING.getMessageDefinition("Asset not in the supported zones!"));
                     return;
                 }
-                publisher.publishEvent(assetBean);
+                publisher.publishEvent(assetCatalogEvent);
             }else if (  supportedTypesForSearch!=null
                     && supportedTypesForSearch.contains(entityDetail.getType().getTypeDefName()))
             {

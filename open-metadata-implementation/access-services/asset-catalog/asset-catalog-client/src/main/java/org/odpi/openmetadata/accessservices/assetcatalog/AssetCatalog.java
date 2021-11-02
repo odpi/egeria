@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetcatalog;
 
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogListResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogSupportedTypes;
@@ -13,7 +14,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.Re
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipResponse;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 
@@ -27,7 +28,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
  * <li>OMAS Server calls to retrieve assets and information related to the assets.</li>
  * </ul>
  */
-public class AssetCatalog extends FFDCRESTClient implements AssetCatalogInterface {
+public class AssetCatalog extends OCFRESTClient implements AssetCatalogInterface {
 
     private static final String BASE_PATH = "/servers/{0}/open-metadata/access-services/asset-catalog/users/{1}";
 
