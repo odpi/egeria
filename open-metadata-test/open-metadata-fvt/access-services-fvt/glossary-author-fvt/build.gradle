@@ -47,6 +47,7 @@ java {
 ext
         {
             distdir="../../../../../open-metadata-distribution/open-metadata-assemblies/build/unpacked/egeria-${project.version}-distribution.tar.gz"
+           // distdir= "../../../../open-metadata-distribution/open-metadata-assemblies/build/unpacked/egeria-${project.version}-distribution.tar.gz"
             gaport="10454"
         }
 

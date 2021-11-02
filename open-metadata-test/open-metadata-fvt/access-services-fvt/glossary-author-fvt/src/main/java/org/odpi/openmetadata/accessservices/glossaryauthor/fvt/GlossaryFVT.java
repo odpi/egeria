@@ -74,7 +74,7 @@ public class GlossaryFVT {
     public static void runIt(String url, String serverName, String userId) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, GlossaryAuthorFVTCheckedException {
         try
         {
-            System.out.println("GlossaryFVT runIt started");
+            System.out.println("GlossaryFVT runIt started " + serverName + " and " + userId);
             GlossaryFVT fvt = new GlossaryFVT(url, serverName, userId);
             fvt.run();
             fvt.deleteRemainingGlossaries();

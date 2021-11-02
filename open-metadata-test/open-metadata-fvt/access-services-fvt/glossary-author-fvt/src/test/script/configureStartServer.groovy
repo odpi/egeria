@@ -70,13 +70,13 @@ while (!connected && i>0)
             println(post0.getInputStream().getText());
         } else {
             i--;
-            Thread.sleep(1000 * delay);
+            Thread.sleep(1000 * Integer.valueOf(delay));
         }
     } catch (Throwable t)
     {
         // TODO: look at whether some exceptions should be deemed irrecoverable rather than retry
         i--;
-        Thread.sleep(1000 * delay);
+        Thread.sleep(1000 * Integer.valueOf(delay));
     }
 }
 
@@ -151,6 +151,20 @@ if(postRC11g.equals(200)) {
     println(post11g.getInputStream().getText());
 }
 
+
+//    /open-metadata/admin-services/users/" + user+ "/servers/" + serverName + "audit-log-destinations/default
+System.out.println("=== Configuring server: " + serverView + " Add audit ===");
+//post1g = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverView + "/local-repository/mode/local-graph-repository" ).openConnection()
+post1g = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverView + "/audit-log-destinations/default" ).openConnection()
+post1g.setRequestMethod("POST")
+post1g.setRequestProperty("Content-Type", "application/json")
+postRC1g = post1g.getResponseCode();
+println(postRC1g);
+if(postRC1g.equals(200)) {
+    println(post1g.getInputStream().getText());
+}
+
+
 System.out.println("=== Configuring server: " + serverView + " ===");
 //post1g = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverView + "/local-repository/mode/local-graph-repository" ).openConnection()
 post1g = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverView + "/configuration" ).openConnection()
@@ -161,6 +175,8 @@ println(postRC1g);
 if(postRC1g.equals(200)) {
     println(post1g.getInputStream().getText());
 }
+
+
 
 // --- Enable Glossary Author service - any errors here and we exit
 System.out.println("=== Enabling Glossary Author view Service   : " + serverView + " ===");
@@ -180,6 +196,7 @@ def jopt = JsonOutput.toJson(viewServiceRequestBodyMap)
 OutputStreamWriter requestBodyWriter = new OutputStreamWriter(post2g.getOutputStream())
 System.out.println("=== Request JSON is  " + jopt + " ===");
 requestBodyWriter.write(jopt)
+requestBodyWriter.flush()
 System.out.println(post2g.getURL())
 //post2g.
 
