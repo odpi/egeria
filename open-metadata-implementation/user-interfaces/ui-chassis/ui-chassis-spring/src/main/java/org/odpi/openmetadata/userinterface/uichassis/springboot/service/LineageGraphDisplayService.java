@@ -94,7 +94,7 @@ public class LineageGraphDisplayService {
 
         }
 
-        if (newStartNodes.size() > 0 && listEdges.size() > 0) {
+        if (!newStartNodes.isEmpty() && !listEdges.isEmpty()) {
             setNodesLevel(newStartNodes, listNodes, listEdges);
         }
     }
