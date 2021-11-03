@@ -84,7 +84,7 @@ public class DataEngineFolderHierarchyHandler {
         if (StringUtils.isEmpty(pathName)) {
             return;
         }
-        validateParameters(fileGuid, pathName, externalSourceGuid, externalSourceName, userId, methodName);
+        validateParameters(fileGuid, externalSourceGuid, externalSourceName, userId, methodName);
         List<FileFolder> folders = extractFolders(pathName, externalSourceName, methodName);
 
         String folderGuid = "";
@@ -219,8 +219,7 @@ public class DataEngineFolderHierarchyHandler {
         return new File(pathName).getName().length() < 1 ? pathName : new File(pathName).getName();
     }
 
-    private void validateParameters(String fileGuid, String pathName, String externalSourceGuid, String externalSourceName,
-                                    String userId, String methodName)
+    private void validateParameters(String fileGuid, String externalSourceGuid, String externalSourceName, String userId, String methodName)
             throws InvalidParameterException {
         invalidParameterHandler.validateObject(fileGuid, "fileGuid", methodName);
         invalidParameterHandler.validateObject(externalSourceGuid, "externalSourceGuid", methodName);
