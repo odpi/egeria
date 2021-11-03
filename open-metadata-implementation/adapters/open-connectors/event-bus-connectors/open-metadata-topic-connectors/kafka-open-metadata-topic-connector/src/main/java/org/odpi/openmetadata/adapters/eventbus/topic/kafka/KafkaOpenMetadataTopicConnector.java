@@ -496,8 +496,10 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
                 int minSleepTime = Integer.parseInt( connectionProperties.getProperty("bring.up.minSleepTime")) ;
 
                 while (count < napCount) {
-
-                    auditLog.logMessage("waitForBrokers", KafkaOpenMetadataTopicConnectorAuditCode.KAFKA_CONNECTION_RETRY.getMessageDefinition(String.valueOf(count+1)));
+                   if (auditLog != null )
+                   {
+                       auditLog.logMessage("waitForBrokers", KafkaOpenMetadataTopicConnectorAuditCode.KAFKA_CONNECTION_RETRY.getMessageDefinition(String.valueOf(count + 1)));
+                   }
                     Instant start = Instant.now();
                     if (getRunningBrokers(connectionProperties)) {
                         //we were returned a list of running brokers
