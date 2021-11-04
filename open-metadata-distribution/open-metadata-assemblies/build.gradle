@@ -115,7 +115,7 @@ distributions {
                 from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:cohort-registry-store-connectors:cohort-registry-file-store-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-archive-connectors:open-metadata-archive-file-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:inmemory-repository-connector').jar }
-                from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:graph-repository-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:graph-repository-connector').fatJar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:omrs-rest-repository-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:avro-file-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector').jar }
