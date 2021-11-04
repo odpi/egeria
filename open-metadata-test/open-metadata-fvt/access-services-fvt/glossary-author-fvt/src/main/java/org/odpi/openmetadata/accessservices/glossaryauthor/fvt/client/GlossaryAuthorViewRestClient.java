@@ -27,7 +27,7 @@ import java.util.Date;
 import java.util.Map;
 
 public class GlossaryAuthorViewRestClient extends FFDCRESTClient {
-    private static final Logger log = LoggerFactory.getLogger(SubjectAreaRestClient.class);
+    private static final Logger log = LoggerFactory.getLogger(GlossaryAuthorViewRestClient.class);
     protected static final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
     private final String serverName;
     private final String serverPlatformURLRoot;
@@ -326,7 +326,10 @@ public class GlossaryAuthorViewRestClient extends FFDCRESTClient {
             String findUrlTemplate = String.format(serverPlatformURLRoot + urnTemplate, serverName, userId);
             // the searchCriteria could contain utf-8 characters that could include % characters, that format would incorrectly interpret. So we add the query params after the format
             String expandedURL = findUrlTemplate + createFindQuery(methodName, findRequest, exactValue, ignoreCase).toString();
+            System.out.println("++++ expandedURL " + expandedURL);
             completeResponse = callGetRESTCall(methodName, type, expandedURL);
+            System.out.println("++++ completeResponse " + completeResponse.toString());
+            log.error("<== Testing log : " + methodName + ",userId=" + userId);
             exceptionHandler.detectAndThrowStandardExceptions(methodName, completeResponse);
         } else {
             completeResponse = getAccumulatedResponse(userId, methodName, urnTemplate, type, findRequest, maximumPageSizeOnRestCall, requestedPageSize);
