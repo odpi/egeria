@@ -13,7 +13,6 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -34,11 +33,6 @@ public class DemoSecurityConfig extends SecurityConfig {
 
     @Override
     protected AuthenticationExceptionHandler getAuthenticationExceptionHandler() {
-        return new AuthenticationExceptionHandler() {
-            @Override
-            public boolean isBadCredentials(AuthenticationException e) {
-                return e instanceof BadCredentialsException;
-            }
-        };
+        return BadCredentialsException.class::isInstance;
     }
 }

@@ -13,7 +13,6 @@ import org.springframework.ldap.InvalidSearchFilterException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.AuthenticationException;
 
 
 @EnableWebSecurity
@@ -73,11 +72,6 @@ class LdapSecurityConfig extends SecurityConfig {
 
     @Override
     protected AuthenticationExceptionHandler getAuthenticationExceptionHandler() {
-        return new AuthenticationExceptionHandler() {
-            @Override
-            public boolean isBadCredentials(AuthenticationException e) {
-                return e instanceof BadCredentialsException || e.getCause() instanceof InvalidSearchFilterException;
-            }
-        };
+        return e -> e instanceof BadCredentialsException || e.getCause() instanceof InvalidSearchFilterException;
     }
 }
