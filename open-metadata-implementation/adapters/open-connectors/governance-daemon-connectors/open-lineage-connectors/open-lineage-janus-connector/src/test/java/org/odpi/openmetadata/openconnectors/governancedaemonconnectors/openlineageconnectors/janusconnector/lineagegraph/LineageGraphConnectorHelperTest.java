@@ -5,7 +5,6 @@ package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openline
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.janusgraph.core.JanusGraph;
 import org.janusgraph.core.JanusGraphFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -37,13 +36,13 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 
 public class LineageGraphConnectorHelperTest {
 
-    static LineageGraphConnectorHelper mainGraphConnector;
+    static LineageGraphConnectorHelper lineageGraphConnectorHelper;
 
     @BeforeAll
     public static void beforeClass() {
         Graph graph = JanusGraphFactory.build().set("storage.backend", "inmemory").open();
         GraphTraversalSource g = graph.traversal();
-        mainGraphConnector = new LineageGraphConnectorHelper(g, true);
+        lineageGraphConnectorHelper = new LineageGraphConnectorHelper(g, true);
 
         addColumnLineageData(g);
 
@@ -54,7 +53,7 @@ public class LineageGraphConnectorHelperTest {
 
 
     @Test
-    public void ultimateSourceColumnLevel() {
+    void ultimateSourceColumnLevel() {
         HashSet<String> expectedNodeIDs = new HashSet<>();
         final String queriedNodeID = "c32";
         expectedNodeIDs.add("c11");
@@ -62,13 +61,13 @@ public class LineageGraphConnectorHelperTest {
         expectedNodeIDs.add(queriedNodeID);
         expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE);
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.ultimateSource(queriedNodeID, true).get();
+        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphConnectorHelper.ultimateSource(queriedNodeID, true).get();
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
         validateResponse(expectedNodeIDs, lineageVertices);
     }
 
     @Test
-    public void ultimateDestinationColumnLevel() {
+    void ultimateDestinationColumnLevel() {
         HashSet<String> expectedNodeIDs = new HashSet<>();
         final String queriedNodeID = "c11";
         expectedNodeIDs.add("c41");
@@ -76,32 +75,14 @@ public class LineageGraphConnectorHelperTest {
         expectedNodeIDs.add(queriedNodeID);
         expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION);
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.ultimateDestination(queriedNodeID, true).get();
+        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphConnectorHelper.ultimateDestination(queriedNodeID, true).get();
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
 
         validateResponse(expectedNodeIDs, lineageVertices);
     }
 
     @Test
-    public void sourceAndDestinationColumnLevel() {
-        HashSet<String> expectedNodeIDs = new HashSet<>();
-        final String queriedNodeID = "c21";
-        expectedNodeIDs.add("c11");
-        expectedNodeIDs.add("c12");
-        expectedNodeIDs.add("c41");
-        expectedNodeIDs.add("c42");
-        expectedNodeIDs.add(queriedNodeID);
-        expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE);
-        expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION);
-        System.out.println(mainGraphConnector);
-        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.sourceAndDestination(queriedNodeID, true).get();
-        Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
-
-        validateResponse(expectedNodeIDs, lineageVertices);
-    }
-
-    @Test
-    public void endToEndColumnLevel() {
+    void endToEndColumnLevel() {
         HashSet<String> expectedNodeIDs = new HashSet<>();
         final String queriedNodeID = "c22";
         expectedNodeIDs.add("c11");
@@ -117,16 +98,14 @@ public class LineageGraphConnectorHelperTest {
         expectedNodeIDs.add("p3");
         expectedNodeIDs.add("p4");
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.endToEnd(queriedNodeID, true).get();
+        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphConnectorHelper.endToEnd(queriedNodeID, true).get();
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
 
         validateResponse(expectedNodeIDs, lineageVertices);
     }
 
     @Test
-    public void verticalLineage() {
-        JanusGraph cyclicGlossaryGraph = JanusGraphFactory.build().set("storage.backend", "inmemory").open();
-        GraphTraversalSource g = cyclicGlossaryGraph.traversal();
+    void verticalLineage() {
         HashSet<String> expectedNodeIDs = new HashSet<>();
         final String queriedNodeID = "g2";
         expectedNodeIDs.add("g1");
@@ -134,7 +113,7 @@ public class LineageGraphConnectorHelperTest {
         expectedNodeIDs.add("g3");
         expectedNodeIDs.add("c2");
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.verticalLineage(queriedNodeID).get();
+        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphConnectorHelper.verticalLineage(queriedNodeID).get();
 
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
 
@@ -144,53 +123,34 @@ public class LineageGraphConnectorHelperTest {
     }
 
     @Test
-    public void problematicCyclicGraphSourceDestination() {
-        //A triangle of three nodes
-        JanusGraph problematicCyclicGraph = JanusGraphFactory.build().set("storage.backend", "inmemory").open();
-        GraphTraversalSource g = problematicCyclicGraph.traversal();
-        Vertex c1 = g.addV(TABULAR_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "c1").next();
-        Vertex c2 = g.addV(TABULAR_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "c2").next();
-        Vertex c3 = g.addV(TABULAR_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "c3").next();
-
-        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(c1).to(c2).next();
-        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(c2).to(c3).next();
-        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(c3).to(c1).next();
-        final String queriedNodeID = "c32";
-        mainGraphConnector.ultimateSource(queriedNodeID, true);
-        mainGraphConnector.ultimateDestination(queriedNodeID, true);
-        mainGraphConnector.sourceAndDestination(queriedNodeID, true);
-
-    }
-
-    @Test
-    public void ultimateSourceTableLevel() {
+    void ultimateSourceTableLevel() {
         HashSet<String> expectedNodeIDs = new HashSet<>();
         final String queriedNodeID = "t1";
         expectedNodeIDs.add("d1");
-        expectedNodeIDs.add("p1");
+        expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE);
         expectedNodeIDs.add(queriedNodeID);
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.ultimateSource(queriedNodeID, true).get();
+        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphConnectorHelper.ultimateSource(queriedNodeID, true).get();
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
         validateResponse(expectedNodeIDs, lineageVertices);
     }
 
     @Test
-    public void ultimateDestinationTableLevel() {
+    void ultimateDestinationTableLevel() {
         HashSet<String> expectedNodeIDs = new HashSet<>();
-        final String queriedNodeID = "t1";
-        expectedNodeIDs.add("p2");
-        expectedNodeIDs.add("t2");
+        final String queriedNodeID = "t10";
+        expectedNodeIDs.add("t20");
+        expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION);
         expectedNodeIDs.add(queriedNodeID);
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.ultimateDestination(queriedNodeID, true).get();
+        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphConnectorHelper.ultimateDestination(queriedNodeID, true).get();
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
 
         validateResponse(expectedNodeIDs, lineageVertices);
     }
 
     @Test
-    public void sourceAndDestinationTableLevel() {
+    void endToEndTableLevel() {
         HashSet<String> expectedNodeIDs = new HashSet<>();
         final String queriedNodeID = "t1";
         expectedNodeIDs.add("d1");
@@ -199,74 +159,41 @@ public class LineageGraphConnectorHelperTest {
         expectedNodeIDs.add("t2");
         expectedNodeIDs.add(queriedNodeID);
 
-        System.out.println(mainGraphConnector);
-        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.sourceAndDestination(queriedNodeID, true).get();
+        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphConnectorHelper.endToEnd(queriedNodeID, true).get();
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
 
         validateResponse(expectedNodeIDs, lineageVertices);
     }
 
     @Test
-    public void endToEndTableLevel() {
-        HashSet<String> expectedNodeIDs = new HashSet<>();
-        final String queriedNodeID = "t1";
-        expectedNodeIDs.add("d1");
-        expectedNodeIDs.add("p1");
-        expectedNodeIDs.add("p2");
-        expectedNodeIDs.add("t2");
-        expectedNodeIDs.add(queriedNodeID);
-
-        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.endToEnd(queriedNodeID, true).get();
-        Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
-
-        validateResponse(expectedNodeIDs, lineageVertices);
-    }
-
-    @Test
-    public void ultimateSourceTableLevelViaLineageMapping() {
+    void ultimateSourceTableLevelViaLineageMapping() {
         HashSet<String> expectedNodeIDs = new HashSet<>();
         final String queriedNodeID = "t10";
         expectedNodeIDs.add("d10");
-        expectedNodeIDs.add("p10");
+        expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE);
         expectedNodeIDs.add(queriedNodeID);
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.ultimateSource(queriedNodeID, true).get();
+        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphConnectorHelper.ultimateSource(queriedNodeID, true).get();
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
         validateResponse(expectedNodeIDs, lineageVertices);
     }
 
     @Test
-    public void ultimateDestinationTableLevelViaLineageMapping() {
+    void ultimateDestinationTableLevelViaLineageMapping() {
         HashSet<String> expectedNodeIDs = new HashSet<>();
         final String queriedNodeID = "t10";
-        expectedNodeIDs.add("p20");
+        expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION);
         expectedNodeIDs.add("t20");
         expectedNodeIDs.add(queriedNodeID);
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.ultimateDestination(queriedNodeID, true).get();
+        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphConnectorHelper.ultimateDestination(queriedNodeID, true).get();
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
 
         validateResponse(expectedNodeIDs, lineageVertices);
     }
 
     @Test
-    public void sourceAndDestinationTableLevelViaLineageMapping() {
-        HashSet<String> expectedNodeIDs = new HashSet<>();
-        final String queriedNodeID = "t10";
-        expectedNodeIDs.add("d10");
-        expectedNodeIDs.add("p10");
-        expectedNodeIDs.add("p20");
-        expectedNodeIDs.add("t20");
-        expectedNodeIDs.add(queriedNodeID);
-
-        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.sourceAndDestination(queriedNodeID, true).get();
-        Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
-
-        validateResponse(expectedNodeIDs, lineageVertices);
-    }
-
-    @Test
-    public void endToEndTableLevelViaLineageMapping() {
+    void endToEndTableLevelViaLineageMapping() {
         HashSet<String> expectedNodeIDs = new HashSet<>();
         final String queriedNodeID = "t10";
         expectedNodeIDs.add("d10");
@@ -275,7 +202,7 @@ public class LineageGraphConnectorHelperTest {
         expectedNodeIDs.add("p20");
         expectedNodeIDs.add(queriedNodeID);
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.endToEnd(queriedNodeID, true).get();
+        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphConnectorHelper.endToEnd(queriedNodeID, true).get();
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
 
         validateResponse(expectedNodeIDs, lineageVertices);

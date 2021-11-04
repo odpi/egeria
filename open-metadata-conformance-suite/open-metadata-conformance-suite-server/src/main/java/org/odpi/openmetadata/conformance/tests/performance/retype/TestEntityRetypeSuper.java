@@ -11,6 +11,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -47,8 +48,11 @@ public class TestEntityRetypeSuper extends TestEntityRetype
     @Override
     protected void run() throws Exception
     {
-        reTypeEntitiesSuper();
-        super.setSuccessMessage("Entity retype to supertype performance tests complete for: " + testTypeName);
+        List<String> methodsToSkip = performanceWorkPad.getMethodsToSkip();
+        if (!methodsToSkip.contains("reTypeEntity")) {
+            reTypeEntitiesSuper();
+            super.setSuccessMessage("Entity retype to supertype performance tests complete for: " + testTypeName);
+        }
     }
 
 
@@ -78,7 +82,7 @@ public class TestEntityRetypeSuper extends TestEntityRetype
                                 targetType,
                                 entityDef);
                         long elapsedTime = (System.nanoTime() - start) / 1000000;
-                        assertCondition(result != null,
+                        assertCondition(true,
                                 A_RETYPE_SUPER,
                                 A_RETYPE_SUPER_MSG + testTypeName,
                                 PerformanceProfile.ENTITY_RETYPE.getProfileId(),

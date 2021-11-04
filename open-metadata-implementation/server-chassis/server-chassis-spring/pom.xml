@@ -10,7 +10,7 @@
     <parent>
         <artifactId>server-chassis</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.3-SNAPSHOT</version>
+        <version>3.4-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -43,6 +43,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -133,6 +139,13 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-owner-spring</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>asset-catalog-topic-connector</artifactId>
             <scope>runtime</scope>
         </dependency>
 
@@ -439,6 +452,12 @@
             <artifactId>swagger-annotations</artifactId>
         </dependency>
 
+        <!--dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+            <scope>provided</scope>
+        </dependency-->
+
     </dependencies>
 
     <build>
@@ -481,15 +500,20 @@
                                     org.springframework.boot:spring-boot-starter-security:*
                                 </ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>
-                                    org.springframework.boot:spring-boot-starter-data-jpa:*
-                                </ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>
                                     org.springdoc:springdoc-openapi-ui:*
                                 </ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>
                                     org.odpi.egeria:search-integrator-api:*
                                 </ignoredUnusedDeclaredDependency>
                             </ignoredUnusedDeclaredDependencies>
+                            <ignoredDependencies>
+                                <ignoreDependency>
+                                    javax.annotation:javax.annotation-api:*
+                                </ignoreDependency>
+                                <ignoreDependency>
+                                    jakarta.annotation:jakarta.annotation-api:*
+                                </ignoreDependency>
+                            </ignoredDependencies>
                         </configuration>
                     </execution>
                 </executions>

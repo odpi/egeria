@@ -7,9 +7,7 @@ import org.odpi.openmetadata.conformance.workbenches.performance.PerformanceWork
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 
 /**
@@ -24,6 +22,7 @@ public class TestEntityPurgeHard extends TestEntityPurge
     private static final String A_PURGE_RC     = TEST_CASE_ID + "-purgeEntityReferenceCopy";
     private static final String A_PURGE_RC_MSG = "Repository purge of reference copy instances of type: ";
 
+    private static final Set<String> purgedGUIDs = new HashSet<>();
 
     /**
      * Typical constructor sets up superclass and discovered information needed for tests
@@ -46,8 +45,13 @@ public class TestEntityPurgeHard extends TestEntityPurge
      */
     protected void run() throws Exception
     {
-        purgeEntities();
-        purgeEntityReferenceCopies();
+        List<String> methodsToSkip = performanceWorkPad.getMethodsToSkip();
+        if (!methodsToSkip.contains("purgeEntity")) {
+            purgeEntities();
+        }
+        if (!methodsToSkip.contains("purgeEntityReferenceCopy")) {
+            purgeEntityReferenceCopies();
+        }
         super.setSuccessMessage("Entity purge performance tests complete for: " + testTypeName);
     }
 
@@ -66,20 +70,23 @@ public class TestEntityPurgeHard extends TestEntityPurge
             String lastGuid = null;
             try {
                 for (String guid : guids) {
-                    lastGuid = guid;
-                    long start = System.nanoTime();
-                    metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
-                            entityDef.getGUID(),
-                            entityDef.getName(),
-                            guid);
-                    long elapsedTime = (System.nanoTime() - start) / 1000000;
-                    assertCondition(true,
-                            A_PURGE,
-                            A_PURGE_MSG + testTypeName,
-                            PerformanceProfile.ENTITY_PURGE.getProfileId(),
-                            null,
-                            methodName,
-                            elapsedTime);
+                    if (!purgedGUIDs.contains(guid)) {
+                        lastGuid = guid;
+                        long start = System.nanoTime();
+                        metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
+                                entityDef.getGUID(),
+                                entityDef.getName(),
+                                guid);
+                        long elapsedTime = (System.nanoTime() - start) / 1000000;
+                        assertCondition(true,
+                                A_PURGE,
+                                A_PURGE_MSG + testTypeName,
+                                PerformanceProfile.ENTITY_PURGE.getProfileId(),
+                                null,
+                                methodName,
+                                elapsedTime);
+                        purgedGUIDs.add(guid);
+                    }
                 }
             } catch (FunctionNotSupportedException exception) {
                 super.addNotSupportedAssertion(A_PURGE,
@@ -114,21 +121,24 @@ public class TestEntityPurgeHard extends TestEntityPurge
             String lastGuid = null;
             try {
                 for (String guid : guidsRC) {
-                    lastGuid = guid;
-                    long start = System.nanoTime();
-                    metadataCollection.purgeEntityReferenceCopy(workPad.getLocalServerUserId(),
-                            guid,
-                            entityDef.getGUID(),
-                            entityDef.getName(),
-                            performanceWorkPad.getReferenceCopyMetadataCollectionId());
-                    long elapsedTime = (System.nanoTime() - start) / 1000000;
-                    assertCondition(true,
-                            A_PURGE_RC,
-                            A_PURGE_RC_MSG + testTypeName,
-                            PerformanceProfile.ENTITY_PURGE.getProfileId(),
-                            null,
-                            methodName,
-                            elapsedTime);
+                    if (!purgedGUIDs.contains(guid)) {
+                        lastGuid = guid;
+                        long start = System.nanoTime();
+                        metadataCollection.purgeEntityReferenceCopy(workPad.getLocalServerUserId(),
+                                guid,
+                                entityDef.getGUID(),
+                                entityDef.getName(),
+                                performanceWorkPad.getReferenceCopyMetadataCollectionId());
+                        long elapsedTime = (System.nanoTime() - start) / 1000000;
+                        assertCondition(true,
+                                A_PURGE_RC,
+                                A_PURGE_RC_MSG + testTypeName,
+                                PerformanceProfile.ENTITY_PURGE.getProfileId(),
+                                null,
+                                methodName,
+                                elapsedTime);
+                        purgedGUIDs.add(guid);
+                    }
                 }
             } catch (FunctionNotSupportedException exception) {
                 super.addNotSupportedAssertion(A_PURGE_RC,

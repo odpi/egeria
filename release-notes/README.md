@@ -24,6 +24,19 @@ and bad.  We would love to hear from you.
 
 Below are the release notes for the latest Egeria release:
 
+* [Release 3.2](release-notes-3-3.md) - November 2021
+  * Open Metadata Type changes
+  * New hand-on lab introducing Lineage management
+
+## Older Releases
+
+* [Release 3.2](release-notes-3-2.md) - October 2021
+  * Open Metadata Type changes
+  * New beta documentation site
+  * Deprecations
+  * Dependency Updates
+  * Bug Fixes
+
 * [Release 3.1](release-notes-3-1.md) - September 2021
   * Open Metadata Type changes
   * New beta documentation site
@@ -32,8 +45,6 @@ Below are the release notes for the latest Egeria release:
   * Changes to the Coco Pharmaceuticals lab environment
   * Dependency Updates
   * Bug Fixes
-  
-## Older Releases
 
 * [Release 3.0](release-notes-3-0.md) - August 2021
   * Java 11 is now required for build and runtime

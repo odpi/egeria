@@ -37,6 +37,7 @@ import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngin
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineCommonHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineConnectionAndEndpointHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineDataFileHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineFindHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineFolderHierarchyHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEnginePortHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineProcessHandler;
@@ -159,6 +160,14 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
     private final DataEngineConnectionAndEndpointHandler dataEngineConnectionAndEndpointHandler;
 
     /**
+     * -- GETTER --
+     * Returns the Data Engine find handler.
+     * @return the Data Engine find handler
+     */
+    @Getter
+    private final DataEngineFindHandler dataEngineFindHandler;
+
+    /**
      * Sets up the local repository connector that will service the REST Calls
      *
      * @param repositoryConnector link to the repository responsible for servicing the REST calls
@@ -231,6 +240,20 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
                         publishZones,
                         auditLog);
 
+        AssetHandler<DatabaseSchema> databaseSchemaAssetHandler = new AssetHandler<>(new DatabaseSchemaConverter<>(repositoryHelper, serviceName,serverName),
+                DatabaseSchema.class,
+                serviceName,
+                serverName,
+                invalidParameterHandler,
+                repositoryHandler,
+                repositoryHelper,
+                localServerUserId,
+                securityVerifier,
+                supportedZones,
+                defaultZones,
+                publishZones,
+                auditLog);
+
         final PortHandler<Port> portHandler = new PortHandler<>(new PortConverter<>(repositoryHelper, serviceName, serverName), Port.class,
                 serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, localServerUserId, securityVerifier,
                 supportedZones, defaultZones, publishZones, auditLog);
@@ -276,7 +299,7 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
         dataEnginePortHandler = new DataEnginePortHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
                 dataEngineCommonHandler, portHandler, dataEngineRegistrationHandler);
         dataEngineRelationalDataHandler = new DataEngineRelationalDataHandler(serviceName, serverName, invalidParameterHandler,
-                relationalDataHandler, dataEngineRegistrationHandler, dataEngineCommonHandler, dataEngineConnectionAndEndpointHandler);
+                relationalDataHandler, databaseSchemaAssetHandler, dataEngineRegistrationHandler, dataEngineCommonHandler, dataEngineConnectionAndEndpointHandler);
 
 
         final AssetHandler<FileFolder> folderHandler = new AssetHandler<>(new FileFolderConverter<>(repositoryHelper, serviceName, serverName),
@@ -290,5 +313,8 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
         dataEngineDataFileHandler = new DataEngineDataFileHandler(invalidParameterHandler, repositoryHelper,
                 repositoryHandler, dataEngineCommonHandler, fileHandler, dataEngineSchemaTypeHandler, dataEngineFolderHierarchyHandler,
                 dataEngineConnectionAndEndpointHandler);
+
+        dataEngineFindHandler = new DataEngineFindHandler(invalidParameterHandler, repositoryHelper, repositoryHandler,
+                serviceName, serverName, dataEngineCommonHandler );
     }
 }

@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.dataengine.client;
 
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
+import org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema;
 import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
@@ -17,7 +18,9 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineOMASAPIReq
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineRegistrationRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataFileRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DatabaseRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.DatabaseSchemaRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DeleteRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.FindRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
@@ -26,9 +29,11 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.RelationalTableRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -49,11 +54,14 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
     private static final String PROCESS_HIERARCHY_URL_TEMPLATE = DATA_ENGINE_PATH + "process-hierarchies";
     private static final String LINEAGE_MAPPINGS_URL_TEMPLATE = DATA_ENGINE_PATH + "lineage-mappings";
     private static final String DATABASE_URL_TEMPLATE = DATA_ENGINE_PATH + "databases";
+    private static final String DATABASE_SCHEMA_URL_TEMPLATE = DATA_ENGINE_PATH + "database-schemas";
     private static final String RELATIONAL_TABLE_URL_TEMPLATE = DATA_ENGINE_PATH + "relational-tables";
     private static final String DATA_FILE_URL_TEMPLATE = DATA_ENGINE_PATH + "data-files";
     private static final String FOLDER_URL_TEMPLATE = DATA_ENGINE_PATH + "folders";
     private static final String CONNECTION_URL_TEMPLATE = DATA_ENGINE_PATH + "connections";
     private static final String ENDPOINT_URL_TEMPLATE = DATA_ENGINE_PATH + "endpoints";
+    private static final String FIND_URL_TEMPLATE = DATA_ENGINE_PATH + "find";
+
     private static final String PROCESS_METHOD_NAME = "createOrUpdateProcess";
     private static final String PROCESS_DELETE_METHOD_NAME = "deleteProcess";
     private static final String EXTERNAL_DATA_ENGINE_METHOD_NAME = "createExternalDataEngine";
@@ -67,14 +75,17 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
     private static final String PROCESS_HIERARCHY_METHOD_NAME = "createOrUpdateProcessHierarchy";
     private static final String LINEAGE_MAPPINGS_METHOD_NAME = "addLineageMappings";
     private static final String DATABASE_METHOD_NAME = "upsertDatabase";
+    private static final String DATABASE_SCHEMA_METHOD_NAME = "upsertDatabaseSchema";
     private static final String RELATIONAL_TABLE_METHOD_NAME = "upsertRelationalTable";
     private static final String DATA_FILE_METHOD_NAME = "upsertDataFile";
     private static final String DATABASE_DELETE_METHOD_NAME = "deleteDatabase";
+    private static final String DATABASE_SCHEMA_DELETE_METHOD_NAME = "deleteDatabaseSchema";
     private static final String RELATIONAL_TABLE_DELETE_METHOD_NAME = "deleteRelationalTable";
     private static final String DATA_FILE_DELETE_METHOD_NAME = "deleteDataFile";
     private static final String FOLDER_DELETE_METHOD_NAME = "deleteFolder";
     private static final String CONNECTION_DELETE_METHOD_NAME = "deleteConnection";
     private static final String ENDPOINT_DELETE_METHOD_NAME = "deleteEndpoint";
+    private static final String FIND_METHOD_NAME = "find";
 
     private final String serverPlatformRootURL;
     private String externalSourceName;
@@ -332,15 +343,39 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
      * {@inheritDoc}
      */
     @Override
-    public String upsertRelationalTable(String userId, RelationalTable relationalTable, String databaseQualifiedName)
-            throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+    public String upsertDatabaseSchema(String userId, DatabaseSchema databaseSchema, String databaseQualifiedName,
+                                       boolean incomplete) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException {
+        final String methodName = DATABASE_SCHEMA_METHOD_NAME;
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        DatabaseSchemaRequestBody requestBody = new DatabaseSchemaRequestBody();
+        requestBody.setDatabaseSchema(databaseSchema);
+        requestBody.setDatabaseQualifiedName(databaseQualifiedName);
+        requestBody.setIncomplete(incomplete);
+        requestBody.setExternalSourceName(externalSourceName);
+
+        return callGUIDPostRESTCall(userId, methodName, DATABASE_SCHEMA_URL_TEMPLATE, requestBody);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String upsertRelationalTable(String userId, RelationalTable relationalTable, String databaseSchemaQualifiedName,
+                                        boolean incomplete) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException {
         final String methodName = RELATIONAL_TABLE_METHOD_NAME;
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
         RelationalTableRequestBody requestBody = new RelationalTableRequestBody();
         requestBody.setRelationalTable(relationalTable);
-        requestBody.setDatabaseQualifiedName(databaseQualifiedName);
+        requestBody.setDatabaseSchemaQualifiedName(databaseSchemaQualifiedName);
+        requestBody.setIncomplete(incomplete);
         requestBody.setExternalSourceName(externalSourceName);
 
         return callGUIDPostRESTCall(userId, methodName, RELATIONAL_TABLE_URL_TEMPLATE, requestBody);
@@ -350,8 +385,8 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
      * {@inheritDoc}
      */
     @Override
-    public String upsertDataFile(String userId, DataFile dataFile) throws InvalidParameterException, UserNotAuthorizedException,
-                                                                          PropertyServerException {
+    public String upsertDataFile(String userId, DataFile dataFile, boolean incomplete) throws InvalidParameterException,
+            UserNotAuthorizedException, PropertyServerException {
         final String methodName = DATA_FILE_METHOD_NAME;
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -359,6 +394,7 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         DataFileRequestBody requestBody = new DataFileRequestBody();
         requestBody.setDataFile(dataFile);
         requestBody.setExternalSourceName(externalSourceName);
+        requestBody.setIncomplete(incomplete);
 
         return callGUIDPostRESTCall(userId, methodName, DATA_FILE_URL_TEMPLATE, requestBody);
     }
@@ -373,6 +409,18 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         DeleteRequestBody requestBody = getDeleteRequestBody(qualifiedName, guid);
 
         callVoidDeleteRESTCall(userId, DATABASE_DELETE_METHOD_NAME, DATABASE_URL_TEMPLATE, requestBody);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteDatabaseSchema(String userId, String qualifiedName, String guid) throws InvalidParameterException, PropertyServerException {
+        invalidParameterHandler.validateUserId(userId, DATABASE_SCHEMA_DELETE_METHOD_NAME);
+
+        DeleteRequestBody requestBody = getDeleteRequestBody(qualifiedName, guid);
+
+        callVoidDeleteRESTCall(userId, DATABASE_SCHEMA_DELETE_METHOD_NAME, DATABASE_SCHEMA_URL_TEMPLATE, requestBody);
     }
 
     /**
@@ -433,6 +481,16 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         DeleteRequestBody requestBody = getDeleteRequestBody(qualifiedName, guid);
 
         callVoidDeleteRESTCall(userId, ENDPOINT_DELETE_METHOD_NAME, ENDPOINT_URL_TEMPLATE, requestBody);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public GUIDListResponse find(String userId, FindRequestBody findRequestBody) throws ConnectorCheckedException, InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        invalidParameterHandler.validateUserId(userId, FIND_METHOD_NAME);
+
+        return callGUIDListPostRESTCall(FIND_METHOD_NAME, serverPlatformRootURL + FIND_URL_TEMPLATE, findRequestBody, serverName, userId);
     }
 
     private void callVoidPostRESTCall(String userId, String methodName, String urlTemplate, DataEngineOMASAPIRequestBody requestBody,

@@ -7,7 +7,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineRegistrationRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataFileRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DatabaseRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.DatabaseSchemaRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DeleteRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.FindRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
@@ -16,6 +18,7 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.RelationalTableRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.server.service.DataEngineRESTServices;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ConnectionResponse;
@@ -313,6 +316,39 @@ public class DataEngineResource {
     }
 
     /**
+     * Create a Database Schema entity with all the a relationship to a database, if provided and not virtual
+     *
+     * @param serverName  name of server instance to call
+     * @param userId      the name of the calling user
+     * @param requestBody properties for the database
+     *
+     * @return unique identifier of the created entity
+     */
+    @PostMapping(path = "/database-schemas")
+    public GUIDResponse upsertDatabaseSchema(@PathVariable("userId") String userId,
+                                             @PathVariable("serverName") String serverName,
+                                             @RequestBody DatabaseSchemaRequestBody requestBody) {
+        return restAPI.upsertDatabaseSchema(userId, serverName, requestBody);
+
+    }
+
+    /**
+     * Deletes the database schema
+     *
+     * @param serverName  name of server instance to call
+     * @param userId      the name of the calling user
+     * @param requestBody properties for the database
+     *
+     * @return void response
+     */
+    @DeleteMapping(path = "/database-schemas")
+    public VoidResponse deleteDatabaseSchema(@PathVariable("userId") String userId,
+                                             @PathVariable("serverName") String serverName,
+                                             @RequestBody DeleteRequestBody requestBody) {
+        return restAPI.deleteDatabaseSchema(userId, serverName, requestBody);
+    }
+
+    /**
      * Create a RelationalTable entity with all the needed relationships
      *
      * @param serverName  name of server instance to call
@@ -421,5 +457,21 @@ public class DataEngineResource {
                                        @PathVariable("serverName") String serverName,
                                        @RequestBody DeleteRequestBody requestBody) {
         return restAPI.deleteEndpoint(userId, serverName, requestBody);
+    }
+
+    /**
+     * Find assets
+     *
+     * @param serverName        name of server instance to call
+     * @param userId            the name of the calling user
+     * @param findRequestBody properties for the connection
+     *
+     * @return asset if found
+     */
+    @PostMapping(path = "/find")
+    public GUIDListResponse search(@PathVariable("userId") String userId,
+                                   @PathVariable("serverName") String serverName,
+                                   @RequestBody FindRequestBody findRequestBody){
+        return restAPI.find(userId, serverName, findRequestBody);
     }
 }

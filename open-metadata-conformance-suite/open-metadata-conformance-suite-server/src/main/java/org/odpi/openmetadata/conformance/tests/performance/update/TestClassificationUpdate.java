@@ -6,8 +6,10 @@ import org.odpi.openmetadata.conformance.tests.performance.OpenMetadataPerforman
 import org.odpi.openmetadata.conformance.workbenches.performance.PerformanceProfile;
 import org.odpi.openmetadata.conformance.workbenches.performance.PerformanceWorkPad;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.HashMap;
@@ -65,27 +67,39 @@ public class TestClassificationUpdate extends OpenMetadataPerformanceTestCase
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
         int numInstances = super.getInstancesPerType();
 
-        Set<String> keys = getEntityKeys(metadataCollection, numInstances);
-        updateEntityClassification(metadataCollection, keys);
-
-        super.setSuccessMessage("Classification update performance tests complete for: " + testTypeName);
+        OMRSRepositoryHelper repositoryHelper = super.getRepositoryHelper();
+        List<String> methodsToSkip = performanceWorkPad.getMethodsToSkip();
+        if (!methodsToSkip.contains("updateEntityClassification")) {
+            Set<String> keys = getEntityKeys(metadataCollection, repositoryHelper, numInstances);
+            updateEntityClassification(metadataCollection, keys);
+            super.setSuccessMessage("Classification update performance tests complete for: " + testTypeName);
+        }
     }
 
     /**
      * Retrieve a list of entity GUIDs that have this classification.
      * @param metadataCollection through which to call findEntitiesByClassification
+     * @param repositoryHelper utilities to introspect the repository's capabilities
      * @param numInstances number of instances to retrieve
      * @return set of entity GUIDs that have this classification
      * @throws Exception on any errors
      */
-    private Set<String> getEntityKeys(OMRSMetadataCollection metadataCollection, int numInstances) throws Exception
+    private Set<String> getEntityKeys(OMRSMetadataCollection metadataCollection,
+                                      OMRSRepositoryHelper repositoryHelper,
+                                      int numInstances) throws Exception
     {
+        final String methodName = "getEntityKeys";
+        InstanceProperties byMetadataCollectionId = repositoryHelper.addStringPropertyToInstance(testCaseId,
+                null,
+                "metadataCollectionId",
+                repositoryHelper.getExactMatchRegex(performanceWorkPad.getTutMetadataCollectionId()),
+                methodName);
         long start = System.nanoTime();
         List<EntityDetail> entitiesWithClassification = metadataCollection.findEntitiesByClassification(workPad.getLocalServerUserId(),
                 null,
                 classificationDef.getName(),
-                null,
-                null,
+                byMetadataCollectionId,
+                MatchCriteria.ALL,
                 0,
                 null,
                 null,
@@ -135,7 +149,7 @@ public class TestClassificationUpdate extends OpenMetadataPerformanceTestCase
                             instProps);
                     long elapsedTime = (System.nanoTime() - start) / 1000000;
 
-                    assertCondition(result != null,
+                    assertCondition(true,
                             A_UPDATE_PROPERTIES,
                             A_UPDATE_PROPERTIES_MSG + testTypeName,
                             PerformanceProfile.CLASSIFICATION_UPDATE.getProfileId(),
