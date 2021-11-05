@@ -21,7 +21,6 @@ dependencies {
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-client')
-    implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:graph-repository-connector')
     implementation project(':open-metadata-test:open-metadata-fvt:fvt-utilities')
     testImplementation project(':open-metadata-distribution:open-metadata-assemblies')
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
