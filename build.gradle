@@ -216,6 +216,7 @@ allprojects {
             runtimeOnly("org.janusgraph:janusgraph-es:${janusVersion}")
             runtimeOnly("org.xerial.snappy:snappy-java:1.1.8.2")
 	        runtimeOnly("javax.servlet:javax.servlet-api:4.0.1");
+	        runtimeOnly("org.hibernate:hibernate-validator:7.0.1.Final");
             testImplementation("junit:junit:4.13.2")
             testImplementation("org.glassfish:javax.json:1.1.4")
             testImplementation("org.junit.jupiter:junit-jupiter:${junitjupiterVersion}")
