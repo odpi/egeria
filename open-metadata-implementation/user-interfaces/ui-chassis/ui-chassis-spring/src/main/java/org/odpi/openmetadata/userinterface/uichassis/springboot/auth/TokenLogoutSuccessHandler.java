@@ -33,7 +33,7 @@ public class TokenLogoutSuccessHandler extends
 
 
         String refererUrl = request.getHeader("Referer");
-        log.debug("Logout from: " + refererUrl);
+        log.debug("Logout from: {}", refererUrl);
 
         String token = request.getHeader(AuthService.AUTH_HEADER_NAME);
 
