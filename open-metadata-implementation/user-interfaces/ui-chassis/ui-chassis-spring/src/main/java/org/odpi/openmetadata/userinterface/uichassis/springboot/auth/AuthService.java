@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.ldap.userdetails.InetOrgPerson;
 
@@ -50,7 +51,7 @@ public interface AuthService {
         if (principal instanceof InetOrgPerson) {
             InetOrgPerson person = (InetOrgPerson) principal;
             Collection<String> userRoles = person.getAuthorities().stream()
-                    .map( a -> a.getAuthority() )
+                    .map(GrantedAuthority::getAuthority)
                     .collect(Collectors.toSet());
             tokenUser = new TokenUser( person,
                                        extractUserAppRoles(userRoles));
@@ -58,7 +59,7 @@ public interface AuthService {
             UserDetails userDetails = (UserDetails) principal;
             tokenUser = new TokenUser(userDetails.getUsername(),
                     userDetails.getAuthorities().stream()
-                            .map( a -> a.getAuthority() )
+                            .map(GrantedAuthority::getAuthority)
                             .collect(Collectors.toSet()));
         }
         return tokenUser;

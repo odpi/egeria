@@ -38,7 +38,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.when;
 
@@ -76,7 +75,7 @@ public class OpenLineageServiceTest {
     @DisplayName("Ultimate Source")
     public void testUltimateSource() throws PropertyServerException, InvalidParameterException {
         try {
-            when(openLineageClient.lineage(eq(USER_ID), eq(Scope.ULTIMATE_SOURCE), eq(guid), eq(""), eq(true)))
+            when(openLineageClient.lineage(USER_ID, Scope.ULTIMATE_SOURCE, guid, "", true))
                     .thenReturn(lineageVerticesAndEdges);
         } catch (OpenLineageException e) {
             e.printStackTrace();
@@ -89,7 +88,7 @@ public class OpenLineageServiceTest {
     @DisplayName("End To End")
     public void testEndToEnd() throws PropertyServerException, InvalidParameterException {
         try {
-            when(openLineageClient.lineage(eq(USER_ID), eq(Scope.END_TO_END), eq(guid), eq(""), eq(true)))
+            when(openLineageClient.lineage(USER_ID, Scope.END_TO_END, guid, "", true))
                     .thenReturn(lineageVerticesAndEdges);
         } catch (OpenLineageException e) {
             e.printStackTrace();
@@ -103,7 +102,7 @@ public class OpenLineageServiceTest {
     @DisplayName("Ultimate Destination")
     public void testUltimateDestination() throws PropertyServerException, InvalidParameterException {
         try {
-            when(openLineageClient.lineage(eq(USER_ID), eq(Scope.ULTIMATE_DESTINATION), eq(guid), eq(""), eq(true)))
+            when(openLineageClient.lineage(USER_ID, Scope.ULTIMATE_DESTINATION, guid, "", true))
                     .thenReturn(lineageVerticesAndEdges);
         } catch (OpenLineageException e) {
             e.printStackTrace();
@@ -116,7 +115,7 @@ public class OpenLineageServiceTest {
     @DisplayName("GlossaryLineage")
     public void testGlossaryLineage() throws PropertyServerException, InvalidParameterException {
         try {
-            when(openLineageClient.lineage(eq(USER_ID), eq(Scope.VERTICAL), eq(guid), eq(""), eq(true)))
+            when(openLineageClient.lineage(USER_ID, Scope.VERTICAL, guid, "", true))
                     .thenReturn(lineageVerticesAndEdges);
         } catch (OpenLineageException e) {
             e.printStackTrace();
@@ -132,7 +131,7 @@ public class OpenLineageServiceTest {
     public void testNodesLevels() throws PropertyServerException, InvalidParameterException, IOException {
         setupLineageVerticesAndEdges();
         try {
-            when(openLineageClient.lineage(eq(USER_ID), eq(Scope.END_TO_END), eq("n11"), eq(""), eq(true)))
+            when(openLineageClient.lineage(USER_ID, Scope.END_TO_END, "n11", "", true))
                     .thenReturn(lineageVerticesAndEdges);
             doCallRealMethod().when(lineageGraphDisplayService).setNodesLevel(anyList(), anyList(),anyList());
         } catch (OpenLineageException e) {

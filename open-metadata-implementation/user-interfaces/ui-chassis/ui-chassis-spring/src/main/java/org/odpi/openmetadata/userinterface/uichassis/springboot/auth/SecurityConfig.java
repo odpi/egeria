@@ -82,7 +82,7 @@ public abstract class SecurityConfig extends WebSecurityConfigurerAdapter {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        if( allowedOrigins!=null && allowedOrigins.size() > 0) {
+        if( allowedOrigins!=null && !allowedOrigins.isEmpty()) {
             configuration.setAllowedOrigins(allowedOrigins);
             configuration.setAllowedMethods(Arrays.asList("GET","POST"));
             configuration.addExposedHeader("x-auth-token");
