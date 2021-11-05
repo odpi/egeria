@@ -23,7 +23,7 @@ dependencies {
     runtimeOnly 'org.antlr:antlr-runtime'
     runtimeOnly 'org.xerial.snappy:snappy-java'
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
-
+    runtimeOnly 'org.hibernate:hibernate-validator'
 }
 
 description = 'Graph Repository Connector'
