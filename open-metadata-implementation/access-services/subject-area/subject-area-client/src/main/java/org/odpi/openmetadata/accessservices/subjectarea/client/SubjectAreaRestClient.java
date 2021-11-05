@@ -2,14 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.client;
 
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.Config;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.utils.QueryBuilder;
+import org.odpi.openmetadata.accessservices.subjectarea.utils.QueryParams;
 import org.odpi.openmetadata.accessservices.subjectarea.utils.QueryUtils;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GenericResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GenericResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ResponseParameterization;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -18,11 +17,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 /**
  * RESTClient is responsible for issuing calls to the Subject Area OMAS REST APIs.
@@ -213,7 +207,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
                                                   String urnTemplate,
                                                   FindRequest findRequest,
                                                   Integer maximumPageSizeOnRestCall,
-                                                  Map<String, String> params) throws InvalidParameterException,
+                                                  QueryParams queryParams) throws InvalidParameterException,
                                                                                      PropertyServerException,
                                                                                      UserNotAuthorizedException
     {
@@ -237,13 +231,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
             if (findRequest == null) {
                 expandedURL = String.format(serverPlatformURLRoot + urnTemplate, serverName, userId, guid);
             } else {
-                QueryBuilder queryBuilder = createFindQuery(methodName, findRequest);
-                if (params != null && params.keySet().size() >0) {
-                    for (String param: params.keySet()) {
-                        queryBuilder.addParam(param,params.get(param));
-                    }
-                }
-
+                QueryBuilder queryBuilder = createFindQuery(methodName, findRequest, queryParams);
                 String findUrlTemplate = urnTemplate + queryBuilder.toString();
                 expandedURL = String.format(serverPlatformURLRoot + findUrlTemplate, serverName, userId, guid);
             }
@@ -286,11 +274,10 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
                                                String urnTemplate,
                                                ParameterizedTypeReference<GenericResponse<T>> type,
                                                FindRequest findRequest,
-                                               boolean exactValue,
-                                               boolean ignoreCase) throws InvalidParameterException,
+                                               QueryParams queryParams) throws InvalidParameterException,
                                                                                          PropertyServerException,
                                                                                          UserNotAuthorizedException {
-        return findRESTCall(userId, methodName, urnTemplate, type, findRequest, exactValue, ignoreCase, null);
+        return findRESTCall(userId, methodName, urnTemplate, type, findRequest, queryParams, null);
     }
     /**
      * Issue a GET REST call that returns a response found objects using the information described in findRequest,
@@ -315,8 +302,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
                                                String urnTemplate,
                                                ParameterizedTypeReference<GenericResponse<T>> type,
                                                FindRequest findRequest,
-                                               boolean exactValue,
-                                               boolean ignoreCase,
+                                               QueryParams queryParams,
                                                Integer maximumPageSizeOnRestCall) throws InvalidParameterException,
                                                                                PropertyServerException,
                                                                                UserNotAuthorizedException {
@@ -334,7 +320,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
             // Only need to make one call
             String findUrlTemplate = String.format(serverPlatformURLRoot + urnTemplate, serverName, userId);
             // the searchCriteria could contain utf-8 characters that could include % characters, that format would incorrectly interpret. So we add the query params after the format
-            String expandedURL = findUrlTemplate + createFindQuery(methodName, findRequest, exactValue, ignoreCase).toString();
+            String expandedURL = findUrlTemplate + createFindQuery(methodName, findRequest, queryParams).toString();
             completeResponse = callGetRESTCall(methodName, type, expandedURL);
             exceptionHandler.detectAndThrowStandardExceptions(methodName, completeResponse);
         } else {
@@ -547,7 +533,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
      * @throws InvalidParameterException one of the parameters is null or invalid
      * */
     public QueryBuilder createFindQuery(String methodName, FindRequest findRequest) throws InvalidParameterException {
-        return createFindQuery(methodName, findRequest, false,true);
+        return createFindQuery(methodName, findRequest, null);
     }
 
     /**
@@ -560,7 +546,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
      * @return query
      * @throws InvalidParameterException one of the parameters is null or invalid
      * */
-    public QueryBuilder createFindQuery(String methodName, FindRequest findRequest, boolean exactValue, boolean ignoreCase) throws InvalidParameterException {
+    public QueryBuilder createFindQuery(String methodName, FindRequest findRequest, QueryParams queryParams) throws InvalidParameterException {
         QueryBuilder queryBuilder = new QueryBuilder();
         SequencingOrder sequencingOrder = findRequest.getSequencingOrder();
         if (sequencingOrder == null) {
@@ -584,8 +570,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
             property = QueryUtils.encodeParams(methodName, "sequencingProperty", property);
             queryBuilder.addParam("sequencingProperty", property);
         }
-        queryBuilder.addParam("exactValue", exactValue);
-        queryBuilder.addParam("ignoreCase", ignoreCase);
+        queryBuilder.addParams(queryParams);
         return queryBuilder;
     }
 
