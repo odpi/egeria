@@ -57,6 +57,7 @@ public class OpenLineageServerOperationalServices {
     private final String localServerUserId;
     private final String localServerPassword;
     private final int maxPageSize;
+    private final String localServerId;
 
     private OpenLineageServerConfig openLineageServerConfig;
     private OpenLineageServerInstance openLineageServerInstance;
@@ -75,10 +76,12 @@ public class OpenLineageServerOperationalServices {
      * @param localServerPassword password for this server to use if sending REST requests.
      * @param maxPageSize         maximum number of records that can be requested on the pageSize parameter
      */
-    public OpenLineageServerOperationalServices(String localServerName,
+    public OpenLineageServerOperationalServices(String localServerId,
+                                                String localServerName,
                                                 String localServerUserId,
                                                 String localServerPassword,
                                                 int maxPageSize) {
+        this.localServerId = localServerId;
         this.localServerName = localServerName;
         this.localServerUserId = localServerUserId;
         this.localServerPassword = localServerPassword;
@@ -169,7 +172,7 @@ public class OpenLineageServerOperationalServices {
         } else {
             restClient = new OCFRESTClient(serverName, serverPlatformURLRoot, serverUserId, serverPassword, auditLog);
         }
-        ConnectionResponse restResult = null;
+        ConnectionResponse restResult;
         do {
             restResult = getConnection(methodName, restClient, accessServiceConfig);
             Thread.sleep(RETRIEVE_OUT_TOPIC_CONNECTION_TIMEOUT);
@@ -189,7 +192,7 @@ public class OpenLineageServerOperationalServices {
                     serverPlatformURLRoot + urlTemplate,
                     serverName,
                     serverUserId,
-                    serverUserId);
+                    localServerId);
         } catch (InvalidParameterException | UserNotAuthorizedException | org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException e) {
             logException(OpenLineageServerAuditCode.COULD_NOT_RETRIEVE_TOPIC_CONNECTOR, actionDescription, e);
         }
