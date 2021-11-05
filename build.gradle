@@ -41,7 +41,7 @@ apply plugin: 'nebula-aggregate-javadocs'
 allprojects {
 
     group = 'org.odpi.egeria'
-    version = '3.3-SNAPSHOT'
+    version = '3.4-SNAPSHOT'
 
     // This enforces version checking but is slow to process
     //apply plugin: 'nebula.lint'
@@ -76,21 +76,22 @@ allprojects {
     ext {
         logbackVersion = '1.2.6'
         jacksonVersion = '2.12.2'
-        nettyVersion = '4.1.68.Final'
-        luceneVersion = '8.10.0'
+        luceneVersion = '8.10.1'
+        nettyVersion = '4.1.69.Final'
         gremlinVersion = '3.5.1'
         groovyVersion = '3.0.7'
-        springdataVersion = '2.5.5'
+        springdataVersion = '2.5.6'
         janusVersion = '0.6.0'
-        springwebVersion = '5.3.10'
+        springwebVersion = '5.3.12'
         springldapVersion = '2.3.4.RELEASE'
-        springsecurityVersion = '5.5.2'
-        mockitoVersion = '3.12.4'
+        springsecurityVersion = '5.5.3'
+        mockitoVersion = '4.0.0'
         tomcatVersion = '9.0.54'
         junitjupiterVersion = '5.8.1'
-        springbootVersion = '2.5.5'
+        springbootVersion = '2.5.6'
         httpcoreVersion = '4.4.14'
         jenaVersion = '4.1.0'
+        elasticsearchVersion = '7.15.1'
     }
 
     dependencies {
@@ -102,10 +103,11 @@ allprojects {
             implementation("com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}")
             implementation("com.fasterxml.jackson.core:jackson-core:${jacksonVersion}")
             implementation("com.fasterxml.jackson.core:jackson-datatype-jsr310:${jacksonVersion}")
+            implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${jacksonVersion}")
             implementation("com.fasterxml:classmate:1.5.1")
             implementation("com.github.jsonld-java:jsonld-java:0.13.3")
             implementation("com.google.crypto.tink:tink:1.6.1")
-            implementation("com.github.spotbugs:spotbugs-annotations:4.4.1")
+            implementation("com.github.spotbugs:spotbugs-annotations:4.4.2")
             implementation("com.google.code.findbugs:jsr305:3.0.2")
             implementation("com.google.guava:guava:31.0.1-jre")
             implementation("com.mikesamuel:json-sanitizer:1.2.3")
@@ -114,10 +116,10 @@ allprojects {
             implementation("commons-io:commons-io:2.11.0")
             implementation("commons-logging:commons-logging:1.2")
             implementation("org.apache.commons:commons-text:1.9")
-            implementation("io.github.classgraph:classgraph:4.8.121")
+            implementation("io.github.classgraph:classgraph:4.8.129")
             implementation("io.jsonwebtoken:jjwt:0.9.1")
             implementation('io.lettuce:lettuce-core:6.1.5.RELEASE')
-            implementation("io.micrometer:micrometer-registry-prometheus:1.7.4")
+            implementation("io.micrometer:micrometer-registry-prometheus:1.7.5")
             implementation("io.netty:netty-handler:${nettyVersion}")
             implementation("io.netty:netty-common:${nettyVersion}")
             implementation("io.netty:netty-buffer:${nettyVersion}")
@@ -130,7 +132,7 @@ allprojects {
             implementation("jakarta.persistence:jakarta.persistence-api:2.2.3")
             implementation("javax.validation:validation-api:2.0.1.Final")
             implementation("javax.xml.bind:jaxb-api:2.3.1")
-            implementation("org.apache.avro:avro:1.10.2")
+            implementation("org.apache.avro:avro:1.11.0")
             implementation("org.apache.commons:commons-collections4:4.4")
             implementation("org.apache.commons:commons-lang3:3.12.0")
             implementation("org.apache.httpcomponents:httpclient:4.5.13")
@@ -157,7 +159,9 @@ allprojects {
             implementation("org.codehaus.groovy:groovy-jsr223:${groovyVersion}")
             implementation("org.codehaus.groovy:groovy-templates:${groovyVersion}")
             implementation("org.codehaus.groovy:groovysh:${groovyVersion}")
-            implementation("org.elasticsearch:elasticsearch:7.15.0")
+            compileOnly("org.elasticsearch:elasticsearch:${elasticsearchVersion}")
+            compileOnly("org.elasticsearch.client:elasticsearch-rest-high-level-client:${elasticsearchVersion}")
+            implementation("org.elasticsearch.client:elasticsearch-rest-client:${elasticsearchVersion}")
             implementation("org.codehaus.plexus:plexus-utils:3.4.1")
             implementation("org.hdrhistogram:HdrHistogram:2.1.12")
             implementation("org.janusgraph:janusgraph-core:${janusVersion}")
@@ -165,8 +169,8 @@ allprojects {
             implementation("org.janusgraph:janusgraph-driver:${janusVersion}")
             implementation("org.javassist:3.27.0-GA")
             implementation("org.quartz-scheduler:quartz:2.3.2")
-            implementation("org.reflections:reflections:0.9.12")
-            implementation("org.springdoc:springdoc-openapi-ui:1.5.10")
+            implementation("org.reflections:reflections:0.10.2")
+            implementation("org.springdoc:springdoc-openapi-ui:1.5.12")
             implementation("org.slf4j:jcl-over-slf4j:1.7.32")
             implementation("org.slf4j:slf4j-api:1.7.32")
             implementation("org.springframework.boot:spring-boot-autoconfigure:${springbootVersion}")
@@ -199,7 +203,7 @@ allprojects {
 	        implementation("org.apache.commons:commons-configuration2:2.7")
             // testng also used in our 'source' code to support unit tests
             implementation("org.testng:testng:7.4.0")
-            runtimeOnly("joda-time:joda-time:2.10.12")
+            runtimeOnly("joda-time:joda-time:2.10.13")
             implementation("org.yaml:snakeyaml:1.29")
             runtimeOnly("org.antlr:antlr-runtime:3.5.2")
             runtimeOnly("org.apache.jena:jena-arq:${jenaVersion}")
@@ -226,7 +230,6 @@ allprojects {
             testImplementation("org.testng:testng:7.3.0")
             testImplementation("org.hamcrest:hamcrest:2.2")
             implementation("org.apache.thrift:libthrift:0.15.0")
-            implementation("org.elasticsearch.client:elasticsearch-rest-client:7.15.0")
         }
     }
 

@@ -16,6 +16,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.LineagePublishSum
 import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -326,5 +327,50 @@ public class AssetLineageRestServices {
                     guids.add(relationship.getToVertex().getGuid());
                 });
         return new ArrayList<>(guids);
+    }
+
+    /**
+     * Return the client side connection object for the Asset Lineage OMAS's out topic.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param userId identifier of calling user.
+     * @param callerId unique identifier of the caller
+     *
+     * @return connection object for the out topic or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem retrieving the discovery engine definition.
+     */
+    public ConnectionResponse getOutTopicConnection(String serverName,
+                                                    String userId,
+                                                    String callerId)
+    {
+        final String methodName = "getOutTopicConnection";
+        ConnectionResponse response = new ConnectionResponse();
+        AuditLog           auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            response.setConnection(instanceHandler.getOutTopicConnection(userId, serverName, methodName, callerId));
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        return response;
     }
 }

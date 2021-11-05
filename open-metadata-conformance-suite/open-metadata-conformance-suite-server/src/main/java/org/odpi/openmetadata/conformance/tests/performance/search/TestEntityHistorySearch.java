@@ -99,9 +99,16 @@ public class TestEntityHistorySearch extends OpenMetadataPerformanceTestCase
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
         OMRSRepositoryHelper repositoryHelper = super.getRepositoryHelper();
 
-        findEntities(metadataCollection);
-        findEntitiesByPropertyValue(metadataCollection, repositoryHelper);
-        findEntitiesByProperty(metadataCollection, repositoryHelper);
+        List<String> methodsToSkip = performanceWorkPad.getMethodsToSkip();
+        if (!methodsToSkip.contains("findEntities")) {
+            findEntities(metadataCollection);
+        }
+        if (!methodsToSkip.contains("findEntitiesByPropertyValue")) {
+            findEntitiesByPropertyValue(metadataCollection, repositoryHelper);
+        }
+        if (!methodsToSkip.contains("findEntitiesByProperty")) {
+            findEntitiesByProperty(metadataCollection, repositoryHelper);
+        }
 
         super.setSuccessMessage("Entity historical search performance tests complete for: " + testTypeName);
     }
@@ -130,7 +137,7 @@ public class TestEntityHistorySearch extends OpenMetadataPerformanceTestCase
                     null,
                     asOfTime,
                     null,
-                    SequencingOrder.GUID,
+                    null,
                     performanceWorkPad.getMaxSearchResults());
             long elapsedTime = (System.nanoTime() - start) / 1000000;
 
@@ -160,7 +167,7 @@ public class TestEntityHistorySearch extends OpenMetadataPerformanceTestCase
                         null,
                         null,
                         null,
-                        SequencingOrder.GUID,
+                        null,
                         performanceWorkPad.getMaxSearchResults());
                 elapsedTime = (System.nanoTime() - start) / 1000000;
                 if (results != null && !results.isEmpty()) {

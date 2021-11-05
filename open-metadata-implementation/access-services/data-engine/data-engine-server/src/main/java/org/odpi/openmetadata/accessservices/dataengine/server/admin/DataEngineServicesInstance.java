@@ -240,6 +240,20 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
                         publishZones,
                         auditLog);
 
+        AssetHandler<DatabaseSchema> databaseSchemaAssetHandler = new AssetHandler<>(new DatabaseSchemaConverter<>(repositoryHelper, serviceName,serverName),
+                DatabaseSchema.class,
+                serviceName,
+                serverName,
+                invalidParameterHandler,
+                repositoryHandler,
+                repositoryHelper,
+                localServerUserId,
+                securityVerifier,
+                supportedZones,
+                defaultZones,
+                publishZones,
+                auditLog);
+
         final PortHandler<Port> portHandler = new PortHandler<>(new PortConverter<>(repositoryHelper, serviceName, serverName), Port.class,
                 serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, localServerUserId, securityVerifier,
                 supportedZones, defaultZones, publishZones, auditLog);
@@ -285,7 +299,7 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
         dataEnginePortHandler = new DataEnginePortHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
                 dataEngineCommonHandler, portHandler, dataEngineRegistrationHandler);
         dataEngineRelationalDataHandler = new DataEngineRelationalDataHandler(serviceName, serverName, invalidParameterHandler,
-                relationalDataHandler, dataEngineRegistrationHandler, dataEngineCommonHandler, dataEngineConnectionAndEndpointHandler);
+                relationalDataHandler, databaseSchemaAssetHandler, dataEngineRegistrationHandler, dataEngineCommonHandler, dataEngineConnectionAndEndpointHandler);
 
 
         final AssetHandler<FileFolder> folderHandler = new AssetHandler<>(new FileFolderConverter<>(repositoryHelper, serviceName, serverName),

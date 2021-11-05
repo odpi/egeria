@@ -10,7 +10,7 @@
     <parent>
         <artifactId>access-services</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.3-SNAPSHOT</version>
+        <version>3.4-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -34,6 +34,7 @@
         <module>asset-lineage-client</module>
         <module>asset-lineage-server</module>
         <module>asset-lineage-spring</module>
+        <module>asset-lineage-topic-connectors</module>
     </modules>
 
 </project>

@@ -11,6 +11,7 @@ import org.odpi.openmetadata.accessservices.dataengine.ProcessSetupService;
 import org.odpi.openmetadata.accessservices.dataengine.SoftwareServerCapabilitySetupService;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
+import org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema;
 import org.odpi.openmetadata.accessservices.dataengine.model.Port;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
@@ -29,6 +30,7 @@ public class DataEngineFVT {
 
     protected static final String SOFTWARE_SERVER_CAPABILITY_TYPE_GUID = "fe30a033-8f86-4d17-8986-e6166fa24177";
     protected static final String DATABASE_TYPE_GUID = "0921c83f-b2db-4086-a52c-0d10e52ca078";
+    protected static final String DEPLOYED_DATABASE_SCHEMA_TYPE_GUID = "eab811ec-556a-45f1-9091-bc7ac8face0f";
     protected static final String DATAFILE_TYPE_GUID = "10752b4a-4b5d-4519-9eae-fdd6d162122f";
     protected static final String RELATIONAL_TABLE_TYPE_GUID = "ce7e72b8-396a-4013-8688-f9d973067425";
     protected static final String PROCESS_TYPE_GUID = "d8f33bd7-afa9-4a11-a8c7-07dcec83c050";
@@ -111,6 +113,16 @@ public class DataEngineFVT {
         assertEquals(database.getDatabaseVersion(), databaseAsEntityDetail.getProperties().getPropertyValue(DATABASE_VERSION).valueAsString());
         assertEquals(database.getDatabaseInstance(), databaseAsEntityDetail.getProperties().getPropertyValue(INSTANCE).valueAsString());
         assertEquals(database.getDatabaseImportedFrom(), databaseAsEntityDetail.getProperties().getPropertyValue(IMPORTED_FROM).valueAsString());
+        return databaseAsEntityDetail;
+    }
+
+    protected EntityDetail assertDatabaseSchema(DatabaseSchema databaseSchema, List<EntityDetail> databaseSchemas) {
+        assertNotNull(databaseSchemas);
+        assertEquals(1, databaseSchemas.size());
+
+        EntityDetail databaseAsEntityDetail = databaseSchemas.get(0);
+        assertEquals(databaseSchema.getDisplayName(), databaseAsEntityDetail.getProperties().getPropertyValue(NAME).valueAsString());
+        assertEquals(databaseSchema.getDescription(), databaseAsEntityDetail.getProperties().getPropertyValue(DESCRIPTION).valueAsString());
         return databaseAsEntityDetail;
     }
 

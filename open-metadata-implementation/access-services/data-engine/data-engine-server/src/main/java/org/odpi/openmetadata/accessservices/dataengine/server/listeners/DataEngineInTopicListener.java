@@ -93,6 +93,9 @@ public class DataEngineInTopicListener implements OpenMetadataTopicListener {
                         case DATABASE_EVENT:
                             dataEngineEventProcessor.processDatabaseEvent(dataEngineEvent);
                             break;
+                        case DATABASE_SCHEMA_EVENT:
+                            dataEngineEventProcessor.processDatabaseSchemaEvent(dataEngineEvent);
+                            break;
                         case RELATIONAL_TABLE_EVENT:
                             dataEngineEventProcessor.processRelationalTableEvent(dataEngineEvent);
                             break;
@@ -101,6 +104,9 @@ public class DataEngineInTopicListener implements OpenMetadataTopicListener {
                             break;
                         case DELETE_DATABASE_EVENT:
                             dataEngineEventProcessor.processDeleteDatabaseEvent(dataEngineEvent);
+                            break;
+                        case DELETE_DATABASE_SCHEMA_EVENT:
+                            dataEngineEventProcessor.processDeleteDatabaseSchemaEvent(dataEngineEvent);
                             break;
                         case DELETE_RELATIONAL_TABLE_EVENT:
                             dataEngineEventProcessor.processDeleteRelationalTableEvent(dataEngineEvent);
