@@ -15,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * DuplicateElement contains the properties and header for an asset retrieved from the metadata repository.
+ * DuplicateElement contains the header for PeerDuplicateLink relationship, its properties and the header of the peer element.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -91,7 +91,7 @@ public class DuplicateElement implements MetadataElement, Serializable
      *
      * @param duplicateProperties properties bean
      */
-    public void setAssetProperties(DuplicateProperties duplicateProperties)
+    public void setDuplicateProperties(DuplicateProperties duplicateProperties)
     {
         this.duplicateProperties = duplicateProperties;
     }

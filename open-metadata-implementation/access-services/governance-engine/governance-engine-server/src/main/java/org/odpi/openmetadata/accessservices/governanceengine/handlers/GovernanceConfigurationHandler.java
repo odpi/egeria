@@ -977,11 +977,11 @@ public class GovernanceConfigurationHandler
 
 
     /**
-     * Retrieve a specific governance service registered with a governance engine.
+     * Retrieve a specific governance service registrations with a particular governance engine.
      *
      * @param userId identifier of calling user
      * @param governanceEngineGUID unique identifier of the governance engine.
-     * @param governanceServiceGUID unique identifier of the governance service.
+     * @param governanceServiceGUID unique identifier of the registered governance service.
      *
      * @return details of the governance service and the asset types it is registered for.
      *

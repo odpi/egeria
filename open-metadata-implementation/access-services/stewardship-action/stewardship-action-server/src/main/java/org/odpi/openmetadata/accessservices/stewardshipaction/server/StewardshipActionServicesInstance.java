@@ -2,8 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.stewardshipaction.server;
 
+import org.odpi.openmetadata.accessservices.stewardshipaction.converters.ElementStubConverter;
 import org.odpi.openmetadata.accessservices.stewardshipaction.ffdc.StewardshipActionErrorCode;
+import org.odpi.openmetadata.accessservices.stewardshipaction.metadataelements.ElementStub;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -19,7 +22,8 @@ public class StewardshipActionServicesInstance extends OMASServiceInstance
 {
     private static AccessServiceDescription myDescription = AccessServiceDescription.STEWARDSHIP_ACTION_OMAS;
 
-
+    private ElementStubConverter<ElementStub> elementStubConverter;
+    private ReferenceableHandler<ElementStub> referenceableHandler;
 
     /**
      * Set up the handlers for this server.
@@ -50,7 +54,21 @@ public class StewardshipActionServicesInstance extends OMASServiceInstance
 
         if (repositoryHandler != null)
         {
-            /* Add handlers here */
+            this.elementStubConverter = new ElementStubConverter<>(repositoryHelper, serviceName, serverName);
+
+            this.referenceableHandler = new ReferenceableHandler<>(new ElementStubConverter<>(repositoryHelper, serviceName, serverName),
+                                                                   ElementStub.class,
+                                                                   serviceName,
+                                                                   serverName,
+                                                                   invalidParameterHandler,
+                                                                   repositoryHandler,
+                                                                   repositoryHelper,
+                                                                   localServerUserId,
+                                                                   securityVerifier,
+                                                                   supportedZones,
+                                                                   defaultZones,
+                                                                   publishZones,
+                                                                   auditLog);
         }
         else
         {
@@ -59,6 +77,29 @@ public class StewardshipActionServicesInstance extends OMASServiceInstance
                                            methodName);
 
         }
+    }
+
+
+
+    /**
+     * Return the element stub converter
+     *
+     * @return converter
+     */
+    ElementStubConverter<ElementStub> getElementStubConverter()
+    {
+        return elementStubConverter;
+    }
+
+
+    /**
+     * Return the referencable handler
+     *
+     * @return handler
+     */
+    ReferenceableHandler<ElementStub> getReferenceableHandler()
+    {
+        return referenceableHandler;
     }
 
 }

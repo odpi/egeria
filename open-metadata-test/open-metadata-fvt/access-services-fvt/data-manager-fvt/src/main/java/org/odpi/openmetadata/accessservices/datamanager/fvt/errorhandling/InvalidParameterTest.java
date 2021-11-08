@@ -121,7 +121,7 @@ public class InvalidParameterTest
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -146,7 +146,7 @@ public class InvalidParameterTest
             testCreateFileSystemNoProperties(client, userId);
             testCreateFileSystemNoQualifiedName(client, userId);
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -174,7 +174,7 @@ public class InvalidParameterTest
         {
             // ignore
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -202,7 +202,7 @@ public class InvalidParameterTest
         {
             // ignore
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -232,7 +232,7 @@ public class InvalidParameterTest
         {
             // ignore
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -257,7 +257,7 @@ public class InvalidParameterTest
             testCreateFileManagerNoProperties(client, userId);
             testCreateFileManagerNoQualifiedName(client, userId);
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -285,7 +285,7 @@ public class InvalidParameterTest
         {
             // ignore
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -313,7 +313,7 @@ public class InvalidParameterTest
         {
             // ignore
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -343,7 +343,7 @@ public class InvalidParameterTest
         {
             // ignore
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -368,7 +368,7 @@ public class InvalidParameterTest
             testCreateDatabaseManagerNoProperties(client, userId);
             testCreateDatabaseManagerNoQualifiedName(client, userId);
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -396,7 +396,7 @@ public class InvalidParameterTest
         {
             // ignore
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -424,7 +424,7 @@ public class InvalidParameterTest
         {
             // ignore
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -454,7 +454,7 @@ public class InvalidParameterTest
         {
             // ignore
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -478,7 +478,7 @@ public class InvalidParameterTest
             testGetMetadataSourceGUIDNoUserId(client);
             testGetMetadataSourceGUIDNoQualifiedName(client, userId);
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -504,7 +504,7 @@ public class InvalidParameterTest
         {
             // ignore
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -532,7 +532,7 @@ public class InvalidParameterTest
         {
             // ignore
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -566,7 +566,7 @@ public class InvalidParameterTest
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -593,7 +593,7 @@ public class InvalidParameterTest
             testCreateDatabaseNoExternalSourceGUID(client, userId);
             testCreateDatabaseNoExternalSourceName(client, userId);
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -621,7 +621,7 @@ public class InvalidParameterTest
         {
             // ignore
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -650,7 +650,7 @@ public class InvalidParameterTest
         {
             // ignore
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -680,7 +680,7 @@ public class InvalidParameterTest
         {
             // ignore
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -710,7 +710,7 @@ public class InvalidParameterTest
         {
             // ignore
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -740,7 +740,7 @@ public class InvalidParameterTest
         {
             // ignore
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -774,7 +774,7 @@ public class InvalidParameterTest
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -801,7 +801,7 @@ public class InvalidParameterTest
             testCreateNestedFoldersNoExternalSourceGUID(client, userId);
             testCreateNestedFoldersNoExternalSourceName(client, userId);
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -830,7 +830,7 @@ public class InvalidParameterTest
         {
             // ignore
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -859,7 +859,7 @@ public class InvalidParameterTest
         {
             // ignore
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -888,7 +888,7 @@ public class InvalidParameterTest
         {
             // ignore
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -918,7 +918,7 @@ public class InvalidParameterTest
         {
             // all ok
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -948,7 +948,7 @@ public class InvalidParameterTest
         {
             // all ok
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -982,7 +982,7 @@ public class InvalidParameterTest
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -1006,7 +1006,7 @@ public class InvalidParameterTest
             testRegisterListenerNoUserId(client);
             testRegisterListenerNoListener(client, userId);
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -1032,7 +1032,7 @@ public class InvalidParameterTest
         {
             // ignore
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -1060,7 +1060,7 @@ public class InvalidParameterTest
         {
             // ignore
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }

@@ -113,15 +113,20 @@ public class AssetManagerAdmin extends AccessServiceAdmin
                                                                                                       outTopicAuditLog,
                                                                                                       AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceFullName(),
                                                                                                       actionDescription);
-                eventPublisher = new AssetManagerOutTopicPublisher(outTopicServerConnector, endpoint.getAddress(), outTopicAuditLog);
+                eventPublisher = new AssetManagerOutTopicPublisher(outTopicServerConnector,
+                                                                   endpoint.getAddress(),
+                                                                   outTopicAuditLog,
+                                                                   repositoryConnector.getRepositoryHelper(),
+                                                                   AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceName(),
+                                                                   serverName);
 
                 this.registerWithEnterpriseTopic(AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceFullName(),
                                                  serverName,
                                                  omrsTopicConnector,
                                                  new AssetManagerOMRSTopicListener(AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceFullName(),
+                                                                                   serverUserName,
                                                                                    eventPublisher,
-                                                                                   supportedZones,
-                                                                                   repositoryConnector.getRepositoryHelper(),
+                                                                                   instance.getDataAssetExchangeHandler(),
                                                                                    outTopicAuditLog),
                                                  auditLog);
             }

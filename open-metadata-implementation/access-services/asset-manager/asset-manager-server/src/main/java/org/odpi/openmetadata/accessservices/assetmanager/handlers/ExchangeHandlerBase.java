@@ -24,7 +24,7 @@ import java.util.List;
  * ExchangeHandlerBase is the server side handler for managing the external identifiers and related correlators
  * as well as the supplementary properties for technical metadata elements.
  */
-public class ExchangeHandlerBase
+class ExchangeHandlerBase
 {
     InvalidParameterHandler                                             invalidParameterHandler;
     ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> externalIdentifierHandler;
@@ -33,6 +33,7 @@ public class ExchangeHandlerBase
     String               serverName;
     OMRSRepositoryHelper repositoryHelper;
     RepositoryHandler    repositoryHandler;
+    List<String>         supportedZones;
 
     /**
      * Construct the base exchange handler with information needed to work with the external identifiers
@@ -50,17 +51,17 @@ public class ExchangeHandlerBase
      * @param publishZones list of zones that the access service sets up in published instances.
      * @param auditLog destination for audit log events.
      */
-    public ExchangeHandlerBase(String                             serviceName,
-                               String                             serverName,
-                               InvalidParameterHandler            invalidParameterHandler,
-                               RepositoryHandler                  repositoryHandler,
-                               OMRSRepositoryHelper               repositoryHelper,
-                               String                             localServerUserId,
-                               OpenMetadataServerSecurityVerifier securityVerifier,
-                               List<String>                       supportedZones,
-                               List<String>                       defaultZones,
-                               List<String>                       publishZones,
-                               AuditLog                           auditLog)
+    ExchangeHandlerBase(String                             serviceName,
+                        String                             serverName,
+                        InvalidParameterHandler            invalidParameterHandler,
+                        RepositoryHandler                  repositoryHandler,
+                        OMRSRepositoryHelper               repositoryHelper,
+                        String                             localServerUserId,
+                        OpenMetadataServerSecurityVerifier securityVerifier,
+                        List<String>                       supportedZones,
+                        List<String>                       defaultZones,
+                        List<String>                       publishZones,
+                        AuditLog                           auditLog)
     {
         externalIdentifierHandler = new ExternalIdentifierHandler<>(new ExternalIdentifierConverter<>(repositoryHelper, serviceName, serverName),
                                                                     MetadataCorrelationHeader.class,
@@ -81,6 +82,7 @@ public class ExchangeHandlerBase
         this.invalidParameterHandler = invalidParameterHandler;
         this.serviceName = serviceName;
         this.serverName = serverName;
+        this.supportedZones = supportedZones;
         this.repositoryHelper = repositoryHelper;
         this.repositoryHandler = repositoryHandler;
     }
@@ -417,7 +419,6 @@ public class ExchangeHandlerBase
      * @param elementGUID unique identifier for the element connected to the supplementary properties
      * @param elementQualifiedName unique name for the element connected to the supplementary properties
      * @param supplementaryProperties properties to save
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @throws InvalidParameterException  the parameters are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request

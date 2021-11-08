@@ -236,8 +236,7 @@ public class IntegrationConnectorHandler implements Serializable
                                       integrationConnectorName,
                                       metadataSourceQualifiedName,
                                       integrationConnector,
-                                      permittedSynchronization,
-                                      integrationServiceOptions);
+                                      permittedSynchronization);
 
             this.updateStatus(IntegrationConnectorStatus.INITIALIZED);
 

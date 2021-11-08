@@ -19,7 +19,7 @@ import java.util.Map;
 
 
 /**
- * AssetOwnerOMASConverter provides the generic methods for the Data Manager beans converters.  Generic classes
+ * GovernanceProgramOMASConverter provides the generic methods for the Governance Program beans converters.  Generic classes
  * have limited knowledge of the classes these are working on and this means creating a new instance of a
  * class from within a generic is a little involved.  This class provides the generic method for creating
  * and initializing a Data Manager bean.
