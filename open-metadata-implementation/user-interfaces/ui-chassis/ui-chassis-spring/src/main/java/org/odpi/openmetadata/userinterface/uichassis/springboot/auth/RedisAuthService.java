@@ -73,6 +73,7 @@ public class RedisAuthService extends TokenSettings implements AuthService{
      * creates a token without expiration
      * expiration is to be validated against redis
      */
+    @Override
     public String createTokenForUser(TokenUser user, String secret) {
         return Jwts.builder()
                 .setId(UUID.randomUUID().toString())
