@@ -427,6 +427,7 @@ public class CategoryFVT {
         Category parentCategory = createCategoryWithGlossaryGuid("Parent1", glossary.getSystemAttributes().getGUID());
         Category parentCategory2 = createCategoryWithGlossaryGuid("Parent2", glossary.getSystemAttributes().getGUID());
         String parentGuid = parentCategory.getSystemAttributes().getGUID();
+        String parent2Guid = parentCategory2.getSystemAttributes().getGUID();
 
         Category child = createCategory("child" , glossaryGuid);
         CategorySummary parentCategorySummary1 = new CategorySummary();
@@ -458,8 +459,21 @@ public class CategoryFVT {
             throw new SubjectAreaFVTCheckedException("Category parent still be there for isReplace false");
         }
 
-        Category childUpdated4 = subjectAreaCategory.update(this.userId, child.getSystemAttributes().getGUID(), child, true);
-        if (childUpdated4.getParentCategory() != null) {
+        CategorySummary parentCategorySummary3 = new CategorySummary();
+        parentCategorySummary3.setGuid(parent2Guid);
+        child.setParentCategory(parentCategorySummary3);
+        Category childUpdated4 = updateCategory(child.getSystemAttributes().getGUID(), child);
+        if (childUpdated4.getParentCategory() == null) {
+            throw new SubjectAreaFVTCheckedException("Category parent still be there for isReplace false");
+        } else {
+            if (!childUpdated4.getParentCategory().getGuid().equals(parent2Guid) ) {
+                throw new SubjectAreaFVTCheckedException("Expect category parent to be updated to the requested value");
+            }
+        }
+
+        child.setParentCategory(null);
+        Category childUpdated5 = subjectAreaCategory.update(this.userId, child.getSystemAttributes().getGUID(), child, true);
+        if (childUpdated5.getParentCategory() != null) {
             throw new SubjectAreaFVTCheckedException("Category parent should have been removed for isReplace true");
         }
     }

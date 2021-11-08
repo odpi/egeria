@@ -421,10 +421,10 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                 String suppliedParentGuid = null;
                 if (existingCategory.size() > 0 && existingCategory.get(0).getParentCategory() != null) {
                     existingParentRelationshipGuid = existingCategory.get(0).getParentCategory().getRelationshipguid();
+                    existingParentGuid = existingCategory.get(0).getParentCategory().getGuid();
                 }
                 if (suppliedParent != null && suppliedParent.getGuid() != null) {
                     suppliedParentGuid = suppliedParent.getGuid();
-                    // TODO
                 }
 
                 if (existingParentGuid != null) {
