@@ -174,7 +174,8 @@ public class OpenMetadataTypesArchive3_3
      */
 
 
-    private void create0780IncompleteClassification() {
+    private void create0780IncompleteClassification()
+    {
         this.archiveBuilder.addClassificationDef(addIncompleteClassification());
     }
 

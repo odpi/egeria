@@ -172,7 +172,6 @@ public class OpenMetadataTypesArchive3_2
         update0455ExceptionManagement();
         update0465DuplicateProcessing();
         update0620DataProfiling();
-        create0780IncompleteClassification();
     }
 
 
@@ -1471,36 +1470,6 @@ public class OpenMetadataTypesArchive3_2
 
         return entityDef;
     }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    private void create0780IncompleteClassification() {
-        this.archiveBuilder.addClassificationDef(addIncompleteClassification());
-    }
-
-
-    private ClassificationDef addIncompleteClassification()
-    {
-        final String guid            = "078432fb-a889-4a51-8ebe-9797becea9f1";
-        final String name            = "Incomplete";
-        final String description     = "Accompanies a partial, incomplete Referenceable.";
-        final String descriptionGUID = null;
-
-        final String linkedToEntity = "Referenceable";
-
-        return archiveHelper.getClassificationDef(guid,
-                                                  name,
-                                                  null,
-                                                  description,
-                                                  descriptionGUID,
-                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
-                                                  true);
-    }
-
 
     /*
      * -------------------------------------------------------------------------------------------------------

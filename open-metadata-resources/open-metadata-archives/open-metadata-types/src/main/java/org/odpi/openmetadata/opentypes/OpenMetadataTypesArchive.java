@@ -153,7 +153,7 @@ public class OpenMetadataTypesArchive
      */
     public void getOriginalTypes()
     {
-        OpenMetadataTypesArchive3_2 previousTypes = new OpenMetadataTypesArchive3_2(archiveBuilder);
+        OpenMetadataTypesArchive3_3 previousTypes = new OpenMetadataTypesArchive3_3(archiveBuilder);
 
         /*
          * Pull the types from previous releases.
@@ -171,17 +171,33 @@ public class OpenMetadataTypesArchive
      */
 
     /**
-     * Deprecate the use of GovernanceActionExecutor relationship in favour of additional properties in the GovernanceAction entity.
+     * Deprecate the use of GovernanceActionExecutor and GovernanceActionTypeUse relationships in favour of
+     * additional properties in the GovernanceAction entity.  This is to improve performance.
      */
     private void update0463GovernanceActions()
     {
         this.archiveBuilder.addTypeDefPatch(deprecateGovernanceActionExecutorRelationship());
+        this.archiveBuilder.addTypeDefPatch(deprecateGovernanceActionTypeUseRelationship());
         this.archiveBuilder.addTypeDefPatch(updateGovernanceActionEntity());
     }
 
     private TypeDefPatch deprecateGovernanceActionExecutorRelationship()
     {
         final String typeName = "GovernanceActionExecutor";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch deprecateGovernanceActionTypeUseRelationship()
+    {
+        final String typeName = "GovernanceActionTypeUse";
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -221,8 +237,17 @@ public class OpenMetadataTypesArchive
         final String attribute3Description     = "Unique identifier of the governance engine nominated to run the request.";
         final String attribute3DescriptionGUID = null;
         final String attribute4Name            = "executorEngineName";
-        final String attribute4Description     = "Unique identifier of the governance engine nominated to run the request..";
+        final String attribute4Description     = "Unique identifier of the governance engine nominated to run the request.";
         final String attribute4DescriptionGUID = null;
+        final String attribute5Name            = "processName";
+        final String attribute5Description     = "Unique name of the process that initiated this request.";
+        final String attribute5DescriptionGUID = null;
+        final String attribute6Name            = "governanceActionTypeGUID";
+        final String attribute6Description     = "Unique identifier of the governance action type that initiated this request.";
+        final String attribute6DescriptionGUID = null;
+        final String attribute7Name            = "governanceActionTypeName";
+        final String attribute7Description     = "Unique name of the governance action type that initiated this request.";
+        final String attribute7DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -239,6 +264,18 @@ public class OpenMetadataTypesArchive
         property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
                                                            attribute4Description,
                                                            attribute4DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute5Name,
+                                                           attribute5Description,
+                                                           attribute5DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute6Name,
+                                                           attribute6Description,
+                                                           attribute6DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute7Name,
+                                                           attribute7Description,
+                                                           attribute7DescriptionGUID);
         properties.add(property);
 
         typeDefPatch.setPropertyDefinitions(properties);
