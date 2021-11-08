@@ -57,6 +57,12 @@ public enum LineageIntegratorAuditCode implements AuditLogMessageSet
                                       "This may be due to either (1) an invalid open lineage event, or (2) Egeria's OpenLineageRunEvent not supporting an advancement in the open lineage standard.  " +
                                       "The raw event is passed to the listening connectors with a null OpenLineageRunEvent bean.  The connector can use the open lineage standard server to process the event facet by facet.",
                               "Verify the format of the open lineage event.  If incorrect, seek the source of the event.  If correct, look to enhance Egeria's OpenLineageRunEvent."),
+
+    OPEN_LINEAGE_PUBLISH_ERROR("OMIS-LINEAGE-INTEGRATOR-0006",
+                              OMRSAuditLogRecordSeverity.EXCEPTION,
+                              "A {0} exception with message {1} occurred when a listening integration connector tried to push an OpenLineage event",
+                              "The Lineage Integrator OMIS has caught the exception and will continue to pass the event to the remaining listening integration connectors.",
+                              "Look at the resulting stack trace to understand what went wrong in the called integration connector."),
     ;
 
 

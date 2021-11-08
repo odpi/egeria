@@ -20,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OpenLineageOutputDataset
+public class OpenLineageOutputDataSet
 {
     private String                               namespace;
     private String                               name;
@@ -32,7 +32,7 @@ public class OpenLineageOutputDataset
     /**
      * Default constructor
      */
-    public OpenLineageOutputDataset()
+    public OpenLineageOutputDataSet()
     {
     }
 
@@ -155,7 +155,7 @@ public class OpenLineageOutputDataset
     @Override
     public String toString()
     {
-        return "OpenLineageOutputDataset{" +
+        return "OpenLineageOutputDataSet{" +
                        "namespace='" + namespace + '\'' +
                        ", name='" + name + '\'' +
                        ", facets=" + facets +
@@ -182,7 +182,7 @@ public class OpenLineageOutputDataset
         {
             return false;
         }
-        OpenLineageOutputDataset that = (OpenLineageOutputDataset) objectToCompare;
+        OpenLineageOutputDataSet that = (OpenLineageOutputDataSet) objectToCompare;
         return Objects.equals(namespace, that.namespace) &&
                        Objects.equals(name, that.name) &&
                        Objects.equals(facets, that.facets) &&

@@ -28,6 +28,18 @@ public class OpenLineageOutputDataSetOutputFacet extends OpenLineageFacet
         super (URI.create("https://openlineage.io/spec/1-0-2/OpenLineage.json#/$defs/OutputDatasetFacet"));
     }
 
+
+    /**
+     * Subclass constructor
+     *
+     * @param schemaURL default value for schemaURL
+     */
+    public OpenLineageOutputDataSetOutputFacet(URI schemaURL)
+    {
+        super(schemaURL);
+    }
+
+
     /**
      * Standard toString method.
      *

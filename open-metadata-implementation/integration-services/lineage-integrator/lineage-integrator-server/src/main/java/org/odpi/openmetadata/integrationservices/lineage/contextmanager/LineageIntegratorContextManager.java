@@ -278,15 +278,15 @@ public class LineageIntegratorContextManager extends IntegrationContextManager i
      */
     public synchronized void publishOpenLineageRunEvent(String rawEvent)
     {
-        final String methodName = "publishOpenLineageRunEvent";
+        final String methodName = "publishOpenLineageRunEvent(rawEvent)";
 
-        OpenLineageRunEvent eventBean = null;
+        OpenLineageRunEvent event = null;
 
         if (rawEvent != null)
         {
             try
             {
-                eventBean = objectMapper.readValue(rawEvent, OpenLineageRunEvent.class);
+                event = objectMapper.readValue(rawEvent, OpenLineageRunEvent.class);
             }
             catch (Exception error)
             {
@@ -299,13 +299,7 @@ public class LineageIntegratorContextManager extends IntegrationContextManager i
             }
         }
 
-        for (OpenLineageEventListener listener : registeredEventListeners)
-        {
-            if (listener != null)
-            {
-                listener.processOpenLineageRunEvent(eventBean, rawEvent);
-            }
-        }
+        publishToListeners(event, rawEvent, methodName);
     }
 
 
@@ -316,7 +310,7 @@ public class LineageIntegratorContextManager extends IntegrationContextManager i
      */
     public synchronized void publishOpenLineageRunEvent(OpenLineageRunEvent event)
     {
-        final String methodName = "publishOpenLineageRunEvent";
+        final String methodName = "publishOpenLineageRunEvent(event)";
 
         String rawEvent = null;
 
@@ -337,11 +331,38 @@ public class LineageIntegratorContextManager extends IntegrationContextManager i
             }
         }
 
+        publishToListeners(event, rawEvent, methodName);
+    }
+
+
+    /**
+     * Loop through the listeners and sending an event to each.  If a connector throws an exception, it is logged and the publishing process
+     * continues with the other listeners.
+     *
+     * @param event event bean
+     * @param rawEvent string event
+     * @param methodName calling method
+     */
+    private void publishToListeners(OpenLineageRunEvent event,
+                                    String              rawEvent,
+                                    String              methodName)
+    {
         for (OpenLineageEventListener listener : registeredEventListeners)
         {
             if (listener != null)
             {
-                listener.processOpenLineageRunEvent(event, rawEvent);
+                try
+                {
+                    listener.processOpenLineageRunEvent(event, rawEvent);
+                }
+                catch (Exception error)
+                {
+                    auditLog.logException(methodName,
+                                          LineageIntegratorAuditCode.OPEN_LINEAGE_PUBLISH_ERROR.getMessageDefinition(error.getClass().getName(),
+                                                                                                                     error.getMessage()),
+                                          rawEvent,
+                                          error);
+                }
             }
         }
     }

@@ -13,47 +13,70 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * This class represents the Common header for the SQL facet in Job in the open lineage standard spec
- * https://github.com/OpenLineage/OpenLineage/blob/main/spec/OpenLineage.json.
+ * This class represents the content of an open lineage documentation data set facet as defined in JSON
+ * spec https://openlineage.io/spec/facets/1-0-0/OutputStatisticsOutputDatasetFacet.json#/$defs/OutputStatisticsOutputDatasetFacet.
+ * It is used internally in Egeria to pass this information to the Lineage Integrator OMIS's integration connectors.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OpenLineageSQLJobFacet extends OpenLineageJobFacet
+public class OpenLineageOutputStatisticsOutputDataSetFacet extends OpenLineageOutputDataSetOutputFacet
 {
-    private String query = null;
+    private long rowCount = 0;
+    private long size = 0;
+
 
     /**
      * Default constructor
      */
-    public OpenLineageSQLJobFacet()
+    public OpenLineageOutputStatisticsOutputDataSetFacet()
     {
-        super (URI.create("https://openlineage.io/spec/facets/1-0-0/SQLJobFacet.json#/$defs/SQLJobFacet"));
+        super(URI.create("https://openlineage.io/spec/facets/1-0-0/OutputStatisticsOutputDatasetFacet.json#/$defs/OutputStatisticsOutputDatasetFacet"));
     }
 
 
     /**
-     * Return the query expression used.
+     * Return the number of row written to the data set.
      *
-     * @return string query expression
+     * @return count
      */
-    public String getQuery()
+    public long getRowCount()
     {
-        return query;
+        return rowCount;
     }
 
 
     /**
-     * Set up the query expression used.
+     * Set up the number of row written to the data set.
      *
-     * @param query string query expression
+     * @param rowCount count
      */
-    public void setQuery(String query)
+    public void setRowCount(long rowCount)
     {
-        this.query = query;
+        this.rowCount = rowCount;
     }
 
 
+    /**
+     * Return the number of bytes written to the data set.
+     *
+     * @return number of bytes
+     */
+    public long getSize()
+    {
+        return size;
+    }
+
+
+    /**
+     * Set up the number of bytes written to the data set.
+     *
+     * @param size number of bytes
+     */
+    public void setSize(long size)
+    {
+        this.size = size;
+    }
 
 
     /**
@@ -64,8 +87,9 @@ public class OpenLineageSQLJobFacet extends OpenLineageJobFacet
     @Override
     public String toString()
     {
-        return "OpenLineageDataSourceDataSetFacet{" +
-                       "query='" + query + '\'' +
+        return "OpenLineageOutputStatisticsOutputDataSetFacet{" +
+                       "rowCount=" + rowCount +
+                       ", size=" + size +
                        ", _producer=" + get_producer() +
                        ", _schemaURL=" + get_schemaURL() +
                        ", additionalProperties=" + getAdditionalProperties() +
@@ -94,8 +118,9 @@ public class OpenLineageSQLJobFacet extends OpenLineageJobFacet
         {
             return false;
         }
-        OpenLineageSQLJobFacet that = (OpenLineageSQLJobFacet) objectToCompare;
-        return Objects.equals(query, that.query);
+        OpenLineageOutputStatisticsOutputDataSetFacet that = (OpenLineageOutputStatisticsOutputDataSetFacet) objectToCompare;
+        return rowCount == that.rowCount &&
+                       size == that.size;
     }
 
 
@@ -107,6 +132,6 @@ public class OpenLineageSQLJobFacet extends OpenLineageJobFacet
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), query);
+        return Objects.hash(super.hashCode(), rowCount, size);
     }
 }

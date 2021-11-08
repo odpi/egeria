@@ -6,54 +6,75 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.net.URI;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * This class represents the Common header for the SQL facet in Job in the open lineage standard spec
- * https://github.com/OpenLineage/OpenLineage/blob/main/spec/OpenLineage.json.
+ * This class represents the content of the parent open lineage job.  It is used internally in Egeria to pass this information
+ * to the Lineage Integrator OMIS's integration connectors.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OpenLineageSQLJobFacet extends OpenLineageJobFacet
+public class OpenLineageParentRunFacetJob
 {
-    private String query = null;
+    private String               namespace;
+    private String               name;
+
 
     /**
      * Default constructor
      */
-    public OpenLineageSQLJobFacet()
+    public OpenLineageParentRunFacetJob()
     {
-        super (URI.create("https://openlineage.io/spec/facets/1-0-0/SQLJobFacet.json#/$defs/SQLJobFacet"));
     }
 
 
     /**
-     * Return the query expression used.
+     * Return the namespace for the job.
      *
-     * @return string query expression
+     * @return string name
      */
-    public String getQuery()
+    public String getNamespace()
     {
-        return query;
+        return namespace;
     }
 
 
     /**
-     * Set up the query expression used.
+     * Set up the namespace for the job.
      *
-     * @param query string query expression
+     * @param namespace string name
      */
-    public void setQuery(String query)
+    public void setNamespace(String namespace)
     {
-        this.query = query;
+        this.namespace = namespace;
     }
 
 
+    /**
+     * Return the name of the job.
+     *
+     * @return string name
+     */
+    public String getName()
+    {
+        return name;
+    }
+
+
+    /**
+     * Set up the name of the job.
+     *
+     * @param name string name
+     */
+    public void setName(String name)
+    {
+        this.name = name;
+    }
 
 
     /**
@@ -64,11 +85,9 @@ public class OpenLineageSQLJobFacet extends OpenLineageJobFacet
     @Override
     public String toString()
     {
-        return "OpenLineageDataSourceDataSetFacet{" +
-                       "query='" + query + '\'' +
-                       ", _producer=" + get_producer() +
-                       ", _schemaURL=" + get_schemaURL() +
-                       ", additionalProperties=" + getAdditionalProperties() +
+        return "OpenLineageParentRunFacetJob{" +
+                       "namespace='" + namespace + '\'' +
+                       ", name='" + name + '\'' +
                        '}';
     }
 
@@ -90,12 +109,9 @@ public class OpenLineageSQLJobFacet extends OpenLineageJobFacet
         {
             return false;
         }
-        if (! super.equals(objectToCompare))
-        {
-            return false;
-        }
-        OpenLineageSQLJobFacet that = (OpenLineageSQLJobFacet) objectToCompare;
-        return Objects.equals(query, that.query);
+        OpenLineageParentRunFacetJob that = (OpenLineageParentRunFacetJob) objectToCompare;
+        return Objects.equals(namespace, that.namespace) &&
+                       Objects.equals(name, that.name);
     }
 
 
@@ -107,6 +123,6 @@ public class OpenLineageSQLJobFacet extends OpenLineageJobFacet
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), query);
+        return Objects.hash(namespace, name);
     }
 }

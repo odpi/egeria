@@ -22,6 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OpenLineageOutputDataSetOutputFacets
 {
+    private OpenLineageOutputStatisticsOutputDataSetFacet    outputStatistics     = null;
     private Map<String, OpenLineageOutputDataSetOutputFacet> additionalProperties = new LinkedHashMap<>();
 
 
@@ -30,6 +31,28 @@ public class OpenLineageOutputDataSetOutputFacets
      */
     public OpenLineageOutputDataSetOutputFacets()
     {
+    }
+
+
+    /**
+     * Return statistics facet.
+     *
+     * @return facet
+     */
+    public OpenLineageOutputStatisticsOutputDataSetFacet getOutputStatistics()
+    {
+        return outputStatistics;
+    }
+
+
+    /**
+     * Set up statistics facet.
+     *
+     * @param outputStatistics facet
+     */
+    public void setOutputStatistics(OpenLineageOutputStatisticsOutputDataSetFacet outputStatistics)
+    {
+        this.outputStatistics = outputStatistics;
     }
 
 
@@ -63,8 +86,9 @@ public class OpenLineageOutputDataSetOutputFacets
     @Override
     public String toString()
     {
-        return "OpenLineageJobFacets{" +
-                       "additionalProperties=" + additionalProperties +
+        return "OpenLineageOutputDataSetOutputFacets{" +
+                       "outputStatistics=" + outputStatistics +
+                       ", additionalProperties=" + additionalProperties +
                        '}';
     }
 
@@ -87,7 +111,8 @@ public class OpenLineageOutputDataSetOutputFacets
             return false;
         }
         OpenLineageOutputDataSetOutputFacets that = (OpenLineageOutputDataSetOutputFacets) objectToCompare;
-        return Objects.equals(additionalProperties, that.additionalProperties);
+        return Objects.equals(outputStatistics, that.outputStatistics) &&
+                       Objects.equals(additionalProperties, that.additionalProperties);
     }
 
 
@@ -99,6 +124,6 @@ public class OpenLineageOutputDataSetOutputFacets
     @Override
     public int hashCode()
     {
-        return Objects.hash(additionalProperties);
+        return Objects.hash(outputStatistics, additionalProperties);
     }
 }

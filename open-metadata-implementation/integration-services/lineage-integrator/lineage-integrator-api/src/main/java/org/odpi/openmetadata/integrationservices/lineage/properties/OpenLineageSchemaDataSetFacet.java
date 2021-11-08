@@ -7,53 +7,54 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * This class represents the Common header for the SQL facet in Job in the open lineage standard spec
- * https://github.com/OpenLineage/OpenLineage/blob/main/spec/OpenLineage.json.
+ * This class represents the content of an open lineage schema for a data set facet as defined in JSON
+ * spec https://openlineage.io/spec/facets/1-0-0/SchemaDatasetFacet.json#/$defs/SchemaDatasetFacet.
+ * It is used internally in Egeria to pass this information to the Lineage Integrator OMIS's integration connectors.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OpenLineageSQLJobFacet extends OpenLineageJobFacet
+public class OpenLineageSchemaDataSetFacet extends OpenLineageDataSetFacet
 {
-    private String query = null;
+    private List<OpenLineageSchemaDataSetFacetField> fields;
+
 
     /**
      * Default constructor
      */
-    public OpenLineageSQLJobFacet()
+    public OpenLineageSchemaDataSetFacet()
     {
-        super (URI.create("https://openlineage.io/spec/facets/1-0-0/SQLJobFacet.json#/$defs/SQLJobFacet"));
+        super(URI.create("https://openlineage.io/spec/facets/1-0-0/SchemaDatasetFacet.json#/$defs/SchemaDatasetFacet"));
     }
 
 
     /**
-     * Return the query expression used.
+     * Return the list of data files described by this schema.
      *
-     * @return string query expression
+     * @return list
      */
-    public String getQuery()
+    public List<OpenLineageSchemaDataSetFacetField> getFields()
     {
-        return query;
+        return fields;
     }
 
 
     /**
-     * Set up the query expression used.
+     * Set up the list of data files described by this schema.
      *
-     * @param query string query expression
+     * @param fields list
      */
-    public void setQuery(String query)
+    public void setFields(List<OpenLineageSchemaDataSetFacetField> fields)
     {
-        this.query = query;
+        this.fields = fields;
     }
-
-
 
 
     /**
@@ -64,8 +65,8 @@ public class OpenLineageSQLJobFacet extends OpenLineageJobFacet
     @Override
     public String toString()
     {
-        return "OpenLineageDataSourceDataSetFacet{" +
-                       "query='" + query + '\'' +
+        return "OpenLineageSchemaDataSetFacet{" +
+                       "fields=" + fields +
                        ", _producer=" + get_producer() +
                        ", _schemaURL=" + get_schemaURL() +
                        ", additionalProperties=" + getAdditionalProperties() +
@@ -94,19 +95,19 @@ public class OpenLineageSQLJobFacet extends OpenLineageJobFacet
         {
             return false;
         }
-        OpenLineageSQLJobFacet that = (OpenLineageSQLJobFacet) objectToCompare;
-        return Objects.equals(query, that.query);
+        OpenLineageSchemaDataSetFacet that = (OpenLineageSchemaDataSetFacet) objectToCompare;
+        return Objects.equals(fields, that.fields);
     }
 
 
     /**
-     * Return has code based on properties.
+     * Return has code basa``ed on properties.
      *
      * @return int
      */
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), query);
+        return Objects.hash(super.hashCode(), fields);
     }
 }

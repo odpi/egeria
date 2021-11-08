@@ -6,54 +6,78 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.net.URI;
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * This class represents the Common header for the SQL facet in Job in the open lineage standard spec
+ * This class represents the data quality metrics facet in the open lineage standard spec
  * https://github.com/OpenLineage/OpenLineage/blob/main/spec/OpenLineage.json.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OpenLineageSQLJobFacet extends OpenLineageJobFacet
+public class OpenLineageDataQualityMetricsInputDataSetFacet extends OpenLineageInputDataSetInputFacet
 {
-    private String query = null;
+    private long                                                        rowCount = 0;
+    private long                                                        bytes = 0;
+    private OpenLineageDataQualityMetricsInputDataSetFacetColumnMetrics columnMetrics = null;
+
 
     /**
      * Default constructor
      */
-    public OpenLineageSQLJobFacet()
+    public OpenLineageDataQualityMetricsInputDataSetFacet()
     {
-        super (URI.create("https://openlineage.io/spec/facets/1-0-0/SQLJobFacet.json#/$defs/SQLJobFacet"));
+    }
+
+
+    public long getRowCount()
+    {
+        return rowCount;
+    }
+
+
+    public void setRowCount(long rowCount)
+    {
+        this.rowCount = rowCount;
+    }
+
+
+    public long getBytes()
+    {
+        return bytes;
+    }
+
+
+    public void setBytes(long bytes)
+    {
+        this.bytes = bytes;
     }
 
 
     /**
-     * Return the query expression used.
+     * Return the list of column metrics for the data set.
      *
-     * @return string query expression
+     * @return list of column metrics
      */
-    public String getQuery()
+    public OpenLineageDataQualityMetricsInputDataSetFacetColumnMetrics getColumnMetrics()
     {
-        return query;
+        return columnMetrics;
     }
 
 
     /**
-     * Set up the query expression used.
+     * Set up the list of column metrics for the data set.
      *
-     * @param query string query expression
+     * @param columnMetrics list of column metrics
      */
-    public void setQuery(String query)
+    public void setColumnMetrics(OpenLineageDataQualityMetricsInputDataSetFacetColumnMetrics columnMetrics)
     {
-        this.query = query;
+        this.columnMetrics = columnMetrics;
     }
-
-
 
 
     /**
@@ -64,8 +88,10 @@ public class OpenLineageSQLJobFacet extends OpenLineageJobFacet
     @Override
     public String toString()
     {
-        return "OpenLineageDataSourceDataSetFacet{" +
-                       "query='" + query + '\'' +
+        return "OpenLineageDataQualityMetricsInputDataSetFacet{" +
+                       "rowCount=" + rowCount +
+                       ", bytes=" + bytes +
+                       ", columnMetrics=" + columnMetrics +
                        ", _producer=" + get_producer() +
                        ", _schemaURL=" + get_schemaURL() +
                        ", additionalProperties=" + getAdditionalProperties() +
@@ -94,8 +120,10 @@ public class OpenLineageSQLJobFacet extends OpenLineageJobFacet
         {
             return false;
         }
-        OpenLineageSQLJobFacet that = (OpenLineageSQLJobFacet) objectToCompare;
-        return Objects.equals(query, that.query);
+        OpenLineageDataQualityMetricsInputDataSetFacet that = (OpenLineageDataQualityMetricsInputDataSetFacet) objectToCompare;
+        return rowCount == that.rowCount &&
+                       bytes == that.bytes &&
+                       Objects.equals(columnMetrics, that.columnMetrics);
     }
 
 
@@ -107,6 +135,6 @@ public class OpenLineageSQLJobFacet extends OpenLineageJobFacet
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), query);
+        return Objects.hash(super.hashCode(), rowCount, bytes, columnMetrics);
     }
 }

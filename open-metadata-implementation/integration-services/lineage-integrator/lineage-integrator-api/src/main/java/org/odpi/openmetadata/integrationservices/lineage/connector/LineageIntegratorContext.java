@@ -1093,7 +1093,6 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      *
      * @param assetManagerIsHome ensure that only the asset manager can update this process
      * @param processProperties properties about the process to store
-     * @param initialStatus status value for the new process (default = ACTIVE)
      *
      * @return unique identifier of the new process
      *
@@ -1102,10 +1101,9 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public String createProcess(boolean           assetManagerIsHome,
-                                ProcessProperties processProperties,
-                                ProcessStatus     initialStatus) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+                                ProcessProperties processProperties) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         return lineageExchangeClient.createProcess(userId,
                                                    assetManagerGUID,
@@ -1117,8 +1115,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                    null,
                                                    null,
                                                    null,
-                                                   processProperties,
-                                                   initialStatus);
+                                                   processProperties);
     }
 
 

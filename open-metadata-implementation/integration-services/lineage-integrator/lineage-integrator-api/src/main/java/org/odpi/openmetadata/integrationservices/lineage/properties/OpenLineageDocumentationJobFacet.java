@@ -13,47 +13,47 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * This class represents the Common header for the SQL facet in Job in the open lineage standard spec
- * https://github.com/OpenLineage/OpenLineage/blob/main/spec/OpenLineage.json.
+ * This class represents the content of an open lineage documentation job facet as defined in JSON
+ * spec https://openlineage.io/spec/facets/1-0-0/DocumentationDatasetFacet.json#/$defs/DocumentationDatasetFacet.
+ * It is used internally in Egeria to pass this information to the Lineage Integrator OMIS's integration connectors.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OpenLineageSQLJobFacet extends OpenLineageJobFacet
+public class OpenLineageDocumentationJobFacet extends OpenLineageJobFacet
 {
-    private String query = null;
+    private String description;
+
 
     /**
      * Default constructor
      */
-    public OpenLineageSQLJobFacet()
+    public OpenLineageDocumentationJobFacet()
     {
-        super (URI.create("https://openlineage.io/spec/facets/1-0-0/SQLJobFacet.json#/$defs/SQLJobFacet"));
+        super(URI.create("https://openlineage.io/spec/facets/1-0-0/DocumentationJobFacet.json#/$defs/DocumentationJobFacet"));
     }
 
 
     /**
-     * Return the query expression used.
+     * Return the description of the data set.
      *
-     * @return string query expression
+     * @return string description
      */
-    public String getQuery()
+    public String getDescription()
     {
-        return query;
+        return description;
     }
 
 
     /**
-     * Set up the query expression used.
+     * Set up the description for the data set.
      *
-     * @param query string query expression
+     * @param description string name
      */
-    public void setQuery(String query)
+    public void setDescription(String description)
     {
-        this.query = query;
+        this.description = description;
     }
-
-
 
 
     /**
@@ -64,8 +64,8 @@ public class OpenLineageSQLJobFacet extends OpenLineageJobFacet
     @Override
     public String toString()
     {
-        return "OpenLineageDataSourceDataSetFacet{" +
-                       "query='" + query + '\'' +
+        return "OpenLineageDocumentationJobFacet{" +
+                       "description='" + description + '\'' +
                        ", _producer=" + get_producer() +
                        ", _schemaURL=" + get_schemaURL() +
                        ", additionalProperties=" + getAdditionalProperties() +
@@ -94,8 +94,8 @@ public class OpenLineageSQLJobFacet extends OpenLineageJobFacet
         {
             return false;
         }
-        OpenLineageSQLJobFacet that = (OpenLineageSQLJobFacet) objectToCompare;
-        return Objects.equals(query, that.query);
+        OpenLineageDocumentationJobFacet that = (OpenLineageDocumentationJobFacet) objectToCompare;
+        return Objects.equals(description, that.description);
     }
 
 
@@ -107,6 +107,6 @@ public class OpenLineageSQLJobFacet extends OpenLineageJobFacet
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), query);
+        return Objects.hash(super.hashCode(), description);
     }
 }

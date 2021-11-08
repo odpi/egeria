@@ -32,6 +32,17 @@ public class OpenLineageJobFacet extends OpenLineageFacet
 
 
     /**
+     * Subclass constructor
+     *
+     * @param schemaURL default value for schemaURL
+     */
+    public OpenLineageJobFacet(URI schemaURL)
+    {
+        super(schemaURL);
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style

@@ -6,54 +6,53 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.net.URI;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * This class represents the Common header for the SQL facet in Job in the open lineage standard spec
+ * This class represents the map of data quality quantiles in the open lineage standard spec
  * https://github.com/OpenLineage/OpenLineage/blob/main/spec/OpenLineage.json.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OpenLineageSQLJobFacet extends OpenLineageJobFacet
+public class OpenLineageDataQualityMetricsInputDataSetFacetColumnMetricsAdditionalQuantiles
 {
-    private String query = null;
+    private Map<String, Double> additionalProperties = new LinkedHashMap<>();
+
 
     /**
      * Default constructor
      */
-    public OpenLineageSQLJobFacet()
+    public OpenLineageDataQualityMetricsInputDataSetFacetColumnMetricsAdditionalQuantiles()
     {
-        super (URI.create("https://openlineage.io/spec/facets/1-0-0/SQLJobFacet.json#/$defs/SQLJobFacet"));
     }
 
 
     /**
-     * Return the query expression used.
+     * Return a map of quantile measurements.
      *
-     * @return string query expression
+     * @return The property key is the quantile. Examples: 0.1 0.25 0.5 0.75 1
      */
-    public String getQuery()
+    public Map<String, Double> getAdditionalProperties()
     {
-        return query;
+        return additionalProperties;
     }
 
 
     /**
-     * Set up the query expression used.
+     * Set up a map of quantile measurements.
      *
-     * @param query string query expression
+     * @param additionalProperties The property key is the quantile. Examples: 0.1 0.25 0.5 0.75 1
      */
-    public void setQuery(String query)
+    public void setAdditionalProperties(Map<String, Double> additionalProperties)
     {
-        this.query = query;
+        this.additionalProperties = additionalProperties;
     }
-
-
 
 
     /**
@@ -64,11 +63,8 @@ public class OpenLineageSQLJobFacet extends OpenLineageJobFacet
     @Override
     public String toString()
     {
-        return "OpenLineageDataSourceDataSetFacet{" +
-                       "query='" + query + '\'' +
-                       ", _producer=" + get_producer() +
-                       ", _schemaURL=" + get_schemaURL() +
-                       ", additionalProperties=" + getAdditionalProperties() +
+        return "OpenLineageDataQualityMetricsInputDataSetFacetColumnMetricsAdditionalQuantiles{" +
+                       "additionalProperties=" + additionalProperties +
                        '}';
     }
 
@@ -90,12 +86,9 @@ public class OpenLineageSQLJobFacet extends OpenLineageJobFacet
         {
             return false;
         }
-        if (! super.equals(objectToCompare))
-        {
-            return false;
-        }
-        OpenLineageSQLJobFacet that = (OpenLineageSQLJobFacet) objectToCompare;
-        return Objects.equals(query, that.query);
+        OpenLineageDataQualityMetricsInputDataSetFacetColumnMetricsAdditionalQuantiles
+                that = (OpenLineageDataQualityMetricsInputDataSetFacetColumnMetricsAdditionalQuantiles) objectToCompare;
+        return Objects.equals(additionalProperties, that.additionalProperties);
     }
 
 
@@ -107,6 +100,6 @@ public class OpenLineageSQLJobFacet extends OpenLineageJobFacet
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), query);
+        return Objects.hash(additionalProperties);
     }
 }

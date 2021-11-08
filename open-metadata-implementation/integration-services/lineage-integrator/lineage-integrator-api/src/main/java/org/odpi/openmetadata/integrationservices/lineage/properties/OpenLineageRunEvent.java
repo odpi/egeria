@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.net.URI;
-import java.time.ZonedDateTime;
 import java.util.List;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -21,21 +20,66 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OpenLineageRunEvent extends OpenLineageFacet
+public class OpenLineageRunEvent
 {
+    private URI                            producer;
+    private URI                            schemaURL = URI.create("https://openlineage.io/spec/1-0-2/OpenLineage.json#/$defs/RunEvent");
     private String                         eventType;
-    private ZonedDateTime                  eventTime;
+    private String                         eventTime;
     private OpenLineageRun                 run;
     private OpenLineageJob                 job;
     private List<OpenLineageInputDataSet>  inputs;
-    private List<OpenLineageOutputDataset> outputs;
+    private List<OpenLineageOutputDataSet> outputs;
 
     /**
      * Default constructor
      */
     public OpenLineageRunEvent()
     {
-        super(URI.create("https://openlineage.io/spec/1-0-2/OpenLineage.json#/$defs/RunEvent"));
+    }
+
+
+    /**
+     * Return the URI identifying the producer of this metadata. For example this could be a git url with a given tag or sha.
+     *
+     * @return URI
+     */
+    public URI getProducer()
+    {
+        return producer;
+    }
+
+
+    /**
+     * Set up the URI identifying the producer of this metadata. For example this could be a git url with a given tag or sha.
+     *
+     * @param producer uri
+     */
+    public void setProducer(URI producer)
+    {
+        this.producer = producer;
+    }
+
+
+    /**
+     * Return the JSON Pointer (https://tools.ietf.org/html/rfc6901) URL to the corresponding version of the schema definition for this facet.
+     *
+     * @return uri
+     */
+    public URI getSchemaURL()
+    {
+        return schemaURL;
+    }
+
+
+    /**
+     * Set up the JSON Pointer (https://tools.ietf.org/html/rfc6901) URL to the corresponding version of the schema definition for this facet.
+     *
+     * @param schemaURL uri
+     */
+    public void setSchemaURL(URI schemaURL)
+    {
+        this.schemaURL = schemaURL;
     }
 
 
@@ -68,7 +112,7 @@ public class OpenLineageRunEvent extends OpenLineageFacet
      *
      * @return zoned time
      */
-    public ZonedDateTime getEventTime()
+    public String getEventTime()
     {
         return eventTime;
     }
@@ -79,7 +123,7 @@ public class OpenLineageRunEvent extends OpenLineageFacet
      *
      * @param eventTime zoned time
      */
-    public void setEventTime(ZonedDateTime eventTime)
+    public void setEventTime(String eventTime)
     {
         this.eventTime = eventTime;
     }
@@ -156,7 +200,7 @@ public class OpenLineageRunEvent extends OpenLineageFacet
      *
      * @return list of data set descriptions
      */
-    public List<OpenLineageOutputDataset> getOutputs()
+    public List<OpenLineageOutputDataSet> getOutputs()
     {
         return outputs;
     }
@@ -167,7 +211,7 @@ public class OpenLineageRunEvent extends OpenLineageFacet
      *
      * @param outputs list of data set descriptions
      */
-    public void setOutputs(List<OpenLineageOutputDataset> outputs)
+    public void setOutputs(List<OpenLineageOutputDataSet> outputs)
     {
         this.outputs = outputs;
     }

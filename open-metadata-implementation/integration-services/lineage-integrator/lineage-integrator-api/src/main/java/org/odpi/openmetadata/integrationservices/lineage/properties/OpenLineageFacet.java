@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.net.URI;
-import java.time.ZonedDateTime;
 import java.util.Map;
 import java.util.Objects;
 
@@ -29,7 +28,7 @@ public abstract class OpenLineageFacet
 
 
     /**
-     * Default constructor
+     * Subclass constructor
      *
      * @param schemaURL default value for schemaURL
      */

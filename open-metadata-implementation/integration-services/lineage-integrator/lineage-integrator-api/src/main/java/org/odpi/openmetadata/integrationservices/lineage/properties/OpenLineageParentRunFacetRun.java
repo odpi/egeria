@@ -8,52 +8,49 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.net.URI;
 import java.util.Objects;
+import java.util.UUID;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * This class represents the Common header for the SQL facet in Job in the open lineage standard spec
- * https://github.com/OpenLineage/OpenLineage/blob/main/spec/OpenLineage.json.
+ * This class represents the UUID of the parent job.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OpenLineageSQLJobFacet extends OpenLineageJobFacet
+public class OpenLineageParentRunFacetRun
 {
-    private String query = null;
+    private UUID runId = null;
 
     /**
      * Default constructor
      */
-    public OpenLineageSQLJobFacet()
+    public OpenLineageParentRunFacetRun()
     {
-        super (URI.create("https://openlineage.io/spec/facets/1-0-0/SQLJobFacet.json#/$defs/SQLJobFacet"));
     }
 
 
     /**
-     * Return the query expression used.
+     * Return the unique identifier of the parent job run.
      *
-     * @return string query expression
+     * @return uuid
      */
-    public String getQuery()
+    public UUID getRunId()
     {
-        return query;
+        return runId;
     }
 
 
     /**
-     * Set up the query expression used.
+     * Set up the unique identifier of the parent job run.
      *
-     * @param query string query expression
+     * @param runId uuid
      */
-    public void setQuery(String query)
+    public void setRunId(UUID runId)
     {
-        this.query = query;
+        this.runId = runId;
     }
-
-
 
 
     /**
@@ -64,11 +61,8 @@ public class OpenLineageSQLJobFacet extends OpenLineageJobFacet
     @Override
     public String toString()
     {
-        return "OpenLineageDataSourceDataSetFacet{" +
-                       "query='" + query + '\'' +
-                       ", _producer=" + get_producer() +
-                       ", _schemaURL=" + get_schemaURL() +
-                       ", additionalProperties=" + getAdditionalProperties() +
+        return "OpenLineageParentRunFacetRun{" +
+                       "runId=" + runId +
                        '}';
     }
 
@@ -90,12 +84,8 @@ public class OpenLineageSQLJobFacet extends OpenLineageJobFacet
         {
             return false;
         }
-        if (! super.equals(objectToCompare))
-        {
-            return false;
-        }
-        OpenLineageSQLJobFacet that = (OpenLineageSQLJobFacet) objectToCompare;
-        return Objects.equals(query, that.query);
+        OpenLineageParentRunFacetRun that = (OpenLineageParentRunFacetRun) objectToCompare;
+        return Objects.equals(runId, that.runId);
     }
 
 
@@ -107,6 +97,6 @@ public class OpenLineageSQLJobFacet extends OpenLineageJobFacet
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), query);
+        return Objects.hash(runId);
     }
 }

@@ -6,54 +6,52 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.net.URI;
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * This class represents the Common header for the SQL facet in Job in the open lineage standard spec
+ * This class represents the data quality assertions facet in the open lineage standard spec
  * https://github.com/OpenLineage/OpenLineage/blob/main/spec/OpenLineage.json.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OpenLineageSQLJobFacet extends OpenLineageJobFacet
+public class OpenLineageDataQualityAssertionsInputDataSetFacet extends OpenLineageInputDataSetInputFacet
 {
-    private String query = null;
+    private List<OpenLineageDataQualityAssertionsInputDataSetFacetAssertions> assertions = null;
+
 
     /**
      * Default constructor
      */
-    public OpenLineageSQLJobFacet()
+    public OpenLineageDataQualityAssertionsInputDataSetFacet()
     {
-        super (URI.create("https://openlineage.io/spec/facets/1-0-0/SQLJobFacet.json#/$defs/SQLJobFacet"));
     }
 
 
     /**
-     * Return the query expression used.
+     * Return the list of assertions that the data set has been tested against.
      *
-     * @return string query expression
+     * @return list of assertions
      */
-    public String getQuery()
+    public List<OpenLineageDataQualityAssertionsInputDataSetFacetAssertions> getAssertions()
     {
-        return query;
+        return assertions;
     }
 
 
     /**
-     * Set up the query expression used.
+     * Set up the list of assertions that the data set has been tested against.
      *
-     * @param query string query expression
+     * @param assertions list of assertions
      */
-    public void setQuery(String query)
+    public void setAssertions(List<OpenLineageDataQualityAssertionsInputDataSetFacetAssertions> assertions)
     {
-        this.query = query;
+        this.assertions = assertions;
     }
-
-
 
 
     /**
@@ -64,8 +62,8 @@ public class OpenLineageSQLJobFacet extends OpenLineageJobFacet
     @Override
     public String toString()
     {
-        return "OpenLineageDataSourceDataSetFacet{" +
-                       "query='" + query + '\'' +
+        return "OpenLineageDataQualityAssertionsInputDataSetFacet{" +
+                       "assertions=" + assertions +
                        ", _producer=" + get_producer() +
                        ", _schemaURL=" + get_schemaURL() +
                        ", additionalProperties=" + getAdditionalProperties() +
@@ -94,8 +92,8 @@ public class OpenLineageSQLJobFacet extends OpenLineageJobFacet
         {
             return false;
         }
-        OpenLineageSQLJobFacet that = (OpenLineageSQLJobFacet) objectToCompare;
-        return Objects.equals(query, that.query);
+        OpenLineageDataQualityAssertionsInputDataSetFacet that = (OpenLineageDataQualityAssertionsInputDataSetFacet) objectToCompare;
+        return Objects.equals(assertions, that.assertions);
     }
 
 
@@ -107,6 +105,6 @@ public class OpenLineageSQLJobFacet extends OpenLineageJobFacet
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), query);
+        return Objects.hash(super.hashCode(), assertions);
     }
 }

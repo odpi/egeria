@@ -22,6 +22,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OpenLineageDataSetFacets
 {
+    private OpenLineageDocumentationDataSetFacet documentation        = null;
+    private OpenLineageDataSourceDataSetFacet    dataSource           = null;
+    private OpenLineageSchemaDataSetFacet        schema               = null;
     private Map<String, OpenLineageDataSetFacet> additionalProperties = new LinkedHashMap<>();
 
 
@@ -30,6 +33,72 @@ public class OpenLineageDataSetFacets
      */
     public OpenLineageDataSetFacets()
     {
+    }
+
+
+    /**
+     * Return the document facet.
+     *
+     * @return facet
+     */
+    public OpenLineageDocumentationDataSetFacet getDocumentation()
+    {
+        return documentation;
+    }
+
+
+    /**
+     * Set up the document facet.
+     *
+     * @param documentation facet
+     */
+    public void setDocumentation(OpenLineageDocumentationDataSetFacet documentation)
+    {
+        this.documentation = documentation;
+    }
+
+
+    /**
+     * Return the data source facet.
+     *
+     * @return facet
+     */
+    public OpenLineageDataSourceDataSetFacet getDataSource()
+    {
+        return dataSource;
+    }
+
+
+    /**
+     * Set up the data source facet.
+     *
+     * @param dataSource facet
+     */
+    public void setDataSource(OpenLineageDataSourceDataSetFacet dataSource)
+    {
+        this.dataSource = dataSource;
+    }
+
+
+    /**
+     * Return the schema facet.
+     *
+     * @return facet
+     */
+    public OpenLineageSchemaDataSetFacet getSchema()
+    {
+        return schema;
+    }
+
+
+    /**
+     * Set up the schema facet.
+     *
+     * @param schema facet
+     */
+    public void setSchema(OpenLineageSchemaDataSetFacet schema)
+    {
+        this.schema = schema;
     }
 
 
@@ -64,7 +133,10 @@ public class OpenLineageDataSetFacets
     public String toString()
     {
         return "OpenLineageDataSetFacets{" +
-                       "additionalProperties=" + additionalProperties +
+                       "documentation=" + documentation +
+                       ", dataSource=" + dataSource +
+                       ", schema=" + schema +
+                       ", additionalProperties=" + additionalProperties +
                        '}';
     }
 
@@ -87,7 +159,10 @@ public class OpenLineageDataSetFacets
             return false;
         }
         OpenLineageDataSetFacets that = (OpenLineageDataSetFacets) objectToCompare;
-        return Objects.equals(additionalProperties, that.additionalProperties);
+        return Objects.equals(documentation, that.documentation) &&
+                       Objects.equals(dataSource, that.dataSource) &&
+                       Objects.equals(schema, that.schema) &&
+                       Objects.equals(additionalProperties, that.additionalProperties);
     }
 
 
@@ -99,6 +174,6 @@ public class OpenLineageDataSetFacets
     @Override
     public int hashCode()
     {
-        return Objects.hash(additionalProperties);
+        return Objects.hash(documentation, dataSource, schema, additionalProperties);
     }
 }

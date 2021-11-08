@@ -14,7 +14,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * This class represents the map of data set facets in the open lineage standard spec
+ * This class represents the map of run facets in the open lineage standard spec
  * https://github.com/OpenLineage/OpenLineage/blob/main/spec/OpenLineage.json.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -22,6 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OpenLineageRunFacets
 {
+    private OpenLineageParentRunFacet            parent = null;
+    private OpenLineageNominalTimeRunFacet       nominalTime = null;
     private Map<String, OpenLineageDataSetFacet> additionalProperties = new LinkedHashMap<>();
 
 
@@ -30,6 +32,50 @@ public class OpenLineageRunFacets
      */
     public OpenLineageRunFacets()
     {
+    }
+
+
+    /**
+     * Return details of the parent process.
+     *
+     * @return parent facet
+     */
+    public OpenLineageParentRunFacet getParent()
+    {
+        return parent;
+    }
+
+
+    /**
+     * Set up details of the parent process.
+     *
+     * @param parent parent facet
+     */
+    public void setParent(OpenLineageParentRunFacet parent)
+    {
+        this.parent = parent;
+    }
+
+
+    /**
+     * Return the nominal time.
+     *
+     * @return facet
+     */
+    public OpenLineageNominalTimeRunFacet getNominalTime()
+    {
+        return nominalTime;
+    }
+
+
+    /**
+     * Set up the nominal time.
+     *
+     * @param nominalTime facet
+     */
+    public void setNominalTime(OpenLineageNominalTimeRunFacet nominalTime)
+    {
+        this.nominalTime = nominalTime;
     }
 
 
@@ -63,8 +109,10 @@ public class OpenLineageRunFacets
     @Override
     public String toString()
     {
-        return "OpenLineageDataSetFacets{" +
-                       "additionalProperties=" + additionalProperties +
+        return "OpenLineageRunFacets{" +
+                       "parent=" + parent +
+                       ", nominalTime=" + nominalTime +
+                       ", additionalProperties=" + additionalProperties +
                        '}';
     }
 
@@ -87,7 +135,9 @@ public class OpenLineageRunFacets
             return false;
         }
         OpenLineageRunFacets that = (OpenLineageRunFacets) objectToCompare;
-        return Objects.equals(additionalProperties, that.additionalProperties);
+        return Objects.equals(parent, that.parent) &&
+                       Objects.equals(nominalTime, that.nominalTime) &&
+                       Objects.equals(additionalProperties, that.additionalProperties);
     }
 
 
@@ -99,6 +149,6 @@ public class OpenLineageRunFacets
     @Override
     public int hashCode()
     {
-        return Objects.hash(additionalProperties);
+        return Objects.hash(parent, nominalTime, additionalProperties);
     }
 }

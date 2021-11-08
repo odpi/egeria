@@ -6,54 +6,53 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.net.URI;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * This class represents the Common header for the SQL facet in Job in the open lineage standard spec
+ * This class represents the map of data quality quartiles in the open lineage standard spec
  * https://github.com/OpenLineage/OpenLineage/blob/main/spec/OpenLineage.json.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OpenLineageSQLJobFacet extends OpenLineageJobFacet
+public class OpenLineageDataQualityMetricsInputDataSetFacetColumnMetrics
 {
-    private String query = null;
+    private Map<String, OpenLineageDataQualityMetricsInputDataSetFacetColumnMetricsAdditional> additionalProperties = new LinkedHashMap<>();
+
 
     /**
      * Default constructor
      */
-    public OpenLineageSQLJobFacet()
+    public OpenLineageDataQualityMetricsInputDataSetFacetColumnMetrics()
     {
-        super (URI.create("https://openlineage.io/spec/facets/1-0-0/SQLJobFacet.json#/$defs/SQLJobFacet"));
     }
 
 
     /**
-     * Return the query expression used.
+     * Return a map of additional column based data quality metrics facets.
      *
-     * @return string query expression
+     * @return map from column name to metrics
      */
-    public String getQuery()
+    public Map<String, OpenLineageDataQualityMetricsInputDataSetFacetColumnMetricsAdditional> getAdditionalProperties()
     {
-        return query;
+        return additionalProperties;
     }
 
 
     /**
-     * Set up the query expression used.
+     * Set up a map of additional column based data quality metrics facets.
      *
-     * @param query string query expression
+     * @param additionalProperties map from column name to metrics
      */
-    public void setQuery(String query)
+    public void setAdditionalProperties(Map<String, OpenLineageDataQualityMetricsInputDataSetFacetColumnMetricsAdditional> additionalProperties)
     {
-        this.query = query;
+        this.additionalProperties = additionalProperties;
     }
-
-
 
 
     /**
@@ -64,11 +63,8 @@ public class OpenLineageSQLJobFacet extends OpenLineageJobFacet
     @Override
     public String toString()
     {
-        return "OpenLineageDataSourceDataSetFacet{" +
-                       "query='" + query + '\'' +
-                       ", _producer=" + get_producer() +
-                       ", _schemaURL=" + get_schemaURL() +
-                       ", additionalProperties=" + getAdditionalProperties() +
+        return "OpenLineageDataQualityMetricsInputDataSetFacetColumnMetrics{" +
+                       "additionalProperties=" + additionalProperties +
                        '}';
     }
 
@@ -90,12 +86,9 @@ public class OpenLineageSQLJobFacet extends OpenLineageJobFacet
         {
             return false;
         }
-        if (! super.equals(objectToCompare))
-        {
-            return false;
-        }
-        OpenLineageSQLJobFacet that = (OpenLineageSQLJobFacet) objectToCompare;
-        return Objects.equals(query, that.query);
+        OpenLineageDataQualityMetricsInputDataSetFacetColumnMetrics
+                that = (OpenLineageDataQualityMetricsInputDataSetFacetColumnMetrics) objectToCompare;
+        return Objects.equals(additionalProperties, that.additionalProperties);
     }
 
 
@@ -107,6 +100,6 @@ public class OpenLineageSQLJobFacet extends OpenLineageJobFacet
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), query);
+        return Objects.hash(additionalProperties);
     }
 }

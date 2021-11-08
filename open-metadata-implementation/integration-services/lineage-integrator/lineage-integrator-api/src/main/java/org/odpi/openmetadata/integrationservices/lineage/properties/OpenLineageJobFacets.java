@@ -23,7 +23,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OpenLineageJobFacets
 {
-    private Map<String, OpenLineageJobFacet> additionalProperties = new LinkedHashMap<>();
+    private OpenLineageSourceCodeLocationJobFacet sourceCodeLocation   = null;
+    private OpenLineageSQLJobFacet                sql                  = null;
+    private OpenLineageDocumentationJobFacet      documentation        = null;
+    private Map<String, OpenLineageJobFacet>      additionalProperties = new LinkedHashMap<>();
 
 
     /**
@@ -31,6 +34,42 @@ public class OpenLineageJobFacets
      */
     public OpenLineageJobFacets()
     {
+    }
+
+
+    public OpenLineageSourceCodeLocationJobFacet getSourceCodeLocation()
+    {
+        return sourceCodeLocation;
+    }
+
+
+    public void setSourceCodeLocation(OpenLineageSourceCodeLocationJobFacet sourceCodeLocation)
+    {
+        this.sourceCodeLocation = sourceCodeLocation;
+    }
+
+
+    public OpenLineageSQLJobFacet getSql()
+    {
+        return sql;
+    }
+
+
+    public void setSql(OpenLineageSQLJobFacet sql)
+    {
+        this.sql = sql;
+    }
+
+
+    public OpenLineageDocumentationJobFacet getDocumentation()
+    {
+        return documentation;
+    }
+
+
+    public void setDocumentation(OpenLineageDocumentationJobFacet documentation)
+    {
+        this.documentation = documentation;
     }
 
 
@@ -65,7 +104,10 @@ public class OpenLineageJobFacets
     public String toString()
     {
         return "OpenLineageJobFacets{" +
-                       "additionalProperties=" + additionalProperties +
+                       "sourceCodeLocation=" + sourceCodeLocation +
+                       ", sql=" + sql +
+                       ", documentation=" + documentation +
+                       ", additionalProperties=" + additionalProperties +
                        '}';
     }
 
@@ -88,7 +130,10 @@ public class OpenLineageJobFacets
             return false;
         }
         OpenLineageJobFacets that = (OpenLineageJobFacets) objectToCompare;
-        return Objects.equals(additionalProperties, that.additionalProperties);
+        return Objects.equals(sourceCodeLocation, that.sourceCodeLocation) &&
+                       Objects.equals(sql, that.sql) &&
+                       Objects.equals(documentation, that.documentation) &&
+                       Objects.equals(additionalProperties, that.additionalProperties);
     }
 
 
@@ -100,6 +145,6 @@ public class OpenLineageJobFacets
     @Override
     public int hashCode()
     {
-        return Objects.hash(additionalProperties);
+        return Objects.hash(sourceCodeLocation, sql, documentation, additionalProperties);
     }
 }

@@ -22,7 +22,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OpenLineageInputDataSetInputFacets
 {
-    private Map<String, OpenLineageInputDataSetInputFacet> additionalProperties = new LinkedHashMap<>();
+    private OpenLineageDataQualityAssertionsInputDataSetFacet dataQualityAssertions = null;
+    private OpenLineageDataQualityMetricsInputDataSetFacet    dataQualityMetrics    = null;
+    private Map<String, OpenLineageInputDataSetInputFacet>    additionalProperties  = new LinkedHashMap<>();
 
 
     /**
@@ -30,6 +32,50 @@ public class OpenLineageInputDataSetInputFacets
      */
     public OpenLineageInputDataSetInputFacets()
     {
+    }
+
+
+    /**
+     * Return data quality assertions facet.
+     *
+     * @return facet
+     */
+    public OpenLineageDataQualityAssertionsInputDataSetFacet getDataQualityAssertions()
+    {
+        return dataQualityAssertions;
+    }
+
+
+    /**
+     * Set up the data quality assertions facet.
+     *
+     * @param dataQualityAssertions facet
+     */
+    public void setDataQualityAssertions(OpenLineageDataQualityAssertionsInputDataSetFacet dataQualityAssertions)
+    {
+        this.dataQualityAssertions = dataQualityAssertions;
+    }
+
+
+    /**
+     * Return the data quality metrics facet.
+     *
+     * @return facet
+     */
+    public OpenLineageDataQualityMetricsInputDataSetFacet getDataQualityMetrics()
+    {
+        return dataQualityMetrics;
+    }
+
+
+    /**
+     * Set up the data quality metrics facet.
+     *
+     * @param dataQualityMetrics facet
+     */
+    public void setDataQualityMetrics(OpenLineageDataQualityMetricsInputDataSetFacet dataQualityMetrics)
+    {
+        this.dataQualityMetrics = dataQualityMetrics;
     }
 
 
@@ -64,7 +110,9 @@ public class OpenLineageInputDataSetInputFacets
     public String toString()
     {
         return "OpenLineageInputDataSetInputFacets{" +
-                       "additionalProperties=" + additionalProperties +
+                       "dataQualityAssertions=" + dataQualityAssertions +
+                       ", dataQualityMetrics=" + dataQualityMetrics +
+                       ", additionalProperties=" + additionalProperties +
                        '}';
     }
 
@@ -87,7 +135,9 @@ public class OpenLineageInputDataSetInputFacets
             return false;
         }
         OpenLineageInputDataSetInputFacets that = (OpenLineageInputDataSetInputFacets) objectToCompare;
-        return Objects.equals(additionalProperties, that.additionalProperties);
+        return Objects.equals(dataQualityAssertions, that.dataQualityAssertions) &&
+                       Objects.equals(dataQualityMetrics, that.dataQualityMetrics) &&
+                       Objects.equals(additionalProperties, that.additionalProperties);
     }
 
 
@@ -99,6 +149,6 @@ public class OpenLineageInputDataSetInputFacets
     @Override
     public int hashCode()
     {
-        return Objects.hash(additionalProperties);
+        return Objects.hash(dataQualityAssertions, dataQualityMetrics, additionalProperties);
     }
 }

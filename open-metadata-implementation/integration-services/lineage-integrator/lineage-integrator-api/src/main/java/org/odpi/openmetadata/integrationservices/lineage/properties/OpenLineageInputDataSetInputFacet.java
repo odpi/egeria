@@ -29,6 +29,18 @@ public class OpenLineageInputDataSetInputFacet extends OpenLineageFacet
         super (URI.create("https://openlineage.io/spec/1-0-2/OpenLineage.json#/$defs/InputDatasetFacet"));
     }
 
+
+    /**
+     * Subclass constructor
+     *
+     * @param schemaURL default value for schemaURL
+     */
+    public OpenLineageInputDataSetInputFacet(URI schemaURL)
+    {
+        super(schemaURL);
+    }
+
+
     /**
      * Standard toString method.
      *
