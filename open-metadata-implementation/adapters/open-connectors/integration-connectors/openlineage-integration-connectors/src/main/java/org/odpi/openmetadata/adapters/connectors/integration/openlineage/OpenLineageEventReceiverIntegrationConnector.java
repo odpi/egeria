@@ -20,14 +20,22 @@ import java.util.Map;
 
 
 /**
- * KafkaOpenLineageReceiverIntegrationConnector receives open lineage events from an Apache Kafka topic and publishes them to other listening
- * lineage integration connectors.
+ * OpenLineageEventReceiverIntegrationConnector receives open lineage events from an event broker such as an Apache Kafka topic.
+ * It publishes them to other listening lineage integration connectors.
  */
-public class KafkaOpenLineageReceiverIntegrationConnector extends LineageIntegratorConnector implements OpenMetadataTopicListener,
+public class OpenLineageEventReceiverIntegrationConnector extends LineageIntegratorConnector implements OpenMetadataTopicListener,
                                                                                                         VirtualConnectorExtension
 {
     private LineageIntegratorContext                myContext       = null;
     private Map<String, OpenMetadataTopicConnector> topicConnectors = new HashMap<>();
+
+
+    /**
+     * Default constructor
+     */
+    public OpenLineageEventReceiverIntegrationConnector()
+    {
+    }
 
 
     /**

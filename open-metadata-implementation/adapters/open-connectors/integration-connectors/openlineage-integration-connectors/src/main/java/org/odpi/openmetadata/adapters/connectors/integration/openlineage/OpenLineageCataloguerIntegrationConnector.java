@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.integration.openlineage;
 
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ProcessElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessStatus;
 import org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc.OpenLineageIntegrationConnectorAuditCode;
@@ -11,7 +12,14 @@ import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypePrope
 import org.odpi.openmetadata.integrationservices.lineage.connector.LineageIntegratorConnector;
 import org.odpi.openmetadata.integrationservices.lineage.connector.LineageIntegratorContext;
 import org.odpi.openmetadata.integrationservices.lineage.connector.OpenLineageEventListener;
+import org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageDocumentationJobFacet;
+import org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageJob;
+import org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageParentRunFacetJob;
+import org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageParentRunFacetRun;
+import org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageRun;
 import org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageRunEvent;
+
+import java.util.List;
 
 
 /**
@@ -27,7 +35,7 @@ public class OpenLineageCataloguerIntegrationConnector extends LineageIntegrator
     /**
      * Default constructor
      */
-    protected OpenLineageCataloguerIntegrationConnector()
+    public OpenLineageCataloguerIntegrationConnector()
     {
     }
 
@@ -109,32 +117,118 @@ public class OpenLineageCataloguerIntegrationConnector extends LineageIntegrator
     {
         final String methodName = "processOpenLineageRunEvent";
 
-        ProcessProperties processProperties = new ProcessProperties();
-
-        try
+        if (event != null)
         {
-            myContext.createProcess(false, processProperties, ProcessStatus.ACTIVE);
-        }
-        catch (Exception error)
-        {
-            if (auditLog != null)
+            try
             {
-                String stringEvent = rawEvent;
+                String         processGUID = null;
+                String         parentProcessName = null;
+                String         parentProcessInstanceGUID = null;
 
-                if (rawEvent == null)
+                OpenLineageJob job = event.getJob();
+
+                if (job != null)
                 {
-                    stringEvent = event.toString();
+                    if (job.getName() != null)
+                    {
+                        String qualifiedName = "OpenLineageJob:" + job.getName();
+
+                        List<ProcessElement> existingProcesses = myContext.getProcessesByName(qualifiedName, 0, 0);
+
+                        if ((existingProcesses == null) || (existingProcesses.isEmpty()))
+                        {
+                            ProcessProperties processProperties = new ProcessProperties();
+
+                            if (job.getFacets() != null)
+                            {
+                                OpenLineageDocumentationJobFacet documentation = job.getFacets().getDocumentation();
+
+                                if (documentation != null)
+                                {
+                                    processProperties.setDescription(documentation.getDescription());
+                                }
+                            }
+
+                            processProperties.setTypeName("DeployedSoftwareComponent");
+                            processProperties.setQualifiedName(qualifiedName);
+                            processProperties.setProcessStatus(ProcessStatus.ACTIVE);
+
+                            processGUID = myContext.createProcess(false, processProperties);
+                            myContext.publishProcess(processGUID);
+                        }
+                        else if (existingProcesses.size() == 1)
+                        {
+                            ProcessElement existingProcess = existingProcesses.get(0);
+
+                            processGUID = existingProcess.getElementHeader().getGUID();
+
+                            if (existingProcess.getProcessProperties().getDescription() == null)
+                            {
+                                if (job.getFacets() != null)
+                                {
+                                    OpenLineageDocumentationJobFacet documentation = job.getFacets().getDocumentation();
+
+                                    if (documentation != null)
+                                    {
+                                        ProcessProperties processProperties = new ProcessProperties();
+
+                                        processProperties.setDescription(documentation.getDescription());
+
+                                        myContext.updateProcess(processGUID, true, processProperties);
+                                    }
+                                }
+                            }
+                        }
+
+                        // ignoring the process if there are multiple definitions.
+                    }
+
                 }
 
-                auditLog.logException(methodName,
-                                      OpenLineageIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                         error.getClass().getName(),
-                                                                                                                         methodName,
-                                                                                                                         error.getMessage()),
-                                      stringEvent,
-                                      error);
+                OpenLineageRun run = event.getRun();
+
+                if (run != null)
+                {
+                    if (run.getFacets() != null)
+                    {
+                        if (run.getFacets().getParent() != null)
+                        {
+                            OpenLineageParentRunFacetJob parentJob = run.getFacets().getParent().getJob();
+                            OpenLineageParentRunFacetRun parentRun = run.getFacets().getParent().getRun();
+
+                            if (parentJob != null)
+                            {
+                                parentProcessName = parentJob.getName();
+
+                                List<ProcessElement> existingProcesses = myContext.getProcessesByName(parentProcessName, 0 , 0);
+
+
+                            }
+                        }
+                    }
+                }
+
+            }
+            catch (Exception error)
+            {
+                if (auditLog != null)
+                {
+                    String stringEvent = rawEvent;
+
+                    if (rawEvent == null)
+                    {
+                        stringEvent = event.toString();
+                    }
+
+                    auditLog.logException(methodName,
+                                          OpenLineageIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                             error.getClass().getName(),
+                                                                                                                             methodName,
+                                                                                                                             error.getMessage()),
+                                          stringEvent,
+                                          error);
+                }
             }
         }
     }
-
 }

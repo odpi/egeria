@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties
 import org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageRunEvent;
 
 import java.io.File;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -104,19 +105,45 @@ public class FileBasedOpenLineageLogStoreConnector extends OpenLineageLogStoreCo
             String namespace = "default-namespace/";
             String jobName = "unformatted/";
             String runId = UUID.randomUUID().toString();
-            String eventTime = new Date().toString();
             String eventType = "UNKNOWN";
+
+            ZonedDateTime zonedDateTime = ZonedDateTime.now();
 
             try
             {
                 if (openLineageEvent != null)
                 {
-                    eventTime = openLineageEvent.getEventTime().toString();
+                    String eventTime = openLineageEvent.getEventTime();
+                    zonedDateTime = ZonedDateTime.parse(eventTime);
+
                     eventType = openLineageEvent.getEventType();
-                    runId = openLineageEvent.getRun().getRunId().toString();
+                    if ((openLineageEvent.getRun() != null) && (openLineageEvent.getRun().getRunId() != null))
+                    {
+                        runId = openLineageEvent.getRun().getRunId().toString();
+                    }
+
+                    if (openLineageEvent.getJob() != null)
+                    {
+                        if (openLineageEvent.getJob().getName() != null)
+                        {
+                            jobName = openLineageEvent.getJob().getName();
+                        }
+                        if (openLineageEvent.getJob().getNamespace() != null)
+                        {
+                            namespace = openLineageEvent.getJob().getNamespace();
+                        }
+                    }
                 }
 
-                File         logStoreFile = new File(logStoreDirectoryName + "/" + namespace + jobName + runId + "-" + eventTime + "-" + eventType + ".json");
+                String timestamp = zonedDateTime.getYear() + "-" +
+                                           zonedDateTime.getMonthValue() +  "-" +
+                                           zonedDateTime.getDayOfMonth() +  ":" +
+                                           zonedDateTime.getHour() +  "-" +
+                                           zonedDateTime.getMinute() +  "-" +
+                                           zonedDateTime.getSecond() +  ":" +
+                                           zonedDateTime.getNano();
+
+                File logStoreFile = new File(logStoreDirectoryName + "/" + namespace + "/" + jobName + "/" + runId + "-" + timestamp + "-" + eventType + ".json");
 
                 FileUtils.writeStringToFile(logStoreFile, rawEvent, (String) null, false);
             }

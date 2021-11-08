@@ -10,6 +10,16 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageRunEvent;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
+
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 
 /**
@@ -23,6 +33,8 @@ public class APIBasedOpenLineageLogStoreConnector extends OpenLineageLogStoreCon
 
     private String logStoreURL = null;
     private FFDCRESTClient restClient = null;               /* Initialized at start() */
+    private RestTemplate   restTemplate = null;
+    private HttpHeaders    header = null;
 
 
     /**
@@ -60,7 +72,18 @@ public class APIBasedOpenLineageLogStoreConnector extends OpenLineageLogStoreCon
 
         try
         {
-            restClient = new FFDCRESTClient(getDestinationName(), logStoreURL);
+            restClient = new FFDCRESTClient(getConnectorInstanceId(), logStoreURL);
+
+            restTemplate = new RestTemplate();
+
+            /* Ensure that the REST template always uses UTF-8 */
+            List<HttpMessageConverter<?>> converters = restTemplate.getMessageConverters();
+            converters.removeIf(httpMessageConverter -> httpMessageConverter instanceof StringHttpMessageConverter);
+            converters.add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
+
+            header = new HttpHeaders();
+
+            header.setContentType(MediaType.APPLICATION_JSON);
         }
         catch (Exception error)
         {
@@ -97,7 +120,11 @@ public class APIBasedOpenLineageLogStoreConnector extends OpenLineageLogStoreCon
 
         if (rawEvent != null)
         {
-            restClient.callVoidPostRESTCall(methodName, logStoreURL, rawEvent);
+            // restClient.callPostRESTCallNoParams(methodName, null, logStoreURL, rawEvent);
+
+            HttpEntity<?> request = new HttpEntity<>((Object)rawEvent, header);
+
+            restTemplate.exchange(logStoreURL, HttpMethod.POST, request, Void.class);
         }
         else
         {

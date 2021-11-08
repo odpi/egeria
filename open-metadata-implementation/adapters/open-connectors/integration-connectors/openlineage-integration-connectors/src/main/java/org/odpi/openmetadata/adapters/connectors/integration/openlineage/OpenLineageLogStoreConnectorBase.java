@@ -37,7 +37,7 @@ public abstract class OpenLineageLogStoreConnectorBase extends LineageIntegrator
     /**
      * Default constructor
      */
-    protected OpenLineageLogStoreConnectorBase()
+    public OpenLineageLogStoreConnectorBase()
     {
     }
 
@@ -233,11 +233,10 @@ public abstract class OpenLineageLogStoreConnectorBase extends LineageIntegrator
             additionalProperties.put(parameterName, openLineageEvent.toString());
         }
 
-        throw new InvalidParameterException(
-                OpenLineageIntegrationConnectorErrorCode.NO_RAW_EVENT.getMessageDefinition(connectorName, methodName),
-                this.getClass().getName(),
-                methodName,
-                parameterName,
-                additionalProperties);
+        throw new InvalidParameterException(OpenLineageIntegrationConnectorErrorCode.NO_RAW_EVENT.getMessageDefinition(connectorName, methodName),
+                                            this.getClass().getName(),
+                                            methodName,
+                                            parameterName,
+                                            additionalProperties);
     }
 }
