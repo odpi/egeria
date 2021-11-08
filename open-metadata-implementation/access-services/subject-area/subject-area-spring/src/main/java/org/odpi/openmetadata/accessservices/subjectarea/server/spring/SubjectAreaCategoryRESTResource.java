@@ -159,6 +159,7 @@ public class SubjectAreaCategoryRESTResource {
      * Update a Category
      * <p>
      * Status is not updated using this call.
+     * The category parent can be updated with this call. For isReplace a null category parent will remove the existing parent relationship.
      *
      * @param serverName       serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId           userId under which the request is performed
