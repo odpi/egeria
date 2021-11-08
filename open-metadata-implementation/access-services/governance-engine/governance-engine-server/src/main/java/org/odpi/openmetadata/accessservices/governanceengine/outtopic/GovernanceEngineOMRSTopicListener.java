@@ -23,11 +23,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import static java.lang.Thread.sleep;
 
 /**
  * GovernanceEngineOMRSTopicListener is the listener that registers with the repository services (OMRS)
@@ -168,20 +166,21 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                                               type.getTypeDefName(),
                                               OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME))
                 {
-                    EntityProxy end2 = relationship.getEntityTwoProxy();
+                    EntityProxy governanceEngineEntityProxy = relationship.getEntityOneProxy();
+                    EntityProxy governanceServiceEntityProxy = relationship.getEntityTwoProxy();
 
-                    if (end2 != null)
+                    if (governanceEngineEntityProxy != null)
                     {
-                        eventPublisher.publishRefreshGovernanceServiceEvent(end2.getGUID(),
-                                                                           repositoryHelper.getStringProperty(sourceName,
-                                                                                                              OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                                                                                              end2.getUniqueProperties(),
-                                                                                                              methodName),
-                                                                           relationship.getGUID(),
-                                                                           repositoryHelper.getStringProperty(sourceName,
-                                                                                                              OpenMetadataAPIMapper.REQUEST_TYPE_PROPERTY_NAME,
-                                                                                                              relationship.getProperties(),
-                                                                                                              methodName));
+                        eventPublisher.publishRefreshGovernanceServiceEvent(governanceEngineEntityProxy.getGUID(),
+                                                                            repositoryHelper.getStringProperty(sourceName,
+                                                                                                               OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                                               governanceEngineEntityProxy.getUniqueProperties(),
+                                                                                                               methodName),
+                                                                            governanceServiceEntityProxy.getGUID(),
+                                                                            repositoryHelper.getStringProperty(sourceName,
+                                                                                                               OpenMetadataAPIMapper.REQUEST_TYPE_PROPERTY_NAME,
+                                                                                                               relationship.getProperties(),
+                                                                                                               methodName));
                         return true;
                     }
                 }
@@ -248,68 +247,19 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
 
                     if (status == GovernanceActionStatus.APPROVED)
                     {
-                        try
-                        {
-                            int attempt = 0;
-                            int sleepTime = 1000;
 
-                            while (attempt < 5)
-                            {
-                                EntityDetail governanceEngine = governanceActionHandler.getAttachedEntity(userId,
-                                                                                                          entity.getGUID(),
-                                                                                                          entityGUIDParameterName,
-                                                                                                          OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME,
-                                                                                                          OpenMetadataAPIMapper.GOVERNANCE_ACTION_EXECUTOR_TYPE_GUID,
-                                                                                                          OpenMetadataAPIMapper.GOVERNANCE_ACTION_EXECUTOR_TYPE_NAME,
-                                                                                                          OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME,
-                                                                                                          false,
-                                                                                                          false,
-                                                                                                          new Date(),
-                                                                                                          methodName);
+                        String governanceEngineGUID = repositoryHelper.getStringProperty(sourceName,
+                                                                                         OpenMetadataAPIMapper.EXECUTOR_ENGINE_GUID_PROPERTY_NAME,
+                                                                                         entity.getProperties(),
+                                                                                         methodName);
+                        String governanceEngineName = repositoryHelper.getStringProperty(sourceName,
+                                                                                         OpenMetadataAPIMapper.EXECUTOR_ENGINE_NAME_PROPERTY_NAME,
+                                                                                         entity.getProperties(),
+                                                                                         methodName);
 
-                                if (governanceEngine != null)
-                                {
-                                    eventPublisher.publishNewGovernanceAction(governanceEngine.getGUID(),
-                                                                              repositoryHelper.getStringProperty(sourceName,
-                                                                                                                 OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                                                                                                 governanceEngine.getProperties(),
-                                                                                                                 methodName),
-                                                                              entity.getGUID());
-
-                                    return true;
-                                }
-
-                                /*
-                                 * The governance action is being set up so need to give the metadata server more time.
-                                 */
-                                attempt ++;
-                                sleep(sleepTime);
-                                sleepTime = sleepTime * 2;
-                            }
-
-                            /*
-                             * Given up waiting
-                             */
-                            auditLog.logMessage(methodName, GovernanceEngineAuditCode.BAD_GOVERNANCE_ACTION.getMessageDefinition(entity.toString()));
-                        }
-                        catch (InvalidParameterException error)
-                        {
-                            auditLog.logMessage(methodName,
-                                                GovernanceEngineAuditCode.SKIPPING_INSTANCE.getMessageDefinition(sourceName,
-                                                                                                                 methodName,
-                                                                                                                 entity.getGUID(),
-                                                                                                                 error.getMessage()));
-                        }
-                        catch (Exception error)
-                        {
-                            auditLog.logException(methodName,
-                                                  GovernanceEngineAuditCode.EVENT_PROCESSING_ERROR.getMessageDefinition(error.getClass().getName(),
-                                                                                                                        sourceName,
-                                                                                                                        methodName,
-                                                                                                                        entity.getGUID(),
-                                                                                                                        error.getMessage()),
-                                                  error);
-                        }
+                        eventPublisher.publishNewGovernanceAction(governanceEngineGUID,
+                                                                  governanceEngineName,
+                                                                  entity.getGUID());
                     }
 
                     return true;
@@ -420,7 +370,6 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                 {
                     return true;
                 }
-
 
                 return (repositoryHelper.isTypeOf(sourceName,
                                                   type.getTypeDefName(),
@@ -708,7 +657,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                 watchdogEvent.setEventType(eventType);
                 watchdogEvent.setMetadataElement(metadataElementHandler.getMetadataElementByGUID(userId,
                                                                                                  entity.getGUID(),
-                                                                                                 false,
+                                                                                                 true,
                                                                                                  false,
                                                                                                  null,
                                                                                                  methodName));
@@ -717,7 +666,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                 {
                     watchdogEvent.setPreviousMetadataElement(metadataElementHandler.getMetadataElementByGUID(userId,
                                                                                                              previousEntity.getGUID(),
-                                                                                                             false,
+                                                                                                             true,
                                                                                                              false,
                                                                                                              null,
                                                                                                              methodName));
@@ -771,7 +720,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                 WatchdogClassificationEvent watchdogEvent = new WatchdogClassificationEvent();
 
                 watchdogEvent.setEventType(eventType);
-                watchdogEvent.setMetadataElement(metadataElementHandler.getMetadataElementByGUID(userId, entity.getGUID(), false, false, null, methodName));
+                watchdogEvent.setMetadataElement(metadataElementHandler.getMetadataElementByGUID(userId, entity.getGUID(), true, false, null, methodName));
                 watchdogEvent.setChangedClassification(this.getClassification(sourceName, classification));
 
                 if (previousClassification != null)
@@ -825,8 +774,8 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                 /*
                  * Validate that the relationship is visible to this service
                  */
-                metadataElementHandler.getMetadataElementByGUID(userId, relationship.getEntityOneProxy().getGUID(), false, false, null, methodName);
-                metadataElementHandler.getMetadataElementByGUID(userId, relationship.getEntityTwoProxy().getGUID(), false, false, null, methodName);
+                metadataElementHandler.getMetadataElementByGUID(userId, relationship.getEntityOneProxy().getGUID(), true, false, null, methodName);
+                metadataElementHandler.getMetadataElementByGUID(userId, relationship.getEntityTwoProxy().getGUID(), true, false, null, methodName);
 
                 /*
                  * OK to publish relationship
@@ -984,8 +933,8 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processClassifiedEntityEvent";
 
-        if ((! processGovernanceEngineEvent(sourceName, entity, methodName)) &&
-                    (! processGovernanceActionEvent(sourceName, entity, methodName)) &&
+        if ((! excludeGovernanceEngineEvent(sourceName, entity)) &&
+                    (! excludeGovernanceActionEvent(sourceName, entity)) &&
                     (! excludeGovernanceManagementEvents(sourceName, entity)))
         {
             processWatchdogEvent(sourceName, WatchdogEventType.NEW_CLASSIFICATION, entity, classification, null, methodName);
@@ -1017,8 +966,8 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processDeclassifiedEntityEvent";
 
-        if ((! processGovernanceEngineEvent(sourceName, entity, methodName)) &&
-                    (! processGovernanceActionEvent(sourceName, entity, methodName)) &&
+        if ((! excludeGovernanceEngineEvent(sourceName, entity)) &&
+                    (! excludeGovernanceActionEvent(sourceName, entity)) &&
                     (! excludeGovernanceManagementEvents(sourceName, entity)))
         {
             processWatchdogEvent(sourceName, WatchdogEventType.DELETED_CLASSIFICATION, entity, originalClassification, null, methodName);
@@ -1052,8 +1001,8 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processReclassifiedEntityEvent";
 
-        if ((! processGovernanceEngineEvent(sourceName, entity, methodName)) &&
-                    (! processGovernanceActionEvent(sourceName, entity, methodName)) &&
+        if ((! excludeGovernanceEngineEvent(sourceName, entity)) &&
+                    (! excludeGovernanceActionEvent(sourceName, entity)) &&
                     (! excludeGovernanceManagementEvents(sourceName, entity)))
         {
             processWatchdogEvent(sourceName, WatchdogEventType.UPDATED_CLASSIFICATION_PROPERTIES, entity, classification, originalClassification, methodName);

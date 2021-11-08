@@ -65,13 +65,12 @@
         <developer>
             <id>mandy-chessell</id>
             <name>Mandy Chessell</name>
-            <email>mandy_chessell@uk.ibm.com</email>
+            <email>mandy.e.chessell@gmail.com</email>
             <timezone>Europe/London</timezone>
             <roles>
                 <role>Project Leader</role>
                 <role>maintainer</role>
             </roles>
-            <organization>IBM Corporation</organization>
         </developer>
         <developer>
             <id>planetf1</id>
@@ -259,6 +258,7 @@
         <process-exec-plugin.version>0.9</process-exec-plugin.version>
         <groovy-plugin.version>2.1.1</groovy-plugin.version>
         <properties.plugin.version>1.0.0</properties.plugin.version>
+        <openlineage.version>0.2.3</openlineage.version>
 
         <!-- Configuration of sonar code scanning-->
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
@@ -274,6 +274,7 @@
     </properties>
 
     <dependencyManagement>
+
         <dependencies>
 
             <dependency>
@@ -321,7 +322,7 @@
             <dependency>
                  <groupId>com.fasterxml.jackson.datatype</groupId>
                  <artifactId>jackson-datatype-jsr310</artifactId>
-                 <scope>compile</scope>
+                 <scope>runtime</scope>
                  <version>${jackson.version}</version>
              </dependency>
 
@@ -342,14 +343,14 @@
                 <artifactId>commons-collections4</artifactId>
                 <scope>compile</scope>
                 <version>${commons-collections4.version}</version>
-	    </dependency>
+	        </dependency>
 
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-text</artifactId>
                 <scope>compile</scope>
                 <version>${commons-text.version}</version>
-   	    </dependency>
+   	        </dependency>
 
             <dependency>
                 <groupId>org.apache.jena</groupId>
@@ -370,6 +371,13 @@
                 <artifactId>commons-io</artifactId>
                 <scope>compile</scope>
                 <version>${commons-io.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.openlineage</groupId>
+                <artifactId>openlineage-java</artifactId>
+                <scope>compile</scope>
+                <version>${openlineage.version}</version>
             </dependency>
 
             <dependency>
@@ -445,14 +453,14 @@
                 <artifactId>gremlin-driver</artifactId>
                 <scope>compile</scope>
                 <version>${gremlin.version}</version>
-	    </dependency>
+	        </dependency>
 
             <dependency>
                 <groupId>org.apache.tinkerpop</groupId>
                 <artifactId>gremlin-shaded</artifactId>
                 <scope>compile</scope>
                 <version>${gremlin.version}</version>
-	    </dependency>
+	        </dependency>
 
             <dependency>
                 <groupId>org.apache.tinkerpop</groupId>
@@ -473,7 +481,7 @@
                 <artifactId>commons-configuration</artifactId>
                 <version>${commons-configuration.version}</version>
                 <scope>compile</scope>
-	</dependency>
+	        </dependency>
 
             <dependency>
                 <groupId>org.apache.commons</groupId>
@@ -2462,6 +2470,27 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>kafka-integration-connector</artifactId>
+                <version>${open-metadata.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>openapi-integration-connector</artifactId>
+                <version>${open-metadata.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>openlineage-integration-connectors</artifactId>
+                <version>${open-metadata.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>subject-area-api</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
@@ -3148,7 +3177,6 @@
                 <scope>compile</scope>
             </dependency>
 
-
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>search-integrator-server</artifactId>
@@ -3173,7 +3201,6 @@
                 <version>${open-metadata.version}</version>
             </dependency>
 
-
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>elasticsearch-integration-connector</artifactId>
@@ -3186,6 +3213,7 @@
                 <artifactId>hibernate-validator</artifactId>
                 <version>${hibernate-validator.version}</version>
             </dependency>
+
         </dependencies>
 
     </dependencyManagement>
@@ -3688,6 +3716,7 @@
                                 <ignoredUnusedDeclaredDependency>org.springframework.boot:spring-boot-starter-actuator</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>io.micrometer:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>org.junit.platform:*</ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:*</ignoredUnusedDeclaredDependency>
                                 <!-- Used with slf4j as default implementation in test scope only -->
                                 <ignoredUnusedDeclaredDependency>ch.qos.logback:logback*:*
                                 </ignoredUnusedDeclaredDependency>

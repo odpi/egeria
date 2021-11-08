@@ -125,6 +125,7 @@ public class IntegrationDaemonOperationalServices
                                                             partnerOMASRootURL,
                                                             localServerUserId,
                                                             localServerPassword,
+                                                            integrationServiceConfig.getIntegrationServiceOptions(),
                                                             maxPageSize,
                                                             auditLog);
 

@@ -225,8 +225,8 @@ public interface AssetConnectionManagementInterface
                               String assetGUID,
                               String assetSummary,
                               String connectionGUID) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException;
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException;
 
 
     /**

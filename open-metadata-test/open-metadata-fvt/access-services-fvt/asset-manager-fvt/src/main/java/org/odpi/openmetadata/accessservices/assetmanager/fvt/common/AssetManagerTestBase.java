@@ -61,7 +61,7 @@ public class AssetManagerTestBase
 
             return new AssetManagerClient(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -91,7 +91,7 @@ public class AssetManagerTestBase
 
             return new GlossaryExchangeClient(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -157,7 +157,7 @@ public class AssetManagerTestBase
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -423,7 +423,7 @@ public class AssetManagerTestBase
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }

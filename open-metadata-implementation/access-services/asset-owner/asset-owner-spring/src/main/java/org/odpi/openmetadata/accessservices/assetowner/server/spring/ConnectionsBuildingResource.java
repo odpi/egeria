@@ -306,7 +306,8 @@ public class ConnectionsBuildingResource
                                              @PathVariable String            userId,
                                              @PathVariable String            assetGUID,
                                              @PathVariable String            connectionGUID,
-                                             @PathVariable StringRequestBody requestBody)
+                                             @RequestBody (required =  false)
+                                                           StringRequestBody requestBody)
     {
         return restAPI.setupAssetConnection(serverName, userId, assetGUID, connectionGUID, requestBody);
     }
@@ -332,7 +333,8 @@ public class ConnectionsBuildingResource
                                              @PathVariable String          userId,
                                              @PathVariable String          assetGUID,
                                              @PathVariable String          connectionGUID,
-                                             @RequestBody(required = false) NullRequestBody requestBody)
+                                             @RequestBody(required = false)
+                                                           NullRequestBody requestBody)
     {
         return restAPI.clearAssetConnection(serverName, userId, assetGUID, connectionGUID, requestBody);
     }
@@ -354,10 +356,11 @@ public class ConnectionsBuildingResource
      */
     @PostMapping(path = "/connections/{connectionGUID}/delete")
 
-    public VoidResponse removeConnection(@PathVariable                  String          serverName,
-                                         @PathVariable                  String          userId,
-                                         @PathVariable                  String          connectionGUID,
-                                         @RequestBody(required = false) NullRequestBody requestBody)
+    public VoidResponse removeConnection(@PathVariable String          serverName,
+                                         @PathVariable String          userId,
+                                         @PathVariable String          connectionGUID,
+                                         @RequestBody(required = false)
+                                                       NullRequestBody requestBody)
     {
         return restAPI.removeConnection(serverName, userId, connectionGUID, requestBody);
     }
@@ -535,10 +538,11 @@ public class ConnectionsBuildingResource
      */
     @PostMapping(path = "/endpoints/{endpointGUID}/delete")
 
-    public VoidResponse removeEndpoint(@PathVariable                  String          serverName,
-                                       @PathVariable                  String          userId,
-                                       @PathVariable                  String          endpointGUID,
-                                       @RequestBody(required = false) NullRequestBody requestBody)
+    public VoidResponse removeEndpoint(@PathVariable String          serverName,
+                                       @PathVariable String          userId,
+                                       @PathVariable String          endpointGUID,
+                                       @RequestBody(required = false)
+                                                     NullRequestBody requestBody)
     {
         return restAPI.removeEndpoint(serverName, userId, endpointGUID, requestBody);
     }

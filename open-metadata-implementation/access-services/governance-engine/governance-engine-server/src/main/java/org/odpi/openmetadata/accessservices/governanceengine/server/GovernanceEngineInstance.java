@@ -188,7 +188,7 @@ public class GovernanceEngineInstance extends OMASServiceInstance
      *
      * @return handler object
      */
-    public AssetHandler<GovernanceActionProcessElement> getGovernanceActionProcessHandler()
+     AssetHandler<GovernanceActionProcessElement> getGovernanceActionProcessHandler()
     {
         return governanceActionProcessHandler;
     }
@@ -199,7 +199,7 @@ public class GovernanceEngineInstance extends OMASServiceInstance
      *
      * @return handler object
      */
-    public GovernanceActionTypeHandler<GovernanceActionTypeElement> getGovernanceActionTypeHandler()
+    GovernanceActionTypeHandler<GovernanceActionTypeElement> getGovernanceActionTypeHandler()
     {
         return governanceActionTypeHandler;
     }

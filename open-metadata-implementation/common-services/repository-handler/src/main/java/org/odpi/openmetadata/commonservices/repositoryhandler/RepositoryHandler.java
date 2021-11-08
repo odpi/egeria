@@ -256,82 +256,88 @@ public class RepositoryHandler
                 {
                     RelationshipDef relationshipDef = (RelationshipDef)typeDef;
 
-                    if ((relationshipDef.getEndDef1().getAttributeCardinality() == RelationshipEndCardinality.AT_MOST_ONE) ||
-                                (relationshipDef.getEndDef2().getAttributeCardinality() == RelationshipEndCardinality.AT_MOST_ONE))
+                    /*
+                     * If the relationship is set up as multi-link it means that every relationship is significant and no deduplication is desirable.
+                     */
+                    if (! relationshipDef.getMultiLink())
                     {
-                        Map<String, Relationship> usedGUIDs = new HashMap<>();
-                        List<Relationship>        results = new ArrayList<>();
-
-                        /*
-                         * Search for duplicates at end 1
-                         */
-                        if (relationshipDef.getEndDef1().getAttributeCardinality() == RelationshipEndCardinality.AT_MOST_ONE)
+                        if ((relationshipDef.getEndDef1().getAttributeCardinality() == RelationshipEndCardinality.AT_MOST_ONE) ||
+                                    (relationshipDef.getEndDef2().getAttributeCardinality() == RelationshipEndCardinality.AT_MOST_ONE))
                         {
-                            for (Relationship relationship : retrievedRelationships)
-                            {
-                                if (relationship != null)
-                                {
-                                    Relationship duplicateRelationship = usedGUIDs.get(relationship.getEntityTwoProxy().getGUID());
+                            Map<String, Relationship> usedGUIDs = new HashMap<>();
+                            List<Relationship>        results = new ArrayList<>();
 
-                                    if ((duplicateRelationship == null) || (errorHandler.validateIsLatestUpdate(duplicateRelationship, relationship)))
+                            /*
+                             * Search for duplicates at end 1
+                             */
+                            if (relationshipDef.getEndDef1().getAttributeCardinality() == RelationshipEndCardinality.AT_MOST_ONE)
+                            {
+                                for (Relationship relationship : retrievedRelationships)
+                                {
+                                    if (relationship != null)
                                     {
-                                        /*
-                                         * Replacing the relationship with the previous one because it is newer.
-                                         */
-                                        usedGUIDs.put(relationship.getEntityTwoProxy().getGUID(), relationship);
+                                        Relationship duplicateRelationship = usedGUIDs.get(relationship.getEntityTwoProxy().getGUID());
+
+                                        if ((duplicateRelationship == null) || (errorHandler.validateIsLatestUpdate(duplicateRelationship, relationship)))
+                                        {
+                                            /*
+                                             * Replacing the relationship with the previous one because it is newer.
+                                             */
+                                            usedGUIDs.put(relationship.getEntityTwoProxy().getGUID(), relationship);
+                                        }
+                                    }
+                                }
+
+                                /*
+                                 * Is end1 independent of end2?
+                                 */
+                                if (! relationshipDef.getEndDef1().getAttributeName().equals(relationshipDef.getEndDef2().getAttributeName()))
+                                {
+                                    /*
+                                     * The attribute names are different at either end of the relationship.  This means the ends have a particular
+                                     * direction and we can process each end independently.
+                                     */
+                                    if (! usedGUIDs.isEmpty())
+                                    {
+                                        results.addAll(usedGUIDs.values());
+                                        usedGUIDs = new HashMap<>();
                                     }
                                 }
                             }
 
                             /*
-                             * Is end1 independent of end2?
+                             * Search for duplicates at end 2 (note check that the relationship is not 0..1 to 0..1)
                              */
-                            if (! relationshipDef.getEndDef1().getAttributeName().equals(relationshipDef.getEndDef2().getAttributeName()))
+                            if ((relationshipDef.getEndDef1().getAttributeCardinality() != RelationshipEndCardinality.AT_MOST_ONE) &&
+                                        (relationshipDef.getEndDef2().getAttributeCardinality() == RelationshipEndCardinality.AT_MOST_ONE))
                             {
-                                /*
-                                 * The attribute names are different at either end of the relationship.  This means the ends have a particular
-                                 * direction and we can process each end independently.
-                                 */
-                                if (! usedGUIDs.isEmpty())
+                                for (Relationship relationship : retrievedRelationships)
                                 {
-                                    results.addAll(usedGUIDs.values());
-                                    usedGUIDs = new HashMap<>();
-                                }
-                            }
-                        }
-
-                        /*
-                         * Search for duplicates at end 2 (note check that the relationship is not 0..1 to 0..1)
-                         */
-                        if ((relationshipDef.getEndDef1().getAttributeCardinality() != RelationshipEndCardinality.AT_MOST_ONE) &&
-                                    (relationshipDef.getEndDef2().getAttributeCardinality() == RelationshipEndCardinality.AT_MOST_ONE))
-                        {
-                            for (Relationship relationship : retrievedRelationships)
-                            {
-                                if (relationship != null)
-                                {
-                                    Relationship duplicateRelationship = usedGUIDs.get(relationship.getEntityOneProxy().getGUID());
-
-                                    if ((duplicateRelationship == null) || (errorHandler.validateIsLatestUpdate(duplicateRelationship, relationship)))
+                                    if (relationship != null)
                                     {
-                                        /*
-                                         * Replacing the existing relationship with the previous one because it is newer.
-                                         */
-                                        usedGUIDs.put(relationship.getEntityOneProxy().getGUID(), relationship);
+                                        Relationship duplicateRelationship = usedGUIDs.get(relationship.getEntityOneProxy().getGUID());
+
+                                        if ((duplicateRelationship == null) || (errorHandler.validateIsLatestUpdate(duplicateRelationship, relationship)))
+                                        {
+                                            /*
+                                             * Replacing the existing relationship with the previous one because it is newer.
+                                             */
+                                            usedGUIDs.put(relationship.getEntityOneProxy().getGUID(), relationship);
+                                        }
                                     }
                                 }
                             }
-                        }
 
-                        /*
-                         * Add filtered relationships to the results.
-                         */
-                        if (! usedGUIDs.isEmpty())
-                        {
-                            results.addAll(usedGUIDs.values());
-                        }
+                            /*
+                             * Add filtered relationships to the results.
+                             */
+                            if (! usedGUIDs.isEmpty())
+                            {
+                                results.addAll(usedGUIDs.values());
+                            }
 
-                        return results;
+                            return results;
+                        }
                     }
                 }
             }
