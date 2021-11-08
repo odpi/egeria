@@ -1605,10 +1605,13 @@ public class OpenMetadataAPIMapper
     public static final String GOVERNANCE_ACTION_TYPE_NAME               = "GovernanceAction";
     /* Reference */
 
-    public static final String EXECUTOR_ENGINE_GUID_PROPERTY_NAME        = "executorEngineGUID";     /* from GovernanceAction entity */
-    public static final String EXECUTOR_ENGINE_NAME_PROPERTY_NAME        = "executorEngineName";     /* from GovernanceAction entity */
-    public static final String MANDATORY_GUARDS_PROPERTY_NAME            = "mandatoryGuards";        /* from GovernanceAction entity */
-    public static final String RECEIVED_GUARDS_PROPERTY_NAME             = "receivedGuards";         /* from GovernanceAction entity */
+    public static final String EXECUTOR_ENGINE_GUID_PROPERTY_NAME        = "executorEngineGUID";       /* from GovernanceAction entity */
+    public static final String EXECUTOR_ENGINE_NAME_PROPERTY_NAME        = "executorEngineName";       /* from GovernanceAction entity */
+    public static final String PROCESS_NAME_PROPERTY_NAME                = "processName";              /* from GovernanceAction entity */
+    public static final String GOVERNANCE_ACTION_TYPE_GUID_PROPERTY_NAME = "governanceActionTypeGUID"; /* from GovernanceAction entity */
+    public static final String GOVERNANCE_ACTION_TYPE_NAME_PROPERTY_NAME = "governanceActionTypeName"; /* from GovernanceAction entity */
+    public static final String MANDATORY_GUARDS_PROPERTY_NAME            = "mandatoryGuards";          /* from GovernanceAction entity */
+    public static final String RECEIVED_GUARDS_PROPERTY_NAME             = "receivedGuards";           /* from GovernanceAction entity */
     public static final String START_DATE_PROPERTY_NAME                  = "startDate";              /* from GovernanceAction and Project entity */
     public static final String PLANNED_END_DATE_PROPERTY_NAME            = "plannedEndDate";         /* from Project entity */
     public static final String CREATION_TIME_PROPERTY_NAME               = "creationTime";           /* from To Do entity */

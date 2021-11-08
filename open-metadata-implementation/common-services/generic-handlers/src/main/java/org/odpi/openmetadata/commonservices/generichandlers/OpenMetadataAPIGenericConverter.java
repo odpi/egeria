@@ -4181,6 +4181,76 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
+     * Extract and delete the processName property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string
+     */
+    protected String removeProcessName(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeProcessName";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.PROCESS_NAME_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the governanceActionTypeGUID property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string
+     */
+    protected String removeGovernanceActionTypeGUID(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeGovernanceActionTypeGUID";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_GUID_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the governanceActionTypeName property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string
+     */
+    protected String removeGovernanceActionTypeName(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeGovernanceActionTypeName";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
      * Extract and delete the producedGuards property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity

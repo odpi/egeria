@@ -177,7 +177,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      *
      * @param userId caller's userId
      * @param anchorGUID the unique identifier of the first governance action in the governance action process (if any)
-     * @param governanceActionTypeGUID unique identifier to give this governance action type
+     * @param governanceActionTypeGUID unique identifier of the governance action type
      * @param governanceActionTypeGUIDParameterName parameter supplying governanceActionTypeGUID
      * @param guard guard that triggered this action
      * @param initialRequestParameters initial set of request parameters
@@ -243,10 +243,10 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                effectiveTime,
                                                                                methodName);
 
-        String qualifiedName = repositoryHelper.getStringProperty(serviceName,
-                                                                  OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                                                  governanceActionTypeEntity.getProperties(),
-                                                                  methodName);
+        String governanceActionTypeName = repositoryHelper.getStringProperty(serviceName,
+                                                                             OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                             governanceActionTypeEntity.getProperties(),
+                                                                             methodName);
         int domainIdentifier = repositoryHelper.getIntProperty(serviceName,
                                                                OpenMetadataAPIMapper.DOMAIN_IDENTIFIER_PROPERTY_NAME,
                                                                governanceActionTypeEntity.getProperties(),
@@ -300,7 +300,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
         List<String> mandatoryGuards = this.getMandatoryGuards(userId, governanceActionTypeGUID, effectiveTime);
 
         return initiateGovernanceAction(userId,
-                                        qualifiedName + ":" + UUID.randomUUID().toString(),
+                                        governanceActionTypeName + ":" + UUID.randomUUID().toString(),
                                         domainIdentifier,
                                         displayName,
                                         description,
@@ -313,6 +313,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         requestType,
                                         requestParameters,
                                         governanceActionTypeGUID,
+                                        governanceActionTypeName,
                                         anchorGUID,
                                         requestSourceName,
                                         originatorServiceName,
@@ -342,7 +343,9 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param anchorGUID identifier of the first governance action of the process (null for standalone governance actions and the first governance
      *                   action in a governance action process).
      * @param governanceActionTypeGUID unique identifier of the governance action type that initiated this governance action as part of
-     *                                 a governance action process (or null if this is standalone governance action
+     *                                 a governance action process (or null if this is standalone governance action)
+     * @param governanceActionTypeName unique name of the governance action type that initiated this governance action as part of
+     *                                 a governance action process (or null if this is standalone governance action)
      * @param requestSourceName where did the request come from
      * @param originatorServiceName unique identifier of the originator - typically an ActorProfile or Process such as a GovernanceService.
      * @param originatorEngineName optional unique name of the governance engine (if initiated by a governance engine)
@@ -367,6 +370,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            String                requestType,
                                            Map<String, String>   requestParameters,
                                            String                governanceActionTypeGUID,
+                                           String                governanceActionTypeName,
                                            String                anchorGUID,
                                            String                requestSourceName,
                                            String                originatorServiceName,
@@ -396,6 +400,9 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                       description,
                                                                       governanceEngineGUID,
                                                                       governanceEngineName,
+                                                                      requestSourceName,
+                                                                      governanceActionTypeGUID,
+                                                                      governanceActionTypeName,
                                                                       requestType,
                                                                       requestParameters,
                                                                       mandatoryGuards,
@@ -429,22 +436,6 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
         {
             final String governanceActionGUIDParameterName = "governanceActionGUID";
             final String governanceActionTypeGUIDParameterName = "governanceActionTypeGUID";
-            final String governanceEngineGUIDParameterName = "governanceEngineGUID";
-
-            if (anchorGUID == null)
-            {
-                /*
-                 * This governance action is the anchor for this process instance.
-                 */
-                this.setClassificationInRepository(userId,
-                                                   governanceActionGUID,
-                                                   governanceActionGUIDParameterName,
-                                                   OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME,
-                                                   OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_GUID,
-                                                   OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME,
-                                                   builder.getAnchorsProperties(governanceActionGUID, methodName),
-                                                   methodName);
-            }
 
             /*
              * Show the relationship to an governance action type if this governance action originated from a governance action process.
@@ -527,31 +518,6 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   governanceActionGUIDParameterName,
                                   actionTargets,
                                   methodName);
-
-
-            /*
-             * Link the governance action to the governance engine.
-             */
-            InstanceProperties executorProperties = null;
-
-            if (requestType != null)
-            {
-                executorProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                                  null,
-                                                                                  OpenMetadataAPIMapper.REQUEST_TYPE_PROPERTY_NAME,
-                                                                                  requestType,
-                                                                                  methodName);
-            }
-
-            if ((requestParameters != null) && (! requestParameters.isEmpty()))
-            {
-                executorProperties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
-                                                                                     executorProperties,
-                                                                                     OpenMetadataAPIMapper.REQUEST_PARAMETERS_PROPERTY_NAME,
-                                                                                     requestParameters,
-                                                                                     methodName);
-            }
-
 
             if ((mandatoryGuards == null) || ((receivedGuards != null) && (receivedGuards.containsAll(mandatoryGuards))))
             {
@@ -705,8 +671,8 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                   OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME,
                                                                   null,
                                                                   null,
-                                                                  false,
-                                                                  false,
+                                                                  true,
+                                                                  true,
                                                                   supportedZones,
                                                                   effectiveTime,
                                                                   methodName);
@@ -722,7 +688,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                            OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME,
                                                                                            null,
                                                                                            null,
-                                                                                           false,
+                                                                                           true,
                                                                                            0,
                                                                                            invalidParameterHandler.getMaxPagingSize(),
                                                                                            effectiveTime,
@@ -740,6 +706,10 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                     {
                         relationships.add(relationship);
                     }
+                    else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_USE_TYPE_NAME))
+                    {
+                        relationships.add(relationship);
+                    }
                     else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataAPIMapper.TARGET_FOR_ACTION_TYPE_NAME))
                     {
                         relationships.add(relationship);
@@ -752,8 +722,8 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                                                null,
                                                                                null,
-                                                                               false,
-                                                                               false,
+                                                                               true,
+                                                                               true,
                                                                                supportedZones,
                                                                                effectiveTime,
                                                                                methodName));
@@ -771,8 +741,8 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
                                                                                null,
                                                                                null,
-                                                                               false,
-                                                                               false,
+                                                                               true,
+                                                                               true,
                                                                                supportedZones,
                                                                                effectiveTime,
                                                                                methodName));
@@ -1213,16 +1183,20 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                         nextActionTargets = newActionTargets;
                     }
 
-
                     /*
                      * The anchor GUID is set if this is part of a governance action process.  It points to the first governance action entity
                      * created when the governance action process was initiated.
                      */
                     String anchorGUID = this.getAnchorGUIDFromAnchorsClassification(governanceActionEntity, methodName);
 
+                    String processName = repositoryHelper.getStringProperty(serviceName,
+                                                                            OpenMetadataAPIMapper.PROCESS_NAME_PROPERTY_NAME,
+                                                                            properties,
+                                                                            methodName);
                     this.initiateNextGovernanceActions(userId,
                                                        governanceActionGUID,
                                                        anchorGUID,
+                                                       processName,
                                                        outputGuards,
                                                        nextActionTargets,
                                                        callerRequestParameters,
@@ -1365,6 +1339,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param userId calling user
      * @param previousGovernanceActionGUID unique identifier of governance action that has just completed
      * @param anchorGUID unique identifier of the first governance action to execute for the process
+     * @param processName name of initiating process (if any)
      * @param outputGuards guards set up by the previous action(s)
      * @param newActionTargets unique identifiers of the elements for future governance actions to work on
      * @param currentRequestParameters set of request parameters gathered so far in the process
@@ -1378,6 +1353,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
     private void initiateNextGovernanceActions(String                userId,
                                                String                previousGovernanceActionGUID,
                                                String                anchorGUID,
+                                               String                processName,
                                                List<String>          outputGuards,
                                                List<NewActionTarget> newActionTargets,
                                                Map<String, String>   currentRequestParameters,
@@ -1495,20 +1471,44 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                 /*
                                  * A new governance action can be created.  Information is needed from the governance action type.
                                  */
-                                nextGovernanceActionGUID = initiateGovernanceActionFromType(userId,
-                                                                                            anchorGUID,
-                                                                                            governanceActionTypeGUID,
-                                                                                            governanceActionTypeGUIDParameterName,
-                                                                                            guard,
-                                                                                            currentRequestParameters,
-                                                                                            null,
-                                                                                            newActionTargets,
-                                                                                            new Date(),
-                                                                                            null,
-                                                                                            originatorServiceName,
-                                                                                            originatorEngineName,
-                                                                                            effectiveTime,
-                                                                                            methodName);
+                                if (anchorGUID == null)
+                                {
+                                    /*
+                                     * The anchor is set up to be the first governance action in the chain.  If it is null then the previous governance
+                                     * action was the first in the chain.
+                                     */
+                                    nextGovernanceActionGUID = initiateGovernanceActionFromType(userId,
+                                                                                                previousGovernanceActionGUID,
+                                                                                                governanceActionTypeGUID,
+                                                                                                governanceActionTypeGUIDParameterName,
+                                                                                                guard,
+                                                                                                currentRequestParameters,
+                                                                                                null,
+                                                                                                newActionTargets,
+                                                                                                new Date(),
+                                                                                                processName,
+                                                                                                originatorServiceName,
+                                                                                                originatorEngineName,
+                                                                                                effectiveTime,
+                                                                                                methodName);
+                                }
+                                else
+                                {
+                                    nextGovernanceActionGUID = initiateGovernanceActionFromType(userId,
+                                                                                                anchorGUID,
+                                                                                                governanceActionTypeGUID,
+                                                                                                governanceActionTypeGUIDParameterName,
+                                                                                                guard,
+                                                                                                currentRequestParameters,
+                                                                                                null,
+                                                                                                newActionTargets,
+                                                                                                new Date(),
+                                                                                                processName,
+                                                                                                originatorServiceName,
+                                                                                                originatorEngineName,
+                                                                                                effectiveTime,
+                                                                                                methodName);
+                                }
                             }
 
                             /*
