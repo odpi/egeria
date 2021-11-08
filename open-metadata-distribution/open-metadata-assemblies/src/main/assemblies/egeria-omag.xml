@@ -35,6 +35,7 @@
             <!-- We only pick from this module (submodules included by default) -->
             <includes>
                 <include>org.odpi.egeria:server-chassis-spring:*</include>
+                <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:*</include>
             </includes>
             <!-- Choose the binaries (ie jars) to includes - in this case keeping as a jar -->
             <binaries>
