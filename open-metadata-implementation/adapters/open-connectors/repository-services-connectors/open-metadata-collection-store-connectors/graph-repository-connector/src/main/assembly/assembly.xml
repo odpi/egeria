@@ -18,13 +18,13 @@
             <useProjectArtifact>false</useProjectArtifact>
             <unpack>true</unpack>
             <scope>runtime</scope>
-            <excludes>
-                <exclude>org.odpi.egeria:audit-log-framework</exclude>
-                <exclude>org.odpi.egeria:open-connector-framework</exclude>
-                <exclude>com.fasterxml.jackson.core:jackson-core</exclude>
-                <exclude>com.fasterxml.jackson.core:jackson-databind</exclude>
-                <exclude>org.slf4j</exclude>
-            </excludes>
+<!--            <excludes>-->
+<!--                <exclude>org.odpi.egeria:audit-log-framework</exclude>-->
+<!--                <exclude>org.odpi.egeria:open-connector-framework</exclude>-->
+<!--                <exclude>com.fasterxml.jackson.core:jackson-core</exclude>-->
+<!--                <exclude>com.fasterxml.jackson.core:jackson-databind</exclude>-->
+<!--                <exclude>org.slf4j</exclude>-->
+<!--            </excludes>-->
         </dependencySet>
     </dependencySets>
     <fileSets>
