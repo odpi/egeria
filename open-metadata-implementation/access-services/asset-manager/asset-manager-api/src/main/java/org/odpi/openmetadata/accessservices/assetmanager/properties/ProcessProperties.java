@@ -21,8 +21,9 @@ public class ProcessProperties extends AssetProperties
 {
     private static final long     serialVersionUID = 1L;
 
-    private String formula                = null;
-    private String implementationLanguage = null;
+    private ProcessStatus processStatus          = null;
+    private String        formula                = null;
+    private String        implementationLanguage = null;
 
     /**
      * Default constructor
@@ -44,9 +45,32 @@ public class ProcessProperties extends AssetProperties
 
         if (template != null)
         {
+            processStatus = template.getProcessStatus();
             formula = template.getFormula();
             implementationLanguage = template.getImplementationLanguage();
         }
+    }
+
+
+    /**
+     * Return the process status.
+     *
+     * @return enum describing lifecycle state
+     */
+    public ProcessStatus getProcessStatus()
+    {
+        return processStatus;
+    }
+
+
+    /**
+     * Set up the process status.
+     *
+     * @param processStatus enum describing lifecycle state
+     */
+    public void setProcessStatus(ProcessStatus processStatus)
+    {
+        this.processStatus = processStatus;
     }
 
 
@@ -100,7 +124,8 @@ public class ProcessProperties extends AssetProperties
     public String toString()
     {
         return "ProcessProperties{" +
-                       "formula='" + formula + '\'' +
+                       "processStatus=" + processStatus +
+                       ", formula='" + formula + '\'' +
                        ", implementationLanguage='" + implementationLanguage + '\'' +
                        ", technicalName='" + getTechnicalName() + '\'' +
                        ", technicalDescription='" + getTechnicalDescription() + '\'' +
@@ -135,13 +160,14 @@ public class ProcessProperties extends AssetProperties
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
         ProcessProperties that = (ProcessProperties) objectToCompare;
-        return Objects.equals(getFormula(), that.getFormula()) &&
-                       Objects.equals(getImplementationLanguage(), that.getImplementationLanguage());
+        return processStatus == that.processStatus &&
+                       Objects.equals(formula, that.formula) &&
+                       Objects.equals(implementationLanguage, that.implementationLanguage);
     }
 
 
@@ -153,6 +179,6 @@ public class ProcessProperties extends AssetProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getFormula(), getImplementationLanguage());
+        return Objects.hash(super.hashCode(), getProcessStatus(), getFormula(), getImplementationLanguage());
     }
 }

@@ -10,6 +10,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.events.AssetManagerOutT
 import org.odpi.openmetadata.accessservices.assetmanager.ffdc.AssetManagerAuditCode;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -23,6 +24,7 @@ public class AssetManagerOutTopicPublisher
     private AuditLog                              outTopicAuditLog;
     private String                                outTopicName;
     private ElementHeaderConverter<ElementHeader> headerConverter;
+    private OMRSRepositoryHelper                  repositoryHelper;
 
     private final String actionDescription = "Out topic configuration refresh event publishing";
 
@@ -46,6 +48,7 @@ public class AssetManagerOutTopicPublisher
         this.outTopicServerConnector = outTopicServerConnector;
         this.outTopicAuditLog        = outTopicAuditLog;
         this.outTopicName            = outTopicName;
+        this.repositoryHelper        = repositoryHelper;
 
         this.headerConverter = new ElementHeaderConverter<>(repositoryHelper, serviceName, serverName);
 
@@ -65,7 +68,7 @@ public class AssetManagerOutTopicPublisher
     public void publishEntityEvent(EntityDetail          entity,
                                    AssetManagerEventType eventType)
     {
-        this.publishEntityEvent(entity, eventType, null);
+        this.publishEntityEvent(eventType, entity, null, null, null);
     }
 
 
@@ -74,11 +77,14 @@ public class AssetManagerOutTopicPublisher
      *
      * @param entity entity that is the subject of the event
      * @param eventType type of event
-     * @param classificationName name of the classification if the event relates to a classification
+     * @param newClassification latest classification information (if the event relates to a classification)
+     * @param previousClassification previous classification information (if the event relates to a classification)
      */
-    public void publishEntityEvent(EntityDetail          entity,
-                                   AssetManagerEventType eventType,
-                                   String                classificationName)
+    public void publishEntityEvent(AssetManagerEventType eventType,
+                                   EntityDetail          entity,
+                                   EntityDetail          previousEntity,
+                                   Classification        newClassification,
+                                   Classification        previousClassification)
     {
         final String methodName = "publishEntityEvent";
 
@@ -88,9 +94,36 @@ public class AssetManagerOutTopicPublisher
 
             try
             {
-                event.setElementHeader(headerConverter.getNewBean(ElementHeader.class, entity, methodName));
                 event.setEventType(eventType);
-                event.setClassificationName(classificationName);
+
+                if (entity.getUpdateTime() == null)
+                {
+                    event.setEventTime(entity.getCreateTime());
+                }
+                else
+                {
+                    event.setEventTime(entity.getUpdateTime());
+                }
+
+                event.setElementHeader(headerConverter.getNewBean(ElementHeader.class, entity, methodName));
+                event.setElementProperties(repositoryHelper.getInstancePropertiesAsMap(entity.getProperties()));
+
+                if (previousEntity != null)
+                {
+                    event.setPreviousElementHeader(headerConverter.getNewBean(ElementHeader.class, previousEntity, methodName));
+                    event.setPreviousElementProperties(repositoryHelper.getInstancePropertiesAsMap(previousEntity.getProperties()));
+                }
+
+                if (newClassification != null)
+                {
+                    event.setClassificationName(newClassification.getName());
+                }
+
+                if (previousClassification != null)
+                {
+                    event.setClassificationName(previousClassification.getName());
+                    event.setPreviousClassificationProperties(repositoryHelper.getInstancePropertiesAsMap(previousClassification.getProperties()));
+                }
 
                 outTopicServerConnector.sendEvent(event);
 

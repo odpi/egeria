@@ -5,8 +5,8 @@ package org.odpi.openmetadata.accessservices.assetmanager.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessContainmentType;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -14,24 +14,22 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * NameRequestBody is the request body structure used on OMAG REST API calls that passes a name that is used to retrieve
- * an element by name.
+ * ProcessContainmentTypeRequestBody is the request body structure used on OMAG REST API calls that passes a ProcessContainmentType enum.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class NameRequestBody extends AssetManagerIdentifiersRequestBody
+public class ProcessContainmentTypeRequestBody extends AssetManagerIdentifiersRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
-    private String name = null;
-    private String nameParameterName = null;
+    private ProcessContainmentType processContainmentType = null;
 
 
     /**
      * Default constructor
      */
-    public NameRequestBody()
+    public ProcessContainmentTypeRequestBody()
     {
         super();
     }
@@ -42,59 +40,36 @@ public class NameRequestBody extends AssetManagerIdentifiersRequestBody
      *
      * @param template object to copy
      */
-    public NameRequestBody(NameRequestBody template)
+    public ProcessContainmentTypeRequestBody(ProcessContainmentTypeRequestBody template)
     {
         super(template);
 
         if (template != null)
         {
-            name = template.getName();
-            nameParameterName = template.getNameParameterName();
+            processContainmentType = template.getProcessContainmentType();
         }
     }
 
 
     /**
-     * Return the name for the query request.
+     * Return the relationship between the parent and child process.
      *
-     * @return string name
+     * @return process containment type enum
      */
-    public String getName()
+    public ProcessContainmentType getProcessContainmentType()
     {
-        return name;
+        return processContainmentType;
     }
 
 
     /**
-     * Set up the name for the query request.
+     * Set up the relationship between the parent and child process.
      *
-     * @param name string
+     * @param processContainmentType process containment type enum
      */
-    public void setName(String name)
+    public void setProcessContainmentType(ProcessContainmentType processContainmentType)
     {
-        this.name = name;
-    }
-
-
-    /**
-     * Return the parameter name.
-     *
-     * @return string name
-     */
-    public String getNameParameterName()
-    {
-        return nameParameterName;
-    }
-
-
-    /**
-     * Set up the parameter name.
-     *
-     * @param nameParameterName string
-     */
-    public void setNameParameterName(String nameParameterName)
-    {
-        this.nameParameterName = nameParameterName;
+        this.processContainmentType = processContainmentType;
     }
 
 
@@ -106,9 +81,8 @@ public class NameRequestBody extends AssetManagerIdentifiersRequestBody
     @Override
     public String toString()
     {
-        return "NameRequestBody{" +
-                       "name='" + name + '\'' +
-                       ", nameParameterName='" + nameParameterName + '\'' +
+        return "ProcessContainmentTypeRequestBody{" +
+                       "processContainmentType=" + processContainmentType +
                        ", assetManagerGUID='" + getAssetManagerGUID() + '\'' +
                        ", assetManagerName='" + getAssetManagerName() + '\'' +
                        '}';
@@ -136,9 +110,8 @@ public class NameRequestBody extends AssetManagerIdentifiersRequestBody
         {
             return false;
         }
-        NameRequestBody that = (NameRequestBody) objectToCompare;
-        return Objects.equals(name, that.name) &&
-                       Objects.equals(nameParameterName, that.nameParameterName);
+        ProcessContainmentTypeRequestBody that = (ProcessContainmentTypeRequestBody) objectToCompare;
+        return processContainmentType == that.processContainmentType;
     }
 
 
@@ -150,6 +123,6 @@ public class NameRequestBody extends AssetManagerIdentifiersRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), name, nameParameterName);
+        return Objects.hash(super.hashCode(), processContainmentType);
     }
 }

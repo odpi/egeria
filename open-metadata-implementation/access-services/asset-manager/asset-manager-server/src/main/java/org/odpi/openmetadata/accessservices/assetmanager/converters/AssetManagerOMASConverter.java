@@ -455,7 +455,7 @@ public abstract class AssetManagerOMASConverter<B> extends OpenMetadataAPIGeneri
      * Extract and delete the portType property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
-     * @return SynchronizationDirection enum
+     * @return PortType enum
      */
     PortType removePortType(InstanceProperties  instanceProperties)
     {
@@ -478,6 +478,67 @@ public abstract class AssetManagerOMASConverter<B> extends OpenMetadataAPIGeneri
         }
 
         return PortType.OTHER;
+    }
+
+
+    /**
+     * Extract and delete the processContainmentType property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return ProcessContainmentType enum
+     */
+    ProcessContainmentType removeProcessContainmentType(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeProcessContainmentType";
+
+        if (instanceProperties != null)
+        {
+            int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName,
+                                                                     OpenMetadataAPIMapper.CONTAINMENT_TYPE_PROPERTY_NAME,
+                                                                     instanceProperties,
+                                                                     methodName);
+
+            for (ProcessContainmentType containmentType : ProcessContainmentType.values())
+            {
+                if (containmentType.getOpenTypeOrdinal() == ordinal)
+                {
+                    return containmentType;
+                }
+            }
+        }
+
+        return ProcessContainmentType.OTHER;
+    }
+
+
+    /**
+     * Extract the instanceStatus property from the header.
+     *
+     * @param header header from entity
+     * @return ProcessStatus enum
+     */
+    ProcessStatus getProcessStatus(InstanceAuditHeader header)
+    {
+        if (header != null)
+        {
+            switch (header.getStatus())
+            {
+                case DRAFT:
+                    return ProcessStatus.DRAFT;
+
+                case PROPOSED:
+                    return ProcessStatus.PROPOSED;
+
+                case APPROVED:
+                    return ProcessStatus.APPROVED;
+
+                case ACTIVE:
+                    return ProcessStatus.ACTIVE;
+
+            }
+        }
+
+        return null;
     }
 
 

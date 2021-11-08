@@ -108,7 +108,11 @@ public class AssetManagerOMRSTopicListener extends OMRSTopicListenerBase
         {
             log.debug("Publishing updated Entity event from: " + sourceName);
 
-            eventPublisher.publishEntityEvent(newEntity, AssetManagerEventType.ELEMENT_UPDATED);
+            eventPublisher.publishEntityEvent(AssetManagerEventType.ELEMENT_UPDATED,
+                                              newEntity,
+                                              oldEntity,
+                                              null,
+                                              null);
         }
     }
 
@@ -140,14 +144,11 @@ public class AssetManagerOMRSTopicListener extends OMRSTopicListenerBase
         {
             log.debug("Publishing classified Entity event from: " + sourceName);
 
-            if (classification != null)
-            {
-                eventPublisher.publishEntityEvent(entity, AssetManagerEventType.ELEMENT_CLASSIFIED, classification.getName());
-            }
-            else
-            {
-                eventPublisher.publishEntityEvent(entity, AssetManagerEventType.ELEMENT_CLASSIFIED);
-            }
+            eventPublisher.publishEntityEvent(AssetManagerEventType.ELEMENT_CLASSIFIED,
+                                              entity,
+                                              null,
+                                              classification,
+                                              null);
         }
     }
 
@@ -209,14 +210,11 @@ public class AssetManagerOMRSTopicListener extends OMRSTopicListenerBase
         {
             log.debug("Publishing declassified Entity event from: " + sourceName);
 
-            if (originalClassification != null)
-            {
-                eventPublisher.publishEntityEvent(entity, AssetManagerEventType.ELEMENT_DECLASSIFIED, originalClassification.getName());
-            }
-            else
-            {
-                eventPublisher.publishEntityEvent(entity, AssetManagerEventType.ELEMENT_DECLASSIFIED);
-            }
+            eventPublisher.publishEntityEvent(AssetManagerEventType.ELEMENT_DECLASSIFIED,
+                                              entity,
+                                              null,
+                                              null,
+                                              originalClassification);
         }
     }
 
@@ -280,14 +278,7 @@ public class AssetManagerOMRSTopicListener extends OMRSTopicListenerBase
         {
             log.debug("Publishing reclassified Entity event from: " + sourceName);
 
-            if (originalClassification != null)
-            {
-                eventPublisher.publishEntityEvent(entity, AssetManagerEventType.ELEMENT_RECLASSIFIED, originalClassification.getName());
-            }
-            else
-            {
-                eventPublisher.publishEntityEvent(entity, AssetManagerEventType.ELEMENT_RECLASSIFIED);
-            }
+            eventPublisher.publishEntityEvent(AssetManagerEventType.ELEMENT_RECLASSIFIED, entity, null, classification, originalClassification);
         }
     }
 
@@ -522,6 +513,4 @@ public class AssetManagerOMRSTopicListener extends OMRSTopicListenerBase
             eventPublisher.publishEntityEvent(entity, AssetManagerEventType.REFRESH_ELEMENT_EVENT);
         }
     }
-
-
 }

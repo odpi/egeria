@@ -5,13 +5,17 @@ package org.odpi.openmetadata.accessservices.assetmanager.events;
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ElementHeader;
 
+import java.util.Date;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * AssetManagerOutTopicEvent provides The structure of the Asset Manager OMAS's OutTopic events.
+ * AssetManagerOutTopicEvent provides the structure of the Asset Manager OMAS's OutTopic events.  The values for elements and their classifications
+ * come from the events.  They are not guaranteed to be current.  If the latest values are required, the element should be queried from the repository
+ * using its GUID.  The event values are useful if the third party catalog needs to maintain an exact record of all of the versions.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -19,10 +23,20 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 public class AssetManagerOutTopicEvent implements java.io.Serializable
 {
+    private static final long     serialVersionUID = 1L;
+
     private long                  eventVersionId     = 1L;
     private AssetManagerEventType eventType          = null;
+    private Date                  eventTime          = null;
     private ElementHeader         elementHeader      = null;
-    private String                classificationName = null;
+    private Map<String, Object>   elementProperties  = null;
+
+    private ElementHeader         previousElementHeader     = null;
+    private Map<String, Object>   previousElementProperties = null;
+
+    private String                classificationName               = null;
+    private Map<String, Object>   previousClassificationProperties = null;
+
 
 
     /**
@@ -45,6 +59,11 @@ public class AssetManagerOutTopicEvent implements java.io.Serializable
             eventVersionId = template.getEventVersionId();
             eventType = template.getEventType();
             elementHeader = template.getElementHeader();
+            elementProperties = template.getElementProperties();
+            previousElementHeader = template.getPreviousElementHeader();
+            previousElementProperties = template.getPreviousElementProperties();
+            classificationName = template.getClassificationName();
+            previousClassificationProperties = template.getPreviousClassificationProperties();
         }
     }
 
@@ -94,6 +113,28 @@ public class AssetManagerOutTopicEvent implements java.io.Serializable
 
 
     /**
+     * Return the time that the element was updated.
+     *
+     * @return date/time
+     */
+    public Date getEventTime()
+    {
+        return eventTime;
+    }
+
+
+    /**
+     * Set up the time that the element was updated.
+     *
+     * @param eventTime date/time
+     */
+    public void setEventTime(Date eventTime)
+    {
+        this.eventTime = eventTime;
+    }
+
+
+    /**
      * Return details of the subject of the event.
      *
      * @return element header
@@ -112,6 +153,72 @@ public class AssetManagerOutTopicEvent implements java.io.Serializable
     public void setElementHeader(ElementHeader elementHeader)
     {
         this.elementHeader = elementHeader;
+    }
+
+
+    /**
+     * Return the map of properties for the element provided with the event.  These values are not guaranteed to be current.
+     *
+     * @return property map
+     */
+    public Map<String, Object> getElementProperties()
+    {
+        return elementProperties;
+    }
+
+
+    /**
+     * Set up the map of properties for the element provided with the event.  These values are not guaranteed to be current.
+     *
+     * @param elementProperties property map
+     */
+    public void setElementProperties(Map<String, Object> elementProperties)
+    {
+        this.elementProperties = elementProperties;
+    }
+
+
+    /**
+     * Return the previous version of the element's header (if the event is related to an element update).
+     *
+     * @return element header
+     */
+    public ElementHeader getPreviousElementHeader()
+    {
+        return previousElementHeader;
+    }
+
+
+    /**
+     * Set up the previous version of the element's header (if the event is related to an element update).
+     *
+     * @param previousElementHeader element header
+     */
+    public void setPreviousElementHeader(ElementHeader previousElementHeader)
+    {
+        this.previousElementHeader = previousElementHeader;
+    }
+
+
+    /**
+     * Return the previous version of the element's properties (if the event is related to an element update).
+     *
+     * @return property map
+     */
+    public Map<String, Object> getPreviousElementProperties()
+    {
+        return previousElementProperties;
+    }
+
+
+    /**
+     * Set up the previous version of the element's properties (if the event is related to an element update).
+     *
+     * @param previousElementProperties property map
+     */
+    public void setPreviousElementProperties(Map<String, Object> previousElementProperties)
+    {
+        this.previousElementProperties = previousElementProperties;
     }
 
 
@@ -138,6 +245,28 @@ public class AssetManagerOutTopicEvent implements java.io.Serializable
 
 
     /**
+     * Return the property map for the previous version of a classification's properties (used for reclassify events).
+     *
+     * @return property map
+     */
+    public Map<String, Object> getPreviousClassificationProperties()
+    {
+        return previousClassificationProperties;
+    }
+
+
+    /**
+     * Set up the property map for the previous version of a classification's properties (used for reclassify events).
+     *
+     * @param previousClassificationProperties property map
+     */
+    public void setPreviousClassificationProperties(Map<String, Object> previousClassificationProperties)
+    {
+        this.previousClassificationProperties = previousClassificationProperties;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -148,8 +277,13 @@ public class AssetManagerOutTopicEvent implements java.io.Serializable
         return "AssetManagerOutTopicEvent{" +
                        "eventVersionId=" + eventVersionId +
                        ", eventType=" + eventType +
+                       ", eventTime=" + eventTime +
                        ", elementHeader=" + elementHeader +
+                       ", elementProperties=" + elementProperties +
+                       ", previousElementHeader=" + previousElementHeader +
+                       ", previousElementProperties=" + previousElementProperties +
                        ", classificationName='" + classificationName + '\'' +
+                       ", previousClassificationProperties=" + previousClassificationProperties +
                        '}';
     }
 
@@ -174,8 +308,13 @@ public class AssetManagerOutTopicEvent implements java.io.Serializable
         AssetManagerOutTopicEvent that = (AssetManagerOutTopicEvent) objectToCompare;
         return eventVersionId == that.eventVersionId &&
                        eventType == that.eventType &&
+                       Objects.equals(eventTime, that.eventTime) &&
                        Objects.equals(elementHeader, that.elementHeader) &&
-                       Objects.equals(classificationName, that.classificationName);
+                       Objects.equals(elementProperties, that.elementProperties) &&
+                       Objects.equals(previousElementHeader, that.previousElementHeader) &&
+                       Objects.equals(previousElementProperties, that.previousElementProperties) &&
+                       Objects.equals(classificationName, that.classificationName) &&
+                       Objects.equals(previousClassificationProperties, that.previousClassificationProperties);
     }
 
 
@@ -187,6 +326,7 @@ public class AssetManagerOutTopicEvent implements java.io.Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(eventVersionId, eventType, elementHeader, classificationName);
+        return Objects.hash(eventVersionId, eventType, eventTime, elementHeader, elementProperties, classificationName, previousElementHeader,
+                            previousElementProperties, previousClassificationProperties);
     }
 }
