@@ -32,8 +32,8 @@ public class IntegrationServiceHandler
     private IntegrationContextManager contextManager;                /* Initialized in constructor */
     private AuditLog                  auditLog;                      /* Initialized in constructor */
 
-    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private       List<IntegrationConnectorHandler> connectorHandlers = new ArrayList<>();
+    private final InvalidParameterHandler     invalidParameterHandler = new InvalidParameterHandler();
+    private List<IntegrationConnectorHandler> connectorHandlers = new ArrayList<>();
 
     /**
      * Constructor passes the service config. It is just saved at this point. Interesting things
