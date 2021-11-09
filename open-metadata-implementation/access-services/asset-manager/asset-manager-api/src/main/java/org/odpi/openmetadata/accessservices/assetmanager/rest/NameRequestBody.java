@@ -49,6 +49,7 @@ public class NameRequestBody extends AssetManagerIdentifiersRequestBody
         if (template != null)
         {
             name = template.getName();
+            nameParameterName = template.getNameParameterName();
         }
     }
 
@@ -131,9 +132,13 @@ public class NameRequestBody extends AssetManagerIdentifiersRequestBody
         {
             return false;
         }
+        if (! super.equals(objectToCompare))
+        {
+            return false;
+        }
         NameRequestBody that = (NameRequestBody) objectToCompare;
-        return Objects.equals(getName(), that.getName()) &&
-                       Objects.equals(getNameParameterName(), that.getNameParameterName());
+        return Objects.equals(name, that.name) &&
+                       Objects.equals(nameParameterName, that.nameParameterName);
     }
 
 
@@ -145,6 +150,6 @@ public class NameRequestBody extends AssetManagerIdentifiersRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(getName(), getNameParameterName());
+        return Objects.hash(super.hashCode(), name, nameParameterName);
     }
 }

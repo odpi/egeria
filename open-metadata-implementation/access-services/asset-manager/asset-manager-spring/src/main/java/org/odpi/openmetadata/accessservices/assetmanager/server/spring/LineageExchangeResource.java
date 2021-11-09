@@ -48,7 +48,6 @@ public class LineageExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param assetManagerIsHome ensure that only the process manager can update this process
-     * @param initialStatus status value for the new process (default = ACTIVE)
      * @param requestBody properties about the process to store
      *
      * @return unique identifier of the new process or
@@ -61,10 +60,9 @@ public class LineageExchangeResource
     public GUIDResponse createProcess(@PathVariable String             serverName,
                                       @PathVariable String             userId,
                                       @RequestParam boolean            assetManagerIsHome,
-                                      @RequestParam ProcessStatus      initialStatus,
                                       @RequestBody  ProcessRequestBody requestBody)
     {
-        return restAPI.createProcess(serverName, userId, assetManagerIsHome, initialStatus, requestBody);
+        return restAPI.createProcess(serverName, userId, assetManagerIsHome, requestBody);
     }
 
 
@@ -151,7 +149,6 @@ public class LineageExchangeResource
      * @param assetManagerIsHome ensure that only the process manager can update this process
      * @param parentProcessGUID unique identifier of the process in the external process manager that is to be the parent process
      * @param childProcessGUID unique identifier of the process in the external process manager that is to be the nested sub-process
-     * @param containmentType describes the ownership of the sub-process
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return void or
@@ -161,15 +158,14 @@ public class LineageExchangeResource
      */
     @PostMapping(path = "/processes/parent/{parentProcessGUID}/child/{childProcessGUID}")
 
-    public VoidResponse setupProcessParent(@PathVariable String                             serverName,
-                                           @PathVariable String                             userId,
-                                           @PathVariable String                             parentProcessGUID,
-                                           @PathVariable String                             childProcessGUID,
-                                           @RequestParam boolean                            assetManagerIsHome,
-                                           @RequestParam ProcessContainmentType             containmentType,
-                                           @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse setupProcessParent(@PathVariable String                            serverName,
+                                           @PathVariable String                            userId,
+                                           @PathVariable String                            parentProcessGUID,
+                                           @PathVariable String                            childProcessGUID,
+                                           @RequestParam boolean                           assetManagerIsHome,
+                                           @RequestBody  ProcessContainmentTypeRequestBody requestBody)
     {
-        return restAPI.setupProcessParent(serverName, userId, parentProcessGUID, childProcessGUID, assetManagerIsHome, containmentType, requestBody);
+        return restAPI.setupProcessParent(serverName, userId, parentProcessGUID, childProcessGUID, assetManagerIsHome, requestBody);
     }
 
 
@@ -704,7 +700,7 @@ public class LineageExchangeResource
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param processGUID unique identifier of the process of @RequestParam interest
+     * @param processGUID unique identifier of the process of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param requestBody unique identifiers of software server capability representing the caller (optional)

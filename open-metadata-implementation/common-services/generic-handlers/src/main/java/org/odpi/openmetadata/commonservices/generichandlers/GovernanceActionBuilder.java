@@ -16,16 +16,23 @@ import java.util.Map;
  */
 public class GovernanceActionBuilder extends ReferenceableBuilder
 {
-    private int          domainIdentifier       = 0;
-    private String       displayName            = null;
-    private String       description            = null;
-    private List<String> mandatoryGuards        = null;
-    private List<String> receivedGuards         = null;
-    private int          actionStatus           = 0;
-    private Date         startDate              = null;
-    private String       processingEngineUserId = null;
-    private Date         completionDate         = null;
-    private List<String> completionGuards       = null;
+    private int                 domainIdentifier         = 0;
+    private String              displayName              = null;
+    private String              description              = null;
+    private String              governanceEngineGUID     = null;
+    private String              governanceEngineName     = null;
+    private String              requestSourceName        = null;
+    private String              governanceActionTypeGUID = null;
+    private String              governanceActionTypeName = null;
+    private String              requestType              = null;
+    private Map<String, String> requestParameters        = null;
+    private List<String>        mandatoryGuards          = null;
+    private List<String>        receivedGuards           = null;
+    private int                 actionStatus             = 0;
+    private Date                startDate                = null;
+    private String              processingEngineUserId   = null;
+    private Date                completionDate           = null;
+    private List<String>        completionGuards         = null;
 
     /**
      * Create constructor
@@ -34,6 +41,13 @@ public class GovernanceActionBuilder extends ReferenceableBuilder
      * @param domainIdentifier governance domain for this governance action
      * @param displayName short display name for the governance action
      * @param description description of the governance action
+     * @param governanceEngineGUID GUID of the governance engine that should execute the request
+     * @param governanceEngineName name of the governance engine that should execute the request
+     * @param requestSourceName name of the process that requested the governance action
+     * @param governanceActionTypeGUID unique identifier of the governance action type that initiated this governance action
+     * @param governanceActionTypeName unique name of the governance action type that initiated this governance action
+     * @param requestType request type to identify the governance action service to run
+     * @param requestParameters properties to pass to the governance action service
      * @param mandatoryGuards list of guards that must be supplied before this governance action can proceed
      * @param receivedGuards list of guards that triggered this governance action
      * @param actionStatus status for the governance action
@@ -50,6 +64,13 @@ public class GovernanceActionBuilder extends ReferenceableBuilder
                             int                  domainIdentifier,
                             String               displayName,
                             String               description,
+                            String               governanceEngineGUID,
+                            String               governanceEngineName,
+                            String               requestSourceName,
+                            String               governanceActionTypeGUID,
+                            String               governanceActionTypeName,
+                            String               requestType,
+                            Map<String, String>  requestParameters,
                             List<String>         mandatoryGuards,
                             List<String>         receivedGuards,
                             int                  actionStatus,
@@ -74,6 +95,13 @@ public class GovernanceActionBuilder extends ReferenceableBuilder
         this.domainIdentifier = domainIdentifier;
         this.displayName = displayName;
         this.description = description;
+        this.governanceEngineGUID = governanceEngineGUID;
+        this.governanceEngineName = governanceEngineName;
+        this.requestSourceName = requestSourceName;
+        this.governanceActionTypeGUID = governanceActionTypeGUID;
+        this.governanceActionTypeName = governanceActionTypeName;
+        this.requestType = requestType;
+        this.requestParameters = requestParameters;
         this.mandatoryGuards = mandatoryGuards;
         this.receivedGuards = receivedGuards;
         this.actionStatus = actionStatus;
@@ -160,6 +188,43 @@ public class GovernanceActionBuilder extends ReferenceableBuilder
                                                                       OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
                                                                       description,
                                                                       methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.EXECUTOR_ENGINE_GUID_PROPERTY_NAME,
+                                                                  governanceEngineGUID,
+                                                                  methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.EXECUTOR_ENGINE_NAME_PROPERTY_NAME,
+                                                                  governanceEngineName,
+                                                                  methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.PROCESS_NAME_PROPERTY_NAME,
+                                                                  requestSourceName,
+                                                                  methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_GUID_PROPERTY_NAME,
+                                                                  governanceActionTypeGUID,
+                                                                  methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME_PROPERTY_NAME,
+                                                                  governanceActionTypeName,
+                                                                  methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.REQUEST_TYPE_PROPERTY_NAME,
+                                                                  requestType,
+                                                                  methodName);
+        properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
+                                                                     properties,
+                                                                     OpenMetadataAPIMapper.REQUEST_PARAMETERS_PROPERTY_NAME,
+                                                                     requestParameters,
+                                                                     methodName);
+
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                            properties,
                                                                            OpenMetadataAPIMapper.MANDATORY_GUARDS_PROPERTY_NAME,

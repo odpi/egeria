@@ -22,6 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
               property = "class")
 @JsonSubTypes(
         {
+                @JsonSubTypes.Type(value = DataAssetProperties.class, name = "DataAssetProperties"),
                 @JsonSubTypes.Type(value = ProcessProperties.class, name = "ProcessProperties"),
         })
 public class AssetProperties extends SupplementaryProperties

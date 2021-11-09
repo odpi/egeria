@@ -47,4 +47,22 @@ public class LineageIntegratorResource
     {
         return restAPI.validateConnector(serverName, userId, connectorProviderClassName);
     }
+
+
+    /**
+     * Pass an open lineage event to the integration service.  It will pass it on to the integration connectors that have registered a
+     * listener for open lineage events.
+     *
+     * @param serverName integration daemon server name
+     * @param userId calling user
+     * @param event open lineage event to publish.
+     */
+    @PostMapping(path = "/api/v1/lineage")
+
+    void publishOpenLineageEvent(@PathVariable String serverName,
+                                 @PathVariable String userId,
+                                 @RequestBody  String event)
+    {
+        restAPI.publishOpenLineageEvent(serverName, userId, event);
+    }
 }

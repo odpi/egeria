@@ -241,6 +241,7 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
      * Update a Category
      * <p>
      * Status is not updated using this call.
+     * The category parent can be updated with this call. For isReplace a null category parent will remove the existing parent relationship.
      *
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId           userId under which the request is performed
@@ -265,7 +266,7 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaCategoryHandler handler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
-            response = handler.updateCategory(userId, guid, suppliedCategory, isReplace);
+            response = handler.updateCategory(userId, instanceHandler.getSubjectAreaRelationshipHandler(userId, serverName, methodName), guid, suppliedCategory, isReplace);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
         } catch (Exception exception) {

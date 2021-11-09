@@ -294,7 +294,7 @@ public abstract class OMRSAuditLogStoreConnectorBase extends ConnectorBase imple
         {
             return objectMapper.writeValueAsString(logRecord);
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             throw new InvalidParameterException(OMRSErrorCode.AUDIT_LOG_RECORD_NOT_JSON_ENABLED.getMessageDefinition(destinationName),
                                                 this.getClass().getName(),

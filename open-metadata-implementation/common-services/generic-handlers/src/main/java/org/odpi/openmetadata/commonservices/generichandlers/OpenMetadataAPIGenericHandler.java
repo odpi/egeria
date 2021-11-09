@@ -8969,7 +8969,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * 2 flags exactValue and ignoreCase are supplied that determine the nature of the regex expression that is created.
      *
      * @param searchCriteria text literal use as the basis of the match, if this empty then match everything ignoring the flags.
-     * @param exactValue the exactValue flag when set means to exactly match the streing, otehrwise it looks for srings starting with the searchCriteria.
+     * @param exactValue the exactValue flag when set means to exactly match the string, otherwise it looks for strings starting with the searchCriteria.
      * @param ignoreCase if set ignore the case on the match, if not set then the case must match.
      * @return a regex expression created to match implement the supplied searchCriteria and flags.
      */

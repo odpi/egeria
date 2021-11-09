@@ -24,7 +24,7 @@ public enum KafkaIntegrationConnectorAuditCode implements AuditLogMessageSet
 {
     CONNECTOR_CONFIGURATION("KAFKA-INTEGRATION-CONNECTOR-0001",
                           OMRSAuditLogRecordSeverity.INFO,
-                          "The {0} integration connector has been initialized to monitor event broker at URL {1} with  templateQualifiedName={2}",
+                          "The {0} integration connector has been initialized to monitor event broker at URL {1} with templateQualifiedName={2}",
                           "The connector is designed to monitor changes to the topics managed by the event broker.  " +
                                   "If the templateQualifiedName is set, it identifies a template entity to use.",
                           "No specific action is required.  This message is to confirm the configuration for the integration connector."),

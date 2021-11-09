@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.integrationservices.lineage.contextmanager;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.assetmanager.client.*;
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties;
@@ -17,21 +18,31 @@ import org.odpi.openmetadata.governanceservers.integrationdaemonservices.context
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceDescription;
 import org.odpi.openmetadata.integrationservices.lineage.connector.LineageIntegratorConnector;
 import org.odpi.openmetadata.integrationservices.lineage.connector.LineageIntegratorContext;
+import org.odpi.openmetadata.integrationservices.lineage.connector.OpenLineageEventListener;
+import org.odpi.openmetadata.integrationservices.lineage.connector.OpenLineageListenerManager;
 import org.odpi.openmetadata.integrationservices.lineage.ffdc.*;
+import org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageRunEvent;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 
 /**
  * LineageIntegratorContextManager provides the bridge between the integration daemon services and
- * the specific implementation of an integration service
+ * the specific implementation of an integration service.
  */
-public class LineageIntegratorContextManager extends IntegrationContextManager
+public class LineageIntegratorContextManager extends IntegrationContextManager implements OpenLineageListenerManager
 {
-    private AssetManagerClient      assetManagerClient;
-    private DataAssetExchangeClient dataAssetExchangeClient;
-    private LineageExchangeClient   lineageExchangeClient;
+    private AssetManagerClient       assetManagerClient;
+    private DataAssetExchangeClient  dataAssetExchangeClient;
+    private LineageExchangeClient    lineageExchangeClient;
+    private GovernanceExchangeClient governanceExchangeClient;
+
+    private ObjectMapper                   objectMapper             = new ObjectMapper();
+    private List<OpenLineageEventListener> registeredEventListeners = new ArrayList<>();
+
 
     /**
      * Default constructor
@@ -46,18 +57,19 @@ public class LineageIntegratorContextManager extends IntegrationContextManager
      * @param partnerOMASPlatformRootURL the network address of the server running the OMAS REST servers
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
+     * @param serviceOptions options from the integration service's configuration
      * @param maxPageSize maximum number of results that can be returned on a single REST call
      * @param auditLog logging destination
      */
-    @Override
-    public void initializeContextManager(String   partnerOMASServerName,
-                                         String   partnerOMASPlatformRootURL,
-                                         String   userId,
-                                         String   password,
-                                         int      maxPageSize,
-                                         AuditLog auditLog)
+    public void initializeContextManager(String              partnerOMASServerName,
+                                         String              partnerOMASPlatformRootURL,
+                                         String              userId,
+                                         String              password,
+                                         Map<String, Object> serviceOptions,
+                                         int                 maxPageSize,
+                                         AuditLog            auditLog)
     {
-        super.initializeContextManager(partnerOMASServerName, partnerOMASPlatformRootURL, userId, password, maxPageSize, auditLog);
+        super.initializeContextManager(partnerOMASServerName, partnerOMASPlatformRootURL, userId, password, serviceOptions, maxPageSize, auditLog);
 
         final String methodName = "initializeContextManager";
 
@@ -109,6 +121,11 @@ public class LineageIntegratorContextManager extends IntegrationContextManager
                                                           maxPageSize,
                                                           auditLog);
 
+        governanceExchangeClient = new GovernanceExchangeClient(partnerOMASServerName,
+                                                                partnerOMASPlatformRootURL,
+                                                                restClient,
+                                                                maxPageSize,
+                                                                auditLog);
     }
 
 
@@ -161,7 +178,6 @@ public class LineageIntegratorContextManager extends IntegrationContextManager
      * @param metadataSourceQualifiedName unique name of the software server capability that represents the metadata source.
      * @param integrationConnector connector created from connection integration service configuration
      * @param permittedSynchronization controls the direction(s) that metadata is allowed to flow
-     * @param serviceOptions options from the integration service's configuration
      *
      * @throws InvalidParameterException the connector is not of the correct type
      * @throws UserNotAuthorizedException user not authorized to issue this request
@@ -172,10 +188,9 @@ public class LineageIntegratorContextManager extends IntegrationContextManager
                            String                   connectorName,
                            String                   metadataSourceQualifiedName,
                            IntegrationConnector     integrationConnector,
-                           PermittedSynchronization permittedSynchronization,
-                           Map<String, Object>      serviceOptions) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+                           PermittedSynchronization permittedSynchronization) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
         final String  methodName = "setContext";
 
@@ -201,12 +216,23 @@ public class LineageIntegratorContextManager extends IntegrationContextManager
                                                                                                                permittedSynchronizationName,
                                                                                                                serviceOptionsString));
 
+            AssetManagerEventClient eventClient = new AssetManagerEventClient(partnerOMASServerName,
+                                                                              partnerOMASPlatformRootURL,
+                                                                              localServerUserId,
+                                                                              localServerPassword,
+                                                                              maxPageSize,
+                                                                              auditLog,
+                                                                              connectorId);
+
             LineageIntegratorConnector serviceSpecificConnector = (LineageIntegratorConnector)integrationConnector;
 
             String metadataSourceGUID = this.setUpMetadataSource(metadataSourceQualifiedName);
 
-            serviceSpecificConnector.setContext(new LineageIntegratorContext(dataAssetExchangeClient,
+            serviceSpecificConnector.setContext(new LineageIntegratorContext(this,
+                                                                             dataAssetExchangeClient,
                                                                              lineageExchangeClient,
+                                                                             governanceExchangeClient,
+                                                                             eventClient,
                                                                              localServerUserId,
                                                                              metadataSourceGUID,
                                                                              metadataSourceQualifiedName,
@@ -216,7 +242,7 @@ public class LineageIntegratorContextManager extends IntegrationContextManager
         }
         else
         {
-            final String  parameterName = "integrationConnector";
+            final String parameterName = "integrationConnector";
 
             throw new InvalidParameterException(
                     LineageIntegratorErrorCode.INVALID_CONNECTOR.getMessageDefinition(connectorName,
@@ -225,6 +251,119 @@ public class LineageIntegratorContextManager extends IntegrationContextManager
                     this.getClass().getName(),
                     methodName,
                     parameterName);
+        }
+    }
+
+
+    /* ======================================================================================
+     * Support for open lineage events.
+     */
+
+    /**
+     * The listener is implemented by the integration connector.  Once it is registered with the context, its processOpenLineageRunEvent()
+     * method is called each time an open lineage event is published to the Lineage Integrator OMIS.
+     *
+     * @param listener listener to call
+     */
+    public synchronized void registerListener(OpenLineageEventListener listener)
+    {
+        registeredEventListeners.add(listener);
+    }
+
+
+    /**
+     * Pass the incoming openLineage event to all connectors that are listening.
+     *
+     * @param rawEvent JSON payload containing the open lineage event
+     */
+    public synchronized void publishOpenLineageRunEvent(String rawEvent)
+    {
+        final String methodName = "publishOpenLineageRunEvent(rawEvent)";
+
+        OpenLineageRunEvent event = null;
+
+        if (rawEvent != null)
+        {
+            try
+            {
+                event = objectMapper.readValue(rawEvent, OpenLineageRunEvent.class);
+            }
+            catch (Exception error)
+            {
+                auditLog.logException(methodName,
+                                      LineageIntegratorAuditCode.OPEN_LINEAGE_FORMAT_ERROR.getMessageDefinition(error.getClass().getName(),
+                                                                                                                error.getMessage(),
+                                                                                                                rawEvent),
+                                      rawEvent,
+                                      error);
+            }
+        }
+
+        publishToListeners(event, rawEvent, methodName);
+    }
+
+
+    /**
+     * Pass the incoming openLineage event to all connectors that are listening.
+     *
+     * @param event JSON payload containing the open lineage event
+     */
+    public synchronized void publishOpenLineageRunEvent(OpenLineageRunEvent event)
+    {
+        final String methodName = "publishOpenLineageRunEvent(event)";
+
+        String rawEvent = null;
+
+        if (event != null)
+        {
+            try
+            {
+                rawEvent = objectMapper.writeValueAsString(event);
+            }
+            catch (Exception error)
+            {
+                auditLog.logException(methodName,
+                                      LineageIntegratorAuditCode.OPEN_LINEAGE_FORMAT_ERROR.getMessageDefinition(error.getClass().getName(),
+                                                                                                                error.getMessage(),
+                                                                                                                event.toString()),
+                                      event.toString(),
+                                      error);
+            }
+        }
+
+        publishToListeners(event, rawEvent, methodName);
+    }
+
+
+    /**
+     * Loop through the listeners and sending an event to each.  If a connector throws an exception, it is logged and the publishing process
+     * continues with the other listeners.
+     *
+     * @param event event bean
+     * @param rawEvent string event
+     * @param methodName calling method
+     */
+    private void publishToListeners(OpenLineageRunEvent event,
+                                    String              rawEvent,
+                                    String              methodName)
+    {
+        for (OpenLineageEventListener listener : registeredEventListeners)
+        {
+            if (listener != null)
+            {
+                try
+                {
+                    listener.processOpenLineageRunEvent(event, rawEvent);
+                }
+                catch (Exception error)
+                {
+                    auditLog.logException(methodName,
+                                          LineageIntegratorAuditCode.OPEN_LINEAGE_PUBLISH_ERROR.getMessageDefinition(error.getClass().getName(),
+                                                                                                                     error.getMessage()),
+                                          rawEvent,
+                                          error);
+                }
+            }
         }
     }
 }

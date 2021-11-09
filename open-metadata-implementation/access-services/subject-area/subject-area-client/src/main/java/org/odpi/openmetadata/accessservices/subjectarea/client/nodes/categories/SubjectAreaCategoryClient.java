@@ -10,6 +10,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.commo
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.utils.QueryBuilder;
+import org.odpi.openmetadata.accessservices.subjectarea.utils.QueryParams;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GenericResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -55,7 +56,10 @@ public class SubjectAreaCategoryClient<C extends Category> extends AbstractSubje
     public List<Category> getCategoryChildren(String userId, String guid, FindRequest findRequest, boolean exactValue, boolean ignoreCase) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         final String urnTemplate = BASE_URL + "/%s/categories";
         final String methodInfo = getMethodInfo(" getCategoryChildren");
-        QueryBuilder query = client.createFindQuery(methodInfo, findRequest, exactValue, ignoreCase );
+        QueryParams queryParams = new QueryParams()
+                .setExactValue(exactValue)
+                .setIgnoreCase(ignoreCase);
+        QueryBuilder query = client.createFindQuery(methodInfo, findRequest, queryParams);
 
         String urlTemplate = urnTemplate + query.toString();
         ResolvableType resolvableType = ResolvableType.forClassWithGenerics(SubjectAreaOMASAPIResponse.class, Category.class);
@@ -94,7 +98,10 @@ public class SubjectAreaCategoryClient<C extends Category> extends AbstractSubje
     public List<Term> getTerms(String userId, String guid, FindRequest findRequest, boolean exactValue, boolean ignoreCase) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         final String urnTemplate = BASE_URL + "/%s/terms";
         final String methodInfo = getMethodInfo("getTerms");
-        QueryBuilder query = client.createFindQuery(methodInfo, findRequest, exactValue, ignoreCase);
+        QueryParams queryParams = new QueryParams()
+                .setExactValue(exactValue)
+                .setIgnoreCase(ignoreCase);
+        QueryBuilder query = client.createFindQuery(methodInfo, findRequest, queryParams);
         String urlTemplate = urnTemplate + query.toString();
 
         ResolvableType resolvableType = ResolvableType.forClassWithGenerics(SubjectAreaOMASAPIResponse.class, Term.class);
