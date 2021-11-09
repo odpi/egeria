@@ -467,22 +467,6 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                 if (suppliedTerm.getEffectiveToTime() != null) {
                     effectiveTo = new Date(suppliedTerm.getEffectiveToTime());
                 }
-
-                GlossaryTermBuilder builder = new GlossaryTermBuilder(suppliedTerm.getQualifiedName(),
-                                                                      suppliedTerm.getName(),
-                                                                      suppliedTerm.getDescription(),
-                                                                      suppliedTerm.getSummary(),
-                                                                      suppliedTerm.getExamples(),
-                                                                      suppliedTerm.getAbbreviation(),
-                                                                      suppliedTerm.getUsage(),
-                                                                      suppliedTerm.getAdditionalProperties(),
-                                                                      suppliedTerm.getExtendedProperties(),
-                                                                      null,
-                                                                      genericHandler.getRepositoryHelper(),
-                                                                      genericHandler.getServiceName(),
-                                                                      genericHandler.getServerName());
-
-                builder.setEffectivityDates(effectiveFrom, effectiveTo);
                 genericHandler.updateBeanInRepository(userId,
                                                       null,
                                                       null,
