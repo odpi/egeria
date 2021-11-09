@@ -10,7 +10,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.commo
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.utils.QueryBuilder;
+import org.odpi.openmetadata.accessservices.subjectarea.utils.QueryParams;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GenericResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -18,9 +18,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.ResolvableType;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @SubjectAreaNodeClient
 public class SubjectAreaGlossaryClient<G extends Glossary> extends AbstractSubjectAreaNode<G> {
@@ -79,13 +77,14 @@ public class SubjectAreaGlossaryClient<G extends Glossary> extends AbstractSubje
     public List<Category> getCategories(String userId, String guid, FindRequest findRequest, Boolean onlyTop, boolean exactValue, boolean ignoreCase, Integer maximumPageSizeOnRestCall) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         final String urnTemplate = BASE_URL + "/%s/categories";
         final String methodInfo = getMethodInfo("getCategories");
-        Map<String, String> params = new HashMap<>();
-        params.put("onlyTop", onlyTop+"");
-        params.put("exactValue", exactValue+"");
-        params.put("ignoreCase", ignoreCase+"");
+        QueryParams queryParams = new QueryParams()
+                .setOnlyTop(onlyTop)
+                .setExactValue(exactValue)
+                .setIgnoreCase(ignoreCase);
+
         ResolvableType resolvableType = ResolvableType.forClassWithGenerics(SubjectAreaOMASAPIResponse.class, Category.class);
         ParameterizedTypeReference<GenericResponse<Category>> type = ParameterizedTypeReference.forType(resolvableType.getType());
-        GenericResponse<Category> response = client.getByIdRESTCall(userId ,guid, methodInfo, type, urnTemplate, findRequest, maximumPageSizeOnRestCall, params);
+        GenericResponse<Category> response = client.getByIdRESTCall(userId ,guid, methodInfo, type, urnTemplate, findRequest, maximumPageSizeOnRestCall, queryParams);
         return response.results();
     }
     /**
@@ -132,12 +131,13 @@ public class SubjectAreaGlossaryClient<G extends Glossary> extends AbstractSubje
     public List<Term> getTerms(String userId, String guid, FindRequest findRequest, boolean exactValue, boolean ignoreCase, Integer maximumPageSizeOnRestCall) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         final String methodInfo = getMethodInfo("getTerms");
         final String urlTemplate = BASE_URL + "/%s/terms";
-        Map<String, String> params = new HashMap<>();
-        params.put("exactValue", exactValue+"");
-        params.put("ignoreCase", ignoreCase+"");
+        QueryParams queryParams = new QueryParams()
+                .setExactValue(exactValue)
+                .setIgnoreCase(ignoreCase);
+
         ResolvableType resolvableType = ResolvableType.forClassWithGenerics(SubjectAreaOMASAPIResponse.class, Term.class);
         ParameterizedTypeReference<GenericResponse<Term>> type = ParameterizedTypeReference.forType(resolvableType.getType());
-        GenericResponse<Term> response = client.getByIdRESTCall(userId, guid, methodInfo, type, urlTemplate, findRequest, maximumPageSizeOnRestCall, params);
+        GenericResponse<Term> response = client.getByIdRESTCall(userId, guid, methodInfo, type, urlTemplate, findRequest, maximumPageSizeOnRestCall, queryParams);
         return response.results();
     }
 }

@@ -5,20 +5,34 @@ package org.odpi.openmetadata.accessservices.subjectarea.utils;
 import java.util.StringJoiner;
 
 public class QueryBuilder {
-    private final StringJoiner j = new StringJoiner("&", "?", "");
-    private final static String PARAM_FORMAT = "%s=%s";
+    private final StringJoiner joiner = new StringJoiner("&", "?", "");
 
     public QueryBuilder() {}
 
     public QueryBuilder addParam(Object key, Object value) {
-        if (value != null) {
-            this.j.add(String.format(PARAM_FORMAT, key, value));
+        if (key != null && value != null) {
+            join(key, value);
         }
+
         return this;
+    }
+
+    public QueryBuilder addParams(QueryParams queryParams) {
+        if (queryParams != null) {
+            queryParams
+                    .getParamMap()
+                    .forEach(this::join);
+        }
+
+        return this;
+    }
+
+    private void join(Object key, Object value) {
+        joiner.add(key + "=" + value);
     }
 
     @Override
     public String toString() {
-        return this.j.toString();
+        return joiner.toString();
     }
 }

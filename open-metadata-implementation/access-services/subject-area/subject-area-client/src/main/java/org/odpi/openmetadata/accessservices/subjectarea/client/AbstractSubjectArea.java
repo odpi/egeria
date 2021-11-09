@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.client;
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
+import org.odpi.openmetadata.accessservices.subjectarea.utils.QueryParams;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GenericResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ResponseParameterization;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -52,8 +53,11 @@ public abstract class AbstractSubjectArea<T> implements SubjectAreaClient<T>, Re
     }
     @Override
     public List<T> find(String userId, FindRequest findRequest, boolean exactValue, boolean ignoreCase, Integer maximumPageSizeOnRestCall) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        QueryParams queryParams = new QueryParams()
+                .setExactValue(exactValue)
+                .setIgnoreCase(ignoreCase);
 
-        GenericResponse<T> response = client.findRESTCall(userId, getMethodInfo("find"), BASE_URL, getParameterizedType(), findRequest, exactValue, ignoreCase, maximumPageSizeOnRestCall);
+        GenericResponse<T> response = client.findRESTCall(userId, getMethodInfo("find"), BASE_URL, getParameterizedType(), findRequest, queryParams, maximumPageSizeOnRestCall);
         return response.results();
     }
 
