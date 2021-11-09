@@ -173,10 +173,11 @@ public class OpenLineageServerOperationalServices {
             restClient = new OCFRESTClient(serverName, serverPlatformURLRoot, serverUserId, serverPassword, auditLog);
         }
         ConnectionResponse restResult;
-        do {
-            restResult = getConnection(methodName, restClient, accessServiceConfig);
+        restResult = getConnection(methodName, restClient, accessServiceConfig);
+        while (restResult == null) {
             Thread.sleep(RETRIEVE_OUT_TOPIC_CONNECTION_TIMEOUT);
-        } while (restResult == null);
+            restResult = getConnection(methodName, restClient, accessServiceConfig);
+        }
         return restResult.getConnection();
     }
 
