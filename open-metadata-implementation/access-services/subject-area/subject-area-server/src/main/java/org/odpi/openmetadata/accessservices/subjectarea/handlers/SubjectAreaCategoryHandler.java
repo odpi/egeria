@@ -9,6 +9,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.categ
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.CategorySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.CategoryAnchor;
@@ -147,11 +148,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                         }
 
                         if (suppliedCategory.getParentCategory() != null && suppliedCategory.getParentCategory().getGuid() != null) {
-                            String parentCategoryGuid = suppliedCategory.getParentCategory().getGuid();
-                            CategoryHierarchyLink categoryHierarchyLink = new CategoryHierarchyLink();
-                            categoryHierarchyLink.getEnd1().setNodeGuid(parentCategoryGuid);
-                            categoryHierarchyLink.getEnd2().setNodeGuid(createdCategoryGuid);
-                            relationshipHandler.createRelationship(methodName, userId, CategoryHierarchyLinkMapper.class, categoryHierarchyLink);
+                            createCategoryParentRelationship(userId, relationshipHandler, createdCategoryGuid, suppliedCategory.getParentCategory().getGuid() , methodName);
                         }
                     }
                     response = getCategoryByGuid(userId, createdCategoryGuid);
@@ -166,6 +163,22 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         }
 
         return response;
+    }
+
+    /**
+     * Create category parent relationship
+     * @param userId              unique identifier for requesting user, under which the request is performed
+     * @param relationshipHandler relationship handler
+     * @param categoryGuid        category guid
+     * @param parentCategoryGuid parent category guid
+     * @param methodName          API name
+     */
+    private void createCategoryParentRelationship(String userId, SubjectAreaRelationshipHandler relationshipHandler, String categoryGuid, String parentCategoryGuid, String methodName) {
+
+        CategoryHierarchyLink categoryHierarchyLink = new CategoryHierarchyLink();
+        categoryHierarchyLink.getEnd1().setNodeGuid(parentCategoryGuid);
+        categoryHierarchyLink.getEnd2().setNodeGuid(categoryGuid);
+        relationshipHandler.createRelationship(methodName, userId, CategoryHierarchyLinkMapper.class, categoryHierarchyLink);
     }
 
     /**
@@ -343,8 +356,10 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * Update a Category
      * <p>
      * Status is not updated using this call.
+     * The category parent can be updated with this call. For isReplace a null category parent will remove the existing parent relationship.
      *
      * @param userId           userId under which the request is performed
+     * @param relationshipHandler relationshipHandler
      * @param guid             guid of the category to update
      * @param suppliedCategory category to be updated
      * @param isReplace        flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
@@ -356,7 +371,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Category> updateCategory(String userId, String guid, Category suppliedCategory, boolean isReplace) {
+    public SubjectAreaOMASAPIResponse<Category> updateCategory(String userId, SubjectAreaRelationshipHandler relationshipHandler, String guid, Category suppliedCategory, boolean isReplace) {
         final String methodName = "updateCategory";
         SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
         try {
@@ -396,6 +411,42 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                                                   methodName);
 
             response = getCategoryByGuid(userId, guid);
+
+            if (response.getRelatedHTTPCode() == 200 ) {
+                // was a parent category requested
+                CategorySummary suppliedParent = suppliedCategory.getParentCategory();
+                List<Category> existingCategory = response.results();
+                String existingParentRelationshipGuid = null;
+                String existingParentGuid = null;
+                String suppliedParentGuid = null;
+                if (existingCategory.size() > 0 && existingCategory.get(0).getParentCategory() != null) {
+                    existingParentRelationshipGuid = existingCategory.get(0).getParentCategory().getRelationshipguid();
+                    existingParentGuid = existingCategory.get(0).getParentCategory().getGuid();
+                }
+                if (suppliedParent != null && suppliedParent.getGuid() != null) {
+                    suppliedParentGuid = suppliedParent.getGuid();
+                }
+
+                if (existingParentGuid != null) {
+                    boolean doDelete = false;
+                    if (suppliedParentGuid != null) {
+                        if (!existingParentGuid.equals(suppliedParentGuid)) {
+                            doDelete = true;
+                        }
+                    } else if (isReplace) {
+                        // there is an existing parent category the requestor supplies a blank parent - we should delete the parent relationship for isReplace
+                        doDelete = true;
+                    }
+                    if (doDelete) {
+                        relationshipHandler.deleteRelationship(methodName, userId, CategoryHierarchyLinkMapper.class, existingParentRelationshipGuid);
+                    }
+                }
+                if (suppliedParentGuid !=null) {
+                    createCategoryParentRelationship(userId, relationshipHandler, guid,  suppliedParentGuid, methodName);
+                }
+
+                response = getCategoryByGuid(userId, guid);
+            }
 
         } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
             response.setExceptionInfo(e, className);

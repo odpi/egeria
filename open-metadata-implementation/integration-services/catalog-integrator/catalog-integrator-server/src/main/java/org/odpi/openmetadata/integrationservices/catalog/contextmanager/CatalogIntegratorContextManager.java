@@ -31,7 +31,7 @@ import java.util.Map;
  */
 public class CatalogIntegratorContextManager extends IntegrationContextManager
 {
-    private static String disabledExchangeServicesOption     = "disabledExchangeServices";
+    private static String disabledExchangeServicesOption = "disabledExchangeServices";
 
     private AssetManagerClient           assetManagerClient;
     private CollaborationExchangeClient  collaborationExchangeClient;
@@ -61,18 +61,19 @@ public class CatalogIntegratorContextManager extends IntegrationContextManager
      * @param partnerOMASPlatformRootURL the network address of the server running the OMAS REST servers
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
+     * @param serviceOptions options from the integration service's configuration
      * @param maxPageSize maximum number of results that can be returned on a single REST call
      * @param auditLog logging destination
      */
-    @Override
-    public void initializeContextManager(String   partnerOMASServerName,
-                                         String   partnerOMASPlatformRootURL,
-                                         String   userId,
-                                         String   password,
-                                         int      maxPageSize,
-                                         AuditLog auditLog)
+    public void initializeContextManager(String              partnerOMASServerName,
+                                         String              partnerOMASPlatformRootURL,
+                                         String              userId,
+                                         String              password,
+                                         Map<String, Object> serviceOptions,
+                                         int                 maxPageSize,
+                                         AuditLog            auditLog)
     {
-        super.initializeContextManager(partnerOMASServerName, partnerOMASPlatformRootURL, userId, password, maxPageSize, auditLog);
+        super.initializeContextManager(partnerOMASServerName, partnerOMASPlatformRootURL, userId, password, serviceOptions, maxPageSize, auditLog);
 
         final String methodName = "initializeContextManager";
 
@@ -217,7 +218,6 @@ public class CatalogIntegratorContextManager extends IntegrationContextManager
      * @param metadataSourceQualifiedName unique name of the software server capability that represents the metadata source.
      * @param integrationConnector connector created from connection integration service configuration
      * @param permittedSynchronization controls the direction(s) that metadata is allowed to flow
-     * @param serviceOptions options from the integration service's configuration
      *
      * @throws InvalidParameterException the connector is not of the correct type
      * @throws UserNotAuthorizedException user not authorized to issue this request
@@ -228,10 +228,9 @@ public class CatalogIntegratorContextManager extends IntegrationContextManager
                            String                   connectorName,
                            String                   metadataSourceQualifiedName,
                            IntegrationConnector     integrationConnector,
-                           PermittedSynchronization permittedSynchronization,
-                           Map<String, Object>      serviceOptions) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+                           PermittedSynchronization permittedSynchronization) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
         final String  methodName = "setContext";
 
@@ -337,10 +336,10 @@ public class CatalogIntegratorContextManager extends IntegrationContextManager
 
 
     /**
-     * Extract the supported zones property from the access services option.
+     * Extract the list of services that have been disabled.
      *
-     * @param serviceOptions options passed to the access service.
-     * @return null or list of disabled exchange service  names
+     * @param serviceOptions options passed to the integration service.
+     * @return null or list of disabled exchange service names
      * @throws InvalidParameterException the supported zones property is not a list of zone names.
      */
     private List<String> extractDisabledExchangeServices(Map<String, Object> serviceOptions,
@@ -371,7 +370,7 @@ public class CatalogIntegratorContextManager extends IntegrationContextManager
                                         CatalogIntegratorAuditCode.DISABLED_EXCHANGE_SERVICES.getMessageDefinition(connectorName, serviceList.toString()));
                     return serviceList;
                 }
-                catch (Throwable error)
+                catch (Exception error)
                 {
                     final String  parameterName = "serviceOptions";
 

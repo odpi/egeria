@@ -5,6 +5,7 @@ package org.odpi.openmetadata.governanceservers.integrationdaemonservices.server
 import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
 import org.odpi.openmetadata.commonservices.multitenant.GovernanceServerServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.contextmanager.IntegrationContextManager;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationServiceHandler;
 
 import java.util.List;
@@ -68,14 +69,48 @@ public class IntegrationDaemonInstanceHandler extends GovernanceServerServiceIns
                                                                   String serverName,
                                                                   String serviceURLMarker,
                                                                   String serviceOperationName) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
     {
         IntegrationDaemonInstance instance = (IntegrationDaemonInstance)super.getServerServiceInstance(userId, serverName, serviceOperationName);
 
         if (instance != null)
         {
             return instance.getIntegrationServiceHandler(serviceURLMarker, serviceOperationName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the specific context manager for the requested integration service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    public IntegrationContextManager getIntegrationServiceContextManager(String userId,
+                                                                         String serverName,
+                                                                         String serviceURLMarker,
+                                                                         String serviceOperationName) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
+    {
+        IntegrationDaemonInstance instance = (IntegrationDaemonInstance)super.getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            IntegrationServiceHandler handler = instance.getIntegrationServiceHandler(serviceURLMarker, serviceOperationName);
+
+            if (handler != null)
+            {
+                return handler.getContextManager();
+            }
         }
 
         return null;

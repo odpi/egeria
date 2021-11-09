@@ -6,6 +6,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceDescription;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceRegistry;
@@ -48,8 +49,8 @@ public class LineageIntegratorRESTServices
      *
      * @return connector type or
      *
-     *  InvalidParameterException the connector provider class name is not a valid connector fo this service
-     *  UserNotAuthorizedException user not authorized to issue this request
+     *  InvalidParameterException the connector provider class name is not a valid connector for this service;
+     *  UserNotAuthorizedException user not authorized to issue this request or
      *  PropertyServerException there was a problem detected by the integration service
      */
     public ConnectorTypeResponse validateConnector(String serverName,
@@ -70,6 +71,52 @@ public class LineageIntegratorRESTServices
             response.setConnectorType(instanceHandler.validateConnector(connectorProviderClassName,
                                                                         LineageIntegratorConnector.class,
                                                                         IntegrationServiceDescription.LINEAGE_INTEGRATOR_OMIS.getIntegrationServiceFullName()));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Pass an open lineage event to the integration service.  It will pass it on to the integration connectors that have registered a
+     * listener for open lineage events.
+     *
+     * @param serverName integration daemon server name
+     * @param userId calling user
+     * @param event open lineage event to publish.
+     *
+     * @return void or
+     *  InvalidParameterException one of the parameters is null or invalid;
+     *  UserNotAuthorizedException the caller is not authorized to call the service or
+     *  PropertyServerException there is a problem processing the request
+     */
+    public VoidResponse publishOpenLineageEvent(String serverName,
+                                                String userId,
+                                                String event)
+    {
+        final String methodName = "publishOpenLineageEvent";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            LineageIntegratorContextManager contextManager =
+                    (LineageIntegratorContextManager)instanceHandler.getIntegrationServiceContextManager(userId,
+                                                                                                         serverName,
+                                                                                                         IntegrationServiceDescription.LINEAGE_INTEGRATOR_OMIS.getIntegrationServiceURLMarker(),
+                                                                                                         methodName);
+            contextManager.publishOpenLineageRunEvent(event);
         }
         catch (Exception error)
         {
