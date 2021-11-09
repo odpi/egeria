@@ -129,9 +129,13 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                                                                       suppliedTerm.getExamples(),
                                                                       suppliedTerm.getAbbreviation(),
                                                                       suppliedTerm.getUsage(),
+                                                                      suppliedTerm.getAdditionalProperties(),
+                                                                      suppliedTerm.getExtendedProperties(),
+                                                                      null,
                                                                       genericHandler.getRepositoryHelper(),
                                                                       genericHandler.getServiceName(),
                                                                       genericHandler.getServerName());
+
 
                 builder.setEffectivityDates(effectiveFrom, effectiveTo);
                 builder.setAnchors(userId, glossaryGuid, methodName);
@@ -471,6 +475,9 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                                                                       suppliedTerm.getExamples(),
                                                                       suppliedTerm.getAbbreviation(),
                                                                       suppliedTerm.getUsage(),
+                                                                      suppliedTerm.getAdditionalProperties(),
+                                                                      suppliedTerm.getExtendedProperties(),
+                                                                      null,
                                                                       genericHandler.getRepositoryHelper(),
                                                                       genericHandler.getServiceName(),
                                                                       genericHandler.getServerName());
