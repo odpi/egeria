@@ -15,25 +15,25 @@ public enum CommonServicesDescription implements Serializable
                                       "Open Metadata Repository Services (OMRS)",
                                       "repository-services",
                                       "Manages the synchronization, retrieval and maintenance of metadata stored in open metadata repositories",
-                                      "https://egeria.odpi.org/open-metadata-implementation/repository-services/"),
+                                      "https://odpi.github.io/egeria-docs/services/omrs"),
 
     ADMIN_OPERATIONAL_SERVICES       (3001,
                                       "OMAG Server Operational Services",
                                       "admin-services",
                                       "Management of services active in an Open Metadata and governance server (OMAG Server)",
-                                      "https://egeria.odpi.org/open-metadata-implementation/admin-services"),
+                                      "https://odpi.github.io/egeria-docs/services/admin-services"),
 
     OCF_METADATA_MANAGEMENT          (3002,
                                       "Connected Asset Services",
                                       "connected-asset",
                                       "Common metadata services for the Open Connector Framework (OCF)",
-                                      "https://egeria.odpi.org/open-metadata-implementation/common-services/ocf-metadata-management/"),
+                                      "https://odpi.github.io/egeria-docs/services/ocf-metadata-management"),
 
     OPEN_METADATA_SECURITY           (3003,
                                       "Open Metadata Security Services",
                                       null,
                                       "Authorization services for Open Metadata and Governance",
-                                      "https://egeria.odpi.org/open-metadata-implementation/common-services/metadata-security/");
+                                      "https://odpi.github.io/egeria-docs/services/metadata-security-services");
 
 
     private static final long     serialVersionUID    = 1L;

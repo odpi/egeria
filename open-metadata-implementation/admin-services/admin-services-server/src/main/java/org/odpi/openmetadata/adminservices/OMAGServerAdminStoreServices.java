@@ -24,6 +24,7 @@ import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataPlatformSecurit
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -37,7 +38,6 @@ import java.util.Set;
 public class OMAGServerAdminStoreServices
 {
     private static Connection  configurationStoreConnection = null;
-    private String className = OMAGServerAdminStoreServices.class.getName();
 
     private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerAdminStoreServices.class),
                                                                       CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName());
@@ -244,13 +244,13 @@ public class OMAGServerAdminStoreServices
     /**
      * Retrieve the connection to the config files.
      *
-     * @param methodName  method requesting the server details
      * @return configuration connector file
      * @throws OMAGConfigurationErrorException A connection error occurred while attempting to access the server config store.
      */
-    private OMAGServerConfigStoreRetrieveAll getServerConfigStoreForRetrieveAll(
-                                                       String   methodName) throws OMAGConfigurationErrorException
+    private OMAGServerConfigStoreRetrieveAll getServerConfigStoreForRetrieveAll() throws OMAGConfigurationErrorException
     {
+        final String methodName = "getServerConfigStoreForRetrieveAll";
+
         Connection   connection = this.getConnectionForRetrieveAll();
 
         try
@@ -317,6 +317,27 @@ public class OMAGServerAdminStoreServices
                                      String   methodName) throws OMAGInvalidParameterException,
                                                                  OMAGNotAuthorizedException
     {
+        return getServerConfig(userId, serverName, true, methodName);
+    }
+
+
+    /**
+     * Retrieve any saved configuration for this server.
+     *
+     * @param userId calling user
+     * @param serverName  name of the server
+     * @param adminCall flag to indicate whether the
+     * @param methodName  method requesting the server details
+     * @return  configuration properties
+     * @throws OMAGInvalidParameterException problem with the configuration file
+     * @throws OMAGNotAuthorizedException user not authorized to make these changes
+     */
+    OMAGServerConfig getServerConfig(String   userId,
+                                     String   serverName,
+                                     boolean  adminCall,
+                                     String   methodName) throws OMAGInvalidParameterException,
+                                                                 OMAGNotAuthorizedException
+    {
         OMAGServerConfigStore   serverConfigStore = getServerConfigStore(serverName, methodName);
         OMAGServerConfig        serverConfig      = null;
 
@@ -379,7 +400,14 @@ public class OMAGServerAdminStoreServices
                                                            null,
                                                            serverConfig.getServerSecurityConnection());
 
-                securityVerifier.validateUserAsServerAdmin(userId);
+                if (adminCall)
+                {
+                    securityVerifier.validateUserAsServerAdmin(userId);
+                }
+                else
+                {
+                    securityVerifier.validateUserAsServerOperator(userId);
+                }
             }
             catch (InvalidParameterException error)
             {
@@ -430,18 +458,52 @@ public class OMAGServerAdminStoreServices
     }
 
     /**
-     * Retrieve all the saved OMAG Server configurations for this platform.
+     * Retrieve all the saved OMAG Server configurations for this platform.  If the calling user is not authorized to access a particular
+     * server's configuration it is removed from the list.
      *
      * @param userId calling user
-     * @param methodName  method requesting the servers details
      * @return  a set of OMAG Server configurations
      * @throws OMAGConfigurationErrorException the OMAG Server configuration connector defined in configuration does not support retrieve all servers call.
      */
-    Set<OMAGServerConfig> retrieveAllServerConfigs(String   userId,
-                                              String   methodName) throws OMAGConfigurationErrorException, OMAGInvalidParameterException {
+    Set<OMAGServerConfig> retrieveAllServerConfigs(String   userId) throws OMAGConfigurationErrorException
+    {
+        final String methodName = "retrieveAllServerConfigs";
 
-        OMAGServerConfigStoreRetrieveAll serverConfigStore = getServerConfigStoreForRetrieveAll(methodName);
-        return serverConfigStore.retrieveAllServerConfigs();
+        OMAGServerConfigStoreRetrieveAll serverConfigStore = this.getServerConfigStoreForRetrieveAll();
+
+        Set<OMAGServerConfig> configuredServers = serverConfigStore.retrieveAllServerConfigs();
+
+        /*
+         * This process ensures the userId is able to access each server.
+         */
+        if (configuredServers != null)
+        {
+            Set<OMAGServerConfig> validatedServers = new HashSet<>();
+
+            for (OMAGServerConfig serverConfig : configuredServers)
+            {
+                if (serverConfig != null)
+                {
+                    try
+                    {
+                        OMAGServerConfig validatedConfig = this.getServerConfig(userId, serverConfig.getLocalServerName(), false, methodName);
+
+                        if (validatedConfig != null)
+                        {
+                            validatedServers.add(validatedConfig);
+                        }
+                    }
+                    catch (Exception error)
+                    {
+                        // skip server
+                    }
+                }
+            }
+
+            return validatedServers;
+        }
+
+        return null;
     }
 
 
