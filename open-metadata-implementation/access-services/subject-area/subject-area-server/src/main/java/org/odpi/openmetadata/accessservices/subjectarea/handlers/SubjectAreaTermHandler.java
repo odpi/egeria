@@ -459,14 +459,11 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                 EntityDetail storedEntity = termMapper.map(storedTerm);
 
                 Date effectiveFrom = null;
-                Date effectiveTo = null;
 
                 if (suppliedTerm.getEffectiveFromTime() != null) {
                     effectiveFrom = new Date(suppliedTerm.getEffectiveFromTime());
                 }
-                if (suppliedTerm.getEffectiveToTime() != null) {
-                    effectiveTo = new Date(suppliedTerm.getEffectiveToTime());
-                }
+
                 genericHandler.updateBeanInRepository(userId,
                                                       null,
                                                       null,
@@ -478,7 +475,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                                                       false,
                                                       suppliedEntity.getProperties(),
                                                       !isReplace,
-                                                      null,
+                                                      effectiveFrom,
                                                       methodName);
 
                 // the update properties should not have updated the classifications so we can use
