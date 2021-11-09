@@ -43,6 +43,11 @@ public enum OpenLineageServerErrorCode {
             "The server is not able to retrieve its configuration.  It fails to start.",
             "Add the Open Lineage configuration to the Open Lineage server's configuration document."),
 
+    BAD_ACCESS_SERVICE_CONFIG(400, "OPEN-LINEAGE-SERVER-400-002 ",
+            "Open Lineage access service configuration field {0} does not have a valid value.",
+            "The server does not have a proper access service configuration. It fails to start.",
+            "Update the Open Lineage configuration with a correct access service configuration."),
+
     SERVICE_INSTANCE_FAILURE(400, "OPEN-LINEAGE-SERVER-400-005 ",
             "The open lineage  services are unable to initialize a new instance of open lineage server {0};" +
                     " error message is {1}",
