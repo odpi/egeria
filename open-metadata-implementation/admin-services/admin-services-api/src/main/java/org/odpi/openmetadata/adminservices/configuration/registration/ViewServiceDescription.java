@@ -14,35 +14,35 @@ public enum ViewServiceDescription implements Serializable
                     "Glossary Author OMVS",
                     "glossary-author",
                     "View Service for glossary authoring.",
-                    "https://egeria.odpi.org/open-metadata-implementation/view-services/glossary-author-view/"),
+                    "https://odpi.github.io/egeria-docs/services/omvs/glossary-author/overview"),
 
     REPOSITORY_EXPLORER(5001,
                   "Repository Explorer",
                   "Repository Explorer OMVS",
                   "rex",
                   "Explore open metadata instances.",
-                  "https://egeria.odpi.org/open-metadata-implementation/view-services/rex-view/"),
+                  "https://odpi.github.io/egeria-docs/services/omvs/rex/overview"),
 
     TYPE_EXPLORER(5002,
                   "Type Explorer",
                   "Type Explorer OMVS",
                   "tex",
                   "Explore the open metadata types in a repository or cohort.",
-                  "https://egeria.odpi.org/open-metadata-implementation/view-services/tex-view/"),
+                  "https://odpi.github.io/egeria-docs/services/omvs/tex/overview"),
 
     DINO(5003,
                   "Dynamic Infrastructure and Operations",
                   "Dynamic Infrastructure and Operations OMVS",
                   "dino",
                   "Explore and operate an open metadata ecosystem.",
-                  "https://egeria.odpi.org/open-metadata-implementation/view-services/dino-view/"),
+                  "https://odpi.github.io/egeria-docs/services/omvs/dino/overview"),
 
     SERVER_AUTHOR(5004,
                  "Server Author",
                  "Server Author OMVS",
                  "server-author",
                  "Author servers.",
-                 "https://egeria.odpi.org/open-metadata-implementation/view-services/server-author-view/");
+                 "https://odpi.github.io/egeria-docs/services/omvs/server-author/overview/");
 
     private static final long serialVersionUID = 1L;
 
