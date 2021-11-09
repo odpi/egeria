@@ -1063,7 +1063,8 @@ public class OMAGServerOperationalServices
         else if (ServerTypeClassification.OPEN_LINEAGE_SERVER.equals(serverTypeClassification))
         {
             OpenLineageServerOperationalServices
-                    operationalOpenLineageServer = new OpenLineageServerOperationalServices(configuration.getLocalServerName(),
+                    operationalOpenLineageServer = new OpenLineageServerOperationalServices(configuration.getLocalServerId(),
+                                                                                            configuration.getLocalServerName(),
                                                                                             configuration.getLocalServerUserId(),
                                                                                             configuration.getLocalServerPassword(),
                                                                                             configuration.getMaxPageSize());
