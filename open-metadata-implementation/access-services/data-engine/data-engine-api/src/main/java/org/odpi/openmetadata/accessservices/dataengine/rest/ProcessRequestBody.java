@@ -23,5 +23,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @ToString
 public class ProcessRequestBody extends DataEngineOMASAPIRequestBody {
 
+    /**
+     * The process
+     * -- GETTER --
+     * Returns the process
+     *
+     * @return the process
+     * -- SETTER --
+     * Sets up the process
+     * @param process the process
+     */
     private Process process;
 }

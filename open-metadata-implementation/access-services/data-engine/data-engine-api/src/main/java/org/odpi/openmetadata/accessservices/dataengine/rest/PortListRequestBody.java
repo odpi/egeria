@@ -24,6 +24,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @ToString
 public class PortListRequestBody extends DataEngineOMASAPIRequestBody {
 
+    /**
+     * The ports
+     * -- GETTER --
+     * Returns the ports.
+     * @return the ports
+     * -- SETTER --
+     * Sets up the ports.
+     * @param ports ports
+     */
     private List<String> ports;
 
 }
