@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name="API Integrator OMIS", description="Supports the detection and creation of metadata for API gateways.",
         externalDocs=@ExternalDocumentation(description="API Integrator Open Metadata Integration Service (OMIS)",
-                url="https://egeria.odpi.org/open-metadata-implementation/integration-services/api-integrator"))
+                url="https://odpi.github.io/egeria-docs/services/omis/api-integrator/overview/"))
 
 public class APIIntegratorResource
 {

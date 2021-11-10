@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/governance-engine/users/{userId}")
 
-@Tag(name="Governance Engine OMAS", description="The Governance Engine Open Metadata Access Service (OMAS) provides support for governance engines, services and actions.", externalDocs=@ExternalDocumentation(description="Governance Engine Open Metadata Access Service (OMAS)", url="https://egeria.odpi.org/open-metadata-implementation/access-services/governance-engine/"))
+@Tag(name="Governance Engine OMAS", description="The Governance Engine Open Metadata Access Service (OMAS) provides support for governance engines, services and actions.",
+     externalDocs=@ExternalDocumentation(description="Governance Engine Open Metadata Access Service (OMAS)",
+                                         url="https://odpi.github.io/egeria-docs/services/omas/governance-engine/overview/"))
 
 public class GovernanceActionProcessResource
 {
