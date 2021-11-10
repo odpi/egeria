@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name="Analytics Modeling OMAS",
 	description="The Analytics Modeling OMAS queries RDBMS metadata from repository and creates module for database schema.",
 	externalDocs=@ExternalDocumentation(description="Analytics Modeling Open Metadata Access Service (OMAS)",
-	url="https://egeria.odpi.org/open-metadata-implementation/access-services/analytics-modeling/"))
+	url="https://odpi.github.io/egeria-docs/services/omas/analytics-modeling/overview/"))
 
 
 public class AnalyticsModelingOMASResource {

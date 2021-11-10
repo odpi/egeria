@@ -136,7 +136,7 @@ used by the Asset Analysis OMES are running on the metadata server called `myMet
                     "engineServiceFullName": "Asset Analysis OMES",
                     "engineServiceURLMarker": "asset-analysis",
                     "engineServiceDescription": "Analyses the content of an asset's real world counterpart, generates annotations in an open discovery report that is attached to the asset in the open metadata repositories .",
-                    "engineServiceWiki": "https://egeria.odpi.org/open-metadata-implementation/engine-services/asset-analysis/",
+                    "engineServiceWiki": "https://odpi.github.io/egeria-docs/services/omes/asset-analysis/",
                     "engines" : [ {"engineId" : "daff1dca-984b-4b8a-8a8f-febaf72b82a8",
                                    "engineName" : "engine1", 
                                    "engineUserId" : "engine1UserId"},

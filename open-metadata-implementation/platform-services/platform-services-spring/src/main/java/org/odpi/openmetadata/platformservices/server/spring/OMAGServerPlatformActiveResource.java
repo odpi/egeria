@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name="Platform Services", description="The platform services provides the APIs for querying the Open Metadata and Governance (OMAG) " +
         "Server Platform and discovering information about the OMAG Servers that it is hosting.",
-        externalDocs=@ExternalDocumentation(description="Platform Services",url="https://egeria.odpi.org/open-metadata-implementation/platform-services"))
+        externalDocs=@ExternalDocumentation(description="Platform Services",url="https://odpi.github.io/egeria-docs/services/platform-services"))
 
 @RestController
 @RequestMapping("/open-metadata/platform-services/users/{userId}/server-platform")
