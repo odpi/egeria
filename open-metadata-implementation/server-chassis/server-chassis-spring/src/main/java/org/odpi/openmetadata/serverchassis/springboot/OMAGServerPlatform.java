@@ -149,7 +149,7 @@ public class OMAGServerPlatform
         }
         else
         {
-            startupMessage = response.getExceptionErrorMessage();
+            startupMessage = "Server startup failed with error: " + response.getExceptionErrorMessage();
 
             StartupFailEvent customSpringEvent = new StartupFailEvent(this, startupMessage);
             applicationEventPublisher.publishEvent(customSpringEvent);
@@ -167,10 +167,9 @@ public class OMAGServerPlatform
 
         if (servers != null)
         {
-            log.info("Temporarily deactivating the auto-started servers '{}'", servers.toString());
+            log.info("Temporarily deactivating any auto-started servers '{}'", servers.toString());
 
-            System.out.println(new Date().toString() + " OMag Server Platform shutdown requested. Temporarily deactivating the following " +
-                                       "auto-started servers: " + servers.toString());
+            System.out.println(new Date().toString() + " OMAG Server Platform shutdown requested. Shutting down auto-started servers (if running): " + servers.toString());
 
             operationalServices.deactivateTemporarilyServerList(sysUser, servers);
         }

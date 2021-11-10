@@ -93,6 +93,7 @@ public class OpenMetadataPlatformSecurityConnector extends ConnectorBase impleme
                                                    String   methodName) throws UserNotAuthorizedException
     {
         AuditLogMessageDefinition messageDefinition = OpenMetadataSecurityAuditCode.UNAUTHORIZED_PLATFORM_ACCESS.getMessageDefinition(userId, serverRootURL);
+
         this.logRecord(messageDefinition.getMessageId(),
                        messageDefinition.getSeverity(),
                        messageFormatter.getFormattedMessage(messageDefinition));
