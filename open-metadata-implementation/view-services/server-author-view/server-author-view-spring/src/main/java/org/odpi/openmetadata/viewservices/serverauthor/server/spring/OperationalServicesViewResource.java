@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
         description="The operational administration services support the management " +
                 "of OMAG Server instances.  This includes starting and stopping the servers as well as querying and changing their operational state.",
         externalDocs=@ExternalDocumentation(description="Further information",
-                url="https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/user/operating-omag-server.html"))
+                url="https://odpi.github.io/egeria-docs/guides/operations/operating-omag-server/"))
 
 
 public class OperationalServicesViewResource
@@ -49,7 +49,7 @@ public class OperationalServicesViewResource
     @Operation(summary="Activate server with stored configuration document",
                description="Activate the named OMAG server using the appropriate configuration document found in the configuration store.",
                externalDocs=@ExternalDocumentation(description="Configuration Documents",
-                    url="https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/concepts/configuration-document.html"))
+                    url="https://odpi.github.io/egeria-docs/concepts/configuration-document"))
 
     public ServerAuthorConfigurationResponse activateWithStoredConfig(@PathVariable String userId,
                                                                       @PathVariable String serverName,
@@ -139,7 +139,7 @@ public class OperationalServicesViewResource
                     "\n" +
                     "Null is returned if the server is not running.",
             externalDocs=@ExternalDocumentation(description="Configuration Documents",
-                    url="https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/concepts/configuration-document.html"))
+                    url="https://odpi.github.io/egeria-docs/concepts/configuration-document/"))
 
     public ServerAuthorConfigurationResponse getActiveConfiguration(@PathVariable String  userId,
                                                            @PathVariable String           serverName,

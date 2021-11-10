@@ -145,7 +145,7 @@ public class OMAGServerOperationalServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            response = activateWithSuppliedConfig(userId, serverName, configStore.getServerConfig(userId, serverName, methodName));
+            response = activateWithSuppliedConfig(userId, serverName, configStore.getServerConfig(userId, serverName, false, methodName));
         }
         catch (OMAGInvalidParameterException error)
         {
@@ -657,12 +657,7 @@ public class OMAGServerOperationalServices
 
             for (AccessServiceConfig  accessServiceConfig : accessServiceConfigList)
             {
-                /*
-                 * Connected Asset OMAS and Data Platform OMAS have been removed but may be present in some older configuration documents.
-                 * The are skipped over if present.
-                 */
-                if ((accessServiceConfig != null) && (accessServiceConfig.getAccessServiceId() != AccessServiceDescription.CONNECTED_ASSET_OMAS.getAccessServiceCode())
-                                                  && (accessServiceConfig.getAccessServiceId() != AccessServiceDescription.DATA_PLATFORM_OMAS.getAccessServiceCode()))
+                if (accessServiceConfig != null)
                 {
                     configuredAccessServiceCount ++;
 

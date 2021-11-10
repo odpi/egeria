@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name="Lineage Integrator OMIS", description="Supports the detection and creation of metadata for file systems and file servers.",
         externalDocs=@ExternalDocumentation(description="Lineage Integrator Open Metadata Integration Service (OMIS)",
-                url="https://egeria.odpi.org/open-metadata-implementation/integration-services/lineage-integrator"))
+                url="https://odpi.github.io/egeria-docs/services/omis/lineage-integrator/overview/"))
 
 public class LineageIntegratorResource
 {
