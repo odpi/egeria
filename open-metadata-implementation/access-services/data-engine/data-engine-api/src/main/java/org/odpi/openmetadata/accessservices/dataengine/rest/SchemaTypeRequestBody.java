@@ -34,7 +34,6 @@ public class SchemaTypeRequestBody extends DataEngineOMASAPIRequestBody {
      * @param schemaType the schema type
      */
     @JsonProperty("schema")
-    @JsonProperty("schema")
     private SchemaType schemaType;
 
 }
