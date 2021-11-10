@@ -236,4 +236,10 @@
             </sources>
         </moduleSet>
     </moduleSets>
+    <files>
+        <file>
+            <source>../../open-metadata-implementation/server-chassis/server-chassis-spring/src/main/resources/keystore.p12</source>
+            <destName>keystore.p12</destName>
+        </file>
+    </files>
 </assembly>
