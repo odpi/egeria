@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
         description="The operational administration services support the management " +
                 "of OMAG Server instances.  This includes starting and stopping the servers as well as querying and changing their operational state.",
         externalDocs=@ExternalDocumentation(description="Further information",
-                url="https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/user/operating-omag-server.html"))
+                url="https://odpi.github.io/egeria-docs/guides/operations/operating-omag-server/"))
 
 
 public class OperationalServicesResource
@@ -51,7 +51,7 @@ public class OperationalServicesResource
     @Operation(summary="Activate server with stored configuration document",
                description="Activate the named OMAG server using the appropriate configuration document found in the configuration store.",
             externalDocs=@ExternalDocumentation(description="Configuration Documents",
-                    url="https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/concepts/configuration-document.html"))
+                    url="https://odpi.github.io/egeria-docs/concepts/configuration-document"))
 
     public SuccessMessageResponse activateWithStoredConfig(@PathVariable String userId,
                                                            @PathVariable String serverName)
@@ -78,7 +78,7 @@ public class OperationalServicesResource
             description="Activate the named OMAG server using the supplied configuration document. This configuration " +
                     "document is added to the configuration store, over-writing any previous configuration for this server.",
             externalDocs=@ExternalDocumentation(description="Configuration Documents",
-                    url="https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/concepts/configuration-document.html"))
+                    url="https://odpi.github.io/egeria-docs/concepts/configuration-document"))
 
     public SuccessMessageResponse activateWithSuppliedConfig(@PathVariable String           userId,
                                                              @PathVariable String           serverName,
@@ -157,7 +157,7 @@ public class OperationalServicesResource
                     "\n" +
                     "Null is returned if the server is not running.",
             externalDocs=@ExternalDocumentation(description="Configuration Documents",
-                    url="https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/concepts/configuration-document.html"))
+                    url="https://odpi.github.io/egeria-docs/concepts/configuration-document"))
 
     public OMAGServerConfigResponse getActiveConfiguration(@PathVariable String           userId,
                                                            @PathVariable String           serverName)
@@ -183,7 +183,7 @@ public class OperationalServicesResource
                                    "archive that is readable through the connector identified by the connection.  " +
                                    "It can be used with OMAG servers that are of type Cohort Member.",
                externalDocs=@ExternalDocumentation(description="Open Metadata Archives",
-                    url="https://egeria.odpi.org/open-metadata-resources/open-metadata-archives/index.html"))
+                    url="https://odpi.github.io/egeria-docs/concepts/open-metadata-archives/"))
 
     public VoidResponse addOpenMetadataArchiveFile(@PathVariable String userId,
                                                    @PathVariable String serverName,
@@ -210,7 +210,7 @@ public class OperationalServicesResource
                                    "archive that is readable through the connector identified by the connection.  " +
                                    "It can be used with OMAG servers that are of type Cohort Member.",
             externalDocs=@ExternalDocumentation(description="Open Metadata Archives",
-                    url="https://egeria.odpi.org/open-metadata-resources/open-metadata-archives/index.html"))
+                    url="https://odpi.github.io/egeria-docs/concepts/open-metadata-archives/"))
 
     public VoidResponse addOpenMetadataArchive(@PathVariable String     userId,
                                                @PathVariable String     serverName,
