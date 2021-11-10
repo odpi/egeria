@@ -53,7 +53,7 @@ public abstract class DataEngineOMASAPIRequestBody implements Serializable {
      * @return the external source name
      * -- SETTER --
      * Sets the external source name
-     * @param     private String externalSourceName; the external source name
+     * @param externalSourceName the external source name
      */
     private String externalSourceName;
 
