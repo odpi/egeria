@@ -12,7 +12,9 @@ import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
+import org.odpi.openmetadata.adminservices.properties.ServerActiveStatus;
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
+import org.odpi.openmetadata.adminservices.rest.OMAGServerStatusResponse;
 import org.odpi.openmetadata.adminservices.rest.SuccessMessageResponse;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
@@ -46,7 +48,7 @@ public class OMAGServerOperationalServices
 {
     private OMAGServerOperationalInstanceHandler instanceHandler = new OMAGServerOperationalInstanceHandler(CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName());
 
-    private OMAGServerPlatformInstanceMap  platformInstanceMap = new OMAGServerPlatformInstanceMap();
+    private OMAGServerPlatformInstanceMap        platformInstanceMap = new OMAGServerPlatformInstanceMap();
 
     private OMAGServerAdminStoreServices   configStore  = new OMAGServerAdminStoreServices();
     private OMAGServerErrorHandler         errorHandler = new OMAGServerErrorHandler();
@@ -238,6 +240,7 @@ public class OMAGServerOperationalServices
                                                            serverTypeClassification,
                                                            CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName(),
                                                            configuration.getMaxPageSize());
+            instance.setServerActiveStatus(ServerActiveStatus.STARTING);
 
             /*
              * Save the configuration that is going to be used to start the server for this instance.  This configuration can be queried by
@@ -256,6 +259,7 @@ public class OMAGServerOperationalServices
              */
             OMRSOperationalServices         operationalRepositoryServices;
 
+            instance.setServerServiceActiveStatus(CommonServicesDescription.REPOSITORY_SERVICES.getServiceName(), ServerActiveStatus.STARTING);
             operationalRepositoryServices = new OMRSOperationalServices(configuration.getLocalServerName(),
                                                                         configuration.getLocalServerType(),
                                                                         configuration.getOrganizationName(),
@@ -266,6 +270,7 @@ public class OMAGServerOperationalServices
             activatedServiceList.add(CommonServicesDescription.REPOSITORY_SERVICES.getServiceName());
             operationalRepositoryServices.initializeAuditLog(configuration.getRepositoryServicesConfig(),
                                                              serverTypeClassification.getServerTypeName());
+
 
 
             /*
@@ -327,9 +332,10 @@ public class OMAGServerOperationalServices
 
                 /*
                  * Pass the resulting security verifier to the repository services.  It will be set up in the local
-                 * repository (if there is a local repository in this server).
+                 * repository (if there is a local repository in this server).  This is the point where we connect to the cohort.
                  */
                 operationalRepositoryServices.setSecurityVerifier(securityVerifier);
+                instance.setServerServiceActiveStatus(CommonServicesDescription.REPOSITORY_SERVICES.getServiceName(), ServerActiveStatus.RUNNING);
 
                 /*
                  * Next initialize the Open Connector Framework (OCF) metadata services.  These services are only initialized
@@ -346,6 +352,7 @@ public class OMAGServerOperationalServices
                      */
                     OCFMetadataOperationalServices operationalOCFMetadataServices;
 
+                    instance.setServerServiceActiveStatus(CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceName(), ServerActiveStatus.STARTING);
                     operationalOCFMetadataServices = new OCFMetadataOperationalServices(configuration.getLocalServerName(),
                                                                                         enterpriseRepositoryConnector,
                                                                                         operationalRepositoryServices.getAuditLog(
@@ -537,6 +544,8 @@ public class OMAGServerOperationalServices
             /*
              * All subsystems are started - just log messages and return.
              */
+            instance.setServerActiveStatus(ServerActiveStatus.RUNNING);
+
             String successMessage = new Date().toString() + " " + serverName + " is running the following services: " + activatedServiceList.toString();
 
             auditLog.logMessage(actionDescription,
@@ -664,10 +673,14 @@ public class OMAGServerOperationalServices
                     if (ServiceOperationalStatus.ENABLED.equals(accessServiceConfig.getAccessServiceOperationalStatus()))
                     {
                         enabledAccessServiceCount ++;
+                        instance.setServerServiceActiveStatus(accessServiceConfig.getAccessServiceFullName(), ServerActiveStatus.STARTING);
 
                         try
                         {
                             AccessServiceAdmin accessServiceAdmin = this.getAccessServiceAdminClass(accessServiceConfig, auditLog, serverName);
+
+                            accessServiceAdmin.setFullServiceName(accessServiceConfig.getAccessServiceFullName());
+
 
                             /*
                              * Each access service has its own audit log instance.
@@ -689,7 +702,7 @@ public class OMAGServerOperationalServices
                                                           localServerUserId);
                             operationalAccessServiceAdminList.add(accessServiceAdmin);
                             activatedServiceList.add(accessServiceConfig.getAccessServiceFullName());
-
+                            instance.setServerServiceActiveStatus(accessServiceAdmin.getFullServiceName(), ServerActiveStatus.RUNNING);
                         }
                         catch (OMAGConfigurationErrorException error)
                         {
@@ -783,6 +796,7 @@ public class OMAGServerOperationalServices
                 if (ServiceOperationalStatus.ENABLED.equals(viewServiceConfig.getViewServiceOperationalStatus()))
                 {
                     enabledViewServiceCount++;
+                    instance.setServerServiceActiveStatus(viewServiceConfig.getViewServiceFullName(), ServerActiveStatus.STARTING);
 
                     try
                     {
@@ -804,7 +818,7 @@ public class OMAGServerOperationalServices
                                                     maxPageSize);
                         operationalViewServiceAdminList.add(viewServiceAdmin);
                         activatedServiceList.add(viewServiceConfig.getViewServiceFullName());
-
+                        instance.setServerServiceActiveStatus(viewServiceConfig.getViewServiceFullName(), ServerActiveStatus.RUNNING);
                     }
                     catch (OMAGConfigurationErrorException error)
                     {
@@ -987,6 +1001,8 @@ public class OMAGServerOperationalServices
          */
         if (ServerTypeClassification.DATA_ENGINE_PROXY.equals(serverTypeClassification))
         {
+            instance.setServerServiceActiveStatus(GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName(), ServerActiveStatus.STARTING);
+
             DataEngineProxyOperationalServices operationalDataEngineProxyServices
                     = new DataEngineProxyOperationalServices(configuration.getLocalServerName(),
                                                              configuration.getLocalServerId(),
@@ -1002,6 +1018,7 @@ public class OMAGServerOperationalServices
                                                                   GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceWiki()));
 
             activatedServiceList.add(GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName());
+            instance.setServerServiceActiveStatus(GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName(), ServerActiveStatus.RUNNING);
         }
 
         /*
@@ -1009,6 +1026,8 @@ public class OMAGServerOperationalServices
          */
         else if (ServerTypeClassification.ENGINE_HOST.equals(serverTypeClassification))
         {
+            instance.setServerServiceActiveStatus(GovernanceServicesDescription.ENGINE_HOST_SERVICES.getServiceName(), ServerActiveStatus.STARTING);
+
             EngineHostOperationalServices engineHostOperationalServices
                     = new EngineHostOperationalServices(configuration.getLocalServerName(),
                                                         configuration.getLocalServerId(),
@@ -1026,6 +1045,7 @@ public class OMAGServerOperationalServices
 
             activatedServiceList.addAll(engineServices);
             activatedServiceList.add(GovernanceServicesDescription.ENGINE_HOST_SERVICES.getServiceName());
+            instance.setServerServiceActiveStatus(GovernanceServicesDescription.ENGINE_HOST_SERVICES.getServiceName(), ServerActiveStatus.RUNNING);
         }
 
         /*
@@ -1034,6 +1054,8 @@ public class OMAGServerOperationalServices
          */
         else if (ServerTypeClassification.INTEGRATION_DAEMON.equals(serverTypeClassification))
         {
+            instance.setServerServiceActiveStatus(GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceName(), ServerActiveStatus.STARTING);
+
             IntegrationDaemonOperationalServices integrationDaemonOperationalServices
                     = new IntegrationDaemonOperationalServices(configuration.getLocalServerName(),
                                                                configuration.getLocalServerUserId(),
@@ -1050,6 +1072,7 @@ public class OMAGServerOperationalServices
 
             activatedServiceList.addAll(integrationServices);
             activatedServiceList.add(GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceName());
+            instance.setServerServiceActiveStatus(GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceName(), ServerActiveStatus.RUNNING);
         }
 
         /*
@@ -1057,6 +1080,8 @@ public class OMAGServerOperationalServices
          */
         else if (ServerTypeClassification.OPEN_LINEAGE_SERVER.equals(serverTypeClassification))
         {
+            instance.setServerServiceActiveStatus(GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(), ServerActiveStatus.STARTING);
+
             OpenLineageServerOperationalServices
                     operationalOpenLineageServer = new OpenLineageServerOperationalServices(configuration.getLocalServerId(),
                                                                                             configuration.getLocalServerName(),
@@ -1072,6 +1097,7 @@ public class OMAGServerOperationalServices
                                                             GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceWiki()));
 
             activatedServiceList.add(GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName());
+            instance.setServerServiceActiveStatus(GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(), ServerActiveStatus.RUNNING);
         }
     }
 
@@ -1141,7 +1167,11 @@ public class OMAGServerOperationalServices
                  */
                 if (instance.getOperationalDataEngineProxyServices() != null)
                 {
+                    instance.setServerServiceActiveStatus(GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName(), ServerActiveStatus.STOPPING);
+
                     instance.getOperationalDataEngineProxyServices().disconnect();
+
+                    instance.setServerServiceActiveStatus(GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName(), ServerActiveStatus.INACTIVE);
                 }
 
                 /*
@@ -1153,7 +1183,11 @@ public class OMAGServerOperationalServices
                     {
                         if (accessServiceAdmin != null)
                         {
+                            instance.setServerServiceActiveStatus(accessServiceAdmin.getFullServiceName(), ServerActiveStatus.STOPPING);
+
                             accessServiceAdmin.shutdown();
+
+                            instance.setServerServiceActiveStatus(accessServiceAdmin.getFullServiceName(), ServerActiveStatus.INACTIVE);
                         }
                     }
                 }
@@ -1167,7 +1201,12 @@ public class OMAGServerOperationalServices
                     {
                         if (viewServiceAdmin != null)
                         {
+                            instance.setServerServiceActiveStatus(viewServiceAdmin.getFullServiceName(), ServerActiveStatus.STOPPING);
+
                             viewServiceAdmin.shutdown();
+
+                            instance.setServerServiceActiveStatus(viewServiceAdmin.getFullServiceName(), ServerActiveStatus.INACTIVE);
+
                         }
                     }
                 }
@@ -1177,7 +1216,12 @@ public class OMAGServerOperationalServices
                  */
                 if (instance.getOperationalOCFMetadataServices() != null)
                 {
+                    instance.setServerServiceActiveStatus(CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceName(), ServerActiveStatus.STOPPING);
+
                     instance.getOperationalOCFMetadataServices().shutdown();
+
+                    instance.setServerServiceActiveStatus(CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceName(), ServerActiveStatus.INACTIVE);
+
                 }
 
                 /*
@@ -1185,7 +1229,12 @@ public class OMAGServerOperationalServices
                  */
                 if (instance.getOperationalEngineHost() != null)
                 {
+                    instance.setServerServiceActiveStatus(GovernanceServicesDescription.ENGINE_HOST_SERVICES.getServiceName(), ServerActiveStatus.STOPPING);
+
                     instance.getOperationalEngineHost().terminate();
+
+                    instance.setServerServiceActiveStatus(GovernanceServicesDescription.ENGINE_HOST_SERVICES.getServiceName(), ServerActiveStatus.INACTIVE);
+
                 }
 
                 /*
@@ -1193,7 +1242,11 @@ public class OMAGServerOperationalServices
                  */
                 if (instance.getOperationalIntegrationDaemon() != null)
                 {
+                    instance.setServerServiceActiveStatus(GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceName(), ServerActiveStatus.STOPPING);
+
                     instance.getOperationalIntegrationDaemon().terminate();
+
+                    instance.setServerServiceActiveStatus(GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceName(), ServerActiveStatus.INACTIVE);
                 }
 
                 /*
@@ -1201,7 +1254,11 @@ public class OMAGServerOperationalServices
                  */
                 if (instance.getOpenLineageOperationalServices() != null)
                 {
+                    instance.setServerServiceActiveStatus(GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(), ServerActiveStatus.STOPPING);
+
                     instance.getOpenLineageOperationalServices().shutdown();
+
+                    instance.setServerServiceActiveStatus(GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(), ServerActiveStatus.INACTIVE);
                 }
 
                 /*
@@ -1209,7 +1266,11 @@ public class OMAGServerOperationalServices
                  */
                 if (instance.getOperationalConformanceSuiteServices() != null)
                 {
+                    instance.setServerServiceActiveStatus(GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName(), ServerActiveStatus.STOPPING);
+
                     instance.getOperationalConformanceSuiteServices().terminate(permanentDeactivation);
+
+                    instance.setServerServiceActiveStatus(GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName(), ServerActiveStatus.INACTIVE);
                 }
 
                 /*
@@ -1217,8 +1278,14 @@ public class OMAGServerOperationalServices
                  */
                 if (instance.getOperationalRepositoryServices() != null)
                 {
+                    instance.setServerServiceActiveStatus(CommonServicesDescription.REPOSITORY_SERVICES.getServiceName(), ServerActiveStatus.STOPPING);
+
                     instance.getOperationalRepositoryServices().disconnect(permanentDeactivation);
+
+                    instance.setServerServiceActiveStatus(CommonServicesDescription.REPOSITORY_SERVICES.getServiceName(), ServerActiveStatus.INACTIVE);
                 }
+
+                instance.setServerActiveStatus(ServerActiveStatus.INACTIVE);
 
                 instanceHandler.removeServerServiceInstance(serverName);
 
@@ -1398,7 +1465,7 @@ public class OMAGServerOperationalServices
      */
 
     /*
-     * Query current configuration
+     * Query current configuration and status
      */
 
 
@@ -1409,7 +1476,7 @@ public class OMAGServerOperationalServices
      * @param serverName  local server name
      * @return OMAGServerConfig properties or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName parameter.
+     * OMAGInvalidParameterException invalid serverName parameter or the server is not runing.
      */
     public OMAGServerConfigResponse getActiveConfiguration(String userId,
                                                            String serverName)
@@ -1448,6 +1515,56 @@ public class OMAGServerOperationalServices
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
+
+
+
+    /**
+     * Return the status of the server and it services within.
+     *
+     * @param userId  user that is issuing the request
+     * @param serverName  local server name
+     * @return OMAGServerConfig properties or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName parameter or the server is not running.
+     */
+    public OMAGServerStatusResponse getActiveServerStatus(String userId,
+                                                          String serverName)
+    {
+        final String methodName = "getActiveServerStatus";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        OMAGServerStatusResponse response = new OMAGServerStatusResponse();
+
+        try
+        {
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            OMAGOperationalServicesInstance instance = instanceHandler.getServerServiceInstance(userId, serverName, methodName);
+
+            response.setServerStatus(instance.getServerStatus());
+        }
+        catch (InvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Exception error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
 
 
     /**
