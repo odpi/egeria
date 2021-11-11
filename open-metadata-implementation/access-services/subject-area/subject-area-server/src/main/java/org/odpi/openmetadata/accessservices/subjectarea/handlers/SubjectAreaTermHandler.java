@@ -129,9 +129,13 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                                                                       suppliedTerm.getExamples(),
                                                                       suppliedTerm.getAbbreviation(),
                                                                       suppliedTerm.getUsage(),
+                                                                      suppliedTerm.getAdditionalProperties(),
+                                                                      suppliedTerm.getExtendedProperties(),
+                                                                      null,
                                                                       genericHandler.getRepositoryHelper(),
                                                                       genericHandler.getServiceName(),
                                                                       genericHandler.getServerName());
+
 
                 builder.setEffectivityDates(effectiveFrom, effectiveTo);
                 builder.setAnchors(userId, glossaryGuid, methodName);
@@ -455,27 +459,11 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                 EntityDetail storedEntity = termMapper.map(storedTerm);
 
                 Date effectiveFrom = null;
-                Date effectiveTo = null;
 
                 if (suppliedTerm.getEffectiveFromTime() != null) {
                     effectiveFrom = new Date(suppliedTerm.getEffectiveFromTime());
                 }
-                if (suppliedTerm.getEffectiveToTime() != null) {
-                    effectiveTo = new Date(suppliedTerm.getEffectiveToTime());
-                }
 
-                GlossaryTermBuilder builder = new GlossaryTermBuilder(suppliedTerm.getQualifiedName(),
-                                                                      suppliedTerm.getName(),
-                                                                      suppliedTerm.getDescription(),
-                                                                      suppliedTerm.getSummary(),
-                                                                      suppliedTerm.getExamples(),
-                                                                      suppliedTerm.getAbbreviation(),
-                                                                      suppliedTerm.getUsage(),
-                                                                      genericHandler.getRepositoryHelper(),
-                                                                      genericHandler.getServiceName(),
-                                                                      genericHandler.getServerName());
-
-                builder.setEffectivityDates(effectiveFrom, effectiveTo);
                 genericHandler.updateBeanInRepository(userId,
                                                       null,
                                                       null,
@@ -487,7 +475,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                                                       false,
                                                       suppliedEntity.getProperties(),
                                                       !isReplace,
-                                                      null,
+                                                      effectiveFrom,
                                                       methodName);
 
                 // the update properties should not have updated the classifications so we can use
