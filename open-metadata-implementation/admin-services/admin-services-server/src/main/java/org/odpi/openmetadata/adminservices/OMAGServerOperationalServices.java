@@ -439,6 +439,7 @@ public class OMAGServerOperationalServices
                  * Set up the repository services REST API
                  */
                 operationalRepositoryServices.initializeViewServer(configuration.getRepositoryServicesConfig());
+                instance.setServerServiceActiveStatus(CommonServicesDescription.REPOSITORY_SERVICES.getServiceName(), ServerActiveStatus.RUNNING);
 
                 /*
                  * Set up the server instance - ensure it is active and the security has been set up correctly.
@@ -471,6 +472,7 @@ public class OMAGServerOperationalServices
                  * Set up the repository services REST API
                  */
                 operationalRepositoryServices.initializeGovernanceServer(configuration.getRepositoryServicesConfig());
+                instance.setServerServiceActiveStatus(CommonServicesDescription.REPOSITORY_SERVICES.getServiceName(), ServerActiveStatus.RUNNING);
 
                 /*
                  * Governance servers are varied in nature.  Many host connectors that exchange metadata with third party technologies.
