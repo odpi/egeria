@@ -24,6 +24,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @ToString
 public class DataEngineRegistrationRequestBody extends DataEngineOMASAPIRequestBody {
 
+    /**
+     * Software server capability
+     * -- GETTER --
+     * Gets the software server capability
+     * @return the software server capability
+     * -- SETTER --
+     * Sets the software server capability
+     * @param softwareServerCapability the software server capability
+     */
     @JsonProperty("dataEngine")
     private SoftwareServerCapability softwareServerCapability;
 
