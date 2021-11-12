@@ -336,6 +336,7 @@
                 <configuration>
                     <excludes>
                         <exclude>**/docs/**</exclude>
+                        <exclude>**/build/**</exclude>
                         <exclude>**/banner.txt</exclude>
                         <exclude>**/.vscode*/**</exclude>
                         <exclude>**/.factorypath/**</exclude>
