@@ -163,12 +163,22 @@ public class OpenMetadataTypesArchive
         /*
          * Calls for new and changed types go here
          */
+
+        update0223Events();
         update0463GovernanceActions();
     }
 
     /*
      * -------------------------------------------------------------------------------------------------------
      */
+
+    /**
+     * Store minimum and maximum partitions and replicas in the KafkaTopic.
+     */
+    private void update0223Events()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateKafkaTopic());
+    }
 
     /**
      * Deprecate the use of GovernanceActionExecutor and GovernanceActionTypeUse relationships in favour of
@@ -280,6 +290,63 @@ public class OpenMetadataTypesArchive
 
         typeDefPatch.setPropertyDefinitions(properties);
 
+        return typeDefPatch;
+    }
+
+    /**
+     * Add 4 new attributes to the kafka topic. These can be used to store the minimum maximum values of
+     * the Kafka topic replicas and partitions.
+     * @return
+     */
+    private TypeDefPatch updateKafkaTopic()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "Kafkatopic";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "minimumPartitions";
+        final String attribute1Description     = "Minimum number of Kafka partitions.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "maximumPartitions";
+        final String attribute2Description     = "Maximum number of Kafka partitions.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "minimumReplicas";
+        final String attribute3Description     = "Minimum number of Kafka replicas.";
+        final String attribute3DescriptionGUID = null;
+        final String attribute4Name            = "maximumReplicas";
+        final String attribute4Description     = "Maximum number of Kafka replicas.";
+        final String attribute4DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
+                                                           attribute4Description,
+                                                           attribute4DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
         return typeDefPatch;
     }
 

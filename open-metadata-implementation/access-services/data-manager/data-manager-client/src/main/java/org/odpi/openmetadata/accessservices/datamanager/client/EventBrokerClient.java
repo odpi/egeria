@@ -17,6 +17,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * EventBrokerClient is the client for managing topics from an Event Manager.
@@ -165,6 +166,17 @@ public class EventBrokerClient extends SchemaManagerClient implements EventBroke
 
         requestBody.setExternalSourceGUID(eventBrokerGUID);
         requestBody.setExternalSourceName(eventBrokerName);
+        Map<String, Object> extendedProperties = topicProperties.getExtendedProperties();
+        if (extendedProperties != null)
+        {
+            requestBody.setExtendedProperties(extendedProperties);
+        }
+        Map<String, String> additionalProperties = topicProperties.getAdditionalProperties();
+
+        if (additionalProperties != null)
+        {
+            requestBody.setAdditionalProperties(additionalProperties);
+        }
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
@@ -273,6 +285,17 @@ public class EventBrokerClient extends SchemaManagerClient implements EventBroke
         requestBody.setExternalSourceGUID(eventBrokerGUID);
         requestBody.setExternalSourceName(eventBrokerName);
 
+        Map<String, Object> extendedProperties = topicProperties.getExtendedProperties();
+        if (extendedProperties != null)
+        {
+            requestBody.setExtendedProperties(extendedProperties);
+        }
+        Map<String, String> additionalProperties = topicProperties.getAdditionalProperties();
+
+        if (additionalProperties != null)
+        {
+            requestBody.setAdditionalProperties(additionalProperties);
+        }
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         requestBody,
