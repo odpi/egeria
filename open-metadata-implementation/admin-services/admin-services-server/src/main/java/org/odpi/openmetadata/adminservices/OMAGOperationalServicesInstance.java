@@ -5,7 +5,11 @@ package org.odpi.openmetadata.adminservices;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServerTypeClassification;
+import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceAdmin;
+import org.odpi.openmetadata.adminservices.properties.OMAGServerServiceStatus;
+import org.odpi.openmetadata.adminservices.properties.ServerActiveStatus;
+import org.odpi.openmetadata.adminservices.properties.ServerStatus;
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerServiceInstance;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.admin.OCFMetadataOperationalServices;
 import org.odpi.openmetadata.conformance.server.ConformanceSuiteOperationalServices;
@@ -17,7 +21,12 @@ import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
 
 /**
  * OMAGOperationalServicesInstance provides the references to the active services for an instance of an OMAG Server.
@@ -25,6 +34,8 @@ import java.util.List;
 
 class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
 {
+    private ServerActiveStatus                   serverActiveStatus                  = ServerActiveStatus.INACTIVE;
+    private Map<String, ServerActiveStatus>      serviceStatusMap                    = new HashMap<>();
     private ServerTypeClassification             serverTypeClassification            = null;
     private OMAGServerConfig                     operationalConfiguration            = null;
     private OMRSOperationalServices              operationalRepositoryServices       = null;
@@ -58,12 +69,87 @@ class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
 
 
     /**
+     * Set the status of the server.
+     *
+     * @param serverActiveStatus new status
+     */
+    public synchronized void setServerActiveStatus(ServerActiveStatus serverActiveStatus)
+    {
+        this.serverActiveStatus = serverActiveStatus;
+    }
+
+
+    /**
+     * Set the status of a particular service.
+     *
+     * @param serviceName name of service
+     * @param activeStatus new status
+     */
+    public synchronized void setServerServiceActiveStatus(String serviceName, ServerActiveStatus activeStatus)
+    {
+        serviceStatusMap.put(serviceName, activeStatus);
+    }
+
+
+    /**
+     * Return a summary of the status of this server and the services within it.
+     *
+     * @return server status
+     */
+    public synchronized ServerStatus getServerStatus()
+    {
+        ServerStatus serverStatus = new ServerStatus();
+
+        serverStatus.setServerName(serverName);
+        serverStatus.setServerType(serverTypeClassification.getServerTypeName());
+        serverStatus.setServerActiveStatus(serverActiveStatus);
+
+        List<OMAGServerServiceStatus>   serviceStatuses = new ArrayList<>();
+
+        for (String serviceName : serviceStatusMap.keySet())
+        {
+            OMAGServerServiceStatus serviceStatus = new OMAGServerServiceStatus();
+
+            serviceStatus.setServiceName(serviceName);
+            serviceStatus.setServiceStatus(serviceStatusMap.get(serviceName));
+
+            serviceStatuses.add(serviceStatus);
+        }
+
+        if (operationalIntegrationDaemon != null)
+        {
+            List<OMAGServerServiceStatus> integrationServices = operationalIntegrationDaemon.getServiceStatuses();
+
+            if (integrationServices != null)
+            {
+                serviceStatuses.addAll(integrationServices);
+            }
+        }
+
+        if (operationalEngineHost != null)
+        {
+            List<OMAGServerServiceStatus> engineServices = operationalEngineHost.getServiceStatuses();
+
+            if (engineServices != null)
+            {
+                serviceStatuses.addAll(engineServices);
+            }
+        }
+
+        serverStatus.setServices(serviceStatuses);
+
+        return serverStatus;
+    }
+
+
+    /**
      * Return the configuration document that was used to start the current running server.
      * This value is null if the server has not been started.
      *
      * @return OMAGServerConfig object
      */
-    OMAGServerConfig getOperationalConfiguration() {
+    OMAGServerConfig getOperationalConfiguration()
+    {
         return operationalConfiguration;
     }
 
@@ -194,7 +280,8 @@ class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
      *
      * @return IntegrationDaemonOperationalServices object
      */
-    EngineHostOperationalServices getOperationalEngineHost() {
+    EngineHostOperationalServices getOperationalEngineHost()
+    {
         return operationalEngineHost;
     }
 
@@ -215,7 +302,8 @@ class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
      *
      * @return IntegrationDaemonOperationalServices object
      */
-    IntegrationDaemonOperationalServices getOperationalIntegrationDaemon() {
+    IntegrationDaemonOperationalServices getOperationalIntegrationDaemon()
+    {
         return operationalIntegrationDaemon;
     }
 
@@ -247,7 +335,8 @@ class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
      *
      * @return DiscoveryServerOperationalServices object
      */
-    OpenLineageServerOperationalServices getOpenLineageOperationalServices() {
+    OpenLineageServerOperationalServices getOpenLineageOperationalServices()
+    {
         return openLineageOperationalServices;
     }
 

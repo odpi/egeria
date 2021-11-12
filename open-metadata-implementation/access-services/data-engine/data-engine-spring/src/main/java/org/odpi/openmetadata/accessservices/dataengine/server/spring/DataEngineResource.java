@@ -43,7 +43,7 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 
 @Tag(name = "Data Engine OMAS", description = "The Data Engine OMAS provides APIs and events for data movement/processing engines to record the " +
         "changes made to the data landscape.", externalDocs = @ExternalDocumentation(description = "Data Engine Open Metadata Access Service (OMAS)"
-        , url = "https://egeria.odpi.org/open-metadata-implementation/access-services/data-engine/"))
+        , url = "https://odpi.github.io/egeria-docs/services/omas/data-engine/overview/"))
 
 public class DataEngineResource {
     private DataEngineRESTServices restAPI;

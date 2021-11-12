@@ -58,11 +58,12 @@ import java.util.*;
                         "NOTE: many REST APIS are not guaranteed to be backward-compatible from release to release since they have supported Java clients.  " +
                         "REST APIs may be used for development, testing, evaluation.  Click on the documentation for each module to discover more ...",
                 license = @License(name = "Apache 2.0", url = "https://www.apache.org/licenses/LICENSE-2.0"),
-                contact = @Contact(url = "https://egeria.odpi.org", name = "Egeria Project", email = "egeria-technical-discuss@lists.lfaidata.foundation")
+                contact = @Contact(url = "https://odpi.github.io/egeria-docs", name = "Egeria Project",
+                                   email = "egeria-technical-discuss@lists.lfaidata.foundation")
         ),
 
         externalDocs = @ExternalDocumentation(description = "OMAG Server Platform documentation",
-                url="https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/user")
+                url="https://odpi.github.io/egeria-docs/guides/admin/")
         )
 
 

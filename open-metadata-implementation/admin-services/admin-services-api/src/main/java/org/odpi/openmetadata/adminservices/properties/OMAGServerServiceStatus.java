@@ -1,94 +1,81 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.platformservices.properties;
+package org.odpi.openmetadata.adminservices.properties;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * OMAGServerInstanceHistory documents the start and end of a server instance.
+ * OMAGServerServiceStatus contains the status of each of the services running in the server.
+ * It is useful in determining which services are active and which service is causing a server to be stuck starting or stopping.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OMAGServerInstanceHistory implements Serializable
+public class OMAGServerServiceStatus implements Serializable
 {
     private static final long    serialVersionUID = 1L;
 
-    private Date startTime = null;
-    private Date endTime   = null;
+    private String             serviceName   = null;
+    private ServerActiveStatus serviceStatus = ServerActiveStatus.UNKNOWN;
 
 
     /**
      * Default constructor for Jackson
      */
-    public OMAGServerInstanceHistory()
+    public OMAGServerServiceStatus()
     {
     }
 
 
     /**
-     * Constructor used to create the history.
+     * Return the name of the service
      *
-     * @param startTime time the server instance started
-     * @param endTime time the server instance ended.
+     * @return string name
      */
-    public OMAGServerInstanceHistory(Date startTime, Date endTime)
+    public String getServiceName()
     {
-        this.startTime = startTime;
-        this.endTime = endTime;
+        return serviceName;
     }
 
 
     /**
-     * Return the time that this instance of the server started.
+     * Set up the name of the service.
      *
-     * @return date/time object
+     * @param serviceName string name
      */
-    public Date getStartTime()
+    public void setServiceName(String serviceName)
     {
-        return startTime;
+        this.serviceName = serviceName;
     }
 
 
     /**
-     * Set up the time that this instance of the server started.
+     * Return the current status.
      *
-     * @param startTime date/time object
+     * @return server instance status enum value
      */
-    public void setStartTime(Date startTime)
+    public ServerActiveStatus getServiceStatus()
     {
-        this.startTime = startTime;
+        return serviceStatus;
     }
 
 
     /**
-     * Return the time when this instance of the server ended.
+     * Set up the current status.
      *
-     * @return date/time object
+     * @param serviceStatus server instance status enum value
      */
-    public Date getEndTime()
+    public void setServiceStatus(ServerActiveStatus serviceStatus)
     {
-        return endTime;
-    }
-
-
-    /**
-     * Set up the time when this instance of the server ended.
-     *
-     * @param endTime date/time object
-     */
-    public void setEndTime(Date endTime)
-    {
-        this.endTime = endTime;
+        this.serviceStatus = serviceStatus;
     }
 
 
@@ -100,10 +87,10 @@ public class OMAGServerInstanceHistory implements Serializable
     @Override
     public String toString()
     {
-        return "OMAGServerInstanceHistory{" +
-                "startTime=" + startTime +
-                ", endTime=" + endTime +
-                '}';
+        return "OMAGServerServiceStatus{" +
+                       "serviceName='" + serviceName + '\'' +
+                       ", serviceStatus=" + serviceStatus +
+                       '}';
     }
 
 
@@ -124,9 +111,9 @@ public class OMAGServerInstanceHistory implements Serializable
         {
             return false;
         }
-        OMAGServerInstanceHistory that = (OMAGServerInstanceHistory) objectToCompare;
-        return Objects.equals(startTime, that.startTime) &&
-                       Objects.equals(endTime, that.endTime);
+        OMAGServerServiceStatus that = (OMAGServerServiceStatus) objectToCompare;
+        return Objects.equals(serviceName, that.serviceName) &&
+                       serviceStatus == that.serviceStatus;
     }
 
 
@@ -138,6 +125,6 @@ public class OMAGServerInstanceHistory implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(startTime, endTime);
+        return Objects.hash(serviceName, serviceStatus);
     }
 }

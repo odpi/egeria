@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/integration-services/display-integrator/users/{userId}")
 
-@Tag(name="Display Integrator OMIS", description="Supports the detection and creation of metadata for aplications that display data to users.",
+@Tag(name="Display Integrator OMIS", description="Supports the detection and creation of metadata for applications that display data to users.",
         externalDocs=@ExternalDocumentation(description="Display Integrator Open Metadata Integration Service (OMIS)",
-                url="https://egeria.odpi.org/open-metadata-implementation/integration-services/display-integrator"))
+                url="https://odpi.github.io/egeria-docs/services/omis/display-integrator/overview/"))
 
 public class DisplayIntegratorResource
 {

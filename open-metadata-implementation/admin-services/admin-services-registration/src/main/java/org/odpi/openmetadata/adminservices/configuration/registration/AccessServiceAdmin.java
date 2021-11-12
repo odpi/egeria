@@ -46,6 +46,8 @@ public abstract class AccessServiceAdmin
     protected String   karmaPointPlateauPropertyName   = "KarmaPointPlateau";   /* Community Profile OMAS */
     protected String   karmaPointIncrementPropertyName = "KarmaPointIncrement"; /* Community Profile OMAS */
 
+    private String     fullServiceName = null;
+
 
     /**
      * Initialize the access service.
@@ -88,6 +90,28 @@ public abstract class AccessServiceAdmin
                            AuditLog                auditLog,
                            String                  serverUserName) throws OMAGConfigurationErrorException
     {
+    }
+
+
+    /**
+     * Return the cached service name.
+     *
+     * @return string name
+     */
+    public String getFullServiceName()
+    {
+        return fullServiceName;
+    }
+
+
+    /**
+     * Set up the cached service name.
+     *
+     * @param fullServiceName string name
+     */
+    public void setFullServiceName(String fullServiceName)
+    {
+        this.fullServiceName = fullServiceName;
     }
 
 
