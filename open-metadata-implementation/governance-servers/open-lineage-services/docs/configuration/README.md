@@ -29,7 +29,6 @@ For example payloads and endpoints, see the [Postman samples](../samples/OLS.pos
     {
       "class": "OpenLineageConfig",
       "openLineageDescription": "Open Lineage Service is used for the storage and querying of lineage",
-      "inTopicName": "server.omas.omas.assetlineage.outTopic",
       "openLineageWiki": "wiki URL",
       "lineageGraphConnection": {
         "class": "Connection",
@@ -75,12 +74,11 @@ For example payloads and endpoints, see the [Postman samples](../samples/OLS.pos
     ```
 
     Update the payload with specific configuration values
-    - `inTopicName` - the topic name of Asset Lineage OMAS Out Topic
     - `lineageGraphConnection` - contains the information needed for configuring the 
     [open-lineage-janus-connector](../../../../adapters/open-connectors/governance-daemon-connectors/open-lineage-connectors/open-lineage-janus-connector/README.md)
     - `accessServiceConfig.serverName` - the name of the server where Asset Lineage is running (mandatory value - exception will be thrown during configuration if null)
     - `accessServiceConfig.serverPlatformUrlRoot` - the base URL where the Asset Lineage is running (mandatory value - exception will be thrown during configuration if null)
-    - `accessServiceConfig.user` - the user needed for authentication in Asset Lineage (not used at the moment)
+    - `accessServiceConfig.user` - the user needed for authentication in Asset Lineage (mandatory value - exception will be thrown during configuration if null)
     - `accessServiceConfig.password` - the password needed for authentication in Asset Lineage (not user at the moment)
     - `backgroundJobs.jobName` - should be the name of the job class name
     - `backgroundJobs.jobInterval` - interval for Open Lineage Services background processing job. The default is 120 if not specified

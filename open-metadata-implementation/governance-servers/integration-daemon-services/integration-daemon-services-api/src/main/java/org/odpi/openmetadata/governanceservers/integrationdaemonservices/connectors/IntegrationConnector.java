@@ -29,7 +29,7 @@ public interface IntegrationConnector
 
 
     /**
-     * This method is for blocking calls to wait for new metadata.  It is called from its own thread iff
+     * This method is for blocking calls to wait for new metadata.  It is called from its own thread if
      * the connector is configured to have its own thread.  It is recommended that the engage() method
      * returns when each blocking call completes.  The integration daemon will pause a second and then
      * call engage() again.  This pattern enables the calling thread to detect the shutdown of the integration

@@ -9,7 +9,7 @@
     <parent>
         <artifactId>open-metadata-fvt</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.3-SNAPSHOT</version>
+        <version>3.4-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -40,6 +40,7 @@
         <module>discovery-engine-fvt</module>
         <module>governance-engine-fvt</module>
         <module>governance-program-fvt</module>
+        <module>stewardship-action-fvt</module>
         <module>subject-area-fvt</module>
     </modules>
 

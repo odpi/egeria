@@ -104,16 +104,16 @@ public class ReferenceableBuilder extends RootBuilder
      *
      * @param qualifiedName unique name
      * @param additionalProperties additional properties
-     * @param typeName type name to use for the entity
      * @param typeId type GUID to use for the entity
+     * @param typeName type name to use for the entity
      * @param repositoryHelper helper methods
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */
     protected ReferenceableBuilder(String               qualifiedName,
                                    Map<String, String>  additionalProperties,
-                                   String               typeName,
                                    String               typeId,
+                                   String               typeName,
                                    OMRSRepositoryHelper repositoryHelper,
                                    String               serviceName,
                                    String               serverName)
@@ -160,8 +160,8 @@ public class ReferenceableBuilder extends RootBuilder
      *
      * @param qualifiedName unique name
      * @param additionalProperties additional properties
-     * @param typeName type name to use for the entity
      * @param typeId type GUID to use for the entity
+     * @param typeName type name to use for the entity
      * @param extendedProperties  properties from the subtype.
      * @param latestChange description of the last change to the asset.
      * @param repositoryHelper helper methods
@@ -170,8 +170,8 @@ public class ReferenceableBuilder extends RootBuilder
      */
     protected ReferenceableBuilder(String               qualifiedName,
                                    Map<String, String>  additionalProperties,
-                                   String               typeName,
                                    String               typeId,
+                                   String               typeName,
                                    Map<String, Object>  extendedProperties,
                                    LatestChange         latestChange,
                                    OMRSRepositoryHelper repositoryHelper,

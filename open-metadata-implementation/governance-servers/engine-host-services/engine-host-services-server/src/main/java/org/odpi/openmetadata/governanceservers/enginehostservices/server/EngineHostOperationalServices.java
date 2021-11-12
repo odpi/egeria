@@ -13,6 +13,8 @@ import org.odpi.openmetadata.adminservices.configuration.registration.AccessServ
 import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
+import org.odpi.openmetadata.adminservices.properties.OMAGServerServiceStatus;
+import org.odpi.openmetadata.adminservices.properties.ServerActiveStatus;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -42,8 +44,9 @@ public class EngineHostOperationalServices
     private String                         localServerPassword;           /* Initialized in constructor */
     private int                            maxPageSize;                   /* Initialized in constructor */
 
-    private AuditLog           auditLog           = null;
-    private EngineHostInstance engineHostInstance = null;
+    private AuditLog                        auditLog           = null;
+    private EngineHostInstance              engineHostInstance = null;
+    private Map<String, ServerActiveStatus> serviceStatusMap   = new HashMap<>();
 
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
@@ -233,6 +236,39 @@ public class EngineHostOperationalServices
     }
 
 
+    /**
+     * Set the status of a particular service.
+     *
+     * @param serviceName name of service
+     * @param activeStatus new status
+     */
+    private synchronized void setServerServiceActiveStatus(String serviceName, ServerActiveStatus activeStatus)
+    {
+        serviceStatusMap.put(serviceName, activeStatus);
+    }
+
+
+    /**
+     * Return a summary of the status of this server and the services within it.
+     *
+     * @return server status
+     */
+    public List<OMAGServerServiceStatus> getServiceStatuses()
+    {
+        List<OMAGServerServiceStatus> serviceStatuses = new ArrayList<>();
+
+        for (String serviceName : serviceStatusMap.keySet())
+        {
+            OMAGServerServiceStatus serviceStatus = new OMAGServerServiceStatus();
+
+            serviceStatus.setServiceName(serviceName);
+            serviceStatus.setServiceStatus(serviceStatusMap.get(serviceName));
+
+            serviceStatuses.add(serviceStatus);
+        }
+
+        return serviceStatuses;
+    }
 
 
     /**
@@ -253,8 +289,6 @@ public class EngineHostOperationalServices
         final String methodName = "initializeEngineServices";
         final String actionDescription = "Initialize Engine Services";
 
-        List<String> activatedEngineServices = new ArrayList<>();
-
         engineServiceAdminList = new ArrayList<>();
 
         if (engineServiceConfigList != null)
@@ -274,6 +308,7 @@ public class EngineHostOperationalServices
                 if (ServiceOperationalStatus.ENABLED.equals(engineServiceConfig.getEngineServiceOperationalStatus()))
                 {
                     enabledEngineServiceCount++;
+                    this.setServerServiceActiveStatus(engineServiceConfig.getEngineServiceFullName(), ServerActiveStatus.STARTING);
 
                     serviceEngineLists.put(engineServiceConfig.getEngineServiceURLMarker(), this.getEngineNames(engineServiceConfig));
 
@@ -315,7 +350,7 @@ public class EngineHostOperationalServices
 
                         governanceEngineHandlers.putAll(serviceEngineHandlers);
                         engineServiceAdminList.add(engineServiceAdmin);
-                        activatedEngineServices.add(engineServiceConfig.getEngineServiceFullName());
+                        this.setServerServiceActiveStatus(engineServiceConfig.getEngineServiceFullName(), ServerActiveStatus.RUNNING);
                     }
                     catch (OMAGConfigurationErrorException error)
                     {
@@ -327,7 +362,7 @@ public class EngineHostOperationalServices
                                               error);
                         throw error;
                     }
-                    catch (Throwable error)
+                    catch (Exception error)
                     {
                         auditLog.logException(methodName,
                                               EngineHostServicesAuditCode.ENGINE_SERVICE_INSTANCE_FAILURE.getMessageDefinition(engineServiceConfig.getEngineServiceName(),
@@ -364,7 +399,7 @@ public class EngineHostOperationalServices
          * Save the list of running engine services to the instance and then add the instance to the instance map.
          * The instance information can then be retrieved for shutdown or other management requests.
          */
-        return activatedEngineServices;
+        return new ArrayList<>(serviceStatusMap.keySet());
     }
 
 

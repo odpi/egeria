@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -22,8 +23,8 @@ public class OMAGServerInstanceHistory implements Serializable
 {
     private static final long    serialVersionUID = 1L;
 
-    Date  startTime;
-    Date  endTime;
+    private Date startTime = null;
+    private Date endTime   = null;
 
 
     /**
@@ -103,5 +104,40 @@ public class OMAGServerInstanceHistory implements Serializable
                 "startTime=" + startTime +
                 ", endTime=" + endTime +
                 '}';
+    }
+
+
+    /**
+     * Return comparison result based on the content of the properties.
+     *
+     * @param objectToCompare test object
+     * @return result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        {
+            return false;
+        }
+        OMAGServerInstanceHistory that = (OMAGServerInstanceHistory) objectToCompare;
+        return Objects.equals(startTime, that.startTime) &&
+                       Objects.equals(endTime, that.endTime);
+    }
+
+
+    /**
+     * Return hash code for this object
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(startTime, endTime);
     }
 }

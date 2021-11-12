@@ -132,10 +132,12 @@ public enum PortType implements Serializable
     public String toString()
     {
         return "PortType{" +
-                       "codeValue=" + ordinal +
-                       ", codeName='" + name + '\'' +
-                       ", description='" + description +
+                       "ordinal=" + ordinal +
+                       ", openTypeOrdinal=" + openTypeOrdinal +
+                       ", name='" + name + '\'' +
+                       ", description='" + description + '\'' +
+                       ", openTypeGUID='" + getOpenTypeGUID() + '\'' +
+                       ", openTypeName='" + getOpenTypeName() + '\'' +
                        '}';
-    }
-}
+    }}
 

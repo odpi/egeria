@@ -10,7 +10,7 @@
     <parent>
         <artifactId>lineage-integrator</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.3-SNAPSHOT</version>
+        <version>3.4-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -59,6 +59,16 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-manager-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.openlineage</groupId>
+            <artifactId>openlineage-java</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
         </dependency>
 
     </dependencies>

@@ -17,6 +17,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+              include = JsonTypeInfo.As.PROPERTY,
+              property = "class")
+@JsonSubTypes(
+        {
+                @JsonSubTypes.Type(value = DataSetProperties.class, name = "DataSetProperties"),
+                @JsonSubTypes.Type(value = DataStoreProperties.class, name = "DataStoreProperties"),
+        })
 public class DataAssetProperties extends AssetProperties
 {
     private static final long     serialVersionUID = 1L;

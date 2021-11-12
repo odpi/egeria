@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.userinterface.uichassis.springboot.auth;
 
 import org.apache.commons.collections4.set.UnmodifiableSet;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.ldap.userdetails.InetOrgPerson;
 
 import java.io.Serializable;

@@ -10,7 +10,7 @@
     <parent>
         <artifactId>open-metadata-distribution</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.3-SNAPSHOT</version>
+        <version>3.4-SNAPSHOT</version>
     </parent>
 
     <name>Open Metadata Assemblies</name>
@@ -108,7 +108,19 @@
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>kafka-integration-connector</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>omrs-rest-repository-connector</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>openapi-integration-connector</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>openlineage-integration-connectors</artifactId>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
@@ -118,12 +130,10 @@
             <groupId>org.odpi.egeria</groupId>
             <artifactId>search-integrator-api</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>elasticsearch-integration-connector</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>open-metadata-archive-file-connector</artifactId>

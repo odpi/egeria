@@ -245,6 +245,8 @@ public class CategoryFVT {
 
         testHierarchyWithSearchCriteria();
 
+        testUpdateCategoryParent();
+
     }
 
     private void testHierarchyWithSearchCriteria() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
@@ -417,6 +419,71 @@ public class CategoryFVT {
         deleteCategory(parentGuid);
         glossaryFVT.deleteGlossary(glossaryGuid);
     }
+
+    private void testUpdateCategoryParent() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
+        System.out.println("Create a glossary");
+        Glossary glossary = glossaryFVT.createGlossary(serverName + " " + DEFAULT_TEST_GLOSSARY_NAME2);
+        String glossaryGuid = glossary.getSystemAttributes().getGUID();
+        Category parentCategory = createCategoryWithGlossaryGuid("Parent1", glossary.getSystemAttributes().getGUID());
+        Category parentCategory2 = createCategoryWithGlossaryGuid("Parent2", glossary.getSystemAttributes().getGUID());
+        String parentGuid = parentCategory.getSystemAttributes().getGUID();
+        String parent2Guid = parentCategory2.getSystemAttributes().getGUID();
+
+        Category child = createCategory("child" , glossaryGuid);
+        CategorySummary parentCategorySummary1 = new CategorySummary();
+        parentCategorySummary1.setGuid(parentGuid);
+        child.setParentCategory(parentCategorySummary1);
+        Category cat2Updated = updateCategory(child.getSystemAttributes().getGUID(), child);
+        if (cat2Updated.getParentCategory() == null) {
+            throw new SubjectAreaFVTCheckedException("Category parent should have been set");
+        } else {
+           if (!cat2Updated.getSystemAttributes().getGUID().equals(child.getSystemAttributes().getGUID())) {
+                throw new SubjectAreaFVTCheckedException("Category parent guid not set correctly");
+            }
+        }
+        CategorySummary parentCategorySummary2 = new CategorySummary();
+        parentCategorySummary2.setGuid(parentGuid);
+        child.setParentCategory(parentCategorySummary2);
+        Category childUpdated2 = updateCategory(child.getSystemAttributes().getGUID(), child);
+        if (childUpdated2.getParentCategory() == null) {
+            throw new SubjectAreaFVTCheckedException("Category parent should have been set");
+        } else {
+            if (!childUpdated2.getSystemAttributes().getGUID().equals(child.getSystemAttributes().getGUID())) {
+                throw new SubjectAreaFVTCheckedException("Category parent guid not set correctly");
+            }
+        }
+
+        child.setParentCategory(null);
+        Category childUpdated3 = updateCategory(child.getSystemAttributes().getGUID(), child);
+        if (childUpdated3.getParentCategory() == null) {
+            throw new SubjectAreaFVTCheckedException("Category parent still be there for isReplace false");
+        }
+
+        CategorySummary parentCategorySummary3 = new CategorySummary();
+        parentCategorySummary3.setGuid(parent2Guid);
+        child.setParentCategory(parentCategorySummary3);
+        Category childUpdated4 = updateCategory(child.getSystemAttributes().getGUID(), child);
+        if (childUpdated4.getParentCategory() == null) {
+            throw new SubjectAreaFVTCheckedException("Category parent still be there for isReplace false");
+        } else {
+            if (!childUpdated4.getParentCategory().getGuid().equals(parent2Guid) ) {
+                throw new SubjectAreaFVTCheckedException("Expect category parent to be updated to the requested value");
+            }
+        }
+
+        child.setParentCategory(null);
+        Category childUpdated5 = subjectAreaCategory.update(this.userId, child.getSystemAttributes().getGUID(), child, true);
+        if (childUpdated5.getParentCategory() != null) {
+            throw new SubjectAreaFVTCheckedException("Category parent should have been removed for isReplace true");
+        }
+        //cleanup
+        deleteCategory(child.getSystemAttributes().getGUID());
+        deleteCategory(parentGuid);
+        deleteCategory(parent2Guid);
+        glossaryFVT.deleteGlossary(glossaryGuid);
+
+    }
+
 
     private Category createCategoryWithParentGlossaryGuid(String subjectAreaName, String parentGuid, String glossaryGuid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
         Category category = new Category();

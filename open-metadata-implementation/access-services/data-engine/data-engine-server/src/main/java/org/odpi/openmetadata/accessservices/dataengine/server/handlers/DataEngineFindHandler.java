@@ -15,10 +15,14 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
 import java.util.Collections;
 import java.util.List;
@@ -62,18 +66,26 @@ public class DataEngineFindHandler {
     }
 
     /**
-     * Performs a find for a DataEngine related object
+     * Performs a find for a DataEngine related object. External repositories are included
      *
-     * @param userId             user id
+     * @param userId           user id
      * @param findRequestBody  contains search criteria
-     * @param methodName         method name
+     * @param methodName       method name
      *
-     * @throws InvalidParameterException  if invalid parameters
-     * @throws PropertyServerException    if errors in repository
-     * @throws UserNotAuthorizedException if user not authorized
+     * @throws InvalidParameterException     if invalid parameters
+     * @throws PropertyServerException       if errors in repository
+     * @throws UserNotAuthorizedException    if user not authorized
+     * @throws FunctionNotSupportedException if function not supported
+     * @throws RepositoryErrorException      if error in repository
+     * @throws PropertyErrorException        if a property does not match
+     * @throws TypeErrorException            if type is unknown
+     * @throws PagingErrorException          if paging is erroneously defined
      */
     public GUIDListResponse find(FindRequestBody findRequestBody, String userId, String methodName)
-            throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+            throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException,
+            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException,
+            org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException,
+            PropertyErrorException, TypeErrorException, PagingErrorException {
 
         validateParameters(findRequestBody, userId, methodName);
 
@@ -81,12 +93,12 @@ public class DataEngineFindHandler {
 
         String matchRegex = repositoryHelper.getExactMatchRegex(findRequestBody.getIdentifiers().getQualifiedName(), false);
         String typeGuid = getTypeGuid(userId, findRequestBody.getType());
-        SearchProperties searchProperties = buildSearchProperties(userId, matchRegex);
+        InstanceProperties instanceProperties = buildInstanceProperties(userId, matchRegex);
         final String externalSourceName = findRequestBody.getExternalSourceName();
 
-        List<EntityDetail> result = repositoryHandler.findEntities(userId, typeGuid, null, searchProperties,
-                Collections.singletonList(InstanceStatus.ACTIVE), null, null, null,
-                SequencingOrder.ANY, 0, 50, methodName);
+        List<EntityDetail> result = repositoryHandler.getMetadataCollection().findEntitiesByProperty(userId, typeGuid,
+                instanceProperties, MatchCriteria.ANY, 0, Collections.singletonList(InstanceStatus.ACTIVE),
+                null, null, null, SequencingOrder.ANY, 50);
 
         if(!Objects.isNull(result)){
             List<String> guids = result.stream()
@@ -100,23 +112,25 @@ public class DataEngineFindHandler {
 
     private void validateParameters(FindRequestBody findRequestBody, String userId, String methodName)
             throws InvalidParameterException {
-
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(findRequestBody, "findRequestBody", methodName);
+        invalidParameterHandler.validateObject(findRequestBody.getIdentifiers(), "findRequestBody.identifiers", methodName);
         invalidParameterHandler.validateName(findRequestBody.getIdentifiers().getQualifiedName(),
                 "findRequestBody.identifiers.qualifiedName", methodName);
-        invalidParameterHandler.validateUserId(userId, methodName);
     }
 
-    private SearchProperties buildSearchProperties(String userId, String matchRegex){
+    private InstanceProperties buildInstanceProperties(String userId, String matchRegex){
         InstanceProperties instanceProperties = new InstanceProperties();
 
-        PrimitivePropertyValue qualifiedNamePrimitivePropertyValue = new PrimitivePropertyValue();
-        qualifiedNamePrimitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-        qualifiedNamePrimitivePropertyValue.setPrimitiveValue(matchRegex);
-        qualifiedNamePrimitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
-        qualifiedNamePrimitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
-        instanceProperties.setProperty(QUALIFIED_NAME_PROPERTY_NAME, qualifiedNamePrimitivePropertyValue );
+        PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        primitivePropertyValue.setPrimitiveValue(matchRegex);
+        primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+        primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
 
-        return repositoryHelper.getSearchPropertiesFromInstanceProperties(userId, instanceProperties, MatchCriteria.ALL);
+        instanceProperties.setProperty(QUALIFIED_NAME_PROPERTY_NAME, primitivePropertyValue);
+
+        return instanceProperties;
     }
 
     private String getTypeGuid(String userId, String typeName){

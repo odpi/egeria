@@ -115,7 +115,7 @@ public enum ProcessStatus implements Serializable
     @Override
     public String toString()
     {
-        return "GlossaryTermStatus{" +
+        return "ProcessStatus{" +
                        "ordinal=" + ordinal +
                        ", openTypeOrdinal=" + openTypeOrdinal +
                        ", name='" + name + '\'' +

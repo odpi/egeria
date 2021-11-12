@@ -27,8 +27,8 @@ public class AssetManagerConverter<B> extends AssetManagerOMASConverter<B>
      * @param serverName local server name
      */
     public AssetManagerConverter(OMRSRepositoryHelper repositoryHelper,
-                                    String               serviceName,
-                                    String               serverName)
+                                 String               serviceName,
+                                 String               serverName)
     {
         super(repositoryHelper, serviceName, serverName);
     }
@@ -59,7 +59,7 @@ public class AssetManagerConverter<B> extends AssetManagerOMASConverter<B>
             if (returnBean instanceof SoftwareServerCapabilityElement)
             {
                 SoftwareServerCapabilityElement bean = (SoftwareServerCapabilityElement) returnBean;
-                AssetManagerProperties databaseManagerProperties = new AssetManagerProperties();
+                AssetManagerProperties assetManagerProperties = new AssetManagerProperties();
 
                 if (entity != null)
                 {
@@ -67,23 +67,23 @@ public class AssetManagerConverter<B> extends AssetManagerOMASConverter<B>
 
                     InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
 
-                    databaseManagerProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
-                    databaseManagerProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    databaseManagerProperties.setDisplayName(this.removeName(instanceProperties));
-                    databaseManagerProperties.setDescription(this.removeDescription(instanceProperties));
-                    databaseManagerProperties.setTypeDescription(this.removeDeployedImplementationType(instanceProperties));
-                    databaseManagerProperties.setVersion(this.removeCapabilityVersion(instanceProperties));
-                    databaseManagerProperties.setPatchLevel(this.removePatchLevel(instanceProperties));
-                    databaseManagerProperties.setSource(this.removeSource(instanceProperties));
+                    assetManagerProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    assetManagerProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                    assetManagerProperties.setDisplayName(this.removeName(instanceProperties));
+                    assetManagerProperties.setDescription(this.removeDescription(instanceProperties));
+                    assetManagerProperties.setTypeDescription(this.removeDeployedImplementationType(instanceProperties));
+                    assetManagerProperties.setVersion(this.removeCapabilityVersion(instanceProperties));
+                    assetManagerProperties.setPatchLevel(this.removePatchLevel(instanceProperties));
+                    assetManagerProperties.setSource(this.removeSource(instanceProperties));
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are
                      * assumed to be defined in a subtype.
                      */
-                    databaseManagerProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
-                    databaseManagerProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+                    assetManagerProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+                    assetManagerProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
-                    bean.setSoftwareServerCapabilitiesProperties(databaseManagerProperties);
+                    bean.setSoftwareServerCapabilitiesProperties(assetManagerProperties);
                 }
                 else
                 {

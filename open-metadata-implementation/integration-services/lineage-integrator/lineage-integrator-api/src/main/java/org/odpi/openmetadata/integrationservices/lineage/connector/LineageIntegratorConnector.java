@@ -30,6 +30,7 @@ public abstract class LineageIntegratorConnector extends IntegrationConnectorBas
      * Return the context for this connector.  It is called by the connector.
      *
      * @return context for this connector's private use.
+     * @throws ConnectorCheckedException no context
      */
     public synchronized LineageIntegratorContext getContext() throws ConnectorCheckedException
     {

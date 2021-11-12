@@ -9,6 +9,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -44,9 +45,8 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
 
         String username = request.getParameter(USERNAME);
         String password = request.getParameter(PASSWORD);
-        Authentication authentication =  getAuthenticationManager()
+        return getAuthenticationManager()
                 .authenticate(new UsernamePasswordAuthenticationToken( username, password));
-        return authentication;
     }
 
     @Override
@@ -78,7 +78,7 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
 
     private boolean checkRoles(Authentication authentication){
        return  authentication.getAuthorities().stream()
-                .map(r -> r.getAuthority())
+                .map(GrantedAuthority::getAuthority)
                 .anyMatch(appRoles::contains);
     }
 

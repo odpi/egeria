@@ -20,6 +20,8 @@ public abstract class ViewServiceAdmin
     final protected String remoteServerName  = "remoteServerName";        /* Common */
     final protected String remoteServerURL   = "remoteServerURL";         /* Common */
 
+    private String     fullServiceName = null;
+
     /**
      * Initialize the view service.
      *
@@ -41,6 +43,29 @@ public abstract class ViewServiceAdmin
      * Shutdown the view service.
      */
     public abstract void shutdown();
+
+
+    /**
+     * Return the cached service name.
+     *
+     * @return string name
+     */
+    public String getFullServiceName()
+    {
+        return fullServiceName;
+    }
+
+
+    /**
+     * Set up the cached service name.
+     *
+     * @param fullServiceName string name
+     */
+    public void setFullServiceName(String fullServiceName)
+    {
+        this.fullServiceName = fullServiceName;
+    }
+
 
     /**
      * Log that the configuration is not valid

@@ -3,7 +3,7 @@
 
 # Swagger API Documentation
 
-The [OMAG Server Platform](https://egeria.odpi.org/open-metadata-publication/website/omag-server)
+The [OMAG Server Platform](https://odpi.github.io/egeria-docs/concepts/omag-server)
 supports the Swagger API for all of its REST 
 
 ## SpringFox Usage

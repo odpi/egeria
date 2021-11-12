@@ -28,7 +28,6 @@ public class OpenLineageServerConfig extends AdminServicesConfigHeader
     private String openLineageName;
     private String openLineageDescription;
     private String lineageServerURL;
-    private String inTopicName;
     private Connection inTopicConnection;
     private Connection lineageGraphConnection;
     private int jobIntervalInSeconds;
@@ -56,7 +55,6 @@ public class OpenLineageServerConfig extends AdminServicesConfigHeader
             openLineageName = template.openLineageName;
             openLineageDescription = template.openLineageDescription;
             lineageServerURL = template.lineageServerURL;
-            inTopicName = template.inTopicName;
             inTopicConnection = template.inTopicConnection;
             lineageGraphConnection = template.lineageGraphConnection;
             accessServiceConfig = template.accessServiceConfig;
@@ -135,25 +133,6 @@ public class OpenLineageServerConfig extends AdminServicesConfigHeader
      */
     public void setLineageServerURL(String lineageServerURL) {
         this.lineageServerURL = lineageServerURL;
-    }
-
-
-    /**
-     * Return the Input Topic Name for Open Lineage
-     *
-     * @return String Input Topic name
-     */
-    public String getInTopicName() {
-        return inTopicName;
-    }
-
-    /**
-     * Set up the Open Lineage In Topic Name
-     *
-     * @param inTopicName String Open Lineage Name
-     */
-    public void setInTopicName(String inTopicName) {
-        this.inTopicName = inTopicName;
     }
 
     /**
@@ -254,7 +233,6 @@ public class OpenLineageServerConfig extends AdminServicesConfigHeader
                 ", openLineageName='" + openLineageName + '\'' +
                 ", openLineageDescription='" + openLineageDescription + '\'' +
                 ", lineageServerURL='" + lineageServerURL + '\'' +
-                ", inTopicName='" + inTopicName + '\'' +
                 ", inTopicConnection=" + inTopicConnection +
                 ", openLineageGraphConnection=" + lineageGraphConnection +
                 ", accessServiceConfig=" + accessServiceConfig +
@@ -271,7 +249,6 @@ public class OpenLineageServerConfig extends AdminServicesConfigHeader
                 Objects.equals(openLineageName, that.openLineageName) &&
                 Objects.equals(openLineageDescription, that.openLineageDescription) &&
                 Objects.equals(lineageServerURL, that.lineageServerURL) &&
-                Objects.equals(inTopicName, that.inTopicName) &&
                 Objects.equals(inTopicConnection, that.inTopicConnection) &&
                 Objects.equals(lineageGraphConnection, that.lineageGraphConnection) &&
                 Objects.equals(accessServiceConfig, that.accessServiceConfig) &&
@@ -281,6 +258,6 @@ public class OpenLineageServerConfig extends AdminServicesConfigHeader
     @Override
     public int hashCode() {
         return Objects.hash(openLineageId, openLineageName, openLineageDescription, lineageServerURL,
-                inTopicName, inTopicConnection, lineageGraphConnection, accessServiceConfig, backgroundJobs);
+                inTopicConnection, lineageGraphConnection, accessServiceConfig, backgroundJobs);
     }
 }

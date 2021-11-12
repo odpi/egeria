@@ -15,6 +15,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -746,5 +747,43 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
         }
 
         return asset;
+    }
+
+
+
+    /**
+     * Test to see if the entity is going to be sent out as an event - it must be a referenceable - and if an asset or anchored to an asset
+     * then it must be in one of the supported zones.
+     *
+     * @param userId callers userId
+     * @param entity entity to test
+     * @return boolean flag - true means send event.
+     */
+    public boolean entityOfInterest(String       userId,
+                                    EntityDetail entity)
+    {
+        final String methodName = "entityOfInterest";
+        final String guidParameterName = "entity.getGUID()";
+
+        try
+        {
+            assetHandler.validateAnchorEntity(userId,
+                                              entity.getGUID(),
+                                              OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                              entity,
+                                              guidParameterName,
+                                              false,
+                                              true,
+                                              false,
+                                              supportedZones,
+                                              new Date(),
+                                              methodName);
+
+            return true;
+        }
+        catch (Exception error)
+        {
+            return false;
+        }
     }
 }

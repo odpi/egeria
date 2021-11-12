@@ -23,7 +23,7 @@ public class AssetManagerOutTopicServerConnector extends OpenMetadataTopicSender
      *
      * @param event event object
      * @throws InvalidParameterException the event is null
-     * @throws ConnectorCheckedException there is a problem with the embedded event bus connector(s)./
+     * @throws ConnectorCheckedException there is a problem with the embedded event bus connector(s).
      */
     public void sendEvent(AssetManagerOutTopicEvent event) throws InvalidParameterException, ConnectorCheckedException
     {

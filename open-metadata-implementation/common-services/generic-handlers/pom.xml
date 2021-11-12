@@ -9,7 +9,7 @@
     <parent>
         <artifactId>common-services</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.3-SNAPSHOT</version>
+        <version>3.4-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -95,7 +95,6 @@
             <groupId>org.odpi.egeria</groupId>
             <artifactId>csv-file-connector</artifactId>
         </dependency>
-
 
     </dependencies>
 
