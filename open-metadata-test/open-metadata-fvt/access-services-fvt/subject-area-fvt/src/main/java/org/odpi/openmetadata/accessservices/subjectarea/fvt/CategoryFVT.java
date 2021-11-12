@@ -476,6 +476,12 @@ public class CategoryFVT {
         if (childUpdated5.getParentCategory() != null) {
             throw new SubjectAreaFVTCheckedException("Category parent should have been removed for isReplace true");
         }
+        //cleanup
+        deleteCategory(child.getSystemAttributes().getGUID());
+        deleteCategory(parentGuid);
+        deleteCategory(parent2Guid);
+        glossaryFVT.deleteGlossary(glossaryGuid);
+
     }
 
 

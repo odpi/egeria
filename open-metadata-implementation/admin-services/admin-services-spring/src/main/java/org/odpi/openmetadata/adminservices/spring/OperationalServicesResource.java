@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.adminservices.OMAGServerOperationalServices;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
+import org.odpi.openmetadata.adminservices.rest.OMAGServerStatusResponse;
 import org.odpi.openmetadata.adminservices.rest.SuccessMessageResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
@@ -155,7 +156,7 @@ public class OperationalServicesResource
                     "document may have changed since the server was started.  This operation makes it possible to verify the " +
                     "configuration values actually being used in the running server. \n" +
                     "\n" +
-                    "Null is returned if the server is not running.",
+                    "An InvalidParameterException is returned if the server is not running.",
             externalDocs=@ExternalDocumentation(description="Configuration Documents",
                     url="https://odpi.github.io/egeria-docs/concepts/configuration-document"))
 
@@ -163,6 +164,36 @@ public class OperationalServicesResource
                                                            @PathVariable String           serverName)
     {
         return operationalServices.getActiveConfiguration(userId, serverName);
+    }
+
+
+
+    /**
+     * Return the status for the current active instance of the server.  Null is returned if
+     * the server instance is not running.
+     *
+     * @param userId  user that is issuing the request
+     * @param serverName  local server name
+     * @return status of the server or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException the server name is invalid or not running or
+     * OMAGConfigurationErrorException there is a problem using the supplied configuration.
+     */
+    @GetMapping(path = "/instance/status")
+
+    @Operation(summary="Retrieve active server's status",
+               description="Retrieve the status for a running instance of a server. The stored configuration " +
+                                   "document may have changed since the server was started.  This operation makes it possible to verify that " +
+                                   "all of the services. \n" +
+                                   "\n" +
+                                   "An InvalidParameterException is returned if the server is not running.",
+               externalDocs=@ExternalDocumentation(description="OMAG Server",
+                                                   url="https://odpi.github.io/egeria-docs/concepts/omag-server"))
+
+    public OMAGServerStatusResponse getActiveServerStatus(@PathVariable String userId,
+                                                          @PathVariable String serverName)
+    {
+        return operationalServices.getActiveServerStatus(userId, serverName);
     }
 
 
