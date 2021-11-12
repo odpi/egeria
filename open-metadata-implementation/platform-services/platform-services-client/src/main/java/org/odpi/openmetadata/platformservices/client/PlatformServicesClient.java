@@ -150,7 +150,7 @@ public class PlatformServicesClient
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ServerStatus getServerStatus(String  userId,
+    public ServerStatus getServerStatus(String userId,
                                         String serverName) throws InvalidParameterException,
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException

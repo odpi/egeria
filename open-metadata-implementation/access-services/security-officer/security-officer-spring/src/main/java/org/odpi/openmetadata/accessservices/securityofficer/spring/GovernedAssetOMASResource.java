@@ -21,7 +21,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/governance-engine/users/{userId}")
 
-@Tag(name="Security Officer OMAS", description="The Security Officer Open Metadata Access Service (OMAS) provides access to metadata for policy enforcement frameworks such as Apache Ranger.", externalDocs=@ExternalDocumentation(description="Security Officer Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/security-officer/"))
+@Tag(name="Security Officer OMAS", description="The Security Officer Open Metadata Access Service (OMAS) provides access to metadata for policy enforcement frameworks such as Apache Ranger.",
+     externalDocs=@ExternalDocumentation(description="Security Officer Open Metadata Access Service (OMAS)",
+                                         url="https://odpi.github.io/egeria-docs/services/omas/security-officer/overview/"))
 
 public class GovernedAssetOMASResource
 {

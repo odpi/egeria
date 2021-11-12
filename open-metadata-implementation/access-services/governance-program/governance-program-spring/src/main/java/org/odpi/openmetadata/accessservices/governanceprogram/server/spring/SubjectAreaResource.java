@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name="Governance Program OMAS", description="The Governance Program OMAS provides APIs and events for tools and applications focused on defining a data strategy, planning support for a regulation and/or developing a governance program for the data landscape."
         , externalDocs=@ExternalDocumentation(description="Governance Program Open Metadata Access Service (OMAS)",
-                                              url="https://egeria.odpi.org/open-metadata-implementation/access-services/governance-program/"))
+                                              url="https://odpi.github.io/egeria-docs/services/omas/governance-program/overview/"))
 
 public class SubjectAreaResource
 {

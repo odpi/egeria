@@ -27,6 +27,43 @@
 
     <artifactId>access-services-fvt</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>graph-repository-connector</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- We don't make use of the assembly at a jar level, but we need it
+				to have been created to run the integration tests -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>analyze</id>
+                        <goals>
+                            <goal>analyze-only</goal>
+                        </goals>
+                        <configuration>
+                            <ignoredUnusedDeclaredDependencies
+                                    combine.children="append">
+                                <ignoredUnusedDeclaredDependency>
+                                    org.odpi.egeria:graph-repository-connector:*
+                                </ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>
+                                    org.apache.commons:commons-lang3:*
+                                </ignoredUnusedDeclaredDependency>
+                            </ignoredUnusedDeclaredDependencies>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
     <packaging>pom</packaging>
     <modules>
         <module>analytics-modeling-fvt</module>
