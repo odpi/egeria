@@ -62,7 +62,8 @@ public class GovernanceEngineOutTopicListener extends GovernanceEngineEventListe
                 {
                     try
                     {
-                        governanceEngineHandler.refreshServiceConfig(governanceServiceEvent.getRegisteredGovernanceServiceGUID());
+                        governanceEngineHandler.refreshServiceConfig(governanceServiceEvent.getRegisteredGovernanceServiceGUID(),
+                                                                     governanceServiceEvent.getRequestType());
                     }
                     catch (Exception error)
                     {

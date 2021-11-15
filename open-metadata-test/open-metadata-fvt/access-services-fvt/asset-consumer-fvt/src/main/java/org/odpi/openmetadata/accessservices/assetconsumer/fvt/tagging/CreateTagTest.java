@@ -136,7 +136,7 @@ public class CreateTagTest
 
             return new AssetConsumer(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -326,7 +326,7 @@ public class CreateTagTest
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, methodName, unexpectedError);
         }

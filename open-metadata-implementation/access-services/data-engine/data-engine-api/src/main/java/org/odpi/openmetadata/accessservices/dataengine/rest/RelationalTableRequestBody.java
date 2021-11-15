@@ -24,11 +24,42 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @ToString
 public class RelationalTableRequestBody  extends DataEngineOMASAPIRequestBody {
 
+    /**
+     * The relational table to be created
+     * -- GETTER --
+     * Return the relational table bean
+     *
+     * @return the relational table
+     * -- SETTER --
+     * Set up the relational table bean
+     * @param relationalTable the relational table
+     */
     @JsonProperty("table")
     private RelationalTable relationalTable;
 
+    /**
+     * The qualified name of the database schema
+     * -- GETTER --
+     * Return the database schema qualified name
+     *
+     * @return String - qualified name of the database schema
+     * -- SETTER --
+     * Set up the qualified name of the database schema
+     * @param databaseSchemaQualifiedName of the database schema
+     */
     private String databaseSchemaQualifiedName;
 
+
+    /**
+     * Determines if the relational table is an incomplete asset
+     * -- GETTER --
+     * Return if the relational table is incomplete
+     *
+     * @return boolean - if the relational table is incomplete
+     * -- SETTER --
+     * Sets if the relational table is incomplete or not
+     * @param incomplete determines if the relational table is an incomplete asset
+     */
     @JsonProperty("incomplete")
     private boolean incomplete;
 

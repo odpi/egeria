@@ -131,7 +131,7 @@ public class CreateMetadataSourceTest
 
             return new MetadataSourceClient(serverName, serverPlatformRootURL, restClient, maxPageSize);
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -178,7 +178,7 @@ public class CreateMetadataSourceTest
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -294,7 +294,7 @@ public class CreateMetadataSourceTest
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }

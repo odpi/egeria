@@ -140,7 +140,14 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         final String fixItDL01UserId    = "fixItDL01npa";
         final String onboardDL01UserId  = "onboardDL01npa";
         final String monitorDL01UserId  = "monitorDL01npa";
-        final String cocoEngineUserId    = "cocoETLnpa";
+        final String cocoEngineUserId   = "cocoETLnpa";
+
+        /*
+         * This userId is the userId that is expected in the calls to auto-start servers (it is changed with the startup.user variable).
+         * Although this function is not part of the Coco Labs the value is included in case someone uses the coco security connectors to test
+         * the auto start functions.
+         */
+        final String serverStartUpUserId = "autoStart01npa";
 
         /*
          * Set up default zone membership
@@ -193,6 +200,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         allUsers.add(onboardDL01UserId);
         allUsers.add(monitorDL01UserId);
         allUsers.add(cocoEngineUserId);
+        allUsers.add(serverStartUpUserId);
 
         allEmployees.add(zachNowUserId);
         allEmployees.add(steveStarterUserId);
@@ -224,6 +232,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
 
         serverAdmins.add(garyGeekeUserId);
         serverOperators.add(garyGeekeUserId);
+        serverOperators.add(serverStartUpUserId);
         serverInvestigators.add(garyGeekeUserId);
 
         metadataArchitects.add(erinOverviewUserId);
@@ -252,6 +261,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         npaAccounts.add(onboardDL01UserId);
         npaAccounts.add(monitorDL01UserId);
         npaAccounts.add(cocoEngineUserId);
+        npaAccounts.add(serverStartUpUserId);
         assetOnboarding.addAll(npaAccounts);
 
         List<String> zoneSetUp = new ArrayList<>();

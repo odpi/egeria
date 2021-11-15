@@ -27,6 +27,7 @@ public class RelationshipDef extends TypeDef
     private ClassificationPropagationRule propagationRule          = ClassificationPropagationRule.NONE;
     private RelationshipEndDef            endDef1                  = null;
     private RelationshipEndDef            endDef2                  = null;
+    private boolean                       multiLink                = false;
 
 
     /**
@@ -71,8 +72,10 @@ public class RelationshipDef extends TypeDef
             this.propagationRule = templateTypeDef.getPropagationRule();
             this.endDef1 = templateTypeDef.getEndDef1();
             this.endDef2 = templateTypeDef.getEndDef2();
+            this.multiLink = templateTypeDef.getMultiLink();
         }
     }
+
 
     /**
      * Delegate the process of cloning to the subclass.
@@ -157,6 +160,28 @@ public class RelationshipDef extends TypeDef
 
 
     /**
+     * Return whether multiple relationships of this type are allowed between the same two entities.
+     *
+     * @return boolean flag
+     */
+    public boolean getMultiLink()
+    {
+        return multiLink;
+    }
+
+
+    /**
+     * Set up whether multiple relationships of this type are allowed between the same two entities.
+     *
+     * @param multiLink boolean flag
+     */
+    public void setMultiLink(boolean multiLink)
+    {
+        this.multiLink = multiLink;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return JSON style description of variables.
@@ -169,6 +194,7 @@ public class RelationshipDef extends TypeDef
                 ", description='" + getDescription() + '\'' +
                 ", endDef1=" + endDef1 +
                 ", endDef2=" + endDef2 +
+                ", multiLink=" + multiLink +
                 ", superType=" + getSuperType() +
                 ", descriptionGUID='" + getDescriptionGUID() + '\'' +
                 ", origin='" + getOrigin() + '\'' +
@@ -207,12 +233,13 @@ public class RelationshipDef extends TypeDef
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
         RelationshipDef that = (RelationshipDef) objectToCompare;
-        return propagationRule == that.propagationRule &&
+        return multiLink == that.multiLink &&
+                       propagationRule == that.propagationRule &&
                        Objects.equals(endDef1, that.endDef1) &&
                        Objects.equals(endDef2, that.endDef2);
     }
@@ -226,6 +253,6 @@ public class RelationshipDef extends TypeDef
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), propagationRule, endDef1, endDef2);
+        return Objects.hash(super.hashCode(), propagationRule, endDef1, endDef2, multiLink);
     }
 }

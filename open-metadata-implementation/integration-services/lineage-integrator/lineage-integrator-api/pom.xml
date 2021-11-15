@@ -61,6 +61,16 @@
             <artifactId>asset-manager-client</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>io.openlineage</groupId>
+            <artifactId>openlineage-java</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

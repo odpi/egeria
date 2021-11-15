@@ -7,7 +7,7 @@
 
 The **Server Chassis** provides the base server framework, such as the web server and
 the REST API endpoint support for the
-[Open Metadata and Governance (OMAG) Server Platform](https://egeria.odpi.org/open-metadata-publication/website/omag-server). 
+[Open Metadata and Governance (OMAG) Server Platform](https://odpi.github.io/egeria-docs/concepts/omag-server-platform). 
 
 
 Calls to the server chassis

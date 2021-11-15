@@ -23,18 +23,79 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @ToString
 @Getter
 @Setter
+/**
+ * RelationalTable entity is a table within a relational database schema type.
+ */
 public class RelationalTable extends Referenceable {
 
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
     private static final long serialVersionUID = 1L;
 
+    /**
+     * The display name of the relational table
+     * -- GETTER --
+     * Returns the display name of the relational table.
+     * @return display name
+     * -- SETTER --
+     * Sets up the display name of the relational table.
+     * @param displayName display name
+     */
     private String displayName;
+
+    /**
+     * The type of the relational table
+     * -- GETTER --
+     * Returns the type of the relational table.
+     * @return type
+     * -- SETTER --
+     * Sets up the type of the relational table.
+     * @param type type
+     */
     private String type;
+
+    /**
+     * The list of aliases of the relational table
+     * -- GETTER --
+     * Returns list of aliases of the relational table.
+     * @return aliases
+     * -- SETTER --
+     * Sets up the list of aliases of the relational table.
+     * @param aliases aliases
+     */
     private List<String> aliases;
+
+    /**
+     * Determines if the relational table if deprecated
+     * -- GETTER --
+     * Returns if the relational table if deprecated.
+     * @return if the relational table if deprecated
+     * -- SETTER --
+     * Sets up the value that determines if the relational table if deprecated.
+     * @param isDeprecated value saying if the relational table if deprecated
+     */
     private boolean isDeprecated;
+
+    /**
+     * The description of the relational table
+     * -- GETTER --
+     * Returns the description of the relational table.
+     * @return description
+     * -- SETTER --
+     * Sets up the description of the relational table.
+     * @param description description
+     */
     private String description;
 
+    /**
+     * The list of columns of the relational table
+     * -- GETTER --
+     * Returns list of columns of the relational table.
+     * @return columns
+     * -- SETTER --
+     * Sets up the list of columns of the relational table.
+     * @param columns columns
+     */
     private List<RelationalColumn> columns;
 
 }

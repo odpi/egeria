@@ -15,7 +15,7 @@ public enum EngineServiceDescription implements Serializable
                         "asset-analysis",
                         "Analyses the content of an asset's real world counterpart, generates annotations " +
                                 "in an open discovery report that is attached to the asset in the open metadata repositories.",
-                        "https://egeria.odpi.org/open-metadata-implementation/engine-services/asset-analysis/",
+                        "https://odpi.github.io/egeria-docs/services/omes/asset-analysis/overview/",
                         "Discovery Engine OMAS"),
 
     GOVERNANCE_ACTION_OMES(6001,
@@ -24,7 +24,7 @@ public enum EngineServiceDescription implements Serializable
                            "governance-action",
                            "Executes requested governance action services to monitor, assess and maintain metadata and its " +
                                    "real-world counterparts.",
-                           "https://egeria.odpi.org/open-metadata-implementation/engine-services/governance-action/",
+                           "https://odpi.github.io/egeria-docs/services/omes/governance-action/overview/",
                            "Governance Engine OMAS"),
 
     ;

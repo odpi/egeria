@@ -8,10 +8,20 @@ import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelp
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.ClassificationDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.ClassificationPropagationRule;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefStatus;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * OpenMetadataTypesArchive builds an open metadata archive containing all of the standard open metadata types.
@@ -35,7 +45,7 @@ public class OpenMetadataTypesArchive
     private static final String                  archiveName        = "Open Metadata Types";
     private static final String                  archiveDescription = "Standard types for open metadata repositories.";
     private static final OpenMetadataArchiveType archiveType        = OpenMetadataArchiveType.CONTENT_PACK;
-    private static final String                  archiveVersion     = "3.3";
+    private static final String                  archiveVersion     = "3.4";
     private static final String                  originatorName     = "Egeria";
     private static final String                  originatorLicense  = "Apache 2.0";
     private static final Date                    creationDate       = new Date(1588261366992L);
@@ -143,7 +153,7 @@ public class OpenMetadataTypesArchive
      */
     public void getOriginalTypes()
     {
-        OpenMetadataTypesArchive3_2 previousTypes = new OpenMetadataTypesArchive3_2(archiveBuilder);
+        OpenMetadataTypesArchive3_3 previousTypes = new OpenMetadataTypesArchive3_3(archiveBuilder);
 
         /*
          * Pull the types from previous releases.
@@ -153,33 +163,134 @@ public class OpenMetadataTypesArchive
         /*
          * Calls for new and changed types go here
          */
-        create0780IncompleteClassification();
+        update0463GovernanceActions();
     }
 
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
 
-    private void create0780IncompleteClassification() {
-        this.archiveBuilder.addClassificationDef(addIncompleteClassification());
-    }
-
-
-    private ClassificationDef addIncompleteClassification()
+    /**
+     * Deprecate the use of GovernanceActionExecutor and GovernanceActionTypeUse relationships in favour of
+     * additional properties in the GovernanceAction entity.  This is to improve performance.
+     */
+    private void update0463GovernanceActions()
     {
-        final String guid            = "078432fb-a889-4a51-8ebe-9797becea9f1";
-        final String name            = "Incomplete";
-        final String description     = "Accompanies a partial, incomplete Referenceable.";
-        final String descriptionGUID = null;
-
-        final String linkedToEntity = "Referenceable";
-
-        return archiveHelper.getClassificationDef(guid,
-                                                  name,
-                                                  null,
-                                                  description,
-                                                  descriptionGUID,
-                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
-                                                  true);
-
+        this.archiveBuilder.addTypeDefPatch(deprecateGovernanceActionExecutorRelationship());
+        this.archiveBuilder.addTypeDefPatch(deprecateGovernanceActionTypeUseRelationship());
+        this.archiveBuilder.addTypeDefPatch(updateGovernanceActionEntity());
     }
 
+    private TypeDefPatch deprecateGovernanceActionExecutorRelationship()
+    {
+        final String typeName = "GovernanceActionExecutor";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch deprecateGovernanceActionTypeUseRelationship()
+    {
+        final String typeName = "GovernanceActionTypeUse";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch updateGovernanceActionEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "GovernanceAction";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "requestType";
+        final String attribute1Description     = "The request type used to call the service.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "requestParameters";
+        final String attribute2Description     = "Properties that configure the governance service for this type of request.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "executorEngineGUID";
+        final String attribute3Description     = "Unique identifier of the governance engine nominated to run the request.";
+        final String attribute3DescriptionGUID = null;
+        final String attribute4Name            = "executorEngineName";
+        final String attribute4Description     = "Unique identifier of the governance engine nominated to run the request.";
+        final String attribute4DescriptionGUID = null;
+        final String attribute5Name            = "processName";
+        final String attribute5Description     = "Unique name of the process that initiated this request.";
+        final String attribute5DescriptionGUID = null;
+        final String attribute6Name            = "governanceActionTypeGUID";
+        final String attribute6Description     = "Unique identifier of the governance action type that initiated this request.";
+        final String attribute6DescriptionGUID = null;
+        final String attribute7Name            = "governanceActionTypeName";
+        final String attribute7Description     = "Unique name of the governance action type that initiated this request.";
+        final String attribute7DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute2Name,
+                                                                    attribute2Description,
+                                                                    attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
+                                                           attribute4Description,
+                                                           attribute4DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute5Name,
+                                                           attribute5Description,
+                                                           attribute5DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute6Name,
+                                                           attribute6Description,
+                                                           attribute6DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute7Name,
+                                                           attribute7Description,
+                                                           attribute7DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
 }
 

@@ -284,7 +284,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
                 }
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             String eventString = NULL_EVENT;
 
@@ -446,7 +446,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
                 }
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             String eventString = NULL_EVENT;
 
@@ -810,7 +810,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
                 log.debug("Ignored instance event, null type");
             }
         }
-        catch (Throwable  error)
+        catch (Exception error)
         {
             String eventString = NULL_EVENT;
 
@@ -1881,6 +1881,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param typeDefName                    name of this relationship's TypeDef.
      * @param instanceGUID                   unique identifier for the relationship.
      */
+    @SuppressWarnings(value = "unused")
     public void processPurgedRelationshipEvent(String sourceName,
                                                String originatorMetadataCollectionId,
                                                String originatorServerName,

@@ -24,6 +24,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @ToString
 public class DatabaseRequestBody extends DataEngineOMASAPIRequestBody {
 
+    /**
+     * The database to be created
+     * -- GETTER --
+     * Return the database bean
+     *
+     * @return the database
+     * -- SETTER --
+     * Set up the database bean
+     * @param database the database
+     */
     @JsonProperty("database")
     private Database database;
 

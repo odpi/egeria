@@ -23,6 +23,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @ToString
 public class ProcessHierarchyRequestBody extends DataEngineOMASAPIRequestBody {
 
+    /**
+     * The process hierarchy
+     * -- GETTER --
+     * Returns the process hierarchy
+     * @return the process hierarchy
+     * -- SETTER --
+     * Sets up the process hierarchy
+     * @param processHierarchy the process hierarchy
+     */
     private ProcessHierarchy processHierarchy;
 
 }
