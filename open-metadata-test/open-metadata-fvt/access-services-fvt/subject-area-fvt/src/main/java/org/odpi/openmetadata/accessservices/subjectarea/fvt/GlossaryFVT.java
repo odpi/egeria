@@ -210,10 +210,10 @@ public class GlossaryFVT {
         return taxonomy;
     }
 
-    public Glossary createPastToGlossary(String name) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    public Glossary createPastToGlossary(long now, String name) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         Glossary glossary = new Glossary();
         glossary.setName(name);
-        long now = new Date().getTime();
+
         // expire the glossary 10 milliseconds ago
         glossary.setEffectiveToTime(new Date(now - 10).getTime());
         Glossary newGlossary = issueCreateGlossary(glossary);
@@ -223,10 +223,9 @@ public class GlossaryFVT {
         return newGlossary;
     }
 
-    public Glossary createPastFromGlossary(String name) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    public Glossary createPastFromGlossary(long now, String name) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         Glossary glossary = new Glossary();
         glossary.setName(name);
-        long now = new Date().getTime();
         // expire the glossary 10 milliseconds ago
         glossary.setEffectiveFromTime(new Date(now - 10).getTime());
         return issueCreateGlossary(glossary);
@@ -242,10 +241,10 @@ public class GlossaryFVT {
         return issueCreateGlossary(glossary);
     }
 
-    public Glossary createFutureGlossary(String name) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
+    public Glossary createFutureGlossary(long now, String name) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
         Glossary glossary = new Glossary();
         glossary.setName(name);
-        long now = new Date().getTime();
+
         // make the glossary effective in a days time for day
         glossary.setEffectiveFromTime(new Date(now + 1000 * 60 * 60 * 24).getTime());
         glossary.setEffectiveToTime(new Date(now + 2000 * 60 * 60 * 24).getTime());

@@ -880,9 +880,9 @@ public class OMAGServerPlatformInstanceMap
             {
                 serverInstance.shutdown(methodName);
             }
-            catch (Throwable t)
+            catch (Exception error)
             {
-                throw t;
+                throw error;
             }
             finally
             {

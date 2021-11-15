@@ -401,6 +401,7 @@ public class TermFVT {
             throw new SubjectAreaFVTCheckedException("ERROR: Use API call to check update to gain 2 categorizations");
         }
         testCategorizedTermsWithSearchCriteria();
+        testAdditionalParameters();
 
         List<CategorySummary> supplied3Categories = new ArrayList<>();
         supplied3Categories.add(cat1Summary);
@@ -530,11 +531,9 @@ public class TermFVT {
         }
         return restoredTerm;
     }
-    public Term updateTermToFuture(String guid, Term term) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        long now = new Date().getTime();
-
-       term.setEffectiveFromTime(new Date(now+6*1000*60*60*24).getTime());
-       term.setEffectiveToTime(new Date(now+7*1000*60*60*24).getTime());
+    public Term updateTermToFuture(long now, String guid, Term term) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+       term.setEffectiveFromTime(new Date(now+1001*60*60*24).getTime());
+       term.setEffectiveToTime(new Date(now+1999*60*60*24).getTime());
 
         Term updatedTerm = subjectAreaTerm.update(this.userId, guid, term);
         if (updatedTerm != null)
@@ -701,47 +700,6 @@ public class TermFVT {
         if (count !=10) {
             throw new SubjectAreaFVTCheckedException("ERROR:  Expected 10 different category term names for ss from first 2 pages " + count);
         }
-//        findRequest.setStartingFrom(0);
-//        List<Term> firstFiveTerms = glossaryFVT.getTerms(glossaryGuid, findRequest);
-//        count = firstFiveTerms.size();
-//        if (count !=5) {
-//            throw new SubjectAreaFVTCheckedException("ERROR: Expected 5 glossary terms for ss, got " + count);
-//        }
-//        Set<String> firstFiveTermsNames = firstFiveTerms.stream()
-//                .map(term ->term.getName()).collect(Collectors.toSet());
-//        count =  firstFiveTermsNames.size();
-//        if (count !=5) {
-//            throw new SubjectAreaFVTCheckedException("ERROR: Expected 5 glossary distinct term names for ss, got " + count);
-//        }
-//        findRequest.setStartingFrom(5);
-//        List<Term> secondFiveTerms =glossaryFVT.getTerms(parentGuid, findRequest);
-//        count =  secondFiveTerms.size();
-//        if (count !=5) {
-//            throw new SubjectAreaFVTCheckedException("ERROR: Expected 5 glossary terms for ss for 2nd page, got " + count);
-//        }
-//        Set<String> secondFiveTermsNames = secondFiveTerms.stream()
-//                .map(term ->term.getName()).collect(Collectors.toSet());
-//        count =  secondFiveTermsNames.size();
-//        if (count !=5) {
-//            throw new SubjectAreaFVTCheckedException("ERROR:  Expected 5 glossary term names for ss for 2nd page " + count);
-//        }
-//        Set<String> totalFiveTermsNames = firstFiveTermsNames;
-//        totalFiveTermsNames.addAll(secondFiveTermsNames);
-//        count = totalFiveCategoryTermsNames.size();
-//        if (count !=10) {
-//            throw new SubjectAreaFVTCheckedException("ERROR:  Expected 10 different glossary term names for ss from first 2 pages " + count);
-//        }
-//
-//        findRequest.setStartingFrom(0);
-//        findRequest.setPageSize(10);
-//        count =  categoryFVT.getTerms(parentGuid, findRequest).size();
-//        if (count !=10) {
-//            throw new SubjectAreaFVTCheckedException("ERROR: Expected 10 terms for ss, got " + count);
-//        }
-//        count = glossaryFVT.getTerms(glossaryGuid, findRequest).size();
-//        if (count !=10) {
-//            throw new SubjectAreaFVTCheckedException("ERROR: Expected 10 glossary terms for ss, got " + count);
-//        }
 
         //cleanup
         for (String termGuid: termGuids) {
@@ -750,6 +708,30 @@ public class TermFVT {
         categoryFVT.deleteCategory(parentGuid);
         glossaryFVT.deleteGlossary(glossaryGuid);
 
+    }
+    private void testAdditionalParameters() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
+        System.out.println("Create a glossary");
+        Glossary glossary = glossaryFVT.createGlossary("Glossary name for CategorizedTermsWithSearchCriteria");
+        String glossaryGuid = glossary.getSystemAttributes().getGUID();
+        Term term = getTermForInput("test",glossaryGuid);
+        Map<String, String> inputMap = new HashMap<>();
+        inputMap.put("aaa","bbb");
+        term.setAdditionalProperties(inputMap);
+        Term createdTerm = issueCreateTerm(term);
+        if (!createdTerm.getAdditionalProperties().get("aaa").equals("bbb") ) {
+             throw new SubjectAreaFVTCheckedException("Create additional properties did not persist");
+        }
+
+        Map<String, String> inputMap2 = new HashMap<>();
+        inputMap2.put("ccc","ddd");
+        term.setAdditionalProperties(inputMap2);
+        Term updatedTerm = updateTerm(createdTerm.getSystemAttributes().getGUID(), term);
+        if (!updatedTerm.getAdditionalProperties().get("ccc").equals("ddd") ) {
+            throw new SubjectAreaFVTCheckedException("Update additional properties did not persist");
+        }
+
+        deleteTerm(createdTerm.getSystemAttributes().getGUID());
+        glossaryFVT.deleteGlossary(glossaryGuid);
     }
 
 }
