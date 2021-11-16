@@ -909,8 +909,7 @@ class DataEngineRESTServicesTest {
 
         verify(dataEngineDataFileHandler, times(1)).upsertFileAssetIntoCatalog(DATA_FILE_TYPE_NAME,
                 DATA_FILE_TYPE_GUID, dataFileRequestBody.getDataFile(), false, dataFileRequestBody.getDataFile().getSchema(),
-                dataFileRequestBody.getDataFile().getColumns(), getDataFileExtendedProperties(), EXTERNAL_SOURCE_DE_GUID,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, USER, "upsertDataFile");
+                getDataFileExtendedProperties(), EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, USER, "upsertDataFile");
     }
 
     @Test
@@ -924,9 +923,8 @@ class DataEngineRESTServicesTest {
 
         verify(dataEngineDataFileHandler, times(1)).upsertFileAssetIntoCatalog(CSV_FILE_TYPE_NAME,
                 CSV_FILE_TYPE_GUID, dataFileRequestBody.getDataFile(), false,
-                dataFileRequestBody.getDataFile().getSchema(), dataFileRequestBody.getDataFile().getColumns(),
-                getCSVFileExtendedProperties(), EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, USER,
-                "upsertDataFile");
+                dataFileRequestBody.getDataFile().getSchema(), getCSVFileExtendedProperties(), EXTERNAL_SOURCE_DE_GUID,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, USER, "upsertDataFile");
     }
 
     @Test

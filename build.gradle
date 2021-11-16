@@ -79,7 +79,7 @@ allprojects {
         luceneVersion = '8.10.1'
         nettyVersion = '4.1.69.Final'
         gremlinVersion = '3.5.1'
-        groovyVersion = '3.0.7'
+        groovyVersion = '3.0.9'
         springdataVersion = '2.5.6'
         janusVersion = '0.6.0'
         springwebVersion = '5.3.12'
@@ -202,6 +202,8 @@ allprojects {
             implementation("javax.servlet:javax.servlet-api:4.0.1")
 	        implementation("commons-configuration:commons-configuration:1.10")
 	        implementation("org.apache.commons:commons-configuration2:2.7")
+            implementation("org.hibernate:hibernate-validator:7.0.1.Final")
+
             // testng also used in our 'source' code to support unit tests
             implementation("org.testng:testng:7.4.0")
             runtimeOnly("joda-time:joda-time:2.10.13")
