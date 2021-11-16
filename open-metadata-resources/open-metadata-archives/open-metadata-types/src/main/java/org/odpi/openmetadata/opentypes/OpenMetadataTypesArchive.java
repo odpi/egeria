@@ -163,12 +163,22 @@ public class OpenMetadataTypesArchive
         /*
          * Calls for new and changed types go here
          */
+
+        update0223Events();
         update0463GovernanceActions();
     }
 
     /*
      * -------------------------------------------------------------------------------------------------------
      */
+
+    /**
+     * Store maximum partitions and replicas in the KafkaTopic.
+     */
+    private void update0223Events()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateKafkaTopic());
+    }
 
     /**
      * Deprecate the use of GovernanceActionExecutor and GovernanceActionTypeUse relationships in favour of
