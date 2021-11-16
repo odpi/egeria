@@ -26,6 +26,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @ToString
 public class LineageMappingsRequestBody extends DataEngineOMASAPIRequestBody {
 
+    /**
+     * The lineage mappings
+     * -- GETTER --
+     * Return the lineage mappings
+     * @return the lineage mappings
+     * -- SETTER --
+     * Set up the lineage mappings
+     * @param lineageMappings the lineage mappings
+     */
     private List<LineageMapping> lineageMappings;
 
 }
