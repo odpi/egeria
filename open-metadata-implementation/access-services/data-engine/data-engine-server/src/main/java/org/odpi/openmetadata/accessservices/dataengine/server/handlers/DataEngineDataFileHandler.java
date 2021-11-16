@@ -36,7 +36,7 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
  */
 public class DataEngineDataFileHandler {
 
-    private static final String FILE_GUID_PARAMETER_NAME   = "fileGUID";
+    private static final String FILE_GUID_PARAMETER_NAME = "fileGUID";
 
     private final InvalidParameterHandler invalidParameterHandler;
     private final OMRSRepositoryHelper repositoryHelper;
@@ -80,7 +80,6 @@ public class DataEngineDataFileHandler {
      * @param fileTypeGuid       file type guid
      * @param file               actual data file
      * @param schemaType         file schema
-     * @param columns            file columns
      * @param extendedProperties extended properties
      * @param externalSourceGuid external source guid
      * @param externalSourceName external source name
@@ -94,11 +93,11 @@ public class DataEngineDataFileHandler {
      * @throws UserNotAuthorizedException if user not authorized
      */
     public String upsertFileAssetIntoCatalog(String fileTypeName, String fileTypeGuid, DataFile file, boolean incomplete,
-                                             SchemaType schemaType, List<Attribute> columns, Map<String, Object> extendedProperties,
-                                             String externalSourceGuid, String externalSourceName, String userId, String methodName)
+                                             SchemaType schemaType, Map<String, Object> extendedProperties, String externalSourceGuid,
+                                             String externalSourceName, String userId, String methodName)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
-        validateParameters(file, schemaType, columns, externalSourceGuid, userId, methodName);
+        validateParameters(file, schemaType, externalSourceGuid, userId, methodName);
 
         Optional<EntityDetail> fileAsEntity = dataEngineCommonHandler.findEntity(userId, file.getQualifiedName(), fileTypeName);
 
@@ -185,19 +184,14 @@ public class DataEngineDataFileHandler {
                 typeGuid, typeName, extendedProperties, methodName);
     }
 
-    private void validateParameters(DataFile file, SchemaType schemaType, List<Attribute> columns, String externalSourceGuid,
-                                    String userId, String methodName) throws InvalidParameterException {
+    private void validateParameters(DataFile file, SchemaType schemaType, String externalSourceGuid, String userId, String methodName) throws
+                                                                                                                                       InvalidParameterException {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateObject(externalSourceGuid, "externalSourceGuid", methodName);
         invalidParameterHandler.validateObject(file, "file", methodName);
         invalidParameterHandler.validateName(file.getQualifiedName(), "file.qualifiedName", methodName);
-        invalidParameterHandler.validateName(file.getPathName(), "file.pathName", methodName);
         if (schemaType != null) {
             invalidParameterHandler.validateObject(schemaType.getQualifiedName(), "schema.qualifiedName", methodName);
-        }
-        invalidParameterHandler.validateObject(columns, "columns", methodName);
-        for (Attribute column : columns) {
-            invalidParameterHandler.validateName(column.getQualifiedName(), "columns.column.qualifiedName", methodName);
         }
     }
 }

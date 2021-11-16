@@ -63,6 +63,16 @@ public interface DataEngineInterface {
      */
     List<SchemaType> getChangedSchemaTypes(Date from, Date to);
 
+
+    /**
+     * Retrieve a list of the changed data stores between the dates and times provided.
+     *
+     * @param from the date and time from which to look for changes (exclusive)
+     * @param to the date and time up to which to look for changes (inclusive)
+     * @return {@code List<SchemaType>}
+     */
+    List<? super Referenceable> getChangedDataStores(Date from, Date to);
+
     /**
      * Retrieve a list of the changed processes between the dates and times provided.
      *

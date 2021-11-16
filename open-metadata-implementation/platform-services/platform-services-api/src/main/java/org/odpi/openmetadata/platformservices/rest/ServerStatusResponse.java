@@ -14,7 +14,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ServerListResponse returns the list of servers running in a platform.
+ * ServerStatusResponse returns the status of a server running in a platform.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -62,7 +62,7 @@ public class ServerStatusResponse extends FFDCResponseBase
     /**
      * Return the name of the server where the services are running.
      *
-     * @return name of server		      * @return name of server
+     * @return name of server
      */
     public String getServerName()
     {

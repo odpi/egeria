@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetmanager.server;
 
-import org.odpi.openmetadata.accessservices.assetmanager.api.DataAssetExchangeInterface;
 import org.odpi.openmetadata.accessservices.assetmanager.connectors.outtopic.AssetManagerOutTopicClientProvider;
 import org.odpi.openmetadata.accessservices.assetmanager.converters.*;
 import org.odpi.openmetadata.accessservices.assetmanager.ffdc.AssetManagerErrorCode;
@@ -11,7 +10,6 @@ import org.odpi.openmetadata.accessservices.assetmanager.handlers.GlossaryExchan
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.ProcessExchangeHandler;
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.SchemaExchangeHandler;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.*;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
@@ -37,6 +35,9 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
     private GlossaryExchangeHandler                                             glossaryExchangeHandler;
     private ProcessExchangeHandler                                              processExchangeHandler;
     private SchemaExchangeHandler                                               schemaExchangeHandler;
+    private GovernanceActionHandler<GovernanceActionElement>                    governanceActionHandler;
+    private AssetHandler<GovernanceActionProcessElement>                        governanceActionProcessHandler;
+    private GovernanceActionTypeHandler<GovernanceActionTypeElement>            governanceActionTypeHandler;
 
 
     /**
@@ -162,6 +163,48 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
                                                                defaultZones,
                                                                publishZones,
                                                                auditLog);
+
+        this.governanceActionHandler = new GovernanceActionHandler<>(new GovernanceActionConverter<>(repositoryHelper, serviceName, serverName),
+                                                                     GovernanceActionElement.class,
+                                                                     serviceName,
+                                                                     serverName,
+                                                                     invalidParameterHandler,
+                                                                     repositoryHandler,
+                                                                     repositoryHelper,
+                                                                     localServerUserId,
+                                                                     securityVerifier,
+                                                                     supportedZones,
+                                                                     defaultZones,
+                                                                     publishZones,
+                                                                     auditLog);
+
+        this.governanceActionProcessHandler = new AssetHandler<>(new GovernanceActionProcessConverter<>(repositoryHelper, serviceName, serverName),
+                                                                 GovernanceActionProcessElement.class,
+                                                                 serviceName,
+                                                                 serverName,
+                                                                 invalidParameterHandler,
+                                                                 repositoryHandler,
+                                                                 repositoryHelper,
+                                                                 localServerUserId,
+                                                                 securityVerifier,
+                                                                 supportedZones,
+                                                                 defaultZones,
+                                                                 publishZones,
+                                                                 auditLog);
+
+        this.governanceActionTypeHandler = new GovernanceActionTypeHandler<>(new GovernanceActionTypeConverter<>(repositoryHelper, serviceName, serverName),
+                                                                             GovernanceActionTypeElement.class,
+                                                                             serviceName,
+                                                                             serverName,
+                                                                             invalidParameterHandler,
+                                                                             repositoryHandler,
+                                                                             repositoryHelper,
+                                                                             localServerUserId,
+                                                                             securityVerifier,
+                                                                             supportedZones,
+                                                                             defaultZones,
+                                                                             publishZones,
+                                                                             auditLog);
     }
 
 
@@ -203,7 +246,7 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
      * @return  handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    DataAssetExchangeHandler getDataAssetExchangeHandler() throws PropertyServerException
+    public DataAssetExchangeHandler getDataAssetExchangeHandler() throws PropertyServerException
     {
         final String methodName = "getDataAssetExchangeHandler";
 
@@ -259,4 +302,39 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
 
         return schemaExchangeHandler;
     }
+
+
+
+    /**
+     * Return the handler for governance action process requests.
+     *
+     * @return handler object
+     */
+    AssetHandler<GovernanceActionProcessElement> getGovernanceActionProcessHandler()
+    {
+        return governanceActionProcessHandler;
+    }
+
+
+    /**
+     * Return the handler for governance action type requests.
+     *
+     * @return handler object
+     */
+    GovernanceActionTypeHandler<GovernanceActionTypeElement> getGovernanceActionTypeHandler()
+    {
+        return governanceActionTypeHandler;
+    }
+
+
+    /**
+     * Return the handler for governance action requests.
+     *
+     * @return handler object
+     */
+    GovernanceActionHandler<GovernanceActionElement> getGovernanceActionHandler()
+    {
+        return governanceActionHandler;
+    }
+
 }

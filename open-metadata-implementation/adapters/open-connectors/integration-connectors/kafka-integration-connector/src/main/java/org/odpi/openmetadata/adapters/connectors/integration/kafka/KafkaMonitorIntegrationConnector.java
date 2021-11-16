@@ -23,8 +23,7 @@ import java.util.Set;
 
 
 /**
- * KafkaMonitorIntegrationConnector provides common methods for the connectors
- * in this module.
+ * KafkaMonitorIntegrationConnector catalogues active topics in a kafka broker.
  */
 public class KafkaMonitorIntegrationConnector extends TopicIntegratorConnector
 {
@@ -282,7 +281,7 @@ public class KafkaMonitorIntegrationConnector extends TopicIntegratorConnector
 
 
     /**
-     * Shutdown file monitoring
+     * Shutdown kafka monitoring
      *
      * @throws ConnectorCheckedException something failed in the super class
      */

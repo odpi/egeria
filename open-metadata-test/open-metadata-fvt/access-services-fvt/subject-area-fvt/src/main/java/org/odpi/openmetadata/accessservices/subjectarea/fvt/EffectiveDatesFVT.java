@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 import java.io.IOException;
+import java.util.Date;
 
 /**
  * FVT resource to call subject area client APIs to test the effectivity dates
@@ -68,15 +69,16 @@ public class EffectiveDatesFVT
     }
 
     public void run() throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        long now = new Date().getTime();
         try
         {
-            glossaryFVT.createPastToGlossary(DEFAULT_TEST_PAST_GLOSSARY_NAME);
+            glossaryFVT.createPastToGlossary(now, DEFAULT_TEST_PAST_GLOSSARY_NAME);
         } catch (InvalidParameterException e) {
             System.out.println("Expected creation of a Glossary with to in the past failed");
         }
         try
         {
-            glossaryFVT.createPastFromGlossary(DEFAULT_TEST_PAST_GLOSSARY_NAME);
+            glossaryFVT.createPastFromGlossary(now, DEFAULT_TEST_PAST_GLOSSARY_NAME);
         } catch (InvalidParameterException e) {
             System.out.println("Expected creation of a Glossary with from in the past failed");
         }
@@ -86,7 +88,7 @@ public class EffectiveDatesFVT
         } catch (InvalidParameterException e) {
             System.out.println("Expected creation of a Glossary with invalid Effectivity dates failed");
         }
-        Glossary futureGloss = glossaryFVT.createFutureGlossary(DEFAULT_TEST_FUTURE_GLOSSARY_NAME);
+        Glossary futureGloss = glossaryFVT.createFutureGlossary(now, DEFAULT_TEST_FUTURE_GLOSSARY_NAME);
         FVTUtils.validateNode(futureGloss);
         Term term5 =termFVT.createTerm(DEFAULT_TEST_TERM_NAME, futureGloss.getSystemAttributes().getGUID());
         FVTUtils.validateNode(term5);
@@ -97,7 +99,7 @@ public class EffectiveDatesFVT
         checkTermGlossaryEffectivity(futureGloss, gotTerm5);
 
         // update the term so that its effective dates not longer are compatible with the glossary
-        Term futureTerm = termFVT.updateTermToFuture(gotTerm5.getSystemAttributes().getGUID(), term5);
+        Term futureTerm = termFVT.updateTermToFuture(now, gotTerm5.getSystemAttributes().getGUID(), term5);
         FVTUtils.validateNode(futureTerm);
         checkTermGlossaryEffectivity(futureGloss, futureTerm);
         futureTerm = termFVT.getTermByGUID(term5.getSystemAttributes().getGUID());

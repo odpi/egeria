@@ -88,6 +88,21 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
     }
 
     /**
+     * Retrieve a list of the changed data stores between the dates and times provided.
+     *
+     * @param from the date and time from which to look for changes (exclusive)
+     * @param to the date and time up to which to look for changes (inclusive)
+     * @return {@code List<SchemaType>}
+     */
+    @Override
+    public List<? super Referenceable> getChangedDataStores(Date from, Date to) {
+        if (requiresPolling()) {
+            log.debug("DataEngineConnectorBase::getChangedDataStores(Date, Date) is not overridden (unimplemented).");
+        }
+        return Collections.emptyList();
+    }
+
+    /**
      * Retrieve a list of the changed processes between the dates and times provided.
      *
      * @param from the date and time from which to look for changes (exclusive)

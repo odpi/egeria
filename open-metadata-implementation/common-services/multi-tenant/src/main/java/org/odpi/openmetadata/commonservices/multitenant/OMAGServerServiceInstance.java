@@ -6,6 +6,7 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.OMAGServerInstanceErrorCode;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.platformservices.properties.ServerInstanceStatus;
 
 /**
  * OMAGServerServiceInstance represents an instance of a service in an OMAG Server.
@@ -13,9 +14,10 @@ import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityV
  */
 public abstract class OMAGServerServiceInstance
 {
-    protected String serverName;
-    protected String serviceName;
-    protected int    maxPageSize = 500;
+    protected String               serverName;
+    protected String               serviceName;
+    private   ServerInstanceStatus serviceInstanceStatus = ServerInstanceStatus.UNKNOWN;
+    protected int                  maxPageSize           = 500;
 
     protected InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
@@ -78,6 +80,28 @@ public abstract class OMAGServerServiceInstance
         {
             platformInstanceMap.addServiceInstanceToPlatform(serverName, null, serviceName, this);
         }
+    }
+
+
+    /**
+     * Set up the current status of the service.
+     *
+     * @param serviceInstanceStatus new status
+     */
+    public void setServiceInstanceStatus(ServerInstanceStatus serviceInstanceStatus)
+    {
+        this.serviceInstanceStatus = serviceInstanceStatus;
+    }
+
+
+    /**
+     * Return the current status of the service.
+     *
+     * @return server instance status enum
+     */
+    public ServerInstanceStatus getServiceInstanceStatus()
+    {
+        return serviceInstanceStatus;
     }
 
 

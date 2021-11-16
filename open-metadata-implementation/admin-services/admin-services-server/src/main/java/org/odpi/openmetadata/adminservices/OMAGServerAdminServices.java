@@ -3871,20 +3871,24 @@ public class OMAGServerAdminServices {
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid parameter occurred while processing.
      */
-    public OMAGServerConfigsResponse retrieveAllServerConfigs(String userId) {
+    public OMAGServerConfigsResponse retrieveAllServerConfigs(String userId)
+    {
         final String methodName = "retrieveAllServerConfigs";
 
         RESTCallToken token = restCallLogger.logRESTCall("", userId, methodName);
+
         OMAGServerConfigsResponse response = new OMAGServerConfigsResponse();
+
         try
         {
-            OpenMetadataPlatformSecurityVerifier.validateUserAsInvestigatorForPlatform(userId);
-            response.setOMAGServerConfigs(configStore.retrieveAllServerConfigs(userId, methodName));
+            OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(userId);
+            response.setOMAGServerConfigs(configStore.retrieveAllServerConfigs(userId));
         }
         catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
-        } catch (Exception  error)
+        }
+        catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(methodName, response, error);
         }

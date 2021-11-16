@@ -32,7 +32,7 @@ import java.util.Map;
         " of the open metadata and governance services within an OMAG Server. This configuration determines which of the Open Metadata and " +
         "Governance (OMAG) services are active.",
         externalDocs=@ExternalDocumentation(description="Further information",
-                url="https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/user/configuring-an-omag-server.html"))
+                url="https://odpi.github.io/egeria-docs/guides/admin/servers/"))
 
 public class ConfigRepositoryServicesResource
 {

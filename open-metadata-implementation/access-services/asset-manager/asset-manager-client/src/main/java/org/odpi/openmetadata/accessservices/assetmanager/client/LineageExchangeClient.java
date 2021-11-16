@@ -138,7 +138,6 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param processExternalIdentifierKeyPattern pattern for the external identifier within the external process manager (default is LOCAL_KEY)
      * @param mappingProperties additional properties to help with the mapping of the elements in the external process manager and open metadata
      * @param processProperties properties about the process to store
-     * @param initialStatus status value for the new process (default = ACTIVE)
      *
      * @return unique identifier of the new process
      *
@@ -157,10 +156,9 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                 String              processExternalIdentifierSource,
                                 KeyPattern          processExternalIdentifierKeyPattern,
                                 Map<String, String> mappingProperties,
-                                ProcessProperties   processProperties,
-                                ProcessStatus       initialStatus) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+                                ProcessProperties   processProperties) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
         final String methodName                  = "createProcess";
         final String propertiesParameterName     = "processProperties";
@@ -182,15 +180,14 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                                    mappingProperties,
                                                                                    methodName));
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes?assetManagerIsHome={2}&initialStatus={3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes?assetManagerIsHome={2}";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
-                                                                  assetManagerIsHome,
-                                                                  initialStatus);
+                                                                  assetManagerIsHome);
 
         return restResult.getGUID();
     }
@@ -413,17 +410,26 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
         invalidParameterHandler.validateGUID(childProcessGUID, childProcessGUIDParameterName, methodName);
         invalidParameterHandler.validateEnum(containmentType, containmentTypeParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/parent/{2}/child/{3}?assetManagerIsHome={4}&containmentType={5}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/parent/{2}/child/{3}?assetManagerIsHome={4}";
+
+        ProcessContainmentTypeRequestBody requestBody = new ProcessContainmentTypeRequestBody();
+
+        if (assetManagerGUID != null)
+        {
+            requestBody.setAssetManagerGUID(assetManagerGUID);
+            requestBody.setAssetManagerName(assetManagerName);
+        }
+
+        requestBody.setProcessContainmentType(containmentType);
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        requestBody,
                                         serverName,
                                         userId,
                                         parentProcessGUID,
                                         childProcessGUID,
-                                        assetManagerIsHome,
-                                        containmentType);
+                                        assetManagerIsHome);
     }
 
 

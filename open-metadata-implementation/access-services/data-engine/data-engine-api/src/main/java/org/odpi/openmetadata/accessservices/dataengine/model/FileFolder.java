@@ -19,6 +19,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
+/**
+ * FileFolder entity. A description of a folder (directory) in a file system.
+ */
 public class FileFolder extends DataStore {
 
 }

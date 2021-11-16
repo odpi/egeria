@@ -17,6 +17,11 @@
         <url>http://github.com/odpi/egeria/tree/master</url>
     </scm>
 
+    <name>Open Lineage Server Connectors</name>
+    <description>
+        Provides connectors for the open lineage server (OLS).
+    </description>
+
     <artifactId>open-lineage-connectors</artifactId>
     <packaging>pom</packaging>
     <modules>

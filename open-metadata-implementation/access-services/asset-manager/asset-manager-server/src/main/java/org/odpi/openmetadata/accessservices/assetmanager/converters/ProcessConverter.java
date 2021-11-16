@@ -65,6 +65,7 @@ public class ProcessConverter<B> extends AssetManagerOMASConverter<B>
                 if (entity != null)
                 {
                     bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));
+                    processProperties.setProcessStatus(this.getProcessStatus(entity));
 
                     /*
                      * The initial set of values come from the entity.
@@ -78,7 +79,6 @@ public class ProcessConverter<B> extends AssetManagerOMASConverter<B>
 
                     processProperties.setFormula(this.removeFormula(instanceProperties));
                     processProperties.setImplementationLanguage(this.removeImplementationLanguage(instanceProperties));
-
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are

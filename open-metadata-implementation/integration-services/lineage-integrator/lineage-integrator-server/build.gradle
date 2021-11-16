@@ -19,8 +19,7 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:asset-manager:asset-manager-api')
     implementation project(':open-metadata-implementation:access-services:asset-manager:asset-manager-client')
     implementation 'org.slf4j:slf4j-api'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
-
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
 }
 
 description = 'Lineage Integrator OMIS Server-side'

@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name="Security Manager OMAS",
         description="The Security Manager OMAS provides APIs for tools and applications wishing to manage metadata relating to security managers.",
         externalDocs=@ExternalDocumentation(description="Security Manager Open Metadata Access Service (OMAS)",
-                url="https://egeria.odpi.org/open-metadata-implementation/access-services/security-manager"))
+                url="https://odpi.github.io/egeria-docs/services/omas/security-manager/overview/"))
 
 public class SecurityManagerOMASResource
 {

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name="Catalog Integrator OMIS", description="Supports the detection and creation of metadata for file systems and file servers.",
         externalDocs=@ExternalDocumentation(description="Catalog Integrator Open Metadata Integration Service (OMIS)",
-                url="https://egeria.odpi.org/open-metadata-implementation/integration-services/catalog-integrator"))
+                url="https://odpi.github.io/egeria-docs/services/omis/catalog-integrator"))
 
 public class CatalogIntegratorResource
 {

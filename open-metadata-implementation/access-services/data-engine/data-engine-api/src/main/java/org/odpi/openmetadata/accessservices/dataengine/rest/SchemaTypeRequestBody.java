@@ -24,6 +24,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @ToString
 public class SchemaTypeRequestBody extends DataEngineOMASAPIRequestBody {
 
+    /**
+     * The schema type
+     * -- GETTER --
+     * Returns the schema type
+     * @return the schema type
+     * -- SETTER --
+     * Sets up the schema type
+     * @param schemaType the schema type
+     */
     @JsonProperty("schema")
     private SchemaType schemaType;
 

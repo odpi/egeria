@@ -21,7 +21,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequestMapping("/servers/{viewServerName}/open-metadata/view-services/tex/users/{userId}")
 
-@Tag(name="Tex OMVS", description="Explore type information in a repository or cohort for visualization of graphs of related types.", externalDocs=@ExternalDocumentation(description="Tex View Service (OMVS)",url="https://egeria.odpi.org/open-metadata-implementation/view-services/tex-view/"))
+@Tag(name="Tex OMVS", description="Explore type information in a repository or cohort for visualization of graphs of related types.",
+     externalDocs=@ExternalDocumentation(description="Tex View Service (OMVS)",
+                                         url="https://odpi.github.io/egeria-docs/services/omvs/tex/overview/"))
 
 public class TexViewRESTResource {
 

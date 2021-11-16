@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "e328f625-7139-41b4-adb2-a6810f3b5e88",
+		"_postman_id": "aca0bb2f-35a2-4cb6-a23f-96529fbe91e9",
 		"name": "DataEngine - asset endpoints",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -308,7 +308,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n   \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"file\": {\n        \"fileType\": \"DataFile\",\n        \"qualifiedName\": \"(host)=HOST::(data_file)=DATAFILE.DAT\",\n        \"displayName\": \"dataFile.dat\",\n        \"pathName\": \"/home/files/dataFile.dat\",\n        \"networkAddress\" : \"localhost\",\n        \"columns\": [\n            {\n                \"qualifiedName\": \"(data_file)=DATAFILE.DAT::(data_file_record)=schema::(data_file_field)=COLUMN-A\",\n                \"displayName\": \"column-a\"\n            },\n            {\n                \"qualifiedName\": \"(data_file)=DATAFILE.DAT::(data_file_record)=schema::(data_file_field)=COLUMN-B\",\n                \"displayName\": \"column-b\"\n            }\n        ]\n    }\n}",
+					"raw": "{\n   \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"file\": {\n        \"fileType\": \"DataFile\",\n        \"qualifiedName\": \"(host)=HOST::(data_file)=DATAFILE.DAT\",\n        \"displayName\": \"dataFile.dat\",\n        \"columns\": [\n            {\n                \"qualifiedName\": \"(data_file)=DATAFILE.DAT::(data_file_record)=schema::(data_file_field)=COLUMN-A\",\n                \"displayName\": \"column-a\"\n            },\n            {\n                \"qualifiedName\": \"(data_file)=DATAFILE.DAT::(data_file_record)=schema::(data_file_field)=COLUMN-B\",\n                \"displayName\": \"column-b\"\n            }\n        ]\n    }\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -374,7 +374,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"file\": {\n        \"fileType\": \"CSVFile\",\n        \"qualifiedName\": \"(file)=CSVFILE.CSV\",\n        \"displayName\": \"csvFile.csv\",\n        \"pathName\": \"/home/files/csvFile.csv\",\n        \"networkAddress\" : \"localhost\",\n        \"columns\": [\n            {\n                \"qualifiedName\": \"(file)=CSVFILE.CSV::(column)=COLUMN-A\",\n                \"displayName\": \"column-a\"\n            },\n            {\n                \"qualifiedName\": \"(file)=CSVFILE.CSV::(column)=COLUMN-B\",\n                \"displayName\": \"column-b\"\n            }\n        ]\n    }\n}",
+					"raw": "{\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"file\": {\n        \"fileType\": \"CSVFile\",\n        \"qualifiedName\": \"(file)=CSVFILE.CSV\",\n        \"displayName\": \"csvFile.csv\",\n        \"columns\": [\n            {\n                \"qualifiedName\": \"(file)=CSVFILE.CSV::(column)=COLUMN-A\",\n                \"displayName\": \"column-a\"\n            },\n            {\n                \"qualifiedName\": \"(file)=CSVFILE.CSV::(column)=COLUMN-B\",\n                \"displayName\": \"column-b\"\n            }\n        ]\n    }\n}",
 					"options": {
 						"raw": {
 							"language": "json"

@@ -36,7 +36,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/asset-owner/users/{userId}")
 
 @Tag(name="Asset Owner OMAS", description="The Asset Owner OMAS provides APIs and notifications for tools and applications supporting the work of Asset Owners in protecting and enhancing their assets.\n" +
-          "\n", externalDocs=@ExternalDocumentation(description="Asset Owner Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/asset-owner/"))
+          "\n", externalDocs=@ExternalDocumentation(description="Asset Owner Open Metadata Access Service (OMAS)",
+                                                    url="https://odpi.github.io/egeria-docs/services/omas/asset-owner/overview/"))
 
 
 public class ConnectionsBuildingResource
@@ -306,7 +307,8 @@ public class ConnectionsBuildingResource
                                              @PathVariable String            userId,
                                              @PathVariable String            assetGUID,
                                              @PathVariable String            connectionGUID,
-                                             @PathVariable StringRequestBody requestBody)
+                                             @RequestBody (required =  false)
+                                                           StringRequestBody requestBody)
     {
         return restAPI.setupAssetConnection(serverName, userId, assetGUID, connectionGUID, requestBody);
     }
@@ -332,7 +334,8 @@ public class ConnectionsBuildingResource
                                              @PathVariable String          userId,
                                              @PathVariable String          assetGUID,
                                              @PathVariable String          connectionGUID,
-                                             @RequestBody(required = false) NullRequestBody requestBody)
+                                             @RequestBody(required = false)
+                                                           NullRequestBody requestBody)
     {
         return restAPI.clearAssetConnection(serverName, userId, assetGUID, connectionGUID, requestBody);
     }
@@ -354,10 +357,11 @@ public class ConnectionsBuildingResource
      */
     @PostMapping(path = "/connections/{connectionGUID}/delete")
 
-    public VoidResponse removeConnection(@PathVariable                  String          serverName,
-                                         @PathVariable                  String          userId,
-                                         @PathVariable                  String          connectionGUID,
-                                         @RequestBody(required = false) NullRequestBody requestBody)
+    public VoidResponse removeConnection(@PathVariable String          serverName,
+                                         @PathVariable String          userId,
+                                         @PathVariable String          connectionGUID,
+                                         @RequestBody(required = false)
+                                                       NullRequestBody requestBody)
     {
         return restAPI.removeConnection(serverName, userId, connectionGUID, requestBody);
     }
@@ -535,10 +539,11 @@ public class ConnectionsBuildingResource
      */
     @PostMapping(path = "/endpoints/{endpointGUID}/delete")
 
-    public VoidResponse removeEndpoint(@PathVariable                  String          serverName,
-                                       @PathVariable                  String          userId,
-                                       @PathVariable                  String          endpointGUID,
-                                       @RequestBody(required = false) NullRequestBody requestBody)
+    public VoidResponse removeEndpoint(@PathVariable String          serverName,
+                                       @PathVariable String          userId,
+                                       @PathVariable String          endpointGUID,
+                                       @RequestBody(required = false)
+                                                     NullRequestBody requestBody)
     {
         return restAPI.removeEndpoint(serverName, userId, endpointGUID, requestBody);
     }
