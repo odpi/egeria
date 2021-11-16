@@ -303,7 +303,7 @@ public class OpenMetadataTypesArchive
         /*
          * Create the Patch
          */
-        final String typeName = "Kafkatopic";
+        final String typeName = "KafkaTopic";
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
