@@ -166,17 +166,6 @@ public class EventBrokerClient extends SchemaManagerClient implements EventBroke
 
         requestBody.setExternalSourceGUID(eventBrokerGUID);
         requestBody.setExternalSourceName(eventBrokerName);
-        Map<String, Object> extendedProperties = topicProperties.getExtendedProperties();
-        if (extendedProperties != null)
-        {
-            requestBody.setExtendedProperties(extendedProperties);
-        }
-        Map<String, String> additionalProperties = topicProperties.getAdditionalProperties();
-
-        if (additionalProperties != null)
-        {
-            requestBody.setAdditionalProperties(additionalProperties);
-        }
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
