@@ -77,9 +77,9 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
     private static final String assertion17    = testCaseId + "-17";
     private static final String assertionMsg17 = " reference relationship re-homed.";
     private static final String assertion18    = testCaseId + "-18";
-    private static final String assertionMsg18 = " rehomed master entity has been retrieved.";
+    private static final String assertionMsg18 = " rehomed master relationship has been retrieved.";
     private static final String assertion19    = testCaseId + "-19";
-    private static final String assertionMsg19 = " rehomed master entity has correct home metadataCollectionId.";
+    private static final String assertionMsg19 = " rehomed master relationship has correct home metadataCollectionId.";
 
     private static final String assertion100     = testCaseId + "-100";
     private static final String assertionMsg100  = " reference relationship re-homed.";
