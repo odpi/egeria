@@ -323,11 +323,11 @@ public class OpenMetadataTypesArchive
         final String attribute2Description     = "Maximum number of Kafka replicas.";
         final String attribute2DescriptionGUID = null;
 
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+        property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
                                                            attribute1DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+        property = archiveHelper.getIntTypeDefAttribute(attribute2Name,
                                                            attribute2Description,
                                                            attribute2DescriptionGUID);
         properties.add(property);
