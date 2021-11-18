@@ -202,7 +202,7 @@ allprojects {
             implementation("javax.servlet:javax.servlet-api:4.0.1")
 	        implementation("commons-configuration:commons-configuration:1.10")
 	        implementation("org.apache.commons:commons-configuration2:2.7")
-            implementation("org.hibernate:hibernate-validator:7.0.1.Final")
+            implementation("org.hibernate:hibernate-validator:6.2.0.Final")
 
             // testng also used in our 'source' code to support unit tests
             implementation("org.testng:testng:7.4.0")
