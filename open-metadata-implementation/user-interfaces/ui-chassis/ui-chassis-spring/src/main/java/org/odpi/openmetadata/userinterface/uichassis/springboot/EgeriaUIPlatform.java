@@ -26,8 +26,7 @@ import org.springframework.core.env.Environment;
 import javax.annotation.PostConstruct;
 
 @SpringBootApplication(
-        scanBasePackages = {"${scan.packages}"},
-        exclude={DataSourceAutoConfiguration.class}
+        scanBasePackages = {"${scan.packages}"}
 )
 @EnableConfigurationProperties(
         {
