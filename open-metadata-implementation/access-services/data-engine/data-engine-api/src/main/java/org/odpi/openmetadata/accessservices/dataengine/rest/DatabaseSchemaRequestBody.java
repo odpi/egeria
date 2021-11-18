@@ -24,12 +24,42 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @ToString
 public class DatabaseSchemaRequestBody extends DataEngineOMASAPIRequestBody {
 
+    /**
+     * The database schema to be created
+     * -- GETTER --
+     * Return the database schema bean
+     *
+     * @return the database schema
+     * -- SETTER --
+     * Set up the database schema bean
+     * @param databaseSchema the database schema
+     */
     @JsonProperty("databaseSchema")
     private DatabaseSchema databaseSchema;
 
+    /**
+     * Determines if the database schema is an incomplete asset
+     * -- GETTER --
+     * Return if the database schema is incomplete
+     *
+     * @return boolean - if the database schema is incomplete
+     * -- SETTER --
+     * Sets if the database schema is incomplete or not
+     * @param incomplete determines if the database schema is an incomplete asset
+     */
     @JsonProperty("incomplete")
     private boolean incomplete;
 
+    /**
+     * The database qualified name to which the database schema will be linked, if it exists
+     * -- GETTER --
+     * Return the database qualified name to which the database schema will be linked, if it exists
+     *
+     * @return the database qualified name
+     * -- SETTER --
+     * Set up the database qualified name to which the database schema will be linked, if it exists
+     * @param databaseQualifiedName the database qualified name
+     */
     @JsonProperty("databaseQualifiedName")
     private String databaseQualifiedName;
 

@@ -23,7 +23,26 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @ToString
 public class PortAliasRequestBody extends DataEngineOMASAPIRequestBody {
 
+    /**
+     * The process qualified name
+     * -- GETTER --
+     * Returns the process qualified name
+     * @return the process qualified name
+     * -- SETTER --
+     * Sets up the process qualified name
+     * @param processQualifiedName the process qualified name
+     */
     private String processQualifiedName;
+
+    /**
+     * The port alias
+     * -- GETTER --
+     * Returns the port alias
+     * @return the port alias
+     * -- SETTER --
+     * Sets up the port alias
+     * @param portAlias the port alias
+     */
     private PortAlias portAlias;
 
 }

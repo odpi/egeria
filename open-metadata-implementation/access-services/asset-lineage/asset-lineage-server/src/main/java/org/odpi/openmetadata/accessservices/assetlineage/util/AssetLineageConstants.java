@@ -63,6 +63,8 @@ public final class AssetLineageConstants {
     public static final String CLASSIFICATION_NAME_ASSET_ZONE_MEMBERSHIP = "AssetZoneMembership";
     public static final String CLASSIFICATION_NAME_SUBJECT_AREA = "SubjectArea";
     public static final String CLASSIFICATION_NAME_ASSET_OWNERSHIP = "AssetOwnership";
+    public static final String CLASSIFICATION_NAME_INCOMPLETE = "Incomplete";
+    public static final String CLASSIFICATION_NAME_PRIMARY_CATEGORY = "PrimaryCategory";
     public static final String UPDATE_TIME = "updateTime";
     public static final String ANCHOR_GUID = "anchorGUID";
 
@@ -79,6 +81,8 @@ public final class AssetLineageConstants {
         defaultLineageClassifications.add(CLASSIFICATION_NAME_ASSET_ZONE_MEMBERSHIP);
         defaultLineageClassifications.add(CLASSIFICATION_NAME_SUBJECT_AREA);
         defaultLineageClassifications.add(CLASSIFICATION_NAME_ASSET_OWNERSHIP);
+        defaultLineageClassifications.add(CLASSIFICATION_NAME_PRIMARY_CATEGORY);
+        defaultLineageClassifications.add(CLASSIFICATION_NAME_INCOMPLETE);
         immutableDefaultLineageClassifications = Collections.unmodifiableSet(defaultLineageClassifications);
 
         final Set<String> validLineageRelationshipTypes = new HashSet<>();
