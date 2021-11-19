@@ -294,9 +294,9 @@ public class OpenMetadataTypesArchive
     }
 
     /**
-     * Add 4 new attributes to the kafka topic. These can be used to store the minimum maximum values of
+     * Add 2 new attributes to the kafka topic. These are used to store the maximum number of
      * the Kafka topic replicas and partitions.
-     * @return
+     * @return the typedefpatch
      */
     private TypeDefPatch updateKafkaTopic()
     {
