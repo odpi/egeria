@@ -27,13 +27,6 @@
 
     <artifactId>access-services-fvt</artifactId>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>graph-repository-connector</artifactId>
-        </dependency>
-    </dependencies>
-
     <build>
         <plugins>
             <!-- We don't make use of the assembly at a jar level, but we need it

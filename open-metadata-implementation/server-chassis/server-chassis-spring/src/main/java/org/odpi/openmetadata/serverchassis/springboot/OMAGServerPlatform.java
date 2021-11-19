@@ -20,7 +20,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -32,8 +31,9 @@ import javax.annotation.PostConstruct;
 import java.util.*;
 
 
-@SpringBootApplication
-@ComponentScan(basePackages = {"${scan.packages}"})
+@SpringBootApplication(
+        scanBasePackages = {"${scan.packages}"}
+)
 @OpenAPIDefinition(
         info = @Info(
                 title = "Egeria's Open Metadata and Governance (OMAG) Server Platform",

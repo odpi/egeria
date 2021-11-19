@@ -131,6 +131,11 @@
             <artifactId>snappy-java</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -155,7 +160,10 @@
                                 </ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-cql:*
                                 </ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>joda-time:joda-time:*</ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>joda-time:joda-time:*
+                                </ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.hibernate.validator:hibernate-validator:*
+                                </ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>org.antlr:antlr-runtime:jar:*
                                 </ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>org.xerial.snappy:snappy-java:*

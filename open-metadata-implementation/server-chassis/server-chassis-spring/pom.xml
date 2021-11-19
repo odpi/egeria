@@ -409,6 +409,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <scope>compile</scope>
@@ -496,6 +501,9 @@
                                 <!-- Spring seems to cause false positives on dependency checker -->
                                 <ignoredUnusedDeclaredDependency>org.springframework.boot:spring-boot-starter-web:*
                                 </ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.springframework.boot:spring-boot-starter-validation:*
+                                </ignoredUnusedDeclaredDependency>
+
                                 <ignoredUnusedDeclaredDependency>
                                     org.springframework.boot:spring-boot-starter-security:*
                                 </ignoredUnusedDeclaredDependency>
