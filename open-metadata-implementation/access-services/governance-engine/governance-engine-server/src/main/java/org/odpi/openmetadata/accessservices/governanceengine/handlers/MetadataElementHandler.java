@@ -1483,7 +1483,7 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
         invalidParameterHandler.validateName(classificationName, classificationParameterName, methodName);
 
         String classificationTypeGUID = invalidParameterHandler.validateTypeName(classificationName,
-                                                                                 OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                                                 null,
                                                                                  serviceName,
                                                                                  methodName,
                                                                                  repositoryHelper);
@@ -1550,7 +1550,7 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
         invalidParameterHandler.validateName(classificationName, classificationParameterName, methodName);
 
         String classificationTypeGUID = invalidParameterHandler.validateTypeName(classificationName,
-                                                                                 OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                                                 null,
                                                                                  serviceName,
                                                                                  methodName,
                                                                                  repositoryHelper);
@@ -1616,7 +1616,7 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
         invalidParameterHandler.validateName(classificationName, classificationParameterName, methodName);
 
         String classificationTypeGUID = invalidParameterHandler.validateTypeName(classificationName,
-                                                                                 OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                                                 null,
                                                                                  serviceName,
                                                                                  methodName,
                                                                                  repositoryHelper);
@@ -1672,7 +1672,7 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
         invalidParameterHandler.validateName(classificationName, classificationParameterName, methodName);
 
         String classificationTypeGUID = invalidParameterHandler.validateTypeName(classificationName,
-                                                                                 OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                                                 null,
                                                                                  serviceName,
                                                                                  methodName,
                                                                                  repositoryHelper);
