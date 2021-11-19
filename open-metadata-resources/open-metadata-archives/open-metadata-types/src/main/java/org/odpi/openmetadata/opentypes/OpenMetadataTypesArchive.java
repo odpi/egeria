@@ -173,7 +173,7 @@ public class OpenMetadataTypesArchive
      */
 
     /**
-     * Store maximum partitions and replicas in the KafkaTopic.
+     * Store the number of partitions and replicas in the KafkaTopic.
      */
     private void update0223Events()
     {
@@ -294,9 +294,9 @@ public class OpenMetadataTypesArchive
     }
 
     /**
-     * Add 4 new attributes to the kafka topic. These can be used to store the minimum maximum values of
+     * Add 2 new attributes to the kafka topic. These are used to store the number of
      * the Kafka topic replicas and partitions.
-     * @return
+     * @return the typedefpatch
      */
     private TypeDefPatch updateKafkaTopic()
     {
@@ -316,18 +316,18 @@ public class OpenMetadataTypesArchive
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "maximumPartitions";
-        final String attribute1Description     = "Maximum number of Kafka partitions.";
+        final String attribute1Name            = "partitions";
+        final String attribute1Description     = "Number of Kafka partitions.";
         final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "maximumReplicas";
-        final String attribute2Description     = "Maximum number of Kafka replicas.";
+        final String attribute2Name            = "replicas";
+        final String attribute2Description     = "Number of Kafka replicas.";
         final String attribute2DescriptionGUID = null;
 
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+        property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
                                                            attribute1DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+        property = archiveHelper.getIntTypeDefAttribute(attribute2Name,
                                                            attribute2Description,
                                                            attribute2DescriptionGUID);
         properties.add(property);
