@@ -1315,7 +1315,7 @@ public class DataEngineRESTServices {
         }
 
         String guid = dataFileHandler.upsertFileAssetIntoCatalog(fileTypeName, fileTypeGuid, file, incomplete, schemaType,
-                columns, extendedProperties, externalSourceGuid, externalSourceName, userId, methodName);
+                extendedProperties, externalSourceGuid, externalSourceName, userId, methodName);
         log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, guid);
         return guid;
     }

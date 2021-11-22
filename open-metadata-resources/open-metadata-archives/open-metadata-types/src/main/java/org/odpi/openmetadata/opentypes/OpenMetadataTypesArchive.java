@@ -163,12 +163,22 @@ public class OpenMetadataTypesArchive
         /*
          * Calls for new and changed types go here
          */
+
+        update0223Events();
         update0463GovernanceActions();
     }
 
     /*
      * -------------------------------------------------------------------------------------------------------
      */
+
+    /**
+     * Store the number of partitions and replicas in the KafkaTopic.
+     */
+    private void update0223Events()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateKafkaTopic());
+    }
 
     /**
      * Deprecate the use of GovernanceActionExecutor and GovernanceActionTypeUse relationships in favour of
@@ -280,6 +290,49 @@ public class OpenMetadataTypesArchive
 
         typeDefPatch.setPropertyDefinitions(properties);
 
+        return typeDefPatch;
+    }
+
+    /**
+     * Add 2 new attributes to the kafka topic. These are used to store the number of
+     * the Kafka topic replicas and partitions.
+     * @return the typedefpatch
+     */
+    private TypeDefPatch updateKafkaTopic()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "KafkaTopic";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "partitions";
+        final String attribute1Description     = "Number of Kafka partitions.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "replicas";
+        final String attribute2Description     = "Number of Kafka replicas.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getIntTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
         return typeDefPatch;
     }
 

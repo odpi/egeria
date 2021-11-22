@@ -3,12 +3,18 @@
  * Copyright Contributors to the ODPi Egeria project.
  */
 
-plugins {
-     id 'org.springframework.boot'
- }
+buildscript {
+    repositories {
+        mavenCentral()
+    }
 
-repositories {
-	mavenCentral()
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin")
+    }
+}
+
+plugins {
+    id 'org.springframework.boot'
 }
 
 dependencies {
@@ -21,7 +27,7 @@ dependencies {
     //implementation 'org.springframework.boot:spring-boot-starter-tomcat'
     //implementation 'javax.servlet:javax.servlet-api'
     // Explicitly needed for gradle - added by maven plugin
-    
+
     implementation 'io.micrometer:micrometer-registry-prometheus'
     implementation 'org.springframework:spring-beans'
     implementation 'org.springframework:spring-core'
@@ -36,6 +42,7 @@ dependencies {
     implementation 'jakarta.annotation:jakarta.annotation-api'
     implementation 'org.springdoc:springdoc-openapi-ui'
     implementation 'io.swagger.core.v3:swagger-annotations'
+    implementation 'org.hibernate:hibernate-validator'
     runtimeOnly project(':open-metadata-implementation:platform-services:platform-services-spring')
     runtimeOnly project(':open-metadata-implementation:admin-services:admin-services-spring')
     runtimeOnly project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-spring')
@@ -92,6 +99,12 @@ dependencies {
 
 description = 'OMAG Server Platform Chassis for Spring'
 
+bootJar {
+    manifest {
+        attributes 'Main-Class': 'org.springframework.boot.loader.PropertiesLauncher'
+    }
+}
+
 java {
     withJavadocJar()
 }
@@ -99,3 +112,5 @@ java {
 test {
 	useJUnitPlatform()
 }
+
+
