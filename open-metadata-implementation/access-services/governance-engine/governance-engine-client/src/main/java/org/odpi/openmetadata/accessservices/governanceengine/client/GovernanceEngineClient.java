@@ -786,7 +786,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         requestBody.setEffectiveTo(effectiveTo);
         requestBody.setProperties(properties);
 
-        restClient.callGUIDPostRESTCall(methodName,
+        restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformURLRoot + urlTemplate,
                                         requestBody,
                                         serverName,
