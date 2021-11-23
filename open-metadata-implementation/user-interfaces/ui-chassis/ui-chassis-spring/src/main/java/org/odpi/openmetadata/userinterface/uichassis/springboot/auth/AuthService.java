@@ -2,10 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.userinterface.uichassis.springboot.auth;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -62,67 +60,21 @@ public interface AuthService {
                             .map(GrantedAuthority::getAuthority)
                             .collect(Collectors.toSet()));
         }
+        tokenUser.setVisibleComponents(getVisibleComponents( tokenUser.getRoles()) );
         return tokenUser;
     }
 
-    /**
-     *
-     * @param userJSON representation of the TokenUser
-     * @return the TokenUser
-     */
-    default TokenUser fromJSON(final String userJSON) {
-        try {
-            return new ObjectMapper().readValue(userJSON, TokenUser.class);
-        } catch (IOException e) {
-            throw new IllegalStateException(e);
-        }
-    }
-
-    /**
-     *
-     * @param user the TokenUser to be serializes
-     * @return the json string representing TokenUser
-     */
-    default String toJSON(TokenUser user) {
-        try {
-            return new ObjectMapper().writeValueAsString(user);
-        } catch (JsonProcessingException e) {
-            throw new IllegalStateException(e);
-        }
-    }
-
-    /**
-     *
-     * @param token the encoded token
-     * @param secret secret phrase to decode
-     * @return parsed TokenUser
-     */
-    default TokenUser parseUserFromToken(String token, String secret) {
-        String userJSON = Jwts.parser()
-                .setSigningKey(secret)
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
-        return fromJSON(userJSON);
-    }
-
-    /**
-     *
-     * @param user the user to create token for
-     * @param secret the secret for signature
-     * @return jwt token
-     */
-    default String createTokenForUser(TokenUser user, String secret) {
-        return Jwts.builder()
-                .setExpiration(new Date(System.currentTimeMillis() + getTokenTimeout()))
-                .setSubject(toJSON(user))
-                .signWith(SignatureAlgorithm.HS512, secret)
-                .compact();
-    }
 
     /**
      *
      * @return milliseconds until expiration
      */
      long getTokenTimeout();
+
+    /**
+     *
+     * @return collection of visible ui components for roles
+     * @param roles the collection of roles
+     */
+    Set<String> getVisibleComponents(Collection<String> roles);
 }
