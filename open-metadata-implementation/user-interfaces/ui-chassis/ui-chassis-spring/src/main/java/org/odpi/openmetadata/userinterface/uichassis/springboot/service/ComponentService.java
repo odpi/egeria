@@ -25,7 +25,7 @@ public class ComponentService {
      * @param roles the list of roles
      * @return a set of  components to be displayed
      */
-    public Set<String> getVisibleComponentsForRoles(Set<String> roles) {
+    public Set<String> getVisibleComponentsForRoles(Collection<String> roles) {
         Set<String> components = new HashSet<>();
         roles.stream()
                 .map(visibleComponents::get)

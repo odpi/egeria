@@ -26,6 +26,8 @@ public class TokenUser implements Serializable {
 
     private Set<String> roles;
 
+    private Set<String> visibleComponents;
+
     public TokenUser() {}
 
     public TokenUser(String username, Collection<String> roles) {
@@ -96,5 +98,13 @@ public class TokenUser implements Serializable {
 
     public void setRoles(Set<String> roles) {
        this.roles = UnmodifiableSet.unmodifiableSet(roles);
+    }
+
+    public Set<String> getVisibleComponents() {
+        return visibleComponents;
+    }
+
+    public void setVisibleComponents(Set<String> visibleComponents) {
+        this.visibleComponents = visibleComponents;
     }
 }
