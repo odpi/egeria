@@ -19,8 +19,10 @@ public class AddEntityProxyExecutor extends RepositoryExecutorBase{
     /**
      * Simple constructor - all methods have the userId in them
      *
-     * @param userId     calling user
-     * @param methodName method name
+     * @param userId      calling user
+     * @param entityProxy entity proxy
+     * @param auditLog    audit log
+     * @param methodName  method name
      */
     public AddEntityProxyExecutor(String userId, EntityProxy entityProxy, AuditLog auditLog, String methodName) {
         super(userId, methodName);
