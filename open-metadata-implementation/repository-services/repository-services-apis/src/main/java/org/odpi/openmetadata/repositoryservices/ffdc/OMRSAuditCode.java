@@ -983,10 +983,9 @@ public enum OMRSAuditCode implements AuditLogMessageSet
     SAVE_PROXY_FAIL("OMRS-AUDIT-8009",
             OMRSAuditLogRecordSeverity.INFO,
             "Fail to save proxy from {0} with guid {1} for user {2}, because: {3}",
-            "The enterprise connector is retrying the call to retrieve an entity from the cohort because a proxy (or no entity) " +
-                    "has been returned.  Since most requests for entities are made with valid GUID, this suggests one of the repositories " +
-                    "is not current registered and so the hope is that by retrying, the entity is returned on a subsequent attempt.",
-            "If this message occurs frequently then seek to improve the availability of the cohort members."),
+            "The enterprise connector is delegating a call to local connector in order save an entity proxy incoming from " +
+                    "other members of the cohort. It should reach local repository so it can be stored.",
+            "Consult attached message for more information as to what happened in the local repo."),
 
 
     NULL_OMRS_EVENT_RECEIVED("OMRS-AUDIT-9002",
