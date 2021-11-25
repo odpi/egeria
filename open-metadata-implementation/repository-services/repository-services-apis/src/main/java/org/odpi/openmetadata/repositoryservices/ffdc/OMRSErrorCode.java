@@ -910,6 +910,10 @@ public enum OMRSErrorCode implements ExceptionMessageSet
              "There is probably a logic error in the repository connector for the real repository because it should have thrown an exception rather" +
                           " than return null.",
              "Raise an issue with the supplier of the real repository connector to get this fixed."),
+    IMPROPER_ENTITY_FOR_CLASSIFICATION(503, "OMRS-LOCAL-REPOSITORY-503-012",
+            "An OMRS repository connector or access server {0} has passed an improper entity to the repository helper {1} operation as part of the {2} request",
+            "Repository helper should know how to treat instances destined to be classified, however the one provided is unknown. Logic update is required",
+            "Raise an issue with the supplier of the real repository connector to get this fixed."),
     HELPER_LOGIC_ERROR(503, "OMRS-REPOSITORY-HELPER-503-001",
              "A caller {0} has passed an invalid parameter to the repository helper {1} operation as part of the {2} request",
              "The open metadata component has invoked the repository helper operations in the wrong order or has a similar logic error.",

@@ -3,17 +3,48 @@
 package org.odpi.openmetadata.commonservices.generichandlers;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.repositoryhandler.*;
-import org.odpi.openmetadata.commonservices.generichandlers.ffdc.*;
+import org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersAuditCode;
+import org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersErrorCode;
+import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryEntitiesIterator;
+import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
+import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryFindEntitiesIterator;
+import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryFindRelationshipsIterator;
+import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryIteratorForEntities;
+import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryRelatedEntitiesIterator;
+import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryRelationshipsIterator;
+import org.odpi.openmetadata.commonservices.repositoryhandler.RepositorySelectedEntitiesIterator;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.metadatasecurity.properties.*;
+import org.odpi.openmetadata.metadatasecurity.properties.Asset;
+import org.odpi.openmetadata.metadatasecurity.properties.AssetAuditHeader;
+import org.odpi.openmetadata.metadatasecurity.properties.ConfidenceGovernanceClassification;
+import org.odpi.openmetadata.metadatasecurity.properties.ConfidentialityGovernanceClassification;
+import org.odpi.openmetadata.metadatasecurity.properties.Connection;
+import org.odpi.openmetadata.metadatasecurity.properties.CriticalityGovernanceClassification;
+import org.odpi.openmetadata.metadatasecurity.properties.GovernanceClassificationStatus;
+import org.odpi.openmetadata.metadatasecurity.properties.ImpactGovernanceClassification;
+import org.odpi.openmetadata.metadatasecurity.properties.ReferenceableStatus;
+import org.odpi.openmetadata.metadatasecurity.properties.RetentionGovernanceClassification;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationOrigin;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceAuditHeader;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyCategory;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
@@ -24,7 +55,13 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorExceptio
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * OpenMetadataAPIGenericHandler manages the exchange of Open Metadata API Bean content with the repository services
@@ -2254,6 +2291,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                     String        anchorGUID,
                                                     boolean       forLineage,
                                                     boolean       forDuplicateProcessing,
+                                                    boolean       isProxy,
                                                     Date          effectiveTime,
                                                     String        methodName) throws InvalidParameterException,
                                                                                      PropertyServerException,
@@ -2344,58 +2382,110 @@ public class OpenMetadataAPIGenericHandler<B>
 
                     if (anchorGUID != null)
                     {
-                        repositoryHandler.classifyEntity(localServerUserId,
-                                                         null,
-                                                         null,
-                                                         targetGUID,
-                                                         null,
-                                                         targetGUIDParameterName,
-                                                         targetEntity.getType().getTypeDefName(),
-                                                         OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_GUID,
-                                                         OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME,
-                                                         ClassificationOrigin.ASSIGNED,
-                                                         null,
-                                                         anchorsProperties,
-                                                         forLineage,
-                                                         forDuplicateProcessing,
-                                                         effectiveTime,
-                                                         methodName);
+                        if (isProxy)
+                        {
+                            repositoryHandler.classifyEntityProxy(localServerUserId,
+                                    targetGUID,
+                                    null,
+                                    OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_GUID,
+                                    OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME,
+                                    anchorsProperties,
+                                    methodName);
+                        }
+                        else
+                            {
+                            repositoryHandler.classifyEntity(localServerUserId,
+                                    null,
+                                    null,
+                                    targetGUID,
+                                    null,
+                                    targetGUIDParameterName,
+                                    targetEntity.getType().getTypeDefName(),
+                                    OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_GUID,
+                                    OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME,
+                                    ClassificationOrigin.ASSIGNED,
+                                    null,
+                                    anchorsProperties,
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    effectiveTime,
+                                    methodName);
+                        }
                     }
                 }
                 else
                 {
                     if (anchorGUID != null)
                     {
-                        repositoryHandler.reclassifyEntity(localServerUserId,
-                                                           null,
-                                                           null,
-                                                           targetGUID,
-                                                           targetGUIDParameterName,
-                                                           targetTypeName,
-                                                           OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_GUID,
-                                                           OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME,
-                                                           anchorsClassification,
-                                                           anchorsProperties,
-                                                           forLineage,
-                                                           forDuplicateProcessing,
-                                                           effectiveTime,
-                                                           methodName);
+                        if(isProxy)
+                        {
+                            repositoryHandler.reclassifyEntityProxy(localServerUserId,
+                                    null,
+                                    null,
+                                    targetGUID,
+                                    targetGUIDParameterName,
+                                    targetTypeName,
+                                    OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_GUID,
+                                    OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME,
+                                    anchorsClassification,
+                                    anchorsProperties,
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    effectiveTime,
+                                    methodName);
+                        }
+                        else
+                        {
+                            repositoryHandler.reclassifyEntity(localServerUserId,
+                                    null,
+                                    null,
+                                    targetGUID,
+                                    targetGUIDParameterName,
+                                    targetTypeName,
+                                    OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_GUID,
+                                    OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME,
+                                    anchorsClassification,
+                                    anchorsProperties,
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    effectiveTime,
+                                    methodName);
+                        }
                     }
                     else
                     {
-                        repositoryHandler.declassifyEntity(localServerUserId,
-                                                           null,
-                                                           null,
-                                                           targetGUID,
-                                                           targetGUIDParameterName,
-                                                           targetEntity.getType().getTypeDefName(),
-                                                           OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_GUID,
-                                                           OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME,
-                                                           anchorsClassification,
-                                                           forLineage,
-                                                           forDuplicateProcessing,
-                                                           effectiveTime,
-                                                           methodName);
+                        if(isProxy)
+                        {
+                            repositoryHandler.declassifyEntityProxy(localServerUserId,
+                                    null,
+                                    null,
+                                    targetGUID,
+                                    targetGUIDParameterName,
+                                    targetTypeName,
+                                    OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_GUID,
+                                    OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME,
+                                    anchorsClassification,
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    effectiveTime,
+                                    methodName);
+                        }
+                        else
+                        {
+                            repositoryHandler.declassifyEntity(localServerUserId,
+                                    null,
+                                    null,
+                                    targetGUID,
+                                    targetGUIDParameterName,
+                                    targetEntity.getType().getTypeDefName(),
+                                    OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_GUID,
+                                    OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME,
+                                    anchorsClassification,
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    effectiveTime,
+                                    methodName);
+                        }
                     }
                 }
             }
@@ -2482,6 +2572,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                         anchorGUID,
                                                                         forLineage,
                                                                         forDuplicateProcessing,
+                                                                        isProxy,
                                                                         effectiveTime,
                                                                         methodName);
                             }
@@ -2518,6 +2609,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                             anchorGUID,
                                                                             forLineage,
                                                                             forDuplicateProcessing,
+                                                                            isProxy,
                                                                             effectiveTime,
                                                                             methodName);
                                 }
@@ -3452,6 +3544,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                         String  originalAnchorGUID,
                                         boolean forLineage,
                                         boolean forDuplicateProcessing,
+                                        boolean isProxy,
                                         Date    effectiveTime,
                                         String  methodName) throws InvalidParameterException,
                                                                    PropertyServerException,
@@ -3486,6 +3579,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                         newAnchorGUID,
                                                         forLineage,
                                                         forDuplicateProcessing,
+                                                        isProxy,
                                                         effectiveTime,
                                                         methodName);
             }
@@ -3521,6 +3615,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                         String       originalAnchorGUID,
                                         boolean      forLineage,
                                         boolean      forDuplicateProcessing,
+                                        boolean      isProxy,
                                         Date         effectiveTime,
                                         String       methodName) throws InvalidParameterException,
                                                                         PropertyServerException,
@@ -3546,6 +3641,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                         newAnchorGUID,
                                                         forLineage,
                                                         forDuplicateProcessing,
+                                                        isProxy,
                                                         effectiveTime,
                                                         methodName);
             }
@@ -3730,6 +3826,7 @@ public class OpenMetadataAPIGenericHandler<B>
 
             if (anchorGUID != null)
             {
+                boolean isProxy = null != repositoryHandler.isEntityProxyKnown(userId, connectToGUID, methodName);
                 /*
                  * The anchor has been found so store it in the classification so it is easy to find next time.
                  */
@@ -3740,6 +3837,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                    anchorGUID,
                                                    forLineage,
                                                    forDuplicateProcessing,
+                                                   isProxy,
                                                    effectiveTime,
                                                    methodName);
             }
@@ -12433,6 +12531,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                   null,
                                                                   forLineage,
                                                                   forDuplicateProcessing,
+                                                                  false,
                                                                   effectiveTime,
                                                                   methodName);
 
@@ -12475,6 +12574,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                           null,
                                                                           forLineage,
                                                                           forDuplicateProcessing,
+                                                                          false,
                                                                           effectiveTime,
                                                                           methodName);
 
@@ -12832,6 +12932,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                           null,
                                           forLineage,
                                           forDuplicateProcessing,
+                                          false,
                                           effectiveTime,
                                           methodName);
             }
@@ -12881,6 +12982,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                           null,
                                           forLineage,
                                           forDuplicateProcessing,
+                                          false,
                                           effectiveTime,
                                           methodName);
             }
@@ -13155,6 +13257,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                       startingElementAnchorEntity.getGUID(),
                                       forLineage,
                                       forDuplicateProcessing,
+                                      false,
                                       effectiveTime,
                                       methodName);
         }
@@ -13184,6 +13287,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                       null,
                                       forLineage,
                                       forDuplicateProcessing,
+                                      false,
                                       effectiveTime,
                                       methodName);
         }
@@ -13217,6 +13321,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                       newAttachingElementAnchorEntity.getGUID(),
                                       forLineage,
                                       forDuplicateProcessing,
+                                      false,
                                       effectiveTime,
                                       methodName);
         }
@@ -13246,6 +13351,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                       null,
                                       forLineage,
                                       forDuplicateProcessing,
+                                      false,
                                       effectiveTime,
                                       methodName);
         }
@@ -13635,6 +13741,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                               startingElementAnchorEntity.getGUID(),
                                                               forLineage,
                                                               forDuplicateProcessing,
+                                                              false,
                                                               effectiveTime,
                                                               methodName);
         }
@@ -13683,6 +13790,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                               attachedElementAnchorEntity.getGUID(),
                                                               forLineage,
                                                               forDuplicateProcessing,
+                                                              false,
                                                               effectiveTime,
                                                               methodName);
         }

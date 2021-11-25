@@ -980,6 +980,15 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                             "is not current registered and so the hope is that by retrying, the entity is returned on a subsequent attempt.",
                     "If this message occurs frequently then seek to improve the availability of the cohort members."),
 
+    SAVE_PROXY_FAIL("OMRS-AUDIT-8009",
+            OMRSAuditLogRecordSeverity.INFO,
+            "Fail to save proxy from {0} with guid {1} for user {2}, because: {3}",
+            "The enterprise connector is retrying the call to retrieve an entity from the cohort because a proxy (or no entity) " +
+                    "has been returned.  Since most requests for entities are made with valid GUID, this suggests one of the repositories " +
+                    "is not current registered and so the hope is that by retrying, the entity is returned on a subsequent attempt.",
+            "If this message occurs frequently then seek to improve the availability of the cohort members."),
+
+
     NULL_OMRS_EVENT_RECEIVED("OMRS-AUDIT-9002",
                              OMRSAuditLogRecordSeverity.EXCEPTION,
                              "Unable to process a received event from topic {0} because its content is null",

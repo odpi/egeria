@@ -146,7 +146,10 @@ public enum GraphOMRSErrorCode implements ExceptionMessageSet
             "The search properties contains a values that do not match the type of property {0} - reported by the {1} method of class {2} to open metadata repository {3}",
             "The system is unable to perform the request because the provided values do not match the type of the property.",
             "Correct the caller's code and retry the request."),
-
+    ENTITY_PROXY_NOT_FOUND(400, "OMRS-GRAPH-REPOSITORY-400-030",
+            "The attempt to retrieve an entity proxy with GUID {0} failed in {1} method of class {2} to open metadata repository {3}",
+            "The system was unable to perform the entity retrieval.",
+            "Correct the caller's code and retry the entity retrieval request."),
     ;
 
     private ExceptionMessageDefinition messageDefinition;

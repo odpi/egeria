@@ -4,11 +4,35 @@ package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacolle
 
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationOrigin;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetailDifferences;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxyDifferences;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummaryDifferences;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceAuditHeader;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.RelationshipDifferences;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefGallery;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.utilities.OMRSRepositoryPropertiesHelper;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PatchErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
 import java.util.List;
 import java.util.Set;
@@ -729,6 +753,21 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
                                            Classification newClassification,
                                            String         methodName);
 
+    /**
+     * Add a classification to an existing entity proxy
+     *
+     * @param sourceName         source of the request (used for logging)
+     * @param entity             entity to update
+     * @param newClassification  classification to update
+     * @param methodName         calling method
+     *
+     * @return updated entity proxy
+     */
+    EntityProxy addClassificationToEntityProxy(String         sourceName,
+                                               EntityProxy   entity,
+                                               Classification newClassification,
+                                               String         methodName);
+
 
     /**
      * Return the named classification from an existing entity and throws an exception if it is not.
@@ -779,6 +818,22 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
 
 
     /**
+     * Replace an existing classification with a new one
+     *
+     * @param sourceName         source of the request (used for logging)
+     * @param userName           name of the editor
+     * @param entity             entity to update
+     * @param newClassification  classification to update
+     * @param methodName         calling method
+     * @return updated entity
+     */
+    EntityProxy updateClassificationInEntityProxy(String         sourceName,
+                                                  String         userName,
+                                                  EntityProxy    entity,
+                                                  Classification newClassification,
+                                                  String         methodName);
+
+    /**
      * Return a oldClassification with the header and type information filled out.  The caller only needs to add properties
      * to complete the set up of the oldClassification.
      *
@@ -794,6 +849,24 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
                                                 String       oldClassificationName,
                                                 String       methodName) throws ClassificationErrorException;
 
+
+    /**
+     * Return a oldClassification with the header and type information filled out.  The caller only needs to add properties
+     * to complete the set up of the oldClassification.
+     *
+     * @param sourceName             source of the request (used for logging)
+     * @param entity                 entity to update
+     * @param oldClassificationName  classification to remove
+     * @param methodName             calling method
+     *
+     * @return updated entity
+     *
+     * @throws ClassificationErrorException  the entity was not classified with this classification
+     */
+    EntityProxy deleteClassificationFromEntityProxy(String       sourceName,
+                                                    EntityProxy entity,
+                                                    String       oldClassificationName,
+                                                    String       methodName) throws ClassificationErrorException;
 
     /**
      * Merge two sets of instance properties.
@@ -845,6 +918,17 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
                                   InstanceAuditHeader originalInstance,
                                   EntityDetail        updatedInstance);
 
+    /**
+     * Changes the control information to reflect an update in an instance proxy
+     *
+     * @param userId            user making the change.
+     * @param originalInstance  original instance before the change
+     * @param updatedInstance   new version of the instance that needs updating
+     * @return updated instance
+     */
+    EntityProxy incrementVersion(String              userId,
+                                 InstanceAuditHeader originalInstance,
+                                 EntityProxy        updatedInstance);
 
     /**
      * Generate an entity proxy from an entity and its TypeDef.

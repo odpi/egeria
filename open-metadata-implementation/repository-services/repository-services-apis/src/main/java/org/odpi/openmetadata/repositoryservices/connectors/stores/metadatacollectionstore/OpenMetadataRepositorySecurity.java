@@ -3,11 +3,19 @@
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -20,6 +28,9 @@ import java.util.List;
  */
 public interface OpenMetadataRepositorySecurity
 {
+
+    Logger log = LoggerFactory.getLogger(OpenMetadataRepositorySecurity.class);
+
     /**
      * Tests for whether a specific user should have the right to create a type within a repository.
      *
@@ -217,6 +228,21 @@ public interface OpenMetadataRepositorySecurity
                                       EntityDetail instance) throws UserNotAuthorizedException;
 
     /**
+     * Tests for whether a specific user should have the right to update a proxy within a repository.
+     *
+     * @param userId                 identifier of user
+     * @param metadataCollectionName configurable name of the metadata collection
+     * @param instance               instance details
+     * @throws UserNotAuthorizedException the user is not authorized to maintain instances
+     */
+    default void validateUserForEntityUpdate(String userId,
+                                             String metadataCollectionName,
+                                             EntityProxy instance) throws UserNotAuthorizedException
+    {
+        log.warn("Method not implemented");
+    }
+
+    /**
      * Tests for whether a specific user should have the right to add a classification to an entity instance
      * within a repository.
      *
@@ -233,6 +259,26 @@ public interface OpenMetadataRepositorySecurity
                                                  String               classificationName,
                                                  InstanceProperties   properties) throws UserNotAuthorizedException;
 
+    /**
+     * Tests for whether a specific user should have the right to add a classification to an entity proxy
+     * within a repository.
+     *
+     * @param userId identifier of user
+     * @param metadataCollectionName configurable name of the metadata collection
+     * @param instance instance details
+     * @param classificationName String name for the classification.
+     * @param properties list of properties for the classification.
+     *
+     * @throws UserNotAuthorizedException the user is not authorized to maintain instances
+     */
+    default void validateUserForEntityClassificationAdd(String               userId,
+                                                        String               metadataCollectionName,
+                                                        EntityProxy          instance,
+                                                        String               classificationName,
+                                                        InstanceProperties   properties) throws UserNotAuthorizedException
+    {
+        log.warn("Method not implemented");
+    }
 
     /**
      * Tests for whether a specific user should have the right to update a classification for an entity instance
@@ -251,6 +297,26 @@ public interface OpenMetadataRepositorySecurity
                                                     String               classificationName,
                                                     InstanceProperties   properties) throws UserNotAuthorizedException;
 
+    /**
+     * Tests for whether a specific user should have the right to update a classification for an entity proxy
+     * within a repository.
+     *
+     * @param userId identifier of user
+     * @param metadataCollectionName configurable name of the metadata collection
+     * @param instance instance details
+     * @param classificationName String name for the classification.
+     * @param properties list of properties for the classification.
+     *
+     * @throws UserNotAuthorizedException the user is not authorized to maintain instances
+     */
+    default void validateUserForEntityClassificationUpdate(String               userId,
+                                                           String               metadataCollectionName,
+                                                           EntityProxy          instance,
+                                                           String               classificationName,
+                                                           InstanceProperties   properties) throws UserNotAuthorizedException
+    {
+        log.warn("Method not implemented");
+    }
 
     /**
      * Tests for whether a specific user should have the right to delete a classification from an entity instance
@@ -267,6 +333,24 @@ public interface OpenMetadataRepositorySecurity
                                                     EntityDetail         instance,
                                                     String               classificationName) throws UserNotAuthorizedException;
 
+    /**
+     * Tests for whether a specific user should have the right to delete a classification from an entity proxy
+     * within a repository.
+     *
+     * @param userId identifier of user
+     * @param metadataCollectionName configurable name of the metadata collection
+     * @param instance instance details
+     * @param classificationName String name for the classification.
+     *
+     * @throws UserNotAuthorizedException the user is not authorized to maintain instances
+     */
+    default void validateUserForEntityClassificationDelete(String               userId,
+                                                           String               metadataCollectionName,
+                                                           EntityProxy          instance,
+                                                           String               classificationName) throws UserNotAuthorizedException
+    {
+        log.warn("Method not implemented");
+    }
 
     /**
      * Tests for whether a specific user should have the right to delete a instance within a repository.

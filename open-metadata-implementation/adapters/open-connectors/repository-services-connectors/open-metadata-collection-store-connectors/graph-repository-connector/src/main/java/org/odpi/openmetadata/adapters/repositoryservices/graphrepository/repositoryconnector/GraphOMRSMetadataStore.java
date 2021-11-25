@@ -37,7 +37,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefGallery;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
@@ -68,19 +67,17 @@ import static org.apache.tinkerpop.gremlin.process.traversal.P.lte;
 import static org.apache.tinkerpop.gremlin.process.traversal.P.neq;
 import static org.apache.tinkerpop.gremlin.process.traversal.P.within;
 import static org.apache.tinkerpop.gremlin.process.traversal.P.without;
-
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.out;
-
 import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_CLASSIFICATION_CLASSIFICATION_NAME;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_ENTITY_CURRENT_STATUS;
 import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_ENTITY_GUID;
 import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_ENTITY_IS_PROXY;
-import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_ENTITY_CURRENT_STATUS;
 import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_ENTITY_TYPE_NAME;
 import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_PREFIX_CLASSIFICATION;
 import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_PREFIX_ENTITY;
 import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_PREFIX_RELATIONSHIP;
-import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_RELATIONSHIP_GUID;
 import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_RELATIONSHIP_CURRENT_STATUS;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_RELATIONSHIP_GUID;
 import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_RELATIONSHIP_TYPE_NAME;
 import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_NAME_TYPE_NAME;
 import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.corePropertiesClassification;
@@ -664,9 +661,7 @@ class GraphOMRSMetadataStore {
 
     synchronized EntityProxy getEntityProxyFromStore(String guid)
 
-    throws RepositoryErrorException
-
-    {
+            throws RepositoryErrorException, EntityNotKnownException {
         String methodName = "getEntityProxyFromStore";
 
         EntityProxy entityProxy = null;
@@ -685,9 +680,6 @@ class GraphOMRSMetadataStore {
                 {
                     log.debug("{} entity vertex {}", methodName, vertex);
 
-                    // Could test here whether vertex is for a proxy, but it doesn't matter whether the vertex represents a full entity
-                    // (i.e. EntityDetail of a local/reference copy) as opposed to an EntityProxy. It can be retrieved as a proxy anyway...
-
                     entityProxy = new EntityProxy();
 
                     entityMapper.mapVertexToEntityProxy(vertex, entityProxy);
@@ -700,7 +692,7 @@ class GraphOMRSMetadataStore {
                 g.tx().rollback();
 
                 throw new RepositoryErrorException(
-                        GraphOMRSErrorCode.ENTITY_NOT_FOUND.getMessageDefinition(
+                        GraphOMRSErrorCode.ENTITY_PROXY_NOT_FOUND.getMessageDefinition(
                                 guid, methodName,
                                 this.getClass().getName(),
                                 repositoryName),
@@ -1175,7 +1167,60 @@ class GraphOMRSMetadataStore {
 
     }
 
+    synchronized void updateEntityProxyInStore(EntityProxy entity)
+            throws RepositoryErrorException
+    {
 
+        String methodName = "updateEntityProxyInStore";
+
+        // Look in the graph
+        String guid = entity.getGUID();
+        GraphTraversalSource g = instanceGraph.traversal();
+
+        GraphTraversal<Vertex, Vertex> gt = g.V().hasLabel("Entity").has(PROPERTY_KEY_ENTITY_GUID, guid);
+
+        // Only looking for proxy entities
+        gt = gt.has(PROPERTY_KEY_ENTITY_IS_PROXY, true);
+
+        if (gt.hasNext())
+        {
+
+            Vertex vertex = gt.next();
+            log.debug("{} found entity vertex {}", methodName, vertex);
+
+            try
+            {
+
+                // Make sure we have stumbled on a proxy
+                Boolean isProxy = entityMapper.isProxy(vertex);
+                if (isProxy)
+                {
+
+                    entityMapper.mapEntityProxyToVertex(entity, vertex);
+
+                    updateEntityClassifications(entity, vertex, g);
+                }
+
+            }
+            catch (Exception e)
+            {
+                log.error("{} caught exception {}", methodName, e.getMessage());
+                g.tx().rollback();
+
+                throw new RepositoryErrorException(
+                        GraphOMRSErrorCode.ENTITY_NOT_UPDATED.getMessageDefinition(
+                                entity.getGUID(), methodName,
+                                this.getClass().getName(),
+                                repositoryName),
+                        this.getClass().getName(),
+                        methodName, e);
+            }
+        }
+
+        log.debug("{} commit entity update tx: ", methodName);
+        g.tx().commit();
+
+    }
 
     // updateEntityClassifications
     private void updateEntityClassifications(EntitySummary         entity,

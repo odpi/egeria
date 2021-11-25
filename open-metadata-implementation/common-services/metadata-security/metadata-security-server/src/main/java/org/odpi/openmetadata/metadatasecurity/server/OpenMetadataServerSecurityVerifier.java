@@ -5,17 +5,26 @@ package org.odpi.openmetadata.metadatasecurity.server;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.metadatasecurity.*;
+import org.odpi.openmetadata.metadatasecurity.OpenMetadataAssetSecurity;
+import org.odpi.openmetadata.metadatasecurity.OpenMetadataConnectionSecurity;
+import org.odpi.openmetadata.metadatasecurity.OpenMetadataServerSecurity;
+import org.odpi.openmetadata.metadatasecurity.OpenMetadataServiceSecurity;
 import org.odpi.openmetadata.metadatasecurity.connectors.OpenMetadataServerSecurityConnector;
 import org.odpi.openmetadata.metadatasecurity.ffdc.OpenMetadataSecurityErrorCode;
-import org.odpi.openmetadata.metadatasecurity.properties.AssetAuditHeader;
 import org.odpi.openmetadata.metadatasecurity.properties.Asset;
+import org.odpi.openmetadata.metadatasecurity.properties.AssetAuditHeader;
 import org.odpi.openmetadata.metadatasecurity.properties.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OpenMetadataRepositorySecurity;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
@@ -1089,6 +1098,25 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
         }
     }
 
+    /**
+     * Tests for whether a specific user should have the right to update a proxy within a repository.
+     *
+     * @param userId identifier of user
+     * @param metadataCollectionName configurable name of the metadata collection
+     * @param instance instance details
+     * @throws UserNotAuthorizedException the user is not authorized to maintain instances
+     */
+    @Override
+    public void  validateUserForEntityUpdate(String          userId,
+                                             String          metadataCollectionName,
+                                             EntityProxy     instance) throws UserNotAuthorizedException
+    {
+        if (repositorySecurityConnector != null)
+        {
+            repositorySecurityConnector.validateUserForEntityUpdate(userId, metadataCollectionName, new EntityProxy(instance));
+        }
+    }
+
 
     /**
      * Tests for whether a specific user should have the right to add a classification to an entity instance
@@ -1118,6 +1146,33 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
         }
     }
 
+    /**
+     * Tests for whether a specific user should have the right to add a classification to an entity proxy
+     * within a repository.
+     *
+     * @param userId identifier of user
+     * @param metadataCollectionName configurable name of the metadata collection
+     * @param instance instance details
+     * @param classificationName String name for the classification.
+     * @param properties list of properties for the classification.
+     * @throws UserNotAuthorizedException the user is not authorized to maintain instances
+     */
+    @Override
+    public void  validateUserForEntityClassificationAdd(String               userId,
+                                                        String               metadataCollectionName,
+                                                        EntityProxy          instance,
+                                                        String               classificationName,
+                                                        InstanceProperties   properties) throws UserNotAuthorizedException
+    {
+        if (repositorySecurityConnector != null)
+        {
+            repositorySecurityConnector.validateUserForEntityClassificationAdd(userId,
+                    metadataCollectionName,
+                    instance,
+                    classificationName,
+                    properties);
+        }
+    }
 
     /**
      * Tests for whether a specific user should have the right to update the classification for an entity instance
@@ -1147,6 +1202,33 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
         }
     }
 
+    /**
+     * Tests for whether a specific user should have the right to update the classification for an entity proxy
+     * within a repository.
+     *
+     * @param userId identifier of user
+     * @param metadataCollectionName configurable name of the metadata collection
+     * @param instance instance details
+     * @param classificationName String name for the classification.
+     * @param properties list of properties for the classification.
+     * @throws UserNotAuthorizedException the user is not authorized to maintain instances
+     */
+    @Override
+    public void  validateUserForEntityClassificationUpdate(String               userId,
+                                                           String               metadataCollectionName,
+                                                           EntityProxy          instance,
+                                                           String               classificationName,
+                                                           InstanceProperties   properties) throws UserNotAuthorizedException
+    {
+        if (repositorySecurityConnector != null)
+        {
+            repositorySecurityConnector.validateUserForEntityClassificationUpdate(userId,
+                    metadataCollectionName,
+                    instance,
+                    classificationName,
+                    properties);
+        }
+    }
 
     /**
      * Tests for whether a specific user should have the right to delete a classification from an entity instance
@@ -1173,6 +1255,31 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
         }
     }
 
+
+    /**
+     * Tests for whether a specific user should have the right to delete a classification from an entity proxy
+     * within a repository.
+     *
+     * @param userId identifier of user
+     * @param metadataCollectionName configurable name of the metadata collection
+     * @param instance instance details
+     * @param classificationName String name for the classification.
+     * @throws UserNotAuthorizedException the user is not authorized to maintain instances
+     */
+    @Override
+    public void  validateUserForEntityClassificationDelete(String               userId,
+                                                           String               metadataCollectionName,
+                                                           EntityProxy          instance,
+                                                           String               classificationName) throws UserNotAuthorizedException
+    {
+        if (repositorySecurityConnector != null)
+        {
+            repositorySecurityConnector.validateUserForEntityClassificationDelete(userId,
+                    metadataCollectionName,
+                    instance,
+                    classificationName);
+        }
+    }
 
     /**
      * Tests for whether a specific user should have the right to delete a instance within a repository.

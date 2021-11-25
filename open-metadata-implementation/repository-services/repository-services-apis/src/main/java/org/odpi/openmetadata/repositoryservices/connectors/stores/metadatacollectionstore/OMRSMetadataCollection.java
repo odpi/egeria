@@ -2,20 +2,24 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore;
 
-import java.util.Date;
-import java.util.List;
-import java.util.concurrent.Future;
-
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
-import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSEventProcessingContext;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationOrigin;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceGraph;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
@@ -27,6 +31,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityConflictException;
@@ -58,6 +63,10 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorExceptio
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.Future;
 
 /**
  * <p>
@@ -773,6 +782,22 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
 
 
     /**
+     * Returns the entity proxy if it is stored in the metadata collection, otherwise null.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param guid String unique identifier for the entity
+     * @return the entity details if the entity is found in the metadata collection; otherwise return null
+     * @throws InvalidParameterException the guid is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public abstract EntityProxy isEntityProxyKnown(String     userId,
+                                                   String     guid) throws InvalidParameterException,
+                                                                           RepositoryErrorException,
+                                                                           UserNotAuthorizedException;
+
+    /**
      * Return the header and classifications for a specific entity.  The returned entity summary may be from
      * a full entity object or an entity proxy.
      *
@@ -814,6 +839,26 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
                                                                          EntityProxyOnlyException,
                                                                          UserNotAuthorizedException;
 
+    /**
+     * Return the header, classifications and properties of a specific entity proxy.  This requires the entity
+     * object to be available.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param guid String unique identifier for the entity.
+     *
+     * @return EntityProxy structure.
+     *
+     * @throws InvalidParameterException the guid is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                 the metadata collection is stored.
+     * @throws EntityNotKnownException the requested entity instance is not known in the metadata collection.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public abstract EntityProxy getEntityProxy(String     userId,
+                                               String     guid) throws InvalidParameterException,
+                                                                       RepositoryErrorException,
+                                                                       EntityNotKnownException,
+                                                                       UserNotAuthorizedException;
 
     /**
      * Return a historical version of an entity.  Thi includes the header, classifications and properties of the entity.
@@ -1700,6 +1745,33 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
                                                                                                 UserNotAuthorizedException,
                                                                                                 FunctionNotSupportedException;
 
+    /**
+     * Update selected properties in an entity proxy
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID String unique identifier (guid) for the entity.
+     * @param properties a list of properties to change.
+     *
+     * @return EntityDetail showing the resulting entity header, properties and classifications.
+     *
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this entity's type
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     */
+    public abstract EntityProxy updateEntityProxyProperties(String               userId,
+                                                            String               entityGUID,
+                                                            InstanceProperties   properties) throws InvalidParameterException,
+                                                                                                    RepositoryErrorException,
+                                                                                                    EntityNotKnownException,
+                                                                                                    PropertyErrorException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    FunctionNotSupportedException;
+
 
     /**
      * Undo the last update to an entity and return the previous content.
@@ -1830,6 +1902,38 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
                                                                                                       UserNotAuthorizedException,
                                                                                                       FunctionNotSupportedException;
 
+    /**
+     * Add the requested classification to a specific entity proxy
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityProxyGUID String unique identifier (guid) for the entity.
+     * @param classificationName String name for the classification.
+     * @param classificationProperties list of properties to set in the classification.
+     *
+     * @return EntityProxy showing the resulting entity header, properties and classifications.
+     *
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws ClassificationErrorException the requested classification is either not known or not valid
+     *                                         for the entity.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     */
+    public abstract EntityProxy classifyEntityProxy(String               userId,
+                                                    String               entityProxyGUID,
+                                                    String               classificationName,
+                                                    InstanceProperties   classificationProperties) throws InvalidParameterException,
+                                                                                                          RepositoryErrorException,
+                                                                                                          EntityNotKnownException,
+                                                                                                          ClassificationErrorException,
+                                                                                                          PropertyErrorException,
+                                                                                                          UserNotAuthorizedException,
+                                                                                                          FunctionNotSupportedException;
+
 
     /**
      * Add the requested classification to a specific entity.
@@ -1903,6 +2007,31 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
                                                                                      UserNotAuthorizedException,
                                                                                      FunctionNotSupportedException;
 
+    /**
+     * Remove a specific classification from an entity proxy
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID String unique identifier (guid) for the entity.
+     * @param classificationName String name for the classification.
+     *
+     * @return EntityProxy showing the resulting entity header, properties and classifications.
+     *
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws ClassificationErrorException the requested classification is not set on the entity.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     */
+    public abstract EntityProxy declassifyEntityProxy(String  userId,
+                                                      String  entityGUID,
+                                                      String  classificationName) throws InvalidParameterException,
+                                                                                         RepositoryErrorException,
+                                                                                         EntityNotKnownException,
+                                                                                         ClassificationErrorException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         FunctionNotSupportedException;
 
     /**
      * Update one or more properties in one of an entity's classifications.
@@ -1933,6 +2062,36 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
                                                                                                     UserNotAuthorizedException,
                                                                                                     FunctionNotSupportedException;
 
+    /**
+     * Update one or more properties in one of an entity proxy's classifications
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID String unique identifier (guid) for the entity.
+     * @param classificationName String name for the classification.
+     * @param properties list of properties for the classification.
+     *
+     * @return EntityProxy showing the resulting entity header, properties and classifications.
+     *
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws ClassificationErrorException the requested classification is not attached to the classification.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     */
+    public abstract EntityProxy updateEntityProxyClassification(String               userId,
+                                                                String               entityGUID,
+                                                                String               classificationName,
+                                                                InstanceProperties   properties) throws InvalidParameterException,
+                                                                                                        RepositoryErrorException,
+                                                                                                        EntityNotKnownException,
+                                                                                                        ClassificationErrorException,
+                                                                                                        PropertyErrorException,
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        FunctionNotSupportedException;
 
 
     /**

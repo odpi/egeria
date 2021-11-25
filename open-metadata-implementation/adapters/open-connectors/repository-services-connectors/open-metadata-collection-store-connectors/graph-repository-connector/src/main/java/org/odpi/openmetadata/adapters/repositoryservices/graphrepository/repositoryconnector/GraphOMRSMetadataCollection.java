@@ -55,10 +55,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 
 /**
@@ -286,7 +284,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         /*
          * Validation complete
          */
-        EntityDetail  entity  = this.isEntityKnown(userId, entityProxy.getGUID());
+        EntityProxy  entity  = this.isEntityProxyKnown(userId, entityProxy.getGUID());
         if (entity == null)
         {
             graphStore.createEntityProxyInStore(entityProxy);
@@ -322,6 +320,39 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         }
         catch (EntityProxyOnlyException | EntityNotKnownException e) {
             log.warn("{} entity with GUID {} does not exist in repository {} or is a proxy", methodName, guid, repositoryName);
+            entity = null;
+        }
+
+        return entity;
+    }
+
+    // isEntityProxyKnown
+    @Override
+    public EntityProxy isEntityProxyKnown(String     userId,
+                                          String     guid)
+            throws
+            InvalidParameterException,
+            RepositoryErrorException,
+            UserNotAuthorizedException
+    {
+        final String  methodName = "isEntityProxyKnown";
+
+        /*
+         * Validate parameters
+         */
+        super.getInstanceParameterValidation(userId, guid, methodName);
+
+        /*
+         * Perform operation
+         */
+
+        EntityProxy entity;
+        try {
+            entity = graphStore.getEntityProxyFromStore(guid);
+            repositoryValidator.validateEntityFromStore(repositoryName, guid, entity, methodName);
+        }
+        catch (EntityNotKnownException e) {
+            log.warn("{} proxy with GUID {} does not exist in repository {}", methodName, guid, repositoryName);
             entity = null;
         }
 
@@ -413,6 +444,35 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
          */
 
         EntityDetail entity = graphStore.getEntityDetailFromStore(guid);
+
+        repositoryValidator.validateEntityFromStore(repositoryName, guid, entity, methodName);
+        repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
+
+        return entity;
+    }
+
+    // getEntityProxy
+    @Override
+    public EntityProxy getEntityProxy(String     userId,
+                                      String     guid)
+            throws
+            InvalidParameterException,
+            RepositoryErrorException,
+            EntityNotKnownException,
+            UserNotAuthorizedException
+    {
+        final String methodName = "getEntityProxy";
+        final String guidParameterName = "guid";
+
+        /*
+         * Validate parameters
+         */
+        super.getInstanceParameterValidation(userId, guid, methodName);
+
+        /*
+         * Perform operation
+         */
+        EntityProxy entity = graphStore.getEntityProxyFromStore(guid);
 
         repositoryValidator.validateEntityFromStore(repositoryName, guid, entity, methodName);
         repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
@@ -800,6 +860,81 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         //EntityProxy entityProxy = repositoryHelper.getNewEntityProxy(repositoryName, updatedEntity);
         //
         //graphStore.updateEntityProxyInStore(entityProxy);
+
+        return updatedEntity;
+    }
+
+    // updateEntityProperties
+    @Override
+    public EntityProxy updateEntityProxyProperties(String               userId,
+                                                   String               entityGUID,
+                                                   InstanceProperties   properties)
+            throws
+            InvalidParameterException,
+            RepositoryErrorException,
+            EntityNotKnownException,
+            PropertyErrorException,
+            UserNotAuthorizedException
+    {
+        final String  methodName = "updateEntityProxyProperties";
+        final String  propertiesParameterName  = "properties";
+
+        /*
+         * Validate parameters
+         */
+        this.updateInstancePropertiesPropertyValidation(userId, entityGUID, properties, methodName);
+
+        /*
+         * Locate entity - only interested in a proxy entity
+         */
+        EntityProxy entityProxy;
+        try {
+
+            entityProxy = graphStore.getEntityProxyFromStore(entityGUID);
+
+        } catch (RepositoryErrorException e) {
+            log.error("{} repository exception during retrieval of entity wth GUID {}", methodName, entityGUID);
+            throw e;
+        }
+
+        repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entityProxy, methodName);
+        repositoryValidator.validateEntityIsNotDeleted(repositoryName, entityProxy, methodName);
+        repositoryValidator.validateEntityCanBeUpdated(repositoryName, metadataCollectionId, entityProxy, methodName);
+        repositoryValidator.validateInstanceType(repositoryName, entityProxy);
+
+        String entityTypeGUID = entityProxy.getType().getTypeDefGUID();
+        String entityTypeName = entityProxy.getType().getTypeDefName();
+
+        TypeDef typeDef;
+        try {
+            typeDef = repositoryHelper.getTypeDef(repositoryName, "entityTypeGUID", entityTypeGUID, methodName);
+        }
+        catch (TypeErrorException e) {
+
+            throw new RepositoryErrorException(OMRSErrorCode.TYPEDEF_NOT_KNOWN.getMessageDefinition(entityTypeName,
+                    entityTypeGUID,
+                    "entityType",
+                    methodName,
+                    repositoryName),
+                    this.getClass().getName(),
+                    methodName,
+                    e);
+        }
+
+        repositoryValidator.validateNewPropertiesForType(repositoryName,
+                propertiesParameterName,
+                typeDef,
+                properties,
+                methodName);
+
+        /*
+         * Validation complete - ok to make changes
+         */
+        EntityProxy updatedEntity = new EntityProxy(entityProxy);
+        updatedEntity.setUniqueProperties(properties);
+        updatedEntity = repositoryHelper.incrementVersion(userId, entityProxy, updatedEntity);
+
+        graphStore.updateEntityProxyInStore(updatedEntity);
 
         return updatedEntity;
     }
@@ -2343,6 +2478,97 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         return updatedEntity;
     }
 
+    // classifyEntity
+    @Override
+    public EntityProxy classifyEntityProxy(String               userId,
+                                           String               entityProxyGUID,
+                                           String               classificationName,
+                                           InstanceProperties   classificationProperties)
+            throws
+            InvalidParameterException,
+            RepositoryErrorException,
+            EntityNotKnownException,
+            ClassificationErrorException,
+            PropertyErrorException,
+            UserNotAuthorizedException
+    {
+        final String  methodName                  = "classifyEntityProxy";
+        final String  entityGUIDParameterName     = "entityGUID";
+        final String  classificationParameterName = "classificationName";
+        final String  propertiesParameterName     = "classificationProperties";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateGUID(repositoryName, entityGUIDParameterName, entityProxyGUID, methodName);
+
+        /*
+         * Locate entity - only interested in a proxy entity
+         */
+        EntityProxy entity;
+        try {
+
+            entity = graphStore.getEntityProxyFromStore(entityProxyGUID);
+
+        } catch (RepositoryErrorException e) {
+            log.error("{} repository exception during retrieval of entity wth GUID {}", methodName, entityProxyGUID);
+            throw e;
+        }
+
+        repositoryValidator.validateEntityFromStore(repositoryName, entityProxyGUID, entity, methodName);
+        repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
+        repositoryValidator.validateInstanceType(repositoryName, entity);
+
+        InstanceType entityType = entity.getType();
+        repositoryValidator.validateClassification(repositoryName, classificationParameterName, classificationName, entityType.getTypeDefName(), methodName);
+
+        Classification newClassification;
+        try
+        {
+            repositoryValidator.validateClassificationProperties(repositoryName,
+                    classificationName,
+                    propertiesParameterName,
+                    classificationProperties,
+                    methodName);
+
+            /*
+             * Validation complete - build the new classification
+             */
+            newClassification = repositoryHelper.getNewClassification(repositoryName,
+                    null,
+                    InstanceProvenanceType.LOCAL_COHORT,
+                    userId,
+                    classificationName,
+                    entityType.getTypeDefName(),
+                    ClassificationOrigin.ASSIGNED,
+                    null,
+                    classificationProperties);
+        }
+        catch (PropertyErrorException  error)
+        {
+            throw error;
+        }
+        catch (Exception e)
+        {
+            throw new ClassificationErrorException(OMRSErrorCode.INVALID_CLASSIFICATION_FOR_ENTITY.getMessageDefinition(),
+                    this.getClass().getName(),
+                    methodName,
+                    e);
+        }
+
+        /*
+         * Validation complete - ok to update entity
+         */
+        EntityProxy updatedEntity = repositoryHelper.addClassificationToEntityProxy(repositoryName, entity, newClassification, methodName);
+
+        graphStore.updateEntityProxyInStore(updatedEntity);
+
+        return updatedEntity;
+    }
 
     // classifyEntity
     @Override
@@ -2528,7 +2754,48 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         return updatedEntity;
     }
 
+    // declassifyEntity
+    @Override
+    public EntityProxy declassifyEntityProxy(String  userId,
+                                             String  entityGUID,
+                                             String  classificationName)
+            throws
+            InvalidParameterException,
+            RepositoryErrorException,
+            EntityNotKnownException,
+            ClassificationErrorException,
+            UserNotAuthorizedException
+    {
+        final String methodName = "declassifyEntityProxy";
 
+        /*
+         * Validate parameters
+         */
+        super.declassifyEntityParameterValidation(userId, entityGUID, classificationName, methodName);
+
+        /*
+         * Locate entity - only interested in a proxy entity
+         */
+        EntityProxy entity;
+        try {
+
+            entity = graphStore.getEntityProxyFromStore(entityGUID);
+
+        }
+        catch (RepositoryErrorException e) {
+            log.error("{} repository exception during retrieval of entity wth GUID {}", methodName, entityGUID);
+            throw e;
+        }
+
+        repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
+        repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
+
+        EntityProxy updatedEntity = repositoryHelper.deleteClassificationFromEntityProxy(repositoryName, entity, classificationName, methodName);
+
+        graphStore.updateEntityProxyInStore(updatedEntity);
+
+        return updatedEntity;
+    }
 
 
     // findEntitiesByClassification
@@ -3475,6 +3742,52 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         return updatedEntity;
     }
 
+    // updateEntityProxyClassification
+    @Override
+    public EntityProxy updateEntityProxyClassification(String               userId,
+                                                       String               entityProxyGUID,
+                                                       String               classificationName,
+                                                       InstanceProperties   properties)
+            throws
+            InvalidParameterException,
+            RepositoryErrorException,
+            EntityNotKnownException,
+            ClassificationErrorException,
+            PropertyErrorException,
+            UserNotAuthorizedException
+    {
+        final String  methodName = "updateEntityProxyClassification";
+
+        /*
+         * Validate parameters
+         */
+        super.classifyEntityParameterValidation(userId, entityProxyGUID, classificationName, properties, methodName);
+
+        /*
+         * Locate entity
+         */
+        EntityProxy entity = graphStore.getEntityProxyFromStore(entityProxyGUID);
+
+        repositoryValidator.validateEntityFromStore(repositoryName, entityProxyGUID, entity, methodName);
+        repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
+
+        Classification classification = repositoryHelper.getClassificationFromEntity(repositoryName,
+                entity,
+                classificationName,
+                methodName);
+
+        Classification  newClassification = new Classification(classification);
+        newClassification.setProperties(properties);
+
+        repositoryHelper.incrementVersion(userId, classification, newClassification);
+
+        EntityProxy updatedEntity = repositoryHelper.updateClassificationInEntityProxy(repositoryName, userId, entity,
+                newClassification, methodName);
+
+        graphStore.updateEntityProxyInStore(updatedEntity);
+
+        return updatedEntity;
+    }
 
     /*
      * Reference Copies

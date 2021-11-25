@@ -7,22 +7,81 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollectionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationOrigin;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceGraph;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDefCategory;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefGallery;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
 import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.control.FederationControl;
 import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.control.ParallelFederationControl;
 import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.control.SequentialFederationControl;
-import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors.*;
+import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors.AddEntityExecutor;
+import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors.AddEntityProxyExecutor;
+import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors.AddRelationshipExecutor;
+import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors.ClassifyEntityExecutor;
+import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors.ClassifyEntityProxyExecutor;
+import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors.FindEntitiesByClassificationExecutor;
+import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors.FindEntitiesByPropertyExecutor;
+import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors.FindEntitiesByPropertyValueExecutor;
+import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors.FindEntitiesExecutor;
+import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors.FindRelationshipsByPropertyExecutor;
+import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors.FindRelationshipsByPropertyValueExecutor;
+import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors.FindRelationshipsExecutor;
+import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors.GetAllTypesExecutor;
+import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors.GetEntityExecutor;
+import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors.GetEntityProxyExecutor;
+import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors.GetEntitySummaryExecutor;
+import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors.GetRelationshipExecutor;
+import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors.GetRelationshipsForEntityExecutor;
+import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors.PurgeEntityExecutor;
+import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors.PurgeRelationshipExecutor;
+import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors.RestoreEntityExecutor;
+import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors.RestoreRelationshipExecutor;
+import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors.VerifyAttributeTypeDefExecutor;
+import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors.VerifyTypeDefExecutor;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotDeletedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidTypeDefException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotDeletedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefConflictException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotSupportedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -906,6 +965,51 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         return executor.isEntityKnown();
     }
 
+    /**
+     * Returns the entity proxy if it is stored in the metadata collection, otherwise null.
+     *
+     * @param userId  unique identifier for requesting user.
+     * @param guid  String unique identifier for the entity
+     * @return the entity proxy if the entity is found in the metadata collection; otherwise return null
+     * @throws InvalidParameterException the guid is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public EntityProxy isEntityProxyKnown(String    userId,
+                                          String    guid) throws InvalidParameterException,
+                                                                 RepositoryErrorException,
+                                                                 UserNotAuthorizedException
+    {
+        final String  methodName = "isEntityProxyKnown";
+
+        /*
+         * Validate parameters
+         */
+        super.getInstanceParameterValidation(userId, guid, methodName);
+
+        /*
+         * Validation complete, ok to continue with request
+         *
+         * The list of cohort connectors are retrieved for each request to ensure that any changes in
+         * the shape of the cohort are reflected immediately.
+         */
+        List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
+
+        FederationControl federationControl = new SequentialFederationControl(userId, cohortConnectors, auditLog, methodName);
+        GetEntityProxyExecutor executor     = new GetEntityProxyExecutor(userId, guid, localMetadataCollectionId, auditLog, methodName);
+
+        /*
+         * Ready to process the request.  Create requests occur in the first repository that accepts the call.
+         * Some repositories may produce exceptions.  These exceptions are saved and will be returned if
+         * there are no positive results from any repository.
+         */
+        federationControl.executeCommand(executor);
+
+        return executor.isEntityProxyKnown();
+    }
+
 
     /**
      * Return the header and classifications for a specific entity.  The returned entity summary may be from
@@ -1008,7 +1112,10 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
             {
                 federationControl.executeCommand(executor);
 
-                return executor.getEntityDetail();
+                EntityDetail entityDetail = executor.getEntityDetail();
+                addEntityProxy(userId, entityDetail, methodName);
+
+                return entityDetail;
             }
             catch (EntityProxyOnlyException proxyException)
             {
@@ -1023,7 +1130,10 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         }
         federationControl.executeCommand(executor);
 
-        return executor.getEntityDetail();
+        EntityDetail entityDetail = executor.getEntityDetail();
+        addEntityProxy(userId, entityDetail, methodName);
+
+        return entityDetail;
     }
 
 
@@ -1081,6 +1191,50 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         return executor.getEntityDetailHistory();
     }
 
+    /**
+     * Returns the entity proxy if it is stored in the metadata collection, otherwise null.
+     *
+     * @param userId  unique identifier for requesting user.
+     * @param guid  String unique identifier for the entity
+     * @return the entity proxy if the entity is found in the metadata collection; otherwise return null
+     * @throws InvalidParameterException the guid is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public EntityProxy getEntityProxy(String    userId,
+                                      String    guid) throws InvalidParameterException,
+                                                             RepositoryErrorException,
+                                                             UserNotAuthorizedException
+    {
+        final String  methodName = "getEntityProxy";
+
+        /*
+         * Validate parameters
+         */
+        super.getInstanceParameterValidation(userId, guid, methodName);
+
+        /*
+         * Validation complete, ok to continue with request
+         *
+         * The list of cohort connectors are retrieved for each request to ensure that any changes in
+         * the shape of the cohort are reflected immediately.
+         */
+        List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
+
+        FederationControl federationControl = new SequentialFederationControl(userId, cohortConnectors, auditLog, methodName);
+        GetEntityProxyExecutor executor     = new GetEntityProxyExecutor(userId, guid, localMetadataCollectionId, auditLog, methodName);
+
+        /*
+         * Ready to process the request.  Create requests occur in the first repository that accepts the call.
+         * Some repositories may produce exceptions.  These exceptions are saved and will be returned if
+         * there are no positive results from any repository.
+         */
+        federationControl.executeCommand(executor);
+
+        return executor.getEntityProxy();
+    }
 
     /**
      * Return the relationships for a specific entity.
@@ -1403,7 +1557,41 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         federationControl.executeCommand(executor);
 
-        return executor.getResults(enterpriseParentConnector, this);
+        List<EntityDetail> results = executor.getResults(enterpriseParentConnector, this);
+
+        addEntityProxies(userId, results, methodName);
+
+        return results;
+    }
+
+    /*
+    * Triggers creation of EntityProxies for each element in the list
+    */
+    private void addEntityProxies(String userId, List<EntityDetail> entityDetails, String methodName)
+            throws RepositoryErrorException, InvalidParameterException {
+
+        if(entityDetails == null){
+            return;
+        }
+
+        for (EntityDetail entityDetail : entityDetails) {
+            addEntityProxy(userId, entityDetail, methodName);
+        }
+    }
+
+    /*
+    * Calls the enterprise method addEntityProxy
+    */
+    private void addEntityProxy(String userId, EntityDetail entityDetail, String methodName)
+            throws RepositoryErrorException, InvalidParameterException {
+
+        try {
+            addEntityProxy(userId, new EntityProxy(entityDetail));
+        } catch (FunctionNotSupportedException e) {
+            auditLog.logMessage(methodName, OMRSAuditCode.SAVE_PROXY_FAIL
+                    .getMessageDefinition(entityDetail.getMetadataCollectionName(), entityDetail.getGUID(), userId,
+                            e.getReportedErrorMessage()));
+        }
     }
 
 
@@ -2764,15 +2952,27 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      *
      * @param userId unique identifier for requesting user.
      * @param entityProxy details of entity to add.
+     *
      * @throws FunctionNotSupportedException the repository does not support entity proxies as first class elements.
      */
     @Override
     public void addEntityProxy(String      userId,
-                               EntityProxy entityProxy) throws FunctionNotSupportedException
-    {
+                               EntityProxy entityProxy) throws FunctionNotSupportedException,
+                                                               RepositoryErrorException,
+                                                               InvalidParameterException {
         final String  methodName = "addEntityProxy";
 
-        throwNotEnterpriseFunction(methodName);
+        /*
+         * Validate parameters
+         */
+        this.addEntityProxyParameterValidation(userId, entityProxy);
+
+        List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
+
+        FederationControl federationControl = new SequentialFederationControl(userId, cohortConnectors, auditLog, methodName);
+        AddEntityProxyExecutor addEntityProxyExecutor = new AddEntityProxyExecutor(userId, entityProxy, auditLog, methodName);
+
+        federationControl.executeCommand(addEntityProxyExecutor);
     }
 
 
@@ -2878,6 +3078,58 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         return null;
     }
 
+    /**
+     * Update selected properties in an entity proxy
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID String unique identifier (guid) for the entity.
+     * @param properties a list of properties to change.
+     *
+     * @return EntityProxy showing the resulting entity header, properties and classifications.
+     *
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this entity's type
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public EntityProxy updateEntityProxyProperties(String             userId,
+                                                   String             entityGUID,
+                                                   InstanceProperties properties) throws InvalidParameterException,
+                                                                                         RepositoryErrorException,
+                                                                                         EntityNotKnownException,
+                                                                                         PropertyErrorException,
+                                                                                         FunctionNotSupportedException,
+                                                                                         UserNotAuthorizedException
+    {
+        final String  methodName = "updateEntityProxyProperties";
+
+        /*
+         * Validate parameters
+         */
+        this.updateInstancePropertiesPropertyValidation(userId, entityGUID, properties, methodName);
+
+        /*
+         * Locate entity
+         */
+        EntitySummary entity = this.getEntitySummary(userId, entityGUID);
+
+        /*
+         * Validation complete, ok to make changes
+         */
+        OMRSMetadataCollection localMetadataCollection =
+                enterpriseParentConnector.getCohortConnectors(methodName).get(0).getMetadataCollection();
+        if (localMetadataCollection != null)
+        {
+            return localMetadataCollection.updateEntityProxyProperties(userId, entityGUID, properties);
+        }
+
+        return null;
+    }
 
     /**
      * Undo the last update to an entity and return the previous content.
@@ -3191,6 +3443,80 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         return executor.getUpdatedEntity();
     }
 
+    /**
+     * Add the requested classification to a specific entity proxy
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityProxyGUID String unique identifier (guid) for the entity.
+     * @param classificationName String name for the classification.
+     * @param classificationProperties list of properties to set in the classification.
+     *
+     * @return EntityProxy showing the resulting entity header, properties and classifications.
+     *
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws ClassificationErrorException the requested classification is either not known or not valid
+     *                                         for the entity.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public EntityProxy classifyEntityProxy(String             userId,
+                                           String             entityProxyGUID,
+                                           String             classificationName,
+                                           InstanceProperties classificationProperties) throws InvalidParameterException,
+                                                                                               RepositoryErrorException,
+                                                                                               EntityNotKnownException,
+                                                                                               ClassificationErrorException,
+                                                                                               PropertyErrorException,
+                                                                                               FunctionNotSupportedException,
+                                                                                               UserNotAuthorizedException
+    {
+        final String  methodName = "classifyEntityProxy";
+
+        /*
+         * Validate parameters
+         */
+        this.classifyEntityParameterValidation(userId,
+                entityProxyGUID,
+                classificationName,
+                classificationProperties,
+                methodName);
+
+        /*
+         * Locate entity and check classification is not already present.
+         */
+        EntitySummary entity = this.getEntitySummary(userId, entityProxyGUID);
+        repositoryHelper.checkEntityNotClassifiedEntity(repositoryName, entity, classificationName, methodName);
+
+        /*
+         * Validation complete, ok to continue with request
+         *
+         * The list of cohort connectors are retrieved for each request to ensure that any changes in
+         * the shape of the cohort are reflected immediately.
+         */
+        List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getHomeLocalRemoteConnectors(entity, methodName);
+
+        FederationControl federationControl = new SequentialFederationControl(userId, cohortConnectors, auditLog, methodName);
+        ClassifyEntityProxyExecutor executor = new ClassifyEntityProxyExecutor(userId, entityProxyGUID, classificationName,
+                null,
+                null,
+                null);
+
+        /*
+         * Ready to process the request.  Create requests occur in the first repository that accepts the call.
+         * Some repositories may produce exceptions.  These exceptions are saved and will be returned if
+         * there are no positive results from any repository.
+         */
+        federationControl.executeCommand(executor);
+
+        return executor.getUpdatedEntityProxy();
+    }
+
 
     /**
      * Add the requested classification to a specific entity.
@@ -3329,6 +3655,52 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         return null;
     }
 
+    /**
+     * Remove a specific classification from an entity proxy
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID String unique identifier (guid) for the entity.
+     * @param classificationName String name for the classification.
+     *
+     * @return EntityProxy showing the resulting entity header, properties and classifications.
+     *
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws ClassificationErrorException the requested classification is not set on the entity.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public EntityProxy declassifyEntityProxy(String userId,
+                                             String entityGUID,
+                                             String classificationName) throws InvalidParameterException,
+            RepositoryErrorException,
+            EntityNotKnownException,
+            ClassificationErrorException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException
+    {
+        final String  methodName = "declassifyEntityProxy";
+
+        /*
+         * Validate parameters
+         */
+        super.declassifyEntityParameterValidation(userId, entityGUID, classificationName, methodName);
+
+        /*
+         * Validation complete, ok to make changes
+         */
+        OMRSMetadataCollection localMetadataCollection =
+                enterpriseParentConnector.getCohortConnectors(methodName).get(0).getMetadataCollection();;
+        if (localMetadataCollection != null)
+        {
+            return localMetadataCollection.declassifyEntityProxy(userId, entityGUID, classificationName);
+        }
+
+        return null;
+    }
 
     /**
      * Update one or more properties in one of an entity's classifications.
@@ -3383,6 +3755,61 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                  entityGUID,
                                                                  classificationName,
                                                                  properties);
+        }
+
+        return null;
+    }
+
+    /**
+     * Update one or more properties in one of an entity proxy's classifications.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityProxyGUID String unique identifier (guid) for the entity.
+     * @param classificationName String name for the classification.
+     * @param properties list of properties for the classification.
+     * @return EntityDetail showing the resulting entity header, properties and classifications.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws ClassificationErrorException the requested classification is not attached to the classification.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public EntityProxy updateEntityProxyClassification(String             userId,
+                                                       String             entityProxyGUID,
+                                                       String             classificationName,
+                                                       InstanceProperties properties) throws InvalidParameterException,
+                                                                                             RepositoryErrorException,
+                                                                                             EntityNotKnownException,
+                                                                                             ClassificationErrorException,
+                                                                                             PropertyErrorException,
+                                                                                             FunctionNotSupportedException,
+                                                                                             UserNotAuthorizedException
+    {
+        final String  methodName = "updateEntityProxyClassification";
+
+        /*
+         * Validate parameters
+         */
+        classifyEntityParameterValidation(userId, entityProxyGUID, classificationName, properties, methodName);
+
+        /*
+         * Locate entity
+         */
+        EntitySummary entity = this.getEntitySummary(userId, entityProxyGUID);
+
+        /*
+         * Validation complete, ok to make changes
+         */
+        OMRSMetadataCollection localMetadataCollection =
+                enterpriseParentConnector.getCohortConnectors(methodName).get(0).getMetadataCollection();
+        if (localMetadataCollection != null)
+        {
+            return localMetadataCollection.updateEntityProxyClassification(userId, entityProxyGUID, classificationName, properties);
         }
 
         return null;

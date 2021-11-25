@@ -3,13 +3,23 @@
 package org.odpi.openmetadata.commonservices.repositoryhandler;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationOrigin;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceAuditHeader;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceGraph;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
@@ -20,8 +30,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -958,6 +968,35 @@ public class RepositoryHandler
 
 
     /**
+     * Validate that the supplied GUID is for a real proxy.  Return null if not.
+     *
+     * @param userId         user making the request.
+     * @param guid           unique identifier of the entity.
+     * @param methodName     name of method called.
+     *
+     * @return retrieved entity
+     *
+     * @throws PropertyServerException    problem accessing property server
+     */
+    public EntityProxy isEntityProxyKnown(String  userId,
+                                          String  guid,
+                                          String  methodName) throws PropertyServerException
+    {
+        final String localMethodName = "isEntityProxyKnown";
+
+        try
+        {
+            return metadataCollection.isEntityProxyKnown(userId, guid);
+        }
+        catch (Exception error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+
+        return null;
+    }
+
+    /**
      * Create a new entity in the open metadata repository with the specified instance status. The setting of externalSourceGUID determines
      * whether a local or a remote entity is created.
      *
@@ -1719,6 +1758,78 @@ public class RepositoryHandler
         }
     }
 
+    /**
+     * Update an existing entity proxy in the open metadata repository. The external source identifiers
+     * are used to validate the provenance of the entity before the update.  If they are null,
+     * only local cohort entities can be updated.  If they are not null, they need to match the instances
+     * metadata collection identifiers.
+     *
+     * @param userId             calling user
+     * @param externalSourceGUID unique identifier (guid) for the external source, or null for local.
+     * @param externalSourceName unique name for the external source.
+     * @param entityHeader       unique identifier of entity to update
+     * @param entityTypeGUID     type of entity to create
+     * @param entityTypeName     name of the entity's type
+     * @param properties         properties for the entity
+     * @param methodName         name of calling method
+     *
+     * @throws PropertyServerException    problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void updateEntityProxyProperties(String             userId,
+                                            String             externalSourceGUID,
+                                            String             externalSourceName,
+                                            InstanceHeader     entityHeader,
+                                            String             entityTypeGUID,
+                                            String             entityTypeName,
+                                            InstanceProperties properties,
+                                            String             methodName) throws UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+        final String localMethodName = "updateEntityProxyProperties";
+        final String typeGUIDParameterName = "entityTypeGUID";
+        final String typeNameParameterName = "entityTypeName";
+
+        errorHandler.validateTypeIdentifiers(entityTypeGUID,
+                typeGUIDParameterName,
+                entityTypeName,
+                typeNameParameterName,
+                methodName,
+                localMethodName);
+        try
+        {
+            errorHandler.validateProvenance(userId,
+                    entityHeader,
+                    entityHeader.getGUID(),
+                    externalSourceGUID,
+                    externalSourceName,
+                    methodName);
+
+            EntityProxy newEntity = metadataCollection.updateEntityProxyProperties(userId, entityHeader.getGUID(), properties);
+
+            if (newEntity == null)
+            {
+                errorHandler.handleNoEntity(entityTypeGUID, entityTypeName, properties, methodName);
+            }
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            /*
+             * This comes from validateProvenance.  The call to validate provenance is in the try..catch
+             * in case the caller has passed bad parameters.
+             */
+            throw error;
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Exception error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+    }
+
 
     /**
      * Update an existing entity status in the open metadata repository.  The external source identifiers
@@ -1920,6 +2031,85 @@ public class RepositoryHandler
         return null;
     }
 
+    /**
+     * Add a new classification to an existing entity proxy in the open metadata repository.
+     *
+     * @param userId                   calling user
+     * @param entityProxyGUID          unique identifier of entity proxy to update
+     * @param entityProxy              retrieved entity proxy (may be null)
+     * @param classificationTypeGUID   type of classification to create
+     * @param classificationTypeName   name of the classification's type
+     * @param classificationProperties properties for the classification
+     * @param methodName               name of calling method
+     *
+     * @return updated entity proxy
+     *
+     * @throws PropertyServerException    problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public EntityProxy classifyEntityProxy(String               userId,
+                                           String               entityProxyGUID,
+                                           EntityProxy          entityProxy,
+                                           String               classificationTypeGUID,
+                                           String               classificationTypeName,
+                                           InstanceProperties   classificationProperties,
+                                           String               methodName) throws UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        final String localMethodName = "classifyEntityProxy";
+
+        final String typeGUIDParameterName = "classificationTypeGUID";
+        final String typeNameParameterName = "classificationTypeName";
+
+        errorHandler.validateTypeIdentifiers(classificationTypeGUID,
+                typeGUIDParameterName,
+                classificationTypeName,
+                typeNameParameterName,
+                methodName,
+                localMethodName);
+        try
+        {
+            if (entityProxy == null)
+            {
+                /*
+                 * This is to check that the entity proxy is in an appropriate state to add the classification.
+                 */
+                this.isEntityProxyKnown(userId, entityProxyGUID, methodName);
+            }
+
+            EntityProxy newEntity = metadataCollection.classifyEntityProxy(userId,
+                    entityProxyGUID,
+                    classificationTypeName,
+                    classificationProperties);
+
+            if (newEntity == null)
+            {
+                errorHandler.handleNoEntityForClassification(entityProxyGUID,
+                        classificationTypeGUID,
+                        classificationTypeName,
+                        classificationProperties,
+                        methodName);
+            }
+            else
+            {
+                return newEntity;
+            }
+        }
+        catch (PropertyServerException error)
+        {
+            throw error;
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Exception error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+
+        return null;
+    }
 
     /**
      * Update the properties of an existing classification to an existing entity in the open metadata repository.
@@ -2058,6 +2248,132 @@ public class RepositoryHandler
 
 
     /**
+     * Update the properties of an existing classification to an existing entity in the open metadata repository.
+     *
+     * @param userId                       calling user
+     * @param externalSourceGUID           unique identifier (guid) for the external source, or null for local.
+     * @param externalSourceName           unique name for the external source.
+     * @param entityGUID                   unique identifier of entity to update
+     * @param entityGUIDParameterName      parameter supplying entityGUID
+     * @param entityTypeName               type of entity
+     * @param classificationTypeGUID       type of classification to create
+     * @param classificationTypeName       name of the classification's type
+     * @param existingClassificationHeader current value of classification
+     * @param newProperties                properties for the classification
+     * @param forLineage                   the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing       the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime                the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName                   name of calling method
+     *
+     * @throws InvalidParameterException  invalid parameters passed - probably GUID
+     * @throws PropertyServerException    problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void reclassifyEntityProxy(String              userId,
+                                      String              externalSourceGUID,
+                                      String              externalSourceName,
+                                      String              entityGUID,
+                                      String              entityGUIDParameterName,
+                                      String              entityTypeName,
+                                      String              classificationTypeGUID,
+                                      String              classificationTypeName,
+                                      InstanceAuditHeader existingClassificationHeader,
+                                      InstanceProperties  newProperties,
+                                      boolean             forLineage,
+                                      boolean             forDuplicateProcessing,
+                                      Date                effectiveTime,
+                                      String              methodName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        final String localMethodName = "reclassifyEntity";
+
+        final String typeGUIDParameterName = "classificationTypeGUID";
+        final String typeNameParameterName = "classificationTypeName";
+
+        errorHandler.validateTypeIdentifiers(classificationTypeGUID,
+                typeGUIDParameterName,
+                classificationTypeName,
+                typeNameParameterName,
+                methodName,
+                localMethodName);
+
+        InstanceAuditHeader auditHeader = existingClassificationHeader;
+
+        /*
+         * The audit header is supplied if the caller has already looked up the entity/classification
+         */
+        if (auditHeader == null)
+        {
+            auditHeader = this.getClassificationForEntity(userId,
+                    entityGUID,
+                    entityGUIDParameterName,
+                    entityTypeName,
+                    classificationTypeName,
+                    forLineage,
+                    forDuplicateProcessing,
+                    effectiveTime,
+                    methodName);
+        }
+
+        if (auditHeader != null)
+        {
+            /*
+             * OK to reclassify the classification is currently attached.
+             */
+            try
+            {
+                errorHandler.validateProvenance(userId,
+                        existingClassificationHeader,
+                        entityGUID,
+                        externalSourceGUID,
+                        externalSourceName,
+                        methodName);
+
+                EntityProxy newEntity = metadataCollection.updateEntityProxyClassification(userId,
+                        entityGUID,
+                        classificationTypeName,
+                        newProperties);
+
+                if (newEntity == null)
+                {
+                    errorHandler.handleNoEntityForClassification(entityGUID,
+                            classificationTypeGUID,
+                            classificationTypeName,
+                            newProperties,
+                            methodName);
+                }
+            }
+            catch (UserNotAuthorizedException | PropertyServerException error)
+            {
+                /*
+                 * This comes from validateProvenance.  The call to validate provenance is in the try..catch
+                 * in case the caller has passed bad parameters.
+                 */
+                throw error;
+            }
+            catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+            {
+                errorHandler.handleUnauthorizedUser(userId, methodName);
+            }
+            catch (Exception error)
+            {
+                errorHandler.handleRepositoryError(error, methodName, localMethodName + "(" + classificationTypeName + ")");
+            }
+        }
+        else /* should be a classify */
+        {
+            this.classifyEntityProxy(userId,
+                    entityGUID,
+                    null,
+                    classificationTypeGUID,
+                    classificationTypeName,
+                    newProperties,
+                    methodName);
+        }
+    }
+
+    /**
      * Remove an existing classification from an existing entity in the open metadata repository.
      *
      * @param userId                       calling user
@@ -2165,6 +2481,113 @@ public class RepositoryHandler
         }
     }
 
+    /**
+     * Remove an existing classification from an existing entity proxy in the open metadata repository.
+     *
+     * @param userId                       calling user
+     * @param externalSourceGUID           unique identifier (guid) for the external source, or null for local.
+     * @param externalSourceName           unique name for the external source.
+     * @param entityGUID                   unique identifier of entity to update
+     * @param entityGUIDParameterName      parameter name that passed the entityGUID
+     * @param entityTypeName               type of entity
+     * @param classificationTypeGUID       type of classification to create
+     * @param classificationTypeName       name of the classification's type
+     * @param existingClassificationHeader current value of classification
+     * @param forLineage                   the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing       the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime                the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName                   name of calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid = probably the GUID
+     * @throws PropertyServerException    problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void declassifyEntityProxy(String              userId,
+                                      String              externalSourceGUID,
+                                      String              externalSourceName,
+                                      String              entityGUID,
+                                      String              entityGUIDParameterName,
+                                      String              entityTypeName,
+                                      String              classificationTypeGUID,
+                                      String              classificationTypeName,
+                                      InstanceAuditHeader existingClassificationHeader,
+                                      boolean             forLineage,
+                                      boolean             forDuplicateProcessing,
+                                      Date                effectiveTime,
+                                      String              methodName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        final String localMethodName = "declassifyEntityProxy";
+
+        final String typeGUIDParameterName = "classificationTypeGUID";
+        final String typeNameParameterName = "classificationTypeName";
+
+        errorHandler.validateTypeIdentifiers(classificationTypeGUID,
+                typeGUIDParameterName,
+                classificationTypeName,
+                typeNameParameterName,
+                methodName,
+                localMethodName);
+
+        InstanceAuditHeader auditHeader = existingClassificationHeader;
+
+        if (auditHeader == null)
+        {
+            auditHeader = this.getClassificationForEntity(userId,
+                    entityGUID,
+                    entityGUIDParameterName,
+                    entityTypeName,
+                    classificationTypeName,
+                    forLineage,
+                    forDuplicateProcessing,
+                    effectiveTime,
+                    methodName);
+        }
+
+        /*
+         * Nothing to do if the classification is already gone.
+         */
+        if (auditHeader != null)
+        {
+            try
+            {
+                errorHandler.validateProvenance(userId,
+                        auditHeader,
+                        entityGUID,
+                        externalSourceGUID,
+                        externalSourceName,
+                        methodName);
+
+                EntityProxy newEntity = metadataCollection.declassifyEntityProxy(userId, entityGUID, classificationTypeName);
+
+                if (newEntity == null)
+                {
+                    errorHandler.handleNoEntityForClassification(entityGUID,
+                            classificationTypeGUID,
+                            classificationTypeName,
+                            null,
+                            methodName);
+                }
+            }
+            catch (UserNotAuthorizedException error)
+            {
+                /*
+                 * This comes from validateProvenance.  The call to validate provenance is in the try..catch
+                 * in case the caller has passed bad parameters.
+                 */
+                throw error;
+            }
+            catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+            {
+                errorHandler.handleUnauthorizedUser(userId, methodName);
+            }
+            catch (Exception error)
+            {
+                errorHandler.handleRepositoryError(error, methodName, localMethodName);
+            }
+        }
+    }
 
     /**
      * Remove an entity from the open metadata repository if the validating properties match. The external source identifiers
