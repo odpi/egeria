@@ -1,3 +1,5 @@
+/* Copyright Contributors to the ODPi Egeria project. */
+
 package org.odpi.openmetadata.accessservices.glossaryauthor.fvt.client.Configs;
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.Config;

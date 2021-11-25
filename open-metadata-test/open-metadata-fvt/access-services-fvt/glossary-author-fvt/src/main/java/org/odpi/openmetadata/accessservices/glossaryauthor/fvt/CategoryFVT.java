@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.glossaryauthor.fvt;
 
+import org.odpi.openmetadata.accessservices.glossaryauthor.fvt.client.GlossaryAuthorViewRestClient;
+import org.odpi.openmetadata.accessservices.glossaryauthor.fvt.client.category.GlossaryAuthorViewCategoryClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaNodeClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRestClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.categories.SubjectAreaCategoryClient;
@@ -31,7 +33,7 @@ public class CategoryFVT {
     private static final String DEFAULT_TEST_CATEGORY_NAME3 = "Test category C";
     private static final String DEFAULT_TEST_CATEGORY_A_CHILD = "Test category A child";
     private SubjectAreaNodeClient<Category> subjectAreaCategory = null;
-    private SubjectAreaCategoryClient subjectAreaCategoryClient = null;
+    private GlossaryAuthorViewCategoryClient glossaryAuthorViewCategoryClient = null;
     private GlossaryFVT glossaryFVT = null;
     private String serverName = null;
     private String userId = null;
@@ -65,9 +67,10 @@ public class CategoryFVT {
     }
 
     public CategoryFVT(String url, String serverName, String userId) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        SubjectAreaRestClient client = new SubjectAreaRestClient(serverName, url);
-        subjectAreaCategory = new SubjectAreaCategoryClient<>(client);
-        subjectAreaCategoryClient = (SubjectAreaCategoryClient) subjectAreaCategory;
+        GlossaryAuthorViewRestClient glossaryAuthorViewRestClient = new GlossaryAuthorViewRestClient(serverName, url);
+     //   subjectAreaCategory = new SubjectAreaCategoryClient<>(client);
+        glossaryAuthorViewCategoryClient = new GlossaryAuthorViewCategoryClient(glossaryAuthorViewRestClient);
+
         glossaryFVT = new GlossaryFVT(url, serverName, userId);
         this.serverName = serverName;
         this.userId = userId;
@@ -107,6 +110,7 @@ public class CategoryFVT {
         FVTUtils.validateNode(category2);
 
         FindRequest findRequest = new FindRequest();
+        //findRequest.setPageSize(10);
         List<Category> results = glossaryFVT.getCategories(glossaryGuid, findRequest, true);
         if (results.size() != 2) {
             throw new GlossaryAuthorFVTCheckedException("ERROR: Expected 2 back on getGlossaryCategories onlyTop true" + results.size());
@@ -131,11 +135,14 @@ public class CategoryFVT {
         if (results.size() != 3) {
             throw new GlossaryAuthorFVTCheckedException("ERROR: Expected all 3 categories  getGlossaryCategories " + results.size());
         }
+
         String category1Guid = category1.getSystemAttributes().getGUID();
+
         List<Category>  children = getCategoryChildren(category1Guid);
         if (children.size() != 1) {
             throw new GlossaryAuthorFVTCheckedException("ERROR: Expected 1 Category as the child " + children.size());
         }
+
         deleteCategory(categoryChild.getSystemAttributes().getGUID());
         children = getCategoryChildren(category1Guid);
         if (children.size() != 0) {
@@ -211,12 +218,22 @@ public class CategoryFVT {
             throw new GlossaryAuthorFVTCheckedException("ERROR: Expected 2 back on the find got " + results.size());
         }
         results = findCategories(null);
-        if (results.size() != 6 +existingCategoryCount) {
-            throw new GlossaryAuthorFVTCheckedException("ERROR1: Expected 6 back on the find got " + results.size());
+        if (results.size() != 6 + existingCategoryCount) {
+            for (Category result: results) {
+                System.err.println("result name " + result.getName());
+                System.err.println("result desc " + result.getDescription());
+                System.err.println("result guid " + result.getSystemAttributes().getGUID());
+            }
+            throw new GlossaryAuthorFVTCheckedException("ERROR1: Expected 6 back on the find got " + results.size() + " 6 + existing=" + (existingCategoryCount));
         }
 
-        results = subjectAreaCategory.findAll(userId);
+        results = glossaryAuthorViewCategoryClient.findAll(userId);
         if (results.size() != 6 + existingCategoryCount) {
+            for (Category result: results) {
+                System.err.println("result name " + result.getName());
+                System.err.println("result desc " + result.getDescription());
+                System.err.println("result guid " + result.getSystemAttributes().getGUID());
+            }
             throw new GlossaryAuthorFVTCheckedException("ERROR: Expected 6 back on the find got " + results.size());
         }
         //soft delete a category and check it is not found
@@ -245,6 +262,7 @@ public class CategoryFVT {
 
         testHierarchyWithSearchCriteria();
 
+        return;
     }
 
     private void testHierarchyWithSearchCriteria() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, GlossaryAuthorFVTCheckedException {
@@ -272,7 +290,7 @@ public class CategoryFVT {
         }
         FindRequest findRequest =new FindRequest();
         findRequest.setSearchCriteria("mm1");
-        int count = subjectAreaCategoryClient.getCategoryChildren(userId, parentGuid, findRequest).size();
+        int count = glossaryAuthorViewCategoryClient.getCategoryChildren(userId, parentGuid, findRequest,false,true).size();
         if (count !=1) {
             throw new GlossaryAuthorFVTCheckedException("ERROR: Expected 1 child category, got " + count);
         }
@@ -301,7 +319,7 @@ public class CategoryFVT {
         }
 
         findRequest.setSearchCriteria("mm");
-        count = subjectAreaCategoryClient.getCategoryChildren(userId, parentGuid, findRequest).size();
+        count = glossaryAuthorViewCategoryClient.getCategoryChildren(userId, parentGuid, findRequest,false,true).size();
         if (count !=3) {
             throw new GlossaryAuthorFVTCheckedException("ERROR: Expected 3 child category, got " + count);
         }
@@ -323,7 +341,7 @@ public class CategoryFVT {
         }
         // issue with page size 5
         findRequest.setPageSize(5);
-        List<Category> categories = subjectAreaCategoryClient.getCategoryChildren(userId, parentGuid, findRequest, false, true);
+        List<Category> categories = glossaryAuthorViewCategoryClient.getCategoryChildren(userId, parentGuid, findRequest, false, true);
         count = categories.size();
         if (count !=5) {
             throw new GlossaryAuthorFVTCheckedException("ERROR: Expected 5 child categories with mm, got " + count);
@@ -340,7 +358,7 @@ public class CategoryFVT {
         // test page size 5, startingFrom 5
         findRequest.setStartingFrom(5);
 
-        categories = subjectAreaCategoryClient.getCategoryChildren(userId, parentGuid, findRequest);
+        categories = glossaryAuthorViewCategoryClient.getCategoryChildren(userId, parentGuid, findRequest,false,true);
         count = categories.size();
         if (count !=5) {
             throw new GlossaryAuthorFVTCheckedException("ERROR: Expected 5 child categories with mm (findRequest.setStartingFrom(5)),got " + count);
@@ -357,7 +375,7 @@ public class CategoryFVT {
         findRequest.setStartingFrom(0);
         findRequest.setSearchCriteria("nn");
         findRequest.setPageSize(20);
-        count = subjectAreaCategoryClient.getCategoryChildren(userId, parentGuid, findRequest,false, true).size();
+        count = glossaryAuthorViewCategoryClient.getCategoryChildren(userId, parentGuid, findRequest,false, true).size();
         if (count !=10) {
             throw new GlossaryAuthorFVTCheckedException("ERROR: Expected 10 child categories for nn and got " + count);
         }
@@ -372,7 +390,7 @@ public class CategoryFVT {
         }
         // issue with page size 5, startingFrom 5 check the categorychildren
         findRequest.setPageSize(5);
-        count = subjectAreaCategoryClient.getCategoryChildren(userId, parentGuid, findRequest, false, true).size();
+        count = glossaryAuthorViewCategoryClient.getCategoryChildren(userId, parentGuid, findRequest, false, true).size();
         if (count !=5) {
             throw new GlossaryAuthorFVTCheckedException("ERROR: Expected 5 child categories for nn, got " + count);
         }
@@ -382,7 +400,7 @@ public class CategoryFVT {
         }
         // issue with page size 5, startingFrom 5 check the categorychildren
         findRequest.setStartingFrom(5);
-        count = subjectAreaCategoryClient.getCategoryChildren(userId, parentGuid, findRequest).size();
+        count = glossaryAuthorViewCategoryClient.getCategoryChildren(userId, parentGuid, findRequest,false,true).size();
         if (count !=5) {
             throw new GlossaryAuthorFVTCheckedException("ERROR: Expected 5 child categories for nn, got " + count);
         }
@@ -398,7 +416,7 @@ public class CategoryFVT {
 
         findRequest.setStartingFrom(0);
         findRequest.setPageSize(10);
-        count = subjectAreaCategoryClient.getCategoryChildren(userId, parentGuid, findRequest).size();
+        count = glossaryAuthorViewCategoryClient.getCategoryChildren(userId, parentGuid, findRequest,false,true).size();
         if (count !=10) {
             throw new GlossaryAuthorFVTCheckedException("ERROR: Expected 10 child categories for nn*, got " + count);
         }
@@ -418,9 +436,9 @@ public class CategoryFVT {
         glossaryFVT.deleteGlossary(glossaryGuid);
     }
 
-    private Category createCategoryWithParentGlossaryGuid(String subjectAreaName, String parentGuid, String glossaryGuid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, GlossaryAuthorFVTCheckedException {
+    private Category createCategoryWithParentGlossaryGuid(String categoryName, String parentGuid, String glossaryGuid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, GlossaryAuthorFVTCheckedException {
         Category category = new Category();
-        category.setName(subjectAreaName);
+        category.setName(categoryName);
         GlossarySummary GlossarySummary = new GlossarySummary();
         GlossarySummary.setGuid(glossaryGuid);
         category.setGlossary(GlossarySummary);
@@ -475,7 +493,7 @@ public class CategoryFVT {
     }
 
     private Category issueCreateCategory(Category category) throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException {
-        Category newCategory = subjectAreaCategory.create(this.userId, category);
+        Category newCategory = glossaryAuthorViewCategoryClient.create(this.userId, category);
         if (newCategory != null) {
             createdCategoriesSet.add(newCategory.getSystemAttributes().getGUID());
             System.out.println("Created Category " + newCategory.getName() + " with userId " + newCategory.getSystemAttributes().getGUID());
@@ -494,7 +512,7 @@ public class CategoryFVT {
 
 
     public Category getCategoryByGUID(String guid) throws GlossaryAuthorFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        Category category = subjectAreaCategory.getByGUID(this.userId, guid);
+        Category category = glossaryAuthorViewCategoryClient.getByGUID(this.userId, guid);
         FVTUtils.validateNode(category);
         System.out.println("Got Category " + category.getName() + " with userId " + category.getSystemAttributes().getGUID() + " and status " + category.getSystemAttributes().getStatus());
         return category;
@@ -503,28 +521,31 @@ public class CategoryFVT {
     public List<Category> findCategories(String criteria) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         FindRequest findRequest = new FindRequest();
         findRequest.setSearchCriteria(criteria);
-        return subjectAreaCategory.find(this.userId, findRequest,false,true);
+        return glossaryAuthorViewCategoryClient.find(this.userId, findRequest,false,true);
     }
     public List<Category> findCategories(String criteria, boolean exactValue, boolean ignoreCase) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         FindRequest findRequest = new FindRequest();
         findRequest.setSearchCriteria(criteria);
-        return subjectAreaCategory.find(this.userId, findRequest, exactValue, ignoreCase);
+        if (glossaryAuthorViewCategoryClient == null)
+            System.out.println("NULL !!!");
+        List<Category> categoryList = glossaryAuthorViewCategoryClient.find(this.userId, findRequest, exactValue, ignoreCase);
+        return categoryList;
     }
 
     public Category updateCategory(String guid, Category category) throws GlossaryAuthorFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        Category updatedCategory = subjectAreaCategory.update(this.userId, guid, category);
+        Category updatedCategory = glossaryAuthorViewCategoryClient.update(this.userId, guid, category,true);
         FVTUtils.validateNode(updatedCategory);
         System.out.println("Updated Category name to " + updatedCategory.getName());
         return updatedCategory;
     }
 
     public void deleteCategory(String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-            subjectAreaCategory.delete(this.userId, guid);
+        glossaryAuthorViewCategoryClient.delete(this.userId, guid);
             createdCategoriesSet.remove(guid);
             System.out.println("Deleted Category succeeded");
     }
     public Category restoreCategory(String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, GlossaryAuthorFVTCheckedException {
-        Category restoredCategory = subjectAreaCategory.restore(this.userId, guid);
+        Category restoredCategory = glossaryAuthorViewCategoryClient.restore(this.userId, guid);
         FVTUtils.validateNode(restoredCategory);
         createdCategoriesSet.add(guid);
         System.out.println("restored Category name is " + restoredCategory.getName());
@@ -532,7 +553,7 @@ public class CategoryFVT {
     }
 
     public List<Relationship> getCategoryRelationships(Category category) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        return subjectAreaCategory.getAllRelationships(this.userId, category.getSystemAttributes().getGUID());
+        return glossaryAuthorViewCategoryClient.getAllRelationships(this.userId, category.getSystemAttributes().getGUID());
     }
     private void deleteRemaining() throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException, GlossaryAuthorFVTCheckedException {
       deleteRemainingCategories();
@@ -552,15 +573,15 @@ public class CategoryFVT {
     }
     public List<Category> getCategoryChildren(String categoryGuid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
-        return subjectAreaCategoryClient.getCategoryChildren(userId, categoryGuid, new FindRequest(), false, true);
+        return glossaryAuthorViewCategoryClient.getCategoryChildren(userId, categoryGuid, new FindRequest(), false, true);
     }
 
     public List<Term> getTerms(String categoryGuid)  throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
     {
-        return subjectAreaCategoryClient.getTerms(userId, categoryGuid, new FindRequest());
+        return glossaryAuthorViewCategoryClient.getTerms(userId, categoryGuid, new FindRequest());
     }
     public List<Term> getTerms(String categoryGuid, FindRequest findRequest)  throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
     {
-        return subjectAreaCategoryClient.getTerms(userId, categoryGuid, findRequest);
+        return glossaryAuthorViewCategoryClient.getTerms(userId, categoryGuid, findRequest);
     }
 }

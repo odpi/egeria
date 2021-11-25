@@ -1,3 +1,5 @@
+/* Copyright Contributors to the ODPi Egeria project. */
+
 package org.odpi.openmetadata.accessservices.glossaryauthor.fvt.client.glossarys;
 
 import org.odpi.openmetadata.accessservices.glossaryauthor.fvt.client.GlossaryAuthorViewRestClient;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 //import org.odpi.openmetadata.accessservices.glossaryview.rest.Glossary;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -162,18 +165,51 @@ public class GlossaryAuthorViewGlossaryClient implements GlossaryAuthorViewGloss
 
         return response.results();
     }
-
+    //find with conditions
     @Override
     public List<Category> getCategories(String userId, String guid, FindRequest findRequest, boolean onlyTop) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         ResolvableType resolvableType = ResolvableType.forClassWithGenerics(SubjectAreaOMASAPIResponse.class, Category.class);
-        String urnTemplate = BASE_URL +  "/%s/categories";
-        ParameterizedTypeReference<GenericResponse<Category>> type = ParameterizedTypeReference.forType(resolvableType.getType());
+        String urnTemplate = BASE_URL +  "/" + guid + "/categories";
 
+        Map<String, String> params = new HashMap();
+        params.put("exactValue", "false");
+        params.put("ignoreCase", "true");
+        params.put("onlyTop", String.valueOf(onlyTop));
+
+
+        ParameterizedTypeReference<GenericResponse<Category>> type = ParameterizedTypeReference.forType(resolvableType.getType());
         GenericResponse<Category> response = client.getByIdRESTCall(userId,
                 guid,
                 getMethodInfo("getCategories"),
                 type,
-                urnTemplate);
+                urnTemplate,
+                findRequest,
+                0,
+                params);
+
+        return response.results();
+
+    }
+
+    //find
+    @Override
+    public List<Category> getCategories(String userId, String guid, FindRequest findRequest) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        ResolvableType resolvableType = ResolvableType.forClassWithGenerics(SubjectAreaOMASAPIResponse.class, Category.class);
+        String urnTemplate = BASE_URL +  "/" + guid + "/categories";
+        ParameterizedTypeReference<GenericResponse<Category>> type = ParameterizedTypeReference.forType(resolvableType.getType());
+        GenericResponse<Category> response = client.findRESTCall(userId,
+                                                                getMethodInfo("getCategories"),
+                                                                urnTemplate,
+                                                                type,
+                                                                findRequest,
+                                                                false,
+                                                                true,
+                                                                0);
+/*        GenericResponse<Category> response = client.getByIdRESTCall(userId,
+                guid,
+                getMethodInfo("getCategories"),
+                type,
+                urnTemplate);*/
         //GenericResponse<Category> response = client.getByIdRESTCall(userId ,guid, methodInfo, type, urlTemplate);
 
         return response.results();

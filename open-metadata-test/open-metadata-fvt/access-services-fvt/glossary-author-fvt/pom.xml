@@ -9,7 +9,7 @@
     <parent>
         <artifactId>access-services-fvt</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.3-SNAPSHOT</version>
+        <version>3.4-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -32,8 +32,13 @@
         <fvt.user>garygeeke</fvt.user>
         <fvt.maxwait>10</fvt.maxwait>
         <!-- TODO: use of an out-of-module relative path isn't ideal, consider better approach -->
-        <fvt.distdir>../../../../../../open-metadata-distribution/open-metadata-assemblies/target/egeria-${open-metadata.version}-distribution/egeria-omag-${open-metadata.version}</fvt.distdir>
-        <fvt.platform-wd>${project.build.outputDirectory}</fvt.platform-wd>    </properties>
+        <fvt.distdir>
+            ../../../../../../open-metadata-distribution/open-metadata-assemblies/target/egeria-${open-metadata.version}-distribution/egeria-omag-${open-metadata.version}
+        </fvt.distdir>
+        <fvt.platform-wd>${project.build.outputDirectory}</fvt.platform-wd>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+    </properties>
 
     <dependencies>
         <dependency>

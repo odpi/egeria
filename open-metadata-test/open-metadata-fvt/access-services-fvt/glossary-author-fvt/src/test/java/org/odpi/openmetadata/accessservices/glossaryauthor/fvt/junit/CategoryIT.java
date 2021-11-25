@@ -21,8 +21,11 @@ public class CategoryIT {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"serverinmem","servergraph"})
+    //@ValueSource(strings = {"serverinmem","serverview"})
+    @ValueSource(strings = {"serverview"})
     public void testCategory(String server) {
-        //assertDoesNotThrow(() -> CategoryFVT.runIt(StringUtils.defaultIfEmpty(System.getProperty("fvt.url"),FVTConstants.SERVER_PLATFORM_URL_ROOT), server, "garygeeke"));
+        assertDoesNotThrow(() -> CategoryFVT.runIt(StringUtils.defaultIfEmpty(System.getProperty("fvt.url"), FVTConstants.SERVER_PLATFORM_URL_ROOT),
+                                                    server,
+                                                    "garygeeke"));
     }
 }

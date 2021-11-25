@@ -1,3 +1,5 @@
+/* Copyright Contributors to the ODPi Egeria project. */
+
 package org.odpi.openmetadata.accessservices.glossaryauthor.fvt.client.glossarys;
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
@@ -39,6 +41,7 @@ public interface GlossaryAuthorViewGlossary {
      * @param userId       userId under which the request is performed
      * @param guid         guid of Glossary object to be updated
      * @param glossary     Glossary object with updated values
+     * @param action       To replace existing Glossary or not
      *
      * @return The updated Glossary
      *
@@ -110,23 +113,31 @@ public interface GlossaryAuthorViewGlossary {
     Glossary restore(String userId, String guid) throws PropertyServerException, InvalidParameterException, UserNotAuthorizedException;
 
     /**
-     * Restore a soft-deleted Glossary.
-     * <p>
-     * The result is the restored Glossary object
+     * Get the Categories owned by this glossary.
      *
-     * @param userId       userId under which the request is performed
-     * @param glossaryGuid         guid of Glossary object
-     * @param findRequest         information object for find calls. This include pageSize to limit the number of elements returned.
-     * @param onlyTop         when only the top categories (those categories without parents) are returned.
-     *
-     * @return List of Categories associated with the Glossary
-     *
-     * @throws PropertyServerException something went wrong with the REST call stack.
+     * @param userId      unique identifier for requesting user, under which the request is performed.
+     * @param glossaryGuid        unique identifier of the object to which the found objects should relate.
+     * @param findRequest information object for find calls. This include pageSize to limit the number of elements returned.
+     * @return list of Categories
+     * @throws PropertyServerException    something went wrong with the REST call stack.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     */
+    List<Category> getCategories(String userId, String glossaryGuid, FindRequest findRequest) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException;
+
+    /**
+     * Get the Categories owned by this glossary.
+     *
+     * @param userId      unique identifier for requesting user, under which the request is performed.
+     * @param glossaryGuid        unique identifier of the object to which the found objects should relate.
+     * @param findRequest information object for find calls. This include pageSize to limit the number of elements returned.
+     * @param onlyTop     when only the top categories (those categories without parents) are returned.
+     * @return list of Categories
+     * @throws PropertyServerException    something went wrong with the REST call stack.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
      */
     List<Category> getCategories(String userId, String glossaryGuid, FindRequest findRequest, boolean onlyTop) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException;
-
     /**
      * Extract terms within a glossary
      *

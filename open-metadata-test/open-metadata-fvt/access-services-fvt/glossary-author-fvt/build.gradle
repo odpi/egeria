@@ -48,6 +48,7 @@ ext
         {
             distdir="../../../../../open-metadata-distribution/open-metadata-assemblies/build/unpacked/egeria-${project.version}-distribution.tar.gz"
            // distdir= "../../../../open-metadata-distribution/open-metadata-assemblies/build/unpacked/egeria-${project.version}-distribution.tar.gz"
+            keydir="../../../../../open-metadata-implementation/server-chassis/server-chassis-spring/src/main/resources"
             gaport="10454"
         }
 
@@ -61,11 +62,22 @@ task startServer(dependsOn: ['cleanData',':open-metadata-distribution:open-metad
     // Start some external service
     executable = System.properties.'java.home' + '/bin/java'
     workingDir = "${buildDir}"
+    // the keystore is needed as for the FVT the flossary author view is a client for the subject ares service
+    //remove the two -Dlogging args if you dont want debug level of logging
     args = [ "-Dserver.port=${gaport}",
              "-Dloader.path=${distdir}/server/lib",
              "-Dspringdoc.api-docs.enabled=false",
              "-Djavax.net.ssl.trustStore=${distdir}/truststore.p12",
+             "-Djavax.net.ssl.trustStorePassword=egeria",
+             "-Djavax.net.ssl.keyStore=${distdir}/keystore.p12",
+             "-Djavax.net.ssl.keyStorePassword=egeria",
              "-Dserver.ssl.trust-store=${distdir}/truststore.p12",
+             "-Dserver.ssl.trust-store-password=egeria",
+//             "-Dserver.ssl.key-store=${keydir}/keystore.p12",
+//             "-Dserver.ssl.key-store-password=egeria",
+//             "-Djavax.net.debug=ssl:handshake:verbose:keymanager:trustmanager", //Troubleshooting removeLater
+            "-Dlogging.level.org.apache.tomcat=DEBUG" ,
+             "-Dlogging.level.org.apache.catalina=DEBUG",
              "-jar",
              "${distdir}/server/server-chassis-spring-${project.version}.jar" ]
     // Setting the output directories to be the same for ALL FVTs acts as a synchronization mechanism
@@ -101,10 +113,13 @@ task cleanData(type: Delete) {
 // The actual tests (Integration only)
 test {
     description 'Run Integration Tests'
+//    test.debug = true // -- to debug in IDE
     group = 'verification'
     outputs.upToDateWhen {return false}
     systemProperties = [
-            'fvt.url': 'https://localhost:'+ gaport
+            'fvt.url': 'https://localhost:'+ gaport,
+//            'javax.net.debug':'ssl:handshake:verbose:keymanager:trustmanager'
+//            'logging.level.org.springframework.web.client.RestTemplate':'DEBUG'
     ]
     useJUnitPlatform()
     testLogging.showStandardStreams = true

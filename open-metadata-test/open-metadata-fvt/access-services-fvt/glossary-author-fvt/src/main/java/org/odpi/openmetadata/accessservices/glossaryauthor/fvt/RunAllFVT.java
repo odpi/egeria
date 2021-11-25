@@ -47,7 +47,7 @@ public class RunAllFVT
 
        GlossaryFVT.runIt(url,serverName,userId);
 //        TermFVT.runIt(url,serverName,userId);
-//        CategoryFVT.runIt(url,serverName,userId);
+        CategoryFVT.runIt(url,serverName,userId);
 //        CategoryHierarchyFVT.runIt(url,serverName,userId);
 //        RelationshipsFVT.runIt(url,serverName,userId);
 //        ProjectFVT.runIt(url, serverName, userId);
