@@ -163,7 +163,7 @@
                                 </ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>joda-time:joda-time:*
                                 </ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>org.hibernate:hibernate-validator:*
+                                <ignoredUnusedDeclaredDependency>org.hibernate*:hibernate-validator:*
                                 </ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>org.antlr:antlr-runtime:jar:*
                                 </ignoredUnusedDeclaredDependency>
