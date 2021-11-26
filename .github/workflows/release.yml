@@ -20,7 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         name: Checkout source
-      # Prep for docker builds which are currently done as part of the maven build
+      # Prep for docker builds
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
       - name: Login to container registry (Quay.io)
@@ -56,25 +56,47 @@ jobs:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.OSSRH_GPG_PASSPHRASE }}
-      - name: Publish container images to quay.io
-        # See https://github.com/actions/toolkit/issues/231 requires parms using . to be quoted
-        run: 'cd open-metadata-resources/open-metadata-deployment/docker && mvn -B -DuseMavenCentral -Ddocker "-Ddocker.taglatest" "-Ddocker.repo=odpi" "-Ddocker.registry=quay.io" "-Ddocker.images=core" clean deploy'
-        # Needed for publishing -- note we push to a staging area, login to oss.sonatype.org to
-        # verify (close) the repository & release
-        env:
-          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
-          MAVEN_GPG_PASSPHRASE: ${{ secrets.OSSRH_GPG_PASSPHRASE }}
-      # Push docker images to docker.io
-      - name: Publish container images to docker.io
-        # See https://github.com/actions/toolkit/issues/231 requires parms using . to be quoted
-        run: 'cd open-metadata-resources/open-metadata-deployment/docker && mvn -B -DuseMavenCentral -Ddocker "-Ddocker.taglatest" "-Ddocker.repo=odpi" "-Ddocker.registry=docker.io" "-Ddocker.images=core" clean deploy'
-        # Needed for publishing -- note we push to a staging area, login to oss.sonatype.org to
-        # verify (close) the repository & release
-        env:
-          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
-          MAVEN_GPG_PASSPHRASE: ${{ secrets.OSSRH_GPG_PASSPHRASE }}
+      # QEMU is needed for ARM64 build for egeria-configure
+      # egeria-configure needs to install utilities
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Set Release version env variable
+        run: |
+          echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+      # Publish container images(egeria) to quay.io and docker.io
+      - name: Copy the distribution content to be used in docker copy command
+        run: |
+          mkdir -p ./open-metadata-resources/open-metadata-deployment/docker/egeria/target/assembly
+          cp -r open-metadata-distribution/open-metadata-assemblies/target/egeria-${{ env.VERSION }}-distribution/egeria-omag-${{ env.VERSION }}/. open-metadata-resources/open-metadata-deployment/docker/egeria/target/assembly
+      - name: Build and push(egeria) to quay.io and docker.io
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: odpi/egeria:${{ env.VERSION }}, odpi/egeria:latest, quay.io/odpi/egeria:${{ env.VERSION }}, quay.io/odpi/egeria:latest
+          context: ./open-metadata-resources/open-metadata-deployment/docker/egeria
+          platforms: linux/amd64,linux/arm64
+      # Publish container images(egeria-configure) to quay.io and docker.io
+      - name: Build and push(egeria-configure) to quay.io and docker.io
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: odpi/egeria-configure:${{ env.VERSION }}, odpi/egeria-configure:latest, quay.io/odpi/egeria-configure:${{ env.VERSION }}, quay.io/odpi/egeria-configure:latest
+          context: ./open-metadata-resources/open-metadata-deployment/docker/configure
+          platforms: linux/amd64,linux/arm64
+      # Publish container images(jupyter) to quay.io and docker.io
+      - name: Copy the deploy content to be used in docker copy command
+        run: |
+          mkdir -p ./open-metadata-resources/open-metadata-deployment/docker/jupyter/target/assembly
+          cp -r open-metadata-distribution/open-metadata-assemblies/target/egeria-${{ env.VERSION }}-deploy/egeria-deploy-${{ env.VERSION }}/. open-metadata-resources/open-metadata-deployment/docker/jupyter/target/assembly
+      - name: Build and push(jupyter) to quay.io and docker.io
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: odpi/jupyter:${{ env.VERSION }}, odpi/jupyter:latest, quay.io/odpi/jupyter:${{ env.VERSION }}, quay.io/odpi/jupyter:latest
+          context: ./open-metadata-resources/open-metadata-deployment/docker/jupyter
+          platforms: linux/amd64,linux/arm64
+
       # Mostly for verification - not published to the release itself for now
       - name: Upload assemblies
         uses: actions/upload-artifact@v2
