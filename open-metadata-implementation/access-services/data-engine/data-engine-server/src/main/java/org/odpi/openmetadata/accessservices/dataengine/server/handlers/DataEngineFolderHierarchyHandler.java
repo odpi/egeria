@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
+import org.apache.commons.lang3.StringUtils;
 import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.model.FileFolder;
 import org.odpi.openmetadata.accessservices.dataengine.model.OwnerType;
@@ -80,7 +81,10 @@ public class DataEngineFolderHierarchyHandler {
                                       String userId, String methodName)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
-        validateParameters(fileGuid, pathName, externalSourceGuid, externalSourceName, userId, methodName);
+        if (StringUtils.isEmpty(pathName)) {
+            return;
+        }
+        validateParameters(fileGuid, externalSourceGuid, externalSourceName, userId, methodName);
         List<FileFolder> folders = extractFolders(pathName, externalSourceName, methodName);
 
         String folderGuid = "";
@@ -215,11 +219,9 @@ public class DataEngineFolderHierarchyHandler {
         return new File(pathName).getName().length() < 1 ? pathName : new File(pathName).getName();
     }
 
-    private void validateParameters(String fileGuid, String pathName, String externalSourceGuid, String externalSourceName,
-                                    String userId, String methodName)
+    private void validateParameters(String fileGuid, String externalSourceGuid, String externalSourceName, String userId, String methodName)
             throws InvalidParameterException {
         invalidParameterHandler.validateObject(fileGuid, "fileGuid", methodName);
-        invalidParameterHandler.validateObject(pathName, "pathName", methodName);
         invalidParameterHandler.validateObject(externalSourceGuid, "externalSourceGuid", methodName);
         invalidParameterHandler.validateObject(externalSourceName, "externalSourceName", methodName);
         invalidParameterHandler.validateUserId(userId, methodName);

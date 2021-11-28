@@ -9,19 +9,9 @@ trigger:
     include:
       - master
 
-schedules:
-  - cron: "0 11 * * 6"
-    displayName: Weekly CLM Scan
-    always: true
-    branches:
-      include:
-        - master
-
 variables:
   - group: Artifactory
   - group: NexusIQ
-  - name: CLM_VERSION
-    value: '2.8.1-01'
 
 stages:
   - stage: CLM
@@ -53,7 +43,7 @@ stages:
               javaHomeOption: 'JDKVersion'
               jdkVersionOption: '11'
               jdkArchitectureOption: 'x64'
-              goals: "dependency:tree com.sonatype.clm:clm-maven-plugin:$(CLM_VERSION):evaluate"
+              goals: "dependency:tree com.sonatype.clm:clm-maven-plugin:evaluate"
               options: >-
                   --batch-mode
                   -e

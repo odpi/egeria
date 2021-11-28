@@ -1231,8 +1231,8 @@ public class TestGraphQueries extends RepositoryConformanceTestCase {
 
                     super.addNotSupportedAssertion(assertion16,
                             assertionMsg16,
-                            RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getProfileId(),
-                            RepositoryConformanceProfileRequirement.CONNECTED_ENTITIES.getRequirementId());
+                            RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getProfileId(),
+                            RepositoryConformanceProfileRequirement.LINKED_ENTITIES.getRequirementId());
 
                     return;
 

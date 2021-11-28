@@ -287,8 +287,10 @@ public class DataEngineSchemaTypeHandler {
                                                                                                                                 UserNotAuthorizedException {
 
         String methodName = "upsertSchemaAttributes";
+        if (CollectionUtils.isEmpty(schemaType.getAttributeList())) {
+            return;
+        }
         for (Attribute tabularColumn : schemaType.getAttributeList()) {
-
             Optional<EntityDetail> schemaAttributeEntity = findSchemaAttributeEntity(userId, tabularColumn.getQualifiedName());
 
             if (schemaAttributeEntity.isEmpty()) {

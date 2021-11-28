@@ -46,7 +46,15 @@ public abstract class DataEngineOMASAPIRequestBody implements Serializable {
     @Setter(AccessLevel.NONE)
     private static final long serialVersionUID = 1L;
 
-    /* unique name for the external source */
+    /**
+     * The unique name of the external source
+     * -- GETTER --
+     * Gets the external source name
+     * @return the external source name
+     * -- SETTER --
+     * Sets the external source name
+     * @param externalSourceName the external source name
+     */
     private String externalSourceName;
 
 }
