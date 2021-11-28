@@ -26,7 +26,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
  */
 public class CommunityProfileEventClient implements CommunityProfileEventInterface
 {
-    private static final String  serviceName = "Data Manager OMAS";
+    private static final String  serviceName = "Community Profile OMAS";
 
     private String        serverName;               /* Initialized in constructor */
     private String        serverPlatformURLRoot;    /* Initialized in constructor */
