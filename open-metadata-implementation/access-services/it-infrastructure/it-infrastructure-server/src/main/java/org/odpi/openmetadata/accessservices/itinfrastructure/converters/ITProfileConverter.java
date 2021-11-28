@@ -217,6 +217,11 @@ public class ITProfileConverter<B> extends ITInfrastructureOMASConverter<B>
                         {
                             bean.setUserIdentities(profileIdentities);
                         }
+
+                        if (! linkedInfrastructure.isEmpty())
+                        {
+                            bean.setLinkedInfrastructure(linkedInfrastructure);
+                        }
                     }
                 }
                 else

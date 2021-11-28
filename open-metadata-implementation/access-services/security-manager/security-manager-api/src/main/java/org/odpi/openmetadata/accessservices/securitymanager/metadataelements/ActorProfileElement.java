@@ -25,15 +25,16 @@ public class ActorProfileElement implements Serializable, MetadataElement
 {
     private static final long          serialVersionUID = 1L;
 
-    private ElementHeader                elementHeader      = null;
-    private ActorProfileProperties       profileProperties  = null;
-    private List<ContactMethodElement>   contactMethods     = null;
-    private List<ElementStub>            personRoles        = null; /* Person only */
-    private List<ProfileIdentityElement> userIdentities     = null;
-    private ElementStub                  superTeam          = null; /* Team only */
-    private List<ElementStub>            subTeams           = null; /* Team only */
-    private List<ElementStub>            teamLeaderRoles    = null; /* Team only */
-    private List<ElementStub>            teamMemberRoles    = null; /* Team only */
+    private ElementHeader                elementHeader        = null;
+    private ActorProfileProperties       profileProperties    = null;
+    private List<ContactMethodElement>   contactMethods       = null;
+    private List<ElementStub>            personRoles          = null; /* Person only */
+    private List<ProfileIdentityElement> userIdentities       = null;
+    private ElementStub                  superTeam            = null; /* Team only */
+    private List<ElementStub>            subTeams             = null; /* Team only */
+    private List<ElementStub>            teamLeaderRoles      = null; /* Team only */
+    private List<ElementStub>            teamMemberRoles      = null; /* Team only */
+    private List<ElementStub>            linkedInfrastructure = null; /* ITProfile only */
 
 
     /**
@@ -62,6 +63,7 @@ public class ActorProfileElement implements Serializable, MetadataElement
             subTeams = template.getSubTeams();
             teamLeaderRoles = template.getTeamLeaderRoles();
             teamMemberRoles = template.getTeamMemberRoles();
+            linkedInfrastructure = template.getLinkedInfrastructure();
         }
     }
 
@@ -265,6 +267,28 @@ public class ActorProfileElement implements Serializable, MetadataElement
 
 
     /**
+     * Return the stubs of the pieces of IT infrastructure linked to the profile.
+     *
+     * @return list of element stubs
+     */
+    public List<ElementStub> getLinkedInfrastructure()
+    {
+        return linkedInfrastructure;
+    }
+
+
+    /**
+     * Set up the stubs of the pieces of IT infrastructure linked to the profile.
+     *
+     * @param linkedInfrastructure list of element stubs
+     */
+    public void setLinkedInfrastructure(List<ElementStub> linkedInfrastructure)
+    {
+        this.linkedInfrastructure = linkedInfrastructure;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -282,6 +306,7 @@ public class ActorProfileElement implements Serializable, MetadataElement
                        ", subTeams=" + subTeams +
                        ", teamLeaderRoles=" + teamLeaderRoles +
                        ", teamMemberRoles=" + teamMemberRoles +
+                       ", linkedInfrastructure=" + linkedInfrastructure +
                        '}';
     }
 
@@ -312,7 +337,8 @@ public class ActorProfileElement implements Serializable, MetadataElement
                        Objects.equals(superTeam, that.superTeam) &&
                        Objects.equals(subTeams, that.subTeams) &&
                        Objects.equals(teamLeaderRoles, that.teamLeaderRoles) &&
-                       Objects.equals(teamMemberRoles, that.teamMemberRoles);
+                       Objects.equals(teamMemberRoles, that.teamMemberRoles) &&
+                       Objects.equals(linkedInfrastructure, that.linkedInfrastructure);
     }
 
 
@@ -325,7 +351,6 @@ public class ActorProfileElement implements Serializable, MetadataElement
     public int hashCode()
     {
         return Objects.hash(elementHeader, profileProperties, contactMethods, userIdentities, superTeam, subTeams,
-                            teamLeaderRoles,
-                            personRoles, teamMemberRoles);
+                            teamLeaderRoles, personRoles, teamMemberRoles, linkedInfrastructure);
     }
 }

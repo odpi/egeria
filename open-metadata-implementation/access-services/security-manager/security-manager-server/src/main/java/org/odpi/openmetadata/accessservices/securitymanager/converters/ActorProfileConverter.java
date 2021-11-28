@@ -289,6 +289,11 @@ public class ActorProfileConverter<B> extends SecurityManagerOMASConverter<B>
                         {
                             bean.setPersonRoles(roles);
                         }
+
+                        if (! linkedInfrastructure.isEmpty())
+                        {
+                            bean.setLinkedInfrastructure(linkedInfrastructure);
+                        }
                     }
                 }
                 else
