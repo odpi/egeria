@@ -71,7 +71,7 @@ task startServer(dependsOn: ['cleanData',':open-metadata-distribution:open-metad
     standardOutput = "${buildDir}/chassis.log"
     errorOutput = "${buildDir}/chassis-error.log"
     //stopAfter = verify
-    waitForPort = 10445
+    waitForPort = 10453
     timeout = 180
     //waitForOutput = 'has started'
 }
