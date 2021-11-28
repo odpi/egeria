@@ -25,10 +25,10 @@ public interface SecurityManagerEventInterface
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    void registerListener(String                   userId,
+    void registerListener(String                       userId,
                           SecurityManagerEventListener listener) throws InvalidParameterException,
-                                                                    ConnectionCheckedException,
-                                                                    ConnectorCheckedException,
-                                                                    PropertyServerException,
-                                                                    UserNotAuthorizedException;
+                                                                        ConnectionCheckedException,
+                                                                        ConnectorCheckedException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException;
 }

@@ -16,7 +16,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorTyp
  */
 public class CommunityProfileOutTopicClientProvider extends ConnectorProviderBase
 {
-    static final String  connectorTypeGUID = "91bda022-184f-4c1c-b62a-c311f0e724f4";
+    static final String  connectorTypeGUID = "5ec48dfe-73ba-4cb1-852e-38da59337861";
     static final String  connectorTypeName = "Community Profile Out Topic Client Connector";
     static final String  connectorTypeDescription = "Connector supports the receipt of events on the Community Profile OMAS Out Topic.";
 

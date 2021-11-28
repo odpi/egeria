@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.*;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.*;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethodType;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class CommunityProfileOMASConverter<B> extends OpenMetadataAPIGenericConverter<B>
 {
-    int karmaPointPlateau = 0;
+    long karmaPointPlateau = 0;
 
 
     /**
@@ -98,63 +98,20 @@ public class CommunityProfileOMASConverter<B> extends OpenMetadataAPIGenericConv
 
 
     /**
-     * Extract the properties from the entity or relationship.
+     * Extract the properties from the instance - called for entities, relationships and entity properties.
      *
      * @param beanClass name of the class to create
      * @param header header from the entity containing the properties
+     * @param entityClassifications classifications (entity and entity proxy only)
      * @param methodName calling method
      * @return filled out element header
      * @throws PropertyServerException there is a problem in the use of the generic handlers because
      * the converter has been configured with a type of bean that is incompatible with the handler
      */
-    public ElementHeader getMetadataElementHeader(Class<B>       beanClass,
-                                                  InstanceHeader header,
-                                                  String         methodName) throws PropertyServerException
-    {
-        if (header != null)
-        {
-            ElementHeader elementHeader = new ElementHeader();
-
-            elementHeader.setGUID(header.getGUID());
-            elementHeader.setType(this.getElementType(header));
-
-            ElementOrigin elementOrigin = new ElementOrigin();
-
-            elementOrigin.setSourceServer(serverName);
-            elementOrigin.setOriginCategory(this.getElementOriginCategory(header.getInstanceProvenanceType()));
-            elementOrigin.setHomeMetadataCollectionId(header.getMetadataCollectionId());
-            elementOrigin.setHomeMetadataCollectionName(header.getMetadataCollectionName());
-            elementOrigin.setLicense(header.getInstanceLicense());
-
-            elementHeader.setOrigin(elementOrigin);
-
-            return elementHeader;
-        }
-        else
-        {
-            super.handleMissingMetadataInstance(beanClass.getName(),
-                                                TypeDefCategory.ENTITY_DEF,
-                                                methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Extract the properties from the entity.
-     *
-     * @param beanClass name of the class to create
-     * @param header header from the entity containing the properties
-     * @param methodName calling method
-     * @return filled out element header
-     * @throws PropertyServerException there is a problem in the use of the generic handlers because
-     * the converter has been configured with a type of bean that is incompatible with the handler
-     */
-    ElementHeader getMetadataElementHeader(Class<B>             beanClass,
-                                           InstanceHeader       header,
-                                           List<Classification> entityClassifications,
-                                           String               methodName) throws PropertyServerException
+    public ElementHeader getMetadataElementHeader(Class<B>             beanClass,
+                                                  InstanceHeader       header,
+                                                  List<Classification> entityClassifications,
+                                                  String               methodName) throws PropertyServerException
     {
         if (header != null)
         {
@@ -173,6 +130,8 @@ public class CommunityProfileOMASConverter<B> extends OpenMetadataAPIGenericConv
             elementOrigin.setLicense(header.getInstanceLicense());
 
             elementHeader.setOrigin(elementOrigin);
+
+            elementHeader.setVersions(this.getElementVersions(header));
 
             return elementHeader;
         }
@@ -203,7 +162,7 @@ public class CommunityProfileOMASConverter<B> extends OpenMetadataAPIGenericConv
     {
         if (entityProxy != null)
         {
-            ElementHeader elementHeader = getMetadataElementHeader(beanClass, entityProxy, methodName);
+            ElementHeader elementHeader = getMetadataElementHeader(beanClass, entityProxy, entityProxy.getClassifications(), methodName);
             ElementStub   elementStub   = new ElementStub(elementHeader);
 
             elementStub.setUniqueName(repositoryHelper.getStringProperty(serviceName,
@@ -277,7 +236,7 @@ public class CommunityProfileOMASConverter<B> extends OpenMetadataAPIGenericConv
     {
         if (relationship != null)
         {
-            ElementHeader elementHeader = getMetadataElementHeader(beanClass, relationship, methodName);
+            ElementHeader elementHeader = getMetadataElementHeader(beanClass, relationship, null, methodName);
             ElementStub   elementStub   = new ElementStub(elementHeader);
 
             return elementStub;
@@ -285,7 +244,7 @@ public class CommunityProfileOMASConverter<B> extends OpenMetadataAPIGenericConv
         else
         {
             super.handleMissingMetadataInstance(beanClass.getName(),
-                                                TypeDefCategory.ENTITY_DEF,
+                                                TypeDefCategory.RELATIONSHIP_DEF,
                                                 methodName);
         }
 
@@ -409,10 +368,10 @@ public class CommunityProfileOMASConverter<B> extends OpenMetadataAPIGenericConv
     /**
      * Convert information from a repository instance into an Open Connector Framework ElementType.
      *
-     * @param instanceHeader values from the server
+     * @param instanceHeader audit header from the repository
      * @return OCF ElementType object
      */
-    ElementType getElementType(InstanceHeader instanceHeader)
+    ElementType getElementType(InstanceAuditHeader instanceHeader)
     {
         ElementType  elementType = new ElementType();
 
@@ -447,6 +406,27 @@ public class CommunityProfileOMASConverter<B> extends OpenMetadataAPIGenericConv
         }
 
         return elementType;
+    }
+
+
+    /**
+     * Extract detail of the version of the element and the user's maintaining it.
+     *
+     * @param header audit header from the repository
+     * @return ElementVersions object
+     */
+    ElementVersions getElementVersions(InstanceAuditHeader header)
+    {
+        ElementVersions elementVersions = new ElementVersions();
+
+        elementVersions.setCreatedBy(header.getCreatedBy());
+        elementVersions.setCreateTime(header.getCreateTime());
+        elementVersions.setUpdatedBy(header.getUpdatedBy());
+        elementVersions.setUpdateTime(header.getUpdateTime());
+        elementVersions.setMaintainedBy(header.getMaintainedBy());
+        elementVersions.setVersion(header.getVersion());
+
+        return elementVersions;
     }
 
 

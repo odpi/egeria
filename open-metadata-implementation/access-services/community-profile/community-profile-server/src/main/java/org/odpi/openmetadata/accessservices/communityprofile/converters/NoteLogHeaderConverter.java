@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.NoteLogHeaderElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.NoteLogHeaderElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.NoteLogHeaderProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -35,7 +35,7 @@ public class NoteLogHeaderConverter<B> extends CommunityProfileOMASConverter<B>
 
     /**
      * Using the supplied instances, return a new instance of the bean. This is used for beans that have
-     * contain a combination of the properties from an entity and a that of a connected relationship.
+     * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
      * @param entity entity containing the properties
@@ -76,7 +76,8 @@ public class NoteLogHeaderConverter<B> extends CommunityProfileOMASConverter<B>
                     logHeaderProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     logHeaderProperties.setName(this.removeName(instanceProperties));
                     logHeaderProperties.setDescription(this.removeDescription(instanceProperties));
-
+                    logHeaderProperties.setEffectiveFrom(instanceProperties.getEffectiveFromTime());
+                    logHeaderProperties.setEffectiveTo(instanceProperties.getEffectiveToTime());
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are

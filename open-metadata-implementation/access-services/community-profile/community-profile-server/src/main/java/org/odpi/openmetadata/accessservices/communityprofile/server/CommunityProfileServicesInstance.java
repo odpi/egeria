@@ -5,13 +5,13 @@ package org.odpi.openmetadata.accessservices.communityprofile.server;
 import org.odpi.openmetadata.accessservices.communityprofile.connectors.outtopic.CommunityProfileOutTopicClientProvider;
 import org.odpi.openmetadata.accessservices.communityprofile.converters.*;
 import org.odpi.openmetadata.accessservices.communityprofile.ffdc.CommunityProfileErrorCode;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.*;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
@@ -28,7 +28,12 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
     private SoftwareServerCapabilityHandler<MetadataSourceElement> metadataSourceHandler;
     private UserIdentityHandler<UserIdentityElement>               userIdentityHandler;
     private ActorProfileHandler<PersonalProfileUniverse>           personalProfileHandler;
+    private ActorProfileHandler<ActorProfileElement>               actorProfileHandler;
+    private PersonRoleHandler<PersonRoleElement>                   personRoleHandler;
     private ContributionRecordHandler<ContributionRecordElement>   contributionRecordHandler;
+    private ContactDetailsHandler<ContactMethodElement>            contactDetailsHandler;
+    private LocationHandler<LocationElement>                       locationHandler;
+    private GovernanceDefinitionHandler<SecurityGroupElement>      securityGroupHandler;
 
     private CommentHandler<CommentElement>         commentHandler;
     private InformalTagHandler<InformalTagElement> informalTagHandler;
@@ -109,6 +114,34 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
                                                                     publishZones,
                                                                     auditLog);
 
+            this.actorProfileHandler = new ActorProfileHandler<>(new ActorProfileConverter<>(repositoryHelper, serviceName,serverName),
+                                                                 ActorProfileElement.class,
+                                                                 serviceName,
+                                                                 serverName,
+                                                                 invalidParameterHandler,
+                                                                 repositoryHandler,
+                                                                 repositoryHelper,
+                                                                 localServerUserId,
+                                                                 securityVerifier,
+                                                                 supportedZones,
+                                                                 defaultZones,
+                                                                 publishZones,
+                                                                 auditLog);
+
+            this.personRoleHandler = new PersonRoleHandler<>(new PersonRoleConverter<>(repositoryHelper, serviceName,serverName),
+                                                             PersonRoleElement.class,
+                                                             serviceName,
+                                                             serverName,
+                                                             invalidParameterHandler,
+                                                             repositoryHandler,
+                                                             repositoryHelper,
+                                                             localServerUserId,
+                                                             securityVerifier,
+                                                             supportedZones,
+                                                             defaultZones,
+                                                             publishZones,
+                                                             auditLog);
+
             this.userIdentityHandler = new UserIdentityHandler<>(new UserIdentityConverter<>(repositoryHelper, serviceName, serverName),
                                                                  UserIdentityElement.class,
                                                                  serviceName,
@@ -122,6 +155,48 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
                                                                  defaultZones,
                                                                  publishZones,
                                                                  auditLog);
+
+            this.locationHandler = new LocationHandler<>(new LocationConverter<>(repositoryHelper, serviceName, serverName),
+                                                         LocationElement.class,
+                                                         serviceName,
+                                                         serverName,
+                                                         invalidParameterHandler,
+                                                         repositoryHandler,
+                                                         repositoryHelper,
+                                                         localServerUserId,
+                                                         securityVerifier,
+                                                         supportedZones,
+                                                         defaultZones,
+                                                         publishZones,
+                                                         auditLog);
+
+            this.securityGroupHandler = new GovernanceDefinitionHandler<>(new SecurityGroupConverter<>(repositoryHelper, serviceName, serverName),
+                                                                          SecurityGroupElement.class,
+                                                                          serviceName,
+                                                                          serverName,
+                                                                          invalidParameterHandler,
+                                                                          repositoryHandler,
+                                                                          repositoryHelper,
+                                                                          localServerUserId,
+                                                                          securityVerifier,
+                                                                          supportedZones,
+                                                                          defaultZones,
+                                                                          publishZones,
+                                                                          auditLog);
+
+            this.contactDetailsHandler = new ContactDetailsHandler<>(new ContactMethodConverter<>(repositoryHelper, serviceName, serverName),
+                                                                     ContactMethodElement.class,
+                                                                     serviceName,
+                                                                     serverName,
+                                                                     invalidParameterHandler,
+                                                                     repositoryHandler,
+                                                                     repositoryHelper,
+                                                                     localServerUserId,
+                                                                     securityVerifier,
+                                                                     supportedZones,
+                                                                     defaultZones,
+                                                                     publishZones,
+                                                                     auditLog);
 
             this.contributionRecordHandler = new ContributionRecordHandler<>(new ContributionRecordConverter<>(repositoryHelper, serviceName, serverName, karmaPointPlateau),
                                                                              ContributionRecordElement.class,
@@ -219,6 +294,38 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
 
 
     /**
+     * Return the handler for organization requests.
+     *
+     * @return handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    public ActorProfileHandler<ActorProfileElement> getActorProfileHandler() throws PropertyServerException
+    {
+        final String methodName = "getActorProfileHandler";
+
+        validateActiveRepository(methodName);
+
+        return actorProfileHandler;
+    }
+
+
+    /**
+     * Return the handler for role requests.
+     *
+     * @return handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    public PersonRoleHandler<PersonRoleElement> getPersonRoleHandler() throws PropertyServerException
+    {
+        final String methodName = "getPersonRoleHandler";
+
+        validateActiveRepository(methodName);
+
+        return personRoleHandler;
+    }
+
+
+    /**
      * Return the handler for personal profile requests.
      *
      * @return handler object
@@ -235,6 +342,22 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
 
 
     /**
+     * Return the handler for contact methods requests.
+     *
+     * @return handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    public ContactDetailsHandler<ContactMethodElement> getContactDetailsHandler() throws PropertyServerException
+    {
+        final String methodName = "getContactMethodHandler";
+
+        validateActiveRepository(methodName);
+
+        return contactDetailsHandler;
+    }
+
+
+    /**
      * Return the handler for user identity requests.
      *
      * @return handler object
@@ -247,6 +370,38 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
         validateActiveRepository(methodName);
 
         return userIdentityHandler;
+    }
+
+
+    /**
+     * Return the handler for location requests.
+     *
+     * @return handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    public LocationHandler<LocationElement> getLocationHandler() throws PropertyServerException
+    {
+        final String methodName = "getLocationHandler";
+
+        validateActiveRepository(methodName);
+
+        return locationHandler;
+    }
+
+
+    /**
+     * Return the handler for security group requests.
+     *
+     * @return handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    public GovernanceDefinitionHandler<SecurityGroupElement> getSecurityGroupHandler() throws PropertyServerException
+    {
+        final String methodName = "getSecurityGroupHandler";
+
+        validateActiveRepository(methodName);
+
+        return securityGroupHandler;
     }
 
 

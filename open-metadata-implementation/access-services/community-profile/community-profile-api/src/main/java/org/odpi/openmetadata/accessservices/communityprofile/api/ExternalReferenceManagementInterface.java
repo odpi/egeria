@@ -2,14 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.api;
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.ExternalReferenceElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ExternalReferenceElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ExternalReferenceProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * ExternalReferenceManagementInterface defines the Java API for managing external references.

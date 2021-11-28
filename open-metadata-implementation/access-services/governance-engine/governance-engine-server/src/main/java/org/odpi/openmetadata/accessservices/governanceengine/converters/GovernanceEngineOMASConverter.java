@@ -26,7 +26,7 @@ import java.util.Map;
  */
 abstract class GovernanceEngineOMASConverter<B> extends OCFConverter<B>
 {
-    protected PropertyHelper propertyHelper = new PropertyHelper();
+    PropertyHelper propertyHelper = new PropertyHelper();
 
 
     /**
@@ -82,10 +82,11 @@ abstract class GovernanceEngineOMASConverter<B> extends OCFConverter<B>
 
 
     /**
-     * Extract the properties from the entity.
+     * Extract the properties from the instance.
      *
      * @param beanClass name of the class to create
      * @param header header from the entity containing the properties
+     * @param entityClassifications classifications from the entity
      * @param methodName calling method
      * @return filled out element header
      * @throws PropertyServerException there is a problem in the use of the generic handlers because
@@ -113,6 +114,8 @@ abstract class GovernanceEngineOMASConverter<B> extends OCFConverter<B>
             elementOrigin.setLicense(header.getInstanceLicense());
 
             elementHeader.setOrigin(elementOrigin);
+
+            elementHeader.setVersions(this.getElementVersions(header));
 
             return elementHeader;
         }
@@ -194,7 +197,7 @@ abstract class GovernanceEngineOMASConverter<B> extends OCFConverter<B>
      * @param instanceHeader values from the server
      * @return ElementType object
      */
-    ElementType getElementType(InstanceHeader instanceHeader)
+    ElementType getElementType(InstanceAuditHeader instanceHeader)
     {
         ElementType  elementType = new ElementType();
 
@@ -229,6 +232,27 @@ abstract class GovernanceEngineOMASConverter<B> extends OCFConverter<B>
         }
 
         return elementType;
+    }
+
+
+    /**
+     * Extract detail of the version of the element and the user's maintaining it.
+     *
+     * @param header audit header from the repository
+     * @return ElementVersions object
+     */
+    ElementVersions getElementVersions(InstanceAuditHeader header)
+    {
+        ElementVersions elementVersions = new ElementVersions();
+
+        elementVersions.setCreatedBy(header.getCreatedBy());
+        elementVersions.setCreateTime(header.getCreateTime());
+        elementVersions.setUpdatedBy(header.getUpdatedBy());
+        elementVersions.setUpdateTime(header.getUpdateTime());
+        elementVersions.setMaintainedBy(header.getMaintainedBy());
+        elementVersions.setVersion(header.getVersion());
+
+        return elementVersions;
     }
 
 

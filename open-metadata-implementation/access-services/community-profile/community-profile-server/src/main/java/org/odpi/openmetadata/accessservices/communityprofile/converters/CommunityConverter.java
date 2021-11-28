@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.CommunityElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.CommunityElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.CommunityProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -78,6 +78,9 @@ public class CommunityConverter<B> extends CommunityProfileOMASConverter<B>
                     communityProperties.setName(this.removeName(instanceProperties));
                     communityProperties.setDescription(this.removeDescription(instanceProperties));
                     communityProperties.setMission(this.removeMission(instanceProperties));
+
+                    communityProperties.setEffectiveFrom(instanceProperties.getEffectiveFromTime());
+                    communityProperties.setEffectiveTo(instanceProperties.getEffectiveToTime());
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are

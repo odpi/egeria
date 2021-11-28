@@ -82,7 +82,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
     /**
      * Using the supplied instances, return a new instance of the bean. This is used for beans that
-     * contain a combination of the properties from an entity and a that of a connected relationship.
+     * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
      * @param entity entity containing the properties
@@ -2072,6 +2072,74 @@ public abstract class OpenMetadataAPIGenericConverter<B>
                                                          OpenMetadataAPIMapper.OWNER_TYPE_NAME_PROPERTY_NAME,
                                                          instanceProperties,
                                                          methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the roleTypeName property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from classification
+     * @return string
+     */
+    protected String removeRoleTypeName(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeRoleTypeName";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.ROLE_TYPE_NAME_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the distinguishedName property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from classification
+     * @return string
+     */
+    protected String removeDistinguishedName(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeDistinguishedName";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.DISTINGUISHED_NAME_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the groups property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from classification
+     * @return string map or null
+     */
+    protected List<String> getGroups(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "getGroups";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.getStringArrayProperty(serviceName,
+                                                           OpenMetadataAPIMapper.GROUPS_PROPERTY_NAME,
+                                                           instanceProperties,
+                                                           methodName);
         }
 
         return null;

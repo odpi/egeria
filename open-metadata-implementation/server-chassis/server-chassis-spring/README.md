@@ -118,7 +118,7 @@ Once this dependency is on the class-path /info and /health endpoints are availa
 
 In order to expose all endpoints over HTTP, use the following property:
 ```
-management.endpoints.web.exposure.inlude=*
+management.endpoints.web.exposure.include=*
 ```
 
 The `exclude` property lists the IDs of the endpoints that should not be exposed.

@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.accessservices.securitymanager.converters;
 
 import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.*;
-import org.odpi.openmetadata.accessservices.securitymanager.properties.DataItemSortOrder;
 import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.ElementClassification;
+import org.odpi.openmetadata.accessservices.securitymanager.properties.ContactMethodType;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -23,7 +23,7 @@ import java.util.List;
  * class from within a generic is a little involved.  This class provides the generic method for creating
  * and initializing a Security Manager bean.
  */
-public abstract class SecurityManagerOMASConverter<B> extends OpenMetadataAPIGenericConverter<B>
+public class SecurityManagerOMASConverter<B> extends OpenMetadataAPIGenericConverter<B>
 {
     /**
      * Constructor
@@ -82,15 +82,16 @@ public abstract class SecurityManagerOMASConverter<B> extends OpenMetadataAPIGen
      *
      * @param beanClass name of the class to create
      * @param header header from the entity containing the properties
+     * @param entityClassifications classifications from an entity or an entity proxy
      * @param methodName calling method
      * @return filled out element header
      * @throws PropertyServerException there is a problem in the use of the generic handlers because
      * the converter has been configured with a type of bean that is incompatible with the handler
      */
-    ElementHeader getMetadataElementHeader(Class<B>             beanClass,
-                                           InstanceHeader       header,
-                                           List<Classification> entityClassifications,
-                                           String               methodName) throws PropertyServerException
+    public ElementHeader getMetadataElementHeader(Class<B>             beanClass,
+                                                  InstanceHeader       header,
+                                                  List<Classification> entityClassifications,
+                                                  String               methodName) throws PropertyServerException
     {
         if (header != null)
         {
@@ -110,6 +111,8 @@ public abstract class SecurityManagerOMASConverter<B> extends OpenMetadataAPIGen
 
             elementHeader.setOrigin(elementOrigin);
 
+            elementHeader.setVersions(this.getElementVersions(header));
+
             return elementHeader;
         }
         else
@@ -121,6 +124,44 @@ public abstract class SecurityManagerOMASConverter<B> extends OpenMetadataAPIGen
 
         return null;
     }
+
+
+    /**
+     * Extract the properties from the entity.
+     *
+     * @param beanClass name of the class to create
+     * @param entityProxy entityProxy from the relationship containing the properties
+     * @param methodName calling method
+     * @return filled out element header
+     * @throws PropertyServerException there is a problem in the use of the generic handlers because
+     * the converter has been configured with a type of bean that is incompatible with the handler
+     */
+    public ElementStub getElementStub(Class<B>    beanClass,
+                                      EntityProxy entityProxy,
+                                      String      methodName) throws PropertyServerException
+    {
+        if (entityProxy != null)
+        {
+            ElementHeader elementHeader = getMetadataElementHeader(beanClass, entityProxy, entityProxy.getClassifications(), methodName);
+            ElementStub   elementStub   = new ElementStub(elementHeader);
+
+            elementStub.setUniqueName(repositoryHelper.getStringProperty(serviceName,
+                                                                         OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                         entityProxy.getUniqueProperties(),
+                                                                         methodName));
+
+            return elementStub;
+        }
+        else
+        {
+            super.handleMissingMetadataInstance(beanClass.getName(),
+                                                TypeDefCategory.ENTITY_DEF,
+                                                methodName);
+        }
+
+        return null;
+    }
+
 
 
     /**
@@ -242,7 +283,7 @@ public abstract class SecurityManagerOMASConverter<B> extends OpenMetadataAPIGen
      * @param instanceHeader values from the server
      * @return OCF ElementType object
      */
-    ElementType getElementType(InstanceHeader instanceHeader)
+    ElementType getElementType(InstanceAuditHeader instanceHeader)
     {
         ElementType  elementType = new ElementType();
 
@@ -277,6 +318,27 @@ public abstract class SecurityManagerOMASConverter<B> extends OpenMetadataAPIGen
         }
 
         return elementType;
+    }
+
+
+    /**
+     * Extract detail of the version of the element and the user's maintaining it.
+     *
+     * @param header audit header from the repository
+     * @return ElementVersions object
+     */
+    ElementVersions getElementVersions(InstanceAuditHeader header)
+    {
+        ElementVersions elementVersions = new ElementVersions();
+
+        elementVersions.setCreatedBy(header.getCreatedBy());
+        elementVersions.setCreateTime(header.getCreateTime());
+        elementVersions.setUpdatedBy(header.getUpdatedBy());
+        elementVersions.setUpdateTime(header.getUpdateTime());
+        elementVersions.setMaintainedBy(header.getMaintainedBy());
+        elementVersions.setVersion(header.getVersion());
+
+        return elementVersions;
     }
 
 
@@ -320,31 +382,49 @@ public abstract class SecurityManagerOMASConverter<B> extends OpenMetadataAPIGen
 
 
     /**
-     * Extract and delete the sortOrder property from the supplied instance properties.
+     * Retrieve the ContactMethodType enum property from the instance properties of an entity
      *
-     * @param instanceProperties properties from entity
-     * @return DataItemSortOrder enum
+     * @param properties  entity properties
+     * @return ContactMethodType  enum value
      */
-    DataItemSortOrder removeSortOrder(InstanceProperties  instanceProperties)
+    ContactMethodType getContactMethodTypeFromProperties(InstanceProperties   properties)
     {
-        final String methodName = "removeSortOrder";
+        final String methodName = "getContactMethodTypeFromProperties";
 
-        if (instanceProperties != null)
+        ContactMethodType contactMethodType = ContactMethodType.OTHER;
+
+        if (properties != null)
         {
-            int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName,
-                                                                     OpenMetadataAPIMapper.SORT_ORDER_PROPERTY_NAME,
-                                                                     instanceProperties,
-                                                                     methodName);
+            int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName, OpenMetadataAPIMapper.CONTACT_METHOD_TYPE_PROPERTY_NAME, properties, methodName);
 
-            for (DataItemSortOrder dataItemSortOrder : DataItemSortOrder.values())
+            switch (ordinal)
             {
-                if (dataItemSortOrder.getOpenTypeOrdinal() == ordinal)
-                {
-                    return dataItemSortOrder;
-                }
+                case 0:
+                    contactMethodType = ContactMethodType.EMAIL;
+                    break;
+
+                case 1:
+                    contactMethodType = ContactMethodType.PHONE;
+                    break;
+
+                case 2:
+                    contactMethodType = ContactMethodType.CHAT;
+                    break;
+
+                case 3:
+                    contactMethodType = ContactMethodType.PROFILE;
+                    break;
+
+                case 4:
+                    contactMethodType = ContactMethodType.ACCOUNT;
+                    break;
+
+                case 99:
+                    contactMethodType = ContactMethodType.OTHER;
+                    break;
             }
         }
 
-        return DataItemSortOrder.UNKNOWN;
+        return contactMethodType;
     }
 }

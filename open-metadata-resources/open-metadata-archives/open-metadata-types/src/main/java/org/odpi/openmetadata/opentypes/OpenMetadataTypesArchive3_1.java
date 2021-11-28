@@ -557,10 +557,10 @@ public class OpenMetadataTypesArchive3_1
         TypeDefAttribute       property;
 
         final String attribute1Name            = "minimumInstances";
-        final String attribute1Description     = "Minimum number of running instances controlled by the software server capability.";
+        final String attribute1Description     = "Minimum number of running asset instances controlled by the software server capability.";
         final String attribute1DescriptionGUID = null;
         final String attribute2Name            = "maximumInstances";
-        final String attribute2Description     = "Maximum number of running instances controlled by the software server capability.";
+        final String attribute2Description     = "Maximum number of running asset instances controlled by the software server capability.";
         final String attribute2DescriptionGUID = null;
 
 

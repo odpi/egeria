@@ -23,7 +23,7 @@ public class GovernanceRoleProperties extends PersonRoleProperties
 {
     private static final long    serialVersionUID = 1L;
 
-    private int headCount = 1;
+    private int                  domainIdentifier = 0;
 
 
     /**
@@ -46,30 +46,30 @@ public class GovernanceRoleProperties extends PersonRoleProperties
 
         if (template != null)
         {
-            this.headCount = template.getHeadCount();
+            this.domainIdentifier = template.getDomainIdentifier();
         }
     }
 
 
     /**
-     * Return the number of people that can be appointed to this role.
+     * Return the identifier of the governance domain that this zone is managed by.
      *
-     * @return int
+     * @return int identifier
      */
-    public int getHeadCount()
+    public int getDomainIdentifier()
     {
-        return headCount;
+        return domainIdentifier;
     }
 
 
     /**
-     * Set up the number of people that can be appointed to this role.
+     * Set up the identifier of the governance domain that this zone is managed by.
      *
-     * @param headCount int
+     * @param domainIdentifier int identifier
      */
-    public void setHeadCount(int headCount)
+    public void setDomainIdentifier(int domainIdentifier)
     {
-        this.headCount = headCount;
+        this.domainIdentifier = domainIdentifier;
     }
 
 
@@ -82,12 +82,13 @@ public class GovernanceRoleProperties extends PersonRoleProperties
     public String toString()
     {
         return "GovernanceRoleProperties{" +
-                       "headCount=" + headCount +
-                       ", domainIdentifier=" + getDomainIdentifier() +
-                       ", appointmentId='" + getRoleId() + '\'' +
-                       ", appointmentContext='" + getScope() + '\'' +
-                       ", appointmentTitle='" + getTitle() + '\'' +
+                       "domainIdentifier=" + domainIdentifier +
+                       ", roleId='" + getRoleId() + '\'' +
+                       ", scope='" + getScope() + '\'' +
+                       ", title='" + getTitle() + '\'' +
                        ", description='" + getDescription() + '\'' +
+                       ", headCountLimitSet=" + getHeadCountLimitSet() +
+                       ", headCount=" + getHeadCount() +
                        ", additionalProperties=" + getAdditionalProperties() +
                        ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
@@ -112,12 +113,12 @@ public class GovernanceRoleProperties extends PersonRoleProperties
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
         GovernanceRoleProperties that = (GovernanceRoleProperties) objectToCompare;
-        return headCount == that.headCount;
+        return domainIdentifier == that.domainIdentifier;
     }
 
 
@@ -129,6 +130,6 @@ public class GovernanceRoleProperties extends PersonRoleProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), headCount);
+        return Objects.hash(super.hashCode(), domainIdentifier);
     }
 }

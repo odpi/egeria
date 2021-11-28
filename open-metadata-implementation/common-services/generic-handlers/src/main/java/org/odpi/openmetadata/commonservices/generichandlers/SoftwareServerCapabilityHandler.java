@@ -155,7 +155,7 @@ public class SoftwareServerCapabilityHandler<B> extends ReferenceableHandler<B>
 
     /**
      * Create specialized Software Server Capabilities entities.  Most software service capabilities
-     * either specialize Software Server Capability or have a special classification.  Metadata server
+     * either specialize Software Server Capability or have a special classification.
      *
      * @param userId calling user
      * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
@@ -256,7 +256,7 @@ public class SoftwareServerCapabilityHandler<B> extends ReferenceableHandler<B>
 
     /**
      * Create specialized Software Server Capabilities entities.  Most software service capabilities
-     * either specialize Software Server Capability or have a special classification.  Metadata server
+     * either specialize Software Server Capability or have a special classification.
      *
      * @param userId calling user
      * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local

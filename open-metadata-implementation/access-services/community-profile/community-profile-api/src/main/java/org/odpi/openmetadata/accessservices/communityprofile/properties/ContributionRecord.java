@@ -24,8 +24,9 @@ public class ContributionRecord extends ReferenceableProperties
 {
     private static final long    serialVersionUID = 1L;
 
-    private int karmaPoints       = 0;
-    private int karmaPointPlateau = 0;
+    private long    karmaPoints       = 0;
+    private long    karmaPointPlateau = 0;
+    private boolean isPublic          = false;
 
 
 
@@ -51,6 +52,7 @@ public class ContributionRecord extends ReferenceableProperties
         {
             this.karmaPoints = template.getKarmaPoints();
             this.karmaPointPlateau = template.getKarmaPointPlateau();
+            this.isPublic = template.getIsPublic();
         }
     }
 
@@ -60,7 +62,7 @@ public class ContributionRecord extends ReferenceableProperties
      *
      * @return count
      */
-    public int getKarmaPoints()
+    public long getKarmaPoints()
     {
         return karmaPoints;
     }
@@ -71,7 +73,7 @@ public class ContributionRecord extends ReferenceableProperties
      *
      * @param karmaPoints count
      */
-    public void setKarmaPoints(int karmaPoints)
+    public void setKarmaPoints(long karmaPoints)
     {
         this.karmaPoints = karmaPoints;
     }
@@ -82,7 +84,7 @@ public class ContributionRecord extends ReferenceableProperties
      *
      * @return count
      */
-    public int getKarmaPointPlateau()
+    public long getKarmaPointPlateau()
     {
         return karmaPointPlateau;
     }
@@ -93,9 +95,31 @@ public class ContributionRecord extends ReferenceableProperties
      *
      * @param karmaPointPlateau count
      */
-    public void setKarmaPointPlateau(int karmaPointPlateau)
+    public void setKarmaPointPlateau(long karmaPointPlateau)
     {
         this.karmaPointPlateau = karmaPointPlateau;
+    }
+
+
+    /**
+     * Return whether this record can be shared with colleagues.
+     *
+     * @return flag
+     */
+    public boolean getIsPublic()
+    {
+        return isPublic;
+    }
+
+
+    /**
+     * Set up whether this record can be shared with colleagues.
+     *
+     * @param isPublic flag
+     */
+    public void setIsPublic(boolean isPublic)
+    {
+        this.isPublic = isPublic;
     }
 
 
@@ -110,8 +134,11 @@ public class ContributionRecord extends ReferenceableProperties
         return "ContributionRecord{" +
                        "karmaPoints=" + karmaPoints +
                        ", karmaPointPlateau=" + karmaPointPlateau +
+                       ", isPublic=" + isPublic +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
                        ", vendorProperties=" + getVendorProperties() +
                        ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
@@ -136,13 +163,14 @@ public class ContributionRecord extends ReferenceableProperties
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
         ContributionRecord that = (ContributionRecord) objectToCompare;
-        return getKarmaPoints() == that.getKarmaPoints() &&
-               getKarmaPointPlateau() == that.getKarmaPointPlateau();
+        return karmaPoints == that.karmaPoints &&
+                       karmaPointPlateau == that.karmaPointPlateau &&
+                       isPublic == that.isPublic;
     }
 
 
@@ -154,6 +182,6 @@ public class ContributionRecord extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getKarmaPoints(), getKarmaPointPlateau());
+        return Objects.hash(super.hashCode(), karmaPoints, karmaPointPlateau, isPublic);
     }
 }

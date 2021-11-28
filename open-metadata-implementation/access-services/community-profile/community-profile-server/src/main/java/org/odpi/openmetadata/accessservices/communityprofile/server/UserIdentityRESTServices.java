@@ -2,11 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.server;
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.UserIdentityElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.UserIdentityElement;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.MetadataSourceRequestBody;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.UserIdentityListResponse;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.UserIdentityRequestBody;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.UserIdentityResponse;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
@@ -15,7 +17,6 @@ import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMappe
 import org.odpi.openmetadata.commonservices.generichandlers.UserIdentityHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
@@ -27,7 +28,8 @@ public class UserIdentityRESTServices
 {
     static private CommunityProfileInstanceHandler instanceHandler = new CommunityProfileInstanceHandler();
 
-    private static final Logger log = LoggerFactory.getLogger(UserIdentityRESTServices.class);
+    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(UserIdentityRESTServices.class),
+                                                                      instanceHandler.getServiceName());
 
     private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
@@ -57,7 +59,7 @@ public class UserIdentityRESTServices
     {
         final String methodName = "createUserIdentity";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDResponse response = new GUIDResponse();
         AuditLog     auditLog = null;
@@ -92,8 +94,7 @@ public class UserIdentityRESTServices
             restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -121,7 +122,7 @@ public class UserIdentityRESTServices
         final String methodName        = "updateUserIdentity";
         final String guidParameterName = "userIdentityGUID";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
@@ -155,8 +156,7 @@ public class UserIdentityRESTServices
             restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -182,7 +182,7 @@ public class UserIdentityRESTServices
         final String methodName        = "deleteUserIdentity";
         final String guidParameterName = "userIdentityGUID";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
@@ -211,8 +211,7 @@ public class UserIdentityRESTServices
             restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -242,7 +241,7 @@ public class UserIdentityRESTServices
         final String userIdentityGUIDParameterName = "userIdentityGUID";
         final String profileGUIDParameterName      = "profileGUID";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
@@ -273,8 +272,7 @@ public class UserIdentityRESTServices
             restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -303,7 +301,7 @@ public class UserIdentityRESTServices
         final String userIdentityGUIDParameterName = "userIdentityGUID";
         final String profileGUIDParameterName      = "profileGUID";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
         AuditLog     auditLog = null;
@@ -334,8 +332,7 @@ public class UserIdentityRESTServices
             restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -364,7 +361,7 @@ public class UserIdentityRESTServices
         final String methodName                 = "findUserIdentities";
         final String searchStringParameterName  = "searchString";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         UserIdentityListResponse response = new UserIdentityListResponse();
         AuditLog                 auditLog = null;
@@ -398,8 +395,7 @@ public class UserIdentityRESTServices
             restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -428,7 +424,7 @@ public class UserIdentityRESTServices
         final String methodName         = "getUserIdentitiesByName";
         final String nameParameterName  = "name";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         UserIdentityListResponse response = new UserIdentityListResponse();
         AuditLog                 auditLog = null;
@@ -459,8 +455,7 @@ public class UserIdentityRESTServices
             restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 
@@ -485,7 +480,7 @@ public class UserIdentityRESTServices
         final String methodName                    = "getUserIdentityByGUID";
         final String userIdentityGUIDParameterName = "userIdentityGUID";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         UserIdentityResponse response = new UserIdentityResponse();
         AuditLog             auditLog = null;
@@ -506,8 +501,7 @@ public class UserIdentityRESTServices
             restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
+        restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
 }

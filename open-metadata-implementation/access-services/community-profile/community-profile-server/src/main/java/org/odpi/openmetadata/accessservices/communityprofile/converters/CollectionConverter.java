@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.CollectionElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.CollectionElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.CollectionOrder;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.CollectionProperties;
 
@@ -84,6 +84,8 @@ public class CollectionConverter<B> extends CommunityProfileOMASConverter<B>
                     collectionProperties.setDescription(this.removeDescription(instanceProperties));
                     collectionProperties.setCollectionOrdering(this.removeCollectionOrderFromProperties(instanceProperties));
                     collectionProperties.setOrderPropertyName(this.removeOrderPropertyName(instanceProperties));
+                    collectionProperties.setEffectiveFrom(instanceProperties.getEffectiveFromTime());
+                    collectionProperties.setEffectiveTo(instanceProperties.getEffectiveToTime());
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are

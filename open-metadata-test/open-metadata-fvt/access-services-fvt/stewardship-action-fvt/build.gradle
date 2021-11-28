@@ -59,7 +59,7 @@ task startServer(dependsOn: ['cleanData',':open-metadata-distribution:open-metad
     // Start some external service
     executable = System.properties.'java.home' + '/bin/java'
     workingDir = "${buildDir}"
-    args = [ "-Dserver.port=10445",
+    args = [ "-Dserver.port=10453",
              "-Dloader.path=${distdir}/server/lib",
              "-Dspringdoc.api-docs.enabled=false",
              "-Djavax.net.ssl.trustStore=${distdir}/truststore.p12",

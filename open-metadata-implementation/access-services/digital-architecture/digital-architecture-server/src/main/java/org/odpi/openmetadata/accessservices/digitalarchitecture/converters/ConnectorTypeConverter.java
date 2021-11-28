@@ -36,7 +36,7 @@ public class ConnectorTypeConverter<B> extends DigitalArchitectureOMASConverter<
 
     /**
      * Using the supplied instances, return a new instance of the bean. This is used for beans that have
-     * contain a combination of the properties from an entity and a that os a connected relationship.
+     * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
      * @param entity entity containing the properties
@@ -116,7 +116,7 @@ public class ConnectorTypeConverter<B> extends DigitalArchitectureOMASConverter<
 
     /**
      * Using the supplied instances, return a new instance of the bean. This is used for beans that have
-     * contain a combination of the properties from an entity and a that os a connected relationship.
+     * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
      * @param entity entity containing the properties

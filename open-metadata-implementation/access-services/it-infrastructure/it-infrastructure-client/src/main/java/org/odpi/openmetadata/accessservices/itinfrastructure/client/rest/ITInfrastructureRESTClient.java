@@ -333,4 +333,162 @@ public class ITInfrastructureRESTClient extends OCFRESTClient
 
         return restResult;
     }
+
+
+    /**
+     * Issue a GET REST call that returns a ITProfileElement in a response object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public ITProfileResponse callITProfileGetRESTCall(String    methodName,
+                                                      String    urlTemplate,
+                                                      Object... params) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        ITProfileResponse restResult = this.callGetRESTCall(methodName, ITProfileResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a list of ITProfileElements in a response object.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param params  a list of parameters that are slotted into the url template
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public ITProfileListResponse callITProfileListGetRESTCall(String    methodName,
+                                                              String    urlTemplate,
+                                                              Object... params)  throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        ITProfileListResponse restResult = this.callGetRESTCall(methodName, ITProfileListResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a list of ITProfileElements in a response object.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param requestBody request body for the request
+     * @param params  a list of parameters that are slotted into the url template
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public ITProfileListResponse callITProfileListPostRESTCall(String    methodName,
+                                                               String    urlTemplate,
+                                                               Object    requestBody,
+                                                               Object... params)  throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        ITProfileListResponse restResult = this.callPostRESTCall(methodName, ITProfileListResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+
+    /**
+     * Issue a GET REST call that returns a UserIdentityElement in a response object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return UserIdentityResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public UserIdentityResponse callUserIdentityGetRESTCall(String    methodName,
+                                                            String    urlTemplate,
+                                                            Object... params) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        UserIdentityResponse restResult = this.callGetRESTCall(methodName, UserIdentityResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a list of UserIdentityElements in a response object.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param params  a list of parameters that are slotted into the url template
+     * @return UserIdentityListResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public UserIdentityListResponse callUserIdentityListGetRESTCall(String    methodName,
+                                                                    String    urlTemplate,
+                                                                    Object... params)  throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
+    {
+        UserIdentityListResponse restResult = this.callGetRESTCall(methodName, UserIdentityListResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a POST REST call that returns a list of UserIdentityElements in a response object.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param requestBody request body for the request
+     * @param params  a list of parameters that are slotted into the url template
+     * @return UserIdentityListResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public UserIdentityListResponse callUserIdentityListPostRESTCall(String    methodName,
+                                                                     String    urlTemplate,
+                                                                     Object    requestBody,
+                                                                     Object... params)  throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
+    {
+        UserIdentityListResponse restResult = this.callPostRESTCall(methodName, UserIdentityListResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
 }

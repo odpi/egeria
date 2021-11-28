@@ -15,7 +15,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorTyp
  * Then the connector provider will work.
  */
 public class AssetCatalogOutTopicClientProvider extends ConnectorProviderBase {
-    static final String connectorTypeGUID = "91bda022-184f-4c1c-b62a-c311f0e724f4";
+    static final String connectorTypeGUID = "785fdb3d-34b7-47e0-bc73-5969610331d4";
     static final String connectorTypeName = "Asset Catalog Out Topic Client Connector";
     static final String connectorTypeDescription = "Connector supports the receipt of events on the Asset Catalog OMAS Out Topic.";
 

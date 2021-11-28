@@ -23,8 +23,9 @@ public class PersonalProfileProperties extends ActorProfileProperties
 {
     private static final long    serialVersionUID = 1L;
 
-    private String fullName = null;
-    private String jobTitle = null;
+    private String  fullName = null;
+    private String  jobTitle = null;
+    private boolean isPublic = false;
 
 
     /**
@@ -49,6 +50,7 @@ public class PersonalProfileProperties extends ActorProfileProperties
         {
             this.fullName = template.getFullName();
             this.jobTitle = template.getJobTitle();
+            this.isPublic = template.getIsPublic();
         }
     }
 
@@ -98,6 +100,28 @@ public class PersonalProfileProperties extends ActorProfileProperties
 
 
     /**
+     * Return if the contents of this profile be shared with colleagues.
+     *
+     * @return flag
+     */
+    public boolean getIsPublic()
+    {
+        return isPublic;
+    }
+
+
+    /**
+     * Set up if the contents of this profile be shared with colleagues.
+     *
+     * @param isPublic flag
+     */
+    public void setIsPublic(boolean isPublic)
+    {
+        this.isPublic = isPublic;
+    }
+
+
+    /**
      * JSON-style toString.
      *
      * @return list of properties and their values.
@@ -106,12 +130,15 @@ public class PersonalProfileProperties extends ActorProfileProperties
     public String toString()
     {
         return "PersonalProfileProperties{" +
-                       "knownName='" + getKnownName() + '\'' +
-                       ", fullName='" + fullName + '\'' +
+                       "fullName='" + fullName + '\'' +
                        ", jobTitle='" + jobTitle + '\'' +
+                       ", isPublic=" + isPublic +
+                       ", knownName='" + getKnownName() + '\'' +
                        ", description='" + getDescription() + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
                        ", vendorProperties=" + getVendorProperties() +
                        ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +

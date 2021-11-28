@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.ToDoElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ToDoElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ToDoProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ToDoStatus;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
@@ -85,6 +85,8 @@ public class ToDoConverter<B> extends CommunityProfileOMASConverter<B>
                     toDoProperties.setDueTime(this.removeDueTime(instanceProperties));
                     toDoProperties.setCompletionTime(this.removeCompletionTime(instanceProperties));
                     toDoProperties.setStatus(this.getToDoStatusFromProperties(instanceProperties));
+                    toDoProperties.setEffectiveFrom(instanceProperties.getEffectiveFromTime());
+                    toDoProperties.setEffectiveTo(instanceProperties.getEffectiveToTime());
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are

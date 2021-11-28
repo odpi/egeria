@@ -135,12 +135,12 @@ public interface DataAssetExchangeInterface extends SchemaExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void updateDataAsset(String          userId,
-                         String          assetManagerGUID,
-                         String          assetManagerName,
-                         String          assetGUID,
-                         String          assetExternalIdentifier,
-                         boolean         isMergeUpdate,
+    void updateDataAsset(String              userId,
+                         String              assetManagerGUID,
+                         String              assetManagerName,
+                         String              assetGUID,
+                         String              assetExternalIdentifier,
+                         boolean             isMergeUpdate,
                          DataAssetProperties assetProperties) throws InvalidParameterException,
                                                                      UserNotAuthorizedException,
                                                                      PropertyServerException;

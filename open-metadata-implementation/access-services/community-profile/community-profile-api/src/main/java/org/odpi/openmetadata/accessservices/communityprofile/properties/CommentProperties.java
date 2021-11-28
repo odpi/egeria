@@ -160,18 +160,19 @@ public class CommentProperties extends ReferenceableProperties
     public String toString()
     {
         return "CommentProperties{" +
-                "commentType=" + commentType +
-                ", commentText='" + commentText + '\'' +
-                ", user='" + user + '\'' +
-                ", isPublic=" + isPublic +
-                ", public=" + getIsPublic() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                       "commentType=" + commentType +
+                       ", commentText='" + commentText + '\'' +
+                       ", user='" + user + '\'' +
+                       ", isPublic=" + isPublic +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
-
 
 
     /**
