@@ -80,7 +80,7 @@ allprojects {
         nettyVersion = '4.1.69.Final'
         gremlinVersion = '3.5.1'
         groovyVersion = '3.0.9'
-        springdataVersion = '2.5.6'
+        springdataVersion = '2.6.0'
         janusVersion = '0.6.0'
         springwebVersion = '5.3.12'
         springldapVersion = '2.3.4.RELEASE'
