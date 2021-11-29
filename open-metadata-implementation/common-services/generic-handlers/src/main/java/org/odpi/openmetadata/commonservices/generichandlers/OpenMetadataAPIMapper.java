@@ -557,6 +557,9 @@ public class OpenMetadataAPIMapper
     public static final String PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME   = "ProfileIdentity";
     /* End1 = ActorProfile; End 2 = UserIdentity */
 
+    public static final String ROLE_TYPE_NAME_PROPERTY_NAME              = "roleTypeName"; /* from ProfileIdentity relationship */
+    public static final String ROLE_GUID_PROPERTY_NAME                   = "roleGUID";     /* from ProfileIdentity relationship */
+
     public static final String CONTACT_DETAILS_TYPE_GUID                 = "79296df8-645a-4ef7-a011-912d1cdcf75a";
     public static final String CONTACT_DETAILS_TYPE_NAME                 = "ContactDetails";
 
@@ -631,6 +634,10 @@ public class OpenMetadataAPIMapper
     public static final String IT_PROFILE_TYPE_GUID                      = "81394f85-6008-465b-926e-b3fae4668937";
     public static final String IT_PROFILE_TYPE_NAME                      = "ITProfile";                 /* from Area 1 */
     /* ActorProfile */
+
+    public static final String IT_INFRASTRUCTURE_PROFILE_RELATIONSHIP_TYPE_GUID = "4c579e3d-a4ff-41c1-9931-33e6fc992f2b";   /* from Area 1 */
+    public static final String IT_INFRASTRUCTURE_PROFILE_RELATIONSHIP_TYPE_NAME = "ITInfrastructureProfile";
+    /* End1 = ITInfrastructure; End 2 = ITProfile */
 
     public static final String COMMUNITY_TYPE_GUID                       = "ba846a7b-2955-40bf-952b-2793ceca090a";
     public static final String COMMUNITY_TYPE_NAME                       = "Community";          /* from Area 1 */
@@ -1375,6 +1382,14 @@ public class OpenMetadataAPIMapper
     public static final String RETENTION_ARCHIVE_AFTER_PROPERTY_NAME                = "archiveAfter";
     public static final String RETENTION_DELETE_AFTER_PROPERTY_NAME                 = "deleteAfter";
 
+    public static final String SECURITY_GROUP_TYPE_GUID                             = "042d9b5c-677e-477b-811f-1c39bf716759";
+    public static final String SECURITY_GROUP_TYPE_NAME                             = "SecurityGroup";
+    /* TechnicalControl */
+
+    public static final String SECURITY_GROUP_MEMBERSHIP_CLASSIFICATION_TYPE_GUID   = "21a16f1e-9231-4983-b371-a0686d555273";
+    public static final String SECURITY_GROUP_MEMBERSHIP_CLASSIFICATION_TYPE_NAME   = "SecurityGroupMembership";
+    public static final String GROUPS_PROPERTY_NAME                                 = "groups";
+    public static final String DISTINGUISHED_NAME_PROPERTY_NAME                     = "distinguishedName";
 
     public static final String SECURITY_TAG_CLASSIFICATION_TYPE_GUID             = "a0b07a86-9fd3-40ca-bb9b-fe83c6981deb";
     public static final String SECURITY_TAG_CLASSIFICATION_TYPE_NAME             = "SecurityTags";

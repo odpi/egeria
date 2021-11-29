@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.api;
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.PersonalProfileUniverse;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonalProfileUniverse;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethodProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethodType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -208,8 +208,8 @@ public interface PersonalProfileManagementInterface
      */
     PersonalProfileUniverse getPersonalProfileByGUID(String userId,
                                                      String profileGUID) throws InvalidParameterException,
-                                                                               PropertyServerException,
-                                                                               UserNotAuthorizedException;
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException;
 
     /**
      * Retrieve a personal profile by userId.
@@ -225,8 +225,8 @@ public interface PersonalProfileManagementInterface
      */
     PersonalProfileUniverse getPersonalProfileForUser(String userId,
                                                       String profileUserId) throws InvalidParameterException,
-                                                                                  PropertyServerException,
-                                                                                  UserNotAuthorizedException;
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException;
 
 
     /**
@@ -243,8 +243,8 @@ public interface PersonalProfileManagementInterface
      */
     PersonalProfileUniverse getPersonalProfileByQualifiedName(String userId,
                                                               String qualifiedName) throws InvalidParameterException,
-                                                                                          PropertyServerException,
-                                                                                          UserNotAuthorizedException;
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException;
 
 
     /**
@@ -262,6 +262,6 @@ public interface PersonalProfileManagementInterface
      */
     List<PersonalProfileUniverse> getPersonalProfilesByName(String userId,
                                                             String name) throws InvalidParameterException,
-                                                                               PropertyServerException,
-                                                                               UserNotAuthorizedException;
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException;
 }

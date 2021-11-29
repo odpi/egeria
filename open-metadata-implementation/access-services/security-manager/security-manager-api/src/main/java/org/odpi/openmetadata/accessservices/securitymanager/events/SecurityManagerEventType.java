@@ -22,11 +22,20 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum SecurityManagerEventType implements Serializable
 {
-    UNKNOWN_SECURITY_MANAGER_EVENT         (0,  "Unknown Event",  "An event that is not recognized by the local server."),
-    NEW_INFORMATION_VIEW_EVENT          (1,  "New View Event", "An new information view asset has been added to one of the access point zones."),
-    NEW_DEPLOYED_DB_SCHEMA_EVENT        (2,  "New Deployed Database Schema Event", "An new deployed database schema asset has been added to one of the access point zones. "),
-    NEW_TABULAR_SCHEMA_EVENT            (3,  "New Tabular Schema Event", "An new tabular schema has been added to one of the access point zones. "),
-    NEW_TABULAR_COLUMN_EVENT            (4,  "New Tabular Column Event", "An new tabular column schema asset has been added to one of the access point zones. ");
+    UNKNOWN_SECURITY_MANAGER_EVENT    (0,  "Unknown Event",  "An event that is not recognized by the local server."),
+
+    NEW_SECURITY_GROUP_EVENT          (1,  "New Security Group Event", "A new security group definition has been created."),
+    UPDATED_SECURITY_GROUP_EVENT      (2,  "Updated Security Group Event", "The properties of a security group definition have been updated. "),
+    DELETED_SECURITY_GROUP_EVENT      (3,  "Deleted Security Group Event", "A security group definition has been deleted. "),
+
+    NEW_USER_IDENTITY_EVENT           (11, "New User Identity Event", "A new user identity has been created."),
+    UPDATED_USER_IDENTITY_EVENT       (12, "Updated User Identity Event", "The properties of a user identity have been updated. "),
+    GROUP_CHANGE_USER_IDENTITY_EVENT  (13, "Group Change User Identity Event", "The groups of a user identity have been updated. "),
+    DELETED_USER_IDENTITY_EVENT       (14, "Deleted User Identity Event", "A user identity has been deleted. "),
+
+    NEW_SECURITY_TAG_EVENT            (21,  "New Security Tag Event", "A new security tag definition has been attached to an element."),
+    UPDATED_SECURITY_TAG_EVENT        (22,  "Updated Security Tag Event", "The properties of a security tag classification have been updated. "),
+    DELETED_SECURITY_TAG_EVENT        (23,  "Deleted Security Tag Event", "A security tag classification has been removed from an element. ");
 
     private static final long     serialVersionUID = 1L;
 

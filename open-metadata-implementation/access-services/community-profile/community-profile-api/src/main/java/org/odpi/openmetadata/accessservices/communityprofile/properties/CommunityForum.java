@@ -49,9 +49,13 @@ public class CommunityForum extends NoteLogHeaderProperties
     public String toString()
     {
         return "CommunityForum{" +
-                       "isPublic=" + getIsPublic() +
+                       "name='" + getName() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", isPublic=" + getIsPublic() +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
                        ", vendorProperties=" + getVendorProperties() +
                        ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +

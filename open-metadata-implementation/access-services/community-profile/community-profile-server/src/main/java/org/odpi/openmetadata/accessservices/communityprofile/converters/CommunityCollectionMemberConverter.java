@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.CommunityCollectionMember;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.CommunityCollectionMember;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.CommunityProperties;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -38,7 +38,7 @@ public class CommunityCollectionMemberConverter<B> extends CommunityProfileOMASC
 
     /**
      * Using the supplied instances, return a new instance of the bean. This is used for beans that have
-     * contain a combination of the properties from an entity and a that os a connected relationship.
+     * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
      * @param entity entity containing the properties
@@ -80,6 +80,10 @@ public class CommunityCollectionMemberConverter<B> extends CommunityProfileOMASC
                     communityProperties.setDescription(repositoryHelper.removeStringProperty(serviceName, OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME, instanceProperties, methodName));
                     communityProperties.setMission(repositoryHelper.removeStringProperty(serviceName, OpenMetadataAPIMapper.MISSION_PROPERTY_NAME, instanceProperties, methodName));
                     communityProperties.setAdditionalProperties(repositoryHelper.removeStringMapFromProperty(serviceName, OpenMetadataAPIMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME, instanceProperties, methodName));
+                    communityProperties.setEffectiveFrom(instanceProperties.getEffectiveFromTime());
+                    communityProperties.setEffectiveTo(instanceProperties.getEffectiveToTime());
+
+                    communityProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
                     communityProperties.setExtendedProperties(repositoryHelper.getInstancePropertiesAsMap(instanceProperties));
                 }
                 else

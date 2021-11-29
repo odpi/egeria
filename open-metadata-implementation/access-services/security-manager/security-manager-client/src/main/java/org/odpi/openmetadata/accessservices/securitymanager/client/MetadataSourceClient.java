@@ -6,9 +6,7 @@ package org.odpi.openmetadata.accessservices.securitymanager.client;
 import org.odpi.openmetadata.accessservices.securitymanager.api.MetadataSourceInterface;
 import org.odpi.openmetadata.accessservices.securitymanager.client.rest.SecurityManagerRESTClient;
 import org.odpi.openmetadata.accessservices.securitymanager.properties.*;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.DatabaseManagerRequestBody;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.FileManagerRequestBody;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.FileSystemRequestBody;
+import org.odpi.openmetadata.accessservices.securitymanager.rest.SecurityManagerRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -137,136 +135,44 @@ public class MetadataSourceClient extends ConnectedAssetClientBase implements Me
      */
 
     /**
-     * Create information about a File System that is being used to store data files.
+     * Create information about a security manager such as a user access directory - such as an LDAP server or access control manager
+     * such as Apache Ranger.
      *
      * @param userId calling user
-     * @param externalSourceGUID        guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName        name of the software server capability entity that represented the external source
-     * @param fileSystemProperties description of the file system
+     * @param externalSourceGUID   guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName   name of the software server capability entity that represented the external source
+     * @param typeName type name for the software server capability
+     * @param securityManagerProperties description of the security manager
      *
-     * @return unique identifier of the file system's software server capability
+     * @return unique identifier of the user directory's software server capability
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
     @Override
-    public String  createFileSystem(String               userId,
-                                    String               externalSourceGUID,
-                                    String               externalSourceName,
-                                    FileSystemProperties fileSystemProperties) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+    public String createExternalSecurityManager(String                    userId,
+                                                String                    externalSourceGUID,
+                                                String                    externalSourceName,
+                                                String                    typeName,
+                                                SecurityManagerProperties securityManagerProperties) throws InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     PropertyServerException
     {
-        final String methodName                  = "createFileSystem";
+        final String methodName                  = "createExternalSecurityManager";
         final String propertiesParameterName     = "fileSystemProperties";
         final String qualifiedNameParameterName  = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateObject(fileSystemProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(fileSystemProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        invalidParameterHandler.validateObject(securityManagerProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(securityManagerProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        FileSystemRequestBody requestBody = new FileSystemRequestBody(fileSystemProperties);
-
-        requestBody.setExternalSourceGUID(externalSourceGUID);
-        requestBody.setExternalSourceName(externalSourceName);
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/filesystems";
-
-        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId);
-
-        return restResult.getGUID();
-    }
-
-
-    /**
-     * Create information about an application that manages a collection of data files.
-     *
-     * @param userId calling user
-     * @param externalSourceGUID        guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName        name of the software server capability entity that represented the external source
-     * @param fileManagerProperties description of the
-     *
-     * @return unique identifier of the file manager's software server capability
-     *
-     * @throws InvalidParameterException  the bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    @Override
-    public String  createFileManager(String                userId,
-                                     String                externalSourceGUID,
-                                     String                externalSourceName,
-                                     FileManagerProperties fileManagerProperties) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException
-    {
-        final String methodName                  = "createFileManager";
-        final String propertiesParameterName     = "fileManagerProperties";
-        final String qualifiedNameParameterName  = "qualifiedName";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateObject(fileManagerProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(fileManagerProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
-
-        FileManagerRequestBody requestBody = new FileManagerRequestBody(fileManagerProperties);
+        SecurityManagerRequestBody requestBody = new SecurityManagerRequestBody(securityManagerProperties);
 
         requestBody.setExternalSourceGUID(externalSourceGUID);
         requestBody.setExternalSourceName(externalSourceName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/file-managers";
-
-        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId);
-
-        return restResult.getGUID();
-    }
-
-
-    /**
-     * Create information about the integration daemon that is managing the acquisition of metadata from the
-     * security manager.  Typically this is Egeria's security manager integrator OMIS.
-     *
-     * @param userId calling user
-     * @param externalSourceGUID        guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName        name of the software server capability entity that represented the external source
-     * @param databaseManagerProperties description of the integration daemon (specify qualified name at a minimum)
-     *
-     * @return unique identifier of the integration daemon's software server capability
-     *
-     * @throws InvalidParameterException  the bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    @Override
-    public String createDatabaseManager(String                     userId,
-                                        String                     externalSourceGUID,
-                                        String                     externalSourceName,
-                                        DatabaseManagerProperties  databaseManagerProperties) throws InvalidParameterException,
-                                                                                                     UserNotAuthorizedException,
-                                                                                                     PropertyServerException
-    {
-        final String methodName                  = "createDatabaseManager";
-        final String propertiesParameterName     = "databaseManagerProperties";
-        final String qualifiedNameParameterName  = "qualifiedName";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateObject(databaseManagerProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(databaseManagerProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/database-managers";
-
-        DatabaseManagerRequestBody requestBody = new DatabaseManagerRequestBody(databaseManagerProperties);
-
-        requestBody.setExternalSourceGUID(externalSourceGUID);
-        requestBody.setExternalSourceName(externalSourceName);
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/security-managers";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
@@ -291,12 +197,12 @@ public class MetadataSourceClient extends ConnectedAssetClientBase implements Me
      * @throws PropertyServerException    problem accessing the property server
      */
     @Override
-    public String getMetadataSourceGUID(String  userId,
-                                        String  qualifiedName) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+    public String getExternalSecurityManagerGUID(String  userId,
+                                                 String  qualifiedName) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
-        final String methodName                  = "getMetadataSourceGUID";
+        final String methodName                  = "getExternalSecurityManagerGUID";
         final String qualifiedNameParameterName  = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);

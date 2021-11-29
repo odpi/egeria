@@ -49,11 +49,13 @@ public class CommunityForumContribution extends NoteLogEntryProperties
     public String toString()
     {
         return "CommunityForumContribution{" +
-                       "user='" + getContributors() + '\'' +
+                       "contributors=" + getContributors() +
                        ", title='" + getTitle() + '\'' +
                        ", text='" + getText() + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
                        ", vendorProperties=" + getVendorProperties() +
                        ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +

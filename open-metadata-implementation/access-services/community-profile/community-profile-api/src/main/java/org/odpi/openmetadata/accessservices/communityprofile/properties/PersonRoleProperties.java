@@ -25,7 +25,7 @@ public class PersonRoleProperties extends PersonalRoleProperties
 
     private boolean headCountLimitSet = false;
     private int     headCount         = 0;
-    private int     appointmentCount  = 0;
+
 
     /**
      * Default constructor
@@ -44,6 +44,11 @@ public class PersonRoleProperties extends PersonalRoleProperties
     public PersonRoleProperties(PersonRoleProperties template)
     {
         super(template);
+
+        if (template != null)
+        {
+
+        }
     }
 
 
@@ -91,27 +96,6 @@ public class PersonRoleProperties extends PersonalRoleProperties
     }
 
 
-    /**
-     * Return the count of people currently appointed to the role.
-     *
-     * @return int
-     */
-    public int getAppointmentCount()
-    {
-        return appointmentCount;
-    }
-
-
-    /**
-     * Set up the count of people currently appointed to the role.
-     *
-     * @param appointmentCount int
-     */
-    public void setAppointmentCount(int appointmentCount)
-    {
-        this.appointmentCount = appointmentCount;
-    }
-
 
     /**
      * JSON-style toString
@@ -124,13 +108,13 @@ public class PersonRoleProperties extends PersonalRoleProperties
         return "PersonRoleProperties{" +
                        "headCountLimitSet=" + headCountLimitSet +
                        ", headCount=" + headCount +
-                       ", appointmentCount=" + appointmentCount +
-                       ", domainIdentifier=" + getDomainIdentifier() +
                        ", roleId='" + getRoleId() + '\'' +
                        ", scope='" + getScope() + '\'' +
                        ", title='" + getTitle() + '\'' +
                        ", description='" + getDescription() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
                        ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
                        '}';
@@ -160,8 +144,7 @@ public class PersonRoleProperties extends PersonalRoleProperties
         }
         PersonRoleProperties that = (PersonRoleProperties) objectToCompare;
         return getHeadCountLimitSet() == that.getHeadCountLimitSet() &&
-                getHeadCount() == that.getHeadCount() &&
-                getAppointmentCount() == that.getAppointmentCount();
+                getHeadCount() == that.getHeadCount();
     }
 
 
@@ -173,6 +156,6 @@ public class PersonRoleProperties extends PersonalRoleProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getHeadCountLimitSet(), getHeadCount(), getAppointmentCount());
+        return Objects.hash(super.hashCode(), getHeadCountLimitSet(), getHeadCount());
     }
 }

@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.communityprofile.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.UserIdentityElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.UserIdentityElement;
 
 import java.util.Arrays;
 import java.util.List;
@@ -55,7 +55,7 @@ public class UserIdentityListResponse extends CommunityProfileOMASAPIResponse
 
 
     /**
-     * Return the personalProfile result.
+     * Return the user identity result.
      *
      * @return unique identifier
      */
@@ -77,7 +77,7 @@ public class UserIdentityListResponse extends CommunityProfileOMASAPIResponse
 
 
     /**
-     * Set up the personalProfile result.
+     * Set up the user identity result.
      *
      * @param elements - unique identifier
      */
@@ -95,7 +95,7 @@ public class UserIdentityListResponse extends CommunityProfileOMASAPIResponse
     @Override
     public String toString()
     {
-        return "PersonalProfileListResponse{" +
+        return "UserIdentityListResponse{" +
                 "elements=" + elements +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +

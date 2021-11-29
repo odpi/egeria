@@ -14,6 +14,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefStatus;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
@@ -163,10 +164,449 @@ public class OpenMetadataTypesArchive
         /*
          * Calls for new and changed types go here
          */
-
+        correct0040SoftwareServers();
+        extend0110Actors();
+        update0112Team();
+        update0115ITProfile();
+        extend0423SecurityDefinitions();
         update0223Events();
         update0463GovernanceActions();
     }
+
+
+    /**
+     * The ServerEndpoint relationship used to be between an Endpoint and a SoftwareServer.  In 3.1 it was changed to connect
+     * an Endpoint with an ITInfrastructure element to allow SoftwareServerPlatforms (like the OMAGServerPlatform)
+     * to support endpoints (and hence APIs).  Unfortunately the wrong end was updated and so this change sets up the
+     * ends properly.
+     */
+    private void correct0040SoftwareServers()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateServerEndpointRelationship());
+    }
+
+
+    private TypeDefPatch updateServerEndpointRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "ServerEndpoint";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Update end 1.
+         */
+        final String                     end1EntityType               = "ITInfrastructure";
+        final String                     end1AttributeName            = "servers";
+        final String                     end1AttributeDescription     = "Server(s) supporting this endpoint.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+
+        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                                    end1AttributeName,
+                                                                                    end1AttributeDescription,
+                                                                                    end1AttributeDescriptionGUID,
+                                                                                    end1Cardinality);
+        typeDefPatch.setEndDef1(relationshipEndDef);
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "Endpoint";
+        final String                     end2AttributeName            = "endpoints";
+        final String                     end2AttributeDescription     = "Endpoints supported by this server.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        typeDefPatch.setEndDef2(relationshipEndDef);
+
+        return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    /**
+     * Add support for LDAP distinguished name and extend the ProfileIdentity relationship to help selection of userIdentity..
+     */
+    private void extend0110Actors()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateUserIdentityEntity());
+        this.archiveBuilder.addTypeDefPatch(updateProfileIdentityRelationship());
+    }
+
+    private TypeDefPatch updateUserIdentityEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "UserIdentity";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "distinguishedName";
+        final String attribute1Description     = "The LDAP distinguished name (DN) that gives a unique positional name in the LDAP DIT.";
+        final String attribute1DescriptionGUID = null;
+
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch updateProfileIdentityRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "ProfileIdentity";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "roleTypeName";
+        final String attribute1Description     = "The type name of the PersonRole that the UserIdentity is used for.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "roleGUID";
+        final String attribute2Description     = "The unique identifier of the specific PersonRole that the UserIdentity is used for.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "description";
+        final String attribute3Description     = "A human readable description of the use of the UserIdentity by the actor.";
+        final String attribute3DescriptionGUID = null;
+
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    /**
+     * Enable any person role to participate in multiple team leadership or team membership relationships.
+     */
+    private void update0112Team()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateTeamMembershipRelationship());
+        this.archiveBuilder.addTypeDefPatch(updateTeamLeadershipRelationship());
+    }
+
+
+    private TypeDefPatch updateTeamMembershipRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "TeamMembership";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "PersonRole";
+        final String                     end1AttributeName            = "teamMembers";
+        final String                     end1AttributeDescription     = "The members of the team.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        typeDefPatch.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "Team";
+        final String                     end2AttributeName            = "memberOfTeam";
+        final String                     end2AttributeDescription     = "The team that this role is a member of.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        typeDefPatch.setEndDef2(relationshipEndDef);
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch updateTeamLeadershipRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "TeamLeadership";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "PersonRole";
+        final String                     end1AttributeName            = "teamLeaders";
+        final String                     end1AttributeDescription     = "The leaders of the team.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        typeDefPatch.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "Team";
+        final String                     end2AttributeName            = "leadsTeam";
+        final String                     end2AttributeDescription     = "The team lead by this person role.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        typeDefPatch.setEndDef2(relationshipEndDef);
+
+        return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    /**
+     * Link an IT profile to the infrastructure it represents.
+     */
+    private void update0115ITProfile()
+    {
+        this.archiveBuilder.addRelationshipDef(addITInfrastructureProfileRelationship());
+    }
+
+
+    private RelationshipDef addITInfrastructureProfileRelationship()
+    {
+        final String guid            = "4c579e3d-a4ff-41c1-9931-33e6fc992f2b";
+        final String name            = "ITInfrastructureProfile";
+        final String description     = "Link between an ITProfile and the asset for the piece of infrastructure it describes.";
+        final String descriptionGUID = null;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "Asset";
+        final String                     end1AttributeName            = "describedByProfile";
+        final String                     end1AttributeDescription     = "The IT infrastructure that is described by the IT profile.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "ITProfile";
+        final String                     end2AttributeName            = "usedByAsset";
+        final String                     end2AttributeDescription     = "Description of the user identifies used by the asset.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        return relationshipDef;
+    }
+
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    /**
+     * Add support for security groups.
+     */
+    private void extend0423SecurityDefinitions()
+    {
+        this.archiveBuilder.addEntityDef(addSecurityGroupEntity());
+        this.archiveBuilder.addClassificationDef(addSecurityGroupMembershipClassification());
+    }
+
+
+    private EntityDef addSecurityGroupEntity()
+    {
+        final String guid = "042d9b5c-677e-477b-811f-1c39bf716759";
+
+        final String name            = "SecurityGroup";
+        final String description     = "A collection of users that should be given the same security privileges.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "TechnicalControl";
+
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "distinguishedName";
+        final String attribute1Description     = "The LDAP distinguished name (DN) that gives a unique positional name in the LDAP DIT.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
+    }
+
+
+    private ClassificationDef addSecurityGroupMembershipClassification()
+    {
+        final String guid = "21a16f1e-9231-4983-b371-a0686d555273";
+
+        final String name            = "SecurityGroupMembership";
+        final String description     = "Identifies the set of user groups that this user identity is a member of.";
+        final String descriptionGUID = null;
+
+        final List<TypeDefLink> linkedToEntities = new ArrayList<>();
+
+        linkedToEntities.add(this.archiveBuilder.getEntityDef("UserIdentity"));
+
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
+                                                                                 name,
+                                                                                 null,
+                                                                                 description,
+                                                                                 descriptionGUID,
+                                                                                 linkedToEntities,
+                                                                                 false);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "groups";
+        final String attribute1Description     = "List of user group names.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getArrayStringTypeDefAttribute(attribute1Name,
+                                                                attribute1Description,
+                                                                attribute1DescriptionGUID);
+        properties.add(property);
+
+        classificationDef.setPropertiesDefinition(properties);
+
+        return classificationDef;
+    }
+
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -179,6 +619,54 @@ public class OpenMetadataTypesArchive
     {
         this.archiveBuilder.addTypeDefPatch(updateKafkaTopic());
     }
+
+    /**
+     * Add 2 new attributes to the kafka topic. These are used to store the number of
+     * the Kafka topic replicas and partitions.
+     * @return the typeDefPatch
+     */
+    private TypeDefPatch updateKafkaTopic()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "KafkaTopic";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "partitions";
+        final String attribute1Description     = "Number of Kafka partitions.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "replicas";
+        final String attribute2Description     = "Number of Kafka replicas.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
+                                                        attribute1Description,
+                                                        attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getIntTypeDefAttribute(attribute2Name,
+                                                        attribute2Description,
+                                                        attribute2DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+        return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
 
     /**
      * Deprecate the use of GovernanceActionExecutor and GovernanceActionTypeUse relationships in favour of
@@ -293,53 +781,6 @@ public class OpenMetadataTypesArchive
         return typeDefPatch;
     }
 
-    /**
-     * Add 2 new attributes to the kafka topic. These are used to store the number of
-     * the Kafka topic replicas and partitions.
-     * @return the typedefpatch
-     */
-    private TypeDefPatch updateKafkaTopic()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "KafkaTopic";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "partitions";
-        final String attribute1Description     = "Number of Kafka partitions.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "replicas";
-        final String attribute2Description     = "Number of Kafka replicas.";
-        final String attribute2DescriptionGUID = null;
-
-        property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getIntTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
 
 
     /*

@@ -8,13 +8,18 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.El
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ElementOriginCategory;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ElementStub;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ElementType;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ElementVersions;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ContactMethodType;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ServerAssetUseType;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceAuditHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -87,52 +92,7 @@ public class ITInfrastructureOMASConverter<B> extends OpenMetadataAPIGenericConv
 
 
     /**
-     * Extract the properties from the entity or relationship.
-     *
-     * @param beanClass name of the class to create
-     * @param header header from the entity containing the properties
-     * @param methodName calling method
-     * @return filled out element header
-     * @throws PropertyServerException there is a problem in the use of the generic handlers because
-     * the converter has been configured with a type of bean that is incompatible with the handler
-     */
-    public ElementHeader getMetadataElementHeader(Class<B>       beanClass,
-                                                  InstanceHeader header,
-                                                  String         methodName) throws PropertyServerException
-    {
-        if (header != null)
-        {
-            ElementHeader elementHeader = new ElementHeader();
-
-            elementHeader.setGUID(header.getGUID());
-            elementHeader.setType(this.getElementType(header));
-
-            ElementOrigin elementOrigin = new ElementOrigin();
-
-            elementOrigin.setSourceServer(serverName);
-            elementOrigin.setOriginCategory(this.getElementOriginCategory(header.getInstanceProvenanceType()));
-            elementOrigin.setHomeMetadataCollectionId(header.getMetadataCollectionId());
-            elementOrigin.setHomeMetadataCollectionName(header.getMetadataCollectionName());
-            elementOrigin.setLicense(header.getInstanceLicense());
-
-            elementHeader.setOrigin(elementOrigin);
-
-            return elementHeader;
-        }
-        else
-        {
-            super.handleMissingMetadataInstance(beanClass.getName(),
-                                                TypeDefCategory.ENTITY_DEF,
-                                                methodName);
-        }
-
-        return null;
-    }
-
-
-
-    /**
-     * Extract the properties from the entity.
+     * Extract the properties from the instance - called for entities, relationships and entity proxies.
      *
      * @param beanClass name of the class to create
      * @param header header from the entity containing the properties
@@ -164,6 +124,8 @@ public class ITInfrastructureOMASConverter<B> extends OpenMetadataAPIGenericConv
 
             elementHeader.setOrigin(elementOrigin);
 
+            elementHeader.setVersions(this.getElementVersions(header));
+
             return elementHeader;
         }
         else
@@ -193,7 +155,7 @@ public class ITInfrastructureOMASConverter<B> extends OpenMetadataAPIGenericConv
     {
         if (entityProxy != null)
         {
-            ElementHeader elementHeader = getMetadataElementHeader(beanClass, entityProxy, methodName);
+            ElementHeader elementHeader = getMetadataElementHeader(beanClass, entityProxy, entityProxy.getClassifications(), methodName);
             ElementStub   elementStub   = new ElementStub(elementHeader);
 
             elementStub.setUniqueName(repositoryHelper.getStringProperty(serviceName,
@@ -267,7 +229,7 @@ public class ITInfrastructureOMASConverter<B> extends OpenMetadataAPIGenericConv
     {
         if (relationship != null)
         {
-            ElementHeader elementHeader = getMetadataElementHeader(beanClass, relationship, methodName);
+            ElementHeader elementHeader = getMetadataElementHeader(beanClass, relationship, null, methodName);
             ElementStub   elementStub   = new ElementStub(elementHeader);
 
             return elementStub;
@@ -275,7 +237,7 @@ public class ITInfrastructureOMASConverter<B> extends OpenMetadataAPIGenericConv
         else
         {
             super.handleMissingMetadataInstance(beanClass.getName(),
-                                                TypeDefCategory.ENTITY_DEF,
+                                                TypeDefCategory.RELATIONSHIP_DEF,
                                                 methodName);
         }
 
@@ -453,7 +415,7 @@ public class ITInfrastructureOMASConverter<B> extends OpenMetadataAPIGenericConv
      * @param instanceHeader values from the server
      * @return OCF ElementType object
      */
-    ElementType getElementType(InstanceHeader instanceHeader)
+    ElementType getElementType(InstanceAuditHeader instanceHeader)
     {
         ElementType  elementType = new ElementType();
 
@@ -488,6 +450,27 @@ public class ITInfrastructureOMASConverter<B> extends OpenMetadataAPIGenericConv
         }
 
         return elementType;
+    }
+
+
+    /**
+     * Extract detail of the version of the element and the user's maintaining it.
+     *
+     * @param header audit header from the repository
+     * @return ElementVersions object
+     */
+    ElementVersions getElementVersions(InstanceAuditHeader header)
+    {
+        ElementVersions elementVersions = new ElementVersions();
+
+        elementVersions.setCreatedBy(header.getCreatedBy());
+        elementVersions.setCreateTime(header.getCreateTime());
+        elementVersions.setUpdatedBy(header.getUpdatedBy());
+        elementVersions.setUpdateTime(header.getUpdateTime());
+        elementVersions.setMaintainedBy(header.getMaintainedBy());
+        elementVersions.setVersion(header.getVersion());
+
+        return elementVersions;
     }
 
 
@@ -527,5 +510,99 @@ public class ITInfrastructureOMASConverter<B> extends OpenMetadataAPIGenericConv
         }
 
         return ElementOriginCategory.UNKNOWN;
+    }
+
+
+
+
+    /**
+     * Retrieve the ContactMethodType enum property from the instance properties of an entity
+     *
+     * @param properties  entity properties
+     * @return ContactMethodType  enum value
+     */
+    ContactMethodType getContactMethodTypeFromProperties(InstanceProperties properties)
+    {
+        final String methodName = "getContactMethodTypeFromProperties";
+
+        ContactMethodType contactMethodType = ContactMethodType.OTHER;
+
+        if (properties != null)
+        {
+            int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName, OpenMetadataAPIMapper.CONTACT_METHOD_TYPE_PROPERTY_NAME, properties, methodName);
+
+            switch (ordinal)
+            {
+                case 0:
+                    contactMethodType = ContactMethodType.EMAIL;
+                    break;
+
+                case 1:
+                    contactMethodType = ContactMethodType.PHONE;
+                    break;
+
+                case 2:
+                    contactMethodType = ContactMethodType.CHAT;
+                    break;
+
+                case 3:
+                    contactMethodType = ContactMethodType.PROFILE;
+                    break;
+
+                case 4:
+                    contactMethodType = ContactMethodType.ACCOUNT;
+                    break;
+
+                case 99:
+                    contactMethodType = ContactMethodType.OTHER;
+                    break;
+            }
+        }
+
+        return contactMethodType;
+    }
+
+
+    /**
+     * Retrieve the ContactMethodType enum property from the instance properties of an entity
+     *
+     * @param properties  entity properties
+     * @return ContactMethodType  enum value
+     */
+    ServerAssetUseType getServerAssetUseTypeFromProperties(InstanceProperties   properties)
+    {
+        final String methodName = "getServerAssetUseTypeFromProperties";
+
+        ServerAssetUseType serverAssetUseType = ServerAssetUseType.OTHER;
+
+        if (properties != null)
+        {
+            int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName, OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_TYPE_NAME, properties, methodName);
+
+            switch (ordinal)
+            {
+                case 0:
+                    serverAssetUseType = ServerAssetUseType.OWNS;
+                    break;
+
+                case 1:
+                    serverAssetUseType = ServerAssetUseType.GOVERNS;
+                    break;
+
+                case 2:
+                    serverAssetUseType = ServerAssetUseType.MAINTAINS;
+                    break;
+
+                case 3:
+                    serverAssetUseType = ServerAssetUseType.USES;
+                    break;
+
+                case 99:
+                    serverAssetUseType = ServerAssetUseType.OTHER;
+                    break;
+            }
+        }
+
+        return serverAssetUseType;
     }
 }

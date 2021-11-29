@@ -36,6 +36,7 @@
         <module>files-integrator</module>
         <module>database-integrator</module>
         <module>display-integrator</module>
+        <module>infrastructure-integrator</module>
         <module>lineage-integrator</module>
         <module>organization-integrator</module>
         <module>security-integrator</module>

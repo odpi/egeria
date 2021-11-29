@@ -101,15 +101,23 @@ public enum IntegrationServiceDescription implements Serializable
                             "Analytics Modeling OMAS",
                             PermittedSynchronization.BOTH_DIRECTIONS),
 
-
     SEARCH_INTEGRATOR_OMIS(4010,
             "Search Integrator",
             "Search Integrator OMIS",
             "search-integrator",
-            "Store metadata with a third party technology that is focused on search efficiency",
+            "Store metadata with a third party technology that is focused on search efficiency.",
             "https://odpi.github.io/egeria-docs/services/omis/search-integrator/overview/",
             "Asset Catalog OMAS",
-            PermittedSynchronization.BOTH_DIRECTIONS)
+            PermittedSynchronization.BOTH_DIRECTIONS),
+
+    INFRASTRUCTURE_INTEGRATOR_OMIS(4011,
+                           "Infrastructure Integrator",
+                           "Infrastructure Integrator OMIS",
+                           "infrastructure-integrator",
+                           "Exchange information relating to IT infrastructure such as hosts, platforms, servers, server capabilities and services.",
+                           "https://odpi.github.io/egeria-docs/services/omis/infrastructure-integrator/overview/",
+                           "IT infrastructure OMAS",
+                           PermittedSynchronization.BOTH_DIRECTIONS)
     ;
 
     private static final long     serialVersionUID    = 1L;

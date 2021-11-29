@@ -93,6 +93,7 @@ public class ElementStub extends ElementHeader
                        ", type=" + getType() +
                        ", GUID='" + getGUID() + '\'' +
                        ", origin=" + getOrigin() +
+                       ", versions=" + getVersions() +
                        ", classifications=" + getClassifications() +
                        '}';
     }

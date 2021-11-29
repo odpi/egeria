@@ -1,0 +1,26 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+
+dependencies {
+    implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    implementation project(':open-metadata-implementation:governance-servers:integration-daemon-services:integration-daemon-services-api')
+    implementation project(':open-metadata-implementation:governance-servers:integration-daemon-services:integration-daemon-services-registration')
+    implementation project(':open-metadata-implementation:governance-servers:integration-daemon-services:integration-daemon-services-server')
+    implementation project(':open-metadata-implementation:integration-services:infrastructure-integrator:infrastructure-integrator-api')
+    implementation project(':open-metadata-implementation:common-services:ffdc-services')
+    implementation project(':open-metadata-implementation:common-services:multi-tenant')
+    implementation project(':open-metadata-implementation:admin-services:admin-services-api')
+    implementation 'org.slf4j:slf4j-api'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+
+}
+
+description = 'Infrastructure Integrator OMIS Server-side'
+
+java {
+    withJavadocJar()
+}

@@ -56,11 +56,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>ffdc-services</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
         </dependency>

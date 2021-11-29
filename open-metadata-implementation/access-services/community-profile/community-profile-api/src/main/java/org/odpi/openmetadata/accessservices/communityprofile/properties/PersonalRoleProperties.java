@@ -4,9 +4,9 @@
 package org.odpi.openmetadata.accessservices.communityprofile.properties;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.CommunityMembershipElement;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -24,14 +24,15 @@ public class PersonalRoleProperties implements Serializable
 {
     private static final long    serialVersionUID = 1L;
 
-    private int                  domainIdentifier = 0;
-
     private String               roleId      = null; /* qualifiedName */
     private String               scope       = null; /* scope */
     private String               title       = null; /* name */
     private String               description = null; /* description */
 
     private Map<String, String>  additionalProperties = null;
+
+    private Date                 effectiveFrom = null;
+    private Date                 effectiveTo   = null;
 
     private String               typeName             = null;
     private Map<String, Object>  extendedProperties   = null;
@@ -54,37 +55,16 @@ public class PersonalRoleProperties implements Serializable
     {
         if (template != null)
         {
-            this.domainIdentifier     = template.getDomainIdentifier();
             this.roleId               = template.getRoleId();
             this.scope                = template.getScope();
             this.title                = template.getTitle();
             this.description          = template.getDescription();
             this.additionalProperties = template.getAdditionalProperties();
+            this.effectiveFrom        = template.getEffectiveFrom();
+            this.effectiveTo          = template.getEffectiveTo();
             this.typeName             = template.getTypeName();
             this.extendedProperties   = template.getExtendedProperties();
         }
-    }
-
-
-    /**
-     * Return the identifier of the governance domain that this zone is managed by.
-     *
-     * @return int identifier
-     */
-    public int getDomainIdentifier()
-    {
-        return domainIdentifier;
-    }
-
-
-    /**
-     * Set up the identifier of the governance domain that this zone is managed by.
-     *
-     * @param domainIdentifier int identifier
-     */
-    public void setDomainIdentifier(int domainIdentifier)
-    {
-        this.domainIdentifier = domainIdentifier;
     }
 
 
@@ -215,6 +195,49 @@ public class PersonalRoleProperties implements Serializable
     }
 
 
+    /**
+     * Return the date/time that this element is effective from (null means effective from the epoch).
+     *
+     * @return date object
+     */
+    public Date getEffectiveFrom()
+    {
+        return effectiveFrom;
+    }
+
+
+    /**
+     * Set up the date/time that this element is effective from (null means effective from the epoch).
+     *
+     * @param effectiveFrom date object
+     */
+    public void setEffectiveFrom(Date effectiveFrom)
+    {
+        this.effectiveFrom = effectiveFrom;
+    }
+
+
+    /**
+     * Return the date/time that element is effective to (null means that it is effective indefinitely into the future).
+     *
+     * @return date object
+     */
+    public Date getEffectiveTo()
+    {
+        return effectiveTo;
+    }
+
+
+    /**
+     * Set the date/time that element is effective to (null means that it is effective indefinitely into the future).
+     *
+     * @param effectiveTo date object
+     */
+    public void setEffectiveTo(Date effectiveTo)
+    {
+        this.effectiveTo = effectiveTo;
+    }
+
 
     /**
      * Return the open metadata type name of this object - this is used to create a subtype of
@@ -284,12 +307,13 @@ public class PersonalRoleProperties implements Serializable
     public String toString()
     {
         return "PersonalRoleProperties{" +
-                       "domainIdentifier=" + domainIdentifier +
-                       ", roleId='" + roleId + '\'' +
+                       "roleId='" + roleId + '\'' +
                        ", scope='" + scope + '\'' +
                        ", title='" + title + '\'' +
                        ", description='" + description + '\'' +
                        ", additionalProperties=" + additionalProperties +
+                       ", effectiveFrom=" + effectiveFrom +
+                       ", effectiveTo=" + effectiveTo +
                        ", typeName='" + typeName + '\'' +
                        ", extendedProperties=" + extendedProperties +
                        '}';
@@ -314,12 +338,13 @@ public class PersonalRoleProperties implements Serializable
             return false;
         }
         PersonalRoleProperties that = (PersonalRoleProperties) objectToCompare;
-        return domainIdentifier == that.domainIdentifier &&
-                       Objects.equals(roleId, that.roleId) &&
+        return Objects.equals(roleId, that.roleId) &&
                        Objects.equals(scope, that.scope) &&
                        Objects.equals(title, that.title) &&
                        Objects.equals(description, that.description) &&
                        Objects.equals(additionalProperties, that.additionalProperties) &&
+                       Objects.equals(effectiveFrom, that.effectiveFrom) &&
+                       Objects.equals(effectiveTo, that.effectiveTo) &&
                        Objects.equals(typeName, that.typeName) &&
                        Objects.equals(extendedProperties, that.extendedProperties);
     }
@@ -333,7 +358,6 @@ public class PersonalRoleProperties implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(domainIdentifier, roleId, scope, title, description, additionalProperties, typeName,
-                            extendedProperties);
+        return Objects.hash(roleId, scope, title, description, additionalProperties, effectiveFrom, effectiveTo, typeName, extendedProperties);
     }
 }

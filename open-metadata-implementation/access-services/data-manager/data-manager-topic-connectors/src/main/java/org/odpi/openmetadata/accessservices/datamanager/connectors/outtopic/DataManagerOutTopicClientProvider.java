@@ -16,7 +16,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorTyp
  */
 public class DataManagerOutTopicClientProvider extends ConnectorProviderBase
 {
-    static final String  connectorTypeGUID = "91bda022-184f-4c1c-b62a-c311f0e724f4";
+    static final String  connectorTypeGUID = "0f5786e1-4856-4f01-a091-f5484f4e0685";
     static final String  connectorTypeName = "Data Manager Out Topic Client Connector";
     static final String  connectorTypeDescription = "Connector supports the receipt of events on the Data Manager OMAS Out Topic.";
 

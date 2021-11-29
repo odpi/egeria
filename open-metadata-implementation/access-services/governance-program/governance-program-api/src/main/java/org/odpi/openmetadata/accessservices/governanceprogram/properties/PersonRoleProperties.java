@@ -30,12 +30,13 @@ public abstract class PersonRoleProperties implements Serializable
 {
     private static final long    serialVersionUID = 1L;
 
-    private int                  domainIdentifier = 0;
-
     private String               roleId      = null; /* qualifiedName */
     private String               scope       = null; /* scope */
     private String               title       = null; /* name */
     private String               description = null; /* description */
+
+    private boolean              headCountLimitSet = false;
+    private int                  headCount = 1;
 
     private Map<String, String>  additionalProperties = null;
 
@@ -60,37 +61,16 @@ public abstract class PersonRoleProperties implements Serializable
     {
         if (template != null)
         {
-            this.domainIdentifier     = template.getDomainIdentifier();
             this.roleId               = template.getRoleId();
             this.scope                = template.getScope();
             this.title                = template.getTitle();
             this.description          = template.getDescription();
+            this.headCount            = template.getHeadCount();
+            this.headCountLimitSet    = template.getHeadCountLimitSet();
             this.additionalProperties = template.getAdditionalProperties();
             this.typeName             = template.getTypeName();
             this.extendedProperties   = template.getExtendedProperties();
         }
-    }
-
-
-    /**
-     * Return the identifier of the governance domain that this zone is managed by.
-     *
-     * @return int identifier
-     */
-    public int getDomainIdentifier()
-    {
-        return domainIdentifier;
-    }
-
-
-    /**
-     * Set up the identifier of the governance domain that this zone is managed by.
-     *
-     * @param domainIdentifier int identifier
-     */
-    public void setDomainIdentifier(int domainIdentifier)
-    {
-        this.domainIdentifier = domainIdentifier;
     }
 
 
@@ -185,6 +165,51 @@ public abstract class PersonRoleProperties implements Serializable
     public void setDescription(String description)
     {
         this.description = description;
+    }
+
+
+
+    /**
+     * Return the indicator whether the head count limit is set for a person role.
+     *
+     * @return boolean flag
+     */
+    public boolean getHeadCountLimitSet()
+    {
+        return headCountLimitSet;
+    }
+
+
+    /**
+     * Set up the indicator whether the head count limit is set for a person role.
+     *
+     * @param headCountLimitSet boolean flag
+     */
+    public void setHeadCountLimitSet(boolean headCountLimitSet)
+    {
+        this.headCountLimitSet = headCountLimitSet;
+    }
+
+
+    /**
+     * Return the number of people that can be appointed to this role.
+     *
+     * @return int
+     */
+    public int getHeadCount()
+    {
+        return headCount;
+    }
+
+
+    /**
+     * Set up the number of people that can be appointed to this role.
+     *
+     * @param headCount int
+     */
+    public void setHeadCount(int headCount)
+    {
+        this.headCount = headCount;
     }
 
 
@@ -290,11 +315,12 @@ public abstract class PersonRoleProperties implements Serializable
     public String toString()
     {
         return "PersonRoleProperties{" +
-                       "domainIdentifier=" + domainIdentifier +
-                       ", roleId='" + roleId + '\'' +
+                       "roleId='" + roleId + '\'' +
                        ", scope='" + scope + '\'' +
                        ", title='" + title + '\'' +
                        ", description='" + description + '\'' +
+                       ", headCountLimitSet=" + headCountLimitSet +
+                       ", headCount=" + headCount +
                        ", additionalProperties=" + additionalProperties +
                        ", typeName='" + typeName + '\'' +
                        ", extendedProperties=" + extendedProperties +
@@ -320,7 +346,8 @@ public abstract class PersonRoleProperties implements Serializable
             return false;
         }
         PersonRoleProperties that = (PersonRoleProperties) objectToCompare;
-        return domainIdentifier == that.domainIdentifier &&
+        return headCountLimitSet == that.headCountLimitSet &&
+                       headCount == that.headCount &&
                        Objects.equals(roleId, that.roleId) &&
                        Objects.equals(scope, that.scope) &&
                        Objects.equals(title, that.title) &&
@@ -339,7 +366,6 @@ public abstract class PersonRoleProperties implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(domainIdentifier, roleId, scope, title, description, additionalProperties, typeName,
-                            extendedProperties);
+        return Objects.hash(roleId, scope, title, description, headCountLimitSet, headCount, additionalProperties, typeName, extendedProperties);
     }
 }

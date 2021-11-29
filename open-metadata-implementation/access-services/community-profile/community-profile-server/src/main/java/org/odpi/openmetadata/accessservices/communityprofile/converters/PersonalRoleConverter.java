@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.PersonalRoleElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonalRoleElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalRoleProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -74,6 +74,8 @@ public class PersonalRoleConverter<B> extends CommunityProfileOMASConverter<B>
                     profileProperties.setDescription(this.removeDescription(instanceProperties));
                     profileProperties.setScope(this.removeScope(instanceProperties));
                     profileProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                    profileProperties.setEffectiveFrom(instanceProperties.getEffectiveFromTime());
+                    profileProperties.setEffectiveTo(instanceProperties.getEffectiveToTime());
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are

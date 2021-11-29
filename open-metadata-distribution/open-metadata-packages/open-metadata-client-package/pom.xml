@@ -153,6 +153,14 @@
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>infrastructure-integrator-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>search-integrator-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>organization-integrator-client</artifactId>
         </dependency>
         <dependency>

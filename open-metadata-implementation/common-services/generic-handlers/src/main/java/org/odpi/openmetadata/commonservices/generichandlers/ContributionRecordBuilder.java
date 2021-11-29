@@ -16,6 +16,7 @@ import java.util.Map;
 public class ContributionRecordBuilder extends ReferenceableBuilder
 {
     private long karmaPoints;
+    private boolean isPublic;
 
 
     /**
@@ -33,6 +34,7 @@ public class ContributionRecordBuilder extends ReferenceableBuilder
      */
     public ContributionRecordBuilder(String               qualifiedName,
                                      long                 karmaPoints,
+                                     boolean              isPublic,
                                      Map<String, String>  additionalProperties,
                                      String               typeGUID,
                                      String               typeName,
@@ -51,6 +53,7 @@ public class ContributionRecordBuilder extends ReferenceableBuilder
               serverName);
 
         this.karmaPoints = karmaPoints;
+        this.isPublic = isPublic;
     }
 
 
@@ -65,6 +68,12 @@ public class ContributionRecordBuilder extends ReferenceableBuilder
     public InstanceProperties getInstanceProperties(String  methodName) throws InvalidParameterException
     {
         InstanceProperties properties = super.getInstanceProperties(methodName);
+
+        properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
+                                                                   properties,
+                                                                   OpenMetadataAPIMapper.IS_PUBLIC_PROPERTY_NAME,
+                                                                   isPublic,
+                                                                   methodName);
 
         return repositoryHelper.addLongPropertyToInstance(serviceName,
                                                           properties,

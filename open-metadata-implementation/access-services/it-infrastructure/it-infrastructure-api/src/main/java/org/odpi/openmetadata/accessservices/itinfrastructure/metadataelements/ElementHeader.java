@@ -31,9 +31,10 @@ public class ElementHeader implements Serializable
     /*
      * Common header for first class elements from a metadata repository
      */
-    private String        guid = null;
-    private ElementType   type = null;
-    private ElementOrigin origin = null;
+    private String          guid = null;
+    private ElementType     type = null;
+    private ElementOrigin   origin = null;
+    private ElementVersions versions = null;
 
     private List<ElementClassification> classifications  = null;
 
@@ -58,6 +59,7 @@ public class ElementHeader implements Serializable
             guid             = template.getGUID();
             type             = template.getType();
             origin           = template.getOrigin();
+            versions         = template.getVersions();
             classifications  = template.getClassifications();
         }
     }
@@ -138,6 +140,28 @@ public class ElementHeader implements Serializable
 
 
     /**
+     * Return detail of the element's current version and the users responsible for maintaining it.
+     *
+     * @return ElementVersion object
+     */
+    public ElementVersions getVersions()
+    {
+        return versions;
+    }
+
+
+    /**
+     * Set up detail of the element's current version and the users responsible for maintaining it.
+     *
+     * @param versions ElementVersion object
+     */
+    public void setVersions(ElementVersions versions)
+    {
+        this.versions = versions;
+    }
+
+
+    /**
      * Return the list of classifications associated with the metadata element.
      *
      * @return Classifications  list of classifications
@@ -179,12 +203,13 @@ public class ElementHeader implements Serializable
     public String toString()
     {
         return "ElementHeader{" +
-                "guid='" + guid + '\'' +
-                ", type=" + type +
-                ", origin=" + origin +
-                ", classifications=" + classifications +
-                ", GUID='" + getGUID() + '\'' +
-                '}';
+                       "guid='" + guid + '\'' +
+                       ", type=" + type +
+                       ", origin=" + origin +
+                       ", versions=" + versions +
+                       ", classifications=" + classifications +
+                       ", GUID='" + getGUID() + '\'' +
+                       '}';
     }
 
 
@@ -207,9 +232,10 @@ public class ElementHeader implements Serializable
         }
         ElementHeader that = (ElementHeader) objectToCompare;
         return Objects.equals(guid, that.guid) &&
-                Objects.equals(type, that.type) &&
-                Objects.equals(origin, that.origin) &&
-                Objects.equals(classifications, that.classifications);
+                       Objects.equals(type, that.type) &&
+                       Objects.equals(origin, that.origin) &&
+                       Objects.equals(versions, that.versions) &&
+                       Objects.equals(classifications, that.classifications);
     }
 
 
@@ -221,6 +247,6 @@ public class ElementHeader implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(guid, type, origin, classifications);
+        return Objects.hash(guid, type, origin, versions, classifications);
     }
 }
