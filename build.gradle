@@ -77,7 +77,7 @@ allprojects {
         logbackVersion = '1.2.6'
         jacksonVersion = '2.12.2'
         luceneVersion = '8.10.1'
-        nettyVersion = '4.1.69.Final'
+        nettyVersion = '4.1.70.Final'
         gremlinVersion = '3.5.1'
         groovyVersion = '3.0.9'
         springdataVersion = '2.5.6'
