@@ -25,7 +25,7 @@ buildscript {
 plugins {
         //id "nebula.lint" version "16.9.0"
         //id "nebula-aggregate-javadocs"
-        id "io.freefair.lombok" version "6.2.0"
+        id "io.freefair.lombok" version "6.3.0"
     }
 
 /* run './gradlew aggregateJavadocs' at top level to build all docs & output to build/docs/javadoc */
