@@ -50,7 +50,7 @@ address of `https://localhost:9443`.
 
 ```bash
 $ curl --insecure -X GET https://localhost:9443/open-metadata/platform-services/users/test/server-platform-origin
-Egeria OMAG Server Platform (version 3.4-SNAPSHOT)
+Egeria OMAG Server Platform (version 3.5-SNAPSHOT)
 ```
 
 If you get the `Egeria OMAG Server Platform (version `versionNumber`)` response then your OMAG server platform is already running.
