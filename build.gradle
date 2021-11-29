@@ -84,7 +84,7 @@ allprojects {
         janusVersion = '0.6.0'
         springwebVersion = '5.3.12'
         springldapVersion = '2.3.4.RELEASE'
-        springsecurityVersion = '5.5.3'
+        springsecurityVersion = '5.6.0'
         mockitoVersion = '4.0.0'
         tomcatVersion = '9.0.55'
         junitjupiterVersion = '5.8.1'
