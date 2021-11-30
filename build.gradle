@@ -91,7 +91,7 @@ allprojects {
         mockitoVersion = '4.0.0'
         springbootVersion = '2.6.0'
         httpcoreVersion = '4.4.14'
-        jenaVersion = '4.1.0'
+        jenaVersion = '4.2.0'
         elasticsearchVersion = '7.15.2'
     }
 
