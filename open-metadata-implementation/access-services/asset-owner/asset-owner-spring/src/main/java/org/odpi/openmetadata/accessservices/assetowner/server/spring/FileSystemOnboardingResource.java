@@ -127,7 +127,7 @@ public class FileSystemOnboardingResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    @PostMapping(path = "/file-systems/{fileSystemGUID}/folders/{fileSystemGUID}/attach")
+    @PostMapping(path = "/file-systems/{fileSystemGUID}/folders/{folderGUID}/attach")
 
     public VoidResponse attachFolderToFileSystem(@PathVariable                  String          serverName,
                                                  @PathVariable                  String          userId,
@@ -153,7 +153,7 @@ public class FileSystemOnboardingResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    @PostMapping(path = "/file-systems/{fileSystemGUID}/folders/{fileSystemGUID}/detach")
+    @PostMapping(path = "/file-systems/{fileSystemGUID}/folders/{folderGUID}/detach")
 
     public VoidResponse detachFolderFromFileSystem(@PathVariable                  String          serverName,
                                                    @PathVariable                  String          userId,

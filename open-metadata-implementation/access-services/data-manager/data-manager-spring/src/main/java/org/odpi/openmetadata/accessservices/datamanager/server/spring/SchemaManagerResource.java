@@ -126,7 +126,7 @@ public class SchemaManagerResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/valid-value-sets/by-name}")
+    @PostMapping(path = "/valid-value-sets/by-name")
 
     public ValidValueSetsResponse getValidValueSetByName(@PathVariable String          serverName,
                                                          @PathVariable String          userId,
