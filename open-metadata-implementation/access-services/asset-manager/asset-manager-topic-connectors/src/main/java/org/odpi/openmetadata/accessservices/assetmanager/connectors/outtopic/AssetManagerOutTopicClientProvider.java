@@ -16,7 +16,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorTyp
  */
 public class AssetManagerOutTopicClientProvider extends ConnectorProviderBase
 {
-    static final String  connectorTypeGUID = "91bda022-184f-4c1c-b62a-c311f0e724f4";
+    static final String  connectorTypeGUID = "aa47afb1-e20b-47f0-abba-9eb1615ac33b";
     static final String  connectorTypeName = "Asset Manager Out Topic Client Connector";
     static final String  connectorTypeDescription = "Connector supports the receipt of events on the Asset Manager OMAS Out Topic.";
 

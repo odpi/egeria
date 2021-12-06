@@ -10,7 +10,7 @@
     <parent>
         <artifactId>open-metadata-implementation</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.4-SNAPSHOT</version>
+        <version>3.5-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -36,6 +36,7 @@
         <module>files-integrator</module>
         <module>database-integrator</module>
         <module>display-integrator</module>
+        <module>infrastructure-integrator</module>
         <module>lineage-integrator</module>
         <module>organization-integrator</module>
         <module>security-integrator</module>

@@ -19,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SoftwareServerPlatformProperties extends AssetProperties
+public class SoftwareServerPlatformProperties extends ITInfrastructureProperties
 {
     private static final long    serialVersionUID = 1L;
 
@@ -157,11 +157,16 @@ public class SoftwareServerPlatformProperties extends AssetProperties
                        ", platformVersion='" + platformVersion + '\'' +
                        ", platformSource='" + platformSource + '\'' +
                        ", platformUserId='" + platformUserId + '\'' +
+                       ", softwareServerType='" + getSoftwareServerType() + '\'' +
+                       ", softwareServerVersion='" + getSoftwareServerVersion() + '\'' +
+                       ", softwareServerSource='" + getSoftwareServerSource() + '\'' +
+                       ", softwareServerUserId='" + getSoftwareServerUserId() + '\'' +
                        ", displayName='" + getDisplayName() + '\'' +
                        ", description='" + getDescription() + '\'' +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
-                       ", classifications=" + getClassifications() +
                        ", vendorProperties=" + getVendorProperties() +
                        ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +

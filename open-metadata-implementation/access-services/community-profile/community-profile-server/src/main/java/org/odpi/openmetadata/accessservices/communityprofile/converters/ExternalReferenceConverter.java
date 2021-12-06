@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.ExternalReferenceElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ExternalReferenceElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ExternalReferenceProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -38,7 +38,7 @@ public class ExternalReferenceConverter<B> extends CommunityProfileOMASConverter
 
     /**
      * Using the supplied instances, return a new instance of the bean. This is used for beans that have
-     * contain a combination of the properties from an entity and a that os a connected relationship.
+     * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
      * @param entity entity containing the properties
@@ -57,7 +57,7 @@ public class ExternalReferenceConverter<B> extends CommunityProfileOMASConverter
 
     /**
      * Using the supplied instances, return a new instance of the bean. This is used for beans that have
-     * contain a combination of the properties from an entity and a that os a connected relationship.
+     * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
      * @param entity entity containing the properties
@@ -100,6 +100,7 @@ public class ExternalReferenceConverter<B> extends CommunityProfileOMASConverter
                     externalReferenceProperties.setResourceVersion(this.removeReferenceVersion(instanceProperties));
                     externalReferenceProperties.setResourceDescription(this.removeDescription(instanceProperties));
                     externalReferenceProperties.setOwningOrganization(this.removeOrganization(instanceProperties));
+
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are

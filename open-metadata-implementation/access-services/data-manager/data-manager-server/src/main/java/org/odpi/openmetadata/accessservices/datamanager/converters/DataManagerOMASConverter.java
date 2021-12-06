@@ -108,6 +108,8 @@ public class DataManagerOMASConverter<B> extends OpenMetadataAPIGenericConverter
 
             elementHeader.setOrigin(elementOrigin);
 
+            elementHeader.setVersions(this.getElementVersions(header));
+
             return elementHeader;
         }
         else
@@ -123,10 +125,11 @@ public class DataManagerOMASConverter<B> extends OpenMetadataAPIGenericConverter
 
 
     /**
-     * Extract the properties from the entity.
+     * Extract the properties from the instance - called for entities, relationships and entity proxies.
      *
      * @param beanClass name of the class to create
      * @param header header from the entity containing the properties
+     * @param entityClassifications classifications from entities and entity proxies
      * @param methodName calling method
      * @return filled out element header
      * @throws PropertyServerException there is a problem in the use of the generic handlers because
@@ -154,6 +157,8 @@ public class DataManagerOMASConverter<B> extends OpenMetadataAPIGenericConverter
             elementOrigin.setLicense(header.getInstanceLicense());
 
             elementHeader.setOrigin(elementOrigin);
+
+            elementHeader.setVersions(this.getElementVersions(header));
 
             return elementHeader;
         }
@@ -184,7 +189,7 @@ public class DataManagerOMASConverter<B> extends OpenMetadataAPIGenericConverter
     {
         if (entityProxy != null)
         {
-            ElementHeader elementHeader = getMetadataElementHeader(beanClass, entityProxy, methodName);
+            ElementHeader elementHeader = getMetadataElementHeader(beanClass, entityProxy, entityProxy.getClassifications(), methodName);
             ElementStub   elementStub   = new ElementStub(elementHeader);
 
             elementStub.setUniqueName(repositoryHelper.getStringProperty(serviceName,
@@ -258,7 +263,7 @@ public class DataManagerOMASConverter<B> extends OpenMetadataAPIGenericConverter
     {
         if (relationship != null)
         {
-            ElementHeader elementHeader = getMetadataElementHeader(beanClass, relationship, methodName);
+            ElementHeader elementHeader = getMetadataElementHeader(beanClass, relationship, null, methodName);
             ElementStub   elementStub   = new ElementStub(elementHeader);
 
             return elementStub;
@@ -266,7 +271,7 @@ public class DataManagerOMASConverter<B> extends OpenMetadataAPIGenericConverter
         else
         {
             super.handleMissingMetadataInstance(beanClass.getName(),
-                                                TypeDefCategory.ENTITY_DEF,
+                                                TypeDefCategory.RELATIONSHIP_DEF,
                                                 methodName);
         }
 
@@ -444,7 +449,7 @@ public class DataManagerOMASConverter<B> extends OpenMetadataAPIGenericConverter
      * @param instanceHeader values from the server
      * @return OCF ElementType object
      */
-    ElementType getElementType(InstanceHeader instanceHeader)
+    ElementType getElementType(InstanceAuditHeader instanceHeader)
     {
         ElementType  elementType = new ElementType();
 
@@ -479,6 +484,27 @@ public class DataManagerOMASConverter<B> extends OpenMetadataAPIGenericConverter
         }
 
         return elementType;
+    }
+
+
+    /**
+     * Extract detail of the version of the element and the user's maintaining it.
+     *
+     * @param header audit header from the repository
+     * @return ElementVersions object
+     */
+    ElementVersions getElementVersions(InstanceAuditHeader header)
+    {
+        ElementVersions elementVersions = new ElementVersions();
+
+        elementVersions.setCreatedBy(header.getCreatedBy());
+        elementVersions.setCreateTime(header.getCreateTime());
+        elementVersions.setUpdatedBy(header.getUpdatedBy());
+        elementVersions.setUpdateTime(header.getUpdateTime());
+        elementVersions.setMaintainedBy(header.getMaintainedBy());
+        elementVersions.setVersion(header.getVersion());
+
+        return elementVersions;
     }
 
 

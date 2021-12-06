@@ -3,17 +3,14 @@
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.ContactMethodElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ContactMethodElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethodProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethodType;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -22,8 +19,6 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class ContactMethodConverter<B> extends CommunityProfileOMASConverter<B>
 {
-    private static final Logger log = LoggerFactory.getLogger(ContactMethodProperties.class);
-
     /**
      * Constructor
      *
@@ -77,11 +72,12 @@ public class ContactMethodConverter<B> extends CommunityProfileOMASConverter<B>
                 {
                     entityProperties = new InstanceProperties(entity.getProperties());
 
-                    contactMethodProperties.setQualifiedName(this.removeQualifiedName(entityProperties));
-                    contactMethodProperties.setAdditionalProperties(this.removeAdditionalProperties(entityProperties));
                     contactMethodProperties.setType(this.getContactMethodTypeFromProperties(entityProperties));
                     contactMethodProperties.setService(this.removeContactMethodService(entityProperties));
                     contactMethodProperties.setValue(this.removeContactMethodValue(entityProperties));
+                    contactMethodProperties.setEffectiveFrom(entityProperties.getEffectiveFromTime());
+                    contactMethodProperties.setEffectiveTo(entityProperties.getEffectiveToTime());
+
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are

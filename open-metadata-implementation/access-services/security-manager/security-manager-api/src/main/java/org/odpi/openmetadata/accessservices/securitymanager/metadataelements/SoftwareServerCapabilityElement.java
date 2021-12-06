@@ -6,8 +6,7 @@ package org.odpi.openmetadata.accessservices.securitymanager.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.securitymanager.properties.DatabaseManagerProperties;
-import org.odpi.openmetadata.accessservices.securitymanager.properties.SoftwareServerCapabilitiesProperties;
+import org.odpi.openmetadata.accessservices.securitymanager.properties.SecurityManagerProperties;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -26,8 +25,8 @@ public class SoftwareServerCapabilityElement implements MetadataElement, Seriali
 {
     private static final long     serialVersionUID = 1L;
 
-    private ElementHeader                        elementHeader = null;
-    private SoftwareServerCapabilitiesProperties softwareServerCapabilitiesProperties = null;
+    private ElementHeader             elementHeader             = null;
+    private SecurityManagerProperties securityManagerProperties = null;
 
 
     /**
@@ -49,7 +48,7 @@ public class SoftwareServerCapabilityElement implements MetadataElement, Seriali
         if (template != null)
         {
             elementHeader = template.getElementHeader();
-            softwareServerCapabilitiesProperties = template.getSoftwareServerCapabilitiesProperties();
+            securityManagerProperties = template.getSecurityManagerProperties();
         }
     }
 
@@ -83,20 +82,20 @@ public class SoftwareServerCapabilityElement implements MetadataElement, Seriali
      *
      * @return properties bean
      */
-    public SoftwareServerCapabilitiesProperties getSoftwareServerCapabilitiesProperties()
+    public SecurityManagerProperties getSecurityManagerProperties()
     {
-        return softwareServerCapabilitiesProperties;
+        return securityManagerProperties;
     }
 
 
     /**
      * Set up the properties of the software server capability.
      *
-     * @param softwareServerCapabilitiesProperties properties bean
+     * @param securityManagerProperties properties bean
      */
-    public void setSoftwareServerCapabilitiesProperties(SoftwareServerCapabilitiesProperties softwareServerCapabilitiesProperties)
+    public void setSecurityManagerProperties(SecurityManagerProperties securityManagerProperties)
     {
-        this.softwareServerCapabilitiesProperties = softwareServerCapabilitiesProperties;
+        this.securityManagerProperties = securityManagerProperties;
     }
 
 
@@ -110,7 +109,7 @@ public class SoftwareServerCapabilityElement implements MetadataElement, Seriali
     {
         return "SoftwareServerCapabilityElement{" +
                 "elementHeader=" + elementHeader +
-                ", softwareServerCapabilitiesProperties=" + softwareServerCapabilitiesProperties +
+                ", securityManagerProperties=" + securityManagerProperties +
                 '}';
     }
 
@@ -138,7 +137,7 @@ public class SoftwareServerCapabilityElement implements MetadataElement, Seriali
         }
         SoftwareServerCapabilityElement that = (SoftwareServerCapabilityElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
-                Objects.equals(softwareServerCapabilitiesProperties, that.softwareServerCapabilitiesProperties);
+                Objects.equals(securityManagerProperties, that.securityManagerProperties);
     }
 
 
@@ -150,6 +149,6 @@ public class SoftwareServerCapabilityElement implements MetadataElement, Seriali
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, softwareServerCapabilitiesProperties);
+        return Objects.hash(super.hashCode(), elementHeader, securityManagerProperties);
     }
 }

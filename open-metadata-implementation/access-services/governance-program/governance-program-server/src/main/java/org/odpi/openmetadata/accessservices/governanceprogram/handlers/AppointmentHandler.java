@@ -283,6 +283,7 @@ public class AppointmentHandler
 
             ElementHeader elementHeader = converter.getMetadataElementHeader(GovernanceAppointee.class,
                                                                              relationship,
+                                                                             null,
                                                                              methodName);
 
             appointee.setElementHeader(elementHeader);
@@ -292,6 +293,7 @@ public class AppointmentHandler
             ProfileElement profile = profileHandler.getActorProfileByGUID(userId,
                                                                           relationship.getEntityOneProxy().getGUID(),
                                                                           profileGUIDParameterName,
+                                                                          OpenMetadataAPIMapper.PERSON_TYPE_NAME,
                                                                           null,
                                                                           methodName);
 

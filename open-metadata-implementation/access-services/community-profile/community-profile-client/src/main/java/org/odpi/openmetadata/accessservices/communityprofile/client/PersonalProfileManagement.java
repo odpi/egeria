@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.communityprofile.client;
 
 import org.odpi.openmetadata.accessservices.communityprofile.api.PersonalProfileManagementInterface;
 import org.odpi.openmetadata.accessservices.communityprofile.client.rest.CommunityProfileRESTClient;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.PersonalProfileUniverse;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonalProfileUniverse;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethodProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethodType;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.*;
@@ -31,7 +31,7 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
     private String                     serverPlatformURLRoot;    /* Initialized in constructor */
     private CommunityProfileRESTClient restClient;               /* Initialized in constructor */
 
-    private InvalidParameterHandler              invalidParameterHandler = new InvalidParameterHandler();
+    private InvalidParameterHandler    invalidParameterHandler = new InvalidParameterHandler();
 
 
     /**

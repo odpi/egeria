@@ -155,9 +155,11 @@ public class CollectionProperties extends ReferenceableProperties
                        "name='" + name + '\'' +
                        ", description='" + description + '\'' +
                        ", collectionOrdering=" + collectionOrdering +
-                       ", orderPropertyName=" + orderPropertyName +
+                       ", orderPropertyName='" + orderPropertyName + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
                        ", vendorProperties=" + getVendorProperties() +
                        ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +

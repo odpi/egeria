@@ -27,8 +27,8 @@ public class SecurityManagerRESTClient extends OCFRESTClient
      * REST API calls.
      */
     public SecurityManagerRESTClient(String   serverName,
-                                 String   serverPlatformURLRoot,
-                                 AuditLog auditLog) throws InvalidParameterException
+                                     String   serverPlatformURLRoot,
+                                     AuditLog auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, auditLog);
     }
@@ -43,7 +43,7 @@ public class SecurityManagerRESTClient extends OCFRESTClient
      * REST API calls.
      */
     public SecurityManagerRESTClient(String serverName,
-                                 String serverPlatformURLRoot) throws InvalidParameterException
+                                     String serverPlatformURLRoot) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot);
     }
@@ -61,10 +61,10 @@ public class SecurityManagerRESTClient extends OCFRESTClient
      * REST API calls.
      */
     public SecurityManagerRESTClient(String   serverName,
-                                 String   serverPlatformURLRoot,
-                                 String   userId,
-                                 String   password,
-                                 AuditLog auditLog) throws InvalidParameterException
+                                     String   serverPlatformURLRoot,
+                                     String   userId,
+                                     String   password,
+                                     AuditLog auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
@@ -81,16 +81,16 @@ public class SecurityManagerRESTClient extends OCFRESTClient
      * REST API calls.
      */
     public SecurityManagerRESTClient(String serverName,
-                                 String serverPlatformURLRoot,
-                                 String userId,
-                                 String password) throws InvalidParameterException
+                                     String serverPlatformURLRoot,
+                                     String userId,
+                                     String password) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, userId, password);
     }
 
 
     /**
-     * Issue a GET REST call that returns a DatabaseColumnResponse object.
+     * Issue a GET REST call that returns a ElementStubsResponse object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
@@ -101,13 +101,13 @@ public class SecurityManagerRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public DatabaseColumnResponse callDatabaseColumnGetRESTCall(String    methodName,
+    public ElementStubsResponse callElementStubsGetRESTCall(String    methodName,
                                                                 String    urlTemplate,
                                                                 Object... params) throws InvalidParameterException,
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
-        DatabaseColumnResponse restResult = this.callGetRESTCall(methodName, DatabaseColumnResponse.class, urlTemplate, params);
+        ElementStubsResponse restResult = this.callGetRESTCall(methodName, ElementStubsResponse.class, urlTemplate, params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 
@@ -116,7 +116,7 @@ public class SecurityManagerRESTClient extends OCFRESTClient
 
 
     /**
-     * Issue a GET REST call that returns a DatabaseColumnsResponse object.
+     * Issue a GET REST call that returns a SecurityGroupResponse object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
@@ -127,143 +127,13 @@ public class SecurityManagerRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public DatabaseColumnsResponse callDatabaseColumnsGetRESTCall(String    methodName,
-                                                                  String    urlTemplate,
-                                                                  Object... params) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException
-    {
-        DatabaseColumnsResponse restResult = this.callGetRESTCall(methodName, DatabaseColumnsResponse.class, urlTemplate, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-    /**
-     * Issue a GET REST call that returns a DatabaseResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return response object
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public DatabaseResponse callDatabaseGetRESTCall(String    methodName,
-                                                    String    urlTemplate,
-                                                    Object... params) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
-    {
-        DatabaseResponse restResult = this.callGetRESTCall(methodName, DatabaseResponse.class, urlTemplate, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-    /**
-     * Issue a GET REST call that returns a DatabasesResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return response object
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public DatabasesResponse callDatabasesGetRESTCall(String    methodName,
-                                                      String    urlTemplate,
-                                                      Object... params) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
-    {
-        DatabasesResponse restResult = this.callGetRESTCall(methodName, DatabasesResponse.class, urlTemplate, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-    /**
-     * Issue a GET REST call that returns a DatabaseSchemaResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return response object
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public DatabaseSchemaResponse callDatabaseSchemaGetRESTCall(String    methodName,
-                                                                String    urlTemplate,
-                                                                Object... params) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException
-    {
-        DatabaseSchemaResponse restResult = this.callGetRESTCall(methodName, DatabaseSchemaResponse.class, urlTemplate, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-    /**
-     * Issue a GET REST call that returns a DatabaseSchemasResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return response object
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public DatabaseSchemasResponse callDatabaseSchemasGetRESTCall(String    methodName,
-                                                                  String    urlTemplate,
-                                                                  Object... params) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException
-    {
-        DatabaseSchemasResponse restResult = this.callGetRESTCall(methodName, DatabaseSchemasResponse.class, urlTemplate, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-    /**
-     * Issue a GET REST call that returns a DatabaseTableResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return response object
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public DatabaseTableResponse callDatabaseTableGetRESTCall(String    methodName,
+    public SecurityGroupResponse callSecurityGroupGetRESTCall(String    methodName,
                                                               String    urlTemplate,
                                                               Object... params) throws InvalidParameterException,
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
-        DatabaseTableResponse restResult = this.callGetRESTCall(methodName, DatabaseTableResponse.class, urlTemplate, params);
+        SecurityGroupResponse restResult = this.callGetRESTCall(methodName, SecurityGroupResponse.class, urlTemplate, params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 
@@ -272,7 +142,35 @@ public class SecurityManagerRESTClient extends OCFRESTClient
 
 
     /**
-     * Issue a GET REST call that returns a DatabaseTablesResponse object.
+     * Issue a POST REST call that returns a SecurityGroupResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody object that passes additional parameters
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public SecurityGroupResponse callSecurityGroupPostRESTCall(String    methodName,
+                                                               String    urlTemplate,
+                                                               Object    requestBody,
+                                                               Object... params) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        SecurityGroupResponse restResult = this.callPostRESTCall(methodName, SecurityGroupResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a SecurityGroupsResponse object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
@@ -283,13 +181,13 @@ public class SecurityManagerRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public DatabaseTablesResponse callDatabaseTablesGetRESTCall(String    methodName,
+    public SecurityGroupsResponse callSecurityGroupsGetRESTCall(String    methodName,
                                                                 String    urlTemplate,
                                                                 Object... params) throws InvalidParameterException,
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
-        DatabaseTablesResponse restResult = this.callGetRESTCall(methodName, DatabaseTablesResponse.class, urlTemplate, params);
+        SecurityGroupsResponse restResult = this.callGetRESTCall(methodName, SecurityGroupsResponse.class, urlTemplate, params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 
@@ -298,7 +196,35 @@ public class SecurityManagerRESTClient extends OCFRESTClient
 
 
     /**
-     * Issue a GET REST call that returns a DatabaseViewResponse object.
+     * Issue a POST REST call that returns a SecurityGroupsResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody object that passes additional parameters
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public SecurityGroupsResponse callSecurityGroupsPostRESTCall(String    methodName,
+                                                                 String    urlTemplate,
+                                                                 Object    requestBody,
+                                                                 Object... params) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
+    {
+        SecurityGroupsResponse restResult = this.callPostRESTCall(methodName, SecurityGroupsResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a UserIdentityResponse object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
@@ -309,13 +235,13 @@ public class SecurityManagerRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public DatabaseViewResponse callDatabaseViewGetRESTCall(String    methodName,
+    public UserIdentityResponse callUserIdentityGetRESTCall(String    methodName,
                                                             String    urlTemplate,
                                                             Object... params) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        DatabaseViewResponse restResult = this.callGetRESTCall(methodName, DatabaseViewResponse.class, urlTemplate, params);
+        UserIdentityResponse restResult = this.callGetRESTCall(methodName, UserIdentityResponse.class, urlTemplate, params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 
@@ -324,59 +250,7 @@ public class SecurityManagerRESTClient extends OCFRESTClient
 
 
     /**
-     * Issue a GET REST call that returns a DatabaseViewsResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return response object
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public DatabaseViewsResponse callDatabaseViewsGetRESTCall(String    methodName,
-                                                              String    urlTemplate,
-                                                              Object... params) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException
-    {
-        DatabaseViewsResponse restResult = this.callGetRESTCall(methodName, DatabaseViewsResponse.class, urlTemplate, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-    /**
-     * Issue a GET REST call that returns a DataFileResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return response object
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public DataFileResponse callDataFileGetRESTCall(String    methodName,
-                                                    String    urlTemplate,
-                                                    Object... params) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
-    {
-        DataFileResponse restResult = this.callGetRESTCall(methodName, DataFileResponse.class, urlTemplate, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-    /**
-     * Issue a POST REST call that returns a DataFileResponse object.
+     * Issue a POST REST call that returns a UserIdentityResponse object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
@@ -388,14 +262,14 @@ public class SecurityManagerRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public DataFileResponse callDataFilePostRESTCall(String    methodName,
-                                                     String    urlTemplate,
-                                                     Object    requestBody,
-                                                     Object... params) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException
+    public UserIdentityResponse callUserIdentityPostRESTCall(String    methodName,
+                                                             String    urlTemplate,
+                                                             Object    requestBody,
+                                                             Object... params) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
     {
-        DataFileResponse restResult = this.callPostRESTCall(methodName, DataFileResponse.class, urlTemplate, requestBody, params);
+        UserIdentityResponse restResult = this.callPostRESTCall(methodName, UserIdentityResponse.class, urlTemplate, requestBody, params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 
@@ -404,7 +278,7 @@ public class SecurityManagerRESTClient extends OCFRESTClient
 
 
     /**
-     * Issue a GET REST call that returns a DataFilesResponse object.
+     * Issue a GET REST call that returns a UserIdentitiesResponse object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
@@ -415,13 +289,13 @@ public class SecurityManagerRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public DataFilesResponse callDataFilesGetRESTCall(String    methodName,
-                                                      String    urlTemplate,
-                                                      Object... params) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    public UserIdentitiesResponse callUserIdentitiesGetRESTCall(String    methodName,
+                                                                String    urlTemplate,
+                                                                Object... params) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
     {
-        DataFilesResponse restResult = this.callGetRESTCall(methodName, DataFilesResponse.class, urlTemplate, params);
+        UserIdentitiesResponse restResult = this.callGetRESTCall(methodName, UserIdentitiesResponse.class, urlTemplate, params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 
@@ -430,7 +304,7 @@ public class SecurityManagerRESTClient extends OCFRESTClient
 
 
     /**
-     * Issue a POST REST call that returns a DataFilesResponse object.
+     * Issue a POST REST call that returns a UserIdentitiesResponse object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
@@ -442,14 +316,14 @@ public class SecurityManagerRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public DataFilesResponse callDataFilesPostRESTCall(String    methodName,
-                                                       String    urlTemplate,
-                                                       Object    requestBody,
-                                                       Object... params) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
+    public UserIdentitiesResponse callUserIdentitiesPostRESTCall(String    methodName,
+                                                                 String    urlTemplate,
+                                                                 Object    requestBody,
+                                                                 Object... params) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
     {
-        DataFilesResponse restResult = this.callPostRESTCall(methodName, DataFilesResponse.class, urlTemplate, requestBody, params);
+        UserIdentitiesResponse restResult = this.callPostRESTCall(methodName, UserIdentitiesResponse.class, urlTemplate, requestBody, params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 
@@ -457,8 +331,9 @@ public class SecurityManagerRESTClient extends OCFRESTClient
     }
 
 
+
     /**
-     * Issue a GET REST call that returns a FileFolderResponse object.
+     * Issue a GET REST call that returns a ActorProfileElement in a response object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
@@ -467,15 +342,93 @@ public class SecurityManagerRESTClient extends OCFRESTClient
      * @return response object
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
+     * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    public FileFolderResponse callFileFolderGetRESTCall(String    methodName,
+    public ActorProfileResponse callActorProfileGetRESTCall(String    methodName,
+                                                            String    urlTemplate,
+                                                            Object... params) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        ActorProfileResponse restResult = this.callGetRESTCall(methodName, ActorProfileResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a list of ActorProfileElements in a response object.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param params  a list of parameters that are slotted into the url template
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public ActorProfileListResponse callActorProfileListGetRESTCall(String    methodName,
+                                                                    String    urlTemplate,
+                                                                    Object... params)  throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
+    {
+        ActorProfileListResponse restResult = this.callGetRESTCall(methodName, ActorProfileListResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a list of ActorProfileElements in a response object.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param requestBody request body for the request
+     * @param params  a list of parameters that are slotted into the url template
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public ActorProfileListResponse callActorProfileListPostRESTCall(String    methodName,
+                                                                     String    urlTemplate,
+                                                                     Object    requestBody,
+                                                                     Object... params)  throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
+    {
+        ActorProfileListResponse restResult = this.callPostRESTCall(methodName, ActorProfileListResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a PersonRoleElement in a response object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public PersonRoleResponse callPersonRoleGetRESTCall(String    methodName,
                                                         String    urlTemplate,
                                                         Object... params) throws InvalidParameterException,
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
     {
-        FileFolderResponse restResult = this.callGetRESTCall(methodName, FileFolderResponse.class, urlTemplate, params);
+        PersonRoleResponse restResult = this.callGetRESTCall(methodName, PersonRoleResponse.class, urlTemplate, params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 
@@ -484,26 +437,23 @@ public class SecurityManagerRESTClient extends OCFRESTClient
 
 
     /**
-     * Issue a POST REST call that returns a FileFolderResponse object.
+     * Issue a GET REST call that returns a list of PersonRoleElements in a response object.
      *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody object that passes additional parameters
-     * @param params      a list of parameters that are slotted into the url template.
-     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param params  a list of parameters that are slotted into the url template
      * @return response object
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
+     * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    public FileFolderResponse callFileFolderPostRESTCall(String    methodName,
-                                                         String    urlTemplate,
-                                                         Object    requestBody,
-                                                         Object... params) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
+    public PersonRoleListResponse callPersonRoleListGetRESTCall(String    methodName,
+                                                                String    urlTemplate,
+                                                                Object... params)  throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
     {
-        FileFolderResponse restResult = this.callPostRESTCall(methodName, FileFolderResponse.class, urlTemplate, requestBody, params);
+        PersonRoleListResponse restResult = this.callGetRESTCall(methodName, PersonRoleListResponse.class, urlTemplate, params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 
@@ -512,27 +462,58 @@ public class SecurityManagerRESTClient extends OCFRESTClient
 
 
     /**
-     * Issue a GET REST call that returns a FileFoldersResponse object.
+     * Issue a POST REST call that returns a list of PersonRoleElements in a response object.
      *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param params      a list of parameters that are slotted into the url template.
-     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param requestBody request body for the request
+     * @param params  a list of parameters that are slotted into the url template
      * @return response object
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
+     * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    public FileFoldersResponse callFileFoldersGetRESTCall(String    methodName,
-                                                          String    urlTemplate,
-                                                          Object... params) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   PropertyServerException
+    public PersonRoleListResponse callPersonRoleListPostRESTCall(String    methodName,
+                                                                 String    urlTemplate,
+                                                                 Object    requestBody,
+                                                                 Object... params)  throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
     {
-        FileFoldersResponse restResult = this.callGetRESTCall(methodName, FileFoldersResponse.class, urlTemplate, params);
+        PersonRoleListResponse restResult = this.callPostRESTCall(methodName, PersonRoleListResponse.class, urlTemplate, requestBody, params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 
         return restResult;
     }
+
+
+
+    /**
+     * Issue a POST REST call that returns a list of PersonRoleAppointees in a response object.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param requestBody request body for the request
+     * @param params  a list of parameters that are slotted into the url template
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public PersonRoleAppointeeListResponse callPersonRoleAppointeeListPostRESTCall(String    methodName,
+                                                                                   String    urlTemplate,
+                                                                                   Object    requestBody,
+                                                                                   Object... params)  throws InvalidParameterException,
+                                                                                                             UserNotAuthorizedException,
+                                                                                                             PropertyServerException
+    {
+        PersonRoleAppointeeListResponse restResult = this.callPostRESTCall(methodName, PersonRoleAppointeeListResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
 }

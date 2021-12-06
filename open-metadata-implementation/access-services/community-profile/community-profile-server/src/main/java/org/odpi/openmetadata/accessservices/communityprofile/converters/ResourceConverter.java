@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.ResourceElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ResourceElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ResourceProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -76,6 +76,8 @@ public class ResourceConverter<B> extends CommunityProfileOMASConverter<B>
 
                     resourceProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     resourceProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                    resourceProperties.setEffectiveFrom(instanceProperties.getEffectiveFromTime());
+                    resourceProperties.setEffectiveTo(instanceProperties.getEffectiveToTime());
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are

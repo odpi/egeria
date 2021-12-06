@@ -4,11 +4,19 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.server;
 
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ConnectionElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ConnectorTypeElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ContactMethodElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.EndpointElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ITProfileElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareServerCapabilityElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.UserIdentityElement;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.commonservices.generichandlers.ActorProfileHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ConnectionHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ConnectorTypeHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.ContactDetailsHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.EndpointHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.SoftwareServerCapabilityHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.UserIdentityHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -128,4 +136,128 @@ class ITInfrastructureInstanceHandler extends OMASServiceInstanceHandler
         return null;
     }
 
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException error in the requested server
+     */
+    ActorProfileHandler<ITProfileElement> getITProfileHandler(String userId,
+                                                              String serverName,
+                                                              String serviceOperationName) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
+    {
+
+        ITInfrastructureServicesInstance instance = (ITInfrastructureServicesInstance) super.getServerServiceInstance(userId,
+                                                                                                                      serverName,
+                                                                                                                      serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getITProfileHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException error in the requested server
+     */
+    SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> getSoftwareServerCapabilityHandler(String userId,
+                                                                                                        String serverName,
+                                                                                                        String serviceOperationName) throws InvalidParameterException,
+                                                                                                                                            UserNotAuthorizedException,
+                                                                                                                                            PropertyServerException
+    {
+
+        ITInfrastructureServicesInstance instance = (ITInfrastructureServicesInstance) super.getServerServiceInstance(userId,
+                                                                                                                      serverName,
+                                                                                                                      serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getSoftwareServerCapabilityHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException error in the requested server
+     */
+    UserIdentityHandler<UserIdentityElement> getUserIdentityHandler(String userId,
+                                                                    String serverName,
+                                                                    String serviceOperationName) throws InvalidParameterException,
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        PropertyServerException
+    {
+
+        ITInfrastructureServicesInstance instance = (ITInfrastructureServicesInstance) super.getServerServiceInstance(userId,
+                                                                                                                      serverName,
+                                                                                                                      serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getUserIdentityHandler();
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException error in the requested server
+     */
+    ContactDetailsHandler<ContactMethodElement> getContactDetailsHandler(String userId,
+                                                                         String serverName,
+                                                                         String serviceOperationName) throws InvalidParameterException,
+                                                                                                             UserNotAuthorizedException,
+                                                                                                             PropertyServerException
+    {
+
+        ITInfrastructureServicesInstance instance = (ITInfrastructureServicesInstance) super.getServerServiceInstance(userId,
+                                                                                                                      serverName,
+                                                                                                                      serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getContactDetailsHandler();
+        }
+
+        return null;
+    }
 }

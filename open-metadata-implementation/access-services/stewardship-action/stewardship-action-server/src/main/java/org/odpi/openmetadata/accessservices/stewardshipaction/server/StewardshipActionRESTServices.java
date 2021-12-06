@@ -404,6 +404,7 @@ public class StewardshipActionRESTServices
 
                         duplicateElement.setElementHeader(converter.getMetadataElementHeader(ElementStub.class,
                                                                                              relationship,
+                                                                                             null,
                                                                                              methodName));
 
                         if (relationship.getProperties() != null)

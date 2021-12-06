@@ -16,21 +16,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-              include = JsonTypeInfo.As.PROPERTY,
-              property = "class")
-@JsonSubTypes(
-        {
-                @JsonSubTypes.Type(value = ITProfileProperties.class, name = "ITProfileProperties"),
-                @JsonSubTypes.Type(value = PersonalProfileProperties.class, name = "PersonalProfileProperties"),
-                @JsonSubTypes.Type(value = TeamProfileProperties.class, name = "TeamProfileProperties")
-        })
 public class ActorProfileProperties extends ReferenceableProperties
 {
     private static final long    serialVersionUID = 1L;
 
-    private String              knownName            = null;
-    private String              description          = null;
+    private String knownName   = null;
+    private String description = null;
 
 
     /**
@@ -116,6 +107,8 @@ public class ActorProfileProperties extends ReferenceableProperties
                        ", description='" + description + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
                        ", vendorProperties=" + getVendorProperties() +
                        ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +

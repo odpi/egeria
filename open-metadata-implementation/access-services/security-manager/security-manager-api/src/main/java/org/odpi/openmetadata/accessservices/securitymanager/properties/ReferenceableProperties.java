@@ -2,10 +2,17 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.securitymanager.properties;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -22,17 +29,19 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = AssetProperties.class, name = "AssetProperties"),
-                @JsonSubTypes.Type(value = EndpointProperties.class, name = "EndpointProperties"),
-                @JsonSubTypes.Type(value = SchemaElementProperties.class, name = "SchemaElementProperties"),
-                @JsonSubTypes.Type(value = SoftwareServerCapabilitiesProperties.class, name = "SoftwareServerCapabilitiesProperties"),
+                @JsonSubTypes.Type(value = ActorProfileProperties.class, name = "ActorProfileProperties"),
+                @JsonSubTypes.Type(value = UserIdentityProperties.class, name = "UserIdentityProperties"),
         })
 public class ReferenceableProperties implements Serializable
 {
     private static final long    serialVersionUID = 1L;
 
+
     private String               qualifiedName        = null;
     private Map<String, String>  additionalProperties = null;
+
+    private Date                 effectiveFrom        = null;
+    private Date                 effectiveTo          = null;
 
     private Map<String, String>  vendorProperties     = null;
 
@@ -59,6 +68,9 @@ public class ReferenceableProperties implements Serializable
         {
             qualifiedName        = template.getQualifiedName();
             additionalProperties = template.getAdditionalProperties();
+
+            effectiveFrom        = template.getEffectiveFrom();
+            effectiveTo          = template.getEffectiveTo();
 
             vendorProperties     = template.getVendorProperties();
 
@@ -125,7 +137,51 @@ public class ReferenceableProperties implements Serializable
 
 
     /**
-     * Return specific properties for the security manager vendor.
+     * Return the date/time that this element is effective from (null means effective from the epoch).
+     *
+     * @return date object
+     */
+    public Date getEffectiveFrom()
+    {
+        return effectiveFrom;
+    }
+
+
+    /**
+     * Set up the date/time that this element is effective from (null means effective from the epoch).
+     *
+     * @param effectiveFrom date object
+     */
+    public void setEffectiveFrom(Date effectiveFrom)
+    {
+        this.effectiveFrom = effectiveFrom;
+    }
+
+
+    /**
+     * Return the date/time that element is effective to (null means that it is effective indefinitely into the future).
+     *
+     * @return date object
+     */
+    public Date getEffectiveTo()
+    {
+        return effectiveTo;
+    }
+
+
+    /**
+     * Set the date/time that element is effective to (null means that it is effective indefinitely into the future).
+     *
+     * @param effectiveTo date object
+     */
+    public void setEffectiveTo(Date effectiveTo)
+    {
+        this.effectiveTo = effectiveTo;
+    }
+
+
+    /**
+     * Return specific properties for the data manager vendor.
      *
      * @return name value pairs
      */
@@ -147,7 +203,7 @@ public class ReferenceableProperties implements Serializable
 
 
     /**
-     * Set up specific properties for the security manager vendor.
+     * Set up specific properties for the data manager vendor.
      *
      * @param vendorProperties name value pairs
      */
@@ -223,12 +279,14 @@ public class ReferenceableProperties implements Serializable
     public String toString()
     {
         return "ReferenceableProperties{" +
-                "qualifiedName='" + qualifiedName + '\'' +
-                ", additionalProperties=" + additionalProperties +
-                ", vendorProperties=" + vendorProperties +
-                ", typeName='" + typeName + '\'' +
-                ", extendedProperties=" + extendedProperties +
-                '}';
+                       "qualifiedName='" + qualifiedName + '\'' +
+                       ", additionalProperties=" + additionalProperties +
+                       ", effectiveFrom=" + effectiveFrom +
+                       ", effectiveTo=" + effectiveTo +
+                       ", vendorProperties=" + vendorProperties +
+                       ", typeName='" + typeName + '\'' +
+                       ", extendedProperties=" + extendedProperties +
+                       '}';
     }
 
 
@@ -251,10 +309,12 @@ public class ReferenceableProperties implements Serializable
         }
         ReferenceableProperties that = (ReferenceableProperties) objectToCompare;
         return Objects.equals(qualifiedName, that.qualifiedName) &&
-                Objects.equals(additionalProperties, that.additionalProperties) &&
-                Objects.equals(vendorProperties, that.vendorProperties) &&
-                Objects.equals(typeName, that.typeName) &&
-                Objects.equals(extendedProperties, that.extendedProperties);
+                       Objects.equals(additionalProperties, that.additionalProperties) &&
+                       Objects.equals(effectiveFrom, that.effectiveFrom) &&
+                       Objects.equals(effectiveTo, that.effectiveTo) &&
+                       Objects.equals(vendorProperties, that.vendorProperties) &&
+                       Objects.equals(typeName, that.typeName) &&
+                       Objects.equals(extendedProperties, that.extendedProperties);
     }
 
 
@@ -266,6 +326,6 @@ public class ReferenceableProperties implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(qualifiedName, additionalProperties, vendorProperties, typeName, extendedProperties);
+        return Objects.hash(qualifiedName, additionalProperties, effectiveFrom, effectiveTo, vendorProperties, typeName, extendedProperties);
     }
 }

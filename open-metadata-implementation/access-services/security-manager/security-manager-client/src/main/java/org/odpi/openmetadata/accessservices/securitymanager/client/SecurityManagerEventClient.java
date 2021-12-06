@@ -32,7 +32,7 @@ public class SecurityManagerEventClient implements SecurityManagerEventInterface
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
     private SecurityManagerOutTopicClientConnector configurationEventTopicConnector = null;
-    private AuditLog                           auditLog                         = null;
+    private AuditLog                               auditLog                         = null;
 
 
     /**
@@ -45,8 +45,8 @@ public class SecurityManagerEventClient implements SecurityManagerEventInterface
      * REST API calls.
      */
     public SecurityManagerEventClient(String serverName,
-                                  String serverPlatformURLRoot,
-                                  String callerId) throws InvalidParameterException
+                                      String serverPlatformURLRoot,
+                                      String callerId) throws InvalidParameterException
     {
         final String methodName = "Constructor (no security)";
 
@@ -72,10 +72,10 @@ public class SecurityManagerEventClient implements SecurityManagerEventInterface
      * REST API calls.
      */
     public SecurityManagerEventClient(String serverName,
-                                  String serverPlatformURLRoot,
-                                  String userId,
-                                  String password,
-                                  String callerId) throws InvalidParameterException
+                                      String serverPlatformURLRoot,
+                                      String userId,
+                                      String password,
+                                      String callerId) throws InvalidParameterException
     {
         final String methodName = "Constructor (with security)";
 
@@ -100,11 +100,11 @@ public class SecurityManagerEventClient implements SecurityManagerEventInterface
      * @throws InvalidParameterException there is a problem with the information about the remote OMAS
      */
     public SecurityManagerEventClient(String        serverName,
-                                  String        serverPlatformURLRoot,
-                                  OCFRESTClient restClient,
-                                  int           maxPageSize,
-                                  AuditLog      auditLog,
-                                  String        callerId) throws InvalidParameterException
+                                      String        serverPlatformURLRoot,
+                                      OCFRESTClient restClient,
+                                      int           maxPageSize,
+                                      AuditLog      auditLog,
+                                      String        callerId) throws InvalidParameterException
     {
         final String methodName = "Constructor (with REST Client)";
 
@@ -146,12 +146,12 @@ public class SecurityManagerEventClient implements SecurityManagerEventInterface
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @Override
-    public void registerListener(String                   userId,
+    public void registerListener(String                       userId,
                                  SecurityManagerEventListener listener) throws InvalidParameterException,
-                                                                            ConnectionCheckedException,
-                                                                            ConnectorCheckedException,
-                                                                            PropertyServerException,
-                                                                            UserNotAuthorizedException
+                                                                               ConnectionCheckedException,
+                                                                               ConnectorCheckedException,
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException
     {
         final String methodName = "registerListener";
         final String nameParameter = "listener";

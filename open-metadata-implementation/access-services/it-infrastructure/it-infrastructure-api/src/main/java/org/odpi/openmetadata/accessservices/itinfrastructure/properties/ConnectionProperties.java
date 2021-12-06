@@ -324,9 +324,10 @@ public class ConnectionProperties extends ConfigurationItemProperties
                        ", clearPassword='" + clearPassword + '\'' +
                        ", configurationProperties=" + configurationProperties +
                        ", securedProperties=" + securedProperties +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
-                       ", classifications=" + getClassifications() +
                        ", vendorProperties=" + getVendorProperties() +
                        ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +

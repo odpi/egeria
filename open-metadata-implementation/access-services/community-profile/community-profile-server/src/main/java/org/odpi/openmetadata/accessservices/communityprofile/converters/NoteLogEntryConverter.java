@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.NoteLogEntryElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.NoteLogEntryElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.NoteLogEntryProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -79,6 +79,9 @@ public class NoteLogEntryConverter<B> extends CommunityProfileOMASConverter<B>
                     logEntryProperties.setTitle(this.removeTitle(instanceProperties));
                     logEntryProperties.setText(this.removeText(instanceProperties));
 
+                    logEntryProperties.setEffectiveFrom(instanceProperties.getEffectiveFromTime());
+                    logEntryProperties.setEffectiveTo(instanceProperties.getEffectiveToTime());
+
                     List<String> contributors = new ArrayList<>();
 
                     contributors.add(entity.getCreatedBy());
@@ -98,6 +101,8 @@ public class NoteLogEntryConverter<B> extends CommunityProfileOMASConverter<B>
                             }
                         }
                     }
+
+                    logEntryProperties.setContributors(contributors);
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are

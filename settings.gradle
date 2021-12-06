@@ -7,10 +7,10 @@
 pluginManagement {
     plugins {
         //id 'io.spring.dependency-management' version '1.0.10.RELEASE'
-        id 'org.springframework.boot' version '2.5.0'
+        id 'org.springframework.boot' version '2.6.1'
         id 'gradle-aggregate-javadocs-plugin' version '3.0.1'
-        id 'com.github.johnrengelman.shadow' version '6.1.0'
-        id 'org.siouan.frontend-jdk11' version '4.0.1'
+        id 'org.siouan.frontend-jdk11' version '6.0.0'
+        id 'com.github.johnrengelman.shadow' version '7.1.0'
         id 'com.github.psxpaul.execfork' version '0.1.15'
 
 
@@ -340,6 +340,11 @@ include(':open-metadata-implementation:integration-services:search-integrator:se
 include(':open-metadata-implementation:integration-services:search-integrator:search-integrator-client')
 include(':open-metadata-implementation:integration-services:search-integrator:search-integrator-server')
 include(':open-metadata-implementation:integration-services:search-integrator:search-integrator-spring')
+include(':open-metadata-implementation:integration-services:infrastructure-integrator')
+include(':open-metadata-implementation:integration-services:infrastructure-integrator:infrastructure-integrator-api')
+include(':open-metadata-implementation:integration-services:infrastructure-integrator:infrastructure-integrator-client')
+include(':open-metadata-implementation:integration-services:infrastructure-integrator:infrastructure-integrator-server')
+include(':open-metadata-implementation:integration-services:infrastructure-integrator:infrastructure-integrator-spring')
 include(':open-metadata-implementation:integration-services:organization-integrator')
 include(':open-metadata-implementation:integration-services:organization-integrator:organization-integrator-api')
 include(':open-metadata-implementation:integration-services:organization-integrator:organization-integrator-client')
@@ -714,6 +719,11 @@ project(':open-metadata-implementation:integration-services:search-integrator:se
 project(':open-metadata-implementation:integration-services:search-integrator:search-integrator-client').projectDir = file('open-metadata-implementation/integration-services/search-integrator/search-integrator-client')
 project(':open-metadata-implementation:integration-services:search-integrator:search-integrator-server').projectDir = file('open-metadata-implementation/integration-services/search-integrator/search-integrator-server')
 project(':open-metadata-implementation:integration-services:search-integrator:search-integrator-spring').projectDir = file('open-metadata-implementation/integration-services/search-integrator/search-integrator-spring')
+project(':open-metadata-implementation:integration-services:infrastructure-integrator').projectDir = file('open-metadata-implementation/integration-services/infrastructure-integrator')
+project(':open-metadata-implementation:integration-services:infrastructure-integrator:infrastructure-integrator-api').projectDir = file('open-metadata-implementation/integration-services/infrastructure-integrator/infrastructure-integrator-api')
+project(':open-metadata-implementation:integration-services:infrastructure-integrator:infrastructure-integrator-client').projectDir = file('open-metadata-implementation/integration-services/infrastructure-integrator/infrastructure-integrator-client')
+project(':open-metadata-implementation:integration-services:infrastructure-integrator:infrastructure-integrator-server').projectDir = file('open-metadata-implementation/integration-services/infrastructure-integrator/infrastructure-integrator-server')
+project(':open-metadata-implementation:integration-services:infrastructure-integrator:infrastructure-integrator-spring').projectDir = file('open-metadata-implementation/integration-services/infrastructure-integrator/infrastructure-integrator-spring')
 project(':open-metadata-implementation:integration-services:organization-integrator').projectDir = file('open-metadata-implementation/integration-services/organization-integrator')
 project(':open-metadata-implementation:integration-services:organization-integrator:organization-integrator-api').projectDir = file('open-metadata-implementation/integration-services/organization-integrator/organization-integrator-api')
 project(':open-metadata-implementation:integration-services:organization-integrator:organization-integrator-client').projectDir = file('open-metadata-implementation/integration-services/organization-integrator/organization-integrator-client')

@@ -37,7 +37,7 @@ public class ElementStubConverter<B> extends StewardshipActionOMASConverter<B>
 
     /**
      * Using the supplied instances, return a new instance of the bean. This is used for beans that have
-     * contain a combination of the properties from an entityProxy and a that os a connected relationship.
+     * contain a combination of the properties from an entityProxy and that of a connected relationship.
      *
      * @param beanClass name of the class to create
      * @param entityProxy entityProxy containing the properties
@@ -77,7 +77,7 @@ public class ElementStubConverter<B> extends StewardshipActionOMASConverter<B>
 
     /**
      * Using the supplied instances, return a new instance of the bean. This is used for beans that have
-     * contain a combination of the properties from an relationship and a that os a connected relationship.
+     * contain a combination of the properties from an relationship and that of a connected relationship.
      *
      * @param beanClass name of the class to create
      * @param relationship relationship containing the properties

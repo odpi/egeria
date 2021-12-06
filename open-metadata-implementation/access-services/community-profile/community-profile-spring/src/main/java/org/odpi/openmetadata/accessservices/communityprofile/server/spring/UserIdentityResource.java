@@ -223,9 +223,11 @@ public class UserIdentityResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public UserIdentityResponse getUserIdentityByGUID(String serverName,
-                                                      String userId,
-                                                      String userIdentityGUID)
+    @GetMapping(path = "/user-identities/{userIdentityGUID}")
+
+    public UserIdentityResponse getUserIdentityByGUID(@PathVariable String serverName,
+                                                      @PathVariable String userId,
+                                                      @PathVariable String userIdentityGUID)
     {
         return restAPI.getUserIdentityByGUID(serverName, userId, userIdentityGUID);
     }

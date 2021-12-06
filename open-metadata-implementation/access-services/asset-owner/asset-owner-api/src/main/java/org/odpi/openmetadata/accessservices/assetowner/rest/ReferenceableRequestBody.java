@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.accessservices.assetowner.rest;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.accessservices.assetowner.properties.ElementClassification;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ElementClassification;
 import org.odpi.openmetadata.accessservices.assetowner.properties.MeaningProperties;
 
 import java.util.*;

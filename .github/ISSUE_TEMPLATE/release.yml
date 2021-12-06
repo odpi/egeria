@@ -29,8 +29,6 @@ body:
 
         Final updates to the release
         - [ ] Ensure any remaining fixes are merged into branch (and vice-versa to master)
-        - [ ] Remove release notes from branch
-        - [ ] update release notes in master & rename
 
         Generate a release image for testing
         - [ ] Start release pipeline manually to generate docker image
@@ -55,10 +53,13 @@ body:
         - [ ] CTS - graph
         - [ ] CTS - inmemory
 
+        Final Docs
+        - [ ] Update release notes in egeria-docs
+
         Final build and publish
         - [ ] Run 'release' pipeline on branch to push candidates to oss.sonatype.org
         - [ ] 'close' staging repo & Validate artifacts ok (number, structure, validations) on oss.sonatype.org
-        - [ ] Create final github releases for egeria (use release notes from master as text)
+        - [ ] Create final github releases for egeria (add link to egeria docs)
         - [ ] Close repo on oss.sonatype.org (once updated) for egeria, release
         - [ ] Check 'release' repo on oss.sonatype.org has artifacts
         - [ ] Update final versions of egeria-charts to release ie x.y

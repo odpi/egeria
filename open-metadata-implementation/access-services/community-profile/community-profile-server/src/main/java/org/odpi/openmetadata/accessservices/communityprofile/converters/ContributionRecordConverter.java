@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.ContributionRecordElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ContributionRecordElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ContributionRecord;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -78,7 +78,13 @@ public class ContributionRecordConverter<B> extends CommunityProfileOMASConverte
                     contributionRecord.setQualifiedName(this.removeQualifiedName(entityProperties));
                     contributionRecord.setAdditionalProperties(this.removeAdditionalProperties(entityProperties));
                     contributionRecord.setKarmaPoints(this.removeKarmaPoints(entityProperties));
-                    contributionRecord.setKarmaPointPlateau(karmaPointPlateau);
+                    if ((contributionRecord.getKarmaPoints() > 0) && (karmaPointPlateau > 0))
+                    {
+                        contributionRecord.setKarmaPointPlateau(contributionRecord.getKarmaPoints() / karmaPointPlateau);
+                    }
+                    contributionRecord.setIsPublic(this.removeIsPublic(entityProperties));
+                    contributionRecord.setEffectiveFrom(entityProperties.getEffectiveFromTime());
+                    contributionRecord.setEffectiveTo(entityProperties.getEffectiveToTime());
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are

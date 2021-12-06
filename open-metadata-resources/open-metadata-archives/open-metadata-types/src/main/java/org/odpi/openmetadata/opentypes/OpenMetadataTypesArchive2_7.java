@@ -274,7 +274,7 @@ public class OpenMetadataTypesArchive2_7
      */
 
     /**
-     * 0210 Replace AssetServerUse relationship with SeverAssetUse
+     * 0210 Add pathname to a data store.
      */
     private void update0210DataStores()
     {

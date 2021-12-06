@@ -16,7 +16,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorTyp
  */
 public class SecurityManagerOutTopicClientProvider extends ConnectorProviderBase
 {
-    static final String  connectorTypeGUID = "91bda022-184f-4c1c-b62a-c311f0e724f4";
+    static final String  connectorTypeGUID = "9dc0a91b-b4e7-4433-a4a6-4a83e7d1adbb";
     static final String  connectorTypeName = "Security Manager Out Topic Client Connector";
     static final String  connectorTypeDescription = "Connector supports the receipt of events on the Security Manager OMAS Out Topic.";
 
