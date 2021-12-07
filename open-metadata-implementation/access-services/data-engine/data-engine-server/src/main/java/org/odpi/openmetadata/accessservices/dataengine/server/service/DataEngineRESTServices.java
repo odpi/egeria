@@ -12,6 +12,7 @@ import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
 import org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema;
 import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
+import org.odpi.openmetadata.accessservices.dataengine.model.EventType;
 import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
 import org.odpi.openmetadata.accessservices.dataengine.model.ParentProcess;
 import org.odpi.openmetadata.accessservices.dataengine.model.Port;
@@ -23,6 +24,7 @@ import org.odpi.openmetadata.accessservices.dataengine.model.Referenceable;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
+import org.odpi.openmetadata.accessservices.dataengine.model.Topic;
 import org.odpi.openmetadata.accessservices.dataengine.model.UpdateSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineOMASAPIRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineRegistrationRequestBody;
@@ -30,6 +32,7 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.DataFileRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DatabaseRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DatabaseSchemaRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DeleteRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.EventTypeRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.FindRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
@@ -38,11 +41,13 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessHierarchyRequ
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.RelationalTableRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.TopicRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.server.admin.DataEngineInstanceHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineCollectionHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineCommonHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineConnectionAndEndpointHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineDataFileHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineEventTypeHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineFindHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineFolderHierarchyHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEnginePortHandler;
@@ -50,6 +55,7 @@ import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngin
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRelationalDataHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineTopicHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
@@ -125,6 +131,9 @@ public class DataEngineRESTServices {
     public static final String SCHEMA = "Schema";
     public static final String SCHEMA_SUFFIX = "::schema";
     public static final String EXTERNAL_SOURCE_NAME_PARAMETER_NAME = "externalSourceName";
+    public static final String TOPIC_PARAMETER_NAME = "topic";
+    private static final String EVENT_TYPE_PARAMETER_NAME = "eventType";
+    private static final String TOPIC_QUALIFIED_NAME_PARAMETER_NAME = "topicQualifiedName";
 
     private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
     private final DataEngineInstanceHandler instanceHandler = new DataEngineInstanceHandler();
@@ -1904,4 +1913,95 @@ public class DataEngineRESTServices {
         return findResponse;
     }
 
+    public GUIDResponse upsertTopic(String userId, String serverName, TopicRequestBody topicRequestBody) {
+        final String methodName = "upsertTopic";
+
+        GUIDResponse response = new GUIDResponse();
+        try {
+            if (!isTopicRequestBodyValid(userId, serverName, topicRequestBody, methodName)) return response;
+
+            String databaseGUID = upsertTopic(userId, serverName, topicRequestBody.getTopic(), topicRequestBody.getExternalSourceName());
+            response.setGUID(databaseGUID);
+        } catch (Exception error) {
+            restExceptionHandler.captureExceptions(response, error, methodName);
+        }
+        return response;
+    }
+
+    private String upsertTopic(String userId, String serverName, Topic topic, String externalSourceName) throws InvalidParameterException,
+                                                                                                                PropertyServerException,
+                                                                                                                UserNotAuthorizedException {
+            final String methodName = "upsertTopic";
+            log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, topic);
+
+            DataEngineTopicHandler dataEngineTopicHandler = instanceHandler.getTopicHandler(userId, serverName, methodName);
+            String topicGUID = dataEngineTopicHandler.upsertTopic(userId, topic, externalSourceName);
+
+            log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, topicGUID);
+            return topicGUID;
+    }
+
+    public VoidResponse deleteTopic(String userId, String serverName, DeleteRequestBody requestBody) {
+        return null;
+    }
+
+    public GUIDResponse upsertEventType(String userId, String serverName, EventTypeRequestBody eventTypeRequestBody) {
+        final String methodName = "upsertEventType";
+
+        GUIDResponse response = new GUIDResponse();
+        try {
+            if (!isEventTypeRequestBodyValid(userId, serverName, eventTypeRequestBody, methodName)) return response;
+
+            String databaseGUID = upsertEventType(userId, serverName, eventTypeRequestBody.getEventType(),
+                    eventTypeRequestBody.getTopicQualifiedName(), eventTypeRequestBody.getExternalSourceName());
+            response.setGUID(databaseGUID);
+        } catch (Exception error) {
+            restExceptionHandler.captureExceptions(response, error, methodName);
+        }
+        return response;
+    }
+
+    private String upsertEventType(String userId, String serverName, EventType eventType, String topicQualifiedName, String externalSourceName) throws
+                                                                                                                                                InvalidParameterException,
+                                                                                                                                                PropertyServerException,
+                                                                                                                                                UserNotAuthorizedException {
+        final String methodName = "upsertEventType";
+        log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, eventType);
+
+        DataEngineEventTypeHandler dataEngineEventTypeHandler = instanceHandler.getEventTypeHandler(userId, serverName, methodName);
+        String eventTypeGUID = dataEngineEventTypeHandler.upsertEventType(userId, eventType, topicQualifiedName, externalSourceName);
+
+        log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, eventTypeGUID);
+        return eventTypeGUID;
+    }
+
+    public VoidResponse deleteEventType(String userId, String serverName, DeleteRequestBody requestBody) {
+        return null;
+    }
+
+    private boolean isTopicRequestBodyValid(String userId, String serverName, TopicRequestBody topicRequestBody, String methodName) throws
+                                                                                                                                    InvalidParameterException {
+        if (isRequestBodyInvalid(userId, serverName, topicRequestBody, methodName)) return false;
+
+        if (topicRequestBody.getTopic() == null) {
+            restExceptionHandler.handleMissingValue(TOPIC_PARAMETER_NAME, methodName);
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isEventTypeRequestBodyValid(String userId, String serverName, EventTypeRequestBody eventTypeRequestBody, String methodName) throws
+                                                                                                                                                InvalidParameterException {
+        if (isRequestBodyInvalid(userId, serverName, eventTypeRequestBody, methodName)) return false;
+
+        if (eventTypeRequestBody.getTopicQualifiedName() == null) {
+            restExceptionHandler.handleMissingValue(TOPIC_QUALIFIED_NAME_PARAMETER_NAME, methodName);
+            return false;
+        }
+        if (eventTypeRequestBody.getEventType() == null) {
+            restExceptionHandler.handleMissingValue(EVENT_TYPE_PARAMETER_NAME, methodName);
+            return false;
+        }
+        return true;
+    }
 }

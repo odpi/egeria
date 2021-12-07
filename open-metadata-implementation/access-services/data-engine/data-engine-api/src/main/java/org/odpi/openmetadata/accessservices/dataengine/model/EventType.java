@@ -27,22 +27,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @ToString
 @Getter
 @Setter
-public class SchemaType extends ComplexSchemaType {
+public class EventType extends ComplexSchemaType {
 
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
     private static final long serialVersionUID = 1L;
 
-    /**
-     * The attribute list
-     * -- GETTER --
-     * Gets attribute list.
-     * @return the attribute list
-     * -- SETTER --
-     * Sets attribute list.
-     * @param attributeList the attribute list
-     */
-    @JsonProperty("columns")
+    @JsonProperty("eventSchemaAttributes")
     private List<Attribute> attributeList;
 
 }

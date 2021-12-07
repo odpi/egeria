@@ -1,48 +1,43 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.dataengine.model;
+package org.odpi.openmetadata.accessservices.dataengine.rest;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import java.util.List;
+import org.odpi.openmetadata.accessservices.dataengine.model.Database;
+import org.odpi.openmetadata.accessservices.dataengine.model.Topic;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
-/**
- * The type Schema type.
- */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@EqualsAndHashCode(callSuper = true)
-@ToString
 @Getter
 @Setter
-public class SchemaType extends ComplexSchemaType {
-
-    @Getter(AccessLevel.NONE)
-    @Setter(AccessLevel.NONE)
-    private static final long serialVersionUID = 1L;
+@EqualsAndHashCode(callSuper = true)
+@ToString
+public class TopicRequestBody extends DataEngineOMASAPIRequestBody {
 
     /**
-     * The attribute list
+     * The topic to be created
      * -- GETTER --
-     * Gets attribute list.
-     * @return the attribute list
+     * Return the topic bean
+     *
+     * @return the topic
      * -- SETTER --
-     * Sets attribute list.
-     * @param attributeList the attribute list
+     * Set up the topic bean
+     * @param topic the topic
      */
-    @JsonProperty("columns")
-    private List<Attribute> attributeList;
+    @JsonProperty("topic")
+    private Topic topic;
 
 }
+
+
