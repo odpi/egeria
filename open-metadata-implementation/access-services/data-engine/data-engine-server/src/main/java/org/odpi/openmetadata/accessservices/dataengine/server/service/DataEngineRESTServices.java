@@ -1931,14 +1931,17 @@ public class DataEngineRESTServices {
     private String upsertTopic(String userId, String serverName, Topic topic, String externalSourceName) throws InvalidParameterException,
                                                                                                                 PropertyServerException,
                                                                                                                 UserNotAuthorizedException {
-            final String methodName = "upsertTopic";
-            log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, topic);
+        final String methodName = "upsertTopic";
+        log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, topic);
 
-            DataEngineTopicHandler dataEngineTopicHandler = instanceHandler.getTopicHandler(userId, serverName, methodName);
-            String topicGUID = dataEngineTopicHandler.upsertTopic(userId, topic, externalSourceName);
+        DataEngineTopicHandler dataEngineTopicHandler = instanceHandler.getTopicHandler(userId, serverName, methodName);
+        String topicGUID = dataEngineTopicHandler.upsertTopic(userId, topic, externalSourceName);
 
-            log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, topicGUID);
-            return topicGUID;
+        DataEngineEventTypeHandler dataEngineEventTypeHandler = instanceHandler.getEventTypeHandler(userId, serverName, methodName);
+        dataEngineEventTypeHandler.upsertEventTypes(userId,  topic.getEventTypes(), topic.getQualifiedName(), externalSourceName);
+
+        log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, topicGUID);
+        return topicGUID;
     }
 
     public VoidResponse deleteTopic(String userId, String serverName, DeleteRequestBody requestBody) {

@@ -11,6 +11,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -33,4 +35,7 @@ public class Topic extends Asset {
      * @param topicType string type name
      */
     private String topicType;
+
+    @JsonProperty("eventTypes")
+    private List<EventType> eventTypes;
 }

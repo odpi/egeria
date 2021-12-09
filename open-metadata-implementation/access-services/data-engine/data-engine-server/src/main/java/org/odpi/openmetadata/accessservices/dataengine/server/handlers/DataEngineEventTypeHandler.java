@@ -37,7 +37,8 @@ public class DataEngineEventTypeHandler {
     public DataEngineEventTypeHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler,
                                       OMRSRepositoryHelper repositoryHelper, EventTypeHandler<EventType> eventTypeHandler,
                                       DataEngineRegistrationHandler dataEngineRegistrationHandler, DataEngineCommonHandler dataEngineCommonHandler,
-                                      DataEngineTopicHandler dataEngineTopicHandler, DataEngineSchemaAttributeHandler dataEngineSchemaAttributeHandler) {
+                                      DataEngineTopicHandler dataEngineTopicHandler,
+                                      DataEngineSchemaAttributeHandler dataEngineSchemaAttributeHandler) {
         this.serviceName = serviceName;
         this.serverName = serverName;
         this.invalidParameterHandler = invalidParameterHandler;
@@ -54,19 +55,31 @@ public class DataEngineEventTypeHandler {
                                                                                                                             PropertyServerException,
                                                                                                                             UserNotAuthorizedException {
         final String methodName = "upsertEventType";
-        validateParameters(userId, methodName, eventType.getQualifiedName(), eventType.getDisplayName(), topicQualifiedName);
+        return upsertEventType(userId, eventType, externalSourceName, registrationHandler.getExternalDataEngine(userId, externalSourceName),
+                getTopicGUID(userId, topicQualifiedName), methodName);
+    }
 
-        String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
-        Optional<EntityDetail> originalEventTypeEntity = dataEngineCommonHandler.findEntity(userId, eventType.getQualifiedName(), EVENT_TYPE_TYPE_NAME);
+    private String getTopicGUID(String userId, String topicQualifiedName) throws UserNotAuthorizedException, PropertyServerException,
+                                                                                 InvalidParameterException {
+        final String methodName = "getTopicGUID";
 
+        invalidParameterHandler.validateName(topicQualifiedName, QUALIFIED_NAME_PROPERTY_NAME, topicQualifiedName);
+
+        Optional<EntityDetail> topicEntity = dataEngineTopicHandler.findTopicEntity(userId, topicQualifiedName);
+        if (topicEntity.isEmpty()) {
+            dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.TOPIC_NOT_FOUND, methodName, topicQualifiedName);
+        }
+        return topicEntity.get().getGUID();
+    }
+
+    private String upsertEventType(String userId, EventType eventType, String externalSourceName, String externalSourceGUID, String topicGUID,
+                                   String methodName) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
+        validateParameters(userId, methodName, eventType.getQualifiedName(), eventType.getDisplayName());
+
+        Optional<EntityDetail> originalEventTypeEntity =
+                dataEngineCommonHandler.findEntity(userId, eventType.getQualifiedName(), EVENT_TYPE_TYPE_NAME);
         String eventTypeGUID;
         if (originalEventTypeEntity.isEmpty()) {
-            Optional<EntityDetail> topicEntity = dataEngineTopicHandler.findTopicEntity(userId, topicQualifiedName);
-            if (topicEntity.isEmpty()) {
-                dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.TOPIC_NOT_FOUND, methodName, topicQualifiedName);
-            }
-            String topicGUID = topicEntity.get().getGUID();
-
             eventTypeGUID = eventTypeHandler.createEventType(userId, externalSourceGUID, externalSourceName, topicGUID, TOPIC_GUID_PARAMETER_NAME,
                     eventType.getQualifiedName(), eventType.getDisplayName(), eventType.getDescription(), eventType.getVersionNumber(),
                     eventType.getIsDeprecated(), eventType.getAuthor(), eventType.getUsage(), eventType.getEncodingStandard(),
@@ -88,7 +101,8 @@ public class DataEngineEventTypeHandler {
     }
 
     private void upsertEventSchemaAttributes(String userId, List<Attribute> attributeList, String externalSourceName, String externalSourceGUID,
-                                        String schemaTypeGUID) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
+                                             String schemaTypeGUID) throws UserNotAuthorizedException, PropertyServerException,
+                                                                           InvalidParameterException {
         for (Attribute eventSchemaAttribute : attributeList) {
             Optional<EntityDetail> schemaAttributeEntity =
                     dataEngineSchemaAttributeHandler.findSchemaAttributeEntity(userId, eventSchemaAttribute.getQualifiedName());
@@ -97,7 +111,8 @@ public class DataEngineEventTypeHandler {
                 dataEngineSchemaAttributeHandler.createSchemaAttribute(userId, schemaTypeGUID, eventSchemaAttribute, externalSourceName);
             } else {
                 String schemaAttributeGUID = schemaAttributeEntity.get().getGUID();
-                dataEngineSchemaAttributeHandler.updateSchemaAttribute(userId, externalSourceGUID, externalSourceName, schemaAttributeGUID, eventSchemaAttribute);
+                dataEngineSchemaAttributeHandler
+                        .updateSchemaAttribute(userId, externalSourceGUID, externalSourceName, schemaAttributeGUID, eventSchemaAttribute);
             }
         }
     }
@@ -107,16 +122,32 @@ public class DataEngineEventTypeHandler {
      *
      * @param userId        the name of the calling user
      * @param methodName    name of the calling method
-     *
      * @param qualifiedName the qualified name
      * @param displayName   the display name
-     * @param topicQualifiedName the qualified name of the topic
+     *
      * @throws InvalidParameterException the bean properties are invalid
      */
-    private void validateParameters(String userId, String methodName, String qualifiedName, String displayName, String topicQualifiedName) throws InvalidParameterException {
+    private void validateParameters(String userId, String methodName, String qualifiedName, String displayName) throws InvalidParameterException {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, QUALIFIED_NAME_PROPERTY_NAME, methodName);
         invalidParameterHandler.validateName(displayName, DISPLAY_NAME_PROPERTY_NAME, methodName);
-        invalidParameterHandler.validateName(topicQualifiedName, QUALIFIED_NAME_PROPERTY_NAME, methodName);
+    }
+
+    public void upsertEventTypes(String userId, List<EventType> eventTypes, String topicQualifiedName, String externalSourceName) throws
+                                                                                                                                  InvalidParameterException,
+                                                                                                                                  PropertyServerException,
+                                                                                                                                  UserNotAuthorizedException {
+        final String methodName = "upsertEventType";
+        if (CollectionUtils.isEmpty(eventTypes)) {
+            return;
+        }
+
+        String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
+        String topicGUID = getTopicGUID(userId, topicQualifiedName);
+
+        for (EventType eventType : eventTypes) {
+            validateParameters(userId, methodName, eventType.getQualifiedName(), eventType.getDisplayName());
+            upsertEventType(userId, eventType, externalSourceName, externalSourceGUID, topicGUID, methodName);
+        }
     }
 }
