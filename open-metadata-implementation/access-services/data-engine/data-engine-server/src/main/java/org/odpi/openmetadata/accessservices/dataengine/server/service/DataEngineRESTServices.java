@@ -917,7 +917,8 @@ public class DataEngineRESTServices {
         try {
             if (!isDatabaseRequestBodyValid(userId, serverName, databaseRequestBody, methodName)) return response;
 
-            String databaseGUID = upsertDatabase(userId, serverName, databaseRequestBody.getDatabase(), databaseRequestBody.getExternalSourceName());
+            String databaseGUID = upsertDatabase(userId, serverName, databaseRequestBody.getDatabase(),
+                    databaseRequestBody.getIncomplete(), databaseRequestBody.getExternalSourceName());
             response.setGUID(databaseGUID);
         } catch (Exception error) {
             restExceptionHandler.captureExceptions(response, error, methodName);
@@ -939,14 +940,13 @@ public class DataEngineRESTServices {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public String upsertDatabase(String userId, String serverName, Database database, String externalSourceName) throws InvalidParameterException,
-                                                                                                                        UserNotAuthorizedException,
-                                                                                                                        PropertyServerException {
+    public String upsertDatabase(String userId, String serverName, Database database, boolean incomplete,
+                                 String externalSourceName) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         final String methodName = "upsertDatabase";
         log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, database);
 
         DataEngineRelationalDataHandler dataEngineRelationalDataHandler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
-        String databaseGUID = dataEngineRelationalDataHandler.upsertDatabase(userId, database, externalSourceName);
+        String databaseGUID = dataEngineRelationalDataHandler.upsertDatabase(userId, database, incomplete, externalSourceName);
 
         log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, databaseGUID);
         return databaseGUID;

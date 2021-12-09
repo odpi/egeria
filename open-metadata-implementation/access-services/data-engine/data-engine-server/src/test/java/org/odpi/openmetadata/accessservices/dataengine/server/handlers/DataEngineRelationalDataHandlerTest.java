@@ -56,6 +56,7 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 @MockitoSettings(strictness = Strictness.WARN)
 class DataEngineRelationalDataHandlerTest {
     public static final String DATABASE_SCHEMA_GUID = "databaseSchemaGUID";
+    public static final String RELATIONAL_TABLE_SCHEMA_GUID = "relationalTableGUID";
     @Mock
     private RepositoryHandler repositoryHandler;
     @Mock
@@ -117,6 +118,10 @@ class DataEngineRelationalDataHandlerTest {
     void upsertDatabase_create() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         String methodName = "upsertDatabase";
         Database database = getDatabase();
+        DatabaseSchema databaseSchema = getDatabaseSchema();
+        RelationalTable table = getRelationalTable();
+        database.setDatabaseSchema(databaseSchema);
+        database.setTables(Collections.singletonList(table));
 
         when(registrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
@@ -128,13 +133,23 @@ class DataEngineRelationalDataHandlerTest {
                 database.getDatabaseType(), database.getDatabaseVersion(), database.getDatabaseInstance(), database.getDatabaseImportedFrom(),
                 database.getAdditionalProperties(), DATABASE_TYPE_NAME, null, null, methodName)).thenReturn(GUID);
 
-        String result = dataEngineRelationalDataHandler.upsertDatabase(USER, database, EXTERNAL_SOURCE_DE_NAME);
+        when(dataEngineRelationalDataHandler.upsertDatabaseSchema(USER, GUID, databaseSchema, false,
+                EXTERNAL_SOURCE_DE_NAME)).thenReturn(DATABASE_SCHEMA_GUID);
+
+        when(dataEngineRelationalDataHandler.upsertRelationalTable(USER, DS_QUALIFIED_NAME, table,
+                EXTERNAL_SOURCE_DE_NAME, false)).thenReturn(RELATIONAL_TABLE_SCHEMA_GUID);
+
+        String result = dataEngineRelationalDataHandler.upsertDatabase(USER, database, false, EXTERNAL_SOURCE_DE_NAME);
 
         assertEquals(GUID, result);
         verifyInvalidParameterHandlerInvocations(methodName);
 
         verify(dataEngineConnectionAndEndpointHandler, times(1)).upsertConnectionAndEndpoint(QUALIFIED_NAME,
                 GUID, DATABASE_TYPE_NAME, PROTOCOL, NETWORK_ADDRESS, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME, USER);
+        verify(dataEngineRelationalDataHandler, times(1)).upsertDatabaseSchema(USER, GUID, databaseSchema,
+                false, EXTERNAL_SOURCE_DE_NAME);
+        verify(dataEngineRelationalDataHandler, times(1)).upsertRelationalTable(USER,
+                DS_QUALIFIED_NAME, table, EXTERNAL_SOURCE_DE_NAME, false);
     }
 
     @Test
@@ -148,7 +163,7 @@ class DataEngineRelationalDataHandlerTest {
         mockFindEntity(QUALIFIED_NAME, GUID, DATABASE_TYPE_NAME);
         mockFindEntity(DS_QUALIFIED_NAME, DATABASE_GUID, DEPLOYED_DATABASE_SCHEMA_TYPE_NAME);
 
-        String result = dataEngineRelationalDataHandler.upsertDatabase(USER, database, EXTERNAL_SOURCE_DE_NAME);
+        String result = dataEngineRelationalDataHandler.upsertDatabase(USER, database, false, EXTERNAL_SOURCE_DE_NAME);
 
         assertEquals(GUID, result);
         verifyInvalidParameterHandlerInvocations(methodName);
