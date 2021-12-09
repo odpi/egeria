@@ -167,9 +167,9 @@ public class OMAGServerPlatform
 
         if (servers != null)
         {
-            log.info("Temporarily deactivating any auto-started servers '{}'", servers.toString());
+            log.info("Temporarily deactivating any auto-started servers '{}'", servers);
 
-            System.out.println(new Date().toString() + " OMAG Server Platform shutdown requested. Shutting down auto-started servers (if running): " + servers.toString());
+            System.out.println(new Date() + " OMAG Server Platform shutdown requested. Shutting down auto-started servers (if running): " + servers);
 
             operationalServices.deactivateTemporarilyServerList(sysUser, servers);
         }
@@ -187,7 +187,7 @@ public class OMAGServerPlatform
             if(triggeredRuntimeHalt){
                 Runtime.getRuntime().halt(43);
             }
-            System.out.println(new Date().toString() + " OMAG server platform ready for more configuration");
+            System.out.println(new Date() + " OMAG server platform ready for more configuration");
         }
 
         @EventListener
