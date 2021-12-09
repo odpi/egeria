@@ -118,7 +118,9 @@ public class OMAGServerPlatform
         {
             String[] splits = startupServers.split(",");
             //remove eventual duplicates
-            HashSet<String> serverSet = new HashSet<>(Arrays.asList(splits));
+            TreeSet<String> serverSet = new TreeSet<String>();
+
+            Collections.addAll(serverSet, splits);
 
             if (! serverSet.isEmpty())
             {
