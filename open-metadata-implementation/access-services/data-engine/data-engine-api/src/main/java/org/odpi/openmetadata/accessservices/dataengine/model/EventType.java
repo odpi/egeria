@@ -27,7 +27,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @ToString
 @Getter
 @Setter
-public class EventType extends ComplexSchemaType {
+public class EventType extends SchemaType {
 
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
@@ -35,5 +35,4 @@ public class EventType extends ComplexSchemaType {
 
     @JsonProperty("eventSchemaAttributes")
     private List<Attribute> attributeList;
-
 }

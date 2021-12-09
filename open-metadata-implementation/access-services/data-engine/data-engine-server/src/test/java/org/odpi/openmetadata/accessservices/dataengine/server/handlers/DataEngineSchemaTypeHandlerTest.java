@@ -112,6 +112,9 @@ class DataEngineSchemaTypeHandlerTest {
     @Mock
     private DataEngineCommonHandler dataEngineCommonHandler;
 
+    @Mock
+    private DataEngineSchemaAttributeHandler dataEngineSchemaAttributeHandler;
+
     @Spy
     @InjectMocks
     private DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler;
@@ -140,7 +143,7 @@ class DataEngineSchemaTypeHandlerTest {
                 schemaTypeBuilder, methodName)).thenReturn(GUID);
 
         SchemaAttributeBuilder schemaAttributeBuilder = getSchemaAttributePropertiesBuilder(attribute);
-        doReturn(schemaAttributeBuilder).when(dataEngineSchemaTypeHandler).getSchemaAttributeBuilder(attribute);
+        doReturn(schemaAttributeBuilder).when(dataEngineSchemaAttributeHandler).getSchemaAttributeBuilder(attribute);
         when(dataEngineCommonHandler.findEntity(USER, ATTRIBUTE_QUALIFIED_NAME, SCHEMA_ATTRIBUTE_TYPE_NAME)).thenReturn(Optional.empty());
         mockTypeDef(TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME, TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID);
 
@@ -195,7 +198,7 @@ class DataEngineSchemaTypeHandlerTest {
                 .thenReturn(schemaTypeDifferences);
 
         SchemaAttributeBuilder schemaAttributeBuilder = getSchemaAttributePropertiesBuilder(attribute);
-        doReturn(schemaAttributeBuilder).when(dataEngineSchemaTypeHandler).getSchemaAttributeBuilder(attribute);
+        doReturn(schemaAttributeBuilder).when(dataEngineSchemaAttributeHandler).getSchemaAttributeBuilder(attribute);
         when(dataEngineCommonHandler.findEntity(USER, ATTRIBUTE_QUALIFIED_NAME, SCHEMA_ATTRIBUTE_TYPE_NAME))
                 .thenReturn(Optional.empty());
         mockTypeDef(TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME, TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID);
@@ -227,7 +230,7 @@ class DataEngineSchemaTypeHandlerTest {
         when(dataEngineRegistrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
                 .thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
-        doReturn(schemaAttributeBuilder).when(dataEngineSchemaTypeHandler).getSchemaAttributeBuilder(attribute);
+        doReturn(schemaAttributeBuilder).when(dataEngineSchemaAttributeHandler).getSchemaAttributeBuilder(attribute);
 
         String result = dataEngineSchemaTypeHandler.upsertSchemaType(USER, schemaType, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 

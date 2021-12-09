@@ -1,6 +1,8 @@
 package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
+import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
 import org.odpi.openmetadata.accessservices.dataengine.model.EventType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.EventTypeHandler;
@@ -10,10 +12,12 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineTopicHandler.TOPIC_GUID_PARAMETER_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.EVENT_SCHEMA_ATTRIBUTE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.EVENT_TYPE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
 
@@ -26,13 +30,14 @@ public class DataEngineEventTypeHandler {
     private final DataEngineCommonHandler dataEngineCommonHandler;
     private final DataEngineRegistrationHandler registrationHandler;
     private final DataEngineTopicHandler dataEngineTopicHandler;
+    private final DataEngineSchemaAttributeHandler dataEngineSchemaAttributeHandler;
 
     public static final String EVENT_TYPE_GUID_PARAMETER_NAME = "eventTypeGUID";
 
     public DataEngineEventTypeHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler,
                                       OMRSRepositoryHelper repositoryHelper, EventTypeHandler<EventType> eventTypeHandler,
                                       DataEngineRegistrationHandler dataEngineRegistrationHandler, DataEngineCommonHandler dataEngineCommonHandler,
-                                      DataEngineTopicHandler dataEngineTopicHandler) {
+                                      DataEngineTopicHandler dataEngineTopicHandler, DataEngineSchemaAttributeHandler dataEngineSchemaAttributeHandler) {
         this.serviceName = serviceName;
         this.serverName = serverName;
         this.invalidParameterHandler = invalidParameterHandler;
@@ -41,6 +46,7 @@ public class DataEngineEventTypeHandler {
         this.registrationHandler = dataEngineRegistrationHandler;
         this.dataEngineCommonHandler = dataEngineCommonHandler;
         this.dataEngineTopicHandler = dataEngineTopicHandler;
+        this.dataEngineSchemaAttributeHandler = dataEngineSchemaAttributeHandler;
     }
 
     public String upsertEventType(String userId, EventType eventType, String topicQualifiedName, String externalSourceName) throws
@@ -72,7 +78,28 @@ public class DataEngineEventTypeHandler {
                     eventType.getIsDeprecated(), eventType.getAuthor(), eventType.getUsage(), eventType.getEncodingStandard(),
                     eventType.getNamespace(), eventType.getAdditionalProperties(), EVENT_TYPE_TYPE_NAME, null, true, methodName);
         }
+
+        List<Attribute> attributeList = eventType.getAttributeList();
+        if (CollectionUtils.isNotEmpty(attributeList)) {
+            upsertEventSchemaAttributes(userId, attributeList, externalSourceName, externalSourceGUID, eventTypeGUID);
+        }
+
         return eventTypeGUID;
+    }
+
+    private void upsertEventSchemaAttributes(String userId, List<Attribute> attributeList, String externalSourceName, String externalSourceGUID,
+                                        String schemaTypeGUID) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
+        for (Attribute eventSchemaAttribute : attributeList) {
+            Optional<EntityDetail> schemaAttributeEntity =
+                    dataEngineSchemaAttributeHandler.findSchemaAttributeEntity(userId, eventSchemaAttribute.getQualifiedName());
+            if (schemaAttributeEntity.isEmpty()) {
+                eventSchemaAttribute.setTypeName(EVENT_SCHEMA_ATTRIBUTE_TYPE_NAME);
+                dataEngineSchemaAttributeHandler.createSchemaAttribute(userId, schemaTypeGUID, eventSchemaAttribute, externalSourceName);
+            } else {
+                String schemaAttributeGUID = schemaAttributeEntity.get().getGUID();
+                dataEngineSchemaAttributeHandler.updateSchemaAttribute(userId, externalSourceGUID, externalSourceName, schemaAttributeGUID, eventSchemaAttribute);
+            }
+        }
     }
 
     /**

@@ -27,11 +27,112 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @ToString
 @Getter
 @Setter
-public class SchemaType extends ComplexSchemaType {
+public class SchemaType extends Referenceable {
 
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
     private static final long serialVersionUID = 1L;
+
+    /**
+     * The display name
+     * -- GETTER --
+     * Gets display name.
+     * @return the display name
+     * -- SETTER --
+     * Sets display name.
+     * @param displayName the display name
+     */
+    private String displayName;
+
+    /**
+     * The author
+     * -- GETTER --
+     * Gets author.
+     * @return the author
+     * -- SETTER --
+     * Sets author.
+     * @param author the author
+     */
+    private String author;
+
+    /**
+     * The usage
+     * -- GETTER --
+     * Gets usage.
+     * @return the usage
+     * -- SETTER --
+     * Sets usage.
+     * @param usage the usage
+     */
+    private String usage;
+
+    /**
+     * The encoding standard
+     * -- GETTER --
+     * Gets encoding standard.
+     * @return the encoding standard
+     * -- SETTER --
+     * Sets encoding standard.
+     * @param encodingStandard the encoding standard
+     */
+    private String encodingStandard;
+
+    /**
+     * The version number
+     * -- GETTER --
+     * Gets version number.
+     * @return the version number
+     * -- SETTER --
+     * Sets version number.
+     * @param versionNumber the version number
+     */
+    private String versionNumber;
+
+    /**
+     * The type
+     * -- GETTER --
+     * Gets type.
+     * @return the type
+     * -- SETTER --
+     * Sets type.
+     * @param type the type
+     */
+    private String type;
+
+    /**
+     * Determines if the schema type is deprecated
+     * -- GETTER --
+     * Returns if the schema type is deprecated.
+     * @return if the schema type is deprecated
+     * -- SETTER --
+     * Sets up the value that determines if the schema type is deprecated.
+     * @param isDeprecated value saying if the schema type is deprecated
+     */
+    private boolean isDeprecated;
+
+    /**
+     * The stored description property associated with the schema type
+     *  -- SETTER --
+     *  Set up the stored description property associated with the schema type.
+     *  @param description String text
+     * -- GETTER --
+     * Returns the stored description property for the schema type.
+     * If no description is provided then null is returned.
+     * @return description
+     */
+    private String description;
+
+    /**
+     * The he name of the namespace that this schema type belongs to
+     *  -- SETTER --
+     *  Set up the namespace that this schema type belongs to.
+     *  @param description String text
+     * -- GETTER --
+     * Returns the namespace that this schema type belongs to
+     * If no namespace is provided then null is returned.
+     * @return namespace
+     */
+    private String namespace;
 
     /**
      * The attribute list
@@ -44,5 +145,4 @@ public class SchemaType extends ComplexSchemaType {
      */
     @JsonProperty("columns")
     private List<Attribute> attributeList;
-
 }

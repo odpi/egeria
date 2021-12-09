@@ -48,6 +48,7 @@ import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngin
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineProcessHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRelationalDataHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaAttributeHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineTopicHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
@@ -189,6 +190,15 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
      */
     @Getter(AccessLevel.PACKAGE)
     private final DataEngineEventTypeHandler dataEngineEventTypeHandler;
+
+    /**
+     * -- GETTER --
+     * Returns the Data Engine schema attribute handler.
+     * @return the Data Engine schema attribute handler
+     */
+    @Getter(AccessLevel.PACKAGE)
+    private final DataEngineSchemaAttributeHandler dataEngineSchemaAttributeHandler;
+
     /**
      * Sets up the local repository connector that will service the REST Calls
      *
@@ -320,8 +330,11 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
 
         processHandler = new DataEngineProcessHandler(serviceName, serverName, invalidParameterHandler, repositoryHelper,
                 assetHandler, dataEngineRegistrationHandler, dataEngineCommonHandler);
+
+        dataEngineSchemaAttributeHandler = new DataEngineSchemaAttributeHandler(serviceName, serverName, invalidParameterHandler,
+                repositoryHelper, schemaAttributeHandler, dataEngineRegistrationHandler, dataEngineCommonHandler);
         dataEngineSchemaTypeHandler = new DataEngineSchemaTypeHandler(serviceName, serverName, invalidParameterHandler,
-                repositoryHelper, schemaTypeHandler, schemaAttributeHandler, dataEngineRegistrationHandler, dataEngineCommonHandler);
+                repositoryHelper, schemaTypeHandler, dataEngineRegistrationHandler, dataEngineCommonHandler, dataEngineSchemaAttributeHandler);
 
         dataEngineCollectionHandler = new DataEngineCollectionHandler(serviceName, serverName, invalidParameterHandler,
                 repositoryHelper, collectionOpenMetadataAPIGenericHandler, dataEngineRegistrationHandler, dataEngineCommonHandler);
@@ -349,6 +362,6 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
         dataEngineTopicHandler = new DataEngineTopicHandler(serviceName, serverName, invalidParameterHandler, repositoryHelper,
                 topicHandler, dataEngineRegistrationHandler, dataEngineCommonHandler);
         dataEngineEventTypeHandler = new DataEngineEventTypeHandler(serviceName, serverName, invalidParameterHandler, repositoryHelper,
-                eventTypeHandler, dataEngineRegistrationHandler, dataEngineCommonHandler, dataEngineTopicHandler);
+                eventTypeHandler, dataEngineRegistrationHandler, dataEngineCommonHandler, dataEngineTopicHandler, dataEngineSchemaAttributeHandler);
     }
 }
