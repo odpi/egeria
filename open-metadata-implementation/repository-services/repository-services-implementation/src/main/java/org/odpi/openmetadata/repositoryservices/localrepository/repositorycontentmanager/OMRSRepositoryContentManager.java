@@ -2672,7 +2672,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                      * It throws TypeDefNotSupportedException if the typeDef is not supported and can not
                      * be dynamically defined by the local repository.
                      */
-                    if (!metadataCollection.verifyTypeDef(localServerUserId, typeDef))
+                    if (! metadataCollection.verifyTypeDef(localServerUserId, typeDef))
                     {
                         metadataCollection.addTypeDef(localServerUserId, typeDef);
 
