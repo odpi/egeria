@@ -52,7 +52,7 @@ public class DataEngineInTopicListener implements OpenMetadataTopicListener {
                 DataEngineEventHeader dataEngineEventHeader = OBJECT_MAPPER.readValue(dataEngineEvent, DataEngineEventHeader.class);
 
                 if ((dataEngineEventHeader != null)) {
-                    switch (dataEngineEventHeader.getEventType()) {
+                    switch (dataEngineEventHeader.getDataEngineEventType()) {
 
                         case DATA_ENGINE_REGISTRATION_EVENT:
                             dataEngineEventProcessor.processDataEngineRegistrationEvent(dataEngineEvent);
