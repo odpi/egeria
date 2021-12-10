@@ -16,11 +16,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ElementHeader provides the common identifier and type information for all properties objects
- * that link off of the asset and have a guid associated with them.  This typically means it is
- * represented by an entity in the metadata repository.
- *
- * In addition are useful attachments that are found connected to the metadata element.
+ * ElementVersions provides the version information for the element plus details of the creation time and last
+ * update time.  Finally it lists all of the users that have made changes to this element.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
