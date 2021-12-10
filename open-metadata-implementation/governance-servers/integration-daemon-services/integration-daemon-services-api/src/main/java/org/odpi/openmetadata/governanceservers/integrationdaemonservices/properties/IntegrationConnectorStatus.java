@@ -19,10 +19,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum IntegrationConnectorStatus implements Serializable
 {
-    INITIALIZED (0,  "Initialized", "The connector is set up and waiting to start."),
-    RUNNING     (1,  "Running",     "The connector is running."),
-    STOPPED     (2,  "Stopped",     "The connector has been stopped (as server is shutting down."),
-    FAILED      (99, "Failed",      "The connector threw an exception."),
+    INITIALIZED       (0,  "Initialized",       "The connector is set up and waiting to start."),
+    RUNNING           (1,  "Running",           "The connector is running."),
+    STOPPED           (2,  "Stopped",           "The connector has been stopped (as server is shutting down."),
+    INITIALIZE_FAILED (3,  "Initialize Failed", "The integration daemon is not able to initialize the connector because the metadata server is not available."),
+    FAILED            (99, "Failed",            "The connector threw an exception and will not be called until it is restarted."),
     ;
 
     private static final long     serialVersionUID = 1L;
