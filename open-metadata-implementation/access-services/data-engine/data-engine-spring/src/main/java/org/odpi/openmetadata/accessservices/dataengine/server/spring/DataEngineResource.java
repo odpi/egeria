@@ -536,9 +536,9 @@ public class DataEngineResource {
      * @return void response
      */
     @DeleteMapping(path = "/event-types")
-    public VoidResponse deleteTopics(@PathVariable("userId") String userId,
-                                     @PathVariable("serverName") String serverName,
-                                     @RequestBody DeleteRequestBody requestBody) {
+    public VoidResponse deleteEventTypes(@PathVariable("userId") String userId,
+                                         @PathVariable("serverName") String serverName,
+                                         @RequestBody DeleteRequestBody requestBody) {
         return restAPI.deleteEventType(userId, serverName, requestBody);
     }
 }

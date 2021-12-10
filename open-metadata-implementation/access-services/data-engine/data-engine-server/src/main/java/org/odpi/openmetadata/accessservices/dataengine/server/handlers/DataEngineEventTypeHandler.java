@@ -3,6 +3,7 @@ package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
+import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.model.EventType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.EventTypeHandler;
@@ -11,6 +12,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +22,8 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.EVENT_SCHEMA_ATTRIBUTE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.EVENT_TYPE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.TOPIC_TYPE_GUID;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.TOPIC_TYPE_NAME;
 
 public class DataEngineEventTypeHandler {
     private final String serviceName;
@@ -149,5 +153,18 @@ public class DataEngineEventTypeHandler {
             validateParameters(userId, methodName, eventType.getQualifiedName(), eventType.getDisplayName());
             upsertEventType(userId, eventType, externalSourceName, externalSourceGUID, topicGUID, methodName);
         }
+    }
+
+    public void removeEventType(String userId, String eventTypeGUID, String qualifiedName, String externalSourceName,
+                                DeleteSemantic deleteSemantic) throws FunctionNotSupportedException, InvalidParameterException,
+                                                                      PropertyServerException,
+                                                                      UserNotAuthorizedException {
+        final String methodName = "removeEventType";
+        dataEngineCommonHandler.validateDeleteSemantic(deleteSemantic, methodName);
+
+        String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
+        eventTypeHandler.removeEventType(userId, externalSourceGUID, externalSourceName, eventTypeGUID, EVENT_TYPE_GUID_PARAMETER_NAME, qualifiedName,
+                methodName);
+
     }
 }

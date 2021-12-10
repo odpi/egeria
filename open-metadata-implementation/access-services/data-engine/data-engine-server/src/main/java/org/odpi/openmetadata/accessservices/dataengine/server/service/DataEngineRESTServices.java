@@ -91,6 +91,7 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DELIMITER_CHARACTER_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.EVENT_TYPE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.FILE_TYPE_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_ALIAS_TYPE_NAME;
@@ -104,6 +105,7 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.TABULAR_FILE_COLUMN_TYPE_GUID;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.TABULAR_FILE_COLUMN_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.TOPIC_TYPE_NAME;
 
 /**
  * The DataEngineRESTServices provides the server-side implementation of the Data Engine Open Metadata Assess Service
@@ -1945,7 +1947,33 @@ public class DataEngineRESTServices {
     }
 
     public VoidResponse deleteTopic(String userId, String serverName, DeleteRequestBody requestBody) {
-        return null;
+
+        final String methodName = "deleteTopic";
+
+        VoidResponse response = new VoidResponse();
+
+        try {
+            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName)) return response;
+
+            deleteTopic(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(), requestBody.getQualifiedName(),
+                    requestBody.getDeleteSemantic());
+        } catch (Exception error) {
+            restExceptionHandler.captureExceptions(response, error, methodName);
+        }
+
+        return response;
+    }
+
+    private void deleteTopic(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
+                             DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
+                                                                   EntityNotDeletedException, FunctionNotSupportedException {
+        final String methodName = "deleteTopic";
+
+        DataEngineTopicHandler dataEngineTopicHandler = instanceHandler.getTopicHandler(userId, serverName, methodName);
+
+        String topicGUID = getEntityGUID(userId, serverName, guid, qualifiedName, TOPIC_TYPE_NAME, methodName);
+        dataEngineTopicHandler.removeTopic(userId, topicGUID, externalSourceName, deleteSemantic);
+        log.debug(DEBUG_DELETE_MESSAGE, topicGUID, TOPIC_TYPE_NAME);
     }
 
     public GUIDResponse upsertEventType(String userId, String serverName, EventTypeRequestBody eventTypeRequestBody) {
@@ -1979,7 +2007,34 @@ public class DataEngineRESTServices {
     }
 
     public VoidResponse deleteEventType(String userId, String serverName, DeleteRequestBody requestBody) {
-        return null;
+        final String methodName = "deleteEventType";
+
+        VoidResponse response = new VoidResponse();
+
+        try {
+            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName)) return response;
+
+            deleteEventType(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(), requestBody.getQualifiedName(),
+                    requestBody.getDeleteSemantic());
+        } catch (Exception error) {
+            restExceptionHandler.captureExceptions(response, error, methodName);
+        }
+
+        return response;
+    }
+
+    private void deleteEventType(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
+                                 DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException,
+                                                                       UserNotAuthorizedException, EntityNotDeletedException,
+                                                                       FunctionNotSupportedException {
+
+        final String methodName = "deleteEventType";
+
+        DataEngineEventTypeHandler dataEngineEventTypeHandler = instanceHandler.getEventTypeHandler(userId, serverName, methodName);
+
+        String eventTypeGUID = getEntityGUID(userId, serverName, guid, qualifiedName, EVENT_TYPE_TYPE_NAME, methodName);
+        dataEngineEventTypeHandler.removeEventType(userId, eventTypeGUID, qualifiedName, externalSourceName, deleteSemantic);
+        log.debug(DEBUG_DELETE_MESSAGE, eventTypeGUID, TOPIC_TYPE_NAME);
     }
 
     private boolean isTopicRequestBodyValid(String userId, String serverName, TopicRequestBody topicRequestBody, String methodName) throws
