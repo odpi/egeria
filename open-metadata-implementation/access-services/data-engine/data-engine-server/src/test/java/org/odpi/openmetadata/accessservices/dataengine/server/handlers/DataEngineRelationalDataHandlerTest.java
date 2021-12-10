@@ -55,8 +55,9 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.WARN)
 class DataEngineRelationalDataHandlerTest {
-    public static final String DATABASE_SCHEMA_GUID = "databaseSchemaGUID";
-    public static final String RELATIONAL_TABLE_SCHEMA_GUID = "relationalTableGUID";
+    private static final String DATABASE_SCHEMA_GUID = "databaseSchemaGUID";
+    private static final String UPSERT_DATABASE_SCHEMA_METHOD = "upsertDatabaseSchema";
+    private static final String UPSERT_RELATIONAL_TABLE_METHOD = "upsertRelationalTable";
     @Mock
     private RepositoryHandler repositoryHandler;
     @Mock
@@ -119,9 +120,9 @@ class DataEngineRelationalDataHandlerTest {
         String methodName = "upsertDatabase";
         Database database = getDatabase();
         DatabaseSchema databaseSchema = getDatabaseSchema();
-        RelationalTable table = getRelationalTable();
+        RelationalTable relationalTable = getRelationalTable();
         database.setDatabaseSchema(databaseSchema);
-        database.setTables(Collections.singletonList(table));
+        database.setTables(Collections.singletonList(relationalTable));
 
         when(registrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
@@ -131,25 +132,46 @@ class DataEngineRelationalDataHandlerTest {
                 database.getOtherOriginValues(), database.getPathName(), database.getCreateTime(), database.getModifiedTime(),
                 database.getEncodingType(), database.getEncodingLanguage(), database.getEncodingDescription(), database.getEncodingProperties(),
                 database.getDatabaseType(), database.getDatabaseVersion(), database.getDatabaseInstance(), database.getDatabaseImportedFrom(),
-                database.getAdditionalProperties(), DATABASE_TYPE_NAME, null, null, methodName)).thenReturn(GUID);
+                database.getAdditionalProperties(), DATABASE_TYPE_NAME, null, null, methodName))
+                .thenReturn(DATABASE_GUID);
 
-        when(dataEngineRelationalDataHandler.upsertDatabaseSchema(USER, GUID, databaseSchema, false,
-                EXTERNAL_SOURCE_DE_NAME)).thenReturn(DATABASE_SCHEMA_GUID);
+        EntityDetail entityDetail = mock(EntityDetail.class);
+        when(entityDetail.getGUID()).thenReturn(DATABASE_SCHEMA_GUID);
+        Optional<EntityDetail> optionalOfMockedEntity = Optional.of(entityDetail);
+        when(dataEngineCommonHandler.findEntity(USER, DS_QUALIFIED_NAME, DEPLOYED_DATABASE_SCHEMA_TYPE_NAME))
+                .thenReturn(Optional.empty(), optionalOfMockedEntity);
 
-        when(dataEngineRelationalDataHandler.upsertRelationalTable(USER, DS_QUALIFIED_NAME, table,
-                EXTERNAL_SOURCE_DE_NAME, false)).thenReturn(RELATIONAL_TABLE_SCHEMA_GUID);
+        int ordinal = OwnerType.USER_ID.getOrdinal();
+        when(relationalDataHandler.createDatabaseSchema(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME, DATABASE_GUID,
+                databaseSchema.getQualifiedName(), databaseSchema.getDisplayName(), databaseSchema.getDescription(),
+                databaseSchema.getOwner(), ordinal, databaseSchema.getZoneMembership(), databaseSchema.getOriginOrganizationGUID(),
+                databaseSchema.getOriginBusinessCapabilityGUID(), databaseSchema.getOtherOriginValues(),
+                databaseSchema.getAdditionalProperties(), DEPLOYED_DATABASE_SCHEMA_TYPE_NAME, null,
+                null, UPSERT_DATABASE_SCHEMA_METHOD)).thenReturn(SCHEMA_GUID);
 
+        when(relationalDataHandler.createDatabaseTable(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME, DATABASE_SCHEMA_GUID,
+                relationalTable.getQualifiedName(), relationalTable.getDisplayName(), relationalTable.getDescription(),
+                relationalTable.getIsDeprecated(), relationalTable.getAliases(), relationalTable.getAdditionalProperties(),
+                RELATIONAL_TABLE_TYPE_NAME, null, null, UPSERT_RELATIONAL_TABLE_METHOD))
+                .thenReturn(TABLE_GUID);
         String result = dataEngineRelationalDataHandler.upsertDatabase(USER, database, false, EXTERNAL_SOURCE_DE_NAME);
 
-        assertEquals(GUID, result);
+        assertEquals(DATABASE_GUID, result);
         verifyInvalidParameterHandlerInvocations(methodName);
 
         verify(dataEngineConnectionAndEndpointHandler, times(1)).upsertConnectionAndEndpoint(QUALIFIED_NAME,
-                GUID, DATABASE_TYPE_NAME, PROTOCOL, NETWORK_ADDRESS, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME, USER);
-        verify(dataEngineRelationalDataHandler, times(1)).upsertDatabaseSchema(USER, GUID, databaseSchema,
-                false, EXTERNAL_SOURCE_DE_NAME);
-        verify(dataEngineRelationalDataHandler, times(1)).upsertRelationalTable(USER,
-                DS_QUALIFIED_NAME, table, EXTERNAL_SOURCE_DE_NAME, false);
+                DATABASE_GUID, DATABASE_TYPE_NAME, PROTOCOL, NETWORK_ADDRESS, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME, USER);
+        verify(relationalDataHandler, times(1)).createDatabaseSchema(USER, EXTERNAL_SOURCE_DE_GUID,
+                EXTERNAL_SOURCE_DE_NAME, DATABASE_GUID, databaseSchema.getQualifiedName(), databaseSchema.getDisplayName(),
+                databaseSchema.getDescription(), databaseSchema.getOwner(), ordinal, databaseSchema.getZoneMembership(),
+                databaseSchema.getOriginOrganizationGUID(), databaseSchema.getOriginBusinessCapabilityGUID(),
+                databaseSchema.getOtherOriginValues(), databaseSchema.getAdditionalProperties(), DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                null, null, UPSERT_DATABASE_SCHEMA_METHOD);
+        verify(relationalDataHandler, times(1)).createDatabaseTable(USER, EXTERNAL_SOURCE_DE_GUID,
+                EXTERNAL_SOURCE_DE_NAME, DATABASE_SCHEMA_GUID, relationalTable.getQualifiedName(), relationalTable.getDisplayName(),
+                relationalTable.getDescription(), relationalTable.getIsDeprecated(), relationalTable.getAliases(),
+                relationalTable.getAdditionalProperties(), RELATIONAL_TABLE_TYPE_NAME, null,
+                null, UPSERT_RELATIONAL_TABLE_METHOD);
     }
 
     @Test
