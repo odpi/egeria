@@ -96,97 +96,6 @@ public interface SoftwareServerCapabilityManagementInterface
                                                                                                         PropertyServerException;
 
 
-
-    /**
-     * Link a software server capability to a software server.
-     *
-     * @param userId calling user
-     * @param externalSourceGUID   guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName   name of the software server capability entity that represented the external source
-     * @param capabilityGUID unique identifier of the software server capability
-     * @param softwareServerGUID unique identifier of the software server
-     * @param deploymentTime time that the capability was enabled
-     * @param deployer user who/that deployed the capability
-     * @param enabledStatus is the capability enabled (or disabled)
-     * @param effectiveFrom start date for the relationship
-     * @param effectiveTo end date for the relationship
-     *
-     * @throws InvalidParameterException one of the guids is null or not known
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    void linkCapabilityToServer(String  userId,
-                                String  externalSourceGUID,
-                                String  externalSourceName,
-                                String  capabilityGUID,
-                                String  softwareServerGUID,
-                                Date    deploymentTime,
-                                String  deployer,
-                                boolean enabledStatus,
-                                Date    effectiveFrom,
-                                Date    effectiveTo) throws InvalidParameterException,
-                                                            UserNotAuthorizedException,
-                                                            PropertyServerException;
-
-
-    /**
-     * Update the effectivity dates of a link from a piece of infrastructure to an IT profile.
-     *
-     * @param userId calling user
-     * @param externalSourceGUID   guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName   name of the software server capability entity that represented the external source
-     * @param capabilityGUID unique identifier of the software server capability
-     * @param softwareServerGUID unique identifier of the software server
-     * @param isMergeUpdate are unspecified properties unchanged (true) or removed?
-     * @param deploymentTime time that the capability was enabled
-     * @param deployer user who/that deployed the capability
-     * @param enabledStatus is the capability enabled (or disabled)
-     * @param effectiveFrom start date for the  relationship
-     * @param effectiveTo end date for the relationship
-     *
-     * @throws InvalidParameterException one of the guids is null or not known
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    void updateCapabilityToServer(String  userId,
-                                  String  externalSourceGUID,
-                                  String  externalSourceName,
-                                  String  capabilityGUID,
-                                  String  softwareServerGUID,
-                                  boolean isMergeUpdate,
-                                  Date    deploymentTime,
-                                  String  deployer,
-                                  boolean enabledStatus,
-                                  Date    effectiveFrom,
-                                  Date    effectiveTo) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException;
-
-
-    /**
-     * Remove the link between a software server capability and a software server.
-     *
-     * @param userId calling user
-     * @param externalSourceGUID   guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName   name of the software server capability entity that represented the external source
-     * @param capabilityGUID unique identifier of the software server capability
-     * @param softwareServerGUID unique identifier of the software server
-     * @param effectiveTime time that the relationship is active - null for any time
-     *
-     * @throws InvalidParameterException one of the guids is null or not known
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    void unlinkCapabilityFromServer(String userId,
-                                    String externalSourceGUID,
-                                    String externalSourceName,
-                                    String capabilityGUID,
-                                    String softwareServerGUID,
-                                    Date   effectiveTime) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException;
-
-
     /**
      * Remove the metadata element representing a software server capability.
      *
@@ -307,6 +216,7 @@ public interface SoftwareServerCapabilityManagementInterface
      * @param userId calling user
      * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
      * @param infrastructureManagerName unique name of software server capability representing the caller
+     * @param infrastructureManagerIsHome should the software server capability be marked as owned by the infrastructure manager so others can not update?
      * @param capabilityGUID unique identifier of a software server capability
      * @param assetGUID unique identifier of an asset
      * @param properties properties about the ServerAssetUse relationship
@@ -320,6 +230,7 @@ public interface SoftwareServerCapabilityManagementInterface
     String createServerAssetUse(String                   userId,
                                 String                   infrastructureManagerGUID,
                                 String                   infrastructureManagerName,
+                                boolean                  infrastructureManagerIsHome,
                                 String                   capabilityGUID,
                                 String                   assetGUID,
                                 ServerAssetUseProperties properties) throws InvalidParameterException,
@@ -413,13 +324,13 @@ public interface SoftwareServerCapabilityManagementInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<ServerAssetUseElement> getServerAssetUsesForCapabililty(String             userId,
-                                                                 String             capabilityGUID,
-                                                                 ServerAssetUseType useType,
-                                                                 int                startFrom,
-                                                                 int                pageSize) throws InvalidParameterException, 
-                                                                                                     UserNotAuthorizedException, 
-                                                                                                     PropertyServerException;
+    List<ServerAssetUseElement> getServerAssetUsesForCapability(String             userId,
+                                                                String             capabilityGUID,
+                                                                ServerAssetUseType useType,
+                                                                int                startFrom,
+                                                                int                pageSize) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException;
 
     /**
      * Return the list of software server capabilities that make use of a specific asset.
