@@ -59,7 +59,7 @@ task startServer(dependsOn: ['cleanData',':open-metadata-distribution:open-metad
     // Start some external service
     executable = System.properties.'java.home' + '/bin/java'
     workingDir = "${buildDir}"
-    args = [ "-Dserver.port=10453",
+    args = [ "-Dserver.port=10455",
              "-Dloader.path=${distdir}/server/lib",
              "-Dspringdoc.api-docs.enabled=false",
              "-Djavax.net.ssl.trustStore=${distdir}/truststore.p12",
@@ -71,7 +71,7 @@ task startServer(dependsOn: ['cleanData',':open-metadata-distribution:open-metad
     standardOutput = "${buildDir}/chassis.log"
     errorOutput = "${buildDir}/chassis-error.log"
     //stopAfter = verify
-    waitForPort = 10453
+    waitForPort = 10455
     timeout = 180
     //waitForOutput = 'has started'
 }
@@ -83,7 +83,7 @@ task configServer(dependsOn: ['startServer','classes'], type: JavaExec) {
     //TODO: These parms aren't currently correctly passed. We rely on defaults in the script
     systemProperties = [
             'name': 'Egeria chassis',
-            'baseURL': 'https://localhost:10453',
+            'baseURL': 'https://localhost:10455',
             'server': 'fvtServer',
             'user': 'testUser'
     ]
@@ -95,7 +95,7 @@ test {
     group = 'verification'
     outputs.upToDateWhen {return false}
     systemProperties = [
-            'fvt.url': 'https://localhost:10453'
+            'fvt.url': 'https://localhost:10455'
     ]
     useJUnitPlatform()
     testLogging.showStandardStreams = true
