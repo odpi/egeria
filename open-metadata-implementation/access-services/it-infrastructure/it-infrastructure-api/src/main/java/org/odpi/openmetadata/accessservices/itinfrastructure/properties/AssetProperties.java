@@ -57,6 +57,26 @@ public class AssetProperties extends ConfigurationItemProperties
 
 
     /**
+     * Convert this object into an AssetProperties object.  This involves packing the properties introduced at this level
+     * into the extended properties.
+     *
+     * @param subTypeName subtype name
+     * @return asset properties
+     */
+    public AssetProperties cloneToAsset(String subTypeName)
+    {
+        AssetProperties clone = new AssetProperties(this);
+
+        if (super.getTypeName() == null)
+        {
+            super.setTypeName(subTypeName);
+        }
+
+        return clone;
+    }
+
+
+    /**
      * Returns the stored display name property for the asset.
      * If no display name is available then null is returned.
      *

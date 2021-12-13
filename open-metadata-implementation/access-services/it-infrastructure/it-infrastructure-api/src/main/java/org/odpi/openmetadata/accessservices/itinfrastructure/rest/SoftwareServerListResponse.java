@@ -1,37 +1,39 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.accessservices.datamanager.rest;
+package org.odpi.openmetadata.accessservices.itinfrastructure.rest;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.APISpecificationElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareServerElement;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * APISpecificationResponse is a response object for passing back a single APISpecification
- * element or an exception if the request failed.
+ * SoftwareServerListResponse is a response object for passing back a a list of software servers
+ * or an exception if the request failed.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class APISpecificationResponse extends DataManagerOMASAPIResponse
+public class SoftwareServerListResponse extends ITInfrastructureOMASAPIResponse
 {
     private static final long    serialVersionUID = 1L;
 
-    private APISpecificationElement element = null;
+    private List<SoftwareServerElement> elementList = null;
 
 
     /**
      * Default constructor
      */
-    public APISpecificationResponse()
+    public SoftwareServerListResponse()
     {
     }
 
@@ -41,36 +43,47 @@ public class APISpecificationResponse extends DataManagerOMASAPIResponse
      *
      * @param template object to copy
      */
-    public APISpecificationResponse(APISpecificationResponse template)
+    public SoftwareServerListResponse(SoftwareServerListResponse template)
     {
         super(template);
 
         if (template != null)
         {
-            element = template.getElement();
+            elementList = template.getElementList();
         }
     }
 
 
     /**
-     * Return the metadata element.
+     * Return the list of metadata elements.
      *
      * @return result object
      */
-    public APISpecificationElement getElement()
+    public List<SoftwareServerElement> getElementList()
     {
-        return element;
+        if (elementList == null)
+        {
+            return null;
+        }
+        else if (elementList.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new ArrayList<>(elementList);
+        }
     }
 
 
     /**
      * Set up the metadata element to return.
      *
-     * @param element result object
+     * @param elementList result object
      */
-    public void setElement(APISpecificationElement element)
+    public void setElementList(List<SoftwareServerElement> elementList)
     {
-        this.element = element;
+        this.elementList = elementList;
     }
 
 
@@ -82,8 +95,8 @@ public class APISpecificationResponse extends DataManagerOMASAPIResponse
     @Override
     public String toString()
     {
-        return "APISpecificationResponse{" +
-                "element=" + element +
+        return "SoftwareServerListResponse{" +
+                "elementList=" + elementList +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
                 ", actionDescription='" + getActionDescription() + '\'' +
@@ -96,7 +109,6 @@ public class APISpecificationResponse extends DataManagerOMASAPIResponse
                 ", exceptionProperties=" + getExceptionProperties() +
                 '}';
     }
-
 
     /**
      * Return comparison result based on the content of the properties.
@@ -119,8 +131,8 @@ public class APISpecificationResponse extends DataManagerOMASAPIResponse
         {
             return false;
         }
-        APISpecificationResponse that = (APISpecificationResponse) objectToCompare;
-        return Objects.equals(element, that.element);
+        SoftwareServerListResponse that = (SoftwareServerListResponse) objectToCompare;
+        return Objects.equals(elementList, that.elementList);
     }
 
 
@@ -132,6 +144,6 @@ public class APISpecificationResponse extends DataManagerOMASAPIResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), element);
+        return Objects.hash(super.hashCode(), elementList);
     }
 }

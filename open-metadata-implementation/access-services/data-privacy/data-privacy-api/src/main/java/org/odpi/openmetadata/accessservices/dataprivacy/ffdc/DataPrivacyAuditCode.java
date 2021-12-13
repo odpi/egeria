@@ -51,7 +51,7 @@ public enum DataPrivacyAuditCode implements AuditLogMessageSet
 
     private static final long    serialVersionUID = 1L;
 
-    AuditLogMessageDefinition messageDefinition;
+    private final AuditLogMessageDefinition messageDefinition;
 
     /**
      * The constructor for DataPrivacyAuditCode expects to be passed one of the enumeration rows defined in

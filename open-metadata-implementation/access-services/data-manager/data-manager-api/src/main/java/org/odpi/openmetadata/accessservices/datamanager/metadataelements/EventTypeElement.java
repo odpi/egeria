@@ -26,7 +26,6 @@ public class EventTypeElement implements MetadataElement, Serializable
 
     private EventTypeProperties properties     = null;
     private ElementHeader       elementHeader  = null;
-    private int                 attributeCount = 0;
 
     /**
      * Default constructor
@@ -48,8 +47,6 @@ public class EventTypeElement implements MetadataElement, Serializable
         {
             elementHeader = template.getElementHeader();
             properties = template.getProperties();
-
-            attributeCount = template.getAttributeCount();
         }
     }
 
@@ -100,26 +97,6 @@ public class EventTypeElement implements MetadataElement, Serializable
     }
 
 
-
-    /**
-     * Return the count of attributes in this schema type.
-     *
-     * @return String data type name
-     */
-    public int getAttributeCount() { return attributeCount; }
-
-
-    /**
-     * Set up the count of attributes in this schema type
-     *
-     * @param attributeCount data type name
-     */
-    public void setAttributeCount(int attributeCount)
-    {
-        this.attributeCount = attributeCount;
-    }
-
-
     /**
      * JSON-style toString
      *
@@ -131,7 +108,6 @@ public class EventTypeElement implements MetadataElement, Serializable
         return "EventTypeElement{" +
                        "properties=" + properties +
                        ", elementHeader=" + elementHeader +
-                       ", attributeCount=" + attributeCount +
                        '}';
     }
 
@@ -154,8 +130,7 @@ public class EventTypeElement implements MetadataElement, Serializable
             return false;
         }
         EventTypeElement that = (EventTypeElement) objectToCompare;
-        return attributeCount == that.attributeCount &&
-                       Objects.equals(properties, that.properties) &&
+        return Objects.equals(properties, that.properties) &&
                        Objects.equals(elementHeader, that.elementHeader);
     }
 
@@ -168,6 +143,6 @@ public class EventTypeElement implements MetadataElement, Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties, attributeCount);
+        return Objects.hash(super.hashCode(), elementHeader, properties);
     }
 }

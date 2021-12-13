@@ -1817,7 +1817,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     false,
                                     false,
-                                    new Date(),
+                                    null,
                                     methodName);
     }
 

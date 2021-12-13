@@ -51,7 +51,7 @@ public enum SoftwareDeveloperAuditCode implements AuditLogMessageSet
     ;
 
 
-    AuditLogMessageDefinition messageDefinition;
+    private final AuditLogMessageDefinition messageDefinition;
 
 
     /**

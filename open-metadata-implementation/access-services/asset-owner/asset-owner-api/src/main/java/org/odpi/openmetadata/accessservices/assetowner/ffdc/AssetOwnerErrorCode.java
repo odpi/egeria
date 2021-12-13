@@ -192,7 +192,7 @@ public enum AssetOwnerErrorCode implements ExceptionMessageSet
 
     private static final long    serialVersionUID = 1L;
 
-    private ExceptionMessageDefinition messageDefinition;
+    private final ExceptionMessageDefinition messageDefinition;
 
 
     /**

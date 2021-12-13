@@ -190,7 +190,7 @@ public enum GovernanceEngineAuditCode implements AuditLogMessageSet
     ;
 
 
-    private AuditLogMessageDefinition messageDefinition;
+    private final AuditLogMessageDefinition messageDefinition;
 
     /**
      * The constructor for GovernanceEngineAuditCode expects to be passed one of the enumeration rows defined in

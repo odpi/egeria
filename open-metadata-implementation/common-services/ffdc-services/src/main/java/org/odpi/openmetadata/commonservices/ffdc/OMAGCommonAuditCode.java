@@ -29,7 +29,7 @@ public enum OMAGCommonAuditCode implements AuditLogMessageSet
              "This is probably a logic error. Review the stack trace to identify where the error " +
                                  "occurred and work to resolve the cause."),
     CLIENT_SIDE_REST_API_ERROR( "OMAG-COMMON-0002",
-             OMRSAuditLogRecordSeverity.EXCEPTION,
+             OMRSAuditLogRecordSeverity.ERROR,
              "A client-side exception was received from API call {0} to OMAG Server {1} at {2}.  The error message was {3}",
              "The server has issued a call to the open metadata access service REST API in a remote server and has received an exception from the local client libraries.",
              "Look for errors in the local server's console to understand and correct the source of the error.")

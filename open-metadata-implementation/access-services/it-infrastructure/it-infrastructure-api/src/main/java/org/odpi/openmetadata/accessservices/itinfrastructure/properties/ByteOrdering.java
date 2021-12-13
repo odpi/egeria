@@ -25,11 +25,11 @@ public enum ByteOrdering implements Serializable
     public static final String ENUM_TYPE_GUID  = "e5612c3a-49bd-4148-8f67-cfdf145d5fd8";
     public static final String ENUM_TYPE_NAME  = "Endianness";
 
-    private int    openTypeOrdinal;
+    private final int    openTypeOrdinal;
 
-    private int    ordinal;
-    private String name;
-    private String description;
+    private final int    ordinal;
+    private final String name;
+    private final String description;
 
     private static final long     serialVersionUID = 1L;
 

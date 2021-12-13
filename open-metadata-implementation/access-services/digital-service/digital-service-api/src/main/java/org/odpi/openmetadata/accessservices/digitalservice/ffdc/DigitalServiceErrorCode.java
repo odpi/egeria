@@ -36,7 +36,7 @@ public enum DigitalServiceErrorCode implements ExceptionMessageSet
 
 
 
-    private ExceptionMessageDefinition messageDefinition;
+    private final ExceptionMessageDefinition messageDefinition;
 
     /**
      * The constructor for DigitalServiceErrorCode expects to be passed one of the enumeration rows defined in

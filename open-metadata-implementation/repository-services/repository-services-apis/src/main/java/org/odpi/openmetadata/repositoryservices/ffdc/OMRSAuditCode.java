@@ -916,7 +916,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
 
     SKIPPING_METADATA_COLLECTION("OMRS-AUDIT-0401",
                                        OMRSAuditLogRecordSeverity.ACTION,
-                                       "Skipping call to repository {0} since it is not responding correctly.  Error received was {1} with message {2}The local server does not have a local repository and so a update to the type called {0} with a unique identifier of {1} that applies to version number of {2} from {3} is just cached for information",
+                                       "Skipping call to repository {0} since it is not responding correctly.  Error received was {1} with message {2}",
                                        "The local server is processing a federated query to all members of the connected cohorts.  However one of the members is not responding correctly and so it has been skipped from the call. The remote server is probably not running, or has been incorrectly configured.",
                                        "Validate the availability and configuration of the remote server.  It may be a temporary failure due to an outage in the network or the server itself.  However, if the remote server is not configured correctly, or has changed its metadata collection id, then this wil lbe a permanent error and this server will not be included in the federated query until it is fixed."),
 

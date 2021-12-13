@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -24,6 +25,7 @@ public class SearchStringRequestBody implements Serializable
 {
     private static final long    serialVersionUID = 1L;
 
+    private Date   effectiveTime = null;
     private String searchString = null;
     private String searchStringParameterName = null;
 
@@ -46,9 +48,32 @@ public class SearchStringRequestBody implements Serializable
     {
         if (template != null)
         {
+            effectiveTime = template.getEffectiveTime();
             searchString = template.getSearchString();
             searchStringParameterName = template.getSearchStringParameterName();
         }
+    }
+
+
+    /**
+     * Return the date/time to use for the query.
+     *
+     * @return date object
+     */
+    public Date getEffectiveTime()
+    {
+        return effectiveTime;
+    }
+
+
+    /**
+     * Set up  the date/time to use for the query.
+     *
+     * @param effectiveTime date object
+     */
+    public void setEffectiveTime(Date effectiveTime)
+    {
+        this.effectiveTime = effectiveTime;
     }
 
 
@@ -105,7 +130,8 @@ public class SearchStringRequestBody implements Serializable
     public String toString()
     {
         return "SearchStringRequestBody{" +
-                       "searchString='" + searchString + '\'' +
+                       "effectiveTime=" + effectiveTime +
+                       ", searchString='" + searchString + '\'' +
                        ", searchStringParameterName='" + searchStringParameterName + '\'' +
                        '}';
     }
@@ -129,10 +155,10 @@ public class SearchStringRequestBody implements Serializable
             return false;
         }
         SearchStringRequestBody that = (SearchStringRequestBody) objectToCompare;
-        return Objects.equals(getSearchString(), that.getSearchString()) &&
-                       Objects.equals(getSearchStringParameterName(), that.getSearchStringParameterName());
+        return Objects.equals(effectiveTime, that.effectiveTime) &&
+                       Objects.equals(searchString, that.searchString) &&
+                       Objects.equals(searchStringParameterName, that.searchStringParameterName);
     }
-
 
 
     /**
@@ -143,6 +169,6 @@ public class SearchStringRequestBody implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(getSearchString(), getSearchStringParameterName());
+        return Objects.hash(effectiveTime, searchString, searchStringParameterName);
     }
 }

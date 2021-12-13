@@ -50,7 +50,7 @@ public enum DataScienceAuditCode implements AuditLogMessageSet
     ;
 
 
-    AuditLogMessageDefinition messageDefinition;
+    private final AuditLogMessageDefinition messageDefinition;
 
 
     /**
