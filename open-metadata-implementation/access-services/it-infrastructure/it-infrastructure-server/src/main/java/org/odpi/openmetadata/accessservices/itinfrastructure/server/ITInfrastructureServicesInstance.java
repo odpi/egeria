@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.itinfrastructure.server;
 
+import org.odpi.openmetadata.accessservices.itinfrastructure.converters.AssetConverter;
 import org.odpi.openmetadata.accessservices.itinfrastructure.converters.ConnectionConverter;
 import org.odpi.openmetadata.accessservices.itinfrastructure.converters.ConnectorTypeConverter;
 import org.odpi.openmetadata.accessservices.itinfrastructure.converters.ContactMethodConverter;
@@ -10,6 +11,7 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.converters.ITProfil
 import org.odpi.openmetadata.accessservices.itinfrastructure.converters.SoftwareServerCapabilityConverter;
 import org.odpi.openmetadata.accessservices.itinfrastructure.converters.UserIdentityConverter;
 import org.odpi.openmetadata.accessservices.itinfrastructure.ffdc.ITInfrastructureErrorCode;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.AssetElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ConnectionElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ConnectorTypeElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ContactMethodElement;
@@ -19,6 +21,7 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.So
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.UserIdentityElement;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.generichandlers.ActorProfileHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ConnectionHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ConnectorTypeHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ContactDetailsHandler;
@@ -48,6 +51,7 @@ public class ITInfrastructureServicesInstance extends OMASServiceInstance
     private UserIdentityHandler<UserIdentityElement>                         userIdentityHandler;
     private ContactDetailsHandler<ContactMethodElement>                      contactDetailsHandler;
     private SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> softwareServerCapabilityHandler;
+    private AssetHandler<AssetElement>                                       assetHandler;
 
 
     /**
@@ -176,6 +180,20 @@ public class ITInfrastructureServicesInstance extends OMASServiceInstance
                                                                                          defaultZones,
                                                                                          publishZones,
                                                                                          auditLog);
+
+            this.assetHandler = new AssetHandler<>(new AssetConverter<>(repositoryHelper, serviceName, serverName),
+                                                   AssetElement.class,
+                                                   serviceName,
+                                                   serverName,
+                                                   invalidParameterHandler,
+                                                   repositoryHandler,
+                                                   repositoryHelper,
+                                                   localServerUserId,
+                                                   securityVerifier,
+                                                   supportedZones,
+                                                   defaultZones,
+                                                   publishZones,
+                                                   auditLog);
         }
         else
         {
@@ -283,6 +301,23 @@ public class ITInfrastructureServicesInstance extends OMASServiceInstance
         validateActiveRepository(methodName);
 
         return contactDetailsHandler;
+    }
+
+
+
+    /**
+     * Return the handler for managing asset objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    AssetHandler<AssetElement> getAssetHandler() throws PropertyServerException
+    {
+        final String methodName = "getAssetHandler";
+
+        validateActiveRepository(methodName);
+
+        return assetHandler;
     }
 
 

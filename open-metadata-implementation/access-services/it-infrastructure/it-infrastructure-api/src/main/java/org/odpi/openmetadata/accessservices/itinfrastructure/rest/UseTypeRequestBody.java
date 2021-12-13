@@ -5,7 +5,8 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProfileIdentityProperties;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ServerAssetUseType;
+import org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody;
 
 import java.util.Objects;
 
@@ -13,22 +14,24 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ProfileIdentityRequestBody provides the request body payload for working with ProfileIdentity relationships.
+ * UseTypeRequestBody for passing the use type and effective time.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ProfileIdentityRequestBody extends MetadataSourceRequestBody
+public class UseTypeRequestBody extends EffectiveTimeRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
-    private ProfileIdentityProperties properties = null;
+    private ServerAssetUseType useType = null;
+
 
     /**
      * Default constructor
      */
-    public ProfileIdentityRequestBody()
+    public UseTypeRequestBody()
     {
+        super();
     }
 
 
@@ -37,60 +40,58 @@ public class ProfileIdentityRequestBody extends MetadataSourceRequestBody
      *
      * @param template object to copy
      */
-    public ProfileIdentityRequestBody(ProfileIdentityRequestBody template)
+    public UseTypeRequestBody(UseTypeRequestBody template)
     {
-        super(template);
-
         if (template != null)
         {
-            this.properties = template.getProperties();
+            useType = template.getUseType();
         }
     }
 
 
     /**
-     * Return the properties for this profile identity.
+     * Return the use type to use for the query.
      *
-     * @return properties bean
+     * @return enum
      */
-    public ProfileIdentityProperties getProperties()
+    public ServerAssetUseType getUseType()
     {
-        return properties;
+        return useType;
     }
 
 
     /**
-     * Set up the properties for this profile identity.
+     * Set up the use type to use for the query.
      *
-     * @param properties properties bean
+     * @param useType enum
      */
-    public void setProperties(ProfileIdentityProperties properties)
+    public void setUseType(ServerAssetUseType useType)
     {
-        this.properties = properties;
+        this.useType = useType;
     }
 
 
+
     /**
-     * JSON-style toString.
+     * JSON-style toString
      *
-     * @return list of properties and their values.
+     * @return return string containing the property names and values
      */
     @Override
     public String toString()
     {
-        return "ProfileIdentityRequestBody{" +
-                       "properties=" + properties +
-                       ", externalSourceGUID='" + getExternalSourceGUID() + '\'' +
-                       ", externalSourceName='" + getExternalSourceName() + '\'' +
+        return "UseTypeRequestBody{" +
+                       "useType=" + useType +
+                       ", effectiveTime=" + getEffectiveTime() +
                        '}';
     }
 
 
     /**
-     * Equals method that returns true if containing properties are the same.
+     * Return comparison result based on the content of the properties.
      *
-     * @param objectToCompare object to compare
-     * @return boolean result of comparison
+     * @param objectToCompare test object
+     * @return result of comparison
      */
     @Override
     public boolean equals(Object objectToCompare)
@@ -103,12 +104,12 @@ public class ProfileIdentityRequestBody extends MetadataSourceRequestBody
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
-        ProfileIdentityRequestBody that = (ProfileIdentityRequestBody) objectToCompare;
-        return Objects.equals(properties, that.properties);
+        UseTypeRequestBody that = (UseTypeRequestBody) objectToCompare;
+        return Objects.equals(useType, that.useType);
     }
 
 
@@ -120,6 +121,6 @@ public class ProfileIdentityRequestBody extends MetadataSourceRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), properties);
+        return Objects.hash(super.hashCode(), useType);
     }
 }

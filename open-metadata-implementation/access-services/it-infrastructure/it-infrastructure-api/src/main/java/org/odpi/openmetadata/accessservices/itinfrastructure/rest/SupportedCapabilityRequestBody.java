@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProfileIdentityProperties;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.SupportedCapabilityProperties;
 
 import java.util.Objects;
 
@@ -13,21 +13,22 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ProfileIdentityRequestBody provides the request body payload for working with ProfileIdentity relationships.
+ * SupportedCapabilityRequestBody provides the request body payload for working with the relationships between
+ * software servers and software server capabilities.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ProfileIdentityRequestBody extends MetadataSourceRequestBody
+public class SupportedCapabilityRequestBody extends MetadataSourceRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
-    private ProfileIdentityProperties properties = null;
+    private SupportedCapabilityProperties properties = null;
 
     /**
      * Default constructor
      */
-    public ProfileIdentityRequestBody()
+    public SupportedCapabilityRequestBody()
     {
     }
 
@@ -37,7 +38,7 @@ public class ProfileIdentityRequestBody extends MetadataSourceRequestBody
      *
      * @param template object to copy
      */
-    public ProfileIdentityRequestBody(ProfileIdentityRequestBody template)
+    public SupportedCapabilityRequestBody(SupportedCapabilityRequestBody template)
     {
         super(template);
 
@@ -53,7 +54,7 @@ public class ProfileIdentityRequestBody extends MetadataSourceRequestBody
      *
      * @return properties bean
      */
-    public ProfileIdentityProperties getProperties()
+    public SupportedCapabilityProperties getProperties()
     {
         return properties;
     }
@@ -64,7 +65,7 @@ public class ProfileIdentityRequestBody extends MetadataSourceRequestBody
      *
      * @param properties properties bean
      */
-    public void setProperties(ProfileIdentityProperties properties)
+    public void setProperties(SupportedCapabilityProperties properties)
     {
         this.properties = properties;
     }
@@ -78,7 +79,7 @@ public class ProfileIdentityRequestBody extends MetadataSourceRequestBody
     @Override
     public String toString()
     {
-        return "ProfileIdentityRequestBody{" +
+        return "SupportedCapabilityRequestBody{" +
                        "properties=" + properties +
                        ", externalSourceGUID='" + getExternalSourceGUID() + '\'' +
                        ", externalSourceName='" + getExternalSourceName() + '\'' +
@@ -107,7 +108,7 @@ public class ProfileIdentityRequestBody extends MetadataSourceRequestBody
         {
             return false;
         }
-        ProfileIdentityRequestBody that = (ProfileIdentityRequestBody) objectToCompare;
+        SupportedCapabilityRequestBody that = (SupportedCapabilityRequestBody) objectToCompare;
         return Objects.equals(properties, that.properties);
     }
 

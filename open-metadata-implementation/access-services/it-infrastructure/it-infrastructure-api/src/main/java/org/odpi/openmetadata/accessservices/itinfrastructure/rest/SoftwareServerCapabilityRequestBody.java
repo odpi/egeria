@@ -2,44 +2,49 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.itinfrastructure.rest;
 
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.SoftwareServerCapabilityProperties;
+
 
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
+
 /**
- * MetadataSourceRequestBody carries the parameters for marking an element as external.
+ * SoftwareServerCapabilityRequestBody describes the properties of the software server capability for creation and update.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class MetadataSourceRequestBody extends ITInfrastructureOMASAPIRequestBody
+public class SoftwareServerCapabilityRequestBody extends SoftwareServerCapabilityProperties
 {
     private static final long    serialVersionUID = 1L;
 
     private String externalSourceGUID = null;
     private String externalSourceName = null;
+    private String classificationName = null;
 
 
     /**
      * Default constructor
      */
-    public MetadataSourceRequestBody()
+    public SoftwareServerCapabilityRequestBody()
     {
         super();
     }
 
 
     /**
-     * Copy/clone constructor
+     * Copy/clone constructor.
      *
      * @param template object to copy
      */
-    public MetadataSourceRequestBody(MetadataSourceRequestBody template)
+    public SoftwareServerCapabilityRequestBody(SoftwareServerCapabilityRequestBody template)
     {
         super(template);
 
@@ -47,7 +52,19 @@ public class MetadataSourceRequestBody extends ITInfrastructureOMASAPIRequestBod
         {
             externalSourceGUID = template.getExternalSourceGUID();
             externalSourceName = template.getExternalSourceName();
+            classificationName = template.getClassificationName();
         }
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
+    public SoftwareServerCapabilityRequestBody(SoftwareServerCapabilityProperties template)
+    {
+        super(template);
     }
 
 
@@ -96,6 +113,28 @@ public class MetadataSourceRequestBody extends ITInfrastructureOMASAPIRequestBod
 
 
     /**
+     * Return the optional classification name for the software server capability.
+     *
+     * @return string name
+     */
+    public String getClassificationName()
+    {
+        return classificationName;
+    }
+
+
+    /**
+     * Set up the optional classification name for the software server capability.
+     *
+     * @param classificationName string name
+     */
+    public void setClassificationName(String classificationName)
+    {
+        this.classificationName = classificationName;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -103,11 +142,26 @@ public class MetadataSourceRequestBody extends ITInfrastructureOMASAPIRequestBod
     @Override
     public String toString()
     {
-        return "MetadataSourceRequestBody{" +
-                "externalSourceGUID='" + externalSourceGUID + '\'' +
-                ", externalSourceName='" + externalSourceName + '\'' +
-                '}';
+        return "SoftwareServerCapabilityRequestBody{" +
+                       "externalSourceGUID='" + externalSourceGUID + '\'' +
+                       ", externalSourceName='" + externalSourceName + '\'' +
+                       ", classificationName='" + classificationName + '\'' +
+                       ", displayName='" + getDisplayName() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", typeDescription='" + getTypeDescription() + '\'' +
+                       ", version='" + getVersion() + '\'' +
+                       ", patchLevel='" + getPatchLevel() + '\'' +
+                       ", source='" + getSource() + '\'' +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
+
 
     /**
      * Return comparison result based on the content of the properties.
@@ -126,9 +180,14 @@ public class MetadataSourceRequestBody extends ITInfrastructureOMASAPIRequestBod
         {
             return false;
         }
-        MetadataSourceRequestBody that = (MetadataSourceRequestBody) objectToCompare;
+        if (! super.equals(objectToCompare))
+        {
+            return false;
+        }
+        SoftwareServerCapabilityRequestBody that = (SoftwareServerCapabilityRequestBody) objectToCompare;
         return Objects.equals(externalSourceGUID, that.externalSourceGUID) &&
-                Objects.equals(externalSourceName, that.externalSourceName);
+                       Objects.equals(externalSourceName, that.externalSourceName) &&
+                       Objects.equals(classificationName, that.classificationName);
     }
 
 
@@ -140,6 +199,6 @@ public class MetadataSourceRequestBody extends ITInfrastructureOMASAPIRequestBod
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), externalSourceGUID, externalSourceName);
+        return Objects.hash(super.hashCode(), externalSourceGUID, externalSourceName, classificationName);
     }
 }

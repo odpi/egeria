@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.itinfrastructure.rest;
 
+package org.odpi.openmetadata.accessservices.itinfrastructure.rest;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -9,31 +9,30 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ServerAssetUseElement;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- *  ServerAssetUseListResponse returns a list of serverAssetUse relationships from the server.
+ * ServerAssetUseResponse is a response object for passing back a single relationship between a software server
+ * capability and an asset (or an exception if the request failed).
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ServerAssetUseListResponse extends ITInfrastructureOMASAPIResponse
+public class ServerAssetUseResponse extends ITInfrastructureOMASAPIResponse
 {
     private static final long    serialVersionUID = 1L;
 
-    private List<ServerAssetUseElement> elements = null;
+    private ServerAssetUseElement element = null;
 
 
     /**
      * Default constructor
      */
-    public ServerAssetUseListResponse()
+    public ServerAssetUseResponse()
     {
-        super();
     }
 
 
@@ -42,48 +41,38 @@ public class ServerAssetUseListResponse extends ITInfrastructureOMASAPIResponse
      *
      * @param template object to copy
      */
-    public ServerAssetUseListResponse(ServerAssetUseListResponse template)
+    public ServerAssetUseResponse(ServerAssetUseResponse template)
     {
         super(template);
 
         if (template != null)
         {
-            this.elements = template.getElements();
+            element = template.getElement();
         }
     }
 
 
     /**
-     * Return the list of assets in the response.
+     * Return the metadata element.
      *
-     * @return list of assets
+     * @return result object
      */
-    public List<ServerAssetUseElement> getElements()
+    public ServerAssetUseElement getElement()
     {
-        if (elements == null)
-        {
-            return null;
-        }
-        else if (elements.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return elements;
-        }
+        return element;
     }
 
 
     /**
-     * Set up the list of assets for the response.
+     * Set up the metadata element to return.
      *
-     * @param elements list of assets
+     * @param element result object
      */
-    public void setElements(List<ServerAssetUseElement> elements)
+    public void setElement(ServerAssetUseElement element)
     {
-        this.elements = elements;
+        this.element = element;
     }
+
 
     /**
      * JSON-style toString
@@ -93,8 +82,8 @@ public class ServerAssetUseListResponse extends ITInfrastructureOMASAPIResponse
     @Override
     public String toString()
     {
-        return "ServerAssetUseListResponse{" +
-                "assets=" + elements +
+        return "ServerAssetUseResponse{" +
+                "element=" + element +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
                 ", actionDescription='" + getActionDescription() + '\'' +
@@ -126,12 +115,12 @@ public class ServerAssetUseListResponse extends ITInfrastructureOMASAPIResponse
         {
             return false;
         }
-        if (! super.equals(objectToCompare))
+        if (!super.equals(objectToCompare))
         {
             return false;
         }
-        ServerAssetUseListResponse that = (ServerAssetUseListResponse) objectToCompare;
-        return Objects.equals(elements, that.elements);
+        ServerAssetUseResponse that = (ServerAssetUseResponse) objectToCompare;
+        return Objects.equals(element, that.element);
     }
 
 
@@ -143,6 +132,6 @@ public class ServerAssetUseListResponse extends ITInfrastructureOMASAPIResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elements);
+        return Objects.hash(super.hashCode(), element);
     }
 }

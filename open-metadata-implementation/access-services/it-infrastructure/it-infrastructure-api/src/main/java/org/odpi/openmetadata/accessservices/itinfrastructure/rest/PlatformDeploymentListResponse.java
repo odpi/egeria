@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ServerAssetUseElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.PlatformDeploymentElement;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,22 +16,22 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- *  ServerAssetUseListResponse returns a list of serverAssetUse relationships from the server.
+ *  PlatformDeploymentListResponse returns a list of SoftwareServerPlatformDeployment relationships from the server.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ServerAssetUseListResponse extends ITInfrastructureOMASAPIResponse
+public class PlatformDeploymentListResponse extends ITInfrastructureOMASAPIResponse
 {
     private static final long    serialVersionUID = 1L;
 
-    private List<ServerAssetUseElement> elements = null;
+    private List<PlatformDeploymentElement> elements = null;
 
 
     /**
      * Default constructor
      */
-    public ServerAssetUseListResponse()
+    public PlatformDeploymentListResponse()
     {
         super();
     }
@@ -42,7 +42,7 @@ public class ServerAssetUseListResponse extends ITInfrastructureOMASAPIResponse
      *
      * @param template object to copy
      */
-    public ServerAssetUseListResponse(ServerAssetUseListResponse template)
+    public PlatformDeploymentListResponse(PlatformDeploymentListResponse template)
     {
         super(template);
 
@@ -58,7 +58,7 @@ public class ServerAssetUseListResponse extends ITInfrastructureOMASAPIResponse
      *
      * @return list of assets
      */
-    public List<ServerAssetUseElement> getElements()
+    public List<PlatformDeploymentElement> getElements()
     {
         if (elements == null)
         {
@@ -80,7 +80,7 @@ public class ServerAssetUseListResponse extends ITInfrastructureOMASAPIResponse
      *
      * @param elements list of assets
      */
-    public void setElements(List<ServerAssetUseElement> elements)
+    public void setElements(List<PlatformDeploymentElement> elements)
     {
         this.elements = elements;
     }
@@ -93,7 +93,7 @@ public class ServerAssetUseListResponse extends ITInfrastructureOMASAPIResponse
     @Override
     public String toString()
     {
-        return "ServerAssetUseListResponse{" +
+        return "PlatformDeploymentListResponse{" +
                 "assets=" + elements +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
@@ -130,7 +130,7 @@ public class ServerAssetUseListResponse extends ITInfrastructureOMASAPIResponse
         {
             return false;
         }
-        ServerAssetUseListResponse that = (ServerAssetUseListResponse) objectToCompare;
+        PlatformDeploymentListResponse that = (PlatformDeploymentListResponse) objectToCompare;
         return Objects.equals(elements, that.elements);
     }
 

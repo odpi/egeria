@@ -2,22 +2,25 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.itinfrastructure.rest;
 
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.HostProperties;
 
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
+
 /**
- * MetadataSourceRequestBody carries the parameters for marking an element as external.
+ * HostRequestBody describes the properties of the software server for creation and update.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class MetadataSourceRequestBody extends ITInfrastructureOMASAPIRequestBody
+public class HostRequestBody extends HostProperties
 {
     private static final long    serialVersionUID = 1L;
 
@@ -28,18 +31,18 @@ public class MetadataSourceRequestBody extends ITInfrastructureOMASAPIRequestBod
     /**
      * Default constructor
      */
-    public MetadataSourceRequestBody()
+    public HostRequestBody()
     {
         super();
     }
 
 
     /**
-     * Copy/clone constructor
+     * Copy/clone constructor.
      *
      * @param template object to copy
      */
-    public MetadataSourceRequestBody(MetadataSourceRequestBody template)
+    public HostRequestBody(HostRequestBody template)
     {
         super(template);
 
@@ -48,6 +51,17 @@ public class MetadataSourceRequestBody extends ITInfrastructureOMASAPIRequestBod
             externalSourceGUID = template.getExternalSourceGUID();
             externalSourceName = template.getExternalSourceName();
         }
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
+    public HostRequestBody(HostProperties template)
+    {
+        super(template);
     }
 
 
@@ -103,11 +117,21 @@ public class MetadataSourceRequestBody extends ITInfrastructureOMASAPIRequestBod
     @Override
     public String toString()
     {
-        return "MetadataSourceRequestBody{" +
-                "externalSourceGUID='" + externalSourceGUID + '\'' +
-                ", externalSourceName='" + externalSourceName + '\'' +
-                '}';
+        return "HostRequestBody{" +
+                       "externalSourceGUID='" + externalSourceGUID + '\'' +
+                       ", externalSourceName='" + externalSourceName + '\'' +
+                       ", displayName='" + getDisplayName() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
+
 
     /**
      * Return comparison result based on the content of the properties.
@@ -126,7 +150,11 @@ public class MetadataSourceRequestBody extends ITInfrastructureOMASAPIRequestBod
         {
             return false;
         }
-        MetadataSourceRequestBody that = (MetadataSourceRequestBody) objectToCompare;
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        HostRequestBody that = (HostRequestBody) objectToCompare;
         return Objects.equals(externalSourceGUID, that.externalSourceGUID) &&
                 Objects.equals(externalSourceName, that.externalSourceName);
     }

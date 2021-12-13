@@ -11,13 +11,13 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ContactM
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProfileIdentityProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.UserIdentityProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.EffectiveDatesRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.EffectiveTimeRequestBody;
+import org.odpi.openmetadata.accessservices.itinfrastructure.rest.EffectiveTimeMetadataSourceRequestBody;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ITProfileListResponse;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ITProfileRequestBody;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ITProfileResponse;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ContactMethodRequestBody;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.MetadataSourceRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.api.ITProfileManagementInterface;
+import org.odpi.openmetadata.accessservices.itinfrastructure.api.ITProfileManagerInterface;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ProfileIdentityRequestBody;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.UserIdentityListResponse;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.UserIdentityRequestBody;
@@ -39,7 +39,7 @@ import java.util.List;
  * OrganizationManagement is the client used by the Organization Integrator OMIS that is responsible with synchronizing organizational
  * structures, profiles rules and users with open metadata.
  */
-public class ITProfileManagerClient implements ITProfileManagementInterface
+public class ITProfileManagerClient implements ITProfileManagerInterface
 {
     private String                     serverName;               /* Initialized in constructor */
     private String                     serverPlatformURLRoot;    /* Initialized in constructor */
@@ -522,7 +522,7 @@ public class ITProfileManagerClient implements ITProfileManagementInterface
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/assets/{2}/profiles/{3}/unlink";
 
-        EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+        EffectiveTimeMetadataSourceRequestBody requestBody = new EffectiveTimeMetadataSourceRequestBody();
 
         requestBody.setExternalSourceGUID(externalSourceGUID);
         requestBody.setExternalSourceName(externalSourceName);

@@ -13,23 +13,22 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * MetadataSourceRequestBody carries the parameters for marking an element as external with the effective time set up.
+ * EffectiveTimeRequestBody carries the date/time for a query.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class EffectiveDatesRequestBody extends MetadataSourceRequestBody
+public class EffectiveTimeMetadataSourceRequestBody extends MetadataSourceRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
-    private Date effectiveFrom = null;
-    private Date effectiveTo   = null;
+    private Date effectiveTime = null;
 
 
     /**
      * Default constructor
      */
-    public EffectiveDatesRequestBody()
+    public EffectiveTimeMetadataSourceRequestBody()
     {
         super();
     }
@@ -40,60 +39,36 @@ public class EffectiveDatesRequestBody extends MetadataSourceRequestBody
      *
      * @param template object to copy
      */
-    public EffectiveDatesRequestBody(EffectiveDatesRequestBody template)
+    public EffectiveTimeMetadataSourceRequestBody(EffectiveTimeMetadataSourceRequestBody template)
     {
-        super(template);
-
         if (template != null)
         {
-            effectiveFrom        = template.getEffectiveFrom();
-            effectiveTo          = template.getEffectiveTo();
+            effectiveTime = template.getEffectiveTime();
         }
     }
 
 
     /**
-     * Return the date/time that this element is effective from (null means effective from the epoch).
+     * Return the date/time to use for the query.
      *
      * @return date object
      */
-    public Date getEffectiveFrom()
+    public Date getEffectiveTime()
     {
-        return effectiveFrom;
+        return effectiveTime;
     }
 
 
     /**
-     * Set up the date/time that this element is effective from (null means effective from the epoch).
+     * Set up  the date/time to use for the query.
      *
-     * @param effectiveFrom date object
+     * @param effectiveTime date object
      */
-    public void setEffectiveFrom(Date effectiveFrom)
+    public void setEffectiveTime(Date effectiveTime)
     {
-        this.effectiveFrom = effectiveFrom;
+        this.effectiveTime = effectiveTime;
     }
 
-
-    /**
-     * Return the date/time that element is effective to (null means that it is effective indefinitely into the future).
-     *
-     * @return date object
-     */
-    public Date getEffectiveTo()
-    {
-        return effectiveTo;
-    }
-
-
-    /**
-     * Set the date/time that element is effective to (null means that it is effective indefinitely into the future).
-     *
-     * @param effectiveTo date object
-     */
-    public void setEffectiveTo(Date effectiveTo)
-    {
-        this.effectiveTo = effectiveTo;
-    }
 
 
     /**
@@ -104,9 +79,8 @@ public class EffectiveDatesRequestBody extends MetadataSourceRequestBody
     @Override
     public String toString()
     {
-        return "EffectiveDatesRequestBody{" +
-                       "effectiveFrom=" + effectiveFrom +
-                       ", effectiveTo=" + effectiveTo +
+        return "EffectiveTimeMetadataSourceRequestBody{" +
+                       "effectiveTime=" + effectiveTime +
                        ", externalSourceGUID='" + getExternalSourceGUID() + '\'' +
                        ", externalSourceName='" + getExternalSourceName() + '\'' +
                        '}';
@@ -134,9 +108,8 @@ public class EffectiveDatesRequestBody extends MetadataSourceRequestBody
         {
             return false;
         }
-        EffectiveDatesRequestBody that = (EffectiveDatesRequestBody) objectToCompare;
-        return Objects.equals(effectiveFrom, that.effectiveFrom) &&
-                       Objects.equals(effectiveTo, that.effectiveTo);
+        EffectiveTimeMetadataSourceRequestBody that = (EffectiveTimeMetadataSourceRequestBody) objectToCompare;
+        return Objects.equals(effectiveTime, that.effectiveTime);
     }
 
 
@@ -148,6 +121,6 @@ public class EffectiveDatesRequestBody extends MetadataSourceRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), effectiveFrom, effectiveTo);
+        return Objects.hash(super.hashCode(), effectiveTime);
     }
 }

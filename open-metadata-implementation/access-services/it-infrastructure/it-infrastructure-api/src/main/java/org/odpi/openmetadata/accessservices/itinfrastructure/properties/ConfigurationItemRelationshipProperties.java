@@ -1,11 +1,14 @@
-/* SPDX-License-Identifier: Apache 2.0 */
+/* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.itinfrastructure.rest;
+package org.odpi.openmetadata.accessservices.itinfrastructure.properties;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
@@ -13,12 +16,21 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * MetadataSourceRequestBody carries the parameters for marking an element as external with the effective time set up.
+ * ConfigurationItemProperties provides the base class for infrastructure items.  This extends referenceable with the ability to
+ * set effectivity dates.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class EffectiveDatesRequestBody extends MetadataSourceRequestBody
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
+@JsonSubTypes(
+        {
+                @JsonSubTypes.Type(value = ServerAssetUseProperties.class, name = "ServerAssetUseProperties"),
+                @JsonSubTypes.Type(value = SupportedCapabilityProperties.class, name = "SupportedCapabilityProperties"),
+        })
+public class ConfigurationItemRelationshipProperties implements Serializable
 {
     private static final long    serialVersionUID = 1L;
 
@@ -29,25 +41,23 @@ public class EffectiveDatesRequestBody extends MetadataSourceRequestBody
     /**
      * Default constructor
      */
-    public EffectiveDatesRequestBody()
+    public ConfigurationItemRelationshipProperties()
     {
         super();
     }
 
 
     /**
-     * Copy/clone constructor
+     * Copy/clone constructor.  Retrieves values from the supplied template
      *
-     * @param template object to copy
+     * @param template element to copy
      */
-    public EffectiveDatesRequestBody(EffectiveDatesRequestBody template)
+    public ConfigurationItemRelationshipProperties(ConfigurationItemRelationshipProperties template)
     {
-        super(template);
-
         if (template != null)
         {
-            effectiveFrom        = template.getEffectiveFrom();
-            effectiveTo          = template.getEffectiveTo();
+            effectiveFrom = template.getEffectiveFrom();
+            effectiveTo = template.getEffectiveTo();
         }
     }
 
@@ -97,27 +107,25 @@ public class EffectiveDatesRequestBody extends MetadataSourceRequestBody
 
 
     /**
-     * JSON-style toString
+     * Standard toString method.
      *
-     * @return return string containing the property names and values
+     * @return print out of variables in a JSON-style
      */
     @Override
     public String toString()
     {
-        return "EffectiveDatesRequestBody{" +
+        return "ConfigurationItemRelationshipProperties{" +
                        "effectiveFrom=" + effectiveFrom +
                        ", effectiveTo=" + effectiveTo +
-                       ", externalSourceGUID='" + getExternalSourceGUID() + '\'' +
-                       ", externalSourceName='" + getExternalSourceName() + '\'' +
                        '}';
     }
 
 
     /**
-     * Return comparison result based on the content of the properties.
+     * Compare the values of the supplied object with those stored in the current object.
      *
-     * @param objectToCompare test object
-     * @return result of comparison
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
      */
     @Override
     public boolean equals(Object objectToCompare)
@@ -130,24 +138,20 @@ public class EffectiveDatesRequestBody extends MetadataSourceRequestBody
         {
             return false;
         }
-        if (! super.equals(objectToCompare))
-        {
-            return false;
-        }
-        EffectiveDatesRequestBody that = (EffectiveDatesRequestBody) objectToCompare;
+        ConfigurationItemRelationshipProperties that = (ConfigurationItemRelationshipProperties) objectToCompare;
         return Objects.equals(effectiveFrom, that.effectiveFrom) &&
                        Objects.equals(effectiveTo, that.effectiveTo);
     }
 
 
     /**
-     * Return hash code for this object
+     * Return has code based on properties.
      *
-     * @return int hash code
+     * @return int
      */
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), effectiveFrom, effectiveTo);
+        return Objects.hash(effectiveFrom, effectiveTo);
     }
 }

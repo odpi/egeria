@@ -16,11 +16,11 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * SoftwareServerCapabilityManagementInterface defines the client side interface for the IT Infrastructure OMAS that is
+ * SoftwareServerCapabilityManagerInterface defines the client side interface for the IT Infrastructure OMAS that is
  * relevant for cataloguing software server capabilities.   It provides the ability to
  * define and maintain the metadata about a software server capability and the assets it interacts with.
  */
-public interface SoftwareServerCapabilityManagementInterface
+public interface SoftwareServerCapabilityManagerInterface
 {
     /**
      * Create a new metadata element to represent a software server capability.
@@ -29,6 +29,7 @@ public interface SoftwareServerCapabilityManagementInterface
      * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
      * @param infrastructureManagerName unique name of software server capability representing the caller
      * @param infrastructureManagerIsHome should the software server capability be marked as owned by the infrastructure manager so others can not update?
+     * @param classificationName optional classification name that refines the type of the software server capability.
      * @param capabilityProperties properties to store
      *
      * @return unique identifier of the new metadata element
@@ -41,6 +42,7 @@ public interface SoftwareServerCapabilityManagementInterface
                                           String                             infrastructureManagerGUID,
                                           String                             infrastructureManagerName,
                                           boolean                            infrastructureManagerIsHome,
+                                          String                             classificationName,
                                           SoftwareServerCapabilityProperties capabilityProperties) throws InvalidParameterException,
                                                                                                           UserNotAuthorizedException,
                                                                                                           PropertyServerException;
@@ -103,7 +105,6 @@ public interface SoftwareServerCapabilityManagementInterface
      * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
      * @param infrastructureManagerName unique name of software server capability representing the caller
      * @param capabilityGUID unique identifier of the metadata element to remove
-     * @param qualifiedName unique name of the metadata element to remove
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -112,10 +113,9 @@ public interface SoftwareServerCapabilityManagementInterface
     void removeSoftwareServerCapability(String userId,
                                         String infrastructureManagerGUID,
                                         String infrastructureManagerName,
-                                        String capabilityGUID,
-                                        String qualifiedName) throws InvalidParameterException,
-                                                                     UserNotAuthorizedException,
-                                                                     PropertyServerException;
+                                        String capabilityGUID) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException;
 
 
     /**
@@ -124,6 +124,7 @@ public interface SoftwareServerCapabilityManagementInterface
      *
      * @param userId calling user
      * @param searchString string to find in the properties
+     * @param effectiveTime effective time for the query
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -135,6 +136,7 @@ public interface SoftwareServerCapabilityManagementInterface
      */
     List<SoftwareServerCapabilityElement> findSoftwareServerCapabilities(String userId,
                                                                          String searchString,
+                                                                         Date   effectiveTime,
                                                                          int    startFrom,
                                                                          int    pageSize) throws InvalidParameterException,
                                                                                                  UserNotAuthorizedException,
@@ -147,6 +149,7 @@ public interface SoftwareServerCapabilityManagementInterface
      *
      * @param userId calling user
      * @param name name to search for
+     * @param effectiveTime effective time for the query
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -158,34 +161,11 @@ public interface SoftwareServerCapabilityManagementInterface
      */
     List<SoftwareServerCapabilityElement> getSoftwareServerCapabilitiesByName(String userId,
                                                                               String name,
+                                                                              Date   effectiveTime,
                                                                               int    startFrom,
                                                                               int    pageSize) throws InvalidParameterException,
                                                                                                       UserNotAuthorizedException,
                                                                                                       PropertyServerException;
-
-
-    /**
-     * Retrieve the list of software server capabilities originating from this caller.
-     *
-     * @param userId calling user
-     * @param infrastructureManagerGUID unique identifier of software server capability representing the software server capability manager (infrastructure manager)
-     * @param infrastructureManagerName unique name of software server capability representing the software server capability manager (infrastructure manager)
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     *
-     * @return list of matching metadata elements
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    List<SoftwareServerCapabilityElement> getSoftwareServerCapabilitiesForInfrastructureManager(String userId,
-                                                                                                String infrastructureManagerGUID,
-                                                                                                String infrastructureManagerName,
-                                                                                                int    startFrom,
-                                                                                                int    pageSize) throws InvalidParameterException,
-                                                                                                                        UserNotAuthorizedException,
-                                                                                                                        PropertyServerException;
 
 
     /**
@@ -244,8 +224,7 @@ public interface SoftwareServerCapabilityManagementInterface
      * @param userId calling user
      * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
      * @param infrastructureManagerName unique name of software server capability representing the caller
-     * @param capabilityGUID unique identifier of a software server capability
-     * @param assetGUID unique identifier of an asset
+     * @param serverAssetUseGUID unique identifier of the relationship between a software server capability and an asset
      * @param isMergeUpdate are unspecified properties unchanged (true) or removed?
      * @param properties new properties for the ServerAssetUse relationship
      *
@@ -256,8 +235,7 @@ public interface SoftwareServerCapabilityManagementInterface
     void updateServerAssetUse(String                   userId,
                               String                   infrastructureManagerGUID,
                               String                   infrastructureManagerName,
-                              String                   capabilityGUID,
-                              String                   assetGUID,
+                              String                   serverAssetUseGUID,
                               boolean                  isMergeUpdate,
                               ServerAssetUseProperties properties) throws InvalidParameterException,
                                                                           UserNotAuthorizedException,
@@ -270,8 +248,7 @@ public interface SoftwareServerCapabilityManagementInterface
      * @param userId calling user
      * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
      * @param infrastructureManagerName unique name of software server capability representing the caller
-     * @param capabilityGUID unique identifier of a software server capability
-     * @param assetGUID unique identifier of an asset
+     * @param serverAssetUseGUID unique identifier of the relationship between a software server capability and an asset
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -280,33 +257,9 @@ public interface SoftwareServerCapabilityManagementInterface
     void removeServerAssetUse(String userId,
                               String infrastructureManagerGUID,
                               String infrastructureManagerName,
-                              String capabilityGUID,
-                              String assetGUID) throws InvalidParameterException,
-                                                       UserNotAuthorizedException,
-                                                       PropertyServerException;
-
-
-    /**
-     * Retrieve the list of server asset use relationships that contain the search string in the description.
-     * The search string is treated as a regular expression.
-     *
-     * @param userId calling user
-     * @param searchString string to find in the properties
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     *
-     * @return list of matching metadata elements
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    List<ServerAssetUseElement> findServerAssetUses(String userId,
-                                                    String searchString,
-                                                    int    startFrom,
-                                                    int    pageSize) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException;
+                              String serverAssetUseGUID) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException;
 
 
     /**
@@ -315,6 +268,7 @@ public interface SoftwareServerCapabilityManagementInterface
      * @param userId calling user
      * @param capabilityGUID unique identifier of the software server capability to query
      * @param useType value to search for.  Null means all use types.
+     * @param effectiveTime effective time for the query
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -327,10 +281,12 @@ public interface SoftwareServerCapabilityManagementInterface
     List<ServerAssetUseElement> getServerAssetUsesForCapability(String             userId,
                                                                 String             capabilityGUID,
                                                                 ServerAssetUseType useType,
+                                                                Date               effectiveTime,
                                                                 int                startFrom,
                                                                 int                pageSize) throws InvalidParameterException,
                                                                                                     UserNotAuthorizedException,
                                                                                                     PropertyServerException;
+
 
     /**
      * Return the list of software server capabilities that make use of a specific asset.
@@ -338,6 +294,7 @@ public interface SoftwareServerCapabilityManagementInterface
      * @param userId calling user
      * @param assetGUID unique identifier of the asset to query
      * @param useType Optionally restrict the search to a specific user type.  Null means all use types.
+     * @param effectiveTime effective time for the query
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -350,6 +307,7 @@ public interface SoftwareServerCapabilityManagementInterface
     List<ServerAssetUseElement> getCapabilityUsesForAsset(String             userId,
                                                           String             assetGUID,
                                                           ServerAssetUseType useType,
+                                                          Date               effectiveTime,
                                                           int                startFrom,
                                                           int                pageSize) throws InvalidParameterException,
                                                                                               UserNotAuthorizedException,
@@ -357,11 +315,12 @@ public interface SoftwareServerCapabilityManagementInterface
 
 
     /**
-     * Retrieve the list of relationships between software server capabilities and assets where the use type
-     * is set to the desired value.
+     * Retrieve the list of relationships between a specific software server capability and a specific asset.
      *
      * @param userId calling user
-     * @param useType value to search for.  Null means all use types.
+     * @param capabilityGUID unique identifier of a software server capability
+     * @param assetGUID unique identifier of an asset
+     * @param effectiveTime effective time for the query
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -371,12 +330,14 @@ public interface SoftwareServerCapabilityManagementInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<ServerAssetUseElement> getServerAssetUsesByType(String             userId,
-                                                         ServerAssetUseType useType,
-                                                         int                startFrom,
-                                                         int                pageSize) throws InvalidParameterException,
-                                                                                             UserNotAuthorizedException,
-                                                                                             PropertyServerException;
+    List<ServerAssetUseElement> getServerAssetUsesForElements(String userId,
+                                                              String capabilityGUID,
+                                                              String assetGUID,
+                                                              Date   effectiveTime,
+                                                              int    startFrom,
+                                                              int    pageSize) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException;
 
 
     /**
