@@ -3395,7 +3395,7 @@ public class ITInfrastructureRESTServices
      *
      * @param userId calling user
      * @param relationship result from the repositories
-     * @param useType useType to match on
+     * @param requestedUseType useType to match on
      * @param assetHandler handler used to retrieve the asset element
      * @param repositoryHelper repository helper
      * @param serviceName name of this service
@@ -3410,7 +3410,7 @@ public class ITInfrastructureRESTServices
      */
     private ServerAssetUseElement getServerAssetUseElement(String                     userId,
                                                            Relationship               relationship,
-                                                           ServerAssetUseType         useType,
+                                                           ServerAssetUseType         requestedUseType,
                                                            AssetHandler<AssetElement> assetHandler,
                                                            OMRSRepositoryHelper       repositoryHelper,
                                                            String                     serviceName,
@@ -3422,21 +3422,21 @@ public class ITInfrastructureRESTServices
         final String assetGUIDParameterName = "relationship.entityTwoProxy.guid";
 
         boolean matchingUseType = false;
-        int ordinal = 0;
 
         InstanceProperties instanceProperties = relationship.getProperties();
 
-        if (useType == null)
+        int propertyUseTypeOrdinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName,
+                                                                                OpenMetadataAPIMapper.USE_TYPE_PROPERTY_NAME,
+                                                                                instanceProperties,
+                                                                                methodName);
+
+        if (requestedUseType == null)
         {
             matchingUseType = true;
         }
         else
         {
-            ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName,
-                                                                 OpenMetadataAPIMapper.USE_TYPE_PROPERTY_NAME,
-                                                                 instanceProperties,
-                                                                 methodName);
-            if (useType.getOpenTypeOrdinal() == ordinal)
+            if (requestedUseType.getOpenTypeOrdinal() == propertyUseTypeOrdinal)
             {
                 matchingUseType = true;
             }
@@ -3500,9 +3500,10 @@ public class ITInfrastructureRESTServices
                         }
                         else if (OpenMetadataAPIMapper.USE_TYPE_PROPERTY_NAME.equals(propertyName))
                         {
+
                             for (ServerAssetUseType useTypeValue : ServerAssetUseType.values())
                             {
-                                if (useTypeValue.getOpenTypeOrdinal() == ordinal)
+                                if (useTypeValue.getOpenTypeOrdinal() == propertyUseTypeOrdinal)
                                 {
                                     properties.setUseType(useTypeValue);
                                 }
