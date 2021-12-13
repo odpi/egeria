@@ -37,10 +37,10 @@ public enum ServerAssetUseType implements Serializable
     public static final String ENUM_TYPE_GUID  = "09439481-9489-467c-9ae5-178a6e0b6b5a";
     public static final String ENUM_TYPE_NAME  = "ServerAssetUseType";
 
-    private int    ordinal;
-    private int    openTypeOrdinal;
-    private String name;
-    private String description;
+    private final int    ordinal;
+    private final int    openTypeOrdinal;
+    private final String name;
+    private final String description;
 
 
     /**

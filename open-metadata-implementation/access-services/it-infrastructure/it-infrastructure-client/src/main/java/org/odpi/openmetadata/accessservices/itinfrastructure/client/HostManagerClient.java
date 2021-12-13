@@ -5,8 +5,10 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.client;
 import org.odpi.openmetadata.accessservices.itinfrastructure.api.HostManagerInterface;
 import org.odpi.openmetadata.accessservices.itinfrastructure.client.rest.ITInfrastructureRESTClient;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.HostElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.AssetProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.HostProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.TemplateProperties;
+import org.odpi.openmetadata.accessservices.itinfrastructure.rest.AssetRequestBody;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.HostListResponse;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.HostRequestBody;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.HostResponse;
@@ -31,7 +33,7 @@ import java.util.List;
  */
 public class HostManagerClient implements HostManagerInterface
 {
-    private static final String hostURLTemplatePrefix = "/servers/{0}/open-metadata/access-services/it-infrastructure/users/{1}/hosts";
+    private static final String assetURLTemplatePrefix = "/servers/{0}/open-metadata/access-services/it-infrastructure/users/{1}/assets";
 
     private String   serverName;               /* Initialized in constructor */
     private String   serverPlatformURLRoot;    /* Initialized in constructor */
@@ -212,9 +214,11 @@ public class HostManagerClient implements HostManagerInterface
         invalidParameterHandler.validateObject(hostProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(hostProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + hostURLTemplatePrefix + "?infrastructureManagerIsHome={2}";
+        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "?infrastructureManagerIsHome={2}";
 
-        HostRequestBody requestBody = new HostRequestBody(hostProperties);
+        AssetProperties assetProperties = hostProperties.cloneToAsset();
+
+        AssetRequestBody requestBody = new AssetRequestBody(assetProperties);
 
         requestBody.setExternalSourceGUID(infrastructureManagerGUID);
         requestBody.setExternalSourceName(infrastructureManagerName);
@@ -266,7 +270,7 @@ public class HostManagerClient implements HostManagerInterface
         invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(templateProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + hostURLTemplatePrefix + "/from-template/{2}?infrastructureManagerIsHome={3}";
+        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/from-template/{2}?infrastructureManagerIsHome={3}";
 
         TemplateRequestBody requestBody = new TemplateRequestBody(templateProperties);
 
@@ -319,9 +323,11 @@ public class HostManagerClient implements HostManagerInterface
         invalidParameterHandler.validateObject(hostProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(hostProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + hostURLTemplatePrefix + "/{2}?isMergeUpdate={3}";
+        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/{2}?isMergeUpdate={3}";
 
-        HostRequestBody requestBody = new HostRequestBody(hostProperties);
+        AssetProperties assetProperties = hostProperties.cloneToAsset();
+
+        AssetRequestBody requestBody = new AssetRequestBody(assetProperties);
 
         requestBody.setExternalSourceGUID(infrastructureManagerGUID);
         requestBody.setExternalSourceName(infrastructureManagerName);
@@ -367,7 +373,7 @@ public class HostManagerClient implements HostManagerInterface
         invalidParameterHandler.validateGUID(hostGUID, hostGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(hostedHostGUID, hostedHostGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + hostURLTemplatePrefix + "/{2}/hosted-hosts/{3}";
+        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/{2}/hosted-hosts/{3}";
 
         MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
 
@@ -414,7 +420,7 @@ public class HostManagerClient implements HostManagerInterface
         invalidParameterHandler.validateGUID(hostGUID, hostGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(hostedHostGUID, hostedHostGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + hostURLTemplatePrefix + "/{2}/hosted-hosts/{3}/delete";
+        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/{2}/hosted-hosts/{3}/delete";
 
         MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
 
@@ -461,7 +467,7 @@ public class HostManagerClient implements HostManagerInterface
         invalidParameterHandler.validateGUID(hostGUID, hostGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(clusterMemberGUID, clusterMemberGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + hostURLTemplatePrefix + "/{2}/cluster-members/{3}";
+        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/{2}/cluster-members/{3}";
 
         MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
 
@@ -508,7 +514,7 @@ public class HostManagerClient implements HostManagerInterface
         invalidParameterHandler.validateGUID(hostGUID, hostGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(clusterMemberGUID, clusterMemberGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + hostURLTemplatePrefix + "/{2}/cluster-members/{3}/delete";
+        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/{2}/cluster-members/{3}/delete";
 
         MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
 
@@ -550,7 +556,7 @@ public class HostManagerClient implements HostManagerInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(hostGUID, elementGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + hostURLTemplatePrefix + "/{2}/publish";
+        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/{2}/publish";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -585,7 +591,7 @@ public class HostManagerClient implements HostManagerInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(hostGUID, elementGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + hostURLTemplatePrefix + "/{2}/withdraw";
+        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/{2}/withdraw";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -622,7 +628,7 @@ public class HostManagerClient implements HostManagerInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(hostGUID, elementGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + hostURLTemplatePrefix + "/{2}/delete";
+        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/{2}/delete";
 
         MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
 
@@ -671,7 +677,7 @@ public class HostManagerClient implements HostManagerInterface
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + hostURLTemplatePrefix + "/by-search-string?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/by-search-string?startFrom={2}&pageSize={3}";
 
         SearchStringRequestBody requestBody = new SearchStringRequestBody();
 
@@ -723,7 +729,7 @@ public class HostManagerClient implements HostManagerInterface
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + hostURLTemplatePrefix + "?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "?startFrom={2}&pageSize={3}";
 
         NameRequestBody requestBody = new NameRequestBody();
 
@@ -779,7 +785,7 @@ public class HostManagerClient implements HostManagerInterface
 
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + hostURLTemplatePrefix + "/infrastructureManagers/{2}/{3}/hosts?startFrom={4}&pageSize={5}";
+        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/infrastructureManagers/{2}/{3}/hosts?startFrom={4}&pageSize={5}";
 
         EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
 
@@ -823,7 +829,7 @@ public class HostManagerClient implements HostManagerInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + hostURLTemplatePrefix + "/{2}";
+        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/{2}";
 
         HostResponse restResult = restClient.callHostGetRESTCall(methodName,
                                                                  urlTemplate,
@@ -864,7 +870,7 @@ public class HostManagerClient implements HostManagerInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + hostURLTemplatePrefix + "/{2}/hosted-hosts?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/{2}/hosted-hosts?startFrom={3}&pageSize={4}";
 
         EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
 
@@ -912,7 +918,7 @@ public class HostManagerClient implements HostManagerInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + hostURLTemplatePrefix + "/{2}/cluster-members?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/{2}/cluster-members?startFrom={3}&pageSize={4}";
 
         EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
 

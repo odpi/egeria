@@ -25,11 +25,11 @@ public enum OperationalStatus implements Serializable
     public static final String ENUM_TYPE_GUID  = "24e1e33e-9250-4a6c-8b07-05c7adec3a1d";
     public static final String ENUM_TYPE_NAME  = "OperationalStatus";
 
-    private int    openTypeOrdinal;
+    private final int    openTypeOrdinal;
 
-    private int    ordinal;
-    private String name;
-    private String description;
+    private final int    ordinal;
+    private final String name;
+    private final String description;
 
     private static final long     serialVersionUID = 1L;
 

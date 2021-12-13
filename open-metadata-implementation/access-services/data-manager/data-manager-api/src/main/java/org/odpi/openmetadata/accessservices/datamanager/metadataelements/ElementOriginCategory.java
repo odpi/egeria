@@ -38,9 +38,9 @@ public enum ElementOriginCategory implements Serializable
 
     private static final long     serialVersionUID = 1L;
 
-    private int    originCode;
-    private String originName;
-    private String originDescription;
+    private final int    originCode;
+    private final String originName;
+    private final String originDescription;
 
 
     /**

@@ -25,7 +25,7 @@ public class HostElement implements MetadataElement, Serializable
     private static final long serialVersionUID = 1L;
 
     private HostProperties properties    = null;
-    private ElementHeader   elementHeader = null;
+    private ElementHeader  elementHeader = null;
 
 
     /**
