@@ -2674,7 +2674,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                      */
                     if (! metadataCollection.verifyTypeDef(localServerUserId, typeDef))
                     {
-                        metadataCollection.addTypeDef(sourceName, typeDef);
+                        metadataCollection.addTypeDef(localServerUserId, typeDef);
 
                         auditLog.logMessage(actionDescription,
                                             OMRSAuditCode.NEW_TYPE_ADDED.getMessageDefinition(typeDef.getName(),
