@@ -1182,6 +1182,81 @@ public class OpenMetadataAPIGenericHandler<B>
     }
 
 
+
+    /**
+     * Update the properties associated with a relationship.  Effectivity dates are unchanged.
+     *
+     * @param userId caller's userId
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param relationshipGUID unique identifier of the relationship to update
+     * @param relationshipGUIDParameterName  name of the parameter supplying the relationshipGUID
+     * @param relationshipTypeName type name of relationship if known (null is ok)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way; the properties are
+     *                                    not valid for this type of relationship
+     * @throws UserNotAuthorizedException the governance action service is not authorized to update this relationship
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    public void deleteRelationship(String             userId,
+                                   String             externalSourceGUID,
+                                   String             externalSourceName,
+                                   String             relationshipGUID,
+                                   String             relationshipGUIDParameterName,
+                                   String             relationshipTypeName,
+                                   String             methodName) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(relationshipGUID, relationshipGUIDParameterName, methodName);
+
+        Relationship relationship = repositoryHandler.getRelationshipByGUID(userId,
+                                                                            relationshipGUID,
+                                                                            relationshipGUIDParameterName,
+                                                                            relationshipTypeName,
+                                                                            null,
+                                                                            methodName);
+
+        if (this.visibleToUserThroughRelationship(userId, relationship, methodName))
+        {
+
+
+            final String entityOneParameterName = "relationship.getEntityOneProxy().getGUID()";
+            final String entityTwoParameterName = "relationship.getEntityTwoProxy().getGUID()";
+
+            this.validateAnchorEntity(userId,
+                                      relationship.getEntityOneProxy().getGUID(),
+                                      entityOneParameterName,
+                                      OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                      false,
+                                      false,
+                                      false,
+                                      supportedZones,
+                                      null,
+                                      methodName);
+
+            this.validateAnchorEntity(userId,
+                                      relationship.getEntityTwoProxy().getGUID(),
+                                      entityTwoParameterName,
+                                      OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                      false,
+                                      false,
+                                      false,
+                                      supportedZones,
+                                      null,
+                                      methodName);
+
+            repositoryHandler.removeRelationship(userId,
+                                                 externalSourceGUID,
+                                                 externalSourceName,
+                                                 relationship,
+                                                 methodName);
+        }
+    }
+
+
     /**
      * Locate the requested classification in the supplied entity.
      *
@@ -5070,6 +5145,34 @@ public class OpenMetadataAPIGenericHandler<B>
     }
 
 
+
+
+    public Relationship getAttachmentLink(String       userId,
+                                          String       relationshipGUID,
+                                          String       relationshipGUIDParameterName,
+                                          String       relationshipTypeName,
+                                          Date         effectiveTime,
+                                          String       methodName) throws InvalidParameterException,
+                                                                          PropertyServerException,
+                                                                          UserNotAuthorizedException
+
+    {
+        Relationship relationship = repositoryHandler.getRelationshipByGUID(userId,
+                                                                            relationshipGUID,
+                                                                            relationshipGUIDParameterName,
+                                                                            relationshipTypeName,
+                                                                            effectiveTime,
+                                                                            methodName);
+
+        if (this.visibleToUserThroughRelationship(userId, relationship, methodName))
+        {
+            return relationship;
+        }
+
+        return null;
+    }
+
+
     /**
      * Return the relationship between the requested elements - there should be only one.  Note that the entities are not checked.
      *
@@ -5233,6 +5336,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                        effectiveTime,
                                        methodName);
     }
+
 
 
     /**
@@ -5640,7 +5744,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                    entityTypeGUID,
                                    entityTypeName,
                                    uniqueParameterValue,
-                                   uniqueParameterValue,
+                                   uniqueParameterName,
                                    this.getEffectiveTime(propertyBuilder.getInstanceProperties(methodName)),
                                    methodName);
         }
