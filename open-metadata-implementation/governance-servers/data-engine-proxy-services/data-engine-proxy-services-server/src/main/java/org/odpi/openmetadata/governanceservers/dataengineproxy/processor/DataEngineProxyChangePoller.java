@@ -5,7 +5,6 @@ package org.odpi.openmetadata.governanceservers.dataengineproxy.processor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineClient;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
-import org.odpi.openmetadata.accessservices.dataengine.model.DataStore;
 import org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema;
 import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
@@ -28,11 +27,7 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Predicate;
-
-import static java.util.stream.Collectors.partitioningBy;
 
 /**
  * Class to handle periodically polling a Data Engine for changes, for those data engines that do not
@@ -48,8 +43,21 @@ public class DataEngineProxyChangePoller implements Runnable {
 
     private final AtomicBoolean running = new AtomicBoolean(false);
 
-    public void start() {
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException, InvalidParameterException, PropertyServerException  {
+
+        final String methodName = "start";
+        this.auditLog.logMessage(methodName, DataEngineProxyAuditCode.INIT_POLLING.getMessageDefinition());
+
+
+        // Retrieve the base information from the connector
+        if (connector != null) {
+            SoftwareServerCapability dataEngineDetails = connector.getDataEngineDetails();
+            dataEngineOMASClient.createExternalDataEngine(userId, dataEngineDetails);
+            dataEngineOMASClient.setExternalSourceName(dataEngineDetails.getQualifiedName());
+        }
+
         Thread worker = new Thread(this);
+        worker.setName(DataEngineProxyChangePoller.class.getName());
         worker.start();
     }
 
@@ -79,21 +87,6 @@ public class DataEngineProxyChangePoller implements Runnable {
         this.dataEngineProxyConfig = dataEngineProxyConfig;
         this.dataEngineOMASClient = dataEngineOMASClient;
         this.auditLog = auditLog;
-
-        this.auditLog.logMessage(methodName, DataEngineProxyAuditCode.INIT_POLLING.getMessageDefinition());
-
-        // Retrieve the base information from the connector
-        if (connector != null) {
-            try {
-                SoftwareServerCapability dataEngineDetails = connector.getDataEngineDetails();
-                dataEngineOMASClient.createExternalDataEngine(userId, dataEngineDetails);
-                dataEngineOMASClient.setExternalSourceName(dataEngineDetails.getQualifiedName());
-            } catch (InvalidParameterException | PropertyServerException | ConnectorCheckedException e) {
-                this.auditLog.logException(methodName, DataEngineProxyAuditCode.OMAS_CONNECTION_ERROR.getMessageDefinition(), e);
-            } catch (UserNotAuthorizedException e) {
-                this.auditLog.logMessage(methodName, DataEngineProxyAuditCode.USER_NOT_AUTHORIZED.getMessageDefinition("setup external data engine"));
-            }
-        }
 
     }
 
@@ -146,17 +139,30 @@ public class DataEngineProxyChangePoller implements Runnable {
                 connector.setChangesLastSynced(changesCutoff);
 
                 // Sleep for the poll interval before continuing with the next poll
-                Thread.sleep(dataEngineProxyConfig.getPollIntervalInSeconds() * 1000L);
+                sleep();
 
-            } catch (InvalidParameterException | PropertyServerException | ConnectorCheckedException e) {
-                this.auditLog.logException(methodName, DataEngineProxyAuditCode.OMAS_CONNECTION_ERROR.getMessageDefinition(), e);
-            } catch (UserNotAuthorizedException e) {
-                this.auditLog.logMessage(methodName, DataEngineProxyAuditCode.USER_NOT_AUTHORIZED.getMessageDefinition("send changes"));
-            } catch (InterruptedException e) {
+            } catch (PropertyServerException e) {
+                // Potentially recoverable error. Retry.
+                this.auditLog.logException(methodName, DataEngineProxyAuditCode.RUNTIME_EXCEPTION.getMessageDefinition(), e);
+                sleep();
+            } catch (UserNotAuthorizedException | InvalidParameterException | ConnectorCheckedException e) {
+                // Interrupt processing and propagate runtime error.
+                this.auditLog.logException(methodName, DataEngineProxyAuditCode.RUNTIME_EXCEPTION.getMessageDefinition(), e);
                 throw new OCFRuntimeException(DataEngineProxyErrorCode.UNKNOWN_ERROR.getMessageDefinition(), this.getClass().getName(), methodName, e);
             }
         }
 
+    }
+
+    /**
+     *  Sleep until the next polling interval comes.
+     */
+    private void sleep() {
+        try {
+            Thread.sleep(dataEngineProxyConfig.getPollIntervalInSeconds() * 1000L);
+        } catch (InterruptedException e) {
+            this.auditLog.logException("sleep", DataEngineProxyAuditCode.RUNTIME_EXCEPTION.getMessageDefinition(), e);
+        }
     }
 
     private void ensureSourceNameIsSet() {
