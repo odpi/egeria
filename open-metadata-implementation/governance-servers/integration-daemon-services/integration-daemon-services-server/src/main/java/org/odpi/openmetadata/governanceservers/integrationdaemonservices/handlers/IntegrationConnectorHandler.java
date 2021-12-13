@@ -246,12 +246,11 @@ public class IntegrationConnectorHandler implements Serializable
                                                                                                                   connectorClassName,
                                                                                                                   IntegrationConnector.class.getCanonicalName()));
 
-            processConnectorException(actionDescription, operationName, error);
+            processConfigException(actionDescription, operationName, error);
         }
         catch (Exception  error)
         {
-
-            processConnectorException(actionDescription, operationName, error);
+            processConfigException(actionDescription, operationName, error);
         }
 
 
@@ -283,7 +282,7 @@ public class IntegrationConnectorHandler implements Serializable
         }
         catch (Exception error)
         {
-            processConnectorException(actionDescription, operationName, error);
+            processConfigException(actionDescription, operationName, error);
         }
     }
 
@@ -535,6 +534,42 @@ public class IntegrationConnectorHandler implements Serializable
         this.statistics                          = null;
         this.lastRefreshTime                     = null;
     }
+
+
+    /**
+     * This private method ensures consistent logging of connector issues.
+     *
+     * @param actionDescription external caller's activity
+     * @param operationName connector operation that failed
+     * @param error resulting exception
+     */
+    private void processConfigException(String     actionDescription,
+                                        String     operationName,
+                                        Exception  error)
+    {
+        updateStatus(IntegrationConnectorStatus.CONFIG_FAILED);
+        failingExceptionMessage = error.getMessage();
+
+        if (error instanceof OCFCheckedExceptionBase)
+        {
+            auditLog.logMessage(actionDescription,
+                                IntegrationDaemonServicesAuditCode.CONFIG_ERROR.getMessageDefinition(integrationConnectorName,
+                                                                                                        operationName,
+                                                                                                        error.getClass().getName(),
+                                                                                                        error.getMessage()));
+        }
+        else
+        {
+            auditLog.logException(actionDescription,
+                                  IntegrationDaemonServicesAuditCode.CONFIG_ERROR.getMessageDefinition(integrationConnectorName,
+                                                                                                          operationName,
+                                                                                                          error.getClass().getName(),
+                                                                                                          error.getMessage()),
+                                  error);
+        }
+    }
+
+
 
 
     /**
