@@ -1,11 +1,12 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.itinfrastructure.rest;
+package org.odpi.openmetadata.commonservices.ffdc.rest;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
@@ -18,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class EffectiveTimeRequestBody extends MetadataSourceRequestBody
+public class EffectiveTimeRequestBody implements Serializable
 {
     private static final long    serialVersionUID = 1L;
 
@@ -81,8 +82,6 @@ public class EffectiveTimeRequestBody extends MetadataSourceRequestBody
     {
         return "EffectiveTimeRequestBody{" +
                        "effectiveTime=" + effectiveTime +
-                       ", externalSourceGUID='" + getExternalSourceGUID() + '\'' +
-                       ", externalSourceName='" + getExternalSourceName() + '\'' +
                        '}';
     }
 
@@ -104,10 +103,6 @@ public class EffectiveTimeRequestBody extends MetadataSourceRequestBody
         {
             return false;
         }
-        if (! super.equals(objectToCompare))
-        {
-            return false;
-        }
         EffectiveTimeRequestBody that = (EffectiveTimeRequestBody) objectToCompare;
         return Objects.equals(effectiveTime, that.effectiveTime);
     }
@@ -121,6 +116,6 @@ public class EffectiveTimeRequestBody extends MetadataSourceRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), effectiveTime);
+        return Objects.hash(effectiveTime);
     }
 }
