@@ -20,8 +20,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Optional;
@@ -42,10 +40,6 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
  * OMAS and creates entities and relationships through the OMRSRepositoryConnector.
  */
 public class DataEngineRelationalDataHandler {
-
-    private static final Logger log = LoggerFactory.getLogger(DataEngineRelationalDataHandler.class);
-    private static final String DEBUG_MESSAGE_METHOD_DETAILS = "Calling method {} for entity: {}";
-    private static final String DEBUG_MESSAGE_METHOD_RETURN = "Returning from method: {} with response: {}";
 
     private static final String DATABASE_SCHEMA_GUID = "databaseSchemaGUID";
     private static final String DATABASE_GUID = "databaseGUID";
@@ -138,17 +132,12 @@ public class DataEngineRelationalDataHandler {
 
         DatabaseSchema databaseSchema = database.getDatabaseSchema();
         if(databaseSchema != null) {
-            log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, databaseSchema.getQualifiedName());
-            String databaseSchemaGUID = upsertDatabaseSchema(userId, databaseGUID, databaseSchema, incomplete, externalSourceName);
-            log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, databaseSchemaGUID);
+            upsertDatabaseSchema(userId, databaseGUID, databaseSchema, incomplete, externalSourceName);
             List<RelationalTable> tables = database.getTables();
             if(CollectionUtils.isNotEmpty(tables)) {
                 for (RelationalTable table: tables) {
                     String databaseSchemaQualifiedName = databaseSchema.getQualifiedName();
-                    log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, table.getQualifiedName());
-                    String relationalTableGUID = upsertRelationalTable(userId, databaseSchemaQualifiedName, table,
-                            externalSourceName, incomplete);
-                    log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, relationalTableGUID);
+                    upsertRelationalTable(userId, databaseSchemaQualifiedName, table, externalSourceName, incomplete);
                 }
             }
         }

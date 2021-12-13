@@ -125,6 +125,7 @@ public class DataEngineRESTServices {
     public static final String SCHEMA = "Schema";
     public static final String SCHEMA_SUFFIX = "::schema";
     public static final String EXTERNAL_SOURCE_NAME_PARAMETER_NAME = "externalSourceName";
+    public static final String UPSERT_METHOD_CALLS_FOR = "Method {} will take longer. Inside it, upsert method will be called for: {} and/or {}";
 
     private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
     private final DataEngineInstanceHandler instanceHandler = new DataEngineInstanceHandler();
@@ -944,6 +945,11 @@ public class DataEngineRESTServices {
                                  String externalSourceName) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         final String methodName = "upsertDatabase";
         log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, database);
+        DatabaseSchema databaseSchema = database.getDatabaseSchema();
+        List<RelationalTable> tables = database.getTables();
+        if(databaseSchema != null || CollectionUtils.isNotEmpty(tables)) {
+            log.debug(UPSERT_METHOD_CALLS_FOR, methodName, databaseSchema, tables);
+        }
 
         DataEngineRelationalDataHandler dataEngineRelationalDataHandler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
         String databaseGUID = dataEngineRelationalDataHandler.upsertDatabase(userId, database, incomplete, externalSourceName);

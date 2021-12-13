@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
+import org.odpi.openmetadata.accessservices.dataengine.model.Database;
 import org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
 import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientConnector;
@@ -56,6 +57,17 @@ public class DataEngineRESTClientTest {
         }
 
         dataEngineRESTClient.setExternalSourceName(EXTERNAL_SOURCE_NAME);
+    }
+
+    @Test
+    public void upsertDatabase() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, RESTServerException {
+        GUIDResponse response = mockGUIDResponse();
+        Database database = new Database();
+
+        when(connector.callPostRESTCall(eq("upsertDatabase"), eq(GUIDResponse.class), anyString(), any(), any()))
+                .thenReturn(response);
+        dataEngineRESTClient.upsertDatabase(USER_ID, database, false);
+        assertEquals(GUID, response.getGUID());
     }
 
     @Test
