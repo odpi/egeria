@@ -138,12 +138,17 @@ public class DataEngineRelationalDataHandler {
 
         DatabaseSchema databaseSchema = database.getDatabaseSchema();
         if(databaseSchema != null) {
-            upsertDatabaseSchema(userId, databaseGUID, databaseSchema, incomplete, externalSourceName);
+            log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, databaseSchema.getQualifiedName());
+            String databaseSchemaGUID = upsertDatabaseSchema(userId, databaseGUID, databaseSchema, incomplete, externalSourceName);
+            log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, databaseSchemaGUID);
             List<RelationalTable> tables = database.getTables();
             if(CollectionUtils.isNotEmpty(tables)) {
                 for (RelationalTable table: tables) {
                     String databaseSchemaQualifiedName = databaseSchema.getQualifiedName();
-                    upsertRelationalTable(userId, databaseSchemaQualifiedName, table, externalSourceName, incomplete);
+                    log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, table.getQualifiedName());
+                    String relationalTableGUID = upsertRelationalTable(userId, databaseSchemaQualifiedName, table,
+                            externalSourceName, incomplete);
+                    log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, relationalTableGUID);
                 }
             }
         }
@@ -207,8 +212,6 @@ public class DataEngineRelationalDataHandler {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(databaseSchema.getQualifiedName(), QUALIFIED_NAME_PROPERTY_NAME, methodName);
 
-        log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, databaseSchema.getQualifiedName());
-
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
         Optional<EntityDetail> originalDatabaseSchemaEntity = dataEngineCommonHandler.findEntity(userId, databaseSchema.getQualifiedName(),
                 DEPLOYED_DATABASE_SCHEMA_TYPE_NAME);
@@ -244,7 +247,6 @@ public class DataEngineRelationalDataHandler {
                     DEPLOYED_DATABASE_SCHEMA_TYPE_NAME, INCOMPLETE_CLASSIFICATION_TYPE_GUID, INCOMPLETE_CLASSIFICATION_TYPE_NAME,
                     null, methodName);
         }
-        log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, databaseSchemaGUID);
         return databaseSchemaGUID;
     }
 
@@ -267,7 +269,6 @@ public class DataEngineRelationalDataHandler {
             PropertyServerException, UserNotAuthorizedException {
         final String methodName = "upsertRelationalTable";
         validateParameters(userId, methodName, relationalTable.getQualifiedName(), relationalTable.getDisplayName());
-        log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, relationalTable.getQualifiedName());
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
 
         String relationalTableGUID;
@@ -300,7 +301,6 @@ public class DataEngineRelationalDataHandler {
                     RELATIONAL_TABLE_TYPE_NAME, INCOMPLETE_CLASSIFICATION_TYPE_GUID, INCOMPLETE_CLASSIFICATION_TYPE_NAME,
                     null, methodName);
         }
-        log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, relationalTableGUID);
         return relationalTableGUID;
     }
 
