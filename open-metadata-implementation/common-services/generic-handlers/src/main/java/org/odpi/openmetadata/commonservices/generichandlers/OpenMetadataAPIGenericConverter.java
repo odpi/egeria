@@ -780,9 +780,9 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.getStringProperty(serviceName,
-                                                         OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
-                                                         instanceProperties,
-                                                         methodName);
+                                                      OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                      instanceProperties,
+                                                      methodName);
         }
 
         return null;
@@ -899,6 +899,73 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
+     * Extract and delete the initials property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removeInitials(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeInitials";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.INITIALS_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the givenNames property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removeGivenNames(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeGivenNames";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.GIVEN_NAMES_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the surname property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removeSurname(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeSurname";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.SURNAME_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
      * Extract and delete the fullName property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
@@ -921,6 +988,29 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
+     * Extract and delete the preferredLanguage property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removePreferredLanguage(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removePreferredLanguage";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.PREFERRED_LANGUAGE_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
      * Extract and delete the jobTitle property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
@@ -934,6 +1024,52 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         {
             return repositoryHelper.removeStringProperty(serviceName,
                                                          OpenMetadataAPIMapper.JOB_TITLE_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Extract and delete the employeeNumber property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removeEmployeeNumber(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeEmployeeNumber";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.EMPLOYEE_NUMBER_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Extract and delete the employeeType property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removeEmployeeType(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeEmployeeType";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.EMPLOYEE_TYPE_PROPERTY_NAME,
                                                          instanceProperties,
                                                          methodName);
         }

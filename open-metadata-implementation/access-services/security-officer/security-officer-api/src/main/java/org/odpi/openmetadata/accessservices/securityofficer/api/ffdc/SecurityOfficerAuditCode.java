@@ -7,10 +7,7 @@ package org.odpi.openmetadata.accessservices.securityofficer.api.ffdc;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.text.MessageFormat;
 
 public enum SecurityOfficerAuditCode implements AuditLogMessageSet
 {
@@ -96,7 +93,7 @@ public enum SecurityOfficerAuditCode implements AuditLogMessageSet
 
 
 
-    private AuditLogMessageDefinition messageDefinition;
+    private final AuditLogMessageDefinition messageDefinition;
 
     /**
      * The constructor for SecurityOfficerAuditCode expects to be passed one of the enumeration rows defined in

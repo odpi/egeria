@@ -36,7 +36,7 @@ public enum DesignModelErrorCode implements ExceptionMessageSet
 
 
 
-    private ExceptionMessageDefinition messageDefinition;
+    private final ExceptionMessageDefinition messageDefinition;
 
     /**
      * The constructor for DesignModelErrorCode expects to be passed one of the enumeration rows defined in

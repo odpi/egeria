@@ -32,11 +32,11 @@ public enum CommentType implements Serializable
     public static final String ENUM_TYPE_GUID  = "06d5032e-192a-4f77-ade1-a4b97926e867";
     public static final String ENUM_TYPE_NAME  = "CommentType";
 
-    private int    openTypeOrdinal;
+    private final int    openTypeOrdinal;
 
-    private int    ordinal;
-    private String name;
-    private String description;
+    private final int    ordinal;
+    private final String name;
+    private final String description;
 
 
     /**

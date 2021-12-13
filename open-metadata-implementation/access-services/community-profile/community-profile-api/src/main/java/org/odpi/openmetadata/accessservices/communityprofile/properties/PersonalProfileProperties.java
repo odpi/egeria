@@ -23,9 +23,18 @@ public class PersonalProfileProperties extends ActorProfileProperties
 {
     private static final long    serialVersionUID = 1L;
 
-    private String  fullName = null;
-    private String  jobTitle = null;
+    private String title             = null;
+    private String initials          = null;
+    private String givenNames        = null;
+    private String surname           = null;
+    private String fullName          = null;
+    private String jobTitle          = null;
+    private String employeeNumber    = null;
+    private String employeeType      = null;
+    private String preferredLanguage = null;
+
     private boolean isPublic = false;
+
 
 
     /**
@@ -50,6 +59,13 @@ public class PersonalProfileProperties extends ActorProfileProperties
         {
             this.fullName = template.getFullName();
             this.jobTitle = template.getJobTitle();
+            this.title = template.getTitle();
+            this.initials = template.getInitials();
+            this.givenNames = template.getGivenNames();
+            this.surname = template.getSurname();
+            this.employeeNumber = template.getEmployeeNumber();
+            this.employeeType = template.getEmployeeType();
+            this.preferredLanguage = template.getPreferredLanguage();
             this.isPublic = template.getIsPublic();
         }
     }
@@ -100,7 +116,161 @@ public class PersonalProfileProperties extends ActorProfileProperties
 
 
     /**
-     * Return if the contents of this profile be shared with colleagues.
+     * Return the courtesy title for the person.
+     *
+     * @return string
+     */
+    public String getTitle()
+    {
+        return title;
+    }
+
+
+    /**
+     * Set up the courtesy title for the person.
+     *
+     * @param title string
+     */
+    public void setTitle(String title)
+    {
+        this.title = title;
+    }
+
+
+    /**
+     * Return first letter of each of the person's given names.
+     *
+     * @return string
+     */
+    public String getInitials()
+    {
+        return initials;
+    }
+
+
+    /**
+     * Set up first letter of each of the person's given names.
+     *
+     * @param initials string
+     */
+    public void setInitials(String initials)
+    {
+        this.initials = initials;
+    }
+
+
+    /**
+     * Return the name strings that are the part of a person's name that is not their surname.
+     *
+     * @return space separated list of names
+     */
+    public String getGivenNames()
+    {
+        return givenNames;
+    }
+
+
+    /**
+     * Set up the name strings that are the part of a person's name that is not their surname.
+     *
+     * @param givenNames space separated list of names
+     */
+    public void setGivenNames(String givenNames)
+    {
+        this.givenNames = givenNames;
+    }
+
+
+    /**
+     * Return the family name of the person.
+     *
+     * @return string
+     */
+    public String getSurname()
+    {
+        return surname;
+    }
+
+
+    /**
+     * Set up the family name of the person.
+     *
+     * @param surname string
+     */
+    public void setSurname(String surname)
+    {
+        this.surname = surname;
+    }
+
+
+    /**
+     * Return the unique identifier of the person used by their employer.
+     *
+     * @return string
+     */
+    public String getEmployeeNumber()
+    {
+        return employeeNumber;
+    }
+
+
+    /**
+     * Set up the unique identifier of the person used by their employer.
+     *
+     * @param employeeNumber string
+     */
+    public void setEmployeeNumber(String employeeNumber)
+    {
+        this.employeeNumber = employeeNumber;
+    }
+
+
+    /**
+     * Return code used by employer typically to describe the type of employment contract.
+     *
+     * @return string
+     */
+    public String getEmployeeType()
+    {
+        return employeeType;
+    }
+
+
+    /**
+     * Set up code used by employer typically to describe the type of employment contract.
+     *
+     * @param employeeType string
+     */
+    public void setEmployeeType(String employeeType)
+    {
+        this.employeeType = employeeType;
+    }
+
+
+    /**
+     * Return spoken or written language preferred by the person.
+     *
+     * @return string
+     */
+    public String getPreferredLanguage()
+    {
+        return preferredLanguage;
+    }
+
+
+    /**
+     * Set up spoken or written language preferred by the person.
+     *
+     * @param preferredLanguage string
+     */
+    public void setPreferredLanguage(String preferredLanguage)
+    {
+        this.preferredLanguage = preferredLanguage;
+    }
+
+
+    /**
+     * Return if the contents of this profile is to be shared with colleagues.
      *
      * @return flag
      */
@@ -111,7 +281,7 @@ public class PersonalProfileProperties extends ActorProfileProperties
 
 
     /**
-     * Set up if the contents of this profile be shared with colleagues.
+     * Set up if the contents of this profile is to be shared with colleagues.
      *
      * @param isPublic flag
      */
@@ -132,6 +302,13 @@ public class PersonalProfileProperties extends ActorProfileProperties
         return "PersonalProfileProperties{" +
                        "fullName='" + fullName + '\'' +
                        ", jobTitle='" + jobTitle + '\'' +
+                       ", title='" + title + '\'' +
+                       ", initials='" + initials + '\'' +
+                       ", givenNames='" + givenNames + '\'' +
+                       ", surname='" + surname + '\'' +
+                       ", employeeNumber='" + employeeNumber + '\'' +
+                       ", employeeType='" + employeeType + '\'' +
+                       ", preferredLanguage='" + preferredLanguage + '\'' +
                        ", isPublic=" + isPublic +
                        ", knownName='" + getKnownName() + '\'' +
                        ", description='" + getDescription() + '\'' +
@@ -163,13 +340,21 @@ public class PersonalProfileProperties extends ActorProfileProperties
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
         PersonalProfileProperties that = (PersonalProfileProperties) objectToCompare;
-        return Objects.equals(fullName, that.fullName) &&
-                       Objects.equals(jobTitle, that.jobTitle);
+        return isPublic == that.isPublic &&
+                       Objects.equals(fullName, that.fullName) &&
+                       Objects.equals(jobTitle, that.jobTitle) &&
+                       Objects.equals(title, that.title) &&
+                       Objects.equals(initials, that.initials) &&
+                       Objects.equals(givenNames, that.givenNames) &&
+                       Objects.equals(surname, that.surname) &&
+                       Objects.equals(employeeNumber, that.employeeNumber) &&
+                       Objects.equals(employeeType, that.employeeType) &&
+                       Objects.equals(preferredLanguage, that.preferredLanguage);
     }
 
 
@@ -181,6 +366,7 @@ public class PersonalProfileProperties extends ActorProfileProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), fullName, jobTitle);
+        return Objects.hash(super.hashCode(), fullName, jobTitle, title, initials, givenNames, surname, employeeNumber, employeeType,
+                            preferredLanguage, isPublic);
     }
 }

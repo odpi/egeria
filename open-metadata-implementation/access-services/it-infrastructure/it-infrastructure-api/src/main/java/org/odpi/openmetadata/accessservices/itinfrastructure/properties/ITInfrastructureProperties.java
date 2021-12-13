@@ -54,6 +54,30 @@ public class ITInfrastructureProperties extends AssetProperties
 
 
     /**
+     * Copy/clone constructor.  Note, this is a deep copy
+     *
+     * @param template object to copy
+     */
+    public ITInfrastructureProperties(AssetProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Convert this object into an AssetProperties object.  This involves packing the properties introduced at this level
+     * into the extended properties.
+     *
+     * @param subTypeName subtype name
+     * @return asset properties
+     */
+    public AssetProperties cloneToAsset(String subTypeName)
+    {
+        return super.cloneToAsset(subTypeName);
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style

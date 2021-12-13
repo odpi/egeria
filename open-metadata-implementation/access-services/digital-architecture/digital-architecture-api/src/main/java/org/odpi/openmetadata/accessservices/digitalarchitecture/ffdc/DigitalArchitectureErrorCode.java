@@ -36,7 +36,7 @@ public enum DigitalArchitectureErrorCode implements ExceptionMessageSet
 
 
 
-    private ExceptionMessageDefinition messageDefinition;
+    private final ExceptionMessageDefinition messageDefinition;
 
     /**
      * The constructor for DigitalArchitectureErrorCode expects to be passed one of the enumeration rows defined in

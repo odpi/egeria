@@ -3203,6 +3203,7 @@ public class OpenMetadataTypesArchive1_2
                                                      element1Description,
                                                      element1DescriptionGUID);
         elementDefs.add(elementDef);
+        enumDef.setDefaultValue(elementDef);
 
         final int    element2Ordinal         = 1;
         final String element2Value           = "Governs";

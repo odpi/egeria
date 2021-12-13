@@ -19,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ServerAssetUseProperties implements Serializable
+public class ServerAssetUseProperties extends ConfigurationItemRelationshipProperties
 {
     private static final long serialVersionUID = 1L;
 
@@ -47,6 +47,8 @@ public class ServerAssetUseProperties implements Serializable
      */
     public ServerAssetUseProperties(ServerAssetUseProperties template)
     {
+        super(template);
+
         if (template != null)
         {
             this.useType = template.getUseType();
@@ -206,6 +208,8 @@ public class ServerAssetUseProperties implements Serializable
                        ", minimumInstances=" + minimumInstances +
                        ", maximumInstancesSet=" + maximumInstancesSet +
                        ", maximumInstances=" + maximumInstances +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
                        '}';
     }
 
@@ -227,6 +231,10 @@ public class ServerAssetUseProperties implements Serializable
         {
             return false;
         }
+        if (! super.equals(objectToCompare))
+        {
+            return false;
+        }
         ServerAssetUseProperties that = (ServerAssetUseProperties) objectToCompare;
         return minimumInstancesSet == that.minimumInstancesSet &&
                        minimumInstances == that.minimumInstances &&
@@ -245,6 +253,6 @@ public class ServerAssetUseProperties implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(useType, description, minimumInstancesSet, minimumInstances, maximumInstancesSet, maximumInstances);
+        return Objects.hash(super.hashCode(), useType, description, minimumInstancesSet, minimumInstances, maximumInstancesSet, maximumInstances);
     }
 }

@@ -50,7 +50,7 @@ public enum DevOpsAuditCode implements AuditLogMessageSet
     ;
 
 
-    AuditLogMessageDefinition messageDefinition;
+    private final AuditLogMessageDefinition messageDefinition;
 
 
     /**
