@@ -1,0 +1,2 @@
+jdk11 = true
+build = "gradlew -x test -x javadoc  build"
