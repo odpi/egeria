@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: Apache 2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
 import org.apache.commons.lang3.StringUtils;
@@ -17,8 +19,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PROCESS_TYPE_GUID;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PROCESS_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.TOPIC_TYPE_GUID;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.TOPIC_TYPE_NAME;
@@ -27,7 +27,6 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 public class DataEngineTopicHandler {
     private final String serviceName;
     private final String serverName;
-    private final OMRSRepositoryHelper repositoryHelper;
     private final InvalidParameterHandler invalidParameterHandler;
     private final AssetHandler<Topic> topicHandler;
     private final DataEngineCommonHandler dataEngineCommonHandler;
@@ -36,12 +35,11 @@ public class DataEngineTopicHandler {
     public static final String TOPIC_GUID_PARAMETER_NAME = "topicGUID";
 
     public DataEngineTopicHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler,
-                                  OMRSRepositoryHelper repositoryHelper, AssetHandler<Topic> topicHandler,
-                                  DataEngineRegistrationHandler dataEngineRegistrationHandler, DataEngineCommonHandler dataEngineCommonHandler) {
+                                  AssetHandler<Topic> topicHandler, DataEngineRegistrationHandler dataEngineRegistrationHandler,
+                                  DataEngineCommonHandler dataEngineCommonHandler) {
         this.serviceName = serviceName;
         this.serverName = serverName;
         this.invalidParameterHandler = invalidParameterHandler;
-        this.repositoryHelper = repositoryHelper;
         this.topicHandler = topicHandler;
         this.registrationHandler = dataEngineRegistrationHandler;
         this.dataEngineCommonHandler = dataEngineCommonHandler;
@@ -53,7 +51,7 @@ public class DataEngineTopicHandler {
         validateParameters(userId, methodName, topic.getQualifiedName(), topic.getDisplayName());
 
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
-        Optional<EntityDetail> originalTopicEntity = dataEngineCommonHandler.findEntity(userId, topic.getQualifiedName(), TOPIC_TYPE_NAME);
+        Optional<EntityDetail> originalTopicEntity = findTopicEntity(userId, topic.getQualifiedName());
 
         Map<String, Object> extendedProperties = new HashMap<>();
         if(StringUtils.isNotEmpty(topic.getTopicType())) {

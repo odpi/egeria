@@ -1922,8 +1922,8 @@ public class DataEngineRESTServices {
         try {
             if (!isTopicRequestBodyValid(userId, serverName, topicRequestBody, methodName)) return response;
 
-            String databaseGUID = upsertTopic(userId, serverName, topicRequestBody.getTopic(), topicRequestBody.getExternalSourceName());
-            response.setGUID(databaseGUID);
+            String topicGUID = upsertTopic(userId, serverName, topicRequestBody.getTopic(), topicRequestBody.getExternalSourceName());
+            response.setGUID(topicGUID);
         } catch (Exception error) {
             restExceptionHandler.captureExceptions(response, error, methodName);
         }
@@ -1983,9 +1983,9 @@ public class DataEngineRESTServices {
         try {
             if (!isEventTypeRequestBodyValid(userId, serverName, eventTypeRequestBody, methodName)) return response;
 
-            String databaseGUID = upsertEventType(userId, serverName, eventTypeRequestBody.getEventType(),
+            String eventTypeGUID = upsertEventType(userId, serverName, eventTypeRequestBody.getEventType(),
                     eventTypeRequestBody.getTopicQualifiedName(), eventTypeRequestBody.getExternalSourceName());
-            response.setGUID(databaseGUID);
+            response.setGUID(eventTypeGUID);
         } catch (Exception error) {
             restExceptionHandler.captureExceptions(response, error, methodName);
         }

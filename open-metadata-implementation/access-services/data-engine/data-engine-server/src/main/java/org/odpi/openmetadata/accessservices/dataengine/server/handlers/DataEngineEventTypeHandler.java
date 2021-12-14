@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: Apache 2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -22,8 +24,6 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.EVENT_SCHEMA_ATTRIBUTE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.EVENT_TYPE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.TOPIC_TYPE_GUID;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.TOPIC_TYPE_NAME;
 
 public class DataEngineEventTypeHandler {
     private final String serviceName;
@@ -150,7 +150,6 @@ public class DataEngineEventTypeHandler {
         String topicGUID = getTopicGUID(userId, topicQualifiedName);
 
         for (EventType eventType : eventTypes) {
-            validateParameters(userId, methodName, eventType.getQualifiedName(), eventType.getDisplayName());
             upsertEventType(userId, eventType, externalSourceName, externalSourceGUID, topicGUID, methodName);
         }
     }
