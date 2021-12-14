@@ -18,7 +18,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * The type Schema type.
+ * The EventType type
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -33,6 +33,15 @@ public class EventType extends SchemaType {
     @Setter(AccessLevel.NONE)
     private static final long serialVersionUID = 1L;
 
+    /**
+     * The attribute list
+     * -- GETTER --
+     * Gets attribute list.
+     * @return the attribute list
+     * -- SETTER --
+     * Sets attribute list.
+     * @param attributeList the attribute list
+     */
     @JsonProperty("eventSchemaAttributes")
     private List<Attribute> attributeList;
 }

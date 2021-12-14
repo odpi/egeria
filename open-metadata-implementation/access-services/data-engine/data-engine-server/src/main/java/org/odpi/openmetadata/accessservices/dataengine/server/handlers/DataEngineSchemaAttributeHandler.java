@@ -12,9 +12,12 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetailDifferences;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.springframework.util.CollectionUtils;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
@@ -23,7 +26,7 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.TABULAR_COLUMN_TYPE_NAME;
 
 /**
- * DataEngineSchemaTypeHandler manages schema types objects from the property server. It runs server-side in the
+ * DataEngineSchemaAttributeHandler manages schema attributes objects from the property server. It runs server-side in the
  * DataEngine OMAS and creates and retrieves schema type entities through the OMRSRepositoryConnector.
  */
 public class DataEngineSchemaAttributeHandler {
@@ -79,15 +82,52 @@ public class DataEngineSchemaAttributeHandler {
         return dataEngineCommonHandler.findEntity(userId, qualifiedName, SCHEMA_ATTRIBUTE_TYPE_NAME);
     }
 
+    /**
+     * Creates or updates the list of schema attributes
+     *
+     * @param userId             the name of the calling user
+     * @param attributeList      the list of attributes
+     * @param externalSourceName the unique name of the external source
+     * @param externalSourceGUID the guid of the external source
+     * @param schemaTypeGUID     the guid of the schema type
+     * @param typeName           the type name of the schema attributes to be created
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public void upsertSchemaAttributes(String userId, List<Attribute> attributeList, String externalSourceName, String externalSourceGUID,
+                                       String schemaTypeGUID, String typeName) throws UserNotAuthorizedException, PropertyServerException,
+                                                                                      InvalidParameterException {
+        if (CollectionUtils.isEmpty(attributeList)) {
+            return;
+        }
+        for (Attribute tabularColumn : attributeList) {
+            Optional<EntityDetail> schemaAttributeEntity = findSchemaAttributeEntity(userId, tabularColumn.getQualifiedName());
+            if (schemaAttributeEntity.isEmpty()) {
+                tabularColumn.setTypeName(typeName);
+                createSchemaAttribute(userId, schemaTypeGUID, tabularColumn, externalSourceName);
+            } else {
+                String schemaAttributeGUID = schemaAttributeEntity.get().getGUID();
+                EntityDetail updatedSchemaAttributeEntity = buildSchemaAttributeEntityDetail(schemaAttributeGUID, tabularColumn);
+                EntityDetailDifferences entityDetailDifferences = repositoryHelper.getEntityDetailDifferences(schemaAttributeEntity.get(),
+                        updatedSchemaAttributeEntity, true);
 
-    public EntityDetail buildSchemaAttributeEntityDetail(String schemaAttributeGUID, Attribute attribute) throws InvalidParameterException {
+                if (entityDetailDifferences.hasInstancePropertiesDifferences()) {
+                    updateSchemaAttribute(userId, externalSourceGUID, externalSourceName, schemaAttributeGUID, tabularColumn);
+                }
+            }
+        }
+    }
+
+    private EntityDetail buildSchemaAttributeEntityDetail(String schemaAttributeGUID, Attribute attribute) throws InvalidParameterException {
         String methodName = "buildSchemaAttributeEntityDetail";
         SchemaAttributeBuilder schemaAttributeBuilder = getSchemaAttributeBuilder(attribute);
 
         return dataEngineCommonHandler.buildEntityDetail(schemaAttributeGUID, schemaAttributeBuilder.getInstanceProperties(methodName));
     }
 
-    public SchemaAttributeBuilder getSchemaAttributeBuilder(Attribute attribute) {
+    private SchemaAttributeBuilder getSchemaAttributeBuilder(Attribute attribute) {
         HashMap<String, String> additionalProperties = new HashMap<>();
         return new SchemaAttributeBuilder(attribute.getQualifiedName(), attribute.getDisplayName(), attribute.getDescription(),
                 attribute.getPosition(), attribute.getMinCardinality(), attribute.getMaxCardinality(), attribute.getIsDeprecated(),
@@ -99,15 +139,15 @@ public class DataEngineSchemaAttributeHandler {
                 null, repositoryHelper, serviceName, serverName);
     }
 
-    public void createSchemaAttribute(String userId, String schemaTypeGUID, Attribute attribute, String externalSourceName) throws
-                                                                                                                            InvalidParameterException,
-                                                                                                                            UserNotAuthorizedException,
-                                                                                                                            PropertyServerException {
+    private void createSchemaAttribute(String userId, String schemaTypeGUID, Attribute attribute, String externalSourceName) throws
+                                                                                                                             InvalidParameterException,
+                                                                                                                             UserNotAuthorizedException,
+                                                                                                                             PropertyServerException {
         final String methodName = "createSchemaAttribute";
 
         String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngine(userId, externalSourceName);
 
-        int sortOrderOrdinal = ((attribute.getSortOrder()==null)?DataItemSortOrder.UNKNOWN:attribute.getSortOrder()).getOpenTypeOrdinal();
+        int sortOrderOrdinal = ((attribute.getSortOrder() == null) ? DataItemSortOrder.UNKNOWN : attribute.getSortOrder()).getOpenTypeOrdinal();
         schemaAttributeHandler.createNestedSchemaAttribute(userId, externalSourceGUID, externalSourceName, schemaTypeGUID,
                 SCHEMA_TYPE_GUID_PARAMETER_NAME, attribute.getQualifiedName(), QUALIFIED_NAME_PROPERTY_NAME, attribute.getDisplayName(),
                 attribute.getDescription(), attribute.getExternalTypeGUID(), attribute.getDataType(), attribute.getDefaultValue(),
@@ -118,9 +158,8 @@ public class DataEngineSchemaAttributeHandler {
                 attribute.getTypeName(), null, methodName);
     }
 
-
-    public void updateSchemaAttribute(String userId, String externalSourceGUID, String externalSourceName, String schemaAttributeGUID,
-                                      Attribute attribute) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    private void updateSchemaAttribute(String userId, String externalSourceGUID, String externalSourceName, String schemaAttributeGUID,
+                                       Attribute attribute) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         final String methodName = "createSchemaAttribute";
 
         SchemaAttributeBuilder schemaAttributeBuilder = getSchemaAttributeBuilder(attribute);

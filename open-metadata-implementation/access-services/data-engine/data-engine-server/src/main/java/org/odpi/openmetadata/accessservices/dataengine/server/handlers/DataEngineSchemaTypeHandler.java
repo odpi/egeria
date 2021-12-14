@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
-import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
 import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -20,7 +19,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -122,33 +120,10 @@ public class DataEngineSchemaTypeHandler {
             }
         }
 
-        List<Attribute> attributeList = schemaType.getAttributeList();
-        if (CollectionUtils.isNotEmpty(attributeList)) {
-            upsertSchemaAttributes(userId, attributeList, externalSourceName, externalSourceGUID, schemaTypeGUID);
-        }
+        dataEngineSchemaAttributeHandler.upsertSchemaAttributes(userId, schemaType.getAttributeList(), externalSourceName, externalSourceGUID,
+                schemaTypeGUID, TABULAR_COLUMN_TYPE_NAME);
 
         return schemaTypeGUID;
-    }
-
-    private void upsertSchemaAttributes(String userId, List<Attribute> attributeList, String externalSourceName, String externalSourceGUID,
-                                             String schemaTypeGUID) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
-        for (Attribute tabularColumn : attributeList) {
-            Optional<EntityDetail> schemaAttributeEntity = dataEngineSchemaAttributeHandler.findSchemaAttributeEntity(userId, tabularColumn.getQualifiedName());
-            if (schemaAttributeEntity.isEmpty()) {
-                tabularColumn.setTypeName(TABULAR_COLUMN_TYPE_NAME);
-                dataEngineSchemaAttributeHandler.createSchemaAttribute(userId, schemaTypeGUID, tabularColumn, externalSourceName);
-            } else {
-                String schemaAttributeGUID = schemaAttributeEntity.get().getGUID();
-                EntityDetail updatedSchemaAttributeEntity = dataEngineSchemaAttributeHandler.buildSchemaAttributeEntityDetail(schemaAttributeGUID, tabularColumn);
-                EntityDetailDifferences entityDetailDifferences = repositoryHelper.getEntityDetailDifferences(schemaAttributeEntity.get(),
-                        updatedSchemaAttributeEntity, true);
-
-                if (entityDetailDifferences.hasInstancePropertiesDifferences()) {
-                    dataEngineSchemaAttributeHandler.updateSchemaAttribute(userId, externalSourceGUID, externalSourceName,
-                            schemaAttributeGUID, tabularColumn);
-                }
-            }
-        }
     }
 
     /**

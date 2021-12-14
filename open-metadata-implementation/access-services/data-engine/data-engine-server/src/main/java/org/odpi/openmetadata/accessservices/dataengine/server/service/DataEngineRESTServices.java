@@ -1947,9 +1947,7 @@ public class DataEngineRESTServices {
     }
 
     public VoidResponse deleteTopic(String userId, String serverName, DeleteRequestBody requestBody) {
-
         final String methodName = "deleteTopic";
-
         VoidResponse response = new VoidResponse();
 
         try {
@@ -1960,7 +1958,6 @@ public class DataEngineRESTServices {
         } catch (Exception error) {
             restExceptionHandler.captureExceptions(response, error, methodName);
         }
-
         return response;
     }
 
@@ -2008,7 +2005,6 @@ public class DataEngineRESTServices {
 
     public VoidResponse deleteEventType(String userId, String serverName, DeleteRequestBody requestBody) {
         final String methodName = "deleteEventType";
-
         VoidResponse response = new VoidResponse();
 
         try {
@@ -2019,7 +2015,6 @@ public class DataEngineRESTServices {
         } catch (Exception error) {
             restExceptionHandler.captureExceptions(response, error, methodName);
         }
-
         return response;
     }
 

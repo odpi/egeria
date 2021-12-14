@@ -7,8 +7,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 
 /**
- * ProcessConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- * EntityDetail object into a Process bean.
+ * EventTypeConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
+ * EntityDetail object into a EventType bean.
  */
 public class EventTypeConverter<B> extends OpenMetadataAPIGenericConverter<B> {
     public EventTypeConverter(OMRSRepositoryHelper repositoryHelper, String serviceName, String serverName) {

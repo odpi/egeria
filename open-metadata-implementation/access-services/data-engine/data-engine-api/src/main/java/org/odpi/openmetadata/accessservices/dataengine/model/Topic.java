@@ -36,6 +36,15 @@ public class Topic extends Asset {
      */
     private String topicType;
 
+    /**
+     * The list of event types
+     * -- GETTER --
+     * Gets event type list.
+     * @return the event type list
+     * -- SETTER --
+     * Sets event type list.
+     * @param eventTypes the event type list
+     */
     @JsonProperty("eventTypes")
     private List<EventType> eventTypes;
 }

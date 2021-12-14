@@ -6,16 +6,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
-import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
 import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.model.EventType;
-import org.odpi.openmetadata.accessservices.dataengine.model.Topic;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.EventTypeHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -23,24 +21,19 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 import static org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineEventTypeHandler.EVENT_TYPE_GUID_PARAMETER_NAME;
 import static org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineTopicHandler.TOPIC_GUID_PARAMETER_NAME;
-import static org.odpi.openmetadata.accessservices.dataengine.server.util.MockedExceptionUtil.mockException;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.EVENT_SCHEMA_ATTRIBUTE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.EVENT_TYPE_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.EXTERNAL_SCHEMA_TYPE_TYPE_GUID;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.TOPIC_TYPE_GUID;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.TOPIC_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.TABULAR_COLUMN_TYPE_NAME;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.WARN)
@@ -90,14 +83,17 @@ class DataEngineEventTypeHandlerTest {
                 null, null, null, null, null, EVENT_TYPE_TYPE_NAME, null,
                 "upsertEventType")).thenReturn(GUID);
         EventType eventType = getEventType();
+        List<Attribute> attributeList = Collections.singletonList(getAttribute());
+        eventType.setAttributeList(attributeList);
+
         dataEngineEventTypeHandler.upsertEventType(USER, eventType, TOPIC_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(eventTypeHandler, times(1)).createEventType(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
                 TOPIC_GUID, TOPIC_GUID_PARAMETER_NAME, QUALIFIED_NAME, DISPLAY_NAME, null, null, false,
                 null, null, null, null, null, EVENT_TYPE_TYPE_NAME, null,
                 "upsertEventType");
-        verify(dataEngineSchemaAttributeHandler, times(1)).createSchemaAttribute(USER, GUID,
-                eventType.getAttributeList().get(0), EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        verify(dataEngineSchemaAttributeHandler, Mockito.times(1)).upsertSchemaAttributes(USER, attributeList,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_GUID, GUID, EVENT_SCHEMA_ATTRIBUTE_TYPE_NAME);
     }
 
     @Test
@@ -111,14 +107,17 @@ class DataEngineEventTypeHandlerTest {
                 .thenReturn(Optional.of(eventSchemaAttribute));
 
         EventType eventType = getEventType();
+        List<Attribute> attributeList = Collections.singletonList(getAttribute());
+        eventType.setAttributeList(attributeList);
+
         dataEngineEventTypeHandler.upsertEventType(USER, eventType, TOPIC_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(eventTypeHandler, times(1)).updateEventType(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
                 GUID, EVENT_TYPE_GUID_PARAMETER_NAME, QUALIFIED_NAME, DISPLAY_NAME, null, null, false,
                 null, null, null, null, null, EVENT_TYPE_TYPE_NAME, null,
                 true, "upsertEventType");
-        verify(dataEngineSchemaAttributeHandler, times(1)).updateSchemaAttribute(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
-                EVENT_SCHEMA_ATTRIBUTE_GUID, eventType.getAttributeList().get(0));
+        verify(dataEngineSchemaAttributeHandler, Mockito.times(1)).upsertSchemaAttributes(USER, attributeList,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_GUID, GUID, EVENT_SCHEMA_ATTRIBUTE_TYPE_NAME);
     }
 
     @Test
@@ -131,16 +130,19 @@ class DataEngineEventTypeHandlerTest {
         when(eventTypeHandler.createEventType(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
                 TOPIC_GUID, TOPIC_GUID_PARAMETER_NAME, QUALIFIED_NAME, DISPLAY_NAME, null, null, false,
                 null, null, null, null, null, EVENT_TYPE_TYPE_NAME, null,
-                "upsertEventType")).thenReturn(GUID);
+                "upsertEventTypes")).thenReturn(GUID);
         EventType eventType = getEventType();
+        List<Attribute> attributeList = Collections.singletonList(getAttribute());
+        eventType.setAttributeList(attributeList);
+
         dataEngineEventTypeHandler.upsertEventTypes(USER, Collections.singletonList(eventType), TOPIC_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(eventTypeHandler, times(1)).createEventType(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
                 TOPIC_GUID, TOPIC_GUID_PARAMETER_NAME, QUALIFIED_NAME, DISPLAY_NAME, null, null, false,
                 null, null, null, null, null, EVENT_TYPE_TYPE_NAME, null,
-                "upsertEventType");
-        verify(dataEngineSchemaAttributeHandler, times(1)).createSchemaAttribute(USER, GUID,
-                eventType.getAttributeList().get(0), EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+                "upsertEventTypes");
+        verify(dataEngineSchemaAttributeHandler, Mockito.times(1)).upsertSchemaAttributes(USER, attributeList,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_GUID, GUID, EVENT_SCHEMA_ATTRIBUTE_TYPE_NAME);
     }
 
     @Test
@@ -158,13 +160,17 @@ class DataEngineEventTypeHandlerTest {
         EventType eventType = new EventType();
         eventType.setQualifiedName(QUALIFIED_NAME);
         eventType.setDisplayName(DISPLAY_NAME);
+
+        return eventType;
+    }
+
+    private Attribute getAttribute() {
         Attribute attribute = new Attribute();
         attribute.setTypeName(EVENT_SCHEMA_ATTRIBUTE_TYPE_NAME);
         attribute.setQualifiedName(EVENT_SCHEMA_QUALIFIED_NAME);
         attribute.setDisplayName(EVENT_SCHEMA_ATTRIBUTE_NAME);
-        eventType.setAttributeList(Collections.singletonList(attribute));
 
-        return eventType;
+        return attribute;
     }
 
     private EntityDetail mockEntityDetail(String guid) {
