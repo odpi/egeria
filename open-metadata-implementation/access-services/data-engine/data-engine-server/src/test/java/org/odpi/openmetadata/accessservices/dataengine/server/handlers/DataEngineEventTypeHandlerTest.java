@@ -76,7 +76,6 @@ class DataEngineEventTypeHandlerTest {
         when(dataEngineRegistrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
         mockFindTopic();
         when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, EVENT_TYPE_TYPE_NAME)).thenReturn(Optional.empty());
-        when(dataEngineSchemaAttributeHandler.findSchemaAttributeEntity(USER, EVENT_SCHEMA_QUALIFIED_NAME)).thenReturn(Optional.empty());
 
         when(eventTypeHandler.createEventType(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
                 TOPIC_GUID, TOPIC_GUID_PARAMETER_NAME, QUALIFIED_NAME, DISPLAY_NAME, null, null, false,
@@ -102,9 +101,6 @@ class DataEngineEventTypeHandlerTest {
         mockFindTopic();
         EntityDetail eventTypeDetails = mockEntityDetail(GUID);
         when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, EVENT_TYPE_TYPE_NAME)).thenReturn(Optional.of(eventTypeDetails));
-        EntityDetail eventSchemaAttribute = mockEntityDetail(EVENT_SCHEMA_ATTRIBUTE_GUID);
-        when(dataEngineSchemaAttributeHandler.findSchemaAttributeEntity(USER, EVENT_SCHEMA_QUALIFIED_NAME))
-                .thenReturn(Optional.of(eventSchemaAttribute));
 
         EventType eventType = getEventType();
         List<Attribute> attributeList = Collections.singletonList(getAttribute());
@@ -116,31 +112,6 @@ class DataEngineEventTypeHandlerTest {
                 GUID, EVENT_TYPE_GUID_PARAMETER_NAME, QUALIFIED_NAME, DISPLAY_NAME, null, null, false,
                 null, null, null, null, null, EVENT_TYPE_TYPE_NAME, null,
                 true, "upsertEventType");
-        verify(dataEngineSchemaAttributeHandler, Mockito.times(1)).upsertSchemaAttributes(USER, attributeList,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_GUID, GUID, EVENT_SCHEMA_ATTRIBUTE_TYPE_NAME);
-    }
-
-    @Test
-    void upsertEventTypes() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        when(dataEngineRegistrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
-        mockFindTopic();
-        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, EVENT_TYPE_TYPE_NAME)).thenReturn(Optional.empty());
-        when(dataEngineSchemaAttributeHandler.findSchemaAttributeEntity(USER, EVENT_SCHEMA_QUALIFIED_NAME)).thenReturn(Optional.empty());
-
-        when(eventTypeHandler.createEventType(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
-                TOPIC_GUID, TOPIC_GUID_PARAMETER_NAME, QUALIFIED_NAME, DISPLAY_NAME, null, null, false,
-                null, null, null, null, null, EVENT_TYPE_TYPE_NAME, null,
-                "upsertEventTypes")).thenReturn(GUID);
-        EventType eventType = getEventType();
-        List<Attribute> attributeList = Collections.singletonList(getAttribute());
-        eventType.setAttributeList(attributeList);
-
-        dataEngineEventTypeHandler.upsertEventTypes(USER, Collections.singletonList(eventType), TOPIC_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
-
-        verify(eventTypeHandler, times(1)).createEventType(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
-                TOPIC_GUID, TOPIC_GUID_PARAMETER_NAME, QUALIFIED_NAME, DISPLAY_NAME, null, null, false,
-                null, null, null, null, null, EVENT_TYPE_TYPE_NAME, null,
-                "upsertEventTypes");
         verify(dataEngineSchemaAttributeHandler, Mockito.times(1)).upsertSchemaAttributes(USER, attributeList,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_GUID, GUID, EVENT_SCHEMA_ATTRIBUTE_TYPE_NAME);
     }

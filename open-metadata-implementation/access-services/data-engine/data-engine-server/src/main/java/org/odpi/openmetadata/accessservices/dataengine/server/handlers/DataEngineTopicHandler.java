@@ -11,7 +11,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.HashMap;
@@ -24,9 +23,11 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.TOPIC_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.TOPIC_TYPE_PROPERTY_NAME;
 
+/**
+ * DataEngineTopicHandler manages topic objects. It runs server-side in the
+ * DataEngine OMAS and creates and retrieves collections entities through the OMRSRepositoryConnector.
+ */
 public class DataEngineTopicHandler {
-    private final String serviceName;
-    private final String serverName;
     private final InvalidParameterHandler invalidParameterHandler;
     private final AssetHandler<Topic> topicHandler;
     private final DataEngineCommonHandler dataEngineCommonHandler;
@@ -34,17 +35,35 @@ public class DataEngineTopicHandler {
 
     public static final String TOPIC_GUID_PARAMETER_NAME = "topicGUID";
 
-    public DataEngineTopicHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler,
-                                  AssetHandler<Topic> topicHandler, DataEngineRegistrationHandler dataEngineRegistrationHandler,
-                                  DataEngineCommonHandler dataEngineCommonHandler) {
-        this.serviceName = serviceName;
-        this.serverName = serverName;
+    /**
+     * Construct the handler information needed to interact with the repository services
+     *
+     * @param invalidParameterHandler       handler for managing parameter errors
+     * @param topicHandler                  provides utilities specific for manipulating topic entities
+     * @param dataEngineCommonHandler       provides utilities for manipulating entities
+     * @param dataEngineRegistrationHandler provides utilities for  software server capability entities
+     */
+    public DataEngineTopicHandler(InvalidParameterHandler invalidParameterHandler, AssetHandler<Topic> topicHandler,
+                                  DataEngineRegistrationHandler dataEngineRegistrationHandler, DataEngineCommonHandler dataEngineCommonHandler) {
         this.invalidParameterHandler = invalidParameterHandler;
         this.topicHandler = topicHandler;
         this.registrationHandler = dataEngineRegistrationHandler;
         this.dataEngineCommonHandler = dataEngineCommonHandler;
     }
 
+    /**
+     * Create or update the topic with event types
+     *
+     * @param userId             the name of the calling user
+     * @param topic              the values of the topic
+     * @param externalSourceName the unique name of the external source
+     *
+     * @return unique identifier of the topic in the repository
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
     public String upsertTopic(String userId, Topic topic, String externalSourceName) throws InvalidParameterException, PropertyServerException,
                                                                                             UserNotAuthorizedException {
         final String methodName = "upsertTopic";
@@ -54,7 +73,7 @@ public class DataEngineTopicHandler {
         Optional<EntityDetail> originalTopicEntity = findTopicEntity(userId, topic.getQualifiedName());
 
         Map<String, Object> extendedProperties = new HashMap<>();
-        if(StringUtils.isNotEmpty(topic.getTopicType())) {
+        if (StringUtils.isNotEmpty(topic.getTopicType())) {
             extendedProperties.put(TOPIC_TYPE_PROPERTY_NAME, topic.getTopicType());
         }
         int ownerTypeOrdinal = dataEngineCommonHandler.getOwnerTypeOrdinal(topic.getOwnerType());
@@ -87,8 +106,8 @@ public class DataEngineTopicHandler {
      * @throws PropertyServerException    problem accessing the property server
      */
     public Optional<EntityDetail> findTopicEntity(String userId, String qualifiedName) throws UserNotAuthorizedException,
-                                                                                                PropertyServerException,
-                                                                                                InvalidParameterException {
+                                                                                              PropertyServerException,
+                                                                                              InvalidParameterException {
         return dataEngineCommonHandler.findEntity(userId, qualifiedName, TOPIC_TYPE_NAME);
     }
 
@@ -108,6 +127,19 @@ public class DataEngineTopicHandler {
         invalidParameterHandler.validateName(displayName, DISPLAY_NAME_PROPERTY_NAME, methodName);
     }
 
+    /**
+     * Remove the topic
+     *
+     * @param userId             the name of the calling user
+     * @param topicGUID          unique identifier of the topic to be removed
+     * @param externalSourceName the external data engine name
+     * @param deleteSemantic     the delete semantic
+     *
+     * @throws InvalidParameterException     the bean properties are invalid
+     * @throws UserNotAuthorizedException    user not authorized to issue this request
+     * @throws PropertyServerException       problem accessing the property server
+     * @throws FunctionNotSupportedException the repository does not support this call.
+     */
     public void removeTopic(String userId, String topicGUID, String externalSourceName, DeleteSemantic deleteSemantic) throws
                                                                                                                        FunctionNotSupportedException,
                                                                                                                        InvalidParameterException,

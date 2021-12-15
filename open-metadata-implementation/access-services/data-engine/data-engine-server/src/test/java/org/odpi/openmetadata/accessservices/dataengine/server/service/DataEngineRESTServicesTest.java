@@ -1282,7 +1282,7 @@ class DataEngineRESTServicesTest {
     @Test
     void upsertTopic() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         mockTopicHandler("upsertTopic");
-        mockEventTypeHandler("upsertTopic");
+        mockEventTypeHandler("upsertEventType");
 
         when(dataEngineTopicHandler.upsertTopic(USER, getTopic(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(GUID);
 
@@ -1290,7 +1290,7 @@ class DataEngineRESTServicesTest {
 
         GUIDResponse response = dataEngineRESTServices.upsertTopic(USER, SERVER_NAME, requestBody);
         assertEquals(GUID, response.getGUID());
-        verify(dataEngineEventTypeHandler, times(1)).upsertEventTypes(USER, getTopic().getEventTypes(),
+        verify(dataEngineEventTypeHandler, times(1)).upsertEventType(USER, getTopic().getEventTypes().get(0),
                 getTopic().getQualifiedName(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
     }
 

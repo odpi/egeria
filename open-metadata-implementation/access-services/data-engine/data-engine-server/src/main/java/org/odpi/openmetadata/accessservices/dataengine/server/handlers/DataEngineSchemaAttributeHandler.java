@@ -76,7 +76,7 @@ public class DataEngineSchemaAttributeHandler {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public Optional<EntityDetail> findSchemaAttributeEntity(String userId, String qualifiedName) throws UserNotAuthorizedException,
+    private Optional<EntityDetail> findSchemaAttributeEntity(String userId, String qualifiedName) throws UserNotAuthorizedException,
                                                                                                         PropertyServerException,
                                                                                                         InvalidParameterException {
         return dataEngineCommonHandler.findEntity(userId, qualifiedName, SCHEMA_ATTRIBUTE_TYPE_NAME);
@@ -147,15 +147,14 @@ public class DataEngineSchemaAttributeHandler {
 
         String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngine(userId, externalSourceName);
 
-        int sortOrderOrdinal = ((attribute.getSortOrder() == null) ? DataItemSortOrder.UNKNOWN : attribute.getSortOrder()).getOpenTypeOrdinal();
         schemaAttributeHandler.createNestedSchemaAttribute(userId, externalSourceGUID, externalSourceName, schemaTypeGUID,
                 SCHEMA_TYPE_GUID_PARAMETER_NAME, attribute.getQualifiedName(), QUALIFIED_NAME_PROPERTY_NAME, attribute.getDisplayName(),
                 attribute.getDescription(), attribute.getExternalTypeGUID(), attribute.getDataType(), attribute.getDefaultValue(),
                 attribute.getFixedValue(), attribute.getValidValuesSetGUID(), null, attribute.getIsDeprecated(), attribute.getPosition(),
                 attribute.getMinCardinality(), attribute.getMaxCardinality(), attribute.getAllowsDuplicateValues(), attribute.getOrderedValues(),
-                attribute.getDefaultValueOverride(), sortOrderOrdinal, attribute.getMinimumLength(), attribute.getLength(), attribute.getPrecision(),
-                attribute.getIsNullable(), attribute.getNativeClass(), attribute.getAliases(), attribute.getAdditionalProperties(),
-                attribute.getTypeName(), null, methodName);
+                attribute.getDefaultValueOverride(), dataEngineCommonHandler.getSortOrder(attribute), attribute.getMinimumLength(),
+                attribute.getLength(), attribute.getPrecision(), attribute.getIsNullable(), attribute.getNativeClass(), attribute.getAliases(),
+                attribute.getAdditionalProperties(), attribute.getTypeName(), null, methodName);
     }
 
     private void updateSchemaAttribute(String userId, String externalSourceGUID, String externalSourceName, String schemaAttributeGUID,

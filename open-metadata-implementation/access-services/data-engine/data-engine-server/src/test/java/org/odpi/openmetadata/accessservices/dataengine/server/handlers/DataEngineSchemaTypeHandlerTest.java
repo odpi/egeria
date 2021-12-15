@@ -156,9 +156,6 @@ class DataEngineSchemaTypeHandlerTest {
         when(repositoryHelper.getEntityDetailDifferences(schemaTypeEntity, schemaTypeUpdatedEntity, true))
                 .thenReturn(schemaTypeDifferences);
 
-        EntityDetail schemaAttributeEntity = mock(EntityDetail.class);
-        when(schemaAttributeEntity.getGUID()).thenReturn(ATTRIBUTE_GUID);
-        when(dataEngineSchemaAttributeHandler.findSchemaAttributeEntity(USER, ATTRIBUTE_QUALIFIED_NAME)).thenReturn(Optional.of(schemaAttributeEntity));
         when(dataEngineRegistrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
                 .thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
