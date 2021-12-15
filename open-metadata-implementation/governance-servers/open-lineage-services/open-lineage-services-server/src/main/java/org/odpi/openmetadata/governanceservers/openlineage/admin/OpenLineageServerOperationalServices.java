@@ -189,11 +189,11 @@ public class OpenLineageServerOperationalServices {
         String serverUserId = accessServiceConfig.getUser();
         ConnectionResponse restResult = null;
         try {
-            restResult = restClient.callConnectionGetRESTCall(methodName,
-                    serverPlatformURLRoot + urlTemplate,
-                    serverName,
-                    serverUserId,
-                    localServerId);
+            restResult = restClient.callOCFConnectionGetRESTCall(methodName,
+                                                                 serverPlatformURLRoot + urlTemplate,
+                                                                 serverName,
+                                                                 serverUserId,
+                                                                 localServerId);
         } catch (InvalidParameterException | UserNotAuthorizedException | org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException e) {
             logException(OpenLineageServerAuditCode.COULD_NOT_RETRIEVE_TOPIC_CONNECTOR, actionDescription, e);
         }
