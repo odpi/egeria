@@ -4,14 +4,14 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.client;
 
 import org.odpi.openmetadata.accessservices.itinfrastructure.api.HostManagerInterface;
 import org.odpi.openmetadata.accessservices.itinfrastructure.client.rest.ITInfrastructureRESTClient;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.AssetElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.HostElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.AssetProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.HostProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.TemplateProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.AssetRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.HostListResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.HostRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.HostResponse;
+import org.odpi.openmetadata.accessservices.itinfrastructure.rest.AssetListResponse;
+import org.odpi.openmetadata.accessservices.itinfrastructure.rest.AssetResponse;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.MetadataSourceRequestBody;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.TemplateRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -25,6 +25,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -34,6 +35,10 @@ import java.util.List;
 public class HostManagerClient implements HostManagerInterface
 {
     private static final String assetURLTemplatePrefix = "/servers/{0}/open-metadata/access-services/it-infrastructure/users/{1}/assets";
+
+    private static final String hostEntityURL = "/Host";
+    private static final String hostedHostRelationship = "HostedHost";
+    private static final String hostClusterMemberRelationship = "HostClusterMember";
 
     private String   serverName;               /* Initialized in constructor */
     private String   serverPlatformURLRoot;    /* Initialized in constructor */
@@ -179,7 +184,6 @@ public class HostManagerClient implements HostManagerInterface
     /* =====================================================================================================================
      * The host describes the computer or container that provides the operating system for the platforms.
      */
-
 
 
     /**
@@ -373,7 +377,7 @@ public class HostManagerClient implements HostManagerInterface
         invalidParameterHandler.validateGUID(hostGUID, hostGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(hostedHostGUID, hostedHostGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/{2}/hosted-hosts/{3}";
+        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/{2}/" + hostedHostRelationship + "/{3}";
 
         MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
 
@@ -420,7 +424,7 @@ public class HostManagerClient implements HostManagerInterface
         invalidParameterHandler.validateGUID(hostGUID, hostGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(hostedHostGUID, hostedHostGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/{2}/hosted-hosts/{3}/delete";
+        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/{2}/" + hostedHostRelationship + "/{3}/delete";
 
         MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
 
@@ -467,7 +471,7 @@ public class HostManagerClient implements HostManagerInterface
         invalidParameterHandler.validateGUID(hostGUID, hostGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(clusterMemberGUID, clusterMemberGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/{2}/cluster-members/{3}";
+        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/{2}/" + hostClusterMemberRelationship + "/{3}";
 
         MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
 
@@ -514,7 +518,7 @@ public class HostManagerClient implements HostManagerInterface
         invalidParameterHandler.validateGUID(hostGUID, hostGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(clusterMemberGUID, clusterMemberGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/{2}/cluster-members/{3}/delete";
+        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/{2}/" + hostClusterMemberRelationship + "/{3/delete";
 
         MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
 
@@ -677,7 +681,7 @@ public class HostManagerClient implements HostManagerInterface
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/by-search-string?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + hostEntityURL + "/by-search-string?startFrom={2}&pageSize={3}";
 
         SearchStringRequestBody requestBody = new SearchStringRequestBody();
 
@@ -685,15 +689,15 @@ public class HostManagerClient implements HostManagerInterface
         requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(searchStringParameterName);
 
-        HostListResponse restResult = restClient.callHostListPostRESTCall(methodName,
-                                                                          urlTemplate,
-                                                                          requestBody,
-                                                                          serverName,
-                                                                          userId,
-                                                                          startFrom,
-                                                                          validatedPageSize);
+        AssetListResponse restResult = restClient.callAssetListPostRESTCall(methodName,
+                                                                            urlTemplate,
+                                                                            requestBody,
+                                                                            serverName,
+                                                                            userId,
+                                                                            startFrom,
+                                                                            validatedPageSize);
 
-        return restResult.getElementList();
+        return this.convertAssetElements(restResult.getElementList());
     }
 
 
@@ -729,7 +733,7 @@ public class HostManagerClient implements HostManagerInterface
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + hostEntityURL + "?startFrom={2}&pageSize={3}";
 
         NameRequestBody requestBody = new NameRequestBody();
 
@@ -737,15 +741,15 @@ public class HostManagerClient implements HostManagerInterface
         requestBody.setName(name);
         requestBody.setNamePropertyName(nameParameterName);
 
-        HostListResponse restResult = restClient.callHostListPostRESTCall(methodName,
-                                                                          urlTemplate,
-                                                                          requestBody,
-                                                                          serverName,
-                                                                          userId,
-                                                                          startFrom,
-                                                                          validatedPageSize);
+        AssetListResponse restResult = restClient.callAssetListPostRESTCall(methodName,
+                                                                            urlTemplate,
+                                                                            requestBody,
+                                                                            serverName,
+                                                                            userId,
+                                                                            startFrom,
+                                                                            validatedPageSize);
 
-        return restResult.getElementList();
+        return this.convertAssetElements(restResult.getElementList());
     }
 
 
@@ -785,23 +789,23 @@ public class HostManagerClient implements HostManagerInterface
 
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/infrastructureManagers/{2}/{3}/hosts?startFrom={4}&pageSize={5}";
+        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + hostEntityURL + "/infrastructureManagers/{2}/{3}/hosts?startFrom={4}&pageSize={5}";
 
         EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
 
         requestBody.setEffectiveTime(effectiveTime);
 
-        HostListResponse restResult = restClient.callHostListPostRESTCall(methodName,
-                                                                          urlTemplate,
-                                                                          requestBody,
-                                                                          serverName,
-                                                                          userId,
-                                                                          infrastructureManagerGUID,
-                                                                          infrastructureManagerName,
-                                                                          startFrom,
-                                                                          validatedPageSize);
+        AssetListResponse restResult = restClient.callAssetListPostRESTCall(methodName,
+                                                                            urlTemplate,
+                                                                            requestBody,
+                                                                            serverName,
+                                                                            userId,
+                                                                            infrastructureManagerGUID,
+                                                                            infrastructureManagerName,
+                                                                            startFrom,
+                                                                            validatedPageSize);
 
-        return restResult.getElementList();
+        return this.convertAssetElements(restResult.getElementList());
     }
 
 
@@ -829,15 +833,15 @@ public class HostManagerClient implements HostManagerInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/{2}";
+        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + hostEntityURL + "/{2}";
 
-        HostResponse restResult = restClient.callHostGetRESTCall(methodName,
-                                                                 urlTemplate,
-                                                                 serverName,
-                                                                 userId,
-                                                                 guid);
+        AssetResponse restResult = restClient.callAssetGetRESTCall(methodName,
+                                                                   urlTemplate,
+                                                                   serverName,
+                                                                   userId,
+                                                                   guid);
 
-        return restResult.getElement();
+        return this.convertAssetElement(restResult.getElement());
     }
 
 
@@ -870,22 +874,22 @@ public class HostManagerClient implements HostManagerInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/{2}/hosted-hosts?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/{2}/" + hostedHostRelationship + "?startFrom={3}&pageSize={4}";
 
         EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
 
         requestBody.setEffectiveTime(effectiveTime);
 
-        HostListResponse restResult = restClient.callHostListPostRESTCall(methodName,
-                                                                          urlTemplate,
-                                                                          requestBody,
-                                                                          serverName,
-                                                                          userId,
-                                                                          supportingHostGUID,
-                                                                          startFrom,
-                                                                          validatedPageSize);
+        AssetListResponse restResult = restClient.callAssetListPostRESTCall(methodName,
+                                                                            urlTemplate,
+                                                                            requestBody,
+                                                                            serverName,
+                                                                            userId,
+                                                                            supportingHostGUID,
+                                                                            startFrom,
+                                                                            validatedPageSize);
 
-        return restResult.getElementList();
+        return this.convertAssetElements(restResult.getElementList());
     }
 
 
@@ -918,21 +922,65 @@ public class HostManagerClient implements HostManagerInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/{2}/cluster-members?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/{2}/" + hostClusterMemberRelationship + "?startFrom={3}&pageSize={4}";
 
         EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
 
         requestBody.setEffectiveTime(effectiveTime);
 
-        HostListResponse restResult = restClient.callHostListPostRESTCall(methodName,
-                                                                          urlTemplate,
-                                                                          requestBody,
-                                                                          serverName,
-                                                                          userId,
-                                                                          hostGUID,
-                                                                          startFrom,
-                                                                          validatedPageSize);
+        AssetListResponse restResult = restClient.callAssetListPostRESTCall(methodName,
+                                                                            urlTemplate,
+                                                                            requestBody,
+                                                                            serverName,
+                                                                            userId,
+                                                                            hostGUID,
+                                                                            startFrom,
+                                                                            validatedPageSize);
 
-        return restResult.getElementList();
+        return this.convertAssetElements(restResult.getElementList());
+    }
+
+
+    /**
+     * Convert a list of AssetElements into a list of HostElements.
+     *
+     * @param assetElements returned assets
+     * @return result for caller
+     */
+    private List<HostElement> convertAssetElements(List<AssetElement> assetElements)
+    {
+        if (assetElements != null)
+        {
+            List<HostElement> hostElements = new ArrayList<>();
+
+            for (AssetElement assetElement : assetElements)
+            {
+                hostElements.add(this.convertAssetElement(assetElement));
+            }
+
+            if (! hostElements.isEmpty())
+            {
+                return hostElements;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Convert a single AssetElement to a HostElement.
+     *
+     * @param assetElement return asset
+     * @return result for caller
+     */
+    private HostElement convertAssetElement(AssetElement assetElement)
+    {
+        if (assetElement != null)
+        {
+            return new HostElement(assetElement);
+        }
+
+        return null;
     }
 }

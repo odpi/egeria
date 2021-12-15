@@ -142,14 +142,14 @@ public class ConnectedAssetInformalTags extends AssetInformalTags
 
         try
         {
-            InformalTagsResponse restResult = restClient.callInformalTagsGetRESTCall(methodName,
-                                                                                     omasServerURL + urlTemplate,
-                                                                                     serverName,
-                                                                                     serviceName,
-                                                                                     userId,
-                                                                                     assetGUID,
-                                                                                     cacheStartPointer,
-                                                                                     maximumSize);
+            InformalTagsResponse restResult = restClient.callOCFInformalTagsGetRESTCall(methodName,
+                                                                                        omasServerURL + urlTemplate,
+                                                                                        serverName,
+                                                                                        serviceName,
+                                                                                        userId,
+                                                                                        assetGUID,
+                                                                                        cacheStartPointer,
+                                                                                        maximumSize);
 
             restExceptionHandler.detectAndThrowInvalidParameterException(restResult);
             restExceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);

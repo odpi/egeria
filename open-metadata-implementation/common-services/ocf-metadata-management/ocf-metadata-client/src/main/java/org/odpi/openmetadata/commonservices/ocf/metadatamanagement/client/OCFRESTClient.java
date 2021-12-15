@@ -100,11 +100,11 @@ public class OCFRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    public AssetResponse callAssetGetRESTCall(String    methodName,
-                                              String    urlTemplate,
-                                              Object... params) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
+    public AssetResponse callOCFAssetGetRESTCall(String    methodName,
+                                                 String    urlTemplate,
+                                                 Object... params) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
         AssetResponse restResult = this.callGetRESTCall(methodName, AssetResponse.class, urlTemplate, params);
 
@@ -126,11 +126,11 @@ public class OCFRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    public AssetsResponse callAssetsGetRESTCall(String    methodName,
-                                                String    urlTemplate,
-                                                Object... params) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
+    public AssetsResponse callOCFAssetsGetRESTCall(String    methodName,
+                                                   String    urlTemplate,
+                                                   Object... params) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         AssetsResponse restResult = this.callGetRESTCall(methodName, AssetsResponse.class, urlTemplate, params);
 
@@ -153,12 +153,12 @@ public class OCFRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    public AssetsResponse callAssetsPostRESTCall(String    methodName,
-                                                 String    urlTemplate,
-                                                 Object    requestBody,
-                                                 Object... params) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public AssetsResponse callOCFAssetsPostRESTCall(String    methodName,
+                                                    String    urlTemplate,
+                                                    Object    requestBody,
+                                                    Object... params) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
     {
         AssetsResponse restResult = this.callPostRESTCall(methodName, AssetsResponse.class, urlTemplate, requestBody, params);
 
@@ -180,11 +180,11 @@ public class OCFRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    CertificationsResponse callCertificationsGetRESTCall(String    methodName,
-                                                         String    urlTemplate,
-                                                         Object... params) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
+    CertificationsResponse callOCFCertificationsGetRESTCall(String    methodName,
+                                                            String    urlTemplate,
+                                                            Object... params) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
         CertificationsResponse restResult = this.callGetRESTCall(methodName, CertificationsResponse.class, urlTemplate, params);
 
@@ -206,11 +206,11 @@ public class OCFRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    CommentsResponse callCommentsGetRESTCall(String    methodName,
-                                             String    urlTemplate,
-                                             Object... params) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+    CommentsResponse callOCFCommentsGetRESTCall(String    methodName,
+                                                String    urlTemplate,
+                                                Object... params) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
     {
         CommentsResponse restResult = this.callGetRESTCall(methodName, CommentsResponse.class, urlTemplate, params);
 
@@ -232,11 +232,11 @@ public class OCFRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    public ConnectionResponse callConnectionGetRESTCall(String    methodName,
-                                                        String    urlTemplate,
-                                                        Object... params) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+    public ConnectionResponse callOCFConnectionGetRESTCall(String    methodName,
+                                                           String    urlTemplate,
+                                                           Object... params) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
     {
         ConnectionResponse restResult = this.callGetRESTCall(methodName, ConnectionResponse.class, urlTemplate, params);
 
@@ -258,11 +258,11 @@ public class OCFRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    ConnectionsResponse callConnectionsGetRESTCall(String    methodName,
-                                                   String    urlTemplate,
-                                                   Object... params) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
+    ConnectionsResponse callOCFConnectionsGetRESTCall(String    methodName,
+                                                      String    urlTemplate,
+                                                      Object... params) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
         ConnectionsResponse restResult = this.callGetRESTCall(methodName, ConnectionsResponse.class, urlTemplate, params);
 
@@ -284,11 +284,11 @@ public class OCFRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    ExternalIdentifiersResponse callExternalIdentifiersGetRESTCall(String    methodName,
-                                                                   String    urlTemplate,
-                                                                   Object... params) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException
+    ExternalIdentifiersResponse callOCFExternalIdentifiersGetRESTCall(String    methodName,
+                                                                      String    urlTemplate,
+                                                                      Object... params) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
     {
         ExternalIdentifiersResponse restResult = this.callGetRESTCall(methodName, ExternalIdentifiersResponse.class, urlTemplate, params);
 
@@ -310,11 +310,11 @@ public class OCFRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    ExternalReferencesResponse callExternalReferencesGetRESTCall(String    methodName,
-                                                                 String    urlTemplate,
-                                                                 Object... params) throws InvalidParameterException,
-                                                                                          UserNotAuthorizedException,
-                                                                                          PropertyServerException
+    ExternalReferencesResponse callOCFExternalReferencesGetRESTCall(String    methodName,
+                                                                    String    urlTemplate,
+                                                                    Object... params) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
     {
         ExternalReferencesResponse restResult = this.callGetRESTCall(methodName, ExternalReferencesResponse.class, urlTemplate, params);
 
@@ -336,11 +336,11 @@ public class OCFRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    InformalTagsResponse callInformalTagsGetRESTCall(String    methodName,
-                                                     String    urlTemplate,
-                                                     Object... params) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException
+    InformalTagsResponse callOCFInformalTagsGetRESTCall(String    methodName,
+                                                        String    urlTemplate,
+                                                        Object... params) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
     {
         InformalTagsResponse restResult = this.callGetRESTCall(methodName, InformalTagsResponse.class, urlTemplate, params);
 
@@ -362,11 +362,11 @@ public class OCFRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    LicensesResponse callLicensesGetRESTCall(String    methodName,
-                                             String    urlTemplate,
-                                             Object... params) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+    LicensesResponse callOCFLicensesGetRESTCall(String    methodName,
+                                                String    urlTemplate,
+                                                Object... params) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
     {
         LicensesResponse restResult = this.callGetRESTCall(methodName, LicensesResponse.class, urlTemplate, params);
 
@@ -388,11 +388,11 @@ public class OCFRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    LikesResponse callLikesGetRESTCall(String    methodName,
-                                       String    urlTemplate,
-                                       Object... params) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException
+    LikesResponse callOCFLikesGetRESTCall(String    methodName,
+                                          String    urlTemplate,
+                                          Object... params) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
     {
         LikesResponse restResult = this.callGetRESTCall(methodName, LikesResponse.class, urlTemplate, params);
 
@@ -414,11 +414,11 @@ public class OCFRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    LocationsResponse callLocationsGetRESTCall(String    methodName,
-                                               String    urlTemplate,
-                                               Object... params) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+    LocationsResponse callOCFLocationsGetRESTCall(String    methodName,
+                                                  String    urlTemplate,
+                                                  Object... params) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
         LocationsResponse restResult = this.callGetRESTCall(methodName, LocationsResponse.class, urlTemplate, params);
 
@@ -440,11 +440,11 @@ public class OCFRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    MeaningResponse callMeaningGetRESTCall(String    methodName,
-                                           String    urlTemplate,
-                                           Object... params) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
+    MeaningResponse callOCFMeaningGetRESTCall(String    methodName,
+                                              String    urlTemplate,
+                                              Object... params) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
     {
         MeaningResponse restResult = this.callGetRESTCall(methodName, MeaningResponse.class, urlTemplate, params);
 
@@ -466,11 +466,11 @@ public class OCFRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    MeaningsResponse callMeaningListGetRESTCall(String    methodName,
-                                                String    urlTemplate,
-                                                Object... params) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
+    MeaningsResponse callOCFMeaningListGetRESTCall(String    methodName,
+                                                   String    urlTemplate,
+                                                   Object... params) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         MeaningsResponse restResult = this.callGetRESTCall(methodName, MeaningsResponse.class, urlTemplate, params);
 
@@ -492,11 +492,11 @@ public class OCFRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    NoteLogsResponse callNoteLogsGetRESTCall(String    methodName,
-                                             String    urlTemplate,
-                                             Object... params) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+    NoteLogsResponse callOCFNoteLogsGetRESTCall(String    methodName,
+                                                String    urlTemplate,
+                                                Object... params) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
     {
         NoteLogsResponse restResult = this.callGetRESTCall(methodName, NoteLogsResponse.class, urlTemplate, params);
 
@@ -518,11 +518,11 @@ public class OCFRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    NotesResponse callNotesGetRESTCall(String    methodName,
-                                       String    urlTemplate,
-                                       Object... params) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException
+    NotesResponse callOCFNotesGetRESTCall(String    methodName,
+                                          String    urlTemplate,
+                                          Object... params) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
     {
         NotesResponse restResult = this.callGetRESTCall(methodName, NotesResponse.class, urlTemplate, params);
 
@@ -544,11 +544,11 @@ public class OCFRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    RatingsResponse callRatingsGetRESTCall(String    methodName,
-                                           String    urlTemplate,
-                                           Object... params) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
+    RatingsResponse callOCFRatingsGetRESTCall(String    methodName,
+                                              String    urlTemplate,
+                                              Object... params) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
     {
         RatingsResponse restResult = this.callGetRESTCall(methodName, RatingsResponse.class, urlTemplate, params);
 
@@ -570,11 +570,11 @@ public class OCFRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    RelatedAssetsResponse callRelatedAssetsGetRESTCall(String    methodName,
-                                                       String    urlTemplate,
-                                                       Object... params) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
+    RelatedAssetsResponse callOCFRelatedAssetsGetRESTCall(String    methodName,
+                                                          String    urlTemplate,
+                                                          Object... params) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
         RelatedAssetsResponse restResult = this.callGetRESTCall(methodName, RelatedAssetsResponse.class, urlTemplate, params);
 
@@ -596,11 +596,11 @@ public class OCFRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    RelatedMediaReferencesResponse callRelatedMediaReferencesGetRESTCall(String    methodName,
-                                                                         String    urlTemplate,
-                                                                         Object... params) throws InvalidParameterException,
-                                                                                                  UserNotAuthorizedException,
-                                                                                                  PropertyServerException
+    RelatedMediaReferencesResponse callOCFRelatedMediaReferencesGetRESTCall(String    methodName,
+                                                                            String    urlTemplate,
+                                                                            Object... params) throws InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     PropertyServerException
     {
         RelatedMediaReferencesResponse restResult = this.callGetRESTCall(methodName, RelatedMediaReferencesResponse.class, urlTemplate, params);
 
@@ -622,11 +622,11 @@ public class OCFRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    SchemaAttributesResponse callSchemaAttributesGetRESTCall(String    methodName,
-                                                             String    urlTemplate,
-                                                             Object... params) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+    SchemaAttributesResponse callOCFSchemaAttributesGetRESTCall(String    methodName,
+                                                                String    urlTemplate,
+                                                                Object... params) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
     {
         SchemaAttributesResponse restResult = this.callGetRESTCall(methodName, SchemaAttributesResponse.class, urlTemplate, params);
 
@@ -647,11 +647,11 @@ public class OCFRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    public TagResponse callTagGetRESTCall(String    methodName,
-                                          String    urlTemplate,
-                                          Object... params) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+    public TagResponse callOCFTagGetRESTCall(String    methodName,
+                                             String    urlTemplate,
+                                             Object... params) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
     {
         TagResponse restResult = this.callGetRESTCall(methodName, TagResponse.class, urlTemplate, params);
 
@@ -673,11 +673,11 @@ public class OCFRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    public TagsResponse callTagListGetRESTCall(String    methodName,
-                                               String    urlTemplate,
-                                               Object... params) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+    public TagsResponse callOCFTagListGetRESTCall(String    methodName,
+                                                  String    urlTemplate,
+                                                  Object... params) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
         TagsResponse restResult = this.callGetRESTCall(methodName, TagsResponse.class, urlTemplate, params);
 
@@ -700,12 +700,12 @@ public class OCFRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    public TagsResponse callTagListPostRESTCall(String    methodName,
-                                                String    urlTemplate,
-                                                Object    requestBody,
-                                                Object... params) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
+    public TagsResponse callOCFTagListPostRESTCall(String    methodName,
+                                                   String    urlTemplate,
+                                                   Object    requestBody,
+                                                   Object... params) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         TagsResponse restResult =  this.callPostRESTCall(methodName, TagsResponse.class, urlTemplate, requestBody, params);
 
