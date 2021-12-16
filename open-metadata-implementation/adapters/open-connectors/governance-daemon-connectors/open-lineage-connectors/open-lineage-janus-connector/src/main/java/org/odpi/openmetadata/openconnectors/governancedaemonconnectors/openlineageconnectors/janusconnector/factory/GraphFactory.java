@@ -16,6 +16,8 @@ import org.janusgraph.core.JanusGraphFactory;
 import org.janusgraph.core.schema.JanusGraphManagement;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph.LineageGraphConnector;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph.LineageGraphConnectorProvider;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph.LineageGraphRemoteConnectorProvider;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode;
@@ -33,12 +35,15 @@ import java.util.stream.Stream;
 
 import static org.apache.tinkerpop.gremlin.process.traversal.AnonymousTraversalSource.traversal;
 import static org.janusgraph.util.system.ConfigurationUtil.loadMapConfiguration;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.GRAPH_TRAVERSAL_EMPTY;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ASSET_LINEAGE_LAST_UPDATE_TIMESTAMP;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_GUID;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_VERSION;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_LABEL;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_METADATA_ID;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_RELATIONSHIP_GUID;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_RELATIONSHIP_LABEL;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_NAME_ASSET_LINEAGE_LAST_UPDATE_TIMESTAMP;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_NAME_GUID;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_NAME_LABEL;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_NAME_METADATA_ID;
@@ -48,10 +53,15 @@ public class GraphFactory extends IndexingFactory {
 
     private static final Logger log = LoggerFactory.getLogger(GraphFactory.class);
     private Graph graph;
-    private GraphTraversalSource g;
     private boolean supportingTransactions;
     private Cluster cluster;
     private Client client;
+    private boolean isRemoteGraph = false;
+    private GraphTraversalSource remoteTraversal;
+    private JanusGraph localGraph;
+
+    public static final String EMPTY_GRAPH_TRAVERSAL = "The graphTraversal is empty. Connection with the graph is not established";
+    public static final String INITIALIZE_GRAPH_DB = "initializeGraphDB";
 
     private static final String ADD_VERTEX_LABEL_IF_MISSING_FORMAT =
             "if (management.getVertexLabel(\"%s\") == null ) { management.makeVertexLabel(\"%s\").make(); }\n";
@@ -66,21 +76,32 @@ public class GraphFactory extends IndexingFactory {
      * @param providerClass        - Provider Class name to be used
      * @param connectionProperties - POJO for the configuration used to create the connector.
      * @param auditLog             - Used for logging errors
-     * @return GraphTraversalSource DSL of Gremlin
      *
      * @throws JanusConnectorException if init fails
+     * @throws OpenLineageException if init fails
      */
-    public GraphTraversalSource openGraph(String providerClass, ConnectionProperties connectionProperties, AuditLog auditLog) throws JanusConnectorException {
+    public void openGraph(String providerClass, ConnectionProperties connectionProperties, AuditLog auditLog) throws JanusConnectorException, OpenLineageException {
+        boolean startError = false;
         super.auditLog = auditLog;
         if (providerClass.equals(LineageGraphConnectorProvider.class.getName())) {
-          return openEmbeddedGraph(connectionProperties.getConfigurationProperties());
+            isRemoteGraph = false;
+            this.localGraph = openEmbeddedGraph(connectionProperties.getConfigurationProperties());
+            startError = this.localGraph == null;
         }
 
         if (providerClass.equals(LineageGraphRemoteConnectorProvider.class.getName())) {
-            return openRemoteGraph(connectionProperties.getConfigurationProperties());
+            isRemoteGraph = true;
+            this.remoteTraversal = openRemoteGraph(connectionProperties.getConfigurationProperties());
+            startError = this.remoteTraversal == null;
         }
-
-        return null;
+        if (startError) {
+            log.error(EMPTY_GRAPH_TRAVERSAL);
+            JanusConnectorErrorCode errorCode = GRAPH_TRAVERSAL_EMPTY;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    EMPTY_GRAPH_TRAVERSAL, INITIALIZE_GRAPH_DB, LineageGraphConnector.class.getName());
+            throw new OpenLineageException(500, errorCode.getClass().getName(), errorMessage, errorCode.getErrorMessage(),
+                    errorCode.getSystemAction(), errorCode.getUserAction());
+        }
     }
 
 
@@ -88,20 +109,19 @@ public class GraphFactory extends IndexingFactory {
      * Open the graph when embedded mode is used.
      *
      * @param properties - POJO for the configuration used to create the connector.
-     * @return GraphTraversalSource DSL of Gremlin
+     * @return JanusGraph graph Gremlin
      *
      * @throws JanusConnectorException if open fails
      */
-    private GraphTraversalSource openEmbeddedGraph(Map<String, Object> properties) throws JanusConnectorException{
+    private JanusGraph openEmbeddedGraph(Map<String, Object> properties) throws JanusConnectorException {
         final String methodName = "openEmbeddedGraph";
 
         try {
             graph = JanusGraphFactory.open(loadMapConfiguration(properties));
-            g = graph.traversal();
             JanusGraph janusGraph = (JanusGraph) graph;
             initializeGraph(janusGraph);
             supportingTransactions = true;
-            return g;
+            return janusGraph;
         } catch (Exception e) {
             log.error("A connection with the graph database could not be established with the provided configuration", e);
             JanusConnectorErrorCode errorCode = JanusConnectorErrorCode.CANNOT_OPEN_GRAPH_DB;
@@ -115,7 +135,6 @@ public class GraphFactory extends IndexingFactory {
      *
      * @param properties - POJO for the configuration used to create the connector.
      * @return GraphTraversalSource DSL of Gremlin
-     *
      * @throws JanusConnectorException if open fails
      */
     private GraphTraversalSource openRemoteGraph(Map<String, Object> properties) throws JanusConnectorException {
@@ -136,6 +155,7 @@ public class GraphFactory extends IndexingFactory {
             throw mapConnectorException(methodName, errorMessage, errorCode);
         }
     }
+
 
     /**
      * Set up the schema for the Janus Graph instance
@@ -253,6 +273,8 @@ public class GraphFactory extends IndexingFactory {
     private void createIndexes(JanusGraph janusGraph) {
         createCompositeIndexForProperty(PROPERTY_NAME_GUID, PROPERTY_KEY_ENTITY_GUID, true, janusGraph, Vertex.class);
         createCompositeIndexForProperty(PROPERTY_NAME_LABEL, PROPERTY_KEY_LABEL, false, janusGraph, Vertex.class);
+        createCompositeIndexForProperty(PROPERTY_NAME_ASSET_LINEAGE_LAST_UPDATE_TIMESTAMP,
+                PROPERTY_KEY_ASSET_LINEAGE_LAST_UPDATE_TIMESTAMP, false, janusGraph, Vertex.class);
         createCompositeIndexForProperty(PROPERTY_NAME_VERSION, PROPERTY_KEY_ENTITY_VERSION, false, janusGraph, Vertex.class);
         createCompositeIndexForProperty(PROPERTY_NAME_METADATA_ID, PROPERTY_KEY_METADATA_ID, false, janusGraph, Vertex.class);
         createCompositeIndexForProperty(PROPERTY_NAME_LABEL, PROPERTY_KEY_RELATIONSHIP_LABEL, false, janusGraph, Edge.class);
@@ -329,19 +351,15 @@ public class GraphFactory extends IndexingFactory {
     public void closeGraph() {
 
         try {
-            if (g != null) {
-                g.close();
-            }
             if (graph != null) {
                 graph.close();
             }
             if (cluster != null) {
                 cluster.close();
             }
-        } catch(Exception e) {
-            log.error("Exception while closing the graph.",e);
+        } catch (Exception e) {
+            log.error("Exception while closing the graph.", e);
         } finally {
-            g = null;
             graph = null;
             client = null;
             cluster = null;
@@ -361,5 +379,11 @@ public class GraphFactory extends IndexingFactory {
                 errorCode.getUserAction());
     }
 
+    public GraphTraversalSource getGraphTraversalSource() {
+        if (isRemoteGraph) {
+            return this.remoteTraversal;
+        }
+        return this.localGraph.traversal();
+    }
 
 }
