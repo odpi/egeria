@@ -362,6 +362,6 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
         dataEngineTopicHandler = new DataEngineTopicHandler(invalidParameterHandler, topicHandler,
                 dataEngineRegistrationHandler, dataEngineCommonHandler);
         dataEngineEventTypeHandler = new DataEngineEventTypeHandler(invalidParameterHandler, eventTypeHandler, dataEngineRegistrationHandler,
-                dataEngineCommonHandler, dataEngineTopicHandler, dataEngineSchemaAttributeHandler);
+                dataEngineCommonHandler, dataEngineSchemaAttributeHandler);
     }
 }

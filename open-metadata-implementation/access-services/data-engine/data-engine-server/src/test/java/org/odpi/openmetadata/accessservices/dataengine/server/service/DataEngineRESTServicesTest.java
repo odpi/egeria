@@ -151,6 +151,8 @@ class DataEngineRESTServicesTest {
     private static final String PROCESS_QUALIFIED_NAME = "processQName";
     private static final String COLLECTION_GUID = "collectionGUID";
     public static final String DATABASE_QUALIFIED_NAME = "databaseQualifiedName";
+    private static final String TOPIC_QUALIFIED_NAME = "topicQualifiedName";
+    private static final String TOPIC_GUID = "topicGuid";
 
     @Mock
     RESTExceptionHandler restExceptionHandler;
@@ -1290,8 +1292,8 @@ class DataEngineRESTServicesTest {
 
         GUIDResponse response = dataEngineRESTServices.upsertTopic(USER, SERVER_NAME, requestBody);
         assertEquals(GUID, response.getGUID());
-        verify(dataEngineEventTypeHandler, times(1)).upsertEventType(USER, getTopic().getEventTypes().get(0),
-                getTopic().getQualifiedName(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        verify(dataEngineEventTypeHandler, times(1)).upsertEventType(USER, getTopic().getEventTypes().get(0), GUID,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
     }
 
     @Test
@@ -1299,7 +1301,10 @@ class DataEngineRESTServicesTest {
         mockTopicHandler("upsertEventType");
         mockEventTypeHandler("upsertEventType");
 
-        when(dataEngineEventTypeHandler.upsertEventType(USER, getEventType(), QUALIFIED_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(GUID);
+        EntityDetail topic = mock(EntityDetail.class);
+        when(topic.getGUID()).thenReturn(TOPIC_GUID);
+        when(dataEngineTopicHandler.findTopicEntity(USER, TOPIC_QUALIFIED_NAME)).thenReturn(Optional.of(topic));
+        when(dataEngineEventTypeHandler.upsertEventType(USER, getEventType(), TOPIC_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(GUID);
 
         EventTypeRequestBody requestBody = mockEventTypeRequestBody();
 
@@ -1522,7 +1527,7 @@ class DataEngineRESTServicesTest {
         EventTypeRequestBody requestBody = new EventTypeRequestBody();
         requestBody.setEventType(getEventType());
         requestBody.setExternalSourceName(EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
-        requestBody.setTopicQualifiedName(QUALIFIED_NAME);
+        requestBody.setTopicQualifiedName(TOPIC_QUALIFIED_NAME);
         return requestBody;
     }
 

@@ -2,8 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
-import org.apache.commons.collections4.CollectionUtils;
-import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.model.EventType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -14,7 +12,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
-import java.util.List;
 import java.util.Optional;
 
 import static org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineTopicHandler.TOPIC_GUID_PARAMETER_NAME;
@@ -32,7 +29,6 @@ public class DataEngineEventTypeHandler {
     private final EventTypeHandler<EventType> eventTypeHandler;
     private final DataEngineCommonHandler dataEngineCommonHandler;
     private final DataEngineRegistrationHandler registrationHandler;
-    private final DataEngineTopicHandler dataEngineTopicHandler;
     private final DataEngineSchemaAttributeHandler dataEngineSchemaAttributeHandler;
 
     public static final String EVENT_TYPE_GUID_PARAMETER_NAME = "eventTypeGUID";
@@ -44,18 +40,15 @@ public class DataEngineEventTypeHandler {
      * @param eventTypeHandler                 provides utilities specific for manipulating event type entities
      * @param dataEngineCommonHandler          provides utilities for manipulating entities
      * @param dataEngineRegistrationHandler    provides utilities for  software server capability entities
-     * @param dataEngineTopicHandler           provides utilities specific for manipulating topic entities
      * @param dataEngineSchemaAttributeHandler provides utilities specific for schema attribute entities
      */
     public DataEngineEventTypeHandler(InvalidParameterHandler invalidParameterHandler, EventTypeHandler<EventType> eventTypeHandler,
                                       DataEngineRegistrationHandler dataEngineRegistrationHandler, DataEngineCommonHandler dataEngineCommonHandler,
-                                      DataEngineTopicHandler dataEngineTopicHandler,
                                       DataEngineSchemaAttributeHandler dataEngineSchemaAttributeHandler) {
         this.invalidParameterHandler = invalidParameterHandler;
         this.eventTypeHandler = eventTypeHandler;
         this.registrationHandler = dataEngineRegistrationHandler;
         this.dataEngineCommonHandler = dataEngineCommonHandler;
-        this.dataEngineTopicHandler = dataEngineTopicHandler;
         this.dataEngineSchemaAttributeHandler = dataEngineSchemaAttributeHandler;
     }
 
@@ -64,7 +57,7 @@ public class DataEngineEventTypeHandler {
      *
      * @param userId             the name of the calling user
      * @param eventType          the values of the event type
-     * @param topicQualifiedName the topic qualified name
+     * @param topicGUID          the unique identifier of the topic
      * @param externalSourceName the unique name of the external source
      *
      * @return unique identifier of the event type in the repository
@@ -73,23 +66,21 @@ public class DataEngineEventTypeHandler {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public String upsertEventType(String userId, EventType eventType, String topicQualifiedName, String externalSourceName) throws
-                                                                                                                            InvalidParameterException,
-                                                                                                                            PropertyServerException,
-                                                                                                                            UserNotAuthorizedException {
+    public String upsertEventType(String userId, EventType eventType, String topicGUID, String externalSourceName) throws
+                                                                                                                   InvalidParameterException,
+                                                                                                                   PropertyServerException,
+                                                                                                                   UserNotAuthorizedException {
         final String methodName = "upsertEventType";
-        Optional<EntityDetail> topicEntity = dataEngineTopicHandler.findTopicEntity(userId, topicQualifiedName);
-        if (topicEntity.isEmpty()) {
-            dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.TOPIC_NOT_FOUND, methodName, topicQualifiedName);
-        }
-        String topicGUID = topicEntity.get().getGUID();
+
         validateParameters(userId, methodName, eventType.getQualifiedName(), eventType.getDisplayName());
 
-        Optional<EntityDetail> originalEventTypeEntity =
-                dataEngineCommonHandler.findEntity(userId, eventType.getQualifiedName(), EVENT_TYPE_TYPE_NAME);
+        Optional<EntityDetail> originalEventTypeEntity = dataEngineCommonHandler.findEntity(userId, eventType.getQualifiedName(),
+                EVENT_TYPE_TYPE_NAME);
         String eventTypeGUID;
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
         if (originalEventTypeEntity.isEmpty()) {
+            eventTypeHandler.verifyExternalSourceIdentity(userId, externalSourceGUID, externalSourceName,
+                    false, false, null, null);
             eventTypeGUID = eventTypeHandler.createEventType(userId, externalSourceGUID, externalSourceName, topicGUID, TOPIC_GUID_PARAMETER_NAME,
                     eventType.getQualifiedName(), eventType.getDisplayName(), eventType.getDescription(), eventType.getVersionNumber(),
                     eventType.getIsDeprecated(), eventType.getAuthor(), eventType.getUsage(), eventType.getEncodingStandard(),

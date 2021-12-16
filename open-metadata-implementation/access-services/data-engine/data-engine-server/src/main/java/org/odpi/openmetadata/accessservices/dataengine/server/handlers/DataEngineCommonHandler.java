@@ -366,7 +366,7 @@ public class DataEngineCommonHandler {
         return sortOrder;
     }
 
-    protected void throwInvalidParameterException(DataEngineErrorCode errorCode, String methodName, String... params) throws
+    public void throwInvalidParameterException(DataEngineErrorCode errorCode, String methodName, String... params) throws
                                                                                                                       InvalidParameterException {
 
         throw new InvalidParameterException(errorCode.getMessageDefinition(params), this.getClass().getName(), methodName, "qualifiedName");

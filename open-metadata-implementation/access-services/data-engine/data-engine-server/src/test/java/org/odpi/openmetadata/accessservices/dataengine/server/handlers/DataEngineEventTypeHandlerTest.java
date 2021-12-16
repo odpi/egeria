@@ -44,11 +44,9 @@ class DataEngineEventTypeHandlerTest {
     private static final String EXTERNAL_SOURCE_DE_GUID = "externalSourceDataEngineGuid";
     private static final String EXTERNAL_SOURCE_DE_QUALIFIED_NAME = "externalSourceDataEngineQualifiedName";
     private static final String GUID = "guid";
-    private static final String TOPIC_QUALIFIED_NAME = "topicQualifiedName";
     private static final String EVENT_SCHEMA_QUALIFIED_NAME = "eventSchemaAttributeQName";
     private static final String EVENT_SCHEMA_ATTRIBUTE_NAME = "eventSchemaAttributeName";
     private static final String TOPIC_GUID = "topicGUID";
-    private static final String EVENT_SCHEMA_ATTRIBUTE_GUID = "eventSchemaAttributeGUID";
 
     @Mock
     private DataEngineCommonHandler dataEngineCommonHandler;
@@ -63,9 +61,6 @@ class DataEngineEventTypeHandlerTest {
     private InvalidParameterHandler invalidParameterHandler;
 
     @Mock
-    private DataEngineTopicHandler dataEngineTopicHandler;
-
-    @Mock
     private DataEngineSchemaAttributeHandler dataEngineSchemaAttributeHandler;
 
     @InjectMocks
@@ -74,7 +69,6 @@ class DataEngineEventTypeHandlerTest {
     @Test
     void upsertEventType_create() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         when(dataEngineRegistrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
-        mockFindTopic();
         when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, EVENT_TYPE_TYPE_NAME)).thenReturn(Optional.empty());
 
         when(eventTypeHandler.createEventType(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
@@ -85,7 +79,7 @@ class DataEngineEventTypeHandlerTest {
         List<Attribute> attributeList = Collections.singletonList(getAttribute());
         eventType.setAttributeList(attributeList);
 
-        dataEngineEventTypeHandler.upsertEventType(USER, eventType, TOPIC_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        dataEngineEventTypeHandler.upsertEventType(USER, eventType, TOPIC_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(eventTypeHandler, times(1)).createEventType(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
                 TOPIC_GUID, TOPIC_GUID_PARAMETER_NAME, QUALIFIED_NAME, DISPLAY_NAME, null, null, false,
@@ -98,7 +92,6 @@ class DataEngineEventTypeHandlerTest {
     @Test
     void upsertEventType_update() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         when(dataEngineRegistrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
-        mockFindTopic();
         EntityDetail eventTypeDetails = mockEntityDetail(GUID);
         when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, EVENT_TYPE_TYPE_NAME)).thenReturn(Optional.of(eventTypeDetails));
 
@@ -106,7 +99,7 @@ class DataEngineEventTypeHandlerTest {
         List<Attribute> attributeList = Collections.singletonList(getAttribute());
         eventType.setAttributeList(attributeList);
 
-        dataEngineEventTypeHandler.upsertEventType(USER, eventType, TOPIC_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+        dataEngineEventTypeHandler.upsertEventType(USER, eventType, TOPIC_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(eventTypeHandler, times(1)).updateEventType(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
                 GUID, EVENT_TYPE_GUID_PARAMETER_NAME, QUALIFIED_NAME, DISPLAY_NAME, null, null, false,
@@ -148,10 +141,5 @@ class DataEngineEventTypeHandlerTest {
         EntityDetail entityDetail = mock(EntityDetail.class);
         when(entityDetail.getGUID()).thenReturn(guid);
         return entityDetail;
-    }
-
-    private void mockFindTopic() throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
-        EntityDetail topic = mockEntityDetail(TOPIC_GUID);
-        when(dataEngineTopicHandler.findTopicEntity(USER, TOPIC_QUALIFIED_NAME)).thenReturn(Optional.of(topic));
     }
 }
