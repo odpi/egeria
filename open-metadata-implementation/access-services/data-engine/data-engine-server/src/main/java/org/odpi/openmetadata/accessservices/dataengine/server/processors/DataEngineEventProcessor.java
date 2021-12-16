@@ -11,6 +11,7 @@ import org.odpi.openmetadata.accessservices.dataengine.event.DataFileEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.DatabaseEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.DatabaseSchemaEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.DeleteEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.EventTypeEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.LineageMappingsEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.PortAliasEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.PortImplementationEvent;
@@ -18,6 +19,7 @@ import org.odpi.openmetadata.accessservices.dataengine.event.ProcessEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.ProcessHierarchyEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.RelationalTableEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.SchemaTypeEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.TopicEvent;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineAuditCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 import org.odpi.openmetadata.accessservices.dataengine.server.admin.DataEngineServicesInstance;
@@ -499,6 +501,79 @@ public class DataEngineEventProcessor {
             DeleteEvent deleteEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DeleteEvent.class);
 
             dataEngineRESTServices.deleteEndpoint(deleteEvent.getUserId(), serverName, deleteEvent.getExternalSourceName(),
+                    deleteEvent.getGuid(), deleteEvent.getQualifiedName(), deleteEvent.getDeleteSemantic());
+        } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException | EntityNotDeletedException e) {
+            logException(dataEngineEvent, methodName, e);
+        }
+    }
+
+    /**
+     * Process a {@link TopicEvent} for creating a topic
+     *
+     * @param dataEngineEvent the event to be processed
+     */
+    public void processTopicEvent(String dataEngineEvent) {
+        final String methodName = "processTopicEvent";
+        log.trace(DEBUG_MESSAGE_METHOD, methodName);
+        try {
+            TopicEvent topicEvent = OBJECT_MAPPER.readValue(dataEngineEvent, TopicEvent.class);
+
+            dataEngineRESTServices.upsertTopic(topicEvent.getUserId(), serverName, topicEvent.getTopic(), topicEvent.getExternalSourceName());
+        } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
+            logException(dataEngineEvent, methodName, e);
+        }
+    }
+
+    /**
+     * Process a {@link EventTypeEvent} for creating a topic
+     *
+     * @param dataEngineEvent the event to be processed
+     */
+    public void processEventTypeEvent(String dataEngineEvent) {
+        final String methodName = "processEventTypeEvent";
+        log.trace(DEBUG_MESSAGE_METHOD, methodName);
+        try {
+            EventTypeEvent eventTypeEvent = OBJECT_MAPPER.readValue(dataEngineEvent, EventTypeEvent.class);
+            String topicGUID = dataEngineRESTServices.getTopicGUID(eventTypeEvent.getUserId(), serverName, eventTypeEvent.getTopicQualifiedName(),
+                    methodName);
+
+            dataEngineRESTServices.upsertEventType(eventTypeEvent.getUserId(), serverName, eventTypeEvent.getEventType(), topicGUID,
+                    eventTypeEvent.getExternalSourceName());
+        } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
+            logException(dataEngineEvent, methodName, e);
+        }
+    }
+
+    /**
+     * Process a {@link DeleteEvent} for deleting a topic
+     *
+     * @param dataEngineEvent the event to be processed
+     */
+    public void processDeleteTopicEvent(String dataEngineEvent) {
+        final String methodName = "processDeleteTopicEvent";
+        log.trace(DEBUG_MESSAGE_METHOD, methodName);
+        try {
+            DeleteEvent deleteEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DeleteEvent.class);
+
+            dataEngineRESTServices.deleteTopic(deleteEvent.getUserId(), serverName, deleteEvent.getExternalSourceName(),
+                    deleteEvent.getGuid(), deleteEvent.getQualifiedName(), deleteEvent.getDeleteSemantic());
+        } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException | EntityNotDeletedException e) {
+            logException(dataEngineEvent, methodName, e);
+        }
+    }
+
+    /**
+     * Process a {@link DeleteEvent} for deleting an event type
+     *
+     * @param dataEngineEvent the event to be processed
+     */
+    public void processDeleteEventTypeEvent(String dataEngineEvent) {
+        final String methodName = "processDeleteEventTypeEvent";
+        log.trace(DEBUG_MESSAGE_METHOD, methodName);
+        try {
+            DeleteEvent deleteEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DeleteEvent.class);
+
+            dataEngineRESTServices.deleteEventType(deleteEvent.getUserId(), serverName, deleteEvent.getExternalSourceName(),
                     deleteEvent.getGuid(), deleteEvent.getQualifiedName(), deleteEvent.getDeleteSemantic());
         } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException | FunctionNotSupportedException | EntityNotDeletedException e) {
             logException(dataEngineEvent, methodName, e);
