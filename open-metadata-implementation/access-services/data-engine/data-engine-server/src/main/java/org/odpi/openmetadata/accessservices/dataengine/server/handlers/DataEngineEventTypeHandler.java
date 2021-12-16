@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
+import org.apache.commons.collections4.CollectionUtils;
+import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
 import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.model.EventType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -12,10 +14,12 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineTopicHandler.TOPIC_GUID_PARAMETER_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.EVENT_SCHEMA_ATTRIBUTE_TYPE_GUID;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.EVENT_SCHEMA_ATTRIBUTE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.EVENT_TYPE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
@@ -93,8 +97,14 @@ public class DataEngineEventTypeHandler {
                     eventType.getNamespace(), eventType.getAdditionalProperties(), EVENT_TYPE_TYPE_NAME, null, true, methodName);
         }
 
-        dataEngineSchemaAttributeHandler.upsertSchemaAttributes(userId, eventType.getAttributeList(), externalSourceName, externalSourceGUID,
-                eventTypeGUID, EVENT_SCHEMA_ATTRIBUTE_TYPE_NAME);
+        List<Attribute> attributeList = eventType.getAttributeList();
+        if (CollectionUtils.isNotEmpty(attributeList)) {
+            attributeList.forEach(column -> {
+                column.setTypeName(EVENT_SCHEMA_ATTRIBUTE_TYPE_NAME);
+                column.setTypeGuid(EVENT_SCHEMA_ATTRIBUTE_TYPE_GUID);
+            });
+        }
+        dataEngineSchemaAttributeHandler.upsertSchemaAttributes(userId, attributeList, externalSourceName, externalSourceGUID, eventTypeGUID);
 
         return eventTypeGUID;
     }

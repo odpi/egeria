@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
 import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
-import org.odpi.openmetadata.accessservices.dataengine.model.DataItemSortOrder;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaAttributeBuilder;
@@ -90,14 +89,13 @@ public class DataEngineSchemaAttributeHandler {
      * @param externalSourceName the unique name of the external source
      * @param externalSourceGUID the guid of the external source
      * @param schemaTypeGUID     the guid of the schema type
-     * @param typeName           the type name of the schema attributes to be created
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
     public void upsertSchemaAttributes(String userId, List<Attribute> attributeList, String externalSourceName, String externalSourceGUID,
-                                       String schemaTypeGUID, String typeName) throws UserNotAuthorizedException, PropertyServerException,
+                                       String schemaTypeGUID) throws UserNotAuthorizedException, PropertyServerException,
                                                                                       InvalidParameterException {
         if (CollectionUtils.isEmpty(attributeList)) {
             return;
@@ -105,7 +103,6 @@ public class DataEngineSchemaAttributeHandler {
         for (Attribute tabularColumn : attributeList) {
             Optional<EntityDetail> schemaAttributeEntity = findSchemaAttributeEntity(userId, tabularColumn.getQualifiedName());
             if (schemaAttributeEntity.isEmpty()) {
-                tabularColumn.setTypeName(typeName);
                 createSchemaAttribute(userId, schemaTypeGUID, tabularColumn, externalSourceName);
             } else {
                 String schemaAttributeGUID = schemaAttributeEntity.get().getGUID();
@@ -154,7 +151,8 @@ public class DataEngineSchemaAttributeHandler {
                 attribute.getMinCardinality(), attribute.getMaxCardinality(), attribute.getAllowsDuplicateValues(), attribute.getOrderedValues(),
                 attribute.getDefaultValueOverride(), dataEngineCommonHandler.getSortOrder(attribute), attribute.getMinimumLength(),
                 attribute.getLength(), attribute.getPrecision(), attribute.getIsNullable(), attribute.getNativeClass(), attribute.getAliases(),
-                attribute.getAdditionalProperties(), attribute.getTypeName(), null, methodName);
+                attribute.getAdditionalProperties(), attribute.getTypeName() != null ? attribute.getTypeName() : TABULAR_COLUMN_TYPE_NAME,
+                null, methodName);
     }
 
     private void updateSchemaAttribute(String userId, String externalSourceGUID, String externalSourceName, String schemaAttributeGUID,

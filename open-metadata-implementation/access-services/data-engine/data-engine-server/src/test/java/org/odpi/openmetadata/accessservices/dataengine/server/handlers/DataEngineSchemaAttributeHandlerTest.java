@@ -29,6 +29,7 @@ import static org.mockito.internal.verification.VerificationModeFactory.times;
 import static org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaAttributeHandler.SCHEMA_TYPE_GUID_PARAMETER_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.TABULAR_COLUMN_TYPE_NAME;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.WARN)
@@ -40,7 +41,6 @@ class DataEngineSchemaAttributeHandlerTest {
     private static final String ATTRIBUTE_GUID = "attributeGuid";
     private static final String EXTERNAL_SOURCE_DE_GUID = "externalSourceDataEngineGuid";
     private static final String EXTERNAL_SOURCE_DE_QUALIFIED_NAME = "externalSourceDataEngineQualifiedName";
-    private static final String TYPE_NAME = "typeName";
 
     @Mock
     private DataEngineCommonHandler dataEngineCommonHandler;
@@ -66,14 +66,14 @@ class DataEngineSchemaAttributeHandlerTest {
         when(dataEngineCommonHandler.getSortOrder(attribute)).thenReturn(99);
 
         dataEngineSchemaAttributeHandler.upsertSchemaAttributes(USER, Collections.singletonList(attribute),
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_GUID, GUID, TYPE_NAME);
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_GUID, GUID);
 
         verify(schemaAttributeHandler, times(1)).createNestedSchemaAttribute(USER, EXTERNAL_SOURCE_DE_GUID,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME, GUID, SCHEMA_TYPE_GUID_PARAMETER_NAME, ATTRIBUTE_QUALIFIED_NAME, QUALIFIED_NAME_PROPERTY_NAME,
                 ATTRIBUTE_DISPLAY_NAME, null, null, null, null, null,
                 null, null, false, 0, 0, 0, false,
                 false, null, 99, 0, 0, 0, false, null,
-                null, null, TYPE_NAME, null, "createSchemaAttribute");
+                null, null, TABULAR_COLUMN_TYPE_NAME, null, "createSchemaAttribute");
     }
 
     @Test
@@ -94,7 +94,7 @@ class DataEngineSchemaAttributeHandlerTest {
                 .thenReturn(attributeDifferences);
 
         dataEngineSchemaAttributeHandler.upsertSchemaAttributes(USER, Collections.singletonList(attribute),
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_GUID, GUID, TYPE_NAME);
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_GUID, GUID);
 
         verify(schemaAttributeHandler, times(1)).updateSchemaAttribute(USER, EXTERNAL_SOURCE_DE_GUID,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME, ATTRIBUTE_GUID, null);

@@ -86,7 +86,7 @@ class DataEngineEventTypeHandlerTest {
                 null, null, null, null, null, EVENT_TYPE_TYPE_NAME, null,
                 "upsertEventType");
         verify(dataEngineSchemaAttributeHandler, Mockito.times(1)).upsertSchemaAttributes(USER, attributeList,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_GUID, GUID, EVENT_SCHEMA_ATTRIBUTE_TYPE_NAME);
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_GUID, GUID);
     }
 
     @Test
@@ -106,7 +106,7 @@ class DataEngineEventTypeHandlerTest {
                 null, null, null, null, null, EVENT_TYPE_TYPE_NAME, null,
                 true, "upsertEventType");
         verify(dataEngineSchemaAttributeHandler, Mockito.times(1)).upsertSchemaAttributes(USER, attributeList,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_GUID, GUID, EVENT_SCHEMA_ATTRIBUTE_TYPE_NAME);
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_GUID, GUID);
     }
 
     @Test

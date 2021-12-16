@@ -121,7 +121,7 @@ public class DataEngineSchemaTypeHandler {
         }
 
         dataEngineSchemaAttributeHandler.upsertSchemaAttributes(userId, schemaType.getAttributeList(), externalSourceName, externalSourceGUID,
-                schemaTypeGUID, TABULAR_COLUMN_TYPE_NAME);
+                schemaTypeGUID);
 
         return schemaTypeGUID;
     }

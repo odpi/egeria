@@ -134,7 +134,7 @@ class DataEngineSchemaTypeHandlerTest {
         verify(invalidParameterHandler, times(1)).validateName(QUALIFIED_NAME, QUALIFIED_NAME_PROPERTY_NAME, methodName);
         verify(invalidParameterHandler, times(1)).validateName(NAME, DISPLAY_NAME_PROPERTY_NAME, methodName);
         verify(dataEngineSchemaAttributeHandler, times(1)).upsertSchemaAttributes(USER, attributeList,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_GUID, GUID, TABULAR_COLUMN_TYPE_NAME);
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_GUID, GUID);
     }
 
     @Test
@@ -170,7 +170,7 @@ class DataEngineSchemaTypeHandlerTest {
         verify(schemaTypeHandler, times(1)).updateSchemaType(USER, EXTERNAL_SOURCE_DE_GUID,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME, GUID, SCHEMA_TYPE_GUID_PARAMETER_NAME, schemaTypeBuilder);
         verify(dataEngineSchemaAttributeHandler, times(1)).upsertSchemaAttributes(USER, attributeList,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_GUID, GUID, TABULAR_COLUMN_TYPE_NAME);
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_GUID, GUID);
     }
 
     @Test
