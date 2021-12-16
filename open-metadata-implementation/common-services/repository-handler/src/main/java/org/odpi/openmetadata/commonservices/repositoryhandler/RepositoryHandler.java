@@ -1906,7 +1906,9 @@ public class RepositoryHandler
             else
             {
                 // update the entity's classifications list with the one we just added
-                List<Classification> classifications = entityDetail.getClassifications();
+                List<Classification> classifications = entityDetail.getClassifications() == null
+                                                            ? new ArrayList<>()
+                                                            : entityDetail.getClassifications();
                 classifications.add(newClassification);
                 entityDetail.setClassifications(classifications);
 
