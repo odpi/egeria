@@ -231,23 +231,6 @@ public class IntegrationConnectorHandler implements Serializable
             genericConnector = this.getConnector(connection, actionDescription);
 
             integrationConnector = (IntegrationConnector)genericConnector;
-
-            contextManager.setContext(integrationConnectorId,
-                                      integrationConnectorName,
-                                      metadataSourceQualifiedName,
-                                      integrationConnector,
-                                      permittedSynchronization);
-
-            this.updateStatus(IntegrationConnectorStatus.INITIALIZED);
-
-            if (needDedicatedThread)
-            {
-                integrationConnectorDedicatedThread = new IntegrationConnectorDedicatedThread(integrationDaemonName,
-                                                                                              this,
-                                                                                              auditLog);
-
-                integrationConnectorDedicatedThread.start();
-            }
         }
         catch (ClassCastException  error)
         {
@@ -263,11 +246,43 @@ public class IntegrationConnectorHandler implements Serializable
                                                                                                                   connectorClassName,
                                                                                                                   IntegrationConnector.class.getCanonicalName()));
 
-            processConnectorException(actionDescription, operationName, error);
+            processConfigException(actionDescription, operationName, error);
         }
         catch (Exception  error)
         {
-            processConnectorException(actionDescription, operationName, error);
+            processConfigException(actionDescription, operationName, error);
+        }
+
+
+        try
+        {
+            contextManager.setContext(integrationConnectorId,
+                                      integrationConnectorName,
+                                      metadataSourceQualifiedName,
+                                      integrationConnector,
+                                      permittedSynchronization);
+
+            this.updateStatus(IntegrationConnectorStatus.INITIALIZED);
+        }
+        catch (Exception  error)
+        {
+            processInitializeException(actionDescription, error);
+        }
+
+        try
+        {
+            if (needDedicatedThread)
+            {
+                integrationConnectorDedicatedThread = new IntegrationConnectorDedicatedThread(integrationDaemonName,
+                                                                                              this,
+                                                                                              auditLog);
+
+                integrationConnectorDedicatedThread.start();
+            }
+        }
+        catch (Exception error)
+        {
+            processConfigException(actionDescription, operationName, error);
         }
     }
 
@@ -365,6 +380,10 @@ public class IntegrationConnectorHandler implements Serializable
 
         try
         {
+            if (integrationConnectorStatus == IntegrationConnectorStatus.INITIALIZE_FAILED)
+            {
+                this.reinitializeConnector(actionDescription);
+            }
             if (integrationConnectorStatus == IntegrationConnectorStatus.INITIALIZED)
             {
                 this.startConnector(actionDescription);
@@ -394,6 +413,10 @@ public class IntegrationConnectorHandler implements Serializable
 
         try
         {
+            if (integrationConnectorStatus == IntegrationConnectorStatus.INITIALIZE_FAILED)
+            {
+                this.reinitializeConnector(actionDescription);
+            }
             if (integrationConnectorStatus == IntegrationConnectorStatus.INITIALIZED)
             {
                 this.startConnector(actionDescription);
@@ -520,6 +543,42 @@ public class IntegrationConnectorHandler implements Serializable
      * @param operationName connector operation that failed
      * @param error resulting exception
      */
+    private void processConfigException(String     actionDescription,
+                                        String     operationName,
+                                        Exception  error)
+    {
+        updateStatus(IntegrationConnectorStatus.CONFIG_FAILED);
+        failingExceptionMessage = error.getMessage();
+
+        if (error instanceof OCFCheckedExceptionBase)
+        {
+            auditLog.logMessage(actionDescription,
+                                IntegrationDaemonServicesAuditCode.CONFIG_ERROR.getMessageDefinition(integrationConnectorName,
+                                                                                                        operationName,
+                                                                                                        error.getClass().getName(),
+                                                                                                        error.getMessage()));
+        }
+        else
+        {
+            auditLog.logException(actionDescription,
+                                  IntegrationDaemonServicesAuditCode.CONFIG_ERROR.getMessageDefinition(integrationConnectorName,
+                                                                                                          operationName,
+                                                                                                          error.getClass().getName(),
+                                                                                                          error.getMessage()),
+                                  error);
+        }
+    }
+
+
+
+
+    /**
+     * This private method ensures consistent logging of connector issues.
+     *
+     * @param actionDescription external caller's activity
+     * @param operationName connector operation that failed
+     * @param error resulting exception
+     */
     private void processConnectorException(String     actionDescription,
                                            String     operationName,
                                            Exception  error)
@@ -545,6 +604,43 @@ public class IntegrationConnectorHandler implements Serializable
                                   error);
         }
     }
+
+
+    /**
+     * This private method ensures consistent logging of connector issues.
+     *
+     * @param actionDescription external caller's activity
+     * @param error resulting exception
+     */
+    private void processInitializeException(String     actionDescription,
+                                            Exception  error)
+    {
+        final String operationName = "setContext";
+
+        updateStatus(IntegrationConnectorStatus.INITIALIZE_FAILED);
+        failingExceptionMessage = error.getMessage();
+
+        if (error instanceof OCFCheckedExceptionBase)
+        {
+            auditLog.logMessage(actionDescription,
+                                IntegrationDaemonServicesAuditCode.INITIALIZE_ERROR.getMessageDefinition(integrationConnectorName,
+                                                                                                         operationName,
+                                                                                                         error.getClass().getName(),
+                                                                                                         error.getMessage()));
+        }
+        else
+        {
+            auditLog.logException(actionDescription,
+                                  IntegrationDaemonServicesAuditCode.INITIALIZE_ERROR.getMessageDefinition(integrationConnectorName,
+                                                                                                           operationName,
+                                                                                                           error.getClass().getName(),
+                                                                                                           error.getMessage()),
+                                  error);
+        }
+    }
+
+
+
 
 
     /**

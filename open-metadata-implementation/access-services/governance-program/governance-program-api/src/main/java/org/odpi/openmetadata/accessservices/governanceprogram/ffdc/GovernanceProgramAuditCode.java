@@ -50,7 +50,7 @@ public enum GovernanceProgramAuditCode implements AuditLogMessageSet
 
     ;
 
-    AuditLogMessageDefinition messageDefinition;
+    private final AuditLogMessageDefinition messageDefinition;
 
 
     /**

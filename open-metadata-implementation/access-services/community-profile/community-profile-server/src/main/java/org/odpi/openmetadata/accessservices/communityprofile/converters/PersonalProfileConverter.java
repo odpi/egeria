@@ -88,8 +88,15 @@ public class PersonalProfileConverter<B> extends CommunityProfileOMASConverter<B
                     profileProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     profileProperties.setKnownName(this.removeName(instanceProperties));
                     profileProperties.setDescription(this.removeDescription(instanceProperties));
+                    profileProperties.setTitle(this.removeTitle(instanceProperties));
+                    profileProperties.setInitials(this.removeInitials(instanceProperties));
+                    profileProperties.setGivenNames(this.removeGivenNames(instanceProperties));
+                    profileProperties.setSurname(this.removeSurname(instanceProperties));
                     profileProperties.setFullName(this.removeFullName(instanceProperties));
+                    profileProperties.setPreferredLanguage(this.removePreferredLanguage(instanceProperties));
                     profileProperties.setJobTitle(this.removeJobTitle(instanceProperties));
+                    profileProperties.setEmployeeNumber(this.removeEmployeeNumber(instanceProperties));
+                    profileProperties.setEmployeeType(this.removeEmployeeType(instanceProperties));
                     profileProperties.setIsPublic(this.removeIsPublic(instanceProperties));
                     profileProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     profileProperties.setEffectiveFrom(instanceProperties.getEffectiveFromTime());

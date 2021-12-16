@@ -1625,7 +1625,7 @@ public class SchemaManagerRESTServices
      * @param serverName name of the service to route the request to.
      * @param userId calling user
      * @param requestBody string to find in the properties
-     * @param typeName optional type name for the schema type - used to restrict the search results
+     * @param typeName optional type name for the schema attribute - used to restrict the search results
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -1691,7 +1691,7 @@ public class SchemaManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param parentSchemaElementGUID unique identifier of the schemaType of interest
+     * @param parentSchemaElementGUID unique identifier of the schema element of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -1749,7 +1749,7 @@ public class SchemaManagerRESTServices
      * @param serverName name of the service to route the request to.
      * @param userId calling user
      * @param requestBody name to search for
-     * @param typeName optional type name for the schema type - used to restrict the search results
+     * @param typeName optional type name for the schema attribute - used to restrict the search results
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *

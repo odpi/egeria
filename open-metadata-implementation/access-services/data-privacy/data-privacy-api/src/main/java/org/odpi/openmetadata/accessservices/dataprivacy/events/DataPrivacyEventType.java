@@ -27,9 +27,9 @@ public enum DataPrivacyEventType implements Serializable
 
     private static final long     serialVersionUID = 1L;
 
-    private  int      eventTypeCode;
-    private  String   eventTypeName;
-    private  String   eventTypeDescription;
+    private final int      eventTypeCode;
+    private final String   eventTypeName;
+    private final String   eventTypeDescription;
 
 
     /**

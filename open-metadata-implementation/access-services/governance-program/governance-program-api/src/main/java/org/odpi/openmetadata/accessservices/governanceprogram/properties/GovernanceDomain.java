@@ -46,9 +46,9 @@ public enum GovernanceDomain implements Serializable
 
     private static final long serialVersionUID = 1L;
 
-    private int            ordinal;
-    private String         name;
-    private String         description;
+    private final int            ordinal;
+    private final String         name;
+    private final String         description;
 
 
     /**

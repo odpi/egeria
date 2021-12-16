@@ -49,7 +49,7 @@ public enum DesignModelAuditCode implements AuditLogMessageSet
     ;
 
 
-    AuditLogMessageDefinition messageDefinition;
+    private final AuditLogMessageDefinition messageDefinition;
 
 
     /**

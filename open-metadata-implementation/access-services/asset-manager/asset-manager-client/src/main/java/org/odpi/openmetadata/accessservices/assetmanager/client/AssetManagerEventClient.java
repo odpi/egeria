@@ -127,11 +127,11 @@ public class AssetManagerEventClient implements AssetManagerEventInterface
              * The connector is only created if/when a listener is registered to prevent unnecessary load on the
              * event bus.
              */
-            ConnectionResponse restResult = restClient.callConnectionGetRESTCall(methodName,
-                                                                                 serverPlatformURLRoot + urlTemplate,
-                                                                                 serverName,
-                                                                                 userId,
-                                                                                 callerId);
+            ConnectionResponse restResult = restClient.callOCFConnectionGetRESTCall(methodName,
+                                                                                    serverPlatformURLRoot + urlTemplate,
+                                                                                    serverName,
+                                                                                    userId,
+                                                                                    callerId);
 
             Connection      topicConnection = restResult.getConnection();
             ConnectorBroker connectorBroker = new ConnectorBroker();

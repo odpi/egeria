@@ -136,7 +136,7 @@ public enum DiscoveryEngineAuditCode implements AuditLogMessageSet
             "Review the message to ensure no action is required.")
     ;
 
-    AuditLogMessageDefinition messageDefinition;
+    private final AuditLogMessageDefinition messageDefinition;
 
 
     /**

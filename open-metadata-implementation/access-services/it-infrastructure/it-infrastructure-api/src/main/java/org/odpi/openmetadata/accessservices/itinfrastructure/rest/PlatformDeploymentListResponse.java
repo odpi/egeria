@@ -1,14 +1,13 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
+package org.odpi.openmetadata.accessservices.itinfrastructure.rest;
 
-package org.odpi.openmetadata.accessservices.datamanager.rest;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.APISpecificationElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.PlatformDeploymentElement;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -17,24 +16,24 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * APISpecificationsResponse is a response object for passing back a a list of APISpecifications
- * or an exception if the request failed.
+ *  PlatformDeploymentListResponse returns a list of SoftwareServerPlatformDeployment relationships from the server.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class APISpecificationsResponse extends DataManagerOMASAPIResponse
+public class PlatformDeploymentListResponse extends ITInfrastructureOMASAPIResponse
 {
     private static final long    serialVersionUID = 1L;
 
-    private List<APISpecificationElement> elementList = null;
+    private List<PlatformDeploymentElement> elements = null;
 
 
     /**
      * Default constructor
      */
-    public APISpecificationsResponse()
+    public PlatformDeploymentListResponse()
     {
+        super();
     }
 
 
@@ -43,49 +42,48 @@ public class APISpecificationsResponse extends DataManagerOMASAPIResponse
      *
      * @param template object to copy
      */
-    public APISpecificationsResponse(APISpecificationsResponse template)
+    public PlatformDeploymentListResponse(PlatformDeploymentListResponse template)
     {
         super(template);
 
         if (template != null)
         {
-            elementList = template.getElementList();
+            this.elements = template.getElements();
         }
     }
 
 
     /**
-     * Return the list of metadata elements.
+     * Return the list of assets in the response.
      *
-     * @return result object
+     * @return list of assets
      */
-    public List<APISpecificationElement> getElementList()
+    public List<PlatformDeploymentElement> getElements()
     {
-        if (elementList == null)
+        if (elements == null)
         {
             return null;
         }
-        else if (elementList.isEmpty())
+        else if (elements.isEmpty())
         {
             return null;
         }
         else
         {
-            return new ArrayList<>(elementList);
+            return elements;
         }
     }
 
 
     /**
-     * Set up the metadata element to return.
+     * Set up the list of assets for the response.
      *
-     * @param elementList result object
+     * @param elements list of assets
      */
-    public void setElementList(List<APISpecificationElement> elementList)
+    public void setElements(List<PlatformDeploymentElement> elements)
     {
-        this.elementList = elementList;
+        this.elements = elements;
     }
-
 
     /**
      * JSON-style toString
@@ -95,8 +93,8 @@ public class APISpecificationsResponse extends DataManagerOMASAPIResponse
     @Override
     public String toString()
     {
-        return "APISpecificationsResponse{" +
-                "elementList=" + elementList +
+        return "PlatformDeploymentListResponse{" +
+                "assets=" + elements +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
                 ", actionDescription='" + getActionDescription() + '\'' +
@@ -109,6 +107,7 @@ public class APISpecificationsResponse extends DataManagerOMASAPIResponse
                 ", exceptionProperties=" + getExceptionProperties() +
                 '}';
     }
+
 
     /**
      * Return comparison result based on the content of the properties.
@@ -127,12 +126,12 @@ public class APISpecificationsResponse extends DataManagerOMASAPIResponse
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
-        APISpecificationsResponse that = (APISpecificationsResponse) objectToCompare;
-        return Objects.equals(elementList, that.elementList);
+        PlatformDeploymentListResponse that = (PlatformDeploymentListResponse) objectToCompare;
+        return Objects.equals(elements, that.elements);
     }
 
 
@@ -144,6 +143,6 @@ public class APISpecificationsResponse extends DataManagerOMASAPIResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementList);
+        return Objects.hash(super.hashCode(), elements);
     }
 }

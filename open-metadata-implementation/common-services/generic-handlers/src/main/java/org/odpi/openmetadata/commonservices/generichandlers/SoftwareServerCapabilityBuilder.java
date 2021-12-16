@@ -77,6 +77,37 @@ public class SoftwareServerCapabilityBuilder extends ReferenceableBuilder
 
 
     /**
+     * Create constructor - when templating
+     *
+     * @param qualifiedName unique name for the connection
+     * @param displayName short display name for the connection
+     * @param description description of the connection
+     * @param repositoryHelper helper methods
+     * @param serviceName name of this OMAS
+     * @param serverName name of local server
+     */
+    SoftwareServerCapabilityBuilder(String               qualifiedName,
+                                    String               displayName,
+                                    String               description,
+                                    OMRSRepositoryHelper repositoryHelper,
+                                    String               serviceName,
+                                    String               serverName)
+    {
+        super(qualifiedName,
+              null,
+              OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_GUID,
+              OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+              null,
+              repositoryHelper,
+              serviceName,
+              serverName);
+
+        this.displayName = displayName;
+        this.description = description;
+    }
+
+
+    /**
      * Create constructor
      *
      * @param repositoryHelper helper methods

@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.itinfrastructure.server;
 
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.AssetElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ConnectionElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ConnectorTypeElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ContactMethodElement;
@@ -11,6 +12,7 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.So
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.UserIdentityElement;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.generichandlers.ActorProfileHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ConnectionHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ConnectorTypeHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ContactDetailsHandler;
@@ -256,6 +258,39 @@ class ITInfrastructureInstanceHandler extends OMASServiceInstanceHandler
         if (instance != null)
         {
             return instance.getContactDetailsHandler();
+        }
+
+        return null;
+    }
+
+
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException error in the requested server
+     */
+    AssetHandler<AssetElement> getAssetHandler(String userId,
+                                               String serverName,
+                                               String serviceOperationName) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+
+        ITInfrastructureServicesInstance instance = (ITInfrastructureServicesInstance) super.getServerServiceInstance(userId,
+                                                                                                                      serverName,
+                                                                                                                      serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getAssetHandler();
         }
 
         return null;

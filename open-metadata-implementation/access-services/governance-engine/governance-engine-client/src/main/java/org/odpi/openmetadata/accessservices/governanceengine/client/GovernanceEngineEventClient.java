@@ -5,17 +5,8 @@ package org.odpi.openmetadata.accessservices.governanceengine.client;
 import org.odpi.openmetadata.accessservices.governanceengine.api.GovernanceEngineEventListener;
 import org.odpi.openmetadata.accessservices.governanceengine.client.rest.GovernanceEngineRESTClient;
 import org.odpi.openmetadata.accessservices.governanceengine.connectors.outtopic.GovernanceEngineOutTopicClientConnector;
-import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceEngineElement;
-import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceServiceElement;
-import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.RegisteredGovernanceServiceElement;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.ffdc.OMAGOCFErrorCode;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ConnectionResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -23,9 +14,6 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-
-import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -113,11 +101,11 @@ public class GovernanceEngineEventClient
              * The connector is only created if/when a listener is registered to prevent unnecessary load on the
              * event bus.
              */
-            ConnectionResponse restResult = restClient.callConnectionGetRESTCall(methodName,
-                                                                                 serverPlatformURLRoot + urlTemplate,
-                                                                                 serverName,
-                                                                                 userId,
-                                                                                 callerId);
+            ConnectionResponse restResult = restClient.callOCFConnectionGetRESTCall(methodName,
+                                                                                    serverPlatformURLRoot + urlTemplate,
+                                                                                    serverName,
+                                                                                    userId,
+                                                                                    callerId);
 
             Connection      topicConnection = restResult.getConnection();
             ConnectorBroker connectorBroker = new ConnectorBroker();
