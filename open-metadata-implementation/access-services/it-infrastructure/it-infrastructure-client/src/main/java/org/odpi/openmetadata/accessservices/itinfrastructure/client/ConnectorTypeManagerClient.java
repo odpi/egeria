@@ -409,13 +409,13 @@ public class ConnectorTypeManagerClient implements ConnectorTypeManagerInterface
         requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(searchStringParameterName);
 
-        ConnectorTypesResponse restResult = restClient.callMyConnectorTypesPostRESTCall(methodName,
-                                                                                        urlTemplate,
-                                                                                        requestBody,
-                                                                                        serverName,
-                                                                                        userId,
-                                                                                        startFrom,
-                                                                                        validatedPageSize);
+        ConnectorTypesResponse restResult = restClient.callConnectorTypesPostRESTCall(methodName,
+                                                                                      urlTemplate,
+                                                                                      requestBody,
+                                                                                      serverName,
+                                                                                      userId,
+                                                                                      startFrom,
+                                                                                      validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -459,13 +459,13 @@ public class ConnectorTypeManagerClient implements ConnectorTypeManagerInterface
         requestBody.setName(name);
         requestBody.setNamePropertyName(nameParameterName);
 
-        ConnectorTypesResponse restResult = restClient.callMyConnectorTypesPostRESTCall(methodName,
-                                                                                        urlTemplate,
-                                                                                        requestBody,
-                                                                                        serverName,
-                                                                                        userId,
-                                                                                        startFrom,
-                                                                                        validatedPageSize);
+        ConnectorTypesResponse restResult = restClient.callConnectorTypesPostRESTCall(methodName,
+                                                                                      urlTemplate,
+                                                                                      requestBody,
+                                                                                      serverName,
+                                                                                      userId,
+                                                                                      startFrom,
+                                                                                      validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -497,11 +497,11 @@ public class ConnectorTypeManagerClient implements ConnectorTypeManagerInterface
 
         final String urlTemplate = serverPlatformURLRoot + connectorTypeURLTemplatePrefix + "/{2}";
 
-        ConnectorTypeResponse restResult = restClient.callMyConnectorTypeGetRESTCall(methodName,
-                                                                                     urlTemplate,
-                                                                                     serverName,
-                                                                                     userId,
-                                                                                     connectorTypeGUID);
+        ConnectorTypeResponse restResult = restClient.callConnectorTypeGetRESTCall(methodName,
+                                                                                   urlTemplate,
+                                                                                   serverName,
+                                                                                   userId,
+                                                                                   connectorTypeGUID);
 
         return restResult.getElement();
     }

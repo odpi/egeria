@@ -137,14 +137,14 @@ public class ConnectedAssetNotes extends AssetNotes
 
         try
         {
-            NotesResponse restResult = restClient.callNotesGetRESTCall(methodName,
-                                                                       omasServerURL + urlTemplate,
-                                                                       serverName,
-                                                                       serviceName,
-                                                                       userId,
-                                                                       noteLogGUID,
-                                                                       cacheStartPointer,
-                                                                       maximumSize);
+            NotesResponse restResult = restClient.callOCFNotesGetRESTCall(methodName,
+                                                                          omasServerURL + urlTemplate,
+                                                                          serverName,
+                                                                          serviceName,
+                                                                          userId,
+                                                                          noteLogGUID,
+                                                                          cacheStartPointer,
+                                                                          maximumSize);
 
             restExceptionHandler.detectAndThrowInvalidParameterException(restResult);
             restExceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);

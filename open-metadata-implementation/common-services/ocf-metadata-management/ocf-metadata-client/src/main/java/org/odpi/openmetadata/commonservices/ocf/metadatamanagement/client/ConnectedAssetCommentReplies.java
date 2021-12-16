@@ -142,14 +142,14 @@ public class ConnectedAssetCommentReplies extends AssetCommentReplies
 
         try
         {
-            CommentsResponse restResult = restClient.callCommentsGetRESTCall(methodName,
-                                                                             omasServerURL + urlTemplate,
-                                                                             serverName,
-                                                                             serviceName,
-                                                                             userId,
-                                                                             rootCommentGUID,
-                                                                             cacheStartPointer,
-                                                                             maximumSize);
+            CommentsResponse restResult = restClient.callOCFCommentsGetRESTCall(methodName,
+                                                                                omasServerURL + urlTemplate,
+                                                                                serverName,
+                                                                                serviceName,
+                                                                                userId,
+                                                                                rootCommentGUID,
+                                                                                cacheStartPointer,
+                                                                                maximumSize);
 
             restExceptionHandler.detectAndThrowInvalidParameterException(restResult);
             restExceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);

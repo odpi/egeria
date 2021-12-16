@@ -537,7 +537,7 @@ public interface SchemaManagerInterface
      *
      * @param userId calling user
      * @param searchString string to find in the properties
-     * @param typeName optional type name for the schema type - used to restrict the search results
+     * @param typeName optional type name for the schema attribute - used to restrict the search results
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -560,7 +560,7 @@ public interface SchemaManagerInterface
      * Retrieve the list of schema attributes associated with a StructSchemaType or nested underneath a schema attribute.
      *
      * @param userId calling user
-     * @param parentSchemaElementGUID unique identifier of the schemaType of interest
+     * @param parentSchemaElementGUID unique identifier of the schema element of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
