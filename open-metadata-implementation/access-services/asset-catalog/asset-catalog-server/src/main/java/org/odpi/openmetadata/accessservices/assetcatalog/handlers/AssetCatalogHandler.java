@@ -16,6 +16,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchP
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -60,6 +61,7 @@ import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.*
 public class AssetCatalogHandler {
 
     private static final Logger log = LoggerFactory.getLogger(AssetCatalogHandler.class);
+    private static final String THIS_ASSET_IF_A_DIFFERENT_ZONE = "This asset if a different zone: {}";
 
     private final String serverUserName;
     private final String sourceName;
@@ -383,7 +385,7 @@ public class AssetCatalogHandler {
             throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
             FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
             PropertyErrorException, TypeErrorException, PagingErrorException,
-            InvalidParameterException, RepositoryErrorException {
+            InvalidParameterException, RepositoryErrorException, EntityNotKnownException {
 
         String methodName = "searchByType";
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -395,6 +397,10 @@ public class AssetCatalogHandler {
         List<String> typesFilter;
         if (CollectionUtils.isNotEmpty(searchParameters.getEntityTypes())) {
             typesFilter = commonHandler.getTypesGUID(userId, searchParameters.getEntityTypes());
+            if (CollectionUtils.isEmpty(typesFilter)) {
+                ExceptionMessageDefinition messageDefinition = AssetCatalogErrorCode.TYPE_DEF_NOT_FOUND.getMessageDefinition(sourceName);
+                throw new EntityNotKnownException(messageDefinition, this.getClass().getName(), messageDefinition.getUserAction());
+            }
             result = collectSearchedEntitiesByType(userId, searchCriteria, searchParameters, typesFilter);
         } else {
             result = collectSearchedEntitiesByType(userId, searchCriteria, searchParameters, defaultSearchTypes);
@@ -413,7 +419,7 @@ public class AssetCatalogHandler {
                 Elements elements = assetCatalogConverter.buildAssetElements(entityDetail);
                 searchResults.add(elements);
             } catch (org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException e) {
-                log.debug("This asset if a different zone: {}", entityDetail.getGUID());
+                log.debug(THIS_ASSET_IF_A_DIFFERENT_ZONE, entityDetail.getGUID());
             }
         }
         SequencingOrder sequencingOrder = searchParameters.getSequencingOrder();
