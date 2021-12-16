@@ -2,21 +2,18 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceprogram.converters;
 
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceAppointee;
+
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceRoleElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.ProfileElement;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceRoleProperties;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
 
 
 /**
@@ -42,7 +39,7 @@ public class GovernanceRoleConverter<B> extends GovernanceProgramOMASConverter<B
 
     /**
      * Using the supplied instances, return a new instance of the bean. This is used for beans that have
-     * contain a combination of the properties from an entity and a that os a connected relationship.
+     * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
      * @param entity entity containing the properties
@@ -69,7 +66,7 @@ public class GovernanceRoleConverter<B> extends GovernanceProgramOMASConverter<B
 
                 if (entity != null)
                 {
-                    bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));
+                    bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, entity.getClassifications(), methodName));
 
                     /*
                      * The initial set of values come from the entity.
@@ -81,6 +78,8 @@ public class GovernanceRoleConverter<B> extends GovernanceProgramOMASConverter<B
                     governanceRoleProperties.setScope(this.removeScope(instanceProperties));
                     governanceRoleProperties.setTitle(this.removeName(instanceProperties));
                     governanceRoleProperties.setDescription(this.removeDescription(instanceProperties));
+                    governanceRoleProperties.setHeadCountLimitSet(instanceProperties.getPropertyValue(OpenMetadataAPIMapper.HEAD_COUNT_PROPERTY_NAME) != null);
+                    governanceRoleProperties.setHeadCount(this.removeHeadCount(instanceProperties));
                     governanceRoleProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
 
                     /*
@@ -106,5 +105,27 @@ public class GovernanceRoleConverter<B> extends GovernanceProgramOMASConverter<B
         }
 
         return null;
+    }
+
+
+    /**
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
+     * contain a combination of the properties from an entity and that of a connected relationship.
+     *
+     * @param beanClass name of the class to create
+     * @param entity entity containing the properties
+     * @param relationship relationship containing the properties
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
+     */
+    @SuppressWarnings(value = "unused")
+    @Override
+    public B getNewBean(Class<B>     beanClass,
+                        EntityDetail entity,
+                        Relationship relationship,
+                        String       methodName) throws PropertyServerException
+    {
+        return this.getNewBean(beanClass, entity, methodName);
     }
 }

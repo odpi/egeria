@@ -6,6 +6,7 @@ import org.odpi.openmetadata.userinterface.uichassis.springboot.service.Componen
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class RoleService {
@@ -15,14 +16,18 @@ public class RoleService {
 
     /**
      *
-     * @param roles collection of roles
-     * @return the intersection
+     * @param userRoles collection of roles of user
+     * @return the intersection between all user roles and roles used for the application
      */
-    public Collection<String> extractUserAppRoles(Collection<String> roles) {
+    public Collection<String> extractUserAppRoles(Collection<String> userRoles) {
         Collection<String> appRoles = componentService.getAppRoles();
-        return  roles.stream()
+        return  userRoles.stream()
                 .filter( appRoles::contains )
                 .collect( Collectors.toSet() );
+    }
+
+    public Set<String> getVisibleComponents(Collection<String> roles){
+        return componentService.getVisibleComponentsForRoles(roles);
     }
 
 }

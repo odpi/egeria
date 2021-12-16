@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.communityprofile.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.CollectionMemberHeader;
 
 import java.util.*;
 
@@ -200,6 +199,8 @@ public class ProjectProperties extends ReferenceableProperties
                        ", plannedEndDate=" + plannedEndDate +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
                        ", vendorProperties=" + getVendorProperties() +
                        ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +

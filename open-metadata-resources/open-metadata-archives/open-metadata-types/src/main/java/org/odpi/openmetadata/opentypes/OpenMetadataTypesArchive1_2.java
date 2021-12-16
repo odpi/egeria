@@ -3185,7 +3185,7 @@ public class OpenMetadataTypesArchive1_2
     {
         final String guid            = "09439481-9489-467c-9ae5-178a6e0b6b5a";
         final String name            = "ServerAssetUseType";
-        final String description     = "Defines how a server capability may use an asset.";
+        final String description     = "Defines how a software server capability may use an asset.";
         final String descriptionGUID = null;
 
         EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
@@ -3195,7 +3195,7 @@ public class OpenMetadataTypesArchive1_2
 
         final int    element1Ordinal         = 0;
         final String element1Value           = "Owns";
-        final String element1Description     = "The server capability is accountable for the maintenance and protection of the asset.";
+        final String element1Description     = "The software server capability is accountable for the maintenance and protection of the asset.";
         final String element1DescriptionGUID = null;
 
         elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
@@ -3203,10 +3203,11 @@ public class OpenMetadataTypesArchive1_2
                                                      element1Description,
                                                      element1DescriptionGUID);
         elementDefs.add(elementDef);
+        enumDef.setDefaultValue(elementDef);
 
         final int    element2Ordinal         = 1;
         final String element2Value           = "Governs";
-        final String element2Description     = "The server capability provides management or oversight of the asset.";
+        final String element2Description     = "The software server capability provides management or oversight of the asset.";
         final String element2DescriptionGUID = null;
 
         elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
@@ -3217,7 +3218,7 @@ public class OpenMetadataTypesArchive1_2
 
         final int    element3Ordinal         = 2;
         final String element3Value           = "Maintains";
-        final String element3Description     = "The server capability keeps the asset up-to-date.";
+        final String element3Description     = "The software server capability keeps the asset up-to-date.";
         final String element3DescriptionGUID = null;
 
         elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
@@ -3228,7 +3229,7 @@ public class OpenMetadataTypesArchive1_2
 
         final int    element4Ordinal         = 3;
         final String element4Value           = "Uses";
-        final String element4Description     = "The server capability consumes the content of the asset.";
+        final String element4Description     = "The software server capability consumes the content of the asset.";
         final String element4DescriptionGUID = null;
 
         elementDef = archiveHelper.getEnumElementDef(element4Ordinal,

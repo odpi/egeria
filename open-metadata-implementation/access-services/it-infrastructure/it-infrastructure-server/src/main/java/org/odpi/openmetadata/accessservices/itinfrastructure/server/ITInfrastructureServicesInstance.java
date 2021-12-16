@@ -2,17 +2,32 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.itinfrastructure.server;
 
+import org.odpi.openmetadata.accessservices.itinfrastructure.converters.AssetConverter;
 import org.odpi.openmetadata.accessservices.itinfrastructure.converters.ConnectionConverter;
 import org.odpi.openmetadata.accessservices.itinfrastructure.converters.ConnectorTypeConverter;
+import org.odpi.openmetadata.accessservices.itinfrastructure.converters.ContactMethodConverter;
 import org.odpi.openmetadata.accessservices.itinfrastructure.converters.EndpointConverter;
+import org.odpi.openmetadata.accessservices.itinfrastructure.converters.ITProfileConverter;
+import org.odpi.openmetadata.accessservices.itinfrastructure.converters.SoftwareServerCapabilityConverter;
+import org.odpi.openmetadata.accessservices.itinfrastructure.converters.UserIdentityConverter;
 import org.odpi.openmetadata.accessservices.itinfrastructure.ffdc.ITInfrastructureErrorCode;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.AssetElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ConnectionElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ConnectorTypeElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ContactMethodElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.EndpointElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ITProfileElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareServerCapabilityElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.UserIdentityElement;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.commonservices.generichandlers.ActorProfileHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ConnectionHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ConnectorTypeHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.ContactDetailsHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.EndpointHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.SoftwareServerCapabilityHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.UserIdentityHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -29,9 +44,14 @@ public class ITInfrastructureServicesInstance extends OMASServiceInstance
 {
     private static AccessServiceDescription myDescription = AccessServiceDescription.IT_INFRASTRUCTURE_OMAS;
 
-    private ConnectionHandler<ConnectionElement>       connectionHandler;
-    private ConnectorTypeHandler<ConnectorTypeElement> connectorTypeHandler;
-    private EndpointHandler<EndpointElement>           endpointHandler;
+    private ConnectionHandler<ConnectionElement>                             connectionHandler;
+    private ConnectorTypeHandler<ConnectorTypeElement>                       connectorTypeHandler;
+    private EndpointHandler<EndpointElement>                                 endpointHandler;
+    private ActorProfileHandler<ITProfileElement>                            itProfileHandler;
+    private UserIdentityHandler<UserIdentityElement>                         userIdentityHandler;
+    private ContactDetailsHandler<ContactMethodElement>                      contactDetailsHandler;
+    private SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> softwareServerCapabilityHandler;
+    private AssetHandler<AssetElement>                                       assetHandler;
 
 
     /**
@@ -104,6 +124,76 @@ public class ITInfrastructureServicesInstance extends OMASServiceInstance
                                                          defaultZones,
                                                          publishZones,
                                                          auditLog);
+
+            this.itProfileHandler = new ActorProfileHandler<>(new ITProfileConverter<>(repositoryHelper, serviceName, serverName),
+                                                              ITProfileElement.class,
+                                                              serviceName,
+                                                              serverName,
+                                                              invalidParameterHandler,
+                                                              repositoryHandler,
+                                                              repositoryHelper,
+                                                              localServerUserId,
+                                                              securityVerifier,
+                                                              supportedZones,
+                                                              defaultZones,
+                                                              publishZones,
+                                                              auditLog);
+
+            this.userIdentityHandler = new UserIdentityHandler<>(new UserIdentityConverter<>(repositoryHelper, serviceName, serverName),
+                                                                 UserIdentityElement.class,
+                                                                 serviceName,
+                                                                 serverName,
+                                                                 invalidParameterHandler,
+                                                                 repositoryHandler,
+                                                                 repositoryHelper,
+                                                                 localServerUserId,
+                                                                 securityVerifier,
+                                                                 supportedZones,
+                                                                 defaultZones,
+                                                                 publishZones,
+                                                                 auditLog);
+
+            this.contactDetailsHandler = new ContactDetailsHandler<>(new ContactMethodConverter<>(repositoryHelper, serviceName, serverName),
+                                                                     ContactMethodElement.class,
+                                                                     serviceName,
+                                                                     serverName,
+                                                                     invalidParameterHandler,
+                                                                     repositoryHandler,
+                                                                     repositoryHelper,
+                                                                     localServerUserId,
+                                                                     securityVerifier,
+                                                                     supportedZones,
+                                                                     defaultZones,
+                                                                     publishZones,
+                                                                     auditLog);
+
+            this.softwareServerCapabilityHandler = new SoftwareServerCapabilityHandler<>(new SoftwareServerCapabilityConverter<>(repositoryHelper, serviceName, serverName),
+                                                                                         SoftwareServerCapabilityElement.class,
+                                                                                         serviceName,
+                                                                                         serverName,
+                                                                                         invalidParameterHandler,
+                                                                                         repositoryHandler,
+                                                                                         repositoryHelper,
+                                                                                         localServerUserId,
+                                                                                         securityVerifier,
+                                                                                         supportedZones,
+                                                                                         defaultZones,
+                                                                                         publishZones,
+                                                                                         auditLog);
+
+            this.assetHandler = new AssetHandler<>(new AssetConverter<>(repositoryHelper, serviceName, serverName),
+                                                   AssetElement.class,
+                                                   serviceName,
+                                                   serverName,
+                                                   invalidParameterHandler,
+                                                   repositoryHandler,
+                                                   repositoryHelper,
+                                                   localServerUserId,
+                                                   securityVerifier,
+                                                   supportedZones,
+                                                   defaultZones,
+                                                   publishZones,
+                                                   auditLog);
         }
         else
         {
@@ -166,4 +256,83 @@ public class ITInfrastructureServicesInstance extends OMASServiceInstance
     }
 
 
+    /**
+     * Return the handler for managing ITProfile objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    ActorProfileHandler<ITProfileElement> getITProfileHandler() throws PropertyServerException
+    {
+        final String methodName = "getITProfileHandler";
+
+        validateActiveRepository(methodName);
+
+        return itProfileHandler;
+    }
+
+
+    /**
+     * Return the handler for managing UserIdentity objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    UserIdentityHandler<UserIdentityElement> getUserIdentityHandler() throws PropertyServerException
+    {
+        final String methodName = "getUserIdentityHandler";
+
+        validateActiveRepository(methodName);
+
+        return userIdentityHandler;
+    }
+
+
+    /**
+     * Return the handler for managing ContactDetails objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    ContactDetailsHandler<ContactMethodElement> getContactDetailsHandler() throws PropertyServerException
+    {
+        final String methodName = "getContactDetailsHandler";
+
+        validateActiveRepository(methodName);
+
+        return contactDetailsHandler;
+    }
+
+
+
+    /**
+     * Return the handler for managing asset objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    AssetHandler<AssetElement> getAssetHandler() throws PropertyServerException
+    {
+        final String methodName = "getAssetHandler";
+
+        validateActiveRepository(methodName);
+
+        return assetHandler;
+    }
+
+
+    /**
+     * Return the handler for managing SoftwareServerCapabilities objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> getSoftwareServerCapabilityHandler() throws PropertyServerException
+    {
+        final String methodName = "getSoftwareServerCapabilityHandler";
+
+        validateActiveRepository(methodName);
+
+        return softwareServerCapabilityHandler;
+    }
 }

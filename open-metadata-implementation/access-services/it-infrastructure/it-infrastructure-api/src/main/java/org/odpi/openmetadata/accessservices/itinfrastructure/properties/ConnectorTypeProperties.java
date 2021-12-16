@@ -548,9 +548,11 @@ public class ConnectorTypeProperties extends ConfigurationItemProperties
                        ", recognizedAdditionalProperties=" + recognizedAdditionalProperties +
                        ", recognizedConfigurationProperties=" + recognizedConfigurationProperties +
                        ", recognizedSecuredProperties=" + recognizedSecuredProperties +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
-                       ", classifications=" + getClassifications() +
+                       ", vendorProperties=" + getVendorProperties() +
                        ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
                        '}';

@@ -10,7 +10,7 @@
     <parent>
         <artifactId>organization-integrator</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.4-SNAPSHOT</version>
+        <version>3.5-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -49,6 +49,16 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>repository-services-apis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>community-profile-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>community-profile-client</artifactId>
         </dependency>
 
     </dependencies>

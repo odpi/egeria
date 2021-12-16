@@ -148,73 +148,14 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
 
 
     /**
-     * Increment a person's karma points.  If this is their first award, a contribution record will be
-     * created automatically.
-     *
-     * @param userId calling user
-     * @param profileGUID unique identifier of personal profile
-     * @param profileGUIDParameterName parameter supply profileGUID
-     * @param qualifiedName unique name for this personal profile
-     * @param karmaPointIncrement number of points to add to the contribution record.
-     * @param methodName calling method
-     * @return updated record or null if not found
-     * @throws InvalidParameterException the userId, qualified name or guid is null
-     * @throws PropertyServerException the metadata repository is not available
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     */
-    public B  incrementKarmaPoints(String   userId,
-                                   String   profileGUID,
-                                   String   profileGUIDParameterName,
-                                   String   qualifiedName,
-                                   int      karmaPointIncrement,
-                                   String   methodName) throws InvalidParameterException,
-                                                                                PropertyServerException,
-                                                                                UserNotAuthorizedException
-    {
-        EntityDetail contributionRecord = this.getAttachedEntity(userId,
-                                                                 profileGUID,
-                                                                 profileGUIDParameterName,
-                                                                 OpenMetadataAPIMapper.PERSON_TYPE_NAME,
-                                                                 OpenMetadataAPIMapper.PERSONAL_CONTRIBUTION_RELATIONSHIP_TYPE_GUID,
-                                                                 OpenMetadataAPIMapper.PERSONAL_CONTRIBUTION_RELATIONSHIP_TYPE_NAME,
-                                                                 OpenMetadataAPIMapper.CONTRIBUTION_RECORD_TYPE_NAME,
-                                                                 false,
-                                                                 false,
-                                                                 supportedZones,
-                                                                 null,
-                                                                 methodName);
-
-        if ((contributionRecord != null) && (karmaPointIncrement > 0))
-        {
-            int newKarmaPoints = repositoryHelper.getIntProperty(serviceName,
-                                                                 OpenMetadataAPIMapper.KARMA_POINTS_PROPERTY_NAME,
-                                                                 contributionRecord.getProperties(),
-                                                                 methodName) + karmaPointIncrement;
-
-            saveContributionRecord(userId,
-                                   profileGUID,
-                                   profileGUIDParameterName,
-                                   qualifiedName + "_ContributionRecord",
-                                   newKarmaPoints,
-                                   null,
-                                   null,
-                                   null,
-                                   methodName);
-
-        }
-
-        return this.getContributionRecord(userId, profileGUID, profileGUIDParameterName, methodName);
-    }
-
-
-    /**
      * Set up the contribution values in a Person profile.
      *
      * @param userId      userId of user making request.
      * @param profileGUID   unique identifier for the connected Person entity.
      * @param profileGUIDParameterName parameter supplying the profileGUID
-     * @param qualifiedName unique name for this contribution record
+     * @param qualifiedName unique name for the profile
      * @param karmaPoints  contribution points for the individual
+     * @param isPublic  can this information be shared with colleagues
      * @param additionalProperties additional properties for the contribution record
      * @param extendedProperties additional properties from defined subtypes
      * @param suppliedTypeName name of subtype or null
@@ -229,6 +170,7 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
                                        String              profileGUIDParameterName,
                                        String              qualifiedName,
                                        long                karmaPoints,
+                                       boolean             isPublic,
                                        Map<String, String> additionalProperties,
                                        String              suppliedTypeName,
                                        Map<String, Object> extendedProperties,
@@ -251,20 +193,22 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
                                                                    methodName,
                                                                    repositoryHelper);
 
-        ContributionRecordBuilder builder = new ContributionRecordBuilder(qualifiedName,
-                                                                          karmaPoints,
-                                                                          additionalProperties,
-                                                                          typeGUID,
-                                                                          typeName,
-                                                                          extendedProperties,
-                                                                          repositoryHelper,
-                                                                          serviceName,
-                                                                          serverName);
-
-        builder.setAnchors(userId, profileGUID, methodName);
 
         if (contributionRecordEntity == null)
         {
+            ContributionRecordBuilder builder = new ContributionRecordBuilder(qualifiedName + "_ContributionRecord",
+                                                                              karmaPoints,
+                                                                              isPublic,
+                                                                              additionalProperties,
+                                                                              typeGUID,
+                                                                              typeName,
+                                                                              extendedProperties,
+                                                                              repositoryHelper,
+                                                                              serviceName,
+                                                                              serverName);
+
+            builder.setAnchors(userId, profileGUID, methodName);
+
             String contributionRecordGUID = this.createBeanInRepository(userId,
                                                                         null,
                                                                         null,
@@ -297,6 +241,16 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
         }
         else
         {
+            ContributionRecordBuilder builder = new ContributionRecordBuilder(null,
+                                                                              karmaPoints,
+                                                                              isPublic,
+                                                                              additionalProperties,
+                                                                              typeGUID,
+                                                                              typeName,
+                                                                              extendedProperties,
+                                                                              repositoryHelper,
+                                                                              serviceName,
+                                                                              serverName);
             this.updateBeanInRepository(userId,
                                         null,
                                         null,
@@ -308,7 +262,7 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
                                         false,
                                         supportedZones,
                                         builder.getInstanceProperties(methodName),
-                                        false,
+                                        true,
                                         new Date(),
                                         methodName);
         }

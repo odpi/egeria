@@ -124,6 +124,44 @@ public class GovernanceContext
 
 
     /**
+     * Create an incident report to capture the situation detected by this governance action service.
+     * This incident report will be processed by other governance activities.
+     *
+     * @param qualifiedName unique identifier to give this new incident report
+     * @param domainIdentifier governance domain associated with this action (0=ALL)
+     * @param background description of the situation
+     * @param impactedResources details of the resources impacted by this situation
+     * @param previousIncidents links to previous incident reports covering this situation
+     * @param incidentClassifiers initial classifiers for the incident report
+     * @param additionalProperties additional arbitrary properties for the incident reports
+     *
+     * @return unique identifier of the resulting incident report
+     *
+     * @throws InvalidParameterException null or non-unique qualified name for the incident report
+     * @throws UserNotAuthorizedException this governance action service is not authorized to create a incident report
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    public String createIncidentReport(String                        qualifiedName,
+                                       int                           domainIdentifier,
+                                       String                        background,
+                                       List<IncidentImpactedElement> impactedResources,
+                                       List<IncidentDependency>      previousIncidents,
+                                       Map<String, Integer>          incidentClassifiers,
+                                       Map<String, String>           additionalProperties) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
+    {
+        return openMetadataStore.createIncidentReport(qualifiedName,
+                                                      domainIdentifier,
+                                                      background,
+                                                      impactedResources,
+                                                      previousIncidents,
+                                                      incidentClassifiers,
+                                                      additionalProperties);
+    }
+
+
+    /**
      * Update the status of a specific action target. By default, these values are derived from
      * the values for the governance action service.  However, if the governance action service has to process name
      * target elements, then setting the status on each individual target will show the progress of the

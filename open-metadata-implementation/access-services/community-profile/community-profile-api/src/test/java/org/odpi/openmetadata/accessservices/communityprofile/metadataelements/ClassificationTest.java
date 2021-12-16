@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.communityprofile.metadataelements;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.ElementClassification;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;

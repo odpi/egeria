@@ -174,21 +174,15 @@ public class GovernanceConfigurationHandler
 
         invalidParameterHandler.validateName(typeName, typeNameParameterName, methodName);
 
-        String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME,
-                                                                   serviceName,
-                                                                   methodName,
-                                                                   repositoryHelper);
-
         return governanceEngineHandler.createSoftwareServerCapability(userId,
                                                                      null,
                                                                      null,
-                                                                     typeGUID,
                                                                      typeName,
                                                                      null,
                                                                      qualifiedName,
                                                                      displayName,
                                                                      description,
+                                                                     null,
                                                                      null,
                                                                      null,
                                                                      null,

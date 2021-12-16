@@ -114,16 +114,21 @@ public class SecurityManagerAdmin extends AccessServiceAdmin
                                                                                                       outTopicAuditLog,
                                                                                                       AccessServiceDescription.SECURITY_MANAGER_OMAS.getAccessServiceFullName(),
                                                                                                       actionDescription);
-                eventPublisher = new SecurityManagerOutTopicPublisher(outTopicServerConnector, endpoint.getAddress(), outTopicAuditLog);
+                eventPublisher = new SecurityManagerOutTopicPublisher(outTopicServerConnector,
+                                                                      endpoint.getAddress(),
+                                                                      outTopicAuditLog,
+                                                                      repositoryConnector.getRepositoryHelper(),
+                                                                      AccessServiceDescription.SECURITY_MANAGER_OMAS.getAccessServiceFullName(),
+                                                                      serverName);
 
                 this.registerWithEnterpriseTopic(AccessServiceDescription.SECURITY_MANAGER_OMAS.getAccessServiceFullName(),
                                                  serverName,
                                                  omrsTopicConnector,
                                                  new SecurityManagerOMRSTopicListener(AccessServiceDescription.SECURITY_MANAGER_OMAS.getAccessServiceFullName(),
-                                                                                   eventPublisher,
-                                                                                   supportedZones,
-                                                                                   repositoryConnector.getRepositoryHelper(),
-                                                                                   outTopicAuditLog),
+                                                                                      eventPublisher,
+                                                                                      supportedZones,
+                                                                                      repositoryConnector.getRepositoryHelper(),
+                                                                                      outTopicAuditLog),
                                                  auditLog);
             }
 

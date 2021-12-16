@@ -1,0 +1,872 @@
+/* SPDX-License-Identifier: Apache 2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+package org.odpi.openmetadata.accessservices.itinfrastructure.client;
+
+import org.odpi.openmetadata.accessservices.itinfrastructure.api.SoftwareServerCapabilityManagerInterface;
+import org.odpi.openmetadata.accessservices.itinfrastructure.client.rest.ITInfrastructureRESTClient;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ServerAssetUseElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareServerCapabilityElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ServerAssetUseProperties;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ServerAssetUseType;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.SoftwareServerCapabilityProperties;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.TemplateProperties;
+import org.odpi.openmetadata.accessservices.itinfrastructure.rest.MetadataSourceRequestBody;
+import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ServerAssetUseListResponse;
+import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ServerAssetUseRequestBody;
+import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ServerAssetUseResponse;
+import org.odpi.openmetadata.accessservices.itinfrastructure.rest.SoftwareServerCapabilityListResponse;
+import org.odpi.openmetadata.accessservices.itinfrastructure.rest.SoftwareServerCapabilityRequestBody;
+import org.odpi.openmetadata.accessservices.itinfrastructure.rest.SoftwareServerCapabilityResponse;
+import org.odpi.openmetadata.accessservices.itinfrastructure.rest.TemplateRequestBody;
+import org.odpi.openmetadata.accessservices.itinfrastructure.rest.UseTypeRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+
+import java.util.Date;
+import java.util.List;
+
+/**
+ * CapabilityManagerClient supports the APIs to maintain software server capabilities and their related objects.
+ */
+public class CapabilityManagerClient implements SoftwareServerCapabilityManagerInterface
+{
+    private static final String capabilityURLTemplatePrefix = "/servers/{0}/open-metadata/access-services/it-infrastructure/users/{1}/software-server-capabilities";
+    private static final String assetUsesURLTemplatePrefix  = "/servers/{0}/open-metadata/access-services/it-infrastructure/users/{1}/server-asset-uses";
+
+    private String   serverName;               /* Initialized in constructor */
+    private String   serverPlatformURLRoot;    /* Initialized in constructor */
+
+    private InvalidParameterHandler     invalidParameterHandler = new InvalidParameterHandler();
+    private ITInfrastructureRESTClient  restClient;               /* Initialized in constructor */
+
+
+    /**
+     * Create a new client with no authentication embedded in the HTTP request.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param auditLog logging destination
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    public CapabilityManagerClient(String   serverName,
+                                   String   serverPlatformURLRoot,
+                                   AuditLog auditLog) throws InvalidParameterException
+    {
+        final String methodName = "Client Constructor";
+
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+
+        this.serverName = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+
+        this.restClient = new ITInfrastructureRESTClient(serverName, serverPlatformURLRoot, auditLog);
+    }
+
+
+    /**
+     * Create a new client with no authentication embedded in the HTTP request.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    public CapabilityManagerClient(String serverName,
+                                   String serverPlatformURLRoot) throws InvalidParameterException
+    {
+        final String methodName = "Client Constructor";
+
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+
+        this.serverName = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+
+        this.restClient = new ITInfrastructureRESTClient(serverName, serverPlatformURLRoot);
+    }
+
+
+    /**
+     * Create a new client that passes userId and password in each HTTP request.  This is the
+     * userId/password of the calling server.  The end user's userId is sent on each request.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param userId caller's userId embedded in all HTTP requests
+     * @param password caller's userId embedded in all HTTP requests
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    public CapabilityManagerClient(String serverName,
+                                   String serverPlatformURLRoot,
+                                   String userId,
+                                   String password) throws InvalidParameterException
+    {
+        final String methodName = "Client Constructor";
+
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+
+        this.serverName = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+
+        this.restClient = new ITInfrastructureRESTClient(serverName, serverPlatformURLRoot, userId, password);
+    }
+
+
+    /**
+     * Create a new client that passes userId and password in each HTTP request.  This is the
+     * userId/password of the calling server.  The end user's userId is sent on each request.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param userId caller's userId embedded in all HTTP requests
+     * @param password caller's userId embedded in all HTTP requests
+     * @param auditLog logging destination
+     *
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    public CapabilityManagerClient(String   serverName,
+                                   String   serverPlatformURLRoot,
+                                   String   userId,
+                                   String   password,
+                                   AuditLog auditLog) throws InvalidParameterException
+    {
+        final String methodName = "Client Constructor";
+
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+
+        this.serverName = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+
+        this.restClient = new ITInfrastructureRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
+    }
+
+
+    /**
+     * Create a new client that is going to be used in an OMAG Server.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param restClient client that issues the REST API calls
+     * @param maxPageSize maximum number of results supported by this server
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    public CapabilityManagerClient(String                     serverName,
+                                   String                     serverPlatformURLRoot,
+                                   ITInfrastructureRESTClient restClient,
+                                   int                        maxPageSize) throws InvalidParameterException
+    {
+        final String methodName = "Client Constructor";
+
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+
+        this.serverName = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+
+        invalidParameterHandler.setMaxPagingSize(maxPageSize);
+
+        this.restClient = restClient;
+    }
+
+
+    /* =====================================================================================================================
+     * The software server capability links assets to the hosting server.
+     */
+
+
+    /**
+     * Create a new metadata element to represent a software server capability.
+     *
+     * @param userId calling user
+     * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
+     * @param infrastructureManagerName unique name of software server capability representing the caller
+     * @param infrastructureManagerIsHome should the software server capability be marked as owned by the infrastructure manager so others can not update?
+     * @param classificationName optional classification name that refines the type of the software server capability.
+     * @param capabilityProperties properties to store
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public String createSoftwareServerCapability(String                             userId,
+                                                 String                             infrastructureManagerGUID,
+                                                 String                             infrastructureManagerName,
+                                                 boolean                            infrastructureManagerIsHome,
+                                                 String                             classificationName,
+                                                 SoftwareServerCapabilityProperties capabilityProperties) throws InvalidParameterException,
+                                                                                                                 UserNotAuthorizedException,
+                                                                                                                 PropertyServerException
+    {
+        final String methodName                  = "createSoftwareServerCapability";
+        final String propertiesParameterName     = "capabilityProperties";
+        final String qualifiedNameParameterName  = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(capabilityProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(capabilityProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + capabilityURLTemplatePrefix + "?infrastructureManagerIsHome={2}";
+
+        SoftwareServerCapabilityRequestBody requestBody = new SoftwareServerCapabilityRequestBody(capabilityProperties);
+
+        requestBody.setExternalSourceGUID(infrastructureManagerGUID);
+        requestBody.setExternalSourceName(infrastructureManagerName);
+        requestBody.setClassificationName(classificationName);
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId,
+                                                                  infrastructureManagerIsHome);
+
+        return restResult.getGUID();
+    }
+
+
+    /**
+     * Create a new metadata element to represent a software server capability using an existing metadata element as a template.
+     *
+     * @param userId calling user
+     * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
+     * @param infrastructureManagerName unique name of software server capability representing the caller
+     * @param infrastructureManagerIsHome should the software server capability be marked as owned by the infrastructure manager so others can not update?
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param templateProperties properties that override the template
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public String createSoftwareServerCapabilityFromTemplate(String             userId,
+                                                             String             infrastructureManagerGUID,
+                                                             String             infrastructureManagerName,
+                                                             boolean            infrastructureManagerIsHome,
+                                                             String             templateGUID,
+                                                             TemplateProperties templateProperties) throws InvalidParameterException,
+                                                                                                           UserNotAuthorizedException,
+                                                                                                           PropertyServerException
+    {
+        final String methodName                  = "createSoftwareServerCapabilityFromTemplate";
+        final String templateGUIDParameterName   = "templateGUID";
+        final String propertiesParameterName     = "templateProperties";
+        final String qualifiedNameParameterName  = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(templateProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + capabilityURLTemplatePrefix + "/from-template/{2}?infrastructureManagerIsHome={3}";
+
+        TemplateRequestBody requestBody = new TemplateRequestBody(templateProperties);
+
+        requestBody.setExternalSourceGUID(infrastructureManagerGUID);
+        requestBody.setExternalSourceName(infrastructureManagerName);
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId,
+                                                                  templateGUID,
+                                                                  infrastructureManagerIsHome);
+
+        return restResult.getGUID();
+    }
+
+
+    /**
+     * Update the metadata element representing a software server capability.
+     *
+     * @param userId calling user
+     * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
+     * @param infrastructureManagerName unique name of software server capability representing the caller
+     * @param capabilityGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate are unspecified properties unchanged (true) or removed?
+     * @param capabilityProperties new properties for this element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void updateSoftwareServerCapability(String                             userId,
+                                               String                             infrastructureManagerGUID,
+                                               String                             infrastructureManagerName,
+                                               String                             capabilityGUID,
+                                               boolean                            isMergeUpdate,
+                                               SoftwareServerCapabilityProperties capabilityProperties) throws InvalidParameterException,
+                                                                                                               UserNotAuthorizedException,
+                                                                                                               PropertyServerException
+    {
+        final String methodName                  = "updateSoftwareServerCapability";
+        final String elementGUIDParameterName    = "capabilityGUID";
+        final String propertiesParameterName     = "capabilityProperties";
+        final String qualifiedNameParameterName  = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(capabilityGUID, elementGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(capabilityProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(capabilityProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + capabilityURLTemplatePrefix + "/{2}?isMergeUpdate={3}";
+
+        SoftwareServerCapabilityRequestBody requestBody = new SoftwareServerCapabilityRequestBody(capabilityProperties);
+
+        requestBody.setExternalSourceGUID(infrastructureManagerGUID);
+        requestBody.setExternalSourceName(infrastructureManagerName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        capabilityGUID,
+                                        isMergeUpdate);
+    }
+
+
+    /**
+     * Remove the metadata element representing a software server capability.
+     *
+     * @param userId calling user
+     * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
+     * @param infrastructureManagerName unique name of software server capability representing the caller
+     * @param capabilityGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void removeSoftwareServerCapability(String userId,
+                                               String infrastructureManagerGUID,
+                                               String infrastructureManagerName,
+                                               String capabilityGUID) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
+    {
+        final String methodName = "removeSoftwareServerCapability";
+        final String elementGUIDParameterName    = "capabilityGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(capabilityGUID, elementGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + capabilityURLTemplatePrefix + "/{2}/delete";
+
+        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+
+        requestBody.setExternalSourceGUID(infrastructureManagerGUID);
+        requestBody.setExternalSourceName(infrastructureManagerName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        capabilityGUID);
+    }
+
+
+    /**
+     * Retrieve the list of software server capability metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param userId calling user
+     * @param searchString string to find in the properties
+     * @param effectiveTime effective time for the query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<SoftwareServerCapabilityElement> findSoftwareServerCapabilities(String userId,
+                                                                                String searchString,
+                                                                                Date   effectiveTime,
+                                                                                int    startFrom,
+                                                                                int    pageSize) throws InvalidParameterException,
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        PropertyServerException
+    {
+        final String methodName                = "findSoftwareServerCapabilities";
+        final String searchStringParameterName = "searchString";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + capabilityURLTemplatePrefix + "/by-search-string?startFrom={2}&pageSize={3}";
+
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+
+        requestBody.setEffectiveTime(effectiveTime);
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(searchStringParameterName);
+
+        SoftwareServerCapabilityListResponse restResult = restClient.callSoftwareServerCapabilityListPostRESTCall(methodName,
+                                                                                                                  urlTemplate,
+                                                                                                                  requestBody,
+                                                                                                                  serverName,
+                                                                                                                  userId,
+                                                                                                                  startFrom,
+                                                                                                                  validatedPageSize);
+
+        return restResult.getElementList();
+    }
+
+
+    /**
+     * Retrieve the list of software server capability metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param userId calling user
+     * @param name name to search for
+     * @param effectiveTime effective time for the query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<SoftwareServerCapabilityElement> getSoftwareServerCapabilitiesByName(String userId,
+                                                                                     String name,
+                                                                                     Date   effectiveTime,
+                                                                                     int    startFrom,
+                                                                                     int    pageSize) throws InvalidParameterException,
+                                                                                                             UserNotAuthorizedException,
+                                                                                                             PropertyServerException
+    {
+        final String methodName        = "getSoftwareServerCapabilitiesByName";
+        final String nameParameterName = "name";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(name, nameParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + capabilityURLTemplatePrefix + "/by-name?startFrom={2}&pageSize={3}";
+
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setEffectiveTime(effectiveTime);
+        requestBody.setName(name);
+        requestBody.setNamePropertyName(nameParameterName);
+
+        SoftwareServerCapabilityListResponse restResult = restClient.callSoftwareServerCapabilityListPostRESTCall(methodName,
+                                                                                                                  urlTemplate,
+                                                                                                                  requestBody,
+                                                                                                                  serverName,
+                                                                                                                  userId,
+                                                                                                                  startFrom,
+                                                                                                                  validatedPageSize);
+
+        return restResult.getElementList();
+    }
+
+
+    /**
+     * Retrieve the software server capability metadata element with the supplied unique identifier.
+     *
+     * @param userId calling user
+     * @param guid unique identifier of the requested metadata element
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public SoftwareServerCapabilityElement getSoftwareServerCapabilityByGUID(String userId,
+                                                                             String guid) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
+    {
+        final String methodName = "getSoftwareServerCapabilityByGUID";
+        final String guidParameterName = "guid";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + capabilityURLTemplatePrefix + "/{2}";
+
+        SoftwareServerCapabilityResponse restResult = restClient.callSoftwareServerCapabilityGetRESTCall(methodName,
+                                                                                                         urlTemplate,
+                                                                                                         serverName,
+                                                                                                         userId,
+                                                                                                         guid);
+
+        return restResult.getElement();
+    }
+
+
+    /*
+     * A software server capability works with assets
+     */
+
+    /**
+     * Create a new metadata relationship to represent the use of an asset by a software server capability.
+     *
+     * @param userId calling user
+     * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
+     * @param infrastructureManagerName unique name of software server capability representing the caller
+     * @param infrastructureManagerIsHome should the software server capability be marked as owned by the infrastructure manager so others can not update?
+     * @param capabilityGUID unique identifier of a software server capability
+     * @param assetGUID unique identifier of an asset
+     * @param properties properties about the ServerAssetUse relationship
+     *
+     * @return unique identifier of the new ServerAssetUse relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public String createServerAssetUse(String                   userId,
+                                       String                   infrastructureManagerGUID,
+                                       String                   infrastructureManagerName,
+                                       boolean                  infrastructureManagerIsHome,
+                                       String                   capabilityGUID,
+                                       String                   assetGUID,
+                                       ServerAssetUseProperties properties) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        final String methodName                  = "createServerAssetUse";
+        final String capabilityGUIDParameterName = "capabilityGUID";
+        final String assetGUIDParameterName      = "assetGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(capabilityGUID, capabilityGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + assetUsesURLTemplatePrefix + "/software-server-capabilities/{2}/assets/{3}?infrastructureManagerIsHome={4}";
+
+        ServerAssetUseRequestBody requestBody = new ServerAssetUseRequestBody();
+
+        requestBody.setExternalSourceGUID(infrastructureManagerGUID);
+        requestBody.setExternalSourceName(infrastructureManagerName);
+        requestBody.setProperties(properties);
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId,
+                                                                  capabilityGUID,
+                                                                  assetGUID,
+                                                                  infrastructureManagerIsHome);
+
+        return restResult.getGUID();
+    }
+
+
+    /**
+     * Update the metadata relationship to represent the use of an asset by a software server capability.
+     *
+     * @param userId calling user
+     * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
+     * @param infrastructureManagerName unique name of software server capability representing the caller
+     * @param serverAssetUseGUID unique identifier of the relationship between a software server capability and an asset
+     * @param isMergeUpdate are unspecified properties unchanged (true) or removed?
+     * @param properties new properties for the ServerAssetUse relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void updateServerAssetUse(String                   userId,
+                                     String                   infrastructureManagerGUID,
+                                     String                   infrastructureManagerName,
+                                     String                   serverAssetUseGUID,
+                                     boolean                  isMergeUpdate,
+                                     ServerAssetUseProperties properties) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        final String methodName               = "updateServerAssetUse";
+        final String elementGUIDParameterName = "serverAssetUseGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(serverAssetUseGUID, elementGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + assetUsesURLTemplatePrefix + "/{2}?isMergeUpdate={3}";
+
+        ServerAssetUseRequestBody requestBody = new ServerAssetUseRequestBody();
+
+        requestBody.setExternalSourceGUID(infrastructureManagerGUID);
+        requestBody.setExternalSourceName(infrastructureManagerName);
+        requestBody.setProperties(properties);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        serverAssetUseGUID,
+                                        isMergeUpdate);
+    }
+
+
+    /**
+     * Remove the metadata relationship to represent the use of an asset by a software server capability.
+     *
+     * @param userId calling user
+     * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
+     * @param infrastructureManagerName unique name of software server capability representing the caller
+     * @param serverAssetUseGUID unique identifier of the relationship between a software server capability and an asset
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void removeServerAssetUse(String userId,
+                                     String infrastructureManagerGUID,
+                                     String infrastructureManagerName,
+                                     String serverAssetUseGUID) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        final String methodName               = "removeServerAssetUse";
+        final String elementGUIDParameterName = "serverAssetUseGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(serverAssetUseGUID, elementGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + assetUsesURLTemplatePrefix + "/{2}/delete";
+
+        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+
+        requestBody.setExternalSourceGUID(infrastructureManagerGUID);
+        requestBody.setExternalSourceName(infrastructureManagerName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        serverAssetUseGUID);
+    }
+
+
+    /**
+     * Return the list of server asset use relationships associated with a software server capability.
+     *
+     * @param userId calling user
+     * @param capabilityGUID unique identifier of the software server capability to query
+     * @param useType value to search for.  Null means all use types.
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching relationships
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<ServerAssetUseElement> getServerAssetUsesForCapability(String             userId,
+                                                                       String             capabilityGUID,
+                                                                       ServerAssetUseType useType,
+                                                                       Date               effectiveTime,
+                                                                       int                startFrom,
+                                                                       int                pageSize) throws InvalidParameterException,
+                                                                                                           UserNotAuthorizedException,
+                                                                                                           PropertyServerException
+    {
+        final String methodName               = "getServerAssetUsesForCapability";
+        final String elementGUIDParameterName = "capabilityGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(capabilityGUID, elementGUIDParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + assetUsesURLTemplatePrefix + "/software-server-capabilities/{2}?startFrom={3}&pageSize={4}";
+
+        UseTypeRequestBody requestBody = new UseTypeRequestBody();
+
+        requestBody.setEffectiveTime(effectiveTime);
+        requestBody.setUseType(useType);
+
+        ServerAssetUseListResponse restResult = restClient.callServerAssetUseListPostRESTCall(methodName,
+                                                                             urlTemplate,
+                                                                             requestBody,
+                                                                             serverName,
+                                                                             userId,
+                                                                             capabilityGUID,
+                                                                             startFrom,
+                                                                             validatedPageSize);
+
+        return restResult.getElements();
+    }
+
+
+    /**
+     * Return the list of software server capabilities that make use of a specific asset.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset to query
+     * @param useType Optionally restrict the search to a specific user type.  Null means all use types.
+     * @param effectiveTime effective time for the query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching relationships
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<ServerAssetUseElement> getCapabilityUsesForAsset(String             userId,
+                                                                 String             assetGUID,
+                                                                 ServerAssetUseType useType,
+                                                                 Date               effectiveTime,
+                                                                 int                startFrom,
+                                                                 int                pageSize) throws InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     PropertyServerException
+    {
+        final String methodName               = "getCapabilityUsesForAsset";
+        final String elementGUIDParameterName = "assetGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, elementGUIDParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + assetUsesURLTemplatePrefix + "/assets/{2}?startFrom={3}&pageSize={4}";
+
+        UseTypeRequestBody requestBody = new UseTypeRequestBody();
+
+        requestBody.setEffectiveTime(effectiveTime);
+        requestBody.setUseType(useType);
+
+        ServerAssetUseListResponse restResult = restClient.callServerAssetUseListPostRESTCall(methodName,
+                                                                                              urlTemplate,
+                                                                                              requestBody,
+                                                                                              serverName,
+                                                                                              userId,
+                                                                                              assetGUID,
+                                                                                              startFrom,
+                                                                                              validatedPageSize);
+
+        return restResult.getElements();
+    }
+
+
+    /**
+     * Retrieve the list of relationships between a specific software server capability and a specific asset.
+     *
+     * @param userId calling user
+     * @param capabilityGUID unique identifier of a software server capability
+     * @param assetGUID unique identifier of an asset
+     * @param effectiveTime effective time for the query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching relationships
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<ServerAssetUseElement> getServerAssetUsesForElements(String userId,
+                                                                     String capabilityGUID,
+                                                                     String assetGUID,
+                                                                     Date   effectiveTime,
+                                                                     int    startFrom,
+                                                                     int    pageSize) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        final String methodName               = "getServerAssetUsesForElements";
+        final String capabilityGUIDParameterName = "capabilityGUID";
+        final String assetGUIDParameterName = "assetGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(capabilityGUID, capabilityGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + assetUsesURLTemplatePrefix + "/software-server-capabilities/{2}/assets/{3}/by-elements?startFrom={4}&pageSize={5}";
+
+        EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+
+        requestBody.setEffectiveTime(effectiveTime);
+
+        ServerAssetUseListResponse restResult = restClient.callServerAssetUseListPostRESTCall(methodName,
+                                                                                              urlTemplate,
+                                                                                              requestBody,
+                                                                                              serverName,
+                                                                                              userId,
+                                                                                              capabilityGUID,
+                                                                                              assetGUID,
+                                                                                              startFrom,
+                                                                                              validatedPageSize);
+
+        return restResult.getElements();
+    }
+
+
+    /**
+     * Retrieve the server asset use type relationship with the supplied unique identifier.
+     *
+     * @param userId calling user
+     * @param guid unique identifier of the requested metadata element
+     *
+     * @return requested relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public ServerAssetUseElement getServerAssetUseByGUID(String userId,
+                                                         String guid) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        final String methodName               = "getServerAssetUseByGUID";
+        final String elementGUIDParameterName = "guid";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(guid, elementGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + assetUsesURLTemplatePrefix + "/{2}";
+
+        ServerAssetUseResponse restResult = restClient.callServerAssetUseGetRESTCall(methodName,
+                                                                                     urlTemplate,
+                                                                                     serverName,
+                                                                                     userId,
+                                                                                     guid);
+
+        return restResult.getElement();
+    }
+}

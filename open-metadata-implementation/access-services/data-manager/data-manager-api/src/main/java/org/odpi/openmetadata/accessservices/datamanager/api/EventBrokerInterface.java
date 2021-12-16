@@ -368,7 +368,7 @@ public interface EventBrokerInterface
 
 
     /**
-     * Return the list of event types associated with an EvenSet.  This is a collection of EventType definitions.
+     * Return the list of event types associated with an EventSet.  This is a collection of EventType definitions.
      * These event types can be used as a template for adding the event types to a topic.
      *
      * @param userId calling user

@@ -15,10 +15,11 @@ import java.util.Map;
  */
 public class PersonRoleBuilder extends ReferenceableBuilder
 {
-    private String name        = null;
-    private String description = null;
-    private String scope       = null;
-    private int    headCount   = 1;
+    private String  name              = null;
+    private String  description       = null;
+    private String  scope             = null;
+    private int     headCount         = 1;
+    private boolean headCountLimitSet = false;
 
 
     /**
@@ -42,6 +43,7 @@ public class PersonRoleBuilder extends ReferenceableBuilder
                       String               description,
                       String               scope,
                       int                  headCount,
+                      boolean              headCountLimitSet,
                       Map<String, String>  additionalProperties,
                       String               typeGUID,
                       String               typeName,
@@ -63,6 +65,7 @@ public class PersonRoleBuilder extends ReferenceableBuilder
         this.description = description;
         this.scope = scope;
         this.headCount = headCount;
+        this.headCountLimitSet = headCountLimitSet;
     }
 
 
@@ -73,6 +76,7 @@ public class PersonRoleBuilder extends ReferenceableBuilder
      * @param name short display name for the role
      * @param description description of the role
      * @param headCount number of individuals that can be appointed to this role
+     * @param headCountLimitSet should the head count property be set?
      * @param repositoryHelper helper methods
      * @param serviceName name of this OMAS
      * @param serverName name of local server
@@ -81,6 +85,7 @@ public class PersonRoleBuilder extends ReferenceableBuilder
                       String               name,
                       String               description,
                       int                  headCount,
+                      boolean              headCountLimitSet,
                       OMRSRepositoryHelper repositoryHelper,
                       String               serviceName,
                       String               serverName)
@@ -93,6 +98,7 @@ public class PersonRoleBuilder extends ReferenceableBuilder
         this.name = name;
         this.description = description;
         this.headCount = headCount;
+        this.headCountLimitSet = headCountLimitSet;
     }
 
 
@@ -138,16 +144,21 @@ public class PersonRoleBuilder extends ReferenceableBuilder
                                                                   OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
                                                                   description,
                                                                   methodName);
+
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
                                                                   OpenMetadataAPIMapper.SCOPE_PROPERTY_NAME,
                                                                   scope,
                                                                   methodName);
-        properties = repositoryHelper.addIntPropertyToInstance(serviceName,
-                                                               properties,
-                                                               OpenMetadataAPIMapper.HEAD_COUNT_PROPERTY_NAME,
-                                                               headCount,
-                                                               methodName);
+
+        if (headCountLimitSet)
+        {
+            properties = repositoryHelper.addIntPropertyToInstance(serviceName,
+                                                                   properties,
+                                                                   OpenMetadataAPIMapper.HEAD_COUNT_PROPERTY_NAME,
+                                                                   headCount,
+                                                                   methodName);
+        }
 
         return properties;
     }
@@ -192,12 +203,14 @@ public class PersonRoleBuilder extends ReferenceableBuilder
      * Return the bean properties for the PersonRoleAppointment relationship in an InstanceProperties object.
      *
      * @param isPublic is this appointment visible to others
-     * @param startDate the official start date of the appointment - null means effective immediately
+     * @param effectiveFrom the official start date of the appointment - null means effective immediately
+     * @param effectiveFrom the official end date of the appointment - null means unknown
      * @param methodName name of the calling method
      * @return InstanceProperties object
      */
     InstanceProperties getAppointmentProperties(boolean isPublic,
-                                                Date    startDate,
+                                                Date    effectiveFrom,
+                                                Date    effectiveTo,
                                                 String  methodName)
     {
         InstanceProperties properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
@@ -206,7 +219,8 @@ public class PersonRoleBuilder extends ReferenceableBuilder
                                                                                       isPublic,
                                                                                       methodName);
 
-        properties.setEffectiveFromTime(startDate);
+        properties.setEffectiveFromTime(effectiveFrom);
+        properties.setEffectiveFromTime(effectiveTo);
 
         return properties;
     }

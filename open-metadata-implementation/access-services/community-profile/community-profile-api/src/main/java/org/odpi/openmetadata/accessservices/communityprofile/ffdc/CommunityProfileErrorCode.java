@@ -71,7 +71,7 @@ public enum CommunityProfileErrorCode implements ExceptionMessageSet
     ;
 
 
-    private ExceptionMessageDefinition messageDefinition;
+    private final ExceptionMessageDefinition messageDefinition;
 
 
     /**

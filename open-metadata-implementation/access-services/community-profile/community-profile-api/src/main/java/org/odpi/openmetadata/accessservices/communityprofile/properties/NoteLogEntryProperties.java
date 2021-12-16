@@ -136,11 +136,13 @@ public class NoteLogEntryProperties extends ReferenceableProperties
     public String toString()
     {
         return "NoteLogEntryProperties{" +
-                       "user='" + contributors + '\'' +
+                       "contributors=" + contributors +
                        ", title='" + title + '\'' +
                        ", text='" + text + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
                        ", vendorProperties=" + getVendorProperties() +
                        ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +

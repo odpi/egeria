@@ -3,11 +3,11 @@
 
 package org.odpi.openmetadata.integrationservices.security.contextmanager;
 
-import org.odpi.openmetadata.accessservices.assetmanager.client.AssetManagerClient;
-import org.odpi.openmetadata.accessservices.assetmanager.client.AssetManagerEventClient;
-import org.odpi.openmetadata.accessservices.assetmanager.client.DataAssetExchangeClient;
-import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties;
+import org.odpi.openmetadata.accessservices.securitymanager.client.MetadataSourceClient;
+import org.odpi.openmetadata.accessservices.securitymanager.client.SecurityManagerClient;
+import org.odpi.openmetadata.accessservices.securitymanager.client.SecurityManagerEventClient;
+import org.odpi.openmetadata.accessservices.securitymanager.client.rest.SecurityManagerRESTClient;
+import org.odpi.openmetadata.accessservices.securitymanager.properties.SecurityManagerProperties;
 import org.odpi.openmetadata.adminservices.configuration.properties.PermittedSynchronization;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -31,8 +31,8 @@ import java.util.Map;
  */
 public class SecurityIntegratorContextManager extends IntegrationContextManager
 {
-    private AssetManagerClient      assetManagerClient;
-    private DataAssetExchangeClient dataAssetExchangeClient;
+    private MetadataSourceClient  metadataSourceClient;
+    private SecurityManagerClient securityManagerClient;
 
     /**
      * Default constructor
@@ -78,34 +78,33 @@ public class SecurityIntegratorContextManager extends IntegrationContextManager
     @Override
     public  void createClients() throws InvalidParameterException
     {
-        AssetManagerRESTClient restClient;
+        SecurityManagerRESTClient restClient;
 
         if (localServerPassword == null)
         {
-            restClient = new AssetManagerRESTClient(partnerOMASServerName,
-                                                    partnerOMASPlatformRootURL,
-                                                    auditLog);
+            restClient = new SecurityManagerRESTClient(partnerOMASServerName,
+                                                       partnerOMASPlatformRootURL,
+                                                       auditLog);
         }
         else
         {
-            restClient = new AssetManagerRESTClient(partnerOMASServerName,
-                                                    partnerOMASPlatformRootURL,
-                                                    localServerUserId,
-                                                    localServerPassword,
-                                                    auditLog);
+            restClient = new SecurityManagerRESTClient(partnerOMASServerName,
+                                                       partnerOMASPlatformRootURL,
+                                                       localServerUserId,
+                                                       localServerPassword,
+                                                       auditLog);
         }
 
-        assetManagerClient = new AssetManagerClient(partnerOMASServerName,
-                                                    partnerOMASPlatformRootURL,
-                                                    restClient,
-                                                    maxPageSize,
-                                                    auditLog);
+        metadataSourceClient = new MetadataSourceClient(partnerOMASServerName,
+                                                        partnerOMASPlatformRootURL,
+                                                        restClient,
+                                                        maxPageSize,
+                                                        auditLog);
 
-        dataAssetExchangeClient = new DataAssetExchangeClient(partnerOMASServerName,
-                                                              partnerOMASPlatformRootURL,
-                                                              restClient,
-                                                              maxPageSize,
-                                                              auditLog);
+        securityManagerClient = new SecurityManagerClient(partnerOMASServerName,
+                                                          partnerOMASPlatformRootURL,
+                                                          restClient,
+                                                          maxPageSize);
     }
 
 
@@ -135,15 +134,15 @@ public class SecurityIntegratorContextManager extends IntegrationContextManager
                                              methodName);
 
 
-        String metadataSourceGUID = assetManagerClient.getExternalAssetManagerGUID(localServerUserId, metadataSourceQualifiedName);
+        String metadataSourceGUID = metadataSourceClient.getExternalSecurityManagerGUID(localServerUserId, metadataSourceQualifiedName);
 
         if (metadataSourceGUID == null)
         {
-            AssetManagerProperties properties = new AssetManagerProperties();
+            SecurityManagerProperties properties = new SecurityManagerProperties();
 
             properties.setQualifiedName(metadataSourceQualifiedName);
 
-            metadataSourceGUID = assetManagerClient.createExternalAssetManager(localServerUserId, properties);
+            metadataSourceGUID = metadataSourceClient.createExternalSecurityManager(localServerUserId, null, null, null, properties);
         }
 
         return metadataSourceGUID;
@@ -196,19 +195,18 @@ public class SecurityIntegratorContextManager extends IntegrationContextManager
                                                                                                                 permittedSynchronizationName,
                                                                                                                 serviceOptionsString));
 
-            AssetManagerEventClient eventClient = new AssetManagerEventClient(partnerOMASServerName,
-                                                                              partnerOMASPlatformRootURL,
-                                                                              localServerUserId,
-                                                                              localServerPassword,
-                                                                              maxPageSize,
-                                                                              auditLog,
-                                                                              connectorId);
+            SecurityManagerEventClient eventClient = new SecurityManagerEventClient(partnerOMASServerName,
+                                                                                    partnerOMASPlatformRootURL,
+                                                                                    localServerUserId,
+                                                                                    localServerPassword,
+                                                                                    connectorId);
 
             SecurityIntegratorConnector serviceSpecificConnector = (SecurityIntegratorConnector)integrationConnector;
 
             String metadataSourceGUID = this.setUpMetadataSource(metadataSourceQualifiedName);
 
-            serviceSpecificConnector.setContext(new SecurityIntegratorContext(dataAssetExchangeClient,
+            serviceSpecificConnector.setContext(new SecurityIntegratorContext(securityManagerClient,
+                                                                              eventClient,
                                                                               localServerUserId,
                                                                               metadataSourceGUID,
                                                                               metadataSourceQualifiedName,

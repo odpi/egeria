@@ -36,7 +36,7 @@ public enum DataScienceErrorCode implements ExceptionMessageSet
 
 
 
-    private ExceptionMessageDefinition messageDefinition;
+    private final ExceptionMessageDefinition messageDefinition;
 
     /**
      * The constructor for DataScienceErrorCode expects to be passed one of the enumeration rows defined in

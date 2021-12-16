@@ -137,11 +137,11 @@ public class CatalogIntegrator implements CatalogIntegratorAPI
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(connectorProviderClassName, nameParameter, methodName);
 
-        ConnectorTypeResponse restResult = restClient.callConnectorTypeGetRESTCall(methodName,
-                                                                                   serverPlatformRootURL + urlTemplate,
-                                                                                   serverName,
-                                                                                   userId,
-                                                                                   connectorProviderClassName);
+        ConnectorTypeResponse restResult = restClient.callOCFConnectorTypeGetRESTCall(methodName,
+                                                                                      serverPlatformRootURL + urlTemplate,
+                                                                                      serverName,
+                                                                                      userId,
+                                                                                      connectorProviderClassName);
 
         return restResult.getConnectorType();
     }

@@ -10,7 +10,7 @@
     <parent>
         <artifactId>security-integrator</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.4-SNAPSHOT</version>
+        <version>3.5-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -57,7 +57,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>asset-manager-api</artifactId>
+            <artifactId>security-manager-api</artifactId>
         </dependency>
 
         <dependency>
@@ -67,7 +67,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>asset-manager-client</artifactId>
+            <artifactId>security-manager-client</artifactId>
         </dependency>
 
         <dependency>

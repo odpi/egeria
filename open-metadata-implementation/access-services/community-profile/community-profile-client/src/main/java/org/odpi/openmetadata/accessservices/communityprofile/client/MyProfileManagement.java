@@ -4,9 +4,9 @@ package org.odpi.openmetadata.accessservices.communityprofile.client;
 
 import org.odpi.openmetadata.accessservices.communityprofile.api.MyPersonalProfileInterface;
 import org.odpi.openmetadata.accessservices.communityprofile.client.rest.CommunityProfileRESTClient;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.ContactMethodElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.PersonalProfileUniverse;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.AssetCollectionMember;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ContactMethodElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonalProfileUniverse;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.AssetCollectionMember;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethodType;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;

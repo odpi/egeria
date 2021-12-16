@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.communityprofile.api;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.CollectionElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.CollectionElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.CollectionOrder;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;

@@ -50,7 +50,7 @@ public enum ITInfrastructureAuditCode implements AuditLogMessageSet
 
     ;
 
-    AuditLogMessageDefinition messageDefinition;
+    private final AuditLogMessageDefinition messageDefinition;
 
 
     /**

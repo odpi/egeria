@@ -11,7 +11,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * AssetProperties is a java bean used to create assets associated with the data platform.
+ * AssetProperties is a java bean used to create assets associated with the IT landscape.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -21,9 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = AssetProperties.class, name = "AssetProperties"),
-                @JsonSubTypes.Type(value = SoftwareServerProperties.class, name = "SoftwareServerProperties"),
-                @JsonSubTypes.Type(value = SoftwareServerPlatformProperties.class, name = "SoftwareServerPlatformProperties"),
+                @JsonSubTypes.Type(value = ITInfrastructureProperties.class, name = "ITInfrastructureProperties"),
         })
 public class AssetProperties extends ConfigurationItemProperties
 {
@@ -55,6 +53,26 @@ public class AssetProperties extends ConfigurationItemProperties
             displayName = template.getDisplayName();
             description = template.getDescription();
         }
+    }
+
+
+    /**
+     * Convert this object into an AssetProperties object.  This involves packing the properties introduced at this level
+     * into the extended properties.
+     *
+     * @param subTypeName subtype name
+     * @return asset properties
+     */
+    public AssetProperties cloneToAsset(String subTypeName)
+    {
+        AssetProperties clone = new AssetProperties(this);
+
+        if (super.getTypeName() == null)
+        {
+            super.setTypeName(subTypeName);
+        }
+
+        return clone;
     }
 
 
@@ -115,9 +133,10 @@ public class AssetProperties extends ConfigurationItemProperties
         return "AssetProperties{" +
                        "displayName='" + displayName + '\'' +
                        ", description='" + description + '\'' +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
-                       ", classifications=" + getClassifications() +
                        ", vendorProperties=" + getVendorProperties() +
                        ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +

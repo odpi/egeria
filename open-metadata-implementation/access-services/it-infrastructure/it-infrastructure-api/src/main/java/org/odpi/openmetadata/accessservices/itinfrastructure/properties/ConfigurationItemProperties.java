@@ -4,16 +4,14 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.properties;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.io.Serializable;
 import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * Many open metadata entities are referenceable.  It means that they have a qualified name and additional
- * properties.  In addition the Referenceable class adds support for the parent asset, guid, url and type
- * for the entity through extending ElementHeader.
+ * ConfigurationItemProperties provides the base class for infrastructure items.  This extends referenceable with the ability to
+ * set effectivity dates.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -24,23 +22,19 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = AssetProperties.class, name = "AssetProperties"),
+                @JsonSubTypes.Type(value = ConnectionProperties.class, name = "ConnectionProperties"),
+                @JsonSubTypes.Type(value = ConnectorTypeProperties.class, name = "ConnectorTypeProperties"),
                 @JsonSubTypes.Type(value = EndpointProperties.class, name = "EndpointProperties"),
-                @JsonSubTypes.Type(value = HostProperties.class, name = "HostProperties"),
-                @JsonSubTypes.Type(value = SoftwareServerCapabilitiesProperties.class, name = "SoftwareServerCapabilitiesProperties"),
+                @JsonSubTypes.Type(value = OperatingPlatformProperties.class, name = "OperatingPlatformProperties"),
+                @JsonSubTypes.Type(value = SoftwareServerCapabilityProperties.class, name = "SoftwareServerCapabilityProperties"),
         })
-public class ConfigurationItemProperties implements Serializable
+public class ConfigurationItemProperties extends ReferenceableProperties
 {
     private static final long    serialVersionUID = 1L;
 
-    private String               qualifiedName        = null;
-    private Map<String, String>  additionalProperties = null;
+    private Date effectiveFrom = null;
+    private Date effectiveTo   = null;
 
-    private List<Classification> classifications      = null;
-
-    private Map<String, String>  vendorProperties     = null;
-
-    private String               typeName             = null;
-    private Map<String, Object>  extendedProperties   = null;
 
     /**
      * Default constructor
@@ -58,193 +52,57 @@ public class ConfigurationItemProperties implements Serializable
      */
     public ConfigurationItemProperties(ConfigurationItemProperties template)
     {
+        super(template);
+
         if (template != null)
         {
-            qualifiedName        = template.getQualifiedName();
-            additionalProperties = template.getAdditionalProperties();
-            classifications      = template.getClassifications();
-            typeName             = template.getTypeName();
-            extendedProperties   = template.getExtendedProperties();
+            effectiveFrom = template.getEffectiveFrom();
+            effectiveTo = template.getEffectiveTo();
         }
     }
 
 
     /**
-     * Set up the fully qualified name.
+     * Return the date/time that this element is effective from (null means effective from the epoch).
      *
-     * @param qualifiedName String name
+     * @return date object
      */
-    public void setQualifiedName(String qualifiedName)
+    public Date getEffectiveFrom()
     {
-        this.qualifiedName = qualifiedName;
+        return effectiveFrom;
     }
 
 
     /**
-     * Returns the stored qualified name property for the metadata entity.
-     * If no qualified name is available then the empty string is returned.
+     * Set up the date/time that this element is effective from (null means effective from the epoch).
      *
-     * @return qualifiedName
+     * @param effectiveFrom date object
      */
-    public String getQualifiedName()
+    public void setEffectiveFrom(Date effectiveFrom)
     {
-        return qualifiedName;
+        this.effectiveFrom = effectiveFrom;
     }
 
 
     /**
-     * Set up additional properties.
+     * Return the date/time that element is effective to (null means that it is effective indefinitely into the future).
      *
-     * @param additionalProperties Additional properties object
+     * @return date object
      */
-    public void setAdditionalProperties(Map<String, String> additionalProperties)
+    public Date getEffectiveTo()
     {
-        this.additionalProperties = additionalProperties;
+        return effectiveTo;
     }
 
 
     /**
-     * Return a copy of the additional properties.  Null means no additional properties are available.
+     * Set the date/time that element is effective to (null means that it is effective indefinitely into the future).
      *
-     * @return AdditionalProperties
+     * @param effectiveTo date object
      */
-    public Map<String, String> getAdditionalProperties()
+    public void setEffectiveTo(Date effectiveTo)
     {
-        if (additionalProperties == null)
-        {
-            return null;
-        }
-        else if (additionalProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(additionalProperties);
-        }
-    }
-
-
-    /**
-     * Return the list of classifications associated with the object.
-     *
-     * @return Classifications  list of classifications
-     */
-    public List<Classification> getClassifications()
-    {
-        if (classifications == null)
-        {
-            return null;
-        }
-        else if (classifications.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(classifications);
-        }
-    }
-
-
-    /**
-     * Set up the classifications associated with this object.
-     *
-     * @param classifications list of classifications
-     */
-    public void setClassifications(List<Classification> classifications)
-    {
-        this.classifications = classifications;
-    }
-
-
-    /**
-     * Return specific properties for the data platform vendor.
-     *
-     * @return name value pairs
-     */
-    public Map<String, String> getVendorProperties()
-    {
-        if (vendorProperties == null)
-        {
-            return null;
-        }
-        else if (vendorProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(vendorProperties);
-        }
-    }
-
-
-    /**
-     * Set up specific properties for the data platform vendor.
-     *
-     * @param vendorProperties name value pairs
-     */
-    public void setVendorProperties(Map<String, String> vendorProperties)
-    {
-        this.vendorProperties = vendorProperties;
-    }
-
-
-    /**
-     * Return the name of the open metadata type for this element.
-     *
-     * @return string name
-     */
-    public String getTypeName()
-    {
-        return typeName;
-    }
-
-
-    /**
-     * Set up the name of the open metadata type for this element.
-     *
-     * @param typeName string name
-     */
-    public void setTypeName(String typeName)
-    {
-        this.typeName = typeName;
-    }
-
-
-    /**
-     * Return the properties that have been defined for a subtype of this object that are not supported explicitly
-     * by this bean.
-     *
-     * @return property map
-     */
-    public Map<String, Object> getExtendedProperties()
-    {
-        if (extendedProperties == null)
-        {
-            return null;
-        }
-        else if (extendedProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(extendedProperties);
-        }
-    }
-
-
-    /**
-     * Set up the properties that have been defined for a subtype of this object that are not supported explicitly
-     * by this bean.
-     *
-     * @param extendedProperties property map
-     */
-    public void setExtendedProperties(Map<String, Object> extendedProperties)
-    {
-        this.extendedProperties = extendedProperties;
+        this.effectiveTo = effectiveTo;
     }
 
 
@@ -257,13 +115,14 @@ public class ConfigurationItemProperties implements Serializable
     public String toString()
     {
         return "ConfigurationItemProperties{" +
-                "qualifiedName='" + qualifiedName + '\'' +
-                ", additionalProperties=" + additionalProperties +
-                ", classifications=" + classifications +
-                ", vendorProperties=" + vendorProperties +
-                ", typeName='" + typeName + '\'' +
-                ", extendedProperties=" + extendedProperties +
-                '}';
+                       "effectiveFrom=" + effectiveFrom +
+                       ", effectiveTo=" + effectiveTo +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 
 
@@ -284,13 +143,13 @@ public class ConfigurationItemProperties implements Serializable
         {
             return false;
         }
+        if (! super.equals(objectToCompare))
+        {
+            return false;
+        }
         ConfigurationItemProperties that = (ConfigurationItemProperties) objectToCompare;
-        return Objects.equals(qualifiedName, that.qualifiedName) &&
-                Objects.equals(additionalProperties, that.additionalProperties) &&
-                Objects.equals(classifications, that.classifications) &&
-                Objects.equals(vendorProperties, that.vendorProperties) &&
-                Objects.equals(typeName, that.typeName) &&
-                Objects.equals(extendedProperties, that.extendedProperties);
+        return Objects.equals(effectiveFrom, that.effectiveFrom) &&
+                       Objects.equals(effectiveTo, that.effectiveTo);
     }
 
 
@@ -302,7 +161,6 @@ public class ConfigurationItemProperties implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(qualifiedName, additionalProperties, classifications,
-                            vendorProperties, typeName, extendedProperties);
+        return Objects.hash(super.hashCode(), effectiveFrom, effectiveTo);
     }
 }

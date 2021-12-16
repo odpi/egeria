@@ -60,7 +60,7 @@ public class GovernanceRolesRESTServices
                                              GovernanceRoleProperties requestBody)
 
     {
-        final String        methodName = "createGovernanceRole";
+        final String methodName = "createGovernanceRole";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -101,9 +101,12 @@ public class GovernanceRolesRESTServices
                                                           requestBody.getDescription(),
                                                           requestBody.getScope(),
                                                           requestBody.getHeadCount(),
+                                                          requestBody.getHeadCountLimitSet(),
                                                           requestBody.getAdditionalProperties(),
                                                           typeName,
                                                           extendedProperties,
+                                                          null,
+                                                          null,
                                                           methodName));
             }
             else
@@ -184,6 +187,7 @@ public class GovernanceRolesRESTServices
                                          requestBody.getDescription(),
                                          requestBody.getScope(),
                                          requestBody.getHeadCount(),
+                                         requestBody.getHeadCountLimitSet(),
                                          requestBody.getAdditionalProperties(),
                                          requestBody.getTypeName(),
                                          extendedProperties,
@@ -859,6 +863,7 @@ public class GovernanceRolesRESTServices
                                                                      governanceRoleGUIDParameterName,
                                                                      true,
                                                                      requestBody.getEffectiveDate(),
+                                                                     null,
                                                                      methodName);
 
                 response.setGUID(appointmentGUID);

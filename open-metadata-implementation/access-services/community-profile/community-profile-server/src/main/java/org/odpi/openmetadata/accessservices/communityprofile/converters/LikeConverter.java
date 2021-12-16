@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.LikeElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.LikeElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.LikeProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -37,7 +37,7 @@ public class LikeConverter<B> extends CommunityProfileOMASConverter<B>
 
     /**
      * Using the supplied instances, return a new instance of the bean. This is used for beans that have
-     * contain a combination of the properties from an entity and a that os a connected relationship.
+     * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
      * @param entity entity containing the properties
@@ -100,7 +100,7 @@ public class LikeConverter<B> extends CommunityProfileOMASConverter<B>
 
     /**
      * Using the supplied instances, return a new instance of the bean. This is used for beans that have
-     * contain a combination of the properties from an entity and a that os a connected relationship.
+     * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
      * @param entity entity containing the properties

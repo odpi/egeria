@@ -29,11 +29,11 @@ public enum GlossaryTermActivityType implements Serializable
     public static final String ENUM_TYPE_GUID  = "af7e403d-9865-4ebb-8c1a-1fd57b4f4bca";
     public static final String ENUM_TYPE_NAME  = "ActivityType";
 
-    private int    openTypeOrdinal;
+    private final int    openTypeOrdinal;
 
-    private int    ordinal;
-    private String name;
-    private String description;
+    private final int    ordinal;
+    private final String name;
+    private final String description;
 
     private static final long     serialVersionUID = 1L;
 

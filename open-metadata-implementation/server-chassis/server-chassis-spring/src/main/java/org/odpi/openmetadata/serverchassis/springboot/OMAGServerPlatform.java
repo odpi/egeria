@@ -17,12 +17,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ContextClosedEvent;
-import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
@@ -37,7 +37,7 @@ import java.util.*;
 @OpenAPIDefinition(
         info = @Info(
                 title = "Egeria's Open Metadata and Governance (OMAG) Server Platform",
-                version = "3.4-SNAPSHOT",
+                version = "3.5-SNAPSHOT",
                 description = "The OMAG Server Platform provides a runtime process and platform for Open Metadata and Governance (OMAG) Services.\n" +
                         "\n" +
                         "The OMAG services are configured and activated in OMAG Servers using the Administration Services.\n" +
@@ -104,7 +104,6 @@ public class OMAGServerPlatform
                 log.warn("strict.ssl is set to false! Invalid certificates will be accepted for connection!");
                 HttpHelper.noStrictSSL();
             }
-            autoStartConfig();
         };
     }
 
@@ -119,7 +118,9 @@ public class OMAGServerPlatform
         {
             String[] splits = startupServers.split(",");
             //remove eventual duplicates
-            HashSet<String> serverSet = new HashSet<>(Arrays.asList(splits));
+            TreeSet<String> serverSet = new TreeSet<String>();
+
+            Collections.addAll(serverSet, splits);
 
             if (! serverSet.isEmpty())
             {
@@ -168,9 +169,9 @@ public class OMAGServerPlatform
 
         if (servers != null)
         {
-            log.info("Temporarily deactivating any auto-started servers '{}'", servers.toString());
+            log.info("Temporarily deactivating any auto-started servers '{}'", servers);
 
-            System.out.println(new Date().toString() + " OMAG Server Platform shutdown requested. Shutting down auto-started servers (if running): " + servers.toString());
+            System.out.println(new Date() + " OMAG Server Platform shutdown requested. Shutting down auto-started servers (if running): " + servers);
 
             operationalServices.deactivateTemporarilyServerList(sysUser, servers);
         }
@@ -180,15 +181,15 @@ public class OMAGServerPlatform
     public class ApplicationContextListener
     {
 
-        @EventListener
-        public void onApplicationEvent(ContextRefreshedEvent event)
-        {
-            System.out.println();
+        @EventListener(ApplicationReadyEvent.class)
+        public void applicationReady() {
+            autoStartConfig();
             System.out.println(OMAGServerPlatform.this.startupMessage);
+
             if(triggeredRuntimeHalt){
                 Runtime.getRuntime().halt(43);
             }
-            System.out.println(new Date().toString() + " OMAG server platform ready for more configuration");
+            System.out.println(new Date() + " OMAG server platform ready for more configuration");
         }
 
         @EventListener

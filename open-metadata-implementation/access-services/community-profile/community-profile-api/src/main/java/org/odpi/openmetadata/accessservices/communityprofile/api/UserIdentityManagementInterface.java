@@ -2,7 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.api;
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.UserIdentityElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.UserIdentityElement;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.ProfileIdentityProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentityProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -67,7 +68,7 @@ public interface UserIdentityManagementInterface
 
 
     /**
-     * Remove a user identity object.  This will fail if a profile would be left without an associated user identity.
+     * Remove a user identity object.
      *
      * @param userId the name of the calling user
      * @param externalSourceGUID unique identifier of software server capability representing the caller
@@ -87,31 +88,57 @@ public interface UserIdentityManagementInterface
 
 
     /**
-     * Link a user identity to a profile.  This will fail if the user identity is already connected to
-     * a profile.
+     * Link a user identity to a profile.
      *
-     * @param userId the name of the calling user.
+     * @param userId the name of the calling user
      * @param externalSourceGUID unique identifier of software server capability representing the caller
      * @param externalSourceName unique name of software server capability representing the caller
-     * @param userIdentityGUID additional userId for the profile.
-     * @param profileGUID the profile to add the identity to.
+     * @param userIdentityGUID additional userId for the profile
+     * @param profileGUID the profile to add the identity to
+     * @param properties the properties that describe how the owner of the profile uses the user identity
      *
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws PropertyServerException  there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    void addIdentityToProfile(String userId,
-                              String externalSourceGUID,
-                              String externalSourceName,
-                              String userIdentityGUID,
-                              String profileGUID) throws InvalidParameterException,
-                                                         PropertyServerException,
-                                                         UserNotAuthorizedException;
+    void addIdentityToProfile(String                    userId,
+                              String                    externalSourceGUID,
+                              String                    externalSourceName,
+                              String                    userIdentityGUID,
+                              String                    profileGUID,
+                              ProfileIdentityProperties properties) throws InvalidParameterException,
+                                                                           PropertyServerException,
+                                                                           UserNotAuthorizedException;
 
 
     /**
-     * Unlink a user identity from a profile.  This will fail if the profile would be left without an
-     * associated user identity.
+     * Update the properties of the relationship between a user identity and profile.
+     *
+     * @param userId the name of the calling user
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
+     * @param userIdentityGUID additional userId for the profile
+     * @param profileGUID the profile to add the identity to
+     * @param isMergeUpdate should the supplied properties be overlaid on the existing properties (true) or replace them (false
+     * @param properties the properties that describe how the owner of the profile uses the user identity
+     *
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws PropertyServerException  there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    void updateProfileIdentity(String                    userId,
+                               String                    externalSourceGUID,
+                               String                    externalSourceName,
+                               String                    userIdentityGUID,
+                               String                    profileGUID,
+                               boolean                   isMergeUpdate,
+                               ProfileIdentityProperties properties) throws InvalidParameterException,
+                                                                            PropertyServerException,
+                                                                            UserNotAuthorizedException;
+
+
+    /**
+     * Unlink a user identity from a profile.
      *
      * @param userId the name of the calling user.
      * @param externalSourceGUID unique identifier of software server capability representing the caller

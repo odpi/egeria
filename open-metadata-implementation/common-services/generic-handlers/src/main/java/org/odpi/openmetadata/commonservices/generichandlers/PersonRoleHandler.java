@@ -87,6 +87,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * @param description description of the role
      * @param scope the scope of the role
      * @param headCount number of individuals that can be appointed to this role
+     * @param headCountLimitSet should the headcount be added to the entity?
      * @param additionalProperties additional properties for a role
      * @param suppliedTypeName type name from the caller (enables creation of subtypes)
      * @param extendedProperties  properties for a governance role subtype
@@ -105,9 +106,12 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                    String              description,
                                    String              scope,
                                    int                 headCount,
+                                   boolean             headCountLimitSet,
                                    Map<String, String> additionalProperties,
                                    String              suppliedTypeName,
                                    Map<String, Object> extendedProperties,
+                                   Date                effectiveFrom,
+                                   Date                effectiveTo,
                                    String              methodName) throws InvalidParameterException,
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
@@ -135,6 +139,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                                               description,
                                                               scope,
                                                               headCount,
+                                                              headCountLimitSet,
                                                               additionalProperties,
                                                               typeGUID,
                                                               typeName,
@@ -142,6 +147,8 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                                               repositoryHelper,
                                                               serviceName,
                                                               serverName);
+
+        roleBuilder.setEffectivityDates(effectiveFrom, effectiveTo);
 
         return this.createBeanInRepository(userId,
                                            externalSourceGUID,
@@ -167,6 +174,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * @param name short display name for the role
      * @param description description of the governance role
      * @param headCount number of individuals that can be appointed to this role
+     * @param headCountLimitSet should the headcount value be set in the entity?
      * @param methodName calling method
      *
      * @return unique identifier of the new metadata element
@@ -175,17 +183,18 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createPersonRoleFromTemplate(String userId,
-                                               String externalSourceGUID,
-                                               String externalSourceName,
-                                               String templateGUID,
-                                               String qualifiedName,
-                                               String name,
-                                               String description,
-                                               int    headCount,
-                                               String methodName) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
+    public String createPersonRoleFromTemplate(String  userId,
+                                               String  externalSourceGUID,
+                                               String  externalSourceName,
+                                               String  templateGUID,
+                                               String  qualifiedName,
+                                               String  name,
+                                               String  description,
+                                               int     headCount,
+                                               boolean headCountLimitSet,
+                                               String  methodName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
         final String templateGUIDParameterName   = "templateGUID";
         final String qualifiedNameParameterName  = "qualifiedName";
@@ -198,6 +207,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                                               name,
                                                               description,
                                                               headCount,
+                                                              headCountLimitSet,
                                                               repositoryHelper,
                                                               serviceName,
                                                               serverName);
@@ -227,7 +237,8 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * @param roleGUID  unique identifier of the person role
      * @param roleGUIDParameterName parameter name supplying roleGUID
      * @param isPublic is this appointment visible to others
-     * @param startDate the official start date of the appointment - null means effective immediately
+     * @param effectiveFrom the official start date of the appointment - null means effective immediately
+     * @param effectiveFrom the official end date of the appointment - null means unknown
      * @param methodName calling method
      *
      * @return unique identifier of the appointment relationship
@@ -244,7 +255,8 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                       String  roleGUID,
                                       String  roleGUIDParameterName,
                                       boolean isPublic,
-                                      Date    startDate,
+                                      Date    effectiveFrom,
+                                      Date    effectiveTo,
                                       String  methodName) throws InvalidParameterException,
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
@@ -265,13 +277,59 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                          supportedZones,
                                          OpenMetadataAPIMapper.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_GUID,
                                          OpenMetadataAPIMapper.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME,
-                                         builder.getAppointmentProperties(isPublic, startDate, methodName),
+                                         builder.getAppointmentProperties(isPublic, effectiveFrom, effectiveTo, methodName),
                                          methodName);
     }
 
 
     /**
-     * Unlink two team profiles from the hierarchy.
+     * Update the properties in an appointment relationship.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID     unique identifier of software server capability representing the caller
+     * @param externalSourceName     unique name of software server capability representing the caller
+     * @param appointmentGUID        relationship GUID
+     * @param appointmentGUIDParameterName property for appointmentGUID
+     * @param isPublic is this appointment visible to others
+     * @param effectiveFrom the official start date of the appointment - null means effective immediately
+     * @param effectiveFrom the official end date of the appointment - null means unknown
+     * @param isMergeUpdate should the supplied properties be merged with existing properties (true) only replacing the properties with
+     *                      matching names, or should the entire properties of the instance be replaced?
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException entity not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void updateAppointment(String  userId,
+                                  String  externalSourceGUID,
+                                  String  externalSourceName,
+                                  String  appointmentGUID,
+                                  String  appointmentGUIDParameterName,
+                                  boolean isPublic,
+                                  Date    effectiveFrom,
+                                  Date    effectiveTo,
+                                  boolean isMergeUpdate,
+                                  String  methodName) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException
+    {
+        PersonRoleBuilder builder = new PersonRoleBuilder(repositoryHelper, serviceName, serverName);
+
+        this.updateRelationshipProperties(userId,
+                                             externalSourceGUID,
+                                             externalSourceName,
+                                             appointmentGUID,
+                                             appointmentGUIDParameterName,
+                                             OpenMetadataAPIMapper.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME,
+                                             isMergeUpdate,
+                                             builder.getAppointmentProperties(isPublic, effectiveFrom, effectiveTo, methodName),
+                                             methodName);
+    }
+
+
+    /**
+     * Set an end date on a specific appointment.
      *
      * @param userId calling user
      * @param externalSourceGUID     unique identifier of software server capability representing the caller
@@ -303,8 +361,6 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                                                 UserNotAuthorizedException,
                                                                 PropertyServerException
     {
-        invalidParameterHandler.validateGUID(profileGUID, profileGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(roleGUID, roleGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(appointmentGUID, appointmentGUIDParameterName, methodName);
 
         Relationship relationship = repositoryHandler.getRelationshipByGUID(userId,
@@ -314,60 +370,67 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                                                             null,
                                                                             methodName);
 
+
         if ((relationship != null) && (relationship.getEntityOneProxy() != null) && (relationship.getEntityTwoProxy() != null))
         {
-            if (! roleGUID.equals(relationship.getEntityTwoProxy().getGUID()))
+            if (roleGUID != null)
             {
-                String relationshipTypeName = "<Unknown>";
-                String proxyTypeName = "<Unknown>";
-
-                if (relationship.getType() != null)
+                if (! roleGUID.equals(relationship.getEntityTwoProxy().getGUID()))
                 {
-                    relationshipTypeName = relationship.getType().getTypeDefName();
-                }
-                if (relationship.getEntityTwoProxy().getType() != null)
-                {
-                    proxyTypeName = relationship.getEntityTwoProxy().getType().getTypeDefName();
-                }
+                    String relationshipTypeName = "<Unknown>";
+                    String proxyTypeName        = "<Unknown>";
 
-                throw new InvalidParameterException(GenericHandlersErrorCode.WRONG_END_GUID.getMessageDefinition(roleGUIDParameterName,
-                                                                                                                 roleGUID,
-                                                                                                                 proxyTypeName,
-                                                                                                                 relationship.getEntityTwoProxy().getGUID(),
-                                                                                                                 Integer.toString(2),
-                                                                                                                 relationshipTypeName,
-                                                                                                                 appointmentGUIDParameterName,
-                                                                                                                 appointmentGUID),
-                                                    this.getClass().getName(),
-                                                    methodName,
-                                                    roleGUIDParameterName);
+                    if (relationship.getType() != null)
+                    {
+                        relationshipTypeName = relationship.getType().getTypeDefName();
+                    }
+                    if (relationship.getEntityTwoProxy().getType() != null)
+                    {
+                        proxyTypeName = relationship.getEntityTwoProxy().getType().getTypeDefName();
+                    }
+
+                    throw new InvalidParameterException(GenericHandlersErrorCode.WRONG_END_GUID.getMessageDefinition(roleGUIDParameterName,
+                                                                                                                     roleGUID,
+                                                                                                                     proxyTypeName,
+                                                                                                                     relationship.getEntityTwoProxy().getGUID(),
+                                                                                                                     Integer.toString(2),
+                                                                                                                     relationshipTypeName,
+                                                                                                                     appointmentGUIDParameterName,
+                                                                                                                     appointmentGUID),
+                                                        this.getClass().getName(),
+                                                        methodName,
+                                                        roleGUIDParameterName);
+                }
             }
 
-            if (! profileGUID.equals(relationship.getEntityOneProxy().getGUID()))
+            if (profileGUID != null)
             {
-                String relationshipTypeName = "<Unknown>";
-                String proxyTypeName = "<Unknown>";
-
-                if (relationship.getType() != null)
+                if (! profileGUID.equals(relationship.getEntityOneProxy().getGUID()))
                 {
-                    relationshipTypeName = relationship.getType().getTypeDefName();
-                }
-                if (relationship.getEntityOneProxy().getType() != null)
-                {
-                    proxyTypeName = relationship.getEntityOneProxy().getType().getTypeDefName();
-                }
+                    String relationshipTypeName = "<Unknown>";
+                    String proxyTypeName        = "<Unknown>";
 
-                throw new InvalidParameterException(GenericHandlersErrorCode.WRONG_END_GUID.getMessageDefinition(profileGUIDParameterName,
-                                                                                                                 profileGUID,
-                                                                                                                 proxyTypeName,
-                                                                                                                 relationship.getEntityOneProxy().getGUID(),
-                                                                                                                 Integer.toString(1),
-                                                                                                                 relationshipTypeName,
-                                                                                                                 appointmentGUIDParameterName,
-                                                                                                                 appointmentGUID),
-                                                    this.getClass().getName(),
-                                                    methodName,
-                                                    roleGUIDParameterName);
+                    if (relationship.getType() != null)
+                    {
+                        relationshipTypeName = relationship.getType().getTypeDefName();
+                    }
+                    if (relationship.getEntityOneProxy().getType() != null)
+                    {
+                        proxyTypeName = relationship.getEntityOneProxy().getType().getTypeDefName();
+                    }
+
+                    throw new InvalidParameterException(GenericHandlersErrorCode.WRONG_END_GUID.getMessageDefinition(profileGUIDParameterName,
+                                                                                                                     profileGUID,
+                                                                                                                     proxyTypeName,
+                                                                                                                     relationship.getEntityOneProxy().getGUID(),
+                                                                                                                     Integer.toString(1),
+                                                                                                                     relationshipTypeName,
+                                                                                                                     appointmentGUIDParameterName,
+                                                                                                                     appointmentGUID),
+                                                        this.getClass().getName(),
+                                                        methodName,
+                                                        roleGUIDParameterName);
+                }
             }
 
             InstanceProperties properties = new InstanceProperties(relationship.getProperties());
@@ -434,7 +497,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                   externalSourceName,
                                   teamLeaderRoleGUID,
                                   teamLeaderRoleGUIDParameterName,
-                                  OpenMetadataAPIMapper.TEAM_LEADER_TYPE_NAME,
+                                  OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
                                   teamGUID,
                                   teamGUIDParameterName,
                                   OpenMetadataAPIMapper.TEAM_TYPE_NAME,
@@ -483,7 +546,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                       externalSourceName,
                                       teamLeaderRoleGUID,
                                       teamLeaderRoleGUIDParameterName,
-                                      OpenMetadataAPIMapper.TEAM_LEADER_TYPE_NAME,
+                                      OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
                                       teamGUID,
                                       teamGUIDParameterName,
                                       OpenMetadataAPIMapper.TEAM_TYPE_GUID,
@@ -541,7 +604,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                   externalSourceName,
                                   teamMemberRoleGUID,
                                   teamMemberRoleGUIDParameterName,
-                                  OpenMetadataAPIMapper.TEAM_MEMBER_TYPE_NAME,
+                                  OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
                                   teamGUID,
                                   teamGUIDParameterName,
                                   OpenMetadataAPIMapper.TEAM_TYPE_NAME,
@@ -590,7 +653,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                       externalSourceName,
                                       teamMemberRoleGUID,
                                       teamMemberRoleGUIDParameterName,
-                                      OpenMetadataAPIMapper.TEAM_MEMBER_TYPE_NAME,
+                                      OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
                                       teamGUID,
                                       teamGUIDParameterName,
                                       OpenMetadataAPIMapper.TEAM_TYPE_GUID,
@@ -607,7 +670,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Update the anchor object that all elements in a role (terms and categories) are linked to.
+     * Update the person role object.
      *
      * @param userId calling user
      * @param externalSourceGUID     unique identifier of software server capability representing the caller
@@ -620,6 +683,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * @param nameParameterName  parameter providing name
      * @param description description of the role
      * @param scope the scope of the role
+     * @param headCountLimitSet should the head count be set in the entity?
      * @param headCount number of individuals that can be appointed to this role
      * @param additionalProperties additional properties for a governance role
      * @param typeName type of role
@@ -646,6 +710,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                  String              description,
                                  String              scope,
                                  int                 headCount,
+                                 boolean             headCountLimitSet,
                                  Map<String, String> additionalProperties,
                                  String              typeName,
                                  Map<String, Object> extendedProperties,
@@ -676,6 +741,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                                               description,
                                                               scope,
                                                               headCount,
+                                                              headCountLimitSet,
                                                               additionalProperties,
                                                               typeGUID,
                                                               typeName,
@@ -831,6 +897,40 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                     pageSize,
                                     effectiveTime,
                                     methodName);
+    }
+
+
+    /**
+     * Return the bean that represents a person role.
+     *
+     * @param userId calling user
+     * @param personRoleGUID unique identifier of the role
+     * @param personRoleGUIDParameterName name of the parameter that supplied the GUID
+     * @param effectiveTime when should this bean be retrieved from
+     * @param methodName calling method
+     *
+     * @return bean
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public B getPersonRoleByGUID(String userId,
+                                 String personRoleGUID,
+                                 String personRoleGUIDParameterName,
+                                 Date   effectiveTime,
+                                 String methodName) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
+    {
+        return getBeanFromRepository(userId,
+                                     personRoleGUID,
+                                     personRoleGUIDParameterName,
+                                     OpenMetadataAPIMapper.PERSON_TYPE_NAME,
+                                     false,
+                                     false,
+                                     effectiveTime,
+                                     methodName);
     }
 
 

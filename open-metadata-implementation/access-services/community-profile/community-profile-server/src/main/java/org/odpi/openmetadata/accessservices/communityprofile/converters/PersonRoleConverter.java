@@ -3,11 +3,13 @@
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.PersonRoleElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ElementStub;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonRoleElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonRoleProperties;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -16,6 +18,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -84,6 +87,9 @@ public class PersonRoleConverter<B> extends CommunityProfileOMASConverter<B>
                     roleProperties.setHeadCount(this.removeHeadCount(instanceProperties));
 
                     roleProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                    roleProperties.setEffectiveFrom(instanceProperties.getEffectiveFromTime());
+                    roleProperties.setEffectiveTo(instanceProperties.getEffectiveToTime());
+
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are
@@ -94,7 +100,7 @@ public class PersonRoleConverter<B> extends CommunityProfileOMASConverter<B>
 
                     if (relationships != null)
                     {
-                        int  appointeeCount = 0;
+                        List<ElementStub> appointees     = new ArrayList<>();
 
                         for (Relationship relationship : relationships)
                         {
@@ -108,13 +114,20 @@ public class PersonRoleConverter<B> extends CommunityProfileOMASConverter<B>
                                                                   instanceType.getTypeDefName(),
                                                                   OpenMetadataAPIMapper.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME))
                                     {
-                                        appointeeCount ++;
+                                        EntityProxy entityProxy = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);
+
+                                        ElementStub elementStub = super.getElementStub(beanClass, entityProxy, methodName);
+
+                                        appointees.add(elementStub);
                                     }
                                 }
                             }
                         }
 
-                        roleProperties.setAppointmentCount(appointeeCount);
+                        if (! appointees.isEmpty())
+                        {
+                            bean.setAppointees(appointees);
+                        }
                     }
 
                     bean.setProperties(roleProperties);

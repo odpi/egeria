@@ -6,7 +6,8 @@ package org.odpi.openmetadata.accessservices.communityprofile.client;
 
 import org.odpi.openmetadata.accessservices.communityprofile.api.UserIdentityManagementInterface;
 import org.odpi.openmetadata.accessservices.communityprofile.client.rest.CommunityProfileRESTClient;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.UserIdentityElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.UserIdentityElement;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.ProfileIdentityProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentityProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -160,7 +161,7 @@ public class UserIdentityManagement implements UserIdentityManagementInterface
 
 
     /* ========================================================
-     * The metadata source represents the third party technology this integration processing is connecting to
+     * Manage user identities
      */
 
     /**
@@ -177,6 +178,7 @@ public class UserIdentityManagement implements UserIdentityManagementInterface
      * @throws PropertyServerException  there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public String createUserIdentity(String                 userId,
                                      String                 externalSourceGUID,
                                      String                 externalSourceName,
@@ -220,6 +222,7 @@ public class UserIdentityManagement implements UserIdentityManagementInterface
      * @throws PropertyServerException  there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public void updateUserIdentity(String                 userId,
                                    String                 externalSourceGUID,
                                    String                 externalSourceName,
@@ -267,6 +270,7 @@ public class UserIdentityManagement implements UserIdentityManagementInterface
      * @throws PropertyServerException  there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public void deleteUserIdentity(String userId,
                                    String externalSourceGUID,
                                    String externalSourceName,
@@ -280,7 +284,7 @@ public class UserIdentityManagement implements UserIdentityManagementInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(userIdentityGUID, guidParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/delete";
 
         MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
 
@@ -300,18 +304,21 @@ public class UserIdentityManagement implements UserIdentityManagementInterface
      * @param externalSourceName unique name of software server capability representing the caller
      * @param profileGUID the profile to add the identity to.
      * @param userIdentityGUID additional userId for the profile.
+     * @param properties the properties that describe how the owner of the profile uses the user identity
      *
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws PropertyServerException  there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void addIdentityToProfile(String userId,
-                                     String externalSourceGUID,
-                                     String externalSourceName,
-                                     String userIdentityGUID,
-                                     String profileGUID) throws InvalidParameterException,
-                                                                PropertyServerException,
-                                                                UserNotAuthorizedException
+    @Override
+    public void addIdentityToProfile(String                    userId,
+                                     String                    externalSourceGUID,
+                                     String                    externalSourceName,
+                                     String                    userIdentityGUID,
+                                     String                    profileGUID,
+                                     ProfileIdentityProperties properties) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
     {
         final String methodName                    = "addIdentityToProfile";
         final String profileGUIDParameterName      = "profileGUID";
@@ -323,18 +330,65 @@ public class UserIdentityManagement implements UserIdentityManagementInterface
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/profiles/{3}/link";
 
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+        ProfileIdentityRequestBody requestBody = new ProfileIdentityRequestBody();
 
         requestBody.setExternalSourceGUID(externalSourceGUID);
         requestBody.setExternalSourceName(externalSourceName);
+        requestBody.setProperties(properties);
 
         restClient.callVoidPostRESTCall(methodName, urlTemplate, requestBody, serverName, userId, userIdentityGUID, profileGUID);
     }
 
 
     /**
-     * Unlink a user identity from a profile.  This will fail if the profile would be left without an
-     * associated user identity.
+     * Update the properties of the relationship between a user identity and profile.
+     *
+     * @param userId the name of the calling user
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
+     * @param userIdentityGUID additional userId for the profile
+     * @param profileGUID the profile to add the identity to
+     * @param isMergeUpdate should the supplied properties be overlaid on the existing properties (true) or replace them (false
+     * @param properties the properties that describe how the owner of the profile uses the user identity
+     *
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws PropertyServerException  there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @Override
+    public void updateProfileIdentity(String                    userId,
+                                      String                    externalSourceGUID,
+                                      String                    externalSourceName,
+                                      String                    userIdentityGUID,
+                                      String                    profileGUID,
+                                      boolean                   isMergeUpdate,
+                                      ProfileIdentityProperties properties) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
+    {
+        final String methodName                    = "updateProfileIdentity";
+        final String profileGUIDParameterName      = "profileGUID";
+        final String userIdentityGUIDParameterName = "userIdentityGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(profileGUID, profileGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(userIdentityGUID, userIdentityGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/profiles/{3}/link/update?isMergeUpdate={4}";
+
+        ProfileIdentityRequestBody requestBody = new ProfileIdentityRequestBody();
+
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
+        requestBody.setProperties(properties);
+
+        restClient.callVoidPostRESTCall(methodName, urlTemplate, requestBody, serverName, userId, userIdentityGUID, profileGUID, isMergeUpdate);
+
+    }
+
+
+    /**
+     * Unlink a user identity from a profile.
      *
      * @param userId the name of the calling user.
      * @param externalSourceGUID unique identifier of software server capability representing the caller
@@ -346,6 +400,7 @@ public class UserIdentityManagement implements UserIdentityManagementInterface
      * @throws PropertyServerException  there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public void removeIdentityFromProfile(String userId,
                                           String externalSourceGUID,
                                           String externalSourceName,
@@ -388,6 +443,7 @@ public class UserIdentityManagement implements UserIdentityManagementInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<UserIdentityElement> findUserIdentities(String userId,
                                                         String searchString,
                                                         int    startFrom,
@@ -435,6 +491,7 @@ public class UserIdentityManagement implements UserIdentityManagementInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public List<UserIdentityElement>  getUserIdentitiesByName(String userId,
                                                               String name,
                                                               int    startFrom,
@@ -481,6 +538,7 @@ public class UserIdentityManagement implements UserIdentityManagementInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public UserIdentityElement getUserIdentityByGUID(String userId,
                                                      String userIdentityGUID) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,

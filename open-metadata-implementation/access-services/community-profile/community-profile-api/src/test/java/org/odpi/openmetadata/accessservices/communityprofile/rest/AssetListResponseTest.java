@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.communityprofile.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.AssetCollectionMember;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.AssetCollectionMember;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;

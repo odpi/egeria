@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.datamanager.metadataelements.APIOper
 import org.odpi.openmetadata.accessservices.datamanager.properties.APIOperationProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -38,49 +39,19 @@ public class APIOperationConverter<B> extends DataManagerOMASConverter<B>
 
 
     /**
-     * Return the converted bean.  This is a special method used for schema types since they are stored
-     * as a collection of instances.  For external schema types and map elements, both the GUID and the bean are returned to
-     * allow the consuming OMAS to choose whether it is returning GUIDs of the linked to schema or the schema type bean itself.
+     * Using the supplied entity, return a new instance of the bean. This is used for most beans that have
+     * a one to one correspondence with the repository instances.
      *
      * @param beanClass name of the class to create
-     * @param schemaRootHeader header of the schema element that holds the root information
-     * @param schemaTypeTypeName name of type of the schema type to create
-     * @param instanceProperties properties describing the schema type
-     * @param schemaRootClassifications classifications from the schema root entity
-     * @param attributeCount number of attributes (for a complex schema type)
-     * @param validValueSetGUID unique identifier of the set of valid values (for an enum schema type)
-     * @param externalSchemaTypeGUID unique identifier of the external schema type
-     * @param externalSchemaType unique identifier for the properties of the schema type that is shared by multiple attributes/assets
-     * @param mapFromSchemaTypeGUID unique identifier of the mapFrom schema type
-     * @param mapFromSchemaType bean containing the properties of the schema type that is part of a map definition
-     * @param mapToSchemaTypeGUID unique identifier of the mapTo schema type
-     * @param mapToSchemaType bean containing the properties of the schema type that is part of a map definition
-     * @param schemaTypeOptionGUIDs list of unique identifiers for schema types that could be the type for this attribute
-     * @param schemaTypeOptions list of schema types that could be the type for this attribute
-     * @param queryTargetRelationships list of relationships to schema types that contain data values used to derive the schema type value(s)
+     * @param entity entity containing the properties
      * @param methodName calling method
-     * @return bean populated with properties from the instances supplied
+     * @return bean populated with properties from the entity supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
-    @SuppressWarnings(value = "unused")
     @Override
-    public B getNewSchemaTypeBean(Class<B>             beanClass,
-                                  InstanceHeader       schemaRootHeader,
-                                  String               schemaTypeTypeName,
-                                  InstanceProperties   instanceProperties,
-                                  List<Classification> schemaRootClassifications,
-                                  int                  attributeCount,
-                                  String               validValueSetGUID,
-                                  String               externalSchemaTypeGUID,
-                                  B                    externalSchemaType,
-                                  String               mapFromSchemaTypeGUID,
-                                  B                    mapFromSchemaType,
-                                  String               mapToSchemaTypeGUID,
-                                  B                    mapToSchemaType,
-                                  List<String>         schemaTypeOptionGUIDs,
-                                  List<B>              schemaTypeOptions,
-                                  List<Relationship>   queryTargetRelationships,
-                                  String               methodName) throws PropertyServerException
+    public B getNewBean(Class<B>     beanClass,
+                        EntityDetail entity,
+                        String       methodName) throws PropertyServerException
     {
         try
         {
@@ -91,7 +62,7 @@ public class APIOperationConverter<B> extends DataManagerOMASConverter<B>
 
             if (returnBean instanceof APIOperationElement)
             {
-                if ((schemaRootHeader != null) && (instanceProperties != null))
+                if ((entity != null) && (entity.getProperties() != null))
                 {
                     /*
                      * The schema type has many different subtypes.
@@ -99,11 +70,11 @@ public class APIOperationConverter<B> extends DataManagerOMASConverter<B>
                      */
                     APIOperationElement bean = (APIOperationElement) returnBean;
 
-                    bean.setElementHeader(this.getMetadataElementHeader(beanClass, schemaRootHeader, schemaRootClassifications, methodName));
+                    bean.setElementHeader(this.getMetadataElementHeader(beanClass, entity, entity.getClassifications(), methodName));
 
                     APIOperationProperties apiOperationProperties = new APIOperationProperties();
 
-                    InstanceProperties propertiesCopy = new InstanceProperties(instanceProperties);
+                    InstanceProperties propertiesCopy = new InstanceProperties(entity.getProperties());
 
                     apiOperationProperties.setDisplayName(this.removeDisplayName(propertiesCopy));
                     apiOperationProperties.setDescription(this.removeDescription(propertiesCopy));
@@ -123,8 +94,6 @@ public class APIOperationConverter<B> extends DataManagerOMASConverter<B>
 
                     bean.setProperties(apiOperationProperties);
 
-                    bean.setPayloadCount(attributeCount);
-
                     return returnBean;
                 }
                 else
@@ -139,5 +108,27 @@ public class APIOperationConverter<B> extends DataManagerOMASConverter<B>
         }
 
         return null;
+    }
+
+
+    /**
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
+     * contain a combination of the properties from an entity and that of a connected relationship.
+     *
+     * @param beanClass name of the class to create
+     * @param entity entity containing the properties
+     * @param relationship relationship containing the properties
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
+     */
+    @SuppressWarnings(value = "unused")
+    @Override
+    public B getNewBean(Class<B>     beanClass,
+                        EntityDetail entity,
+                        Relationship relationship,
+                        String       methodName) throws PropertyServerException
+    {
+        return this.getNewBean(beanClass, entity, methodName);
     }
 }

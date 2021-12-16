@@ -31,8 +31,7 @@ public class APIBasedOpenLineageLogStoreConnector extends OpenLineageLogStoreCon
 {
     private static final String defaultLogStoreURL = "http://localhost:5000/api/v1/lineage";
 
-    private String logStoreURL = null;
-    private FFDCRESTClient restClient = null;               /* Initialized at start() */
+    private String         logStoreURL = null;
     private RestTemplate   restTemplate = null;
     private HttpHeaders    header = null;
 
@@ -72,8 +71,6 @@ public class APIBasedOpenLineageLogStoreConnector extends OpenLineageLogStoreCon
 
         try
         {
-            restClient = new FFDCRESTClient(getConnectorInstanceId(), logStoreURL);
-
             restTemplate = new RestTemplate();
 
             /* Ensure that the REST template always uses UTF-8 */
@@ -120,8 +117,6 @@ public class APIBasedOpenLineageLogStoreConnector extends OpenLineageLogStoreCon
 
         if (rawEvent != null)
         {
-            // restClient.callPostRESTCallNoParams(methodName, null, logStoreURL, rawEvent);
-
             HttpEntity<?> request = new HttpEntity<>((Object)rawEvent, header);
 
             restTemplate.exchange(logStoreURL, HttpMethod.POST, request, Void.class);

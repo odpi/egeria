@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.communityprofile.server;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.MetadataSourceElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.MetadataSourceElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.MetadataSourceProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.MetadataSourceResponse;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
@@ -122,7 +122,6 @@ public class CommunityProfileRESTServices
                                                                         null,
                                                                         null,
                                                                         null,
-                                                                        null,
                                                                         requestBody.getQualifiedName(),
                                                                         requestBody.getDisplayName(),
                                                                         requestBody.getDescription(),
@@ -131,6 +130,7 @@ public class CommunityProfileRESTServices
                                                                         requestBody.getPatchLevel(),
                                                                         requestBody.getSource(),
                                                                         requestBody.getAdditionalProperties(),
+                                                                        null,
                                                                         requestBody.getVendorProperties(),
                                                                         null,
                                                                         null,
