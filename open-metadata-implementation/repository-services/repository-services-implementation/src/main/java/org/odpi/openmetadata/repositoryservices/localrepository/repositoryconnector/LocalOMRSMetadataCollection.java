@@ -4512,6 +4512,97 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * Add the requested classification to a specific entity.
      *
      * @param userId unique identifier for requesting user.
+     * @param entityProxy identifier (proxy) for the entity.
+     * @param classificationName String name for the classification.
+     * @param classificationProperties list of properties to set in the classification.
+     * @return EntityDetail showing the resulting entity header, properties and classifications.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws ClassificationErrorException the requested classification is either not known or not valid
+     *                                         for the entity.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public Classification classifyEntity(String               userId,
+                                         EntityProxy          entityProxy,
+                                         String               classificationName,
+                                         InstanceProperties   classificationProperties) throws InvalidParameterException,
+                                                                                               RepositoryErrorException,
+                                                                                               EntityNotKnownException,
+                                                                                               ClassificationErrorException,
+                                                                                               PropertyErrorException,
+                                                                                               FunctionNotSupportedException,
+                                                                                               UserNotAuthorizedException
+    {
+        final String methodName = "classifyEntity";
+
+        /*
+         * Validate parameters
+         */
+        TypeDef typeDef = this.classifyEntityParameterValidation(userId, entityProxy, classificationName, classificationProperties, methodName);
+        if (! repositoryValidator.isActiveType(repositoryName, typeDef.getGUID(), typeDef.getName()))
+        {
+            throw new ClassificationErrorException(OMRSErrorCode.UNSUPPORTED_CLASSIFICATION.getMessageDefinition(repositoryName, classificationName),
+                    this.getClass().getName(),
+                    methodName);
+        }
+
+        /*
+         * Check operation is allowed
+         */
+        try
+        {
+            securityVerifier.validateUserForEntityClassificationAdd(userId,
+                    metadataCollectionName,
+                    entityProxy,
+                    classificationName,
+                    classificationProperties);
+        }
+        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+        {
+            throw new UserNotAuthorizedException(error);
+        }
+
+        /*
+         * Update entity
+         */
+        Classification classification = realMetadataCollection.classifyEntity(userId,
+                                                                              entityProxy,
+                                                                              classificationName,
+                                                                              classificationProperties);
+
+//        if (entity != null)
+//        {
+//
+//            /*
+//             * OK to send out
+//             */
+//            if (produceEventsForRealConnector)
+//            {
+//
+//                outboundRepositoryEventProcessor.processClassifiedEntityEvent(repositoryName,
+//                        metadataCollectionId,
+//                        localServerName,
+//                        localServerType,
+//                        localOrganizationName,
+//                        entity,
+//                        newClassification);
+//            }
+//        }
+
+        return classification;
+    }
+
+
+    /**
+     * Add the requested classification to a specific entity.
+     *
+     * @param userId unique identifier for requesting user.
      * @param entityGUID String unique identifier (guid) for the entity.
      * @param classificationName String name for the classification.
      * @param externalSourceGUID unique identifier (guid) for the external source.
@@ -4618,6 +4709,107 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         }
 
         return entity;
+    }
+
+
+    /**
+     * Add the requested classification to a specific entity.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityProxy identifier (proxy) for the entity.
+     * @param classificationName String name for the classification.
+     * @param externalSourceGUID unique identifier (guid) for the external source.
+     * @param externalSourceName unique name for the external source.
+     * @param classificationOrigin source of the classification
+     * @param classificationOriginGUID if the classification is propagated, this is the unique identifier of the entity where
+     * @param classificationProperties list of properties to set in the classification.
+     * @return Classification showing the resulting entity header, properties and classifications.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws ClassificationErrorException the requested classification is either not known or not valid
+     *                                         for the entity.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     */
+    @Override
+    public  Classification classifyEntity(String               userId,
+                                          EntityProxy          entityProxy,
+                                          String               classificationName,
+                                          String               externalSourceGUID,
+                                          String               externalSourceName,
+                                          ClassificationOrigin classificationOrigin,
+                                          String               classificationOriginGUID,
+                                          InstanceProperties   classificationProperties) throws InvalidParameterException,
+                                                                                                RepositoryErrorException,
+                                                                                                EntityNotKnownException,
+                                                                                                ClassificationErrorException,
+                                                                                                PropertyErrorException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                FunctionNotSupportedException
+    {
+        final String  methodName = "classifyEntity (detailed)";
+
+        /*
+         * Validate parameters
+         */
+        TypeDef typeDef = this.classifyEntityParameterValidation(userId, entityProxy.getGUID(), classificationName, classificationProperties, methodName);
+        if (! repositoryValidator.isActiveType(repositoryName, typeDef.getGUID(), typeDef.getName()))
+        {
+            throw new ClassificationErrorException(OMRSErrorCode.UNSUPPORTED_CLASSIFICATION.getMessageDefinition(repositoryName, classificationName),
+                    this.getClass().getName(),
+                    methodName);
+        }
+
+        /*
+         * Check operation is allowed
+         */
+        try
+        {
+            securityVerifier.validateUserForEntityClassificationAdd(userId,
+                    metadataCollectionName,
+                    entityProxy,
+                    classificationName,
+                    classificationProperties);
+        }
+        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+        {
+            throw new UserNotAuthorizedException(error);
+        }
+
+        /*
+         * Update entity
+         */
+        Classification classification = realMetadataCollection.classifyEntity(userId,
+                                                                              entityProxy,
+                                                                              classificationName,
+                                                                              externalSourceGUID,
+                                                                              externalSourceName,
+                                                                              classificationOrigin,
+                                                                              classificationOriginGUID,
+                                                                              classificationProperties);
+
+//        if (entity != null)
+//        {
+//            /*
+//             * OK to send out
+//             */
+//            if (produceEventsForRealConnector)
+//            {
+//                outboundRepositoryEventProcessor.processClassifiedEntityEvent(repositoryName,
+//                        metadataCollectionId,
+//                        localServerName,
+//                        localServerType,
+//                        localOrganizationName,
+//                        entity,
+//                        newClassification);
+//            }
+//        }
+
+        return classification;
     }
 
 

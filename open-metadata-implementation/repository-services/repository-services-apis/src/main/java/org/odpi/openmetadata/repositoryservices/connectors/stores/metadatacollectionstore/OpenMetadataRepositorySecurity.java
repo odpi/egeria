@@ -233,6 +233,25 @@ public interface OpenMetadataRepositorySecurity
                                                  String               classificationName,
                                                  InstanceProperties   properties) throws UserNotAuthorizedException;
 
+    /**
+     * Tests for whether a specific user should have the right to add a classification to an entity proxy
+     * within a repository.
+     *
+     * @param userId identifier of user
+     * @param metadataCollectionName configurable name of the metadata collection
+     * @param instance instance proxy
+     * @param classificationName String name for the classification.
+     * @param properties list of properties for the classification.
+     * @throws UserNotAuthorizedException the user is not authorized to maintain instances
+     */
+    default void  validateUserForEntityClassificationAdd(String               userId,
+                                                         String               metadataCollectionName,
+                                                         EntityProxy          instance,
+                                                         String               classificationName,
+                                                         InstanceProperties   properties) throws UserNotAuthorizedException
+    {
+        //
+    }
 
     /**
      * Tests for whether a specific user should have the right to update a classification for an entity instance
@@ -251,6 +270,25 @@ public interface OpenMetadataRepositorySecurity
                                                     String               classificationName,
                                                     InstanceProperties   properties) throws UserNotAuthorizedException;
 
+    /**
+     * Tests for whether a specific user should have the right to update a classification for an entity proxy
+     * within a repository.
+     *
+     * @param userId identifier of user
+     * @param metadataCollectionName configurable name of the metadata collection
+     * @param instance instance proxy
+     * @param classificationName String name for the classification.
+     * @param properties list of properties for the classification.
+     * @throws UserNotAuthorizedException the user is not authorized to maintain instances
+     */
+    default void  validateUserForEntityClassificationUpdate(String               userId,
+                                                            String               metadataCollectionName,
+                                                            EntityProxy          instance,
+                                                            String               classificationName,
+                                                            InstanceProperties   properties) throws UserNotAuthorizedException
+    {
+        //
+    }
 
     /**
      * Tests for whether a specific user should have the right to delete a classification from an entity instance
@@ -267,6 +305,23 @@ public interface OpenMetadataRepositorySecurity
                                                     EntityDetail         instance,
                                                     String               classificationName) throws UserNotAuthorizedException;
 
+    /**
+     * Tests for whether a specific user should have the right to delete a classification from an entity proxy
+     * within a repository.
+     *
+     * @param userId identifier of user
+     * @param metadataCollectionName configurable name of the metadata collection
+     * @param instance instance proxy
+     * @param classificationName String name for the classification.
+     * @throws UserNotAuthorizedException the user is not authorized to maintain instances
+     */
+    default void  validateUserForEntityClassificationDelete(String               userId,
+                                                            String               metadataCollectionName,
+                                                            EntityProxy          instance,
+                                                            String               classificationName) throws UserNotAuthorizedException
+    {
+        //
+    }
 
     /**
      * Tests for whether a specific user should have the right to delete a instance within a repository.

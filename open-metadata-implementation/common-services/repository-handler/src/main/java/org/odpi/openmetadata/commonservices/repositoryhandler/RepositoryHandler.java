@@ -1879,19 +1879,23 @@ public class RepositoryHandler
                 /*
                  * This is to check that the entity is in an appropriate state to add the classification.
                  */
-               this.getEntityByGUID(userId, entityGUID, entityGUIDParameterName, entityTypeName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+               entityDetail = this.getEntityByGUID(userId, entityGUID, entityGUIDParameterName, entityTypeName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
             }
 
-            EntityDetail newEntity = metadataCollection.classifyEntity(userId,
-                                                                       entityGUID,
-                                                                       classificationTypeName,
-                                                                       externalSourceGUID,
-                                                                       externalSourceName,
-                                                                       classificationOrigin,
-                                                                       classificationOriginGUID,
-                                                                       properties);
+            // create a proxy representation to allow classification of entities incoming from other metadata collections
+            EntityProxy entityProxy = repositoryHelper.getNewEntityProxy(userId, entityDetail);
 
-            if (newEntity == null)
+            Classification newClassification = metadataCollection.classifyEntity(userId,
+                                                                                 entityProxy,
+                                                                                 classificationTypeName,
+                                                                                 externalSourceGUID,
+                                                                                 externalSourceName,
+                                                                                 classificationOrigin,
+                                                                                 classificationOriginGUID,
+                                                                                 properties);
+
+
+            if (newClassification == null)
             {
                 errorHandler.handleNoEntityForClassification(entityGUID,
                                                              classificationTypeGUID,
@@ -1901,7 +1905,12 @@ public class RepositoryHandler
             }
             else
             {
-                return newEntity;
+                // update the entity's classifications list with the one we just added
+                List<Classification> classifications = entityDetail.getClassifications();
+                classifications.add(newClassification);
+                entityDetail.setClassifications(classifications);
+
+                return entityDetail;
             }
         }
         catch (UserNotAuthorizedException | PropertyServerException error)

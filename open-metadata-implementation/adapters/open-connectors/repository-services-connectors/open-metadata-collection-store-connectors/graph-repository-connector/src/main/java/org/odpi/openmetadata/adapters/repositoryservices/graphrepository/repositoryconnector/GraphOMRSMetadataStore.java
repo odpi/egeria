@@ -1176,6 +1176,63 @@ class GraphOMRSMetadataStore {
     }
 
 
+    synchronized void updateEntityInStore(EntityProxy entity)
+
+            throws RepositoryErrorException
+
+    {
+
+        String methodName = "updateEntityInStore (EntityProxy)";
+
+        // Look in the graph
+        String guid = entity.getGUID();
+        GraphTraversalSource g = instanceGraph.traversal();
+
+        GraphTraversal<Vertex, Vertex> gt = g.V().hasLabel("Entity").has(PROPERTY_KEY_ENTITY_GUID, guid);
+
+        // Only looking for proxy entities:
+        gt = gt.has(PROPERTY_KEY_ENTITY_IS_PROXY, true);
+
+        if (gt.hasNext())
+        {
+
+            Vertex vertex = gt.next();
+            log.debug("{} found entity vertex {}", methodName, vertex);
+
+            try
+            {
+
+                // Check if we have stumbled on a non-proxy somehow, and if so avoid processing it.
+                Boolean isProxy = entityMapper.isProxy(vertex);
+                if (isProxy)
+                {
+
+                    entityMapper.mapEntityProxyToVertex(entity, vertex);
+
+                    updateEntityClassifications(entity, vertex, g);
+                }
+
+            }
+            catch (Exception e)
+            {
+                log.error("{} caught exception {}", methodName, e.getMessage());
+                g.tx().rollback();
+
+                throw new RepositoryErrorException(
+                        GraphOMRSErrorCode.ENTITY_NOT_UPDATED.getMessageDefinition(
+                                entity.getGUID(), methodName,
+                                this.getClass().getName(),
+                                repositoryName),
+                        this.getClass().getName(),
+                        methodName, e);
+            }
+        }
+
+        log.debug("{} commit entity update tx: ", methodName);
+        g.tx().commit();
+
+    }
+
 
     // updateEntityClassifications
     private void updateEntityClassifications(EntitySummary         entity,
