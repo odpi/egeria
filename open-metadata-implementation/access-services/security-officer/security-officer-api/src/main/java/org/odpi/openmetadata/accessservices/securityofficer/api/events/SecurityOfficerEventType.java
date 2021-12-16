@@ -7,7 +7,8 @@ package org.odpi.openmetadata.accessservices.securityofficer.api.events;
 
 import java.io.Serializable;
 
-public enum SecurityOfficerEventType implements Serializable {
+public enum SecurityOfficerEventType implements Serializable
+{
 
     NEW_SECURITY_ASSIGNMENT(0, "NewSecurityAssignment", "A Security Tags assigment should be processed."),
     UPDATED_SECURITY_ASSIGNMENT(1, "UpdatedSecurityAssigment", "A Security Tags assignment has been updated for schema element."),
@@ -20,9 +21,9 @@ public enum SecurityOfficerEventType implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private int eventTypeCode;
-    private String eventTypeName;
-    private String eventTypeDescription;
+    private final int eventTypeCode;
+    private final String eventTypeName;
+    private final String eventTypeDescription;
 
     /**
      * Default Constructor - sets up the specific values for this instance of the enum.

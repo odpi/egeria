@@ -16,8 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- *  ServerAssetUseListResponse returns a list of serverAssetUse relationships from the server.   The list may be too long to
- *  retrieve in a single call so there is support for paging of replies.
+ *  ServerAssetUseListResponse returns a list of serverAssetUse relationships from the server.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)

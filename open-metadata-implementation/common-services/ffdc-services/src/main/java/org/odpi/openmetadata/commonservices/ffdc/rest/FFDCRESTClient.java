@@ -350,11 +350,11 @@ public class FFDCRESTClient extends FFDCRESTClientBase
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    public ConnectorTypeResponse callConnectorTypeGetRESTCall(String    methodName,
-                                                              String    urlTemplate,
-                                                              Object... params) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException
+    public ConnectorTypeResponse callOCFConnectorTypeGetRESTCall(String    methodName,
+                                                                 String    urlTemplate,
+                                                                 Object... params) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
     {
         ConnectorTypeResponse restResult = this.callGetRESTCall(methodName,
                                                                 ConnectorTypeResponse.class,

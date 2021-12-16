@@ -578,8 +578,15 @@ public class OpenMetadataAPIMapper
     public static final String PERSON_TYPE_NAME                          = "Person";                 /* from Area 1 */
     /* ActorProfile */
 
-    public static final String FULL_NAME_PROPERTY_NAME                   = "fullName";   /* from Person entity */
-    public static final String JOB_TITLE_PROPERTY_NAME                   = "jobTitle";   /* from Person entity */
+    public static final String TITLE_PROPERTY_NAME                       = "title";          /* from Person entity */
+    public static final String INITIALS_PROPERTY_NAME                    = "initials";       /* from Person entity */
+    public static final String GIVEN_NAMES_PROPERTY_NAME                 = "givenNames";     /* from Person entity */
+    public static final String SURNAME_PROPERTY_NAME                     = "surname";        /* from Person entity */
+    public static final String FULL_NAME_PROPERTY_NAME                   = "fullName";       /* from Person entity */
+    public static final String PREFERRED_LANGUAGE_PROPERTY_NAME          = "preferredLanguage";       /* from Person entity */
+    public static final String JOB_TITLE_PROPERTY_NAME                   = "jobTitle";       /* from Person entity */
+    public static final String EMPLOYEE_NUMBER_PROPERTY_NAME             = "employeeNumber"; /* from Person entity */
+    public static final String EMPLOYEE_TYPE_PROPERTY_NAME               = "employeeType";   /* from Person entity */
 
     public static final String PERSONAL_CONTRIBUTION_RELATIONSHIP_TYPE_GUID  = "4a316abe-eeee-4d11-ad5a-4bfb4079b80b";   /* from Area 1 */
     public static final String PERSONAL_CONTRIBUTION_RELATIONSHIP_TYPE_NAME  = "PersonalContribution";
@@ -1294,7 +1301,6 @@ public class OpenMetadataAPIMapper
     public static final String DOMAIN_IDENTIFIER_PROPERTY_NAME           = "domainIdentifier";          /* from many governance entities */
     public static final String CRITERIA_PROPERTY_NAME                    = "criteria";                  /* from many governance entities */
 
-    public static final String TITLE_PROPERTY_NAME                       = "title";                     /* from GovernanceDefinition entity */
     public static final String PRIORITY_PROPERTY_NAME                    = "priority";                  /* from GovernanceDefinition and To Do entity */
     public static final String IMPLICATIONS_PROPERTY_NAME                = "implications";              /* from GovernanceDefinition entity */
     public static final String OUTCOMES_PROPERTY_NAME                    = "outcomes";                  /* from GovernanceDefinition entity */

@@ -5,32 +5,31 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.SupportedCapabilityProperties;
 
-import java.util.Date;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * EffectiveTimeRequestBody carries the date/time for a query.
+ * SupportedCapabilityRequestBody provides the request body payload for working with the relationships between
+ * software servers and software server capabilities.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class EffectiveTimeRequestBody extends MetadataSourceRequestBody
+public class SupportedCapabilityRequestBody extends MetadataSourceRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
-    private Date effectiveTime = null;
-
+    private SupportedCapabilityProperties properties = null;
 
     /**
      * Default constructor
      */
-    public EffectiveTimeRequestBody()
+    public SupportedCapabilityRequestBody()
     {
-        super();
     }
 
 
@@ -39,48 +38,49 @@ public class EffectiveTimeRequestBody extends MetadataSourceRequestBody
      *
      * @param template object to copy
      */
-    public EffectiveTimeRequestBody(EffectiveTimeRequestBody template)
+    public SupportedCapabilityRequestBody(SupportedCapabilityRequestBody template)
     {
+        super(template);
+
         if (template != null)
         {
-            effectiveTime = template.getEffectiveTime();
+            this.properties = template.getProperties();
         }
     }
 
 
     /**
-     * Return the date/time to use for the query.
+     * Return the properties for this profile identity.
      *
-     * @return date object
+     * @return properties bean
      */
-    public Date getEffectiveTime()
+    public SupportedCapabilityProperties getProperties()
     {
-        return effectiveTime;
+        return properties;
     }
 
 
     /**
-     * Set up  the date/time to use for the query.
+     * Set up the properties for this profile identity.
      *
-     * @param effectiveTime date object
+     * @param properties properties bean
      */
-    public void setEffectiveTime(Date effectiveTime)
+    public void setProperties(SupportedCapabilityProperties properties)
     {
-        this.effectiveTime = effectiveTime;
+        this.properties = properties;
     }
 
 
-
     /**
-     * JSON-style toString
+     * JSON-style toString.
      *
-     * @return return string containing the property names and values
+     * @return list of properties and their values.
      */
     @Override
     public String toString()
     {
-        return "EffectiveTimeRequestBody{" +
-                       "effectiveTime=" + effectiveTime +
+        return "SupportedCapabilityRequestBody{" +
+                       "properties=" + properties +
                        ", externalSourceGUID='" + getExternalSourceGUID() + '\'' +
                        ", externalSourceName='" + getExternalSourceName() + '\'' +
                        '}';
@@ -88,10 +88,10 @@ public class EffectiveTimeRequestBody extends MetadataSourceRequestBody
 
 
     /**
-     * Return comparison result based on the content of the properties.
+     * Equals method that returns true if containing properties are the same.
      *
-     * @param objectToCompare test object
-     * @return result of comparison
+     * @param objectToCompare object to compare
+     * @return boolean result of comparison
      */
     @Override
     public boolean equals(Object objectToCompare)
@@ -104,12 +104,12 @@ public class EffectiveTimeRequestBody extends MetadataSourceRequestBody
         {
             return false;
         }
-        if (! super.equals(objectToCompare))
+        if (!super.equals(objectToCompare))
         {
             return false;
         }
-        EffectiveTimeRequestBody that = (EffectiveTimeRequestBody) objectToCompare;
-        return Objects.equals(effectiveTime, that.effectiveTime);
+        SupportedCapabilityRequestBody that = (SupportedCapabilityRequestBody) objectToCompare;
+        return Objects.equals(properties, that.properties);
     }
 
 
@@ -121,6 +121,6 @@ public class EffectiveTimeRequestBody extends MetadataSourceRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), effectiveTime);
+        return Objects.hash(super.hashCode(), properties);
     }
 }

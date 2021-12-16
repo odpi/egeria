@@ -141,14 +141,14 @@ public class ConnectedAssetRelatedMediaReferences extends AssetRelatedMediaRefer
 
         try
         {
-            RelatedMediaReferencesResponse restResult = restClient.callRelatedMediaReferencesGetRESTCall(methodName,
-                                                                                                         omasServerURL + urlTemplate,
-                                                                                                         serverName,
-                                                                                                         serviceName,
-                                                                                                         userId,
-                                                                                                         assetGUID,
-                                                                                                         cacheStartPointer,
-                                                                                                         maximumSize);
+            RelatedMediaReferencesResponse restResult = restClient.callOCFRelatedMediaReferencesGetRESTCall(methodName,
+                                                                                                            omasServerURL + urlTemplate,
+                                                                                                            serverName,
+                                                                                                            serviceName,
+                                                                                                            userId,
+                                                                                                            assetGUID,
+                                                                                                            cacheStartPointer,
+                                                                                                            maximumSize);
 
             restExceptionHandler.detectAndThrowInvalidParameterException(restResult);
             restExceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);

@@ -17,9 +17,9 @@ import java.util.List;
 
 
 /**
- * ITProfileManagementInterface defines the client interface for setting up the profile and userId for a piece of IT infrastructure.
+ * ITProfileManagerInterface defines the client interface for setting up the profile and userId for a piece of IT infrastructure.
  */
-public interface ITProfileManagementInterface
+public interface ITProfileManagerInterface
 {
     /**
      * Create a definition of an IT profile.  If the itInfrastructureGUID is provided, it is connected to the infrastructure element that the

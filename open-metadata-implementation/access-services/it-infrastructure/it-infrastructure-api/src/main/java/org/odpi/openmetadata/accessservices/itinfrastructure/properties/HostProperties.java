@@ -41,6 +41,42 @@ public class HostProperties extends ITInfrastructureProperties
 
 
     /**
+     * Copy/clone constructor.  Note, this is a deep copy
+     *
+     * @param template object to copy
+     */
+    public HostProperties(AssetProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Convert this object into an AssetProperties object.  This involves packing the properties introduced at this level
+     * into the extended properties.
+     *
+     * @return asset properties
+     */
+    public AssetProperties cloneToAsset()
+    {
+        return super.cloneToAsset("Host");
+    }
+
+
+    /**
+     * Convert this object into an AssetProperties object.  This involves packing the properties introduced at this level
+     * into the extended properties.
+     *
+     * @param subTypeName subtype name
+     * @return asset properties
+     */
+    public AssetProperties cloneToAsset(String subTypeName)
+    {
+        return super.cloneToAsset(subTypeName);
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style

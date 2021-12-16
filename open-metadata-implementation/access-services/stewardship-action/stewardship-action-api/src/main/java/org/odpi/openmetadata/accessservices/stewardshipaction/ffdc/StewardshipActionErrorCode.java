@@ -36,7 +36,7 @@ public enum StewardshipActionErrorCode implements ExceptionMessageSet
 
 
 
-    private ExceptionMessageDefinition messageDefinition;
+    private final ExceptionMessageDefinition messageDefinition;
 
     /**
      * The constructor for StewardshipActionErrorCode expects to be passed one of the enumeration rows defined in

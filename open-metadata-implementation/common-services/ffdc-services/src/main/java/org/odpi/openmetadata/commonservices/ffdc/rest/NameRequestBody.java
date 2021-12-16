@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -24,6 +25,7 @@ public class NameRequestBody implements Serializable
 {
     private static final long    serialVersionUID = 1L;
 
+    private Date   effectiveTime = null;
     private String name = null;
     private String nameParameterName = null;
     private String namePropertyName = null;
@@ -47,10 +49,33 @@ public class NameRequestBody implements Serializable
     {
         if (template != null)
         {
+            effectiveTime = template.getEffectiveTime();
             name = template.getName();
             nameParameterName = template.getNameParameterName();
             namePropertyName = template.getNamePropertyName();
         }
+    }
+
+
+    /**
+     * Return the date/time to use for the query.
+     *
+     * @return date object
+     */
+    public Date getEffectiveTime()
+    {
+        return effectiveTime;
+    }
+
+
+    /**
+     * Set up  the date/time to use for the query.
+     *
+     * @param effectiveTime date object
+     */
+    public void setEffectiveTime(Date effectiveTime)
+    {
+        this.effectiveTime = effectiveTime;
     }
 
 
@@ -129,7 +154,8 @@ public class NameRequestBody implements Serializable
     public String toString()
     {
         return "NameRequestBody{" +
-                       "name='" + name + '\'' +
+                       "effectiveTime=" + effectiveTime +
+                       ", name='" + name + '\'' +
                        ", nameParameterName='" + nameParameterName + '\'' +
                        ", namePropertyName='" + namePropertyName + '\'' +
                        '}';
@@ -154,9 +180,10 @@ public class NameRequestBody implements Serializable
             return false;
         }
         NameRequestBody that = (NameRequestBody) objectToCompare;
-        return Objects.equals(getName(), that.getName()) &&
-                       Objects.equals(getNameParameterName(), that.getNameParameterName()) &&
-                       Objects.equals(getNamePropertyName(), that.getNamePropertyName());
+        return Objects.equals(effectiveTime, that.effectiveTime) &&
+                       Objects.equals(name, that.name) &&
+                       Objects.equals(nameParameterName, that.nameParameterName) &&
+                       Objects.equals(namePropertyName, that.namePropertyName);
     }
 
 
@@ -168,6 +195,6 @@ public class NameRequestBody implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(getName(), getNameParameterName(), getNamePropertyName());
+        return Objects.hash(effectiveTime, name, nameParameterName, namePropertyName);
     }
 }

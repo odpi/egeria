@@ -126,7 +126,7 @@ public enum CommunityProfileAuditCode implements AuditLogMessageSet
                             "This event indicates that one of the elements has changed."),
     ;
 
-    private AuditLogMessageDefinition messageDefinition;
+    private final AuditLogMessageDefinition messageDefinition;
 
 
     /**

@@ -171,7 +171,7 @@ public class IntegrationDaemonRESTServices
                 {
                     if (handler != null)
                     {
-                        handler.refreshService(userId);
+                        handler.refreshService(null);
                     }
                 }
             }

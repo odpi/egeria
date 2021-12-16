@@ -111,7 +111,7 @@ public enum SecurityManagerAuditCode implements AuditLogMessageSet
 
     private static final long    serialVersionUID = 1L;
 
-    private AuditLogMessageDefinition messageDefinition;
+    private final AuditLogMessageDefinition messageDefinition;
 
 
     /**

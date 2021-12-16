@@ -9,11 +9,14 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.p
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * OpenMetadataTypesArchive builds an open metadata archive containing all of the standard open metadata types.
@@ -155,9 +158,97 @@ public class OpenMetadataTypesArchive
         /*
          * Calls for new and changed types go here
          */
+        extend0112Person();
         update0130Projects();
         update0140Communities();
     }
+
+
+
+    /**
+     * Extend Person using the field definitions from LDAP
+     */
+    private void extend0112Person()
+    {
+        this.archiveBuilder.addTypeDefPatch(updatePersonEntity());
+    }
+
+    private TypeDefPatch updatePersonEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "Person";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "title";
+        final String attribute1Description     = "The courtesy title for the person.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "givenNames";
+        final String attribute2Description     = "The name strings that are the part of a person's name that is not their surname.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "surname";
+        final String attribute3Description     = "The family name of the person.";
+        final String attribute3DescriptionGUID = null;
+        final String attribute4Name            = "employeeNumber";
+        final String attribute4Description     = "The unique identifier of the person used by their employer.";
+        final String attribute4DescriptionGUID = null;
+        final String attribute5Name            = "employeeType";
+        final String attribute5Description     = "Code used by employer typically to describe the type of employment contract.";
+        final String attribute5DescriptionGUID = null;
+        final String attribute6Name            = "preferredLanguage";
+        final String attribute6Description     = "Spoken or written language preferred by the person.";
+        final String attribute6DescriptionGUID = null;
+        final String attribute7Name            = "initials";
+        final String attribute7Description     = "First letter of each of the person's given names.";
+        final String attribute7DescriptionGUID = null;
+
+
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
+                                                           attribute4Description,
+                                                           attribute4DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute5Name,
+                                                           attribute5Description,
+                                                           attribute5DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute6Name,
+                                                           attribute6Description,
+                                                           attribute6DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute7Name,
+                                                           attribute7Description,
+                                                           attribute7DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
 
 
     /**
