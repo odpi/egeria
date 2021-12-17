@@ -4826,6 +4826,7 @@ public class OpenMetadataAPIGenericHandler<B>
 
 
 
+
     /**
      * Return the list of entities at the other end of the requested relationship type that were created or edited by
      * the requesting user.
@@ -5021,8 +5022,6 @@ public class OpenMetadataAPIGenericHandler<B>
                                         new Date(),
                                         methodName);
     }
-
-
     /**
      * Return the entities for the required relationships attached to a specific entity.
      *
@@ -5066,6 +5065,71 @@ public class OpenMetadataAPIGenericHandler<B>
                                                   Date         effectiveTime,
                                                   String       methodName) throws InvalidParameterException,
                                                                                   PropertyServerException,
+                                                                                  UserNotAuthorizedException {
+
+        return this.getAttachedEntities(userId,
+                                        startingElementGUID,
+                                        startingElementGUIDParameterName,
+                                        startingElementTypeName,
+                                        relationshipTypeGUID,
+                                        relationshipTypeName,
+                                        resultingElementTypeName,
+                                        requiredClassificationName,
+                                        omittedClassificationName,
+                                        forLineage,
+                                        0,
+                                        forDuplicateProcessing,
+                                        serviceSupportedZones,
+                                        startingFrom,
+                                        pageSize,
+                                        effectiveTime,
+                                        methodName);
+    }
+    /**
+     * Return the entities for the required relationships attached to a specific entity.
+     *
+     * @param userId     calling user
+     * @param startingElementGUID identifier for the entity that the identifier is attached to
+     * @param startingElementGUIDParameterName name of the parameter used to pass the guid
+     * @param startingElementTypeName type name for anchor
+     * @param relationshipTypeGUID unique identifier of the attachment's relationship type
+     * @param relationshipTypeName unique name of the attachment's relationship type
+     * @param resultingElementTypeName unique name of the attached entity's type
+     * @param requiredClassificationName name of a classification that must be on the entity for a match
+     * @param omittedClassificationName name of a classification that must NOT be on the entity for a match
+     * @param forLineage is this part of a lineage request?
+     * @param attachmentEntityEnd which relationship end should the attached entity be located? 0=either end; 1=end1; 2=end2
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param serviceSupportedZones supported zones for calling service
+     * @param startingFrom start position for results
+     * @param pageSize     maximum number of results
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return list of retrieved objects or null if none found
+     *
+     * @throws InvalidParameterException  the input properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the repositories
+     */
+    public List<EntityDetail> getAttachedEntities(String       userId,
+                                                  String       startingElementGUID,
+                                                  String       startingElementGUIDParameterName,
+                                                  String       startingElementTypeName,
+                                                  String       relationshipTypeGUID,
+                                                  String       relationshipTypeName,
+                                                  String       resultingElementTypeName,
+                                                  String       requiredClassificationName,
+                                                  String       omittedClassificationName,
+                                                  boolean      forLineage,
+                                                  int          attachmentEntityEnd,
+                                                  boolean      forDuplicateProcessing,
+                                                  List<String> serviceSupportedZones,
+                                                  int          startingFrom,
+                                                  int          pageSize,
+                                                  Date         effectiveTime,
+                                                  String       methodName) throws InvalidParameterException,
+                                                                                  PropertyServerException,
                                                                                   UserNotAuthorizedException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -5082,18 +5146,20 @@ public class OpenMetadataAPIGenericHandler<B>
                                   effectiveTime,
                                   methodName);
 
-        List<Relationship> visibleRelationships = this.getAttachmentLinks(userId,
+        List<Relationship> visibleRelationships =  this.getAttachmentLinks(userId,
                                                                           startingElementGUID,
                                                                           startingElementGUIDParameterName,
                                                                           startingElementTypeName,
                                                                           relationshipTypeGUID,
                                                                           relationshipTypeName,
-                                                                          resultingElementTypeName,
+                                                                          null,
+                                                                          null,
+                                                                          attachmentEntityEnd,
+                                                                          forDuplicateProcessing,
                                                                           startingFrom,
                                                                           pageSize,
                                                                           effectiveTime,
                                                                           methodName);
-
         if (visibleRelationships != null)
         {
             List<EntityDetail> visibleEntities = new ArrayList<>();
@@ -5143,8 +5209,6 @@ public class OpenMetadataAPIGenericHandler<B>
 
         return null;
     }
-
-
 
 
     public Relationship getAttachmentLink(String       userId,
@@ -5831,7 +5895,6 @@ public class OpenMetadataAPIGenericHandler<B>
 
         return null;
     }
-
 
     /**
      * Template process is used to pass around the status of the template replicating process.

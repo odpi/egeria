@@ -917,6 +917,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                 null,
                                                                 null,
                                                                 false,
+                                                                 1,   // make sure we only get the children 
                                                                 false,
                                                                 serviceSupportedZones,
                                                                 startFrom,
