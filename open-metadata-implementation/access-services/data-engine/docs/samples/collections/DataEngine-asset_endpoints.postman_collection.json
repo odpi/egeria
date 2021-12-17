@@ -2919,6 +2919,204 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "9.1  Create topic required props",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"topic\": {\n        \"qualifiedName\": \"(topic)=test-topic-basic\",\n        \"displayName\": \"test-topic-basic\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/topics",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"topics"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "9.2  Create topic all props",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"topic\": {\n        \"qualifiedName\": \"(topic)=test-topic\",\n        \"displayName\": \"test-topic\",\n        \"topicType\": \"topic-type\",\n        \"description\": \"topic description\",\n        \"otherOriginValues\": {\n            \"prop\": \"oherOrigin\"\n        },\n        \"owner\": \"owner\",\n        \"ownerType\": \"USER_ID\",\n        \"zoneMembership\": [\n            \"ZONE_1\"\n        ],\n        \"additionalProperties\": {\n            \"key1\": \"value1\",\n            \"key2\": \"value2\"\n        },\n        \"eventTypes\": [\n            {\n                \"qualifiedName\": \"(topic)=test-topic::(eventType)=test-event\",\n                \"displayName\": \"test-event\",\n                \"author\": \"author\",\n                \"usage\": \"usage\",\n                \"encodingStandard\": \"encoding\",\n                \"versionNumber\": \"versionNumber\",\n                \"isDeprecated\": false,\n                \"description\": \"event type description\",\n                \"eventSchemaAttributes\": [\n                    {\n                        \"qualifiedName\": \"(topic)=test-topic::(eventType)=test-event::(eventAttribute)=test-event-attribute\",\n                        \"displayName\": \"test-event-attribute\",\n                        \"minCardinality\": 1,\n                        \"maxCardinality\": 1,\n                        \"isDeprecated\": false,\n                        \"isNullable\": false,\n                        \"allowsDuplicateValues\": true,\n                        \"position\": 1,\n                        \"dataType\": \"INTEGER\"\n                    }\n                ]\n            }\n        ]\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/topics",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"topics"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "9.3  Create event type required props",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"topicQualifiedName\": \"(topic)=test-topic-basic\",\n    \"eventType\": {\n        \"qualifiedName\": \"(topic)=test-topic-basic::(eventType)=test-event-basic\",\n        \"displayName\": \"test-event-basic\",\n        \"eventSchemaAttributes\": [\n            {\n                \"qualifiedName\": \"(topic)=test-topic-basic::(eventType)=test-event-basic::(eventAttribute)=test-event-attribute-basic\",\n                \"displayName\": \"test-event-attribute-basic\"\n            }\n        ]\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/event-types",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"event-types"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "9.4  Create event type all props",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"topicQualifiedName\": \"(topic)=test-topic\",\n    \"eventType\": {\n        \"qualifiedName\": \"(topic)=test-topic::(eventType)=test-event-2\",\n        \"displayName\": \"test-event-2\",\n        \"author\": \"author\",\n        \"usage\": \"usage\",\n        \"encodingStandard\": \"encoding\",\n        \"versionNumber\": \"versionNumber\",\n        \"isDeprecated\": false,\n        \"description\": \"event type description\",\n        \"eventSchemaAttributes\": [\n            {\n                \"qualifiedName\": \"(topic)=test-topic::(eventType)=test-event-2::(eventAttribute)=test-event-attribute-2\",\n                \"displayName\": \"test-event-attribute-2\",\n                \"minCardinality\": 1,\n                \"maxCardinality\": 1,\n                \"isDeprecated\": false,\n                \"isNullable\": false,\n                \"allowsDuplicateValues\": true,\n                \"position\": 1,\n                \"dataType\": \"INTEGER\"\n            }\n        ]\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/event-types",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"event-types"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "9.5. Delete topic",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"qualifiedName\": \"(topic)=test-topic\",\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/topics",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"topics"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "9.6 Delete event type",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"qualifiedName\": \"(topic)=test-topic::(eventType)=test-event\",\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/event-types",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"event-types"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
