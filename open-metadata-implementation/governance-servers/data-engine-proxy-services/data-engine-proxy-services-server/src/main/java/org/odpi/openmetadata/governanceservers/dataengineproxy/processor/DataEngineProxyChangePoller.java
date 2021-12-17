@@ -6,7 +6,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineClient;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
-import org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema;
 import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.ProcessHierarchy;
@@ -87,21 +86,6 @@ public class DataEngineProxyChangePoller implements Runnable {
         this.dataEngineProxyConfig = dataEngineProxyConfig;
         this.dataEngineOMASClient = dataEngineOMASClient;
         this.auditLog = auditLog;
-
-        this.auditLog.logMessage(methodName, DataEngineProxyAuditCode.INIT_POLLING.getMessageDefinition());
-
-        // Retrieve the base information from the connector
-        if (connector != null) {
-            try {
-                SoftwareServerCapability dataEngineDetails = connector.getDataEngineDetails();
-                dataEngineOMASClient.createExternalDataEngine(userId, dataEngineDetails);
-                dataEngineOMASClient.setExternalSourceName(dataEngineDetails.getQualifiedName());
-            } catch (InvalidParameterException | PropertyServerException | ConnectorCheckedException e) {
-                this.auditLog.logException(methodName, DataEngineProxyAuditCode.OMAS_CONNECTION_ERROR.getMessageDefinition(), e);
-            } catch (UserNotAuthorizedException e) {
-                this.auditLog.logMessage(methodName, DataEngineProxyAuditCode.USER_NOT_AUTHORIZED.getMessageDefinition("setup external data engine"));
-            }
-        }
 
     }
 
