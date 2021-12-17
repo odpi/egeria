@@ -51,11 +51,6 @@ public enum DataEngineProxyAuditCode implements AuditLogMessageSet {
             "The Data Engine Proxy is polling for changes between {0} and {1}",
             "The local server is looking for changes since the last poll interval.",
             "No action is required.  This is part of the normal operation of the service."),
-    OMAS_CONNECTION_ERROR("DATA-ENGINE-PROXY-0010",
-            OMRSAuditLogRecordSeverity.EXCEPTION,
-            "The Data Engine OMAS client was not successfully initialized",
-            "The system is unable to process anything due to a lack of OMAS connectivity.",
-            "Check your OMAS configuration is correct and the OMAS is running."),
     USER_NOT_AUTHORIZED("DATA-ENGINE-PROXY-0011",
             OMRSAuditLogRecordSeverity.ERROR,
             "The user is not authorized for the Data Engine OMAS operation: {0}",
@@ -71,6 +66,11 @@ public enum DataEngineProxyAuditCode implements AuditLogMessageSet {
             "The Data Engine Proxy has completed polling for changes to {0}",
             "The local server has completed looking for changes to the specified type since the last poll interval.",
             "No action is required.  This is part of the normal operation of the service."),
+    RUNTIME_EXCEPTION("DATA-ENGINE-PROXY-0014",
+            OMRSAuditLogRecordSeverity.EXCEPTION,
+            "The Data Engine Proxy processing interrupted due to runtime error.",
+            "The system was unable to complete processing because the sub-system error. System will attempt to retry the process if possible.",
+            "Check diagnostic message from audit log to determine the cause if the problem persists."),
 
     ;
 
