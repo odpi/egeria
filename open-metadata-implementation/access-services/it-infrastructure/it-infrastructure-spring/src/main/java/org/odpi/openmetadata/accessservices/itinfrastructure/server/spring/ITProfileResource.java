@@ -8,8 +8,6 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ITProfileListR
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ITProfileRequestBody;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ITProfileResponse;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ContactMethodRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.EffectiveDatesRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.EffectiveTimeRequestBody;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.MetadataSourceRequestBody;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.UserIdentityListResponse;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.UserIdentityRequestBody;
@@ -29,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * The ITProfileResource provides a Spring based server-side REST API
- * that supports the ITProfileManagementInterface.   It delegates each request to the
+ * that supports the ITProfileManagerInterface.   It delegates each request to the
  * OrganizationRESTServices.  This provides the server-side implementation of the IT Infrastructure Open Metadata
  * Assess Service (OMAS) which is used to manage information about IT profiles and their userIds.
  */

@@ -800,13 +800,13 @@ public class ConnectionManagerClient implements ConnectionsManagerInterface
         requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(searchStringParameterName);
 
-        ConnectionsResponse restResult = restClient.callMyConnectionsPostRESTCall(methodName,
-                                                                                  urlTemplate,
-                                                                                  requestBody,
-                                                                                  serverName,
-                                                                                  userId,
-                                                                                  startFrom,
-                                                                                  validatedPageSize);
+        ConnectionsResponse restResult = restClient.callConnectionsPostRESTCall(methodName,
+                                                                                urlTemplate,
+                                                                                requestBody,
+                                                                                serverName,
+                                                                                userId,
+                                                                                startFrom,
+                                                                                validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -849,13 +849,13 @@ public class ConnectionManagerClient implements ConnectionsManagerInterface
         requestBody.setName(name);
         requestBody.setNamePropertyName(nameParameterName);
 
-        ConnectionsResponse restResult = restClient.callMyConnectionsPostRESTCall(methodName,
-                                                                                 urlTemplate,
-                                                                                 requestBody,
-                                                                                 serverName,
-                                                                                 userId,
-                                                                                 startFrom,
-                                                                                 validatedPageSize);
+        ConnectionsResponse restResult = restClient.callConnectionsPostRESTCall(methodName,
+                                                                                urlTemplate,
+                                                                                requestBody,
+                                                                                serverName,
+                                                                                userId,
+                                                                                startFrom,
+                                                                                validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -887,11 +887,11 @@ public class ConnectionManagerClient implements ConnectionsManagerInterface
 
         final String urlTemplate = serverPlatformURLRoot + connectionURLTemplatePrefix + "/{2}";
 
-        ConnectionResponse restResult = restClient.callMyConnectionGetRESTCall(methodName,
-                                                                               urlTemplate,
-                                                                               serverName,
-                                                                               userId,
-                                                                               connectionGUID);
+        ConnectionResponse restResult = restClient.callConnectionGetRESTCall(methodName,
+                                                                             urlTemplate,
+                                                                             serverName,
+                                                                             userId,
+                                                                             connectionGUID);
 
         return restResult.getElement();
     }

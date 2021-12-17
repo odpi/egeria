@@ -146,14 +146,14 @@ public class ConnectedAssetComments extends AssetComments
 
         try
         {
-            CommentsResponse restResult = restClient.callCommentsGetRESTCall(methodName,
-                                                                             omasServerURL + urlTemplate,
-                                                                             serverName,
-                                                                             serviceName,
-                                                                             userId,
-                                                                             assetGUID,
-                                                                             cacheStartPointer,
-                                                                             maximumSize);
+            CommentsResponse restResult = restClient.callOCFCommentsGetRESTCall(methodName,
+                                                                                omasServerURL + urlTemplate,
+                                                                                serverName,
+                                                                                serviceName,
+                                                                                userId,
+                                                                                assetGUID,
+                                                                                cacheStartPointer,
+                                                                                maximumSize);
 
             restExceptionHandler.detectAndThrowInvalidParameterException(restResult);
             restExceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);

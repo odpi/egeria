@@ -35,10 +35,10 @@ public enum ProcessContainmentType implements Serializable
     public static final String ENUM_TYPE_GUID  = "1bb4b908-7983-4802-a2b5-91b095552ee9";
     public static final String ENUM_TYPE_NAME  = "ProcessContainmentType";
 
-    private int    ordinal;
-    private int    openTypeOrdinal;
-    private String name;
-    private String description;
+    private final int    ordinal;
+    private final int    openTypeOrdinal;
+    private final String name;
+    private final String description;
 
 
     /**

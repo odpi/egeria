@@ -6,6 +6,7 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.AssetProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.HostProperties;
 
 import java.io.Serializable;
@@ -25,7 +26,7 @@ public class HostElement implements MetadataElement, Serializable
     private static final long serialVersionUID = 1L;
 
     private HostProperties properties    = null;
-    private ElementHeader   elementHeader = null;
+    private ElementHeader  elementHeader = null;
 
 
     /**
@@ -48,6 +49,27 @@ public class HostElement implements MetadataElement, Serializable
         {
             elementHeader = template.getElementHeader();
             properties = template.getProperties();
+        }
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public HostElement(AssetElement template)
+    {
+        if (template != null)
+        {
+            elementHeader = template.getElementHeader();
+
+            AssetProperties assetProperties = template.getProperties();
+
+            if (assetProperties != null)
+            {
+                properties = new HostProperties(assetProperties);
+            }
         }
     }
 

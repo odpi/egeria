@@ -448,13 +448,13 @@ public class EndpointManagerClient implements EndpointManagerInterface
         requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(parameterName);
 
-        EndpointsResponse restResult = restClient.callMyEndpointsPostRESTCall(methodName,
-                                                                              serverPlatformURLRoot + urlTemplate,
-                                                                              requestBody,
-                                                                              serverName,
-                                                                              userId,
-                                                                              startFrom,
-                                                                              validatedPageSize);
+        EndpointsResponse restResult = restClient.callEndpointsPostRESTCall(methodName,
+                                                                            serverPlatformURLRoot + urlTemplate,
+                                                                            requestBody,
+                                                                            serverName,
+                                                                            userId,
+                                                                            startFrom,
+                                                                            validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -497,13 +497,13 @@ public class EndpointManagerClient implements EndpointManagerInterface
         requestBody.setName(name);
         requestBody.setNamePropertyName(nameParameter);
 
-        EndpointsResponse restResult = restClient.callMyEndpointsPostRESTCall(methodName,
-                                                                              serverPlatformURLRoot + urlTemplate,
-                                                                              requestBody,
-                                                                              serverName,
-                                                                              userId,
-                                                                              startFrom,
-                                                                              validatedPageSize);
+        EndpointsResponse restResult = restClient.callEndpointsPostRESTCall(methodName,
+                                                                            serverPlatformURLRoot + urlTemplate,
+                                                                            requestBody,
+                                                                            serverName,
+                                                                            userId,
+                                                                            startFrom,
+                                                                            validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -540,13 +540,13 @@ public class EndpointManagerClient implements EndpointManagerInterface
 
         final String urlTemplate = serverPlatformURLRoot + endpointURLTemplatePrefix + "/for-infrastructure/{2}?startFrom={3}&pageSize={4}";
 
-        EndpointsResponse restResult = restClient.callMyEndpointsGetRESTCall(methodName,
-                                                                             urlTemplate,
-                                                                             serverName,
-                                                                             userId,
-                                                                             infrastructureGUID,
-                                                                             startFrom,
-                                                                             validatedPageSize);
+        EndpointsResponse restResult = restClient.callEndpointsGetRESTCall(methodName,
+                                                                           urlTemplate,
+                                                                           serverName,
+                                                                           userId,
+                                                                           infrastructureGUID,
+                                                                           startFrom,
+                                                                           validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -578,11 +578,11 @@ public class EndpointManagerClient implements EndpointManagerInterface
 
         final String urlTemplate = serverPlatformURLRoot + endpointURLTemplatePrefix + "/{2}";
 
-        EndpointResponse restResult = restClient.callMyEndpointGetRESTCall(methodName,
-                                                                           urlTemplate,
-                                                                           serverName,
-                                                                           userId,
-                                                                           endpointGUID);
+        EndpointResponse restResult = restClient.callEndpointGetRESTCall(methodName,
+                                                                         urlTemplate,
+                                                                         serverName,
+                                                                         userId,
+                                                                         endpointGUID);
 
         return restResult.getElement();
     }

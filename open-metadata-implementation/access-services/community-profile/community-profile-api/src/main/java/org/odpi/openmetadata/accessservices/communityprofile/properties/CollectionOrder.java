@@ -40,11 +40,11 @@ public enum CollectionOrder implements Serializable
     public static final String ENUM_TYPE_GUID  = "1d412439-4272-4a7e-a940-1065f889fc56";
     public static final String ENUM_TYPE_NAME  = "OrderBy";
 
-    private int    openTypeOrdinal;
+    private final int    openTypeOrdinal;
 
-    private int            ordinal;
-    private String         name;
-    private String         description;
+    private final int            ordinal;
+    private final String         name;
+    private final String         description;
 
 
     /**

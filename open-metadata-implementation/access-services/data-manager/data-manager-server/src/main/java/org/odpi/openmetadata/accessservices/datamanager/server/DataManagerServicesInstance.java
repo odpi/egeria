@@ -43,7 +43,6 @@ public class DataManagerServicesInstance extends OMASServiceInstance
     private EventTypeHandler<EventTypeElement>                               eventTypeHandler;
 
     private AssetHandler<APIElement>                                         apiHandler;
-    private SchemaTypeHandler<APISpecificationElement>                       apiSpecificationHandler;
     private APIOperationHandler<APIOperationElement>                         apiOperationHandler;
     private APIParameterListHandler<APIParameterListElement>                 apiParameterListHandler;
 
@@ -232,20 +231,6 @@ public class DataManagerServicesInstance extends OMASServiceInstance
                                              defaultZones,
                                              publishZones,
                                              auditLog);
-
-        this.apiSpecificationHandler = new SchemaTypeHandler<>(new APISpecificationConverter<>(repositoryHelper, serviceName,serverName),
-                                                               APISpecificationElement.class,
-                                                               serviceName,
-                                                               serverName,
-                                                               invalidParameterHandler,
-                                                               repositoryHandler,
-                                                               repositoryHelper,
-                                                               localServerUserId,
-                                                               securityVerifier,
-                                                               supportedZones,
-                                                               defaultZones,
-                                                               publishZones,
-                                                               auditLog);
 
 
         this.apiOperationHandler = new APIOperationHandler<>(new APIOperationConverter<>(repositoryHelper, serviceName,serverName),
@@ -558,22 +543,6 @@ public class DataManagerServicesInstance extends OMASServiceInstance
         validateActiveRepository(methodName);
 
         return apiHandler;
-    }
-
-
-    /**
-     * Return the handler for managing APISpecificationElement objects.
-     *
-     * @return  handler object
-     * @throws PropertyServerException the instance has not been initialized successfully
-     */
-    SchemaTypeHandler<APISpecificationElement> getAPISpecificationHandler() throws PropertyServerException
-    {
-        final String methodName = "getAPISpecificationHandler";
-
-        validateActiveRepository(methodName);
-
-        return apiSpecificationHandler;
     }
 
 
