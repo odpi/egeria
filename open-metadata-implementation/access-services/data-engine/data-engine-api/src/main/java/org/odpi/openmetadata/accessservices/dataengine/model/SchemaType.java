@@ -126,7 +126,7 @@ public class SchemaType extends Referenceable {
      * The he name of the namespace that this schema type belongs to
      *  -- SETTER --
      *  Set up the namespace that this schema type belongs to.
-     *  @param description String text
+     *  @param namespace String text
      * -- GETTER --
      * Returns the namespace that this schema type belongs to
      * If no namespace is provided then null is returned.
