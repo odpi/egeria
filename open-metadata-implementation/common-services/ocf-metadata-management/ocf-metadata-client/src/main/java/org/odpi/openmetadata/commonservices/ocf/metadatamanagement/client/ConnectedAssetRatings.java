@@ -141,14 +141,14 @@ public class ConnectedAssetRatings extends AssetRatings
 
         try
         {
-            RatingsResponse restResult = restClient.callRatingsGetRESTCall(methodName,
-                                                                           omasServerURL + urlTemplate,
-                                                                           serverName,
-                                                                           serviceName,
-                                                                           userId,
-                                                                           assetGUID,
-                                                                           cacheStartPointer,
-                                                                           maximumSize);
+            RatingsResponse restResult = restClient.callOCFRatingsGetRESTCall(methodName,
+                                                                              omasServerURL + urlTemplate,
+                                                                              serverName,
+                                                                              serviceName,
+                                                                              userId,
+                                                                              assetGUID,
+                                                                              cacheStartPointer,
+                                                                              maximumSize);
 
             restExceptionHandler.detectAndThrowInvalidParameterException(restResult);
             restExceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);

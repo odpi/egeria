@@ -142,14 +142,14 @@ class ConnectedAssetCertifications extends AssetCertifications
 
         try
         {
-            CertificationsResponse restResult = restClient.callCertificationsGetRESTCall(methodName,
-                                                                                         omasServerURL + urlTemplate,
-                                                                                         serverName,
-                                                                                         serviceName,
-                                                                                         userId,
-                                                                                         assetGUID,
-                                                                                         cacheStartPointer,
-                                                                                         maximumSize);
+            CertificationsResponse restResult = restClient.callOCFCertificationsGetRESTCall(methodName,
+                                                                                            omasServerURL + urlTemplate,
+                                                                                            serverName,
+                                                                                            serviceName,
+                                                                                            userId,
+                                                                                            assetGUID,
+                                                                                            cacheStartPointer,
+                                                                                            maximumSize);
 
             restExceptionHandler.detectAndThrowInvalidParameterException(restResult);
             restExceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
