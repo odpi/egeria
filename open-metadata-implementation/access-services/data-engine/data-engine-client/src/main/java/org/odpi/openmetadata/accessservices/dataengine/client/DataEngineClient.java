@@ -262,8 +262,10 @@ public interface DataEngineClient {
     /**
      * Create or update the database entity
      *
-     * @param userId   the name of the calling user
-     * @param database the database bean
+     * @param userId        the name of the calling user
+     * @param database      the database bean
+     * @param incomplete    determines if the entities inside the database are incomplete or not (database schema
+     *                      and relational tables)
      *
      * @return unique identifier of database in the repository
      *
@@ -272,10 +274,10 @@ public interface DataEngineClient {
      * @throws PropertyServerException    problem accessing the property server
      * @throws ConnectorCheckedException  internal problem with the connector
      */
-    String upsertDatabase(String userId, Database database) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException,
-                                                                   ConnectorCheckedException;
+    String upsertDatabase(String userId, Database database, boolean incomplete) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException,
+                                                                                       ConnectorCheckedException;
 
     /**
      * Create or update the database schema entity

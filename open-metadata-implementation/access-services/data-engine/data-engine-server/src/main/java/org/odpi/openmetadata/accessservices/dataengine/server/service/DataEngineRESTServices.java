@@ -135,6 +135,7 @@ public class DataEngineRESTServices {
     public static final String SCHEMA = "Schema";
     public static final String SCHEMA_SUFFIX = "::schema";
     public static final String EXTERNAL_SOURCE_NAME_PARAMETER_NAME = "externalSourceName";
+    public static final String UPSERT_METHOD_CALLS_FOR = "Method {} will take longer. Inside it, upsert method will be called for: {} and/or {}";
     public static final String TOPIC_PARAMETER_NAME = "topic";
     private static final String EVENT_TYPE_PARAMETER_NAME = "eventType";
     private static final String TOPIC_QUALIFIED_NAME_PARAMETER_NAME = "topicQualifiedName";
@@ -930,7 +931,8 @@ public class DataEngineRESTServices {
         try {
             if (!isDatabaseRequestBodyValid(userId, serverName, databaseRequestBody, methodName)) return response;
 
-            String databaseGUID = upsertDatabase(userId, serverName, databaseRequestBody.getDatabase(), databaseRequestBody.getExternalSourceName());
+            String databaseGUID = upsertDatabase(userId, serverName, databaseRequestBody.getDatabase(),
+                    databaseRequestBody.getIncomplete(), databaseRequestBody.getExternalSourceName());
             response.setGUID(databaseGUID);
         } catch (Exception error) {
             restExceptionHandler.captureExceptions(response, error, methodName);
@@ -952,14 +954,18 @@ public class DataEngineRESTServices {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public String upsertDatabase(String userId, String serverName, Database database, String externalSourceName) throws InvalidParameterException,
-                                                                                                                        UserNotAuthorizedException,
-                                                                                                                        PropertyServerException {
+    public String upsertDatabase(String userId, String serverName, Database database, boolean incomplete,
+                                 String externalSourceName) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         final String methodName = "upsertDatabase";
         log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, database);
+        DatabaseSchema databaseSchema = database.getDatabaseSchema();
+        List<RelationalTable> tables = database.getTables();
+        if(databaseSchema != null || CollectionUtils.isNotEmpty(tables)) {
+            log.debug(UPSERT_METHOD_CALLS_FOR, methodName, databaseSchema, tables);
+        }
 
         DataEngineRelationalDataHandler dataEngineRelationalDataHandler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
-        String databaseGUID = dataEngineRelationalDataHandler.upsertDatabase(userId, database, externalSourceName);
+        String databaseGUID = dataEngineRelationalDataHandler.upsertDatabase(userId, database, incomplete, externalSourceName);
 
         log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, databaseGUID);
         return databaseGUID;

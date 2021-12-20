@@ -809,7 +809,8 @@ class DataEngineRESTServicesTest {
     void upsertDatabase() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         mockRelationalDataHandler("upsertDatabase");
 
-        when(dataEngineRelationalDataHandler.upsertDatabase(USER, getDatabase(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(GUID);
+        when(dataEngineRelationalDataHandler.upsertDatabase(USER, getDatabase(), false,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(GUID);
 
         DatabaseRequestBody requestBody = mockDatabaseRequestBody();
 
