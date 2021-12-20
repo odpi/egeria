@@ -288,12 +288,14 @@ public class DataEngineEventClient implements DataEngineClient {
      * {@inheritDoc}
      */
     @Override
-    public String upsertDatabase(String userId, Database database) throws InvalidParameterException, ConnectorCheckedException {
+    public String upsertDatabase(String userId, Database database, boolean incomplete) throws InvalidParameterException,
+            ConnectorCheckedException {
         DatabaseEvent event = new DatabaseEvent();
         event.setUserId(userId);
         event.setExternalSourceName(externalSource);
         event.setEventType(DataEngineEventType.DATABASE_EVENT);
         event.setDatabase(database);
+        event.setIncomplete(incomplete);
 
         topicConnector.sendEvent(event);
 

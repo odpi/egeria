@@ -11,6 +11,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -78,6 +80,17 @@ public class Database extends DataStore {
      */
     @JsonProperty("schema")
     private DatabaseSchema databaseSchema;
+
+    /**
+     * The relational tables inside the database
+     * -- GETTER --
+     * Gets the relational tables inside the database.
+     * @return the relational tables inside the database
+     * -- SETTER --
+     * Sets up relational tables inside the database.
+     * @param tables relational tables inside the database
+     */
+    List<RelationalTable> tables;
 
     /**
      * The Endpoint protocol
