@@ -66,7 +66,7 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
     private static final String ENDPOINT_URL_TEMPLATE = DATA_ENGINE_PATH + "endpoints";
     private static final String FIND_URL_TEMPLATE = DATA_ENGINE_PATH + "find";
     private static final String TOPIC_URL_TEMPLATE = DATA_ENGINE_PATH + "topics";
-    private static final String EVENT_TYPE_URL_TEMPLATE = DATA_ENGINE_PATH + "eventTypes";
+    private static final String EVENT_TYPE_URL_TEMPLATE = DATA_ENGINE_PATH + "event-types";
 
     private static final String PROCESS_METHOD_NAME = "createOrUpdateProcess";
     private static final String PROCESS_DELETE_METHOD_NAME = "deleteProcess";
