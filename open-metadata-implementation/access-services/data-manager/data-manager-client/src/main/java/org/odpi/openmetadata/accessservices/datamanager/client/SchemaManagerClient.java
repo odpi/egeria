@@ -1398,7 +1398,7 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(parentSchemaElementGUID, elementGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + schemaElementURLTemplatePrefix + "/{2}/nested-attributes";
+        final String urlTemplate = serverPlatformURLRoot + schemaElementURLTemplatePrefix + "/{2}/nested-attributes?startFrom={3}&pageSize={4}";
 
         SchemaAttributesResponse restResult = restClient.callSchemaAttributesGetRESTCall(methodName,
                                                                                          urlTemplate,

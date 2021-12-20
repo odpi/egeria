@@ -5,6 +5,8 @@ package org.odpi.openmetadata.governanceservers.dataengineproxy.connectors;
 import org.odpi.openmetadata.accessservices.dataengine.model.*;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,7 +44,7 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
      * @return Date
      */
     @Override
-    public Date getChangesLastSynced() {
+    public Date getChangesLastSynced() throws ConnectorCheckedException, PropertyServerException {
         if (requiresPolling()) {
             log.warn("DataEngineConnectorBase::getChangesLastSynced() is not overridden (unimplemented), yet the connector requires polling.");
         }
@@ -55,7 +57,7 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
      * @param time the time to record for the last synchronization
      */
     @Override
-    public void setChangesLastSynced(Date time) {
+    public void setChangesLastSynced(Date time) throws ConnectorCheckedException, PropertyServerException {
         if (requiresPolling()) {
             log.warn("DataEngineConnectorBase::setChangesLastSynced(Date) is not overridden (unimplemented), yet the connector requires polling.");
         }
@@ -65,7 +67,7 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
      * {@inheritDoc}
      */
     @Override
-    public Date getOldestChangeSince(Date time) {
+    public Date getOldestChangeSince(Date time) throws ConnectorCheckedException, PropertyServerException {
         if (requiresPolling()) {
             log.warn("DataEngineConnectorBase::getOldestChangeSince(Date) is not overridden (unimplemented), yet the connector requires polling.");
         }
@@ -80,7 +82,7 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
      * @return {@code List<SchemaType>}
      */
     @Override
-    public List<SchemaType> getChangedSchemaTypes(Date from, Date to) {
+    public List<SchemaType> getChangedSchemaTypes(Date from, Date to) throws ConnectorCheckedException, PropertyServerException {
         if (requiresPolling()) {
             log.debug("DataEngineConnectorBase::getChangedSchemaTypes(Date, Date) is not overridden (unimplemented).");
         }
@@ -95,7 +97,7 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
      * @return {@code List<SchemaType>}
      */
     @Override
-    public List<? super Referenceable> getChangedDataStores(Date from, Date to) {
+    public List<? super Referenceable> getChangedDataStores(Date from, Date to) throws ConnectorCheckedException, PropertyServerException {
         if (requiresPolling()) {
             log.debug("DataEngineConnectorBase::getChangedDataStores(Date, Date) is not overridden (unimplemented).");
         }
@@ -110,7 +112,7 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
      * @return {@code List<Process>}
      */
     @Override
-    public List<Process> getChangedProcesses(Date from, Date to) {
+    public List<Process> getChangedProcesses(Date from, Date to) throws ConnectorCheckedException, PropertyServerException {
         if (requiresPolling()) {
             log.debug("DataEngineConnectorBase::getChangedProcesses(Date, Date) is not overridden (unimplemented).");
         }
@@ -125,7 +127,7 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
      * @return {@code List<ProcessHierarchy>}
      */
     @Override
-    public List<ProcessHierarchy> getChangedProcessHierarchies(Date from, Date to) {
+    public List<ProcessHierarchy> getChangedProcessHierarchies(Date from, Date to) throws ConnectorCheckedException, PropertyServerException{
         if (requiresPolling()) {
             log.debug("DataEngineConnectorBase::getChangedProcessHierarchies(Date, Date) is not overridden (unimplemented).");
         }
@@ -140,7 +142,7 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
      * @return {@code List<LineageMapping>}
      */
     @Override
-    public List<LineageMapping> getChangedLineageMappings(Date from, Date to) {
+    public List<LineageMapping> getChangedLineageMappings(Date from, Date to) throws ConnectorCheckedException, PropertyServerException {
         if (requiresPolling()) {
             log.debug("DataEngineConnectorBase::getChangedLineageMappings(Date, Date) is not overridden (unimplemented).");
         }
