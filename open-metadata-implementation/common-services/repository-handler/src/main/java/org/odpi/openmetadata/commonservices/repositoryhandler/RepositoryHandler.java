@@ -2015,12 +2015,22 @@ public class RepositoryHandler
                                                 externalSourceName,
                                                 methodName);
 
-                EntityDetail newEntity = metadataCollection.updateEntityClassification(userId,
-                                                                                       entityGUID,
-                                                                                       classificationTypeName,
-                                                                                       newProperties);
+                EntityDetail entityDetail = this.getEntityByGUID(userId,
+                                                                 entityGUID,
+                                                                 entityGUIDParameterName,
+                                                                 entityTypeName,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 effectiveTime,
+                                                                 methodName);
+                EntityProxy entityProxy = repositoryHelper.getNewEntityProxy(userId, entityDetail);
 
-                if (newEntity == null)
+                Classification newClassification = metadataCollection.updateEntityClassification(userId,
+                                                                                                 entityProxy,
+                                                                                                 classificationTypeName,
+                                                                                                 newProperties);
+
+                if (newClassification == null)
                 {
                     errorHandler.handleNoEntityForClassification(entityGUID,
                                                                  classificationTypeGUID,

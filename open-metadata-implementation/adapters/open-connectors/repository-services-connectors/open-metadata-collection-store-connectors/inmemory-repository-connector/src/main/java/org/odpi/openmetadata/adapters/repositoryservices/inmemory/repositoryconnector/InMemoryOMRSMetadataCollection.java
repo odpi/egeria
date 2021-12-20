@@ -2400,12 +2400,12 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                          ClassificationOrigin classificationOrigin,
                                          String               classificationOriginGUID,
                                          InstanceProperties   classificationProperties) throws InvalidParameterException,
-            RepositoryErrorException,
-            EntityNotKnownException,
-            ClassificationErrorException,
-            PropertyErrorException,
-            UserNotAuthorizedException,
-            FunctionNotSupportedException
+                                                                                               RepositoryErrorException,
+                                                                                               EntityNotKnownException,
+                                                                                               ClassificationErrorException,
+                                                                                               PropertyErrorException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               FunctionNotSupportedException
     {
         final String  methodName = "classifyEntity (detailed - EntityProxy)";
         final String  entityGUIDParameterName     = "entityGUID";
@@ -2652,6 +2652,85 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         return updatedEntity;
     }
 
+
+    /**
+     * Update one or more properties in one of an entity's classifications.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityProxy identifier (proxy) for the entity.
+     * @param classificationName String name for the classification.
+     * @param properties list of properties for the classification.
+     * @return Classification showing the resulting entity header, properties and classifications.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws ClassificationErrorException the requested classification is not attached to the classification.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public Classification updateEntityClassification(String               userId,
+                                                     EntityProxy          entityProxy,
+                                                     String               classificationName,
+                                                     InstanceProperties   properties) throws InvalidParameterException,
+                                                                                             RepositoryErrorException,
+                                                                                             EntityNotKnownException,
+                                                                                             ClassificationErrorException,
+                                                                                             PropertyErrorException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             FunctionNotSupportedException
+    {
+        final String  methodName = "updateEntityClassification (EntityProxy)";
+
+        /*
+         * Validate parameters
+         */
+        String entityGUID = entityProxy.getGUID();
+        super.classifyEntityParameterValidation(userId, entityGUID, classificationName, properties, methodName);
+
+        /*
+         * Locate entity
+         */
+        EntitySummary entity = repositoryStore.getEntity(entityGUID);
+        if(entity == null){
+            repositoryStore.addEntityProxyToStore(entityProxy);
+            entity = repositoryStore.getEntityProxy(entityGUID);
+        }
+
+        repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
+        repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
+
+        Classification classification = repositoryHelper.getClassificationFromEntity(repositoryName,
+                                                                                     entity,
+                                                                                     classificationName,
+                                                                                     methodName);
+
+        Classification newClassification = new Classification(classification);
+        newClassification.setProperties(properties);
+        repositoryHelper.incrementVersion(userId, classification, newClassification);
+
+        if(entity instanceof EntityDetail){
+            EntityDetail updatedEntity = repositoryHelper.updateClassificationInEntity(repositoryName,
+                                                                                       userId,
+                                                                                       (EntityDetail) entity,
+                                                                                       newClassification,
+                                                                                       methodName);
+            repositoryStore.updateEntityInStore(updatedEntity);
+            // The repository store maintains an entity proxy for use with relationships
+            repositoryStore.updateEntityProxyInStore(repositoryHelper.getNewEntityProxy(repositoryName, updatedEntity));
+        }else{
+            EntityProxy updatedProxy = repositoryHelper.addClassificationToEntity(repositoryName,
+                    (EntityProxy) entity,
+                    newClassification,
+                    methodName);
+            repositoryStore.updateEntityProxyInStore(updatedProxy);
+        }
+
+        return newClassification;
+    }
 
 
     /**

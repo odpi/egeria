@@ -3560,6 +3560,64 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
+     * Update one or more properties in one of an entity's classifications.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityProxy identifier (proxy) for the entity.
+     * @param classificationName String name for the classification.
+     * @param properties list of properties for the classification.
+     * @return Classification showing the resulting entity header, properties and classifications.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws ClassificationErrorException the requested classification is not attached to the classification.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public Classification updateEntityClassification(String             userId,
+                                                     EntityProxy        entityProxy,
+                                                     String             classificationName,
+                                                     InstanceProperties properties) throws InvalidParameterException,
+                                                                                           RepositoryErrorException,
+                                                                                           EntityNotKnownException,
+                                                                                           ClassificationErrorException,
+                                                                                           PropertyErrorException,
+                                                                                           FunctionNotSupportedException,
+                                                                                           UserNotAuthorizedException
+    {
+        final String  methodName = "updateEntityClassification (EntityProxy)";
+
+        /*
+         * Validate parameters
+         */
+        classifyEntityParameterValidation(userId, entityProxy.getGUID(), classificationName, properties, methodName);
+
+        /*
+         * Locate entity and retrieve classification.
+         */
+        EntitySummary  entity         = this.getEntitySummary(userId, entityProxy.getGUID());
+        Classification classification = repositoryHelper.getClassificationFromEntity(repositoryName, entity, classificationName, methodName);
+
+        /*
+         * Validation complete, ok to make changes
+         */
+        OMRSMetadataCollection metadataCollection = enterpriseParentConnector.getHomeMetadataCollection(classification, methodName);
+        if (metadataCollection != null)
+        {
+            return metadataCollection.updateEntityClassification(userId,
+                                                                 entityProxy,
+                                                                 classificationName,
+                                                                 properties);
+        }
+
+        return null;
+    }
+
+    /**
      * Add a new relationship between two entities to the metadata collection.
      * <p>
      * There are 3 parts to this method

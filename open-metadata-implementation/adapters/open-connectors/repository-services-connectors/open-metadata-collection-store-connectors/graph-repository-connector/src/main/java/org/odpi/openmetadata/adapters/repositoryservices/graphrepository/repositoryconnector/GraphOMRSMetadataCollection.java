@@ -3749,6 +3749,75 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
     }
 
 
+    // updateEntityClassification
+    @Override
+    public Classification updateEntityClassification(String               userId,
+                                                     EntityProxy          entityProxy,
+                                                     String               classificationName,
+                                                     InstanceProperties   properties)
+            throws
+            InvalidParameterException,
+            RepositoryErrorException,
+            EntityNotKnownException,
+            ClassificationErrorException,
+            PropertyErrorException,
+            UserNotAuthorizedException
+    {
+        final String  methodName = "updateEntityClassification";
+
+        /*
+         * Validate parameters
+         */
+        String entityGUID = entityProxy.getGUID();
+        super.classifyEntityParameterValidation(userId, entityGUID, classificationName, properties, methodName);
+
+        /*
+         * Locate entity
+         */
+        EntitySummary entity = null;
+        try {
+
+            entity = graphStore.getEntityDetailFromStore(entityGUID);
+
+        }
+        catch (EntityProxyOnlyException e) {
+            // entity already stored as a proxy
+            entity = graphStore.getEntityProxyFromStore(entityGUID);
+
+        }
+
+        repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
+        repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
+
+        Classification classification = repositoryHelper.getClassificationFromEntity(repositoryName,
+                                                                                     entity,
+                                                                                     classificationName,
+                                                                                     methodName);
+
+        Classification  newClassification = new Classification(classification);
+        newClassification.setProperties(properties);
+
+        repositoryHelper.incrementVersion(userId, classification, newClassification);
+
+        if(entity instanceof EntityDetail) {
+            EntityDetail updatedEntity = repositoryHelper.updateClassificationInEntity(repositoryName,
+                                                                                       userId,
+                                                                                       (EntityDetail) entity,
+                                                                                       newClassification,
+                                                                                       methodName);
+            graphStore.updateEntityInStore(updatedEntity);
+        }else{
+            EntityProxy updatedProxy = repositoryHelper.updateClassificationInEntity(repositoryName,
+                                                                                     userId,
+                                                                                     (EntityProxy) entity,
+                                                                                     newClassification,
+                                                                                     methodName);
+            graphStore.updateEntityInStore(updatedProxy);
+        }
+
+        return newClassification;
+    }
+
     /*
      * Reference Copies
      */

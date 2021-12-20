@@ -1644,6 +1644,44 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
 
     /**
+     * Replace an existing classification with a new one
+     *
+     * @param sourceName        source of the request (used for logging)
+     * @param userName          name of the editor
+     * @param entity            entity to update
+     * @param newClassification classification to update
+     * @param methodName        calling method
+     * @return updated entity
+     */
+    @Override
+    public EntityProxy updateClassificationInEntity(String         sourceName,
+                                                    String         userName,
+                                                    EntityProxy    entity,
+                                                    Classification newClassification,
+                                                    String         methodName)
+    {
+        if (newClassification != null)
+        {
+            Classification updatedClassification = new Classification(newClassification);
+
+            updatedClassification = incrementVersion(userName, newClassification, updatedClassification);
+
+            return this.addClassificationToEntity(sourceName, entity, updatedClassification, methodName);
+        }
+        else
+        {
+            final String thisMethodName = "updateClassificationInEntity";
+
+            throw new OMRSLogicErrorException(OMRSErrorCode.NULL_CLASSIFICATION_CREATED.getMessageDefinition(sourceName,
+                    thisMethodName,
+                    methodName),
+                    this.getClass().getName(),
+                    methodName);
+        }
+    }
+
+
+    /**
      * Return a oldClassification with the header and type information filled out.  The caller only needs to add properties
      * to complete the set up of the oldClassification.
      *

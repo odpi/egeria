@@ -793,6 +793,23 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
 
 
     /**
+     * Replace an existing classification with a new one
+     *
+     * @param sourceName         source of the request (used for logging)
+     * @param userName           name of the editor
+     * @param entity             entity to update
+     * @param newClassification  classification to update
+     * @param methodName         calling method
+     * @return updated entity
+     */
+    EntityProxy updateClassificationInEntity(String         sourceName,
+                                             String         userName,
+                                             EntityProxy    entity,
+                                             Classification newClassification,
+                                             String         methodName);
+
+
+    /**
      * Return a oldClassification with the header and type information filled out.  The caller only needs to add properties
      * to complete the set up of the oldClassification.
      *
