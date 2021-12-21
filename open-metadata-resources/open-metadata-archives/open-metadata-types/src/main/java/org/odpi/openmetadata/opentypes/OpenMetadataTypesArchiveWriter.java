@@ -29,8 +29,8 @@ public class OpenMetadataTypesArchiveWriter extends OMRSArchiveWriter
     {
         OpenMetadataTypesArchive openMetadataTypesArchive = new OpenMetadataTypesArchive();
 
-        this.writeOpenMetadataArchive(defaultOpenMetadataArchiveFileName,
-                                      openMetadataTypesArchive.getOpenMetadataArchive());
+        super.writeOpenMetadataArchive(defaultOpenMetadataArchiveFileName,
+                                       openMetadataTypesArchive.getOpenMetadataArchive());
     }
 
 }

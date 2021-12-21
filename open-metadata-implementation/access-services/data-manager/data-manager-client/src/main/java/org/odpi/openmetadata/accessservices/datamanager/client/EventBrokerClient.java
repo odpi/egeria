@@ -24,7 +24,7 @@ import java.util.List;
 public class EventBrokerClient extends SchemaManagerClient implements EventBrokerInterface
 {
     private static final String topicURLTemplatePrefix     = "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/topics";
-    private static final String defaultSchemaAttributeName = "EventAttributeSchema";
+    private static final String defaultSchemaAttributeName = "EventSchemaAttribute";
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -479,7 +479,7 @@ public class EventBrokerClient extends SchemaManagerClient implements EventBroke
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + topicURLTemplatePrefix + "?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + topicURLTemplatePrefix + "/by-name?startFrom={2}&pageSize={3}";
 
         NameRequestBody requestBody = new NameRequestBody();
 

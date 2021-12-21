@@ -29,7 +29,7 @@ public class CommunityProfileOMASCreateProfileIT
     {
         FVTResults results = CreateProfileTest.performFVT(serverName, StringUtils.defaultIfEmpty(System.getProperty("fvt.url"),FVTConstants.SERVER_PLATFORM_URL_ROOT), FVTConstants.USERID);
 
-        results.printResults();
+        results.printResults(serverName);
         assertTrue(results.isSuccessful());
     }
 }

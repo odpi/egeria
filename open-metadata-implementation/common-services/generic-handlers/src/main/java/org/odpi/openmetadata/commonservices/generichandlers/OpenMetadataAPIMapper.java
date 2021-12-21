@@ -2050,7 +2050,7 @@ public class OpenMetadataAPIMapper
     public static final String EVENT_TYPE_LIST_TYPE_NAME                = "EventTypeList";
     /* ComplexSchemaType */
 
-    public static final String EVENT_TYPE_TYPE_GUID                     = "bead9aa4-214a-4596-8036-aa78395bbfb1";   /* from Area 5 */
+    public static final String EVENT_TYPE_TYPE_GUID                     = "8bc88aba-d7e4-4334-957f-cfe8e8eadc32";   /* from Area 5 */
     public static final String EVENT_TYPE_TYPE_NAME                     = "EventType";
     /* ComplexSchemaType */
 
@@ -2058,7 +2058,7 @@ public class OpenMetadataAPIMapper
     public static final String EVENT_SCHEMA_ATTRIBUTE_TYPE_NAME         = "EventSchemaAttribute";
     /* SchemaAttribute */
 
-    public static final String EVENT_SET_TYPE_GUID                      = "8bc88aba-d7e4-4334-957f-cfe8e8eadc32";   /* from Area 5 */
+    public static final String EVENT_SET_TYPE_GUID                      = "bead9aa4-214a-4596-8036-aa78395bbfb1";   /* from Area 5 */
     public static final String EVENT_SET_TYPE_NAME                      = "EventSet";
     /* Collection */
 
