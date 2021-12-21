@@ -5,14 +5,13 @@ package org.odpi.openmetadata.governanceservers.dataengineproxy.processor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineClient;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
-import org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema;
+import org.odpi.openmetadata.accessservices.dataengine.model.Database;
 import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.ProcessHierarchy;
 import org.odpi.openmetadata.accessservices.dataengine.model.Referenceable;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
-import org.odpi.openmetadata.accessservices.dataengine.model.VirtualTable;
 import org.odpi.openmetadata.adminservices.configuration.properties.DataEngineProxyConfig;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -201,14 +200,12 @@ public class DataEngineProxyChangePoller implements Runnable {
         // get  list of incomplete relational tables & data files
         List<? super Referenceable> changedDataStores = connector.getChangedDataStores(changesLastSynced, changesCutoff);
         if (CollectionUtils.isNotEmpty(changedDataStores)) {
-            for (Object changedDataSore : changedDataStores) {
-                if (changedDataSore instanceof DataFile) {
-                    dataEngineOMASClient.upsertDataFile(userId, (DataFile) changedDataSore, true);
+            for (Object changedDataStore : changedDataStores) {
+                if (changedDataStore instanceof DataFile) {
+                    dataEngineOMASClient.upsertDataFile(userId, (DataFile) changedDataStore, true);
                 }
-                if (changedDataSore instanceof VirtualTable) {
-                    DatabaseSchema databaseSchema = ((VirtualTable) changedDataSore).getDatabaseSchema();
-                    dataEngineOMASClient.upsertDatabaseSchema(userId, databaseSchema, null, true);
-                    dataEngineOMASClient.upsertRelationalTable(userId, (VirtualTable) changedDataSore, databaseSchema.getQualifiedName(),true);
+                if (changedDataStore instanceof Database) {
+                    dataEngineOMASClient.upsertDatabase(userId, (Database) changedDataStore, true);
                 }
             }
         }

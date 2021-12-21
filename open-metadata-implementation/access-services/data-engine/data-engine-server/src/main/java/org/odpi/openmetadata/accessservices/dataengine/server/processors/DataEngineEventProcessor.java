@@ -316,7 +316,7 @@ public class DataEngineEventProcessor {
             DatabaseEvent databaseEvent = OBJECT_MAPPER.readValue(dataEngineEvent, DatabaseEvent.class);
 
             dataEngineRESTServices.upsertDatabase(databaseEvent.getUserId(), serverName, databaseEvent.getDatabase(),
-                    databaseEvent.getExternalSourceName());
+                    databaseEvent.getIncomplete(), databaseEvent.getExternalSourceName());
         } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
             logException(dataEngineEvent, methodName, e);
         }

@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATABASE_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.GUID_PROPERTY_NAME;
@@ -41,8 +40,9 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
  * OMAS and creates entities and relationships through the OMRSRepositoryConnector.
  */
 public class DataEngineRelationalDataHandler {
-    public static final String DATABASE_SCHEMA_GUID = "databaseSchemaGUID";
-    public static final String DATABASE_GUID = "databaseGUID";
+
+    private static final String DATABASE_SCHEMA_GUID = "databaseSchemaGUID";
+    private static final String DATABASE_GUID = "databaseGUID";
     private final String serviceName;
     private final String serverName;
     private final InvalidParameterHandler invalidParameterHandler;
@@ -81,11 +81,13 @@ public class DataEngineRelationalDataHandler {
     }
 
     /**
-     * Create or update the database
+     * Create or update the database and the inside entities, if any (a database schema and relational tables)
      *
      * @param userId             the name of the calling user
      * @param database           the values of the database
      * @param externalSourceName the unique name of the external source
+     * @param incomplete         determines if the entities inside the database are incomplete, if any (database schema
+     *                           and relational tables)
      *
      * @return unique identifier of the database in the repository
      *
@@ -93,9 +95,9 @@ public class DataEngineRelationalDataHandler {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public String upsertDatabase(String userId, Database database, String externalSourceName) throws InvalidParameterException,
-                                                                                                     UserNotAuthorizedException,
-                                                                                                     PropertyServerException {
+    public String upsertDatabase(String userId, Database database, boolean incomplete, String externalSourceName) throws InvalidParameterException,
+                                                                                                                         UserNotAuthorizedException,
+                                                                                                                         PropertyServerException {
         final String methodName = "upsertDatabase";
         validateParameters(userId, methodName, database.getQualifiedName(), database.getDisplayName());
 
@@ -127,6 +129,18 @@ public class DataEngineRelationalDataHandler {
         dataEngineConnectionAndEndpointHandler.upsertConnectionAndEndpoint(database.getQualifiedName(),
             databaseGUID, DATABASE_TYPE_NAME, database.getProtocol(), database.getNetworkAddress(),
             externalSourceGUID, externalSourceName, userId);
+
+        DatabaseSchema databaseSchema = database.getDatabaseSchema();
+        if(databaseSchema != null) {
+            upsertDatabaseSchema(userId, databaseGUID, databaseSchema, incomplete, externalSourceName);
+            List<RelationalTable> tables = database.getTables();
+            if(CollectionUtils.isNotEmpty(tables)) {
+                for (RelationalTable table: tables) {
+                    String databaseSchemaQualifiedName = databaseSchema.getQualifiedName();
+                    upsertRelationalTable(userId, databaseSchemaQualifiedName, table, externalSourceName, incomplete);
+                }
+            }
+        }
 
         return databaseGUID;
     }
@@ -183,6 +197,7 @@ public class DataEngineRelationalDataHandler {
                                        String externalSourceName) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
         final String methodName = "upsertDatabaseSchema";
+
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(databaseSchema.getQualifiedName(), QUALIFIED_NAME_PROPERTY_NAME, methodName);
 
@@ -204,7 +219,8 @@ public class DataEngineRelationalDataHandler {
                     databaseSchema.getQualifiedName(), databaseSchema.getDisplayName(), databaseSchema.getDescription(), databaseSchema.getOwner(),
                     ownerTypeOrdinal, databaseSchema.getZoneMembership(), databaseSchema.getOriginOrganizationGUID(),
                     databaseSchema.getOriginBusinessCapabilityGUID(), databaseSchema.getOtherOriginValues(),
-                    databaseSchema.getAdditionalProperties(), DEPLOYED_DATABASE_SCHEMA_TYPE_NAME, null, null, methodName);
+                    databaseSchema.getAdditionalProperties(), DEPLOYED_DATABASE_SCHEMA_TYPE_NAME, null,
+                    null, methodName);
 
             if(StringUtils.isNotEmpty(databaseGUID)) {
                 databaseSchemaAssetHandler.linkElementToElement(userId, externalSourceGUID, externalSourceName, databaseGUID,
@@ -220,26 +236,7 @@ public class DataEngineRelationalDataHandler {
                     DEPLOYED_DATABASE_SCHEMA_TYPE_NAME, INCOMPLETE_CLASSIFICATION_TYPE_GUID, INCOMPLETE_CLASSIFICATION_TYPE_NAME,
                     null, methodName);
         }
-
         return databaseSchemaGUID;
-    }
-
-    /**
-     * Retrieve the schema type that is linked to the database
-     *
-     * @param userId       the name of the calling user
-     * @param databaseGUID the unique identifier of the database
-     *
-     * @return optional with entity details if found, empty optional if not found
-     *
-     * @throws InvalidParameterException  the bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    private Optional<EntityDetail> findSchemaForDatabase(String userId, String databaseGUID) throws InvalidParameterException,
-                                                                                                    UserNotAuthorizedException,
-                                                                                                    PropertyServerException {
-        return dataEngineCommonHandler.getEntityForRelationship(userId, databaseGUID, DATA_CONTENT_FOR_DATA_SET_TYPE_NAME, DATABASE_TYPE_NAME);
     }
 
     /**
@@ -261,7 +258,6 @@ public class DataEngineRelationalDataHandler {
             PropertyServerException, UserNotAuthorizedException {
         final String methodName = "upsertRelationalTable";
         validateParameters(userId, methodName, relationalTable.getQualifiedName(), relationalTable.getDisplayName());
-
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
 
         String relationalTableGUID;
