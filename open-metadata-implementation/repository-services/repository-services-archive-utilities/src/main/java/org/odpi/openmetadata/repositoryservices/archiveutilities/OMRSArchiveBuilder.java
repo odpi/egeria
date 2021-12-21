@@ -217,15 +217,15 @@ public class OMRSArchiveBuilder
                                     switch (attributeTypeDef.getCategory())
                                     {
                                         case PRIMITIVE:
-                                            primitiveDefMap.put(attributeTypeDef.getGUID(), (PrimitiveDef) attributeTypeDef);
+                                            primitiveDefMap.put(attributeTypeDef.getName(), (PrimitiveDef) attributeTypeDef);
                                             break;
 
                                         case COLLECTION:
-                                            collectionDefMap.put(attributeTypeDef.getGUID(), (CollectionDef) attributeTypeDef);
+                                            collectionDefMap.put(attributeTypeDef.getName(), (CollectionDef) attributeTypeDef);
                                             break;
 
                                         case ENUM_DEF:
-                                            enumDefMap.put(attributeTypeDef.getGUID(), (EnumDef) attributeTypeDef);
+                                            enumDefMap.put(attributeTypeDef.getName(), (EnumDef) attributeTypeDef);
                                             break;
                                     }
                                 }
