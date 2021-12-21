@@ -105,6 +105,7 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
                                        OpenMetadataAPIMapper.PERSONAL_CONTRIBUTION_RELATIONSHIP_TYPE_GUID,
                                        OpenMetadataAPIMapper.PERSONAL_CONTRIBUTION_RELATIONSHIP_TYPE_NAME,
                                        OpenMetadataAPIMapper.CONTRIBUTION_RECORD_TYPE_NAME,
+                                       0,
                                        false,
                                        false,
                                        supportedZones,
