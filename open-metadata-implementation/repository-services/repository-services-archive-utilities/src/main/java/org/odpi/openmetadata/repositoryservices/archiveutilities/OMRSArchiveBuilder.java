@@ -363,15 +363,15 @@ public class OMRSArchiveBuilder
         switch (typeDef.getCategory())
         {
             case ENTITY_DEF:
-                entityDefMap.put(typeDef.getGUID(), (EntityDef) typeDef);
+                entityDefMap.put(typeDef.getName(), (EntityDef) typeDef);
                 break;
 
             case RELATIONSHIP_DEF:
-                relationshipDefMap.put(typeDef.getGUID(), (RelationshipDef) typeDef);
+                relationshipDefMap.put(typeDef.getName(), (RelationshipDef) typeDef);
                 break;
 
             case CLASSIFICATION_DEF:
-                classificationDefMap.put(typeDef.getGUID(), (ClassificationDef) typeDef);
+                classificationDefMap.put(typeDef.getName(), (ClassificationDef) typeDef);
                 break;
         }
     }
