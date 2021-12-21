@@ -581,6 +581,21 @@ public class AssetCatalogHandlerTest {
     }
 
     @Test
+    public void searchByType_throwsEntityNotKnownException() throws InvalidParameterException {
+        String methodName = "searchByType";
+        SearchParameters searchParams = mockSearchParams();
+        mockSearchString(SEARCH_CRITERIA, searchParams.getCaseInsensitive());
+
+        assertThrows(EntityNotKnownException.class, () -> assetCatalogHandler.searchByType(USER, SEARCH_CRITERIA, searchParams));
+
+        verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
+        verify(invalidParameterHandler, times(1)).validatePaging(searchParams.getFrom(),
+                searchParams.getPageSize(), methodName);
+        verify(invalidParameterHandler, times(1)).validateObject(searchParams,
+                "searchParameter", methodName);
+    }
+
+    @Test
     public void searchByType_throwsInvalidParameterException() throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException, org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
         String methodName = "searchByType";
         SearchParameters searchParams = mockSearchParams();
