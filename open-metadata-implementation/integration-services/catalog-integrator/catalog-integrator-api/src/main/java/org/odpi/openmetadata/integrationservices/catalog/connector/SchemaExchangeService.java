@@ -975,9 +975,9 @@ public class SchemaExchangeService
 
 
     /**
-     * Retrieve the list of schema attributes associated with a schemaType.
+     * Retrieve the list of schema attributes associated with a schema element.
      *
-     * @param schemaTypeGUID unique identifier of the schemaType of interest
+     * @param parentSchemaElementGUID unique identifier of the schemaType of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -987,13 +987,13 @@ public class SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<SchemaAttributeElement>    getAttributesForSchemaType(String schemaTypeGUID,
-                                                                      int    startFrom,
-                                                                      int    pageSize) throws InvalidParameterException,
-                                                                                              UserNotAuthorizedException,
-                                                                                              PropertyServerException
+    public List<SchemaAttributeElement>    getNestedAttributes(String parentSchemaElementGUID,
+                                                               int    startFrom,
+                                                               int    pageSize) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
     {
-        return schemaExchangeClient.getAttributesForSchemaType(userId, assetManagerGUID, assetManagerName, schemaTypeGUID, startFrom, pageSize);
+        return schemaExchangeClient.getNestedSchemaAttributes(userId, assetManagerGUID, assetManagerName, parentSchemaElementGUID, startFrom, pageSize);
     }
 
 
