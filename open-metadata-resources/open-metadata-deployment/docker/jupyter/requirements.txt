@@ -3,3 +3,4 @@
 
 # Add any additional python modules here. Install uses 'conda'
 pandas
+numpy>=1.22.0rc1 # not directly required, pinned by Snyk to avoid a vulnerability
