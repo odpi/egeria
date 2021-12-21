@@ -3,10 +3,10 @@
 
 # Create database
 
-Create a database, with the associated schema type. If no schema is provided, one will be created automatically.
+Create a database and all the entities inside it, if any. These entities are a database schema and relational tables.
 If provided, the fields protocol and networkAddress will trigger the creation of a connection, an endpoint and a relationship
 to a proper connector type. A connector type is linked to the connection indicating which implementation the connection uses.
-By default the connector type is a OCF one, but for the moment there is no current implementation for it.
+By default, the connector type is a OCF one, but for the moment there is no current implementation for it.
 This means none of these three entities will be created (connection, connector type, endpoint).
 
 More examples with all available properties for a database can be found in the

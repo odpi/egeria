@@ -326,8 +326,8 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
      * {@inheritDoc}
      */
     @Override
-    public String upsertDatabase(String userId, Database database) throws InvalidParameterException, UserNotAuthorizedException,
-                                                                          PropertyServerException {
+    public String upsertDatabase(String userId, Database database, boolean incomplete) throws InvalidParameterException,
+            UserNotAuthorizedException, PropertyServerException {
         final String methodName = DATABASE_METHOD_NAME;
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -335,6 +335,7 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         DatabaseRequestBody requestBody = new DatabaseRequestBody();
         requestBody.setDatabase(database);
         requestBody.setExternalSourceName(externalSourceName);
+        requestBody.setIncomplete(incomplete);
 
         return callGUIDPostRESTCall(userId, methodName, DATABASE_URL_TEMPLATE, requestBody);
     }

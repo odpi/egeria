@@ -66,7 +66,7 @@ public class DataEngineRESTClientTest {
 
         when(connector.callPostRESTCall(eq("upsertDatabase"), eq(GUIDResponse.class), anyString(), any(), any()))
                 .thenReturn(response);
-        dataEngineRESTClient.upsertDatabase(USER_ID, database);
+        dataEngineRESTClient.upsertDatabase(USER_ID, database, false);
         assertEquals(GUID, response.getGUID());
     }
 
