@@ -2802,6 +2802,80 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
     }
 
 
+    // declassifyEntity
+    @Override
+    public Classification declassifyEntity(String      userId,
+                                           EntityProxy entityProxy,
+                                           String      classificationName)
+            throws
+            InvalidParameterException,
+            RepositoryErrorException,
+            EntityNotKnownException,
+            ClassificationErrorException,
+            UserNotAuthorizedException
+    {
+        final String methodName = "declassifyEntity (EntityProxy)";
+
+        /*
+         * Validate parameters
+         */
+        String entityGUID = entityProxy.getGUID();
+        super.declassifyEntityParameterValidation(userId, entityGUID, classificationName, methodName);
+
+        /*
+         * Locate entity
+         */
+        EntitySummary entity;
+        try {
+
+            entity = graphStore.getEntityDetailFromStore(entityGUID);
+
+        }
+        catch (EntityProxyOnlyException e){
+
+            entity = graphStore.getEntityProxyFromStore(entityGUID);
+
+        }
+        catch ( EntityNotKnownException e) {
+            log.warn("{} entity wth GUID {} not found", methodName, entityGUID);
+
+            throw new EntityNotKnownException(OMRSErrorCode.ENTITY_PROXY_ONLY.getMessageDefinition(methodName,
+                    this.getClass().getName(),
+                    repositoryName),
+                    this.getClass().getName(),
+                    methodName,
+                    e);
+
+        }
+        catch (RepositoryErrorException e) {
+            log.error("{} repository exception during retrieval of entity wth GUID {}", methodName, entityGUID);
+            throw e;
+        }
+
+        repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
+        repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
+
+        Classification toBeRemoved = repositoryHelper.getClassificationFromEntity(repositoryName,
+                                                                                  entity,
+                                                                                  classificationName,
+                                                                                  methodName);
+
+        if(entity instanceof EntityDetail) {
+            EntityDetail updatedEntity = repositoryHelper.deleteClassificationFromEntity(repositoryName,
+                                                                                         (EntityDetail) entity,
+                                                                                         classificationName,
+                                                                                         methodName);
+            graphStore.updateEntityInStore(updatedEntity);
+        }else{
+            EntityProxy updatedEntity = repositoryHelper.deleteClassificationFromEntity(repositoryName,
+                    (EntityProxy) entity,
+                    classificationName,
+                    methodName);
+            graphStore.updateEntityInStore(updatedEntity);
+        }
+
+        return toBeRemoved;
+    }
 
 
     // findEntitiesByClassification

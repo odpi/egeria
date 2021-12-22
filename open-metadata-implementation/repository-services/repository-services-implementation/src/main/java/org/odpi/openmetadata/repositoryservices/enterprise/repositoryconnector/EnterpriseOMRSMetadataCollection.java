@@ -3499,6 +3499,56 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         return null;
     }
 
+    /**
+     * Remove a specific classification from an entity.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityProxy identifier (proxy) for the entity.
+     * @param classificationName String name for the classification.
+     * @return Classification showing the resulting entity header, properties and classifications.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws ClassificationErrorException the requested classification is not set on the entity.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public Classification declassifyEntity(String      userId,
+                                           EntityProxy entityProxy,
+                                           String      classificationName) throws InvalidParameterException,
+            RepositoryErrorException,
+            EntityNotKnownException,
+            ClassificationErrorException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException
+    {
+        final String  methodName = "declassifyEntity (EntityProxy)";
+
+        /*
+         * Validate parameters
+         */
+        String entityGUID = entityProxy.getGUID();
+        super.declassifyEntityParameterValidation(userId, entityGUID, classificationName, methodName);
+
+        /*
+         * Locate entity and retrieve classification.
+         */
+        EntitySummary  entity         = this.getEntitySummary(userId, entityGUID);
+        Classification classification = repositoryHelper.getClassificationFromEntity(repositoryName, entity, classificationName, methodName);
+
+        /*
+         * Validation complete, ok to make changes
+         */
+        OMRSMetadataCollection metadataCollection = enterpriseParentConnector.getHomeMetadataCollection(classification, methodName);
+        if (metadataCollection != null)
+        {
+            return metadataCollection.declassifyEntity(userId, entityProxy, classificationName);
+        }
+
+        return null;
+    }
 
     /**
      * Update one or more properties in one of an entity's classifications.

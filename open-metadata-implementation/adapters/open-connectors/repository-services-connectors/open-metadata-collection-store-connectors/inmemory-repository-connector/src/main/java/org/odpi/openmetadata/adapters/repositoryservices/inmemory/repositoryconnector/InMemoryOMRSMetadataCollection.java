@@ -2579,6 +2579,74 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
 
 
     /**
+     * Remove a specific classification from an entity.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityProxy identifier (proxy) for the entity.
+     * @param classificationName String name for the classification.
+     * @return Classification showing the resulting entity header, properties and classifications.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws ClassificationErrorException the requested classification is not set on the entity.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public Classification declassifyEntity(String      userId,
+                                           EntityProxy entityProxy,
+                                           String      classificationName) throws InvalidParameterException,
+                                                                                  RepositoryErrorException,
+                                                                                  EntityNotKnownException,
+                                                                                  ClassificationErrorException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  FunctionNotSupportedException
+    {
+        final String  methodName                  = "declassifyEntity (EntityProxy)";
+
+        /*
+         * Validate parameters
+         */
+        String entityGUID = entityProxy.getGUID();
+        super.declassifyEntityParameterValidation(userId, entityGUID, classificationName, methodName);
+
+        /*
+         * Locate entity
+         */
+        EntitySummary entity = repositoryStore.getEntity(entityGUID);
+        if(entity == null){
+            entity = repositoryStore.getEntityProxy(entityGUID);
+        }
+
+        repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
+        repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
+
+        Classification toBeRemoved = repositoryHelper.getClassificationFromEntity(repositoryName,
+                                                                                  entity,
+                                                                                  classificationName,
+                                                                                  methodName);
+
+        if(entity instanceof EntityDetail) {
+            EntityDetail updatedEntity = repositoryHelper.deleteClassificationFromEntity(repositoryName,
+                                                                                         (EntityDetail) entity,
+                                                                                         classificationName,
+                                                                                         methodName);
+            repositoryStore.updateEntityInStore(updatedEntity);
+            // The repository store maintains an entity proxy for use with relationships
+            repositoryStore.updateEntityProxyInStore(repositoryHelper.getNewEntityProxy(repositoryName, updatedEntity));
+        }else{
+            EntityProxy updatedEntity = repositoryHelper.deleteClassificationFromEntity(repositoryName,
+                                                                                        (EntityProxy) entity,
+                                                                                        classificationName,
+                                                                                        methodName);
+            repositoryStore.updateEntityProxyInStore(updatedEntity);
+        }
+
+        return toBeRemoved;
+    }
+
+    /**
      * Update one or more properties in one of an entity's classifications.
      *
      * @param userId unique identifier for requesting user.

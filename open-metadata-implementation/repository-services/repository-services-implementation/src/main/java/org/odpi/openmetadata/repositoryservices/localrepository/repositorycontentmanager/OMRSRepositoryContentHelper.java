@@ -1756,6 +1756,80 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
         }
     }
 
+    /**
+     * Return a oldClassification with the header and type information filled out.  The caller only needs to add properties
+     * to complete the set up of the oldClassification.
+     *
+     * @param sourceName            source of the request (used for logging)
+     * @param entity                entity to update
+     * @param oldClassificationName classification to remove
+     * @param methodName            calling method
+     * @return updated entity
+     * @throws ClassificationErrorException the entity was not classified with this classification
+     */
+    @Override
+    public EntityProxy deleteClassificationFromEntity(String       sourceName,
+                                                      EntityProxy  entity,
+                                                      String       oldClassificationName,
+                                                      String       methodName) throws ClassificationErrorException
+    {
+        EntityProxy updatedEntity = new EntityProxy(entity);
+
+        if (oldClassificationName != null)
+        {
+            /*
+             * Duplicate classifications are not allowed so a hash map is used to remove duplicates.
+             */
+            Map<String, Classification> entityClassificationsMap = new HashMap<>();
+            List<Classification>        entityClassifications    = updatedEntity.getClassifications();
+
+            if (entityClassifications != null)
+            {
+                for (Classification existingClassification : entityClassifications)
+                {
+                    if (existingClassification != null)
+                    {
+                        entityClassificationsMap.put(existingClassification.getName(), existingClassification);
+                    }
+                }
+            }
+
+            Classification oldClassification = entityClassificationsMap.remove(oldClassificationName);
+
+            if (oldClassification == null)
+            {
+                throw new ClassificationErrorException(OMRSErrorCode.ENTITY_NOT_CLASSIFIED.getMessageDefinition(methodName,
+                        sourceName,
+                        oldClassificationName,
+                        entity.getGUID()),
+                        this.getClass().getName(),
+                        methodName);
+            }
+
+            if (entityClassificationsMap.isEmpty())
+            {
+                updatedEntity.setClassifications(null);
+            }
+            else
+            {
+                entityClassifications = new ArrayList<>(entityClassificationsMap.values());
+
+                updatedEntity.setClassifications(entityClassifications);
+            }
+
+            return updatedEntity;
+        }
+        else
+        {
+            final String thisMethodName = "deleteClassificationFromEntity";
+
+            throw new OMRSLogicErrorException(OMRSErrorCode.NULL_CLASSIFICATION_NAME.getMessageDefinition(sourceName,
+                    thisMethodName,
+                    methodName),
+                    this.getClass().getName(),
+                    methodName);
+        }
+    }
 
     /**
      * Merge two sets of instance properties.

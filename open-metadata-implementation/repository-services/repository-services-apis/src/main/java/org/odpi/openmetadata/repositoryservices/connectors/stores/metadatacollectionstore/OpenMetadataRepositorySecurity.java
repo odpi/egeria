@@ -234,7 +234,7 @@ public interface OpenMetadataRepositorySecurity
                                                  InstanceProperties   properties) throws UserNotAuthorizedException;
 
     /**
-     * Tests for whether a specific user should have the right to add a classification to an entity proxy
+     * Tests for whether a specific user should have the right to add a classification to an entity instance
      * within a repository.
      *
      * @param userId identifier of user
@@ -271,7 +271,7 @@ public interface OpenMetadataRepositorySecurity
                                                     InstanceProperties   properties) throws UserNotAuthorizedException;
 
     /**
-     * Tests for whether a specific user should have the right to update a classification for an entity proxy
+     * Tests for whether a specific user should have the right to update a classification for an entity instance
      * within a repository.
      *
      * @param userId identifier of user
@@ -306,7 +306,7 @@ public interface OpenMetadataRepositorySecurity
                                                     String               classificationName) throws UserNotAuthorizedException;
 
     /**
-     * Tests for whether a specific user should have the right to delete a classification from an entity proxy
+     * Tests for whether a specific user should have the right to delete a classification from an entity instance
      * within a repository.
      *
      * @param userId identifier of user

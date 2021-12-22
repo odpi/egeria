@@ -4902,6 +4902,89 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
+     * Remove a specific classification from an entity.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityProxy String unique identifier (guid) for the entity.
+     * @param classificationName String name for the classification.
+     * @return Classification showing the resulting entity header, properties and classifications.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws ClassificationErrorException the requested classification is not set on the entity.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public Classification declassifyEntity(String      userId,
+                                           EntityProxy entityProxy,
+                                           String      classificationName) throws InvalidParameterException,
+                                                                                  RepositoryErrorException,
+                                                                                  EntityNotKnownException,
+                                                                                  ClassificationErrorException,
+                                                                                  FunctionNotSupportedException,
+                                                                                  UserNotAuthorizedException
+    {
+        final String methodName = "declassifyEntity (EntityProxy)";
+
+        /*
+         * Validate parameters
+         */
+        String entityGUID = entityProxy.getGUID();
+        this.declassifyEntityParameterValidation(userId, entityGUID, classificationName, methodName);
+
+        /*
+         * Check operation is allowed
+         */
+        try
+        {
+            securityVerifier.validateUserForEntityClassificationDelete(userId,
+                    metadataCollectionName,
+                    entityProxy,
+                    classificationName);
+        }
+        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+        {
+            throw new UserNotAuthorizedException(error);
+        }
+
+        /*
+         * Process entity
+         */
+        Classification removedClassification = realMetadataCollection.declassifyEntity(userId,
+                                                                                       entityProxy,
+                                                                                       classificationName);
+
+        // TODO removed classification events
+//        if (entity != null)
+//        {
+//            setLocalProvenanceThroughoutEntity(entity);
+//
+//            /*
+//             * OK to send out
+//             */
+//            if (produceEventsForRealConnector)
+//            {
+//                Classification currentClassification = repositoryHelper.getClassificationFromEntity(repositoryName,
+//                        entityProxy,
+//                        classificationName,
+//                        methodName);
+//                outboundRepositoryEventProcessor.processDeclassifiedEntityEvent(repositoryName,
+//                        metadataCollectionId,
+//                        localServerName,
+//                        localServerType,
+//                        localOrganizationName,
+//                        entity,
+//                        currentClassification);
+//            }
+//        }
+
+        return removedClassification;
+    }
+
+
+    /**
      * Update one or more properties in one of an entity's classifications.
      *
      * @param userId unique identifier for requesting user.

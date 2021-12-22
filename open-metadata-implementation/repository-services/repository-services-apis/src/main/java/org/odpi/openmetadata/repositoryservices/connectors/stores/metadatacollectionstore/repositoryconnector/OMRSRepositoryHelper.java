@@ -827,6 +827,23 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
 
 
     /**
+     * Return a oldClassification with the header and type information filled out.  The caller only needs to add properties
+     * to complete the set up of the oldClassification.
+     *
+     * @param sourceName             source of the request (used for logging)
+     * @param entityProxy                 entity to update
+     * @param oldClassificationName  classification to remove
+     * @param methodName             calling method
+     * @return updated entity
+     * @throws ClassificationErrorException  the entity was not classified with this classification
+     */
+    EntityProxy deleteClassificationFromEntity(String       sourceName,
+                                               EntityProxy  entityProxy,
+                                               String       oldClassificationName,
+                                               String       methodName) throws ClassificationErrorException;
+
+
+    /**
      * Merge two sets of instance properties.
      *
      * @param sourceName          source of the request (used for logging)

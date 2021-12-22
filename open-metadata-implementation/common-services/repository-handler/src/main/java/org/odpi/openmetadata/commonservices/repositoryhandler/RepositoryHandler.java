@@ -2156,9 +2156,21 @@ public class RepositoryHandler
                                                 externalSourceName,
                                                 methodName);
 
-                EntityDetail newEntity = metadataCollection.declassifyEntity(userId, entityGUID, classificationTypeName);
+                EntityDetail entityDetail = this.getEntityByGUID(userId,
+                                                                 entityGUID,
+                                                                 entityGUIDParameterName,
+                                                                 entityTypeName,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 effectiveTime,
+                                                                 methodName);
 
-                if (newEntity == null)
+                // create a proxy representation to allow declassification of entities incoming from other metadata collections
+                EntityProxy entityProxy = repositoryHelper.getNewEntityProxy(userId, entityDetail);
+
+                Classification removedClassification = metadataCollection.declassifyEntity(userId, entityProxy, classificationTypeName);
+
+                if (removedClassification == null)
                 {
                     errorHandler.handleNoEntityForClassification(entityGUID,
                                                                  classificationTypeGUID,
