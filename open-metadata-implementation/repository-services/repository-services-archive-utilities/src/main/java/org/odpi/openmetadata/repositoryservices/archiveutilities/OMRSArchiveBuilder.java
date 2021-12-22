@@ -217,15 +217,15 @@ public class OMRSArchiveBuilder
                                     switch (attributeTypeDef.getCategory())
                                     {
                                         case PRIMITIVE:
-                                            primitiveDefMap.put(attributeTypeDef.getGUID(), (PrimitiveDef) attributeTypeDef);
+                                            primitiveDefMap.put(attributeTypeDef.getName(), (PrimitiveDef) attributeTypeDef);
                                             break;
 
                                         case COLLECTION:
-                                            collectionDefMap.put(attributeTypeDef.getGUID(), (CollectionDef) attributeTypeDef);
+                                            collectionDefMap.put(attributeTypeDef.getName(), (CollectionDef) attributeTypeDef);
                                             break;
 
                                         case ENUM_DEF:
-                                            enumDefMap.put(attributeTypeDef.getGUID(), (EnumDef) attributeTypeDef);
+                                            enumDefMap.put(attributeTypeDef.getName(), (EnumDef) attributeTypeDef);
                                             break;
                                     }
                                 }
@@ -363,15 +363,15 @@ public class OMRSArchiveBuilder
         switch (typeDef.getCategory())
         {
             case ENTITY_DEF:
-                entityDefMap.put(typeDef.getGUID(), (EntityDef) typeDef);
+                entityDefMap.put(typeDef.getName(), (EntityDef) typeDef);
                 break;
 
             case RELATIONSHIP_DEF:
-                relationshipDefMap.put(typeDef.getGUID(), (RelationshipDef) typeDef);
+                relationshipDefMap.put(typeDef.getName(), (RelationshipDef) typeDef);
                 break;
 
             case CLASSIFICATION_DEF:
-                classificationDefMap.put(typeDef.getGUID(), (ClassificationDef) typeDef);
+                classificationDefMap.put(typeDef.getName(), (ClassificationDef) typeDef);
                 break;
         }
     }

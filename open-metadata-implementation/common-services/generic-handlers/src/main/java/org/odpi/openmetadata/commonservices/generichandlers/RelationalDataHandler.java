@@ -2001,6 +2001,7 @@ public class RelationalDataHandler<DATABASE,
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Deprecated
     public String createDatabaseTable(String               userId,
                                       String               databaseManagerGUID,
                                       String               databaseManagerName,
@@ -2018,6 +2019,67 @@ public class RelationalDataHandler<DATABASE,
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException
     {
+        return this.createDatabaseTable(userId,
+                                        databaseManagerGUID,
+                                        databaseManagerName,
+                                        databaseSchemaGUID,
+                                        qualifiedName,
+                                        displayName,
+                                        description,
+                                        isDeprecated,
+                                        aliases,
+                                        additionalProperties,
+                                        typeName,
+                                        extendedProperties,
+                                        vendorProperties,
+                                        new Date(),
+                                        methodName);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a database table.
+     *
+     * @param userId calling user
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseSchemaGUID unique identifier of the database schema where the database table is located
+     * @param qualifiedName unique name for the database table
+     * @param displayName the stored display name property for the database table
+     * @param description the stored description property associated with the database table
+     * @param isDeprecated is this table deprecated?
+     * @param aliases a list of alternative names for the attribute
+     * @param additionalProperties any arbitrary properties not part of the type system
+     * @param typeName name of the type that is a subtype of RelationalTable - or null to create standard type
+     * @param extendedProperties properties from any subtype
+     * @param vendorProperties additional properties relating to the source of the database technology
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return unique identifier of the new metadata element for the database table
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createDatabaseTable(String               userId,
+                                      String               databaseManagerGUID,
+                                      String               databaseManagerName,
+                                      String               databaseSchemaGUID,
+                                      String               qualifiedName,
+                                      String               displayName,
+                                      String               description,
+                                      boolean              isDeprecated,
+                                      List<String>         aliases,
+                                      Map<String, String>  additionalProperties,
+                                      String               typeName,
+                                      Map<String, Object>  extendedProperties,
+                                      Map<String, String>  vendorProperties,
+                                      Date                 effectiveTime,
+                                      String               methodName) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
+    {
         final String parentElementGUIDParameterName = "databaseSchemaGUID";
         final String schemaTypeGUIDParameterName = "databaseSchemaTypeGUID";
         final String qualifiedNameParameterName     = "qualifiedName";
@@ -2030,6 +2092,7 @@ public class RelationalDataHandler<DATABASE,
                                                                                     OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
                                                                                     OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID,
                                                                                     OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
+                                                                                    effectiveTime,
                                                                                     methodName);
 
         if (databaseSchemaTypeGUID != null)
@@ -2059,6 +2122,7 @@ public class RelationalDataHandler<DATABASE,
             int tableCount = databaseTableHandler.countSchemaAttributes(userId,
                                                                         databaseSchemaTypeGUID,
                                                                         parentElementGUIDParameterName,
+                                                                        effectiveTime,
                                                                         methodName);
 
             /*
@@ -2148,15 +2212,16 @@ public class RelationalDataHandler<DATABASE,
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createDatabaseTableFromTemplate(String               userId,
-                                                  String               databaseManagerGUID,
-                                                  String               databaseManagerName,
-                                                  String               templateGUID,
-                                                  String               databaseSchemaGUID,
-                                                  String               qualifiedName,
-                                                  String               displayName,
-                                                  String               description,
-                                                  String               methodName) throws InvalidParameterException,
+    public String createDatabaseTableFromTemplate(String userId,
+                                                  String databaseManagerGUID,
+                                                  String databaseManagerName,
+                                                  String templateGUID,
+                                                  String databaseSchemaGUID,
+                                                  String qualifiedName,
+                                                  String displayName,
+                                                  String description,
+                                                  Date   effectiveTime,
+                                                  String methodName) throws InvalidParameterException,
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
@@ -2181,6 +2246,7 @@ public class RelationalDataHandler<DATABASE,
                                                                                     OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
                                                                                     OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID,
                                                                                     OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
+                                                                                    effectiveTime,
                                                                                     methodName);
 
         if (databaseSchemaTypeGUID != null)
@@ -2430,6 +2496,7 @@ public class RelationalDataHandler<DATABASE,
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -2442,6 +2509,7 @@ public class RelationalDataHandler<DATABASE,
                                                      String searchString,
                                                      int    startFrom,
                                                      int    pageSize,
+                                                     Date   effectiveTime,
                                                      String methodName) throws InvalidParameterException,
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
@@ -2460,6 +2528,7 @@ public class RelationalDataHandler<DATABASE,
                                                          OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
                                                          startFrom,
                                                          pageSize,
+                                                         effectiveTime,
                                                          methodName);
     }
 
@@ -2471,6 +2540,7 @@ public class RelationalDataHandler<DATABASE,
      * @param databaseSchemaGUID unique identifier of the database schema of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of associated metadata elements
@@ -2483,6 +2553,7 @@ public class RelationalDataHandler<DATABASE,
                                                            String databaseSchemaGUID,
                                                            int    startFrom,
                                                            int    pageSize,
+                                                           Date   effectiveTime,
                                                            String methodName) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
@@ -2501,6 +2572,7 @@ public class RelationalDataHandler<DATABASE,
                                                                                     OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
                                                                                     OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID,
                                                                                     OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
+                                                                                    effectiveTime,
                                                                                     methodName);
 
         if (databaseSchemaTypeGUID != null)
@@ -2514,6 +2586,7 @@ public class RelationalDataHandler<DATABASE,
                                                                                 OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
                                                                                 startFrom,
                                                                                 pageSize,
+                                                                                effectiveTime,
                                                                                 methodName);
         }
 
@@ -2529,6 +2602,7 @@ public class RelationalDataHandler<DATABASE,
      * @param name name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -2541,6 +2615,7 @@ public class RelationalDataHandler<DATABASE,
                                                         String name,
                                                         int    startFrom,
                                                         int    pageSize,
+                                                        Date   effectiveTime,
                                                         String methodName) throws InvalidParameterException,
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
@@ -2553,6 +2628,7 @@ public class RelationalDataHandler<DATABASE,
                                                               OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
                                                               startFrom,
                                                               pageSize,
+                                                              effectiveTime,
                                                               methodName);
     }
 
@@ -2562,6 +2638,7 @@ public class RelationalDataHandler<DATABASE,
      *
      * @param userId calling user
      * @param guid unique identifier of the requested metadata element
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return matching metadata element
@@ -2572,6 +2649,7 @@ public class RelationalDataHandler<DATABASE,
      */
     public DATABASE_TABLE getDatabaseTableByGUID(String userId,
                                                  String guid,
+                                                 Date   effectiveTime,
                                                  String methodName) throws InvalidParameterException,
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
@@ -2584,6 +2662,7 @@ public class RelationalDataHandler<DATABASE,
                                                        OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME,
                                                        null,
                                                        null,
+                                                       effectiveTime,
                                                        methodName);
     }
 
@@ -2605,6 +2684,7 @@ public class RelationalDataHandler<DATABASE,
      * @param typeName name of the type that is a subtype of DeployedDatabaseSchema - or null to create standard type
      * @param extendedProperties properties from any subtype
      * @param vendorProperties additional properties relating to the source of the database technology
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the new metadata element for the database view
@@ -2627,6 +2707,7 @@ public class RelationalDataHandler<DATABASE,
                                      String               typeName,
                                      Map<String, Object>  extendedProperties,
                                      Map<String, String>  vendorProperties,
+                                     Date                 effectiveTime,
                                      String               methodName) throws InvalidParameterException,
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
@@ -2642,6 +2723,7 @@ public class RelationalDataHandler<DATABASE,
                                                                                    OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
                                                                                    OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID,
                                                                                    OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
+                                                                                   effectiveTime,
                                                                                    methodName);
 
         /*
@@ -2671,6 +2753,7 @@ public class RelationalDataHandler<DATABASE,
             int tableCount = databaseViewHandler.countSchemaAttributes(userId,
                                                                        databaseSchemaTypeGUID,
                                                                        parentElementGUIDParameterName,
+                                                                       effectiveTime,
                                                                        methodName);
 
             /*
@@ -2758,6 +2841,7 @@ public class RelationalDataHandler<DATABASE,
      * @param qualifiedName unique name for the database schema
      * @param displayName the stored display name property for the database table
      * @param description the stored description property associated with the database table
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the new metadata element for the database view
@@ -2766,17 +2850,18 @@ public class RelationalDataHandler<DATABASE,
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createDatabaseViewFromTemplate(String               userId,
-                                                 String               databaseManagerGUID,
-                                                 String               databaseManagerName,
-                                                 String               templateGUID,
-                                                 String               databaseSchemaGUID,
-                                                 String               qualifiedName,
-                                                 String               displayName,
-                                                 String               description,
-                                                 String               methodName) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException
+    public String createDatabaseViewFromTemplate(String userId,
+                                                 String databaseManagerGUID,
+                                                 String databaseManagerName,
+                                                 String templateGUID,
+                                                 String databaseSchemaGUID,
+                                                 String qualifiedName,
+                                                 String displayName,
+                                                 String description,
+                                                 Date   effectiveTime,
+                                                 String methodName) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
         return this.createDatabaseTableFromTemplate(userId,
                                                     databaseManagerGUID,
@@ -2786,6 +2871,7 @@ public class RelationalDataHandler<DATABASE,
                                                     qualifiedName,
                                                     displayName,
                                                     description,
+                                                    effectiveTime,
                                                     methodName);
     }
 
@@ -2894,6 +2980,7 @@ public class RelationalDataHandler<DATABASE,
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -2902,13 +2989,14 @@ public class RelationalDataHandler<DATABASE,
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<DATABASE_VIEW>   findDatabaseViews(String userId,
-                                                     String searchString,
-                                                     int    startFrom,
-                                                     int    pageSize,
-                                                     String methodName) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    public List<DATABASE_VIEW> findDatabaseViews(String userId,
+                                                 String searchString,
+                                                 int    startFrom,
+                                                 int    pageSize,
+                                                 Date   effectiveTime,
+                                                 String methodName) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
         final String searchStringParameterName = "searchString";
 
@@ -2924,6 +3012,7 @@ public class RelationalDataHandler<DATABASE,
                                                         null,
                                                         startFrom,
                                                         pageSize,
+                                                        effectiveTime,
                                                         methodName);
     }
 
@@ -2935,6 +3024,7 @@ public class RelationalDataHandler<DATABASE,
      * @param databaseSchemaGUID unique identifier of the database schema of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of associated metadata elements
@@ -2947,6 +3037,7 @@ public class RelationalDataHandler<DATABASE,
                                                             String databaseSchemaGUID,
                                                             int    startFrom,
                                                             int    pageSize,
+                                                            Date   effectiveTime,
                                                             String methodName) throws InvalidParameterException,
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
@@ -2965,6 +3056,7 @@ public class RelationalDataHandler<DATABASE,
                                                                                    OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
                                                                                    OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID,
                                                                                    OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
+                                                                                   effectiveTime,
                                                                                    methodName);
 
         if (databaseSchemaTypeGUID != null)
@@ -2978,6 +3070,7 @@ public class RelationalDataHandler<DATABASE,
                                                                                null,
                                                                                startFrom,
                                                                                pageSize,
+                                                                               effectiveTime,
                                                                                methodName);
         }
 
@@ -2993,6 +3086,7 @@ public class RelationalDataHandler<DATABASE,
      * @param name name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -3005,6 +3099,7 @@ public class RelationalDataHandler<DATABASE,
                                                         String name,
                                                         int    startFrom,
                                                         int    pageSize,
+                                                        Date   effectiveTime,
                                                         String methodName) throws InvalidParameterException,
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
@@ -3022,6 +3117,7 @@ public class RelationalDataHandler<DATABASE,
                                                              null,
                                                              startFrom,
                                                              pageSize,
+                                                             effectiveTime,
                                                              methodName);
     }
 
@@ -3031,6 +3127,7 @@ public class RelationalDataHandler<DATABASE,
      *
      * @param userId calling user
      * @param guid unique identifier of the requested metadata element
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return matching metadata element
@@ -3041,6 +3138,7 @@ public class RelationalDataHandler<DATABASE,
      */
     public DATABASE_VIEW getDatabaseViewByGUID(String userId,
                                                String guid,
+                                               Date   effectiveTime,
                                                String methodName) throws InvalidParameterException,
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
@@ -3053,6 +3151,7 @@ public class RelationalDataHandler<DATABASE,
                                                       OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME,
                                                       null,
                                                       null,
+                                                      effectiveTime,
                                                       methodName);
     }
 
@@ -3104,6 +3203,7 @@ public class RelationalDataHandler<DATABASE,
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Deprecated
     public String createDatabaseColumn(String               userId,
                                        String               databaseManagerGUID,
                                        String               databaseManagerName,
@@ -3139,6 +3239,120 @@ public class RelationalDataHandler<DATABASE,
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
+        return this.createDatabaseColumn(userId,
+                                         databaseManagerGUID,
+                                         databaseManagerName,
+                                         databaseTableGUID,
+                                         qualifiedName,
+                                         displayName,
+                                         description,
+                                         externalSchemaTypeGUID,
+                                         dataType,
+                                         defaultValue,
+                                         fixedValue,
+                                         validValuesSetGUID,
+                                         formula,
+                                         isDeprecated,
+                                         elementPosition,
+                                         minCardinality,
+                                         maxCardinality,
+                                         allowsDuplicateValues,
+                                         orderedValues,
+                                         defaultValueOverride,
+                                         sortOrder,
+                                         minimumLength,
+                                         length,
+                                         significantDigits,
+                                         isNullable,
+                                         nativeJavaClass,
+                                         aliases,
+                                         additionalProperties,
+                                         typeName,
+                                         extendedProperties,
+                                         vendorProperties,
+                                         new Date(),
+                                         methodName);
+    }
+
+    /**
+     * Create a new metadata element to represent a database column.
+     *
+     * @param userId calling user
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseTableGUID unique identifier of the database table where this column is located
+     * @param qualifiedName unique name for the database schema
+     * @param displayName the stored display name property for the database table
+     * @param description the stored description property associated with the database table
+     * @param externalSchemaTypeGUID unique identifier of a schema Type that provides the type. If null, a private schema type is used
+     * @param dataType data type name - for stored values
+     * @param defaultValue string containing default value - for stored values
+     * @param fixedValue string containing a fixed value - for a literal
+     * @param validValuesSetGUID unique identifier of a valid value set that lists the valid values for this schema
+     * @param formula String formula - for derived values
+     * @param isDeprecated is this table deprecated?
+     * @param elementPosition the position of this column in its parent table.
+     * @param minCardinality minimum number of repeating instances allowed for this column - typically 1
+     * @param maxCardinality the maximum number of repeating instances allowed for this column - typically 1
+     * @param allowsDuplicateValues  whether the same value can be used by more than one instance of this attribute
+     * @param orderedValues whether the attribute instances are arranged in an order
+     * @param sortOrder the order that the attribute instances are arranged in - if any
+     * @param minimumLength the minimum length of the data
+     * @param length the length of the data field
+     * @param significantDigits number of significant digits to the right of decimal point
+     * @param isNullable whether the field is nullable or not
+     * @param nativeJavaClass equivalent Java class implementation
+     * @param defaultValueOverride default value for this column
+     * @param aliases a list of alternative names for the attribute
+     * @param additionalProperties any arbitrary properties not part of the type system
+     * @param typeName name of the type that is a subtype of DeployedDatabaseSchema - or null to create standard type
+     * @param extendedProperties properties from any subtype
+     * @param vendorProperties additional properties relating to the source of the database technology
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return unique identifier of the new metadata element for the database column
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createDatabaseColumn(String               userId,
+                                       String               databaseManagerGUID,
+                                       String               databaseManagerName,
+                                       String               databaseTableGUID,
+                                       String               qualifiedName,
+                                       String               displayName,
+                                       String               description,
+                                       String               externalSchemaTypeGUID,
+                                       String               dataType,
+                                       String               defaultValue,
+                                       String               fixedValue,
+                                       String               validValuesSetGUID,
+                                       String               formula,
+                                       boolean              isDeprecated,
+                                       int                  elementPosition,
+                                       int                  minCardinality,
+                                       int                  maxCardinality,
+                                       boolean              allowsDuplicateValues,
+                                       boolean              orderedValues,
+                                       String               defaultValueOverride,
+                                       int                  sortOrder,
+                                       int                  minimumLength,
+                                       int                  length,
+                                       int                  significantDigits,
+                                       boolean              isNullable,
+                                       String               nativeJavaClass,
+                                       List<String>         aliases,
+                                       Map<String, String>  additionalProperties,
+                                       String               typeName,
+                                       Map<String, Object>  extendedProperties,
+                                       Map<String, String>  vendorProperties,
+                                       Date                 effectiveTime,
+                                       String               methodName) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
         final String databaseTableGUIDParameterName = "databaseTableGUID";
         final String qualifiedNameParameterName     = "qualifiedName";
         final String dataTypeParameterName     = "dataType";
@@ -3166,7 +3380,7 @@ public class RelationalDataHandler<DATABASE,
                                                                                          null,
                                                                                          false,
                                                                                          false,
-                                                                                         new Date(),
+                                                                                         effectiveTime,
                                                                                          methodName);
 
         if (databaseTableEntity != null)
@@ -3244,7 +3458,7 @@ public class RelationalDataHandler<DATABASE,
                                                                              2,
                                                                              false,
                                                                              false,
-                                                                             null,
+                                                                             effectiveTime,
                                                                              methodName);
 
             if (parentGUID == null)
@@ -3439,7 +3653,7 @@ public class RelationalDataHandler<DATABASE,
      * @param qualifiedName unique name for the database schema
      * @param displayName the stored display name property for the database table
      * @param description the stored description property associated with the database table
-
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the new metadata element for the database column
@@ -3448,17 +3662,18 @@ public class RelationalDataHandler<DATABASE,
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createDatabaseColumnFromTemplate(String               userId,
-                                                   String               databaseManagerGUID,
-                                                   String               databaseManagerName,
-                                                   String               templateGUID,
-                                                   String               databaseTableGUID,
-                                                   String               qualifiedName,
-                                                   String               displayName,
-                                                   String               description,
-                                                   String               methodName) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException
+    public String createDatabaseColumnFromTemplate(String userId,
+                                                   String databaseManagerGUID,
+                                                   String databaseManagerName,
+                                                   String templateGUID,
+                                                   String databaseTableGUID,
+                                                   String qualifiedName,
+                                                   String displayName,
+                                                   String description,
+                                                   Date   effectiveTime,
+                                                   String methodName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
     {
         final String templateGUIDParameterName      = "templateGUID";
         final String databaseTableGUIDParameterName = "databaseTableGUID";
@@ -3487,7 +3702,7 @@ public class RelationalDataHandler<DATABASE,
                                                                                          null,
                                                                                          false,
                                                                                          false,
-                                                                                         new Date(),
+                                                                                         effectiveTime,
                                                                                          methodName);
 
 
@@ -3540,7 +3755,7 @@ public class RelationalDataHandler<DATABASE,
                                                                           2,
                                                                           false,
                                                                           false,
-                                                                          null,
+                                                                          effectiveTime,
                                                                           methodName);
             }
         }
@@ -3829,7 +4044,7 @@ public class RelationalDataHandler<DATABASE,
                                                                                            null,
                                                                                            false,
                                                                                            false,
-                                                                                           new Date(),
+                                                                                           null,
                                                                                            methodName);
 
         if (columnSchemaAttribute != null)
@@ -3950,7 +4165,7 @@ public class RelationalDataHandler<DATABASE,
                                                      qualifiedName,
                                                      false,
                                                      false,
-                                                     new Date(),
+                                                     null,
                                                      methodName);
     }
 
@@ -3963,6 +4178,7 @@ public class RelationalDataHandler<DATABASE,
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -3975,6 +4191,7 @@ public class RelationalDataHandler<DATABASE,
                                                        String searchString,
                                                        int    startFrom,
                                                        int    pageSize,
+                                                       Date   effectiveTime,
                                                        String methodName) throws InvalidParameterException,
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
@@ -3993,6 +4210,7 @@ public class RelationalDataHandler<DATABASE,
                                                           null,
                                                           startFrom,
                                                           pageSize,
+                                                          effectiveTime,
                                                           methodName);
     }
 
@@ -4004,6 +4222,7 @@ public class RelationalDataHandler<DATABASE,
      * @param databaseTableGUID unique identifier of the database table of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -4016,6 +4235,7 @@ public class RelationalDataHandler<DATABASE,
                                                             String databaseTableGUID,
                                                             int    startFrom,
                                                             int    pageSize,
+                                                            Date   effectiveTime,
                                                             String methodName) throws InvalidParameterException,
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
@@ -4030,6 +4250,7 @@ public class RelationalDataHandler<DATABASE,
                                                                parentElementGUIDParameterName,
                                                                startFrom,
                                                                pageSize,
+                                                               effectiveTime,
                                                                methodName);
     }
 
@@ -4042,6 +4263,7 @@ public class RelationalDataHandler<DATABASE,
      * @param name name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -4054,6 +4276,7 @@ public class RelationalDataHandler<DATABASE,
                                                             String name,
                                                             int    startFrom,
                                                             int    pageSize,
+                                                            Date   effectiveTime,
                                                             String methodName) throws InvalidParameterException,
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
@@ -4071,6 +4294,7 @@ public class RelationalDataHandler<DATABASE,
                                                                null,
                                                                startFrom,
                                                                pageSize,
+                                                               effectiveTime,
                                                                methodName);
     }
 
@@ -4080,6 +4304,7 @@ public class RelationalDataHandler<DATABASE,
      *
      * @param userId calling user
      * @param guid unique identifier of the requested metadata element
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return matching metadata element
@@ -4090,6 +4315,7 @@ public class RelationalDataHandler<DATABASE,
      */
     public DATABASE_COLUMN getDatabaseColumnByGUID(String userId,
                                                    String guid,
+                                                   Date   effectiveTime,
                                                    String methodName) throws InvalidParameterException,
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
@@ -4105,6 +4331,7 @@ public class RelationalDataHandler<DATABASE,
                                                         OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
                                                         null,
                                                         null,
+                                                        effectiveTime,
                                                         methodName);
     }
 

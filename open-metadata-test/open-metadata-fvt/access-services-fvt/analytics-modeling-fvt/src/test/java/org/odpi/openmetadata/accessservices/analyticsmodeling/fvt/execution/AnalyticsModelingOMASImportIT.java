@@ -30,7 +30,7 @@ public class AnalyticsModelingOMASImportIT
     {
         FVTResults results = ImportsTest.performFVT(serverName, StringUtils.defaultIfEmpty(System.getProperty("fvt.url"),FVTConstants.SERVER_PLATFORM_URL_ROOT), FVTConstants.USERID);
 
-        results.printResults();
+        results.printResults(serverName);
         assertTrue(results.isSuccessful());
     }
 }

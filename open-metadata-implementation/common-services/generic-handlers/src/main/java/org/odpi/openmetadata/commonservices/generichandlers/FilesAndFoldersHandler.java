@@ -1888,6 +1888,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param columnHeaders does the first line of the file contain the column names. If not pass the list of column headers.
      * @param delimiterCharacter what is the delimiter character - null for default of comma
      * @param quoteCharacter what is the character to group a field that contains delimiter characters
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of GUIDs from the top level to the root of the pathname
@@ -1905,6 +1906,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                              List<String> columnHeaders,
                                              Character    delimiterCharacter,
                                              Character    quoteCharacter,
+                                             Date         effectiveTime,
                                              String       methodName) throws InvalidParameterException,
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
@@ -1976,6 +1978,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                                   OpenMetadataAPIMapper.CSV_FILE_TYPE_NAME,
                                                                                   OpenMetadataAPIMapper.TABULAR_SCHEMA_TYPE_TYPE_GUID,
                                                                                   OpenMetadataAPIMapper.TABULAR_SCHEMA_TYPE_TYPE_NAME,
+                                                                                  effectiveTime,
                                                                                   methodName);
 
             int columnCount = 0;

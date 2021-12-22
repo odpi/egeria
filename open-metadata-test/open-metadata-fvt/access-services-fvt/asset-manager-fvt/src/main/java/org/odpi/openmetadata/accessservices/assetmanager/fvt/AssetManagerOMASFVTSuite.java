@@ -42,28 +42,28 @@ public class AssetManagerOMASFVTSuite extends FVTSuiteBase
         {
             returnCode --;
         }
-        results.printResults();
+        results.printResults(serverName);
 
         results = InvalidParameterTest.performFVT(serverName, serverPlatformRootURL, userId);
         if (! results.isSuccessful())
         {
             returnCode --;
         }
-        results.printResults();
+        results.printResults(serverName);
 
         results = ManageExternalIdsTest.performFVT(serverName, serverPlatformRootURL, userId);
         if (! results.isSuccessful())
         {
             returnCode --;
         }
-        results.printResults();
+        results.printResults(serverName);
 
         results = CreateGlossaryTest.performFVT(serverName, serverPlatformRootURL, userId);
         if (! results.isSuccessful())
         {
             returnCode --;
         }
-        results.printResults();
+        results.printResults(serverName);
 
         return returnCode;
     }
