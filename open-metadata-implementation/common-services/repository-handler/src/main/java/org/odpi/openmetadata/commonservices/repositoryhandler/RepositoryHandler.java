@@ -654,6 +654,7 @@ public class RepositoryHandler
                                                                                                              statusPropertyName,
                                                                                                              statusThreshold,
                                                                                                              this.principleEntity.getType().getTypeDefName(),
+                                                                                                             0,
                                                                                                              forLineage,
                                                                                                              true,
                                                                                                              effectiveTime,
@@ -2781,6 +2782,7 @@ public class RepositoryHandler
                                             null,
                                             0,
                                             null,
+                                            0,
                                             false,
                                             false,
                                             effectiveTime,
@@ -2802,6 +2804,7 @@ public class RepositoryHandler
      * @param statusPropertyName name of the property to check that that the status is acceptable
      * @param statusThreshold the value of status that the relationship property must be equal to or greater
      * @param returningEntityTypeName the type of the resulting entity
+     * @param attachmentEntityEnd which relationship end should the attached entity be located? 0=either end; 1=end1; 2=end2
      * @param forLineage the query is to support lineage retrieval
      * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -2819,6 +2822,7 @@ public class RepositoryHandler
                                                      String       statusPropertyName,
                                                      int          statusThreshold,
                                                      String       returningEntityTypeName,
+                                                     int          attachmentEntityEnd,
                                                      boolean      forLineage,
                                                      boolean      forDuplicateProcessing,
                                                      Date         effectiveTime,
@@ -2869,7 +2873,7 @@ public class RepositoryHandler
                                                                                                     null,
                                                                                                     null,
                                                                                                     null,
-                                                                                                    100);
+                                                                                                    0);
 
                     accumulator.addRelationships(relationships);
                 }
@@ -3730,16 +3734,16 @@ public class RepositoryHandler
         try
         {
             List<EntityDetail> retrievedEntities = metadataCollection.findEntitiesByProperty(userId,
-                                                                                    entityTypeGUID,
-                                                                                    nameProperties,
-                                                                                    MatchCriteria.ANY,
-                                                                                    startingFrom,
-                                                                                    null,
-                                                                                    null,
-                                                                                    null,
-                                                                                    sequencingPropertyName,
-                                                                                    sequencingOrder,
-                                                                                    pageSize);
+                                                                                             entityTypeGUID,
+                                                                                             nameProperties,
+                                                                                             MatchCriteria.ANY,
+                                                                                             startingFrom,
+                                                                                             null,
+                                                                                             null,
+                                                                                             null,
+                                                                                             sequencingPropertyName,
+                                                                                             sequencingOrder,
+                                                                                             pageSize);
 
             return this.validateEntities(userId,
                                          retrievedEntities,

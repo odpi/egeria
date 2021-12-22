@@ -18,6 +18,8 @@ import org.odpi.openmetadata.commonservices.generichandlers.FilesAndFoldersHandl
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
+
 
 /**
  * FileSystemRESTServices provides the server-side implementation for managing files and folder assets in a
@@ -1152,6 +1154,7 @@ public class FileSystemRESTServices
                                                               requestBody.getColumnHeaders(),
                                                               requestBody.getDelimiterCharacter(),
                                                               requestBody.getQuoteCharacter(),
+                                                              new Date(),
                                                               methodName));
             }
         }

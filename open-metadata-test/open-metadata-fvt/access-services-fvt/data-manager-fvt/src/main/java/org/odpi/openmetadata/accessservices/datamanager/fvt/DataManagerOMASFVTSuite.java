@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.datamanager.fvt;
 import org.odpi.openmetadata.accessservices.datamanager.fvt.clientconstructors.ClientConstructorTest;
 import org.odpi.openmetadata.accessservices.datamanager.fvt.databases.CreateDatabaseTest;
 import org.odpi.openmetadata.accessservices.datamanager.fvt.errorhandling.InvalidParameterTest;
+import org.odpi.openmetadata.accessservices.datamanager.fvt.events.CreateEventsTest;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.FVTSuiteBase;
 import org.odpi.openmetadata.http.HttpHelper;
@@ -41,21 +42,28 @@ public class DataManagerOMASFVTSuite extends FVTSuiteBase
         {
             returnCode --;
         }
-        results.printResults();
+        results.printResults(serverName);
 
         results = InvalidParameterTest.performFVT(serverName, serverPlatformRootURL, userId);
         if (! results.isSuccessful())
         {
             returnCode --;
         }
-        results.printResults();
+        results.printResults(serverName);
 
         results = CreateDatabaseTest.performFVT(serverName, serverPlatformRootURL, userId);
         if (! results.isSuccessful())
         {
             returnCode --;
         }
-        results.printResults();
+        results.printResults(serverName);
+
+        results = CreateEventsTest.performFVT(serverName, serverPlatformRootURL, userId);
+        if (! results.isSuccessful())
+        {
+            returnCode --;
+        }
+        results.printResults(serverName);
 
         return returnCode;
     }

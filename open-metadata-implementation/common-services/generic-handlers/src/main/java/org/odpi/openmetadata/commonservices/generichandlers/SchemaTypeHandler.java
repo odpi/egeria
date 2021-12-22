@@ -1588,6 +1588,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                                            OpenMetadataAPIMapper.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP_TYPE_GUID,
                                                                            OpenMetadataAPIMapper.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP_TYPE_NAME,
                                                                            OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                           2,
                                                                            false,
                                                                            false,
                                                                            supportedZones,
@@ -1609,6 +1610,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
             attributeCount = this.countSchemaAttributes(userId,
                                                         schemaRootHeader.getGUID(),
                                                         schemaGUIDParameterName,
+                                                        effectiveTime,
                                                         methodName);
         }
         else if (repositoryHelper.isTypeOf(serviceName, schemaRootTypeName, OpenMetadataAPIMapper.ENUM_SCHEMA_TYPE_TYPE_NAME))
@@ -1682,6 +1684,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                                                OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                                                                null,
                                                                                null,
+                                                                               0,
                                                                                false,
                                                                                false,
                                                                                supportedZones,
