@@ -499,7 +499,6 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                 log.error("could not create things upsert to graph vertex {} {}, edge {}",
                         fromEntity.getGuid(), toEntity.getGuid(), relationshipGuid);
                 g.tx().rollback();
-                System.exit(0);
             }
         }
     }
