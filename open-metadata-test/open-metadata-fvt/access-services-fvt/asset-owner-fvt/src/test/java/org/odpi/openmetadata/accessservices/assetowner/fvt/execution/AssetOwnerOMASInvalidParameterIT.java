@@ -36,7 +36,7 @@ public class AssetOwnerOMASInvalidParameterIT
     {
         FVTResults results = InvalidParameterTest.performFVT(serverName, StringUtils.defaultIfEmpty(System.getProperty("fvt.url"),StringUtils.defaultIfEmpty(System.getProperty("fvt.url"),FVTConstants.SERVER_PLATFORM_URL_ROOT)), FVTConstants.USERID);
 
-        results.printResults();
+        results.printResults(serverName);
         if (! results.isSuccessful())
         {
             throw new FVTTestFailureException(results);

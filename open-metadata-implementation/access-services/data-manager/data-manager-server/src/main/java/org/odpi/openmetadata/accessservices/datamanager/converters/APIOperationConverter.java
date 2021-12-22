@@ -76,6 +76,7 @@ public class APIOperationConverter<B> extends DataManagerOMASConverter<B>
 
                     InstanceProperties propertiesCopy = new InstanceProperties(entity.getProperties());
 
+                    apiOperationProperties.setQualifiedName(this.removeQualifiedName(propertiesCopy));
                     apiOperationProperties.setDisplayName(this.removeDisplayName(propertiesCopy));
                     apiOperationProperties.setDescription(this.removeDescription(propertiesCopy));
                     apiOperationProperties.setIsDeprecated(this.removeIsDeprecated(propertiesCopy));

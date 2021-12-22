@@ -124,6 +124,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param results list of elements
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -134,6 +135,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                        String                  assetManagerGUID,
                                                        String                  assetManagerName,
                                                        List<SchemaTypeElement> results,
+                                                       Date                    effectiveTime,
                                                        String                  methodName) throws InvalidParameterException,
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
@@ -150,7 +152,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                                 OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                                                                 assetManagerGUID,
                                                                                 assetManagerName,
-                                                                                null,
+                                                                                effectiveTime,
                                                                                 methodName));
                 }
             }
@@ -165,6 +167,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param results list of elements
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -175,6 +178,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                             String                       assetManagerGUID,
                                                             String                       assetManagerName,
                                                             List<SchemaAttributeElement> results,
+                                                            Date                         effectiveTime,
                                                             String                       methodName) throws InvalidParameterException,
                                                                                                                UserNotAuthorizedException,
                                                                                                                PropertyServerException
@@ -191,7 +195,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                                          OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                                                          assetManagerGUID,
                                                                                          assetManagerName,
-                                                                                         null,
+                                                                                         effectiveTime,
                                                                                          methodName));
                 }
             }
@@ -737,14 +741,16 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException
     {
+        Date effectiveTime = new Date();
+
         List<SchemaTypeElement> results = schemaTypeHandler.findSchemaTypes(userId,
                                                                             searchString,
                                                                             startFrom,
                                                                             pageSize,
-                                                                            new Date(),
+                                                                            effectiveTime,
                                                                             methodName);
 
-        addCorrelationPropertiesToSchemaTypes(userId, assetManagerGUID, assetManagerName, results, methodName);
+        addCorrelationPropertiesToSchemaTypes(userId, assetManagerGUID, assetManagerName, results, effectiveTime, methodName);
 
         return results;
     }
@@ -847,9 +853,11 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
-        List<SchemaTypeElement> results = schemaTypeHandler.getSchemaTypeByName(userId, name, startFrom, pageSize, new Date(), methodName);
+        Date effectiveTime = new Date();
 
-        addCorrelationPropertiesToSchemaTypes(userId, assetManagerGUID, assetManagerName, results, methodName);
+        List<SchemaTypeElement> results = schemaTypeHandler.getSchemaTypeByName(userId, name, startFrom, pageSize, effectiveTime, methodName);
+
+        addCorrelationPropertiesToSchemaTypes(userId, assetManagerGUID, assetManagerName, results, effectiveTime, methodName);
 
         return results;
     }
@@ -880,10 +888,12 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
     {
         final String guidParameterName = "schemaTypeGUID";
 
+        Date effectiveTime = new Date();
+
         SchemaTypeElement schemaTypeElement = schemaTypeHandler.getSchemaType(userId,
                                                                               schemaTypeGUID,
                                                                               guidParameterName,
-                                                                              new Date(),
+                                                                              effectiveTime,
                                                                               methodName);
 
         if (schemaTypeElement != null)
@@ -894,7 +904,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                                   OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
                                                                                   assetManagerGUID,
                                                                                   assetManagerName,
-                                                                                  null,
+                                                                                  effectiveTime,
                                                                                   methodName));
         }
 
@@ -917,6 +927,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @SuppressWarnings(value="unused")
     public ElementHeader getSchemaTypeParent(String userId,
                                              String assetManagerGUID,
                                              String assetManagerName,
@@ -930,6 +941,8 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(schemaTypeGUID, guidParameterName, methodName);
 
+        Date effectiveTime = new Date();
+
         RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
                                                                                        userId,
                                                                                        schemaTypeGUID,
@@ -939,7 +952,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                                        false,
                                                                                        0,
                                                                                        invalidParameterHandler.getMaxPagingSize(),
-                                                                                       null,
+                                                                                       effectiveTime,
                                                                                        methodName);
 
         while (iterator.moreToReceive())
@@ -964,7 +977,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                                       null,
                                                                                       false,
                                                                                       false,
-                                                                                      new Date(),
+                                                                                      effectiveTime,
                                                                                       methodName);
 
                 ElementHeaderConverter<ElementHeader> headerConverter = new ElementHeaderConverter<>(repositoryHelper, serviceName, serverName);
@@ -1026,6 +1039,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                                         schemaAttributeProperties.getQualifiedName(),
                                                                                         qualifiedNameParameterName,
                                                                                         schemaAttributeBuilder,
+                                                                                        new Date(),
                                                                                         methodName);
 
         if (schemaAttributeGUID != null)
@@ -1162,6 +1176,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                                               templateProperties.getQualifiedName(),
                                                                                               templateProperties.getDisplayName(),
                                                                                               templateProperties.getDescription(),
+                                                                                              new Date(),
                                                                                               methodName);
 
         if (schemaAttributeGUID != null)
@@ -1700,6 +1715,8 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
     {
         final String searchStringParameterName = "searchString";
 
+        Date effectiveTime = new Date();
+
         List<SchemaAttributeElement> results = schemaAttributeHandler.findSchemaAttributes(userId,
                                                                                            searchString,
                                                                                            searchStringParameterName,
@@ -1709,21 +1726,22 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                                            null,
                                                                                            startFrom,
                                                                                            pageSize,
+                                                                                           effectiveTime,
                                                                                            methodName);
 
-        addCorrelationPropertiesToSchemaAttributes(userId, assetManagerGUID, assetManagerName, results, methodName);
+        addCorrelationPropertiesToSchemaAttributes(userId, assetManagerGUID, assetManagerName, results, effectiveTime, methodName);
 
         return results;
     }
 
 
     /**
-     * Retrieve the list of schema attributes associated with a schemaType.
+     * Retrieve the list of schema attributes associated with a StructSchemaType or nested underneath a schema attribute.
      *
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param schemaTypeGUID unique identifier of the schemaType of interest
+     * @param parentSchemaElementGUID unique identifier of the schema element of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param methodName calling method
@@ -1734,26 +1752,31 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<SchemaAttributeElement>    getAttributesForSchemaType(String userId,
-                                                                      String assetManagerGUID,
-                                                                      String assetManagerName,
-                                                                      String schemaTypeGUID,
-                                                                      int    startFrom,
-                                                                      int    pageSize,
-                                                                      String methodName) throws InvalidParameterException,
-                                                                                              UserNotAuthorizedException,
-                                                                                              PropertyServerException
+    public List<SchemaAttributeElement> getNestedAttributes(String userId,
+                                                            String assetManagerGUID,
+                                                            String assetManagerName,
+                                                            String parentSchemaElementGUID,
+                                                            int    startFrom,
+                                                            int    pageSize,
+                                                            String methodName) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
     {
-        List<SchemaAttributeElement> results = schemaAttributeHandler.getSchemaAttributesForComplexSchemaType(userId,
-                                                                                                              schemaTypeGUID,
-                                                                                                              schemaTypeGUIDParameterName,
-                                                                                                              null,
-                                                                                                              null,
-                                                                                                              startFrom,
-                                                                                                              pageSize,
-                                                                                                              methodName);
+        final String elementGUIDParameterName    = "schemaAttributeGUID";
 
-        addCorrelationPropertiesToSchemaAttributes(userId, assetManagerGUID, assetManagerName, results, methodName);
+        Date effectiveTime = new Date();
+
+        List<SchemaAttributeElement> results = schemaAttributeHandler.getAttachedSchemaAttributes(userId,
+                                                                                                  parentSchemaElementGUID,
+                                                                                                  elementGUIDParameterName,
+                                                                                                  OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                                                  startFrom,
+                                                                                                  pageSize,
+                                                                                                  effectiveTime,
+                                                                                                  methodName);
+
+
+        addCorrelationPropertiesToSchemaAttributes(userId, assetManagerGUID, assetManagerName, results, effectiveTime, methodName);
 
         return results;
     }
@@ -1787,6 +1810,8 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
     {
+        Date effectiveTime = new Date();
+
         List<SchemaAttributeElement> results = schemaAttributeHandler.getSchemaAttributesByName(userId,
                                                                                                 OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_GUID,
                                                                                                 OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME,
@@ -1795,9 +1820,10 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                                                 null,
                                                                                                 startFrom,
                                                                                                 pageSize,
+                                                                                                effectiveTime,
                                                                                                 methodName);
 
-        addCorrelationPropertiesToSchemaAttributes(userId, assetManagerGUID, assetManagerName, results, methodName);
+        addCorrelationPropertiesToSchemaAttributes(userId, assetManagerGUID, assetManagerName, results, effectiveTime, methodName);
 
         return results;
     }
