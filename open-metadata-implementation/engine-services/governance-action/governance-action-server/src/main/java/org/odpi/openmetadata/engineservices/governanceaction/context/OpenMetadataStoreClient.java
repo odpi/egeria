@@ -692,6 +692,27 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
 
 
     /**
+     * Link elements as peer duplicates. Create a simple relationship between two elements. These elements must be of the same type.
+     * If the relationship already exists, the properties are updated.
+     *
+     * @param metadataElement1GUID unique identifier of the metadata element at end 1 of the relationship
+     * @param metadataElement2GUID unique identifier of the metadata element at end 2 of the relationship
+     * @throws InvalidParameterException the unique identifier's of the metadata elements are null or invalid in some way; the properties are
+     *                                    not valid for this type of relationship
+     * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of relationship
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    @Override
+    public void linkElementsAsPeerDuplicates(String metadataElement1GUID,
+                                             String metadataElement2GUID) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        governanceEngineClient.linkElementsAsPeerDuplicates(engineUserId, metadataElement1GUID, metadataElement2GUID);
+    }
+
+
+    /**
      * Update the properties associated with a relationship.
      *
      * @param relationshipGUID unique identifier of the relationship to update

@@ -1029,6 +1029,47 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
 
 
     /**
+     * Link elements as peer duplicates. Create a simple relationship between two elements. These elements must be of the same type.
+     * If the relationship already exists, the properties are updated.
+     *
+     * @param userId caller's userId
+     * @param metadataElement1GUID unique identifier of the metadata element at end 1 of the relationship
+     * @param metadataElement2GUID unique identifier of the metadata element at end 2 of the relationship
+     * @throws InvalidParameterException the unique identifier's of the metadata elements are null or invalid in some way; the properties are
+     *                                    not valid for this type of relationship
+     * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of relationship
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    @Override
+    public void linkElementsAsPeerDuplicates(String userId,
+                                             String metadataElement1GUID,
+                                             String metadataElement2GUID) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        String methodName = "linkElementsAsPeerDuplicates";
+        final String end1ParameterName = "metadataElement1GUID";
+        final String end2ParameterName = "metadataElement2GUID";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/related-elements/link-as-peer-duplicate";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(metadataElement1GUID, end1ParameterName, methodName);
+        invalidParameterHandler.validateGUID(metadataElement2GUID, end2ParameterName, methodName);
+
+        NewRelatedElementsRequestBody requestBody = new NewRelatedElementsRequestBody();
+
+        requestBody.setMetadataElement1GUID(metadataElement1GUID);
+        requestBody.setMetadataElement2GUID(metadataElement2GUID);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformURLRoot + urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId);
+    }
+
+
+    /**
      * Update the properties associated with a relationship.
      *
      * @param userId caller's userId
