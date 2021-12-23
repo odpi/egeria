@@ -812,6 +812,28 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
+     * Extract and delete the topicType property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removeTopicType(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeTopicType";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.TOPIC_TYPE_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract and delete the operatingSystem property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity

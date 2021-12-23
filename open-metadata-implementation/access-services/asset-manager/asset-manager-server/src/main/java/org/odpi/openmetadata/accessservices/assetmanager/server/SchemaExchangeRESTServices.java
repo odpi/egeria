@@ -1354,13 +1354,13 @@ public class SchemaExchangeRESTServices
             {
                 SchemaExchangeHandler handler = instanceHandler.getSchemaExchangeHandler(userId, serverName, methodName);
 
-                handler.findSchemaAttributes(userId,
-                                             requestBody.getAssetManagerGUID(),
-                                             requestBody.getAssetManagerName(),
-                                             requestBody.getSearchString(),
-                                             startFrom,
-                                             pageSize,
-                                             methodName);
+                response.setElementList(handler.findSchemaAttributes(userId,
+                                                                     requestBody.getAssetManagerGUID(),
+                                                                     requestBody.getAssetManagerName(),
+                                                                     requestBody.getSearchString(),
+                                                                     startFrom,
+                                                                     pageSize,
+                                                                     methodName));
             }
             else
             {
@@ -1393,14 +1393,14 @@ public class SchemaExchangeRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public SchemaAttributeElementsResponse getAttributesForSchemaType(String                             serverName,
+    public SchemaAttributeElementsResponse getNestedAttributes(String                             serverName,
                                                                       String                             userId,
                                                                       String                             schemaTypeGUID,
                                                                       int                                startFrom,
                                                                       int                                pageSize,
                                                                       AssetManagerIdentifiersRequestBody requestBody)
     {
-        final String methodName = "getAttributesForSchemaType";
+        final String methodName = "getNestedAttributes";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1415,13 +1415,13 @@ public class SchemaExchangeRESTServices
             {
                 SchemaExchangeHandler handler = instanceHandler.getSchemaExchangeHandler(userId, serverName, methodName);
 
-                handler.getAttributesForSchemaType(userId,
-                                                   requestBody.getAssetManagerGUID(),
-                                                   requestBody.getAssetManagerName(),
-                                                   schemaTypeGUID,
-                                                   startFrom,
-                                                   pageSize,
-                                                   methodName);
+                response.setElementList(handler.getNestedAttributes(userId,
+                                                                    requestBody.getAssetManagerGUID(),
+                                                                    requestBody.getAssetManagerName(),
+                                                                    schemaTypeGUID,
+                                                                    startFrom,
+                                                                    pageSize,
+                                                                    methodName));
             }
             else
             {
@@ -1475,13 +1475,13 @@ public class SchemaExchangeRESTServices
             {
                 SchemaExchangeHandler handler = instanceHandler.getSchemaExchangeHandler(userId, serverName, methodName);
 
-                handler.getSchemaAttributesByName(userId,
-                                                  requestBody.getAssetManagerGUID(),
-                                                  requestBody.getAssetManagerName(),
-                                                  requestBody.getName(),
-                                                  startFrom,
-                                                  pageSize,
-                                                  methodName);
+                response.setElementList(handler.getSchemaAttributesByName(userId,
+                                                                          requestBody.getAssetManagerGUID(),
+                                                                          requestBody.getAssetManagerName(),
+                                                                          requestBody.getName(),
+                                                                          startFrom,
+                                                                          pageSize,
+                                                                          methodName));
             }
             else
             {
@@ -1532,11 +1532,11 @@ public class SchemaExchangeRESTServices
             {
                 SchemaExchangeHandler handler = instanceHandler.getSchemaExchangeHandler(userId, serverName, methodName);
 
-                handler.getSchemaAttributeByGUID(userId,
-                                                 requestBody.getAssetManagerGUID(),
-                                                 requestBody.getAssetManagerName(),
-                                                 schemaAttributeGUID,
-                                                 methodName);
+                response.setElement(handler.getSchemaAttributeByGUID(userId,
+                                                                     requestBody.getAssetManagerGUID(),
+                                                                     requestBody.getAssetManagerName(),
+                                                                     schemaAttributeGUID,
+                                                                     methodName));
             }
             else
             {

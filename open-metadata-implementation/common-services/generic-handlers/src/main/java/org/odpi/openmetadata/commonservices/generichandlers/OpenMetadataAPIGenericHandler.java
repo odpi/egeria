@@ -4759,6 +4759,62 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                           PropertyServerException,
                                                                           UserNotAuthorizedException
     {
+        return this.getAttachedEntity(userId,
+                                      startingElementGUID,
+                                      startingElementGUIDParameterName,
+                                      startingElementTypeName,
+                                      relationshipTypeGUID,
+                                      relationshipTypeName,
+                                      resultingElementTypeName,
+                                      0,
+                                      forLineage,
+                                      forDuplicateProcessing,
+                                      serviceSupportedZones,
+                                      effectiveTime,
+                                      methodName);
+    }
+
+
+    /**
+     * Return the entity for the required relationship attached to a specific entity.  This method assumes the starting entity has
+     * a validated anchor
+     *
+     * @param userId     calling user
+     * @param startingElementGUID identifier for the entity that the identifier is attached to
+     * @param startingElementGUIDParameterName name of the parameter used to pass the guid
+     * @param startingElementTypeName type name for anchor
+     * @param relationshipTypeGUID unique identifier of the attachment's relationship type
+     * @param relationshipTypeName unique name of the attachment's relationship type
+     * @param resultingElementTypeName unique name of the attached entity's type
+     * @param attachmentEntityEnd which relationship end should the attached entity be located? 0=either end; 1=end1; 2=end2
+     * @param forLineage is this part of a lineage request?
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param serviceSupportedZones supported zones for calling service
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return list of retrieved objects or null if none found
+     *
+     * @throws InvalidParameterException  the input properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the repositories
+     */
+    public EntityDetail getAttachedEntity(String       userId,
+                                          String       startingElementGUID,
+                                          String       startingElementGUIDParameterName,
+                                          String       startingElementTypeName,
+                                          String       relationshipTypeGUID,
+                                          String       relationshipTypeName,
+                                          String       resultingElementTypeName,
+                                          int          attachmentEntityEnd,
+                                          boolean      forLineage,
+                                          boolean      forDuplicateProcessing,
+                                          List<String> serviceSupportedZones,
+                                          Date         effectiveTime,
+                                          String       methodName) throws InvalidParameterException,
+                                                                          PropertyServerException,
+                                                                          UserNotAuthorizedException
+    {
         EntityDetail startingEntity = this.getEntityFromRepository(userId,
                                                                    startingElementGUID,
                                                                    startingElementGUIDParameterName,
@@ -4779,6 +4835,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                              null,
                                                                              0,
                                                                              resultingElementTypeName,
+                                                                             attachmentEntityEnd,
                                                                              forLineage,
                                                                              forDuplicateProcessing,
                                                                              effectiveTime,
@@ -5013,6 +5070,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                         resultingElementTypeName,
                                         null,
                                         null,
+                                        0,
                                         false,
                                         false,
                                         supportedZones,
@@ -5035,6 +5093,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param resultingElementTypeName unique name of the attached entity's type
      * @param requiredClassificationName name of a classification that must be on the entity for a match
      * @param omittedClassificationName name of a classification that must NOT be on the entity for a match
+     * @param attachmentEntityEnd which relationship end should the attached entity be located? 0=either end; 1=end1; 2=end2
      * @param forLineage is this part of a lineage request?
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param serviceSupportedZones supported zones for calling service
@@ -5058,6 +5117,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                   String       resultingElementTypeName,
                                                   String       requiredClassificationName,
                                                   String       omittedClassificationName,
+                                                  int          attachmentEntityEnd,
                                                   boolean      forLineage,
                                                   boolean      forDuplicateProcessing,
                                                   List<String> serviceSupportedZones,
@@ -5088,7 +5148,10 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                           startingElementTypeName,
                                                                           relationshipTypeGUID,
                                                                           relationshipTypeName,
+                                                                          null,
                                                                           resultingElementTypeName,
+                                                                          attachmentEntityEnd,
+                                                                          forDuplicateProcessing,
                                                                           startingFrom,
                                                                           pageSize,
                                                                           effectiveTime,
@@ -5145,8 +5208,21 @@ public class OpenMetadataAPIGenericHandler<B>
     }
 
 
-
-
+    /**
+     * Return a visible relationship retrieved by its GUID.
+     *
+     * @param userId calling user
+     * @param relationshipGUID unique identifier
+     * @param relationshipGUIDParameterName parameter passing the unique identifier
+     * @param relationshipTypeName type of relationship to be retrieved
+     * @param effectiveTime effective time for the retrieval
+     * @param methodName calling method
+     * @return list of retrieved objects or null if none found
+     *
+     * @throws InvalidParameterException  the input properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the repositories
+     */
     public Relationship getAttachmentLink(String       userId,
                                           String       relationshipGUID,
                                           String       relationshipGUIDParameterName,
@@ -8195,6 +8271,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param relationshipTypeGUID unique identifier of the attachment's relationship type
      * @param relationshipTypeName unique name of the attachment's relationship type
      * @param resultingElementTypeName unique name of the attached entity's type
+     * @param attachmentEntityEnd which relationship end should the attached entity be located? 0=either end; 1=end1; 2=end2
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param serviceSupportedZones supported zones for calling service
@@ -8214,6 +8291,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                 String       relationshipTypeGUID,
                                 String       relationshipTypeName,
                                 String       resultingElementTypeName,
+                                int          attachmentEntityEnd,
                                 boolean      forLineage,
                                 boolean      forDuplicateProcessing,
                                 List<String> serviceSupportedZones,
@@ -8245,6 +8323,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                              null,
                                                                              0,
                                                                              resultingElementTypeName,
+                                                                             attachmentEntityEnd,
                                                                              forLineage,
                                                                              forDuplicateProcessing,
                                                                              effectiveTime,

@@ -899,6 +899,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                                          OpenMetadataAPIMapper.ANNOTATION_TYPE_NAME,
                                                                          null,
                                                                          null,
+                                                                         0,
                                                                          false,
                                                                          false,
                                                                          supportedZones,

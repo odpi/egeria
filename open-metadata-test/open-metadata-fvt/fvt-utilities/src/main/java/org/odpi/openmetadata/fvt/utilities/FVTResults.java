@@ -115,23 +115,22 @@ public class FVTResults
         return (numberOfTests == numberOfSuccesses);
     }
 
-
     /**
      * Print out results
      */
-    synchronized public void printResults()
+    synchronized public void printResults(String serverName)
     {
         System.out.println("==========================================");
 
         if ((this.isSuccessful()) && (capturedErrors.isEmpty()))
         {
-            System.out.println(testCaseName + " FVT ran successfully");
+            System.out.println(testCaseName + " FVT (" + serverName + ") ran successfully");
         }
         else
         {
             int numberOfFailedTests = numberOfTests - numberOfSuccesses;
 
-            System.out.println(testCaseName + " FVT failed");
+            System.out.println(testCaseName + " FVT (" + serverName + ") failed");
 
             System.out.println("Number of Failed tests: " + numberOfFailedTests);
             System.out.println("Captured Exceptions: " + capturedErrors.size());

@@ -29,7 +29,7 @@ public class StewardshipActionOMASClientConstructorIT
     {
         FVTResults results = ClientConstructorTest.performFVT(serverName, StringUtils.defaultIfEmpty(System.getProperty("fvt.url"),FVTConstants.SERVER_PLATFORM_URL_ROOT));
 
-        results.printResults();
+        results.printResults(serverName);
         assertTrue(results.isSuccessful());
     }
 }

@@ -645,11 +645,11 @@ public class SchemaExchangeResource
 
 
     /**
-     * Retrieve the list of schema attributes associated with a schemaType.
+     * Retrieve the list of schema attributes associated with a schema element.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param schemaTypeGUID unique identifier of the schemaType of interest
+     * @param parentSchemaElementGUID unique identifier of the schema element of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param requestBody unique identifier/name of software server capability representing the caller
@@ -659,16 +659,16 @@ public class SchemaExchangeResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/schema-types/{schemaTypeGUID}/schema-attributes/retrieve")
+    @PostMapping(path = "/schema-elements/{parentSchemaElementGUID}/schema-attributes/retrieve")
 
-    public SchemaAttributeElementsResponse getAttributesForSchemaType(@PathVariable String                             serverName,
-                                                                      @PathVariable String                             userId,
-                                                                      @PathVariable String                             schemaTypeGUID,
-                                                                      @RequestParam int                                startFrom,
-                                                                      @RequestParam int                                pageSize,
-                                                                      @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+    public SchemaAttributeElementsResponse getNestedAttributes(@PathVariable String                             serverName,
+                                                               @PathVariable String                             userId,
+                                                               @PathVariable String                             parentSchemaElementGUID,
+                                                               @RequestParam int                                startFrom,
+                                                               @RequestParam int                                pageSize,
+                                                               @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
     {
-        return restAPI.getAttributesForSchemaType(serverName, userId, schemaTypeGUID, startFrom, pageSize, requestBody);
+        return restAPI.getNestedAttributes(serverName, userId, parentSchemaElementGUID, startFrom, pageSize, requestBody);
     }
 
 
