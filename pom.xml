@@ -157,12 +157,12 @@
         <testng.version>7.4.0</testng.version>
         <slf4j.version>1.7.32</slf4j.version>
         <logback.version>1.2.7</logback.version>
-        <jackson.version>2.13.0</jackson.version>
+        <jackson.version>2.13.1</jackson.version>
         <jackson.databind.version>2.10.0</jackson.databind.version>
         <kafka.version>3.0.0</kafka.version>
         <tomcat.version>9.0.55</tomcat.version>
         <netty.version>4.1.70.Final</netty.version>
-        <spring-boot.version>2.6.1</spring-boot.version>
+        <spring-boot.version>2.6.2</spring-boot.version>
         <janus.version>0.6.0</janus.version>
         <spring.ldap.core>2.3.4.RELEASE</spring.ldap.core>
         <gremlin.version>3.5.1</gremlin.version>
@@ -3676,7 +3676,7 @@
                         <license implementation="org.apache.rat.analysis.license.SimplePatternBasedLicense">
                             <licenseFamilyCategory>SPDX</licenseFamilyCategory>
                             <licenseFamilyName>SPDX-License-Identifier: Apache-2.0</licenseFamilyName>
-                            <notes></notes>
+                            <notes/>
                             <patterns>
                                 <pattern>SPDX-License-Identifier: Apache-2.0</pattern>
                             </patterns>
@@ -3684,7 +3684,7 @@
                         <license implementation="org.apache.rat.analysis.license.SimplePatternBasedLicense">
                             <licenseFamilyCategory>SPDX</licenseFamilyCategory>
                             <licenseFamilyName>SPDX-License-Identifier: CC-BY-4.0</licenseFamilyName>
-                            <notes></notes>
+                            <notes/>
                             <patterns>
                                 <pattern>SPDX-License-Identifier: CC-BY-4.0</pattern>
                             </patterns>
