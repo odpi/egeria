@@ -385,7 +385,7 @@ class HandlerHelperTest {
     void isTabularColumn() {
         when(repositoryHelper.isTypeOf(SERVICE_NAME, RELATIONAL_COLUMN, TABULAR_COLUMN)).thenReturn(true);
 
-        assertTrue(handlerHelper.isTabularColumn(SERVICE_NAME, RELATIONAL_COLUMN));
+        assertTrue(handlerHelper.isSchemaAttribute(SERVICE_NAME, RELATIONAL_COLUMN));
     }
 
     private void mockTypeDef(String typeName, String typeGUID) {

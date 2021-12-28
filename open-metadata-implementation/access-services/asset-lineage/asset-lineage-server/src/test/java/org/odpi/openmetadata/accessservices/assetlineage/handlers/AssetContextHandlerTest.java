@@ -166,7 +166,7 @@ class AssetContextHandlerTest {
     void buildColumnContext() throws OCFCheckedExceptionBase {
         LineageEntity lineageEntity = mockLineageEntity(RELATIONAL_COLUMN);
         EntityDetail entityDetail = mockEntityDetail(RELATIONAL_COLUMN);
-        when(handlerHelper.isTabularColumn(USER, RELATIONAL_COLUMN)).thenReturn(true);
+        when(handlerHelper.isSchemaAttribute(USER, RELATIONAL_COLUMN)).thenReturn(true);
         when(handlerHelper.getEntityDetails(USER, GUID, TABULAR_COLUMN)).thenReturn(entityDetail);
 
         assetContextHandler.buildColumnContext(USER, lineageEntity);
@@ -177,7 +177,7 @@ class AssetContextHandlerTest {
     void buildColumnContext_notValidType() throws OCFCheckedExceptionBase {
         LineageEntity lineageEntity = mockLineageEntity(DATA_FILE);
         EntityDetail entityDetail = mockEntityDetail(DATA_FILE);
-        when(handlerHelper.isTabularColumn(USER, DATA_FILE)).thenReturn(false);
+        when(handlerHelper.isSchemaAttribute(USER, DATA_FILE)).thenReturn(false);
 
         assetContextHandler.buildColumnContext(USER, lineageEntity);
         verify(handlerHelper, times(0)).getEntityDetails(USER, GUID, DATA_FILE);
