@@ -73,7 +73,7 @@ class DataEngineSchemaAttributeHandlerTest {
                 ATTRIBUTE_DISPLAY_NAME, null, null, null, null, null,
                 null, null, false, 0, 0, 0, false,
                 false, null, 99, 0, 0, 0, false, null,
-                null, null, TABULAR_COLUMN_TYPE_NAME, null, "createSchemaAttribute");
+                null, null, TABULAR_COLUMN_TYPE_NAME, null, null, "createSchemaAttribute");
     }
 
     @Test

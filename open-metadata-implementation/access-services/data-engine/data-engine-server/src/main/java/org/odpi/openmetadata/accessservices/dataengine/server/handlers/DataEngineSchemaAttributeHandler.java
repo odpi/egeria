@@ -152,7 +152,7 @@ public class DataEngineSchemaAttributeHandler {
                 attribute.getDefaultValueOverride(), dataEngineCommonHandler.getSortOrder(attribute), attribute.getMinimumLength(),
                 attribute.getLength(), attribute.getPrecision(), attribute.getIsNullable(), attribute.getNativeClass(), attribute.getAliases(),
                 attribute.getAdditionalProperties(), attribute.getTypeName() != null ? attribute.getTypeName() : TABULAR_COLUMN_TYPE_NAME,
-                null, methodName);
+                null, null, methodName);
     }
 
     private void updateSchemaAttribute(String userId, String externalSourceGUID, String externalSourceName, String schemaAttributeGUID,
