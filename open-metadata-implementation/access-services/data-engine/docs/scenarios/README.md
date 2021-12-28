@@ -41,6 +41,13 @@ An external tool can [lookup](lookup-registration-tool.md) for the registered ex
 
 #### [Delete Endpoint](delete-endpoints.md)
 
+#### [Create Topic](create-topics.md)
+
+#### [Create EventType](create-event-types.md)
+
+#### [Delete Topic](delete-topics.md)
+
+#### [Delete EventType](delete-event-types.md)
 
 # Sample use case
 

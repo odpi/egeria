@@ -10,12 +10,15 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineRegistrationRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.DeleteRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.EventTypeRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessHierarchyRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.TopicRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.server.service.DataEngineRESTServices;
 
 import static org.mockito.Mockito.times;
@@ -96,5 +99,37 @@ class DataEngineResourceTest {
         dataEngineResource.addLineageMappings(USER, SERVER_NAME, requestBody);
 
         verify(dataEngineRestServices, times(1)).addLineageMappings(USER, SERVER_NAME, requestBody);
+    }
+
+    @Test
+    void testUpsertTopic() {
+        TopicRequestBody requestBody = new TopicRequestBody();
+        dataEngineResource.upsertTopic(USER, SERVER_NAME, requestBody);
+
+        verify(dataEngineRestServices, times(1)).upsertTopic(USER, SERVER_NAME, requestBody);
+    }
+
+    @Test
+    void testUpsertEventType() {
+        EventTypeRequestBody requestBody = new EventTypeRequestBody();
+        dataEngineResource.upsertEventType(USER, SERVER_NAME, requestBody);
+
+        verify(dataEngineRestServices, times(1)).upsertEventType(USER, SERVER_NAME, requestBody);
+    }
+
+    @Test
+    void testDeleteTopic() {
+        DeleteRequestBody requestBody = new DeleteRequestBody();
+        dataEngineResource.deleteTopic(USER, SERVER_NAME, requestBody);
+
+        verify(dataEngineRestServices, times(1)).deleteTopic(USER, SERVER_NAME, requestBody);
+    }
+
+    @Test
+    void testDeleteEventTypes() {
+        DeleteRequestBody requestBody = new DeleteRequestBody();
+        dataEngineResource.deleteEventType(USER, SERVER_NAME, requestBody);
+
+        verify(dataEngineRestServices, times(1)).deleteEventType(USER, SERVER_NAME, requestBody);
     }
 }

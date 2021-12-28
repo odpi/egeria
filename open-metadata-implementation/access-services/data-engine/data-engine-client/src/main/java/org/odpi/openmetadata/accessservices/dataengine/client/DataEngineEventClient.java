@@ -9,6 +9,7 @@ import org.odpi.openmetadata.accessservices.dataengine.event.DataFileEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.DatabaseEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.DatabaseSchemaEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.DeleteEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.EventTypeEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.LineageMappingsEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.PortAliasEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.PortImplementationEvent;
@@ -16,11 +17,13 @@ import org.odpi.openmetadata.accessservices.dataengine.event.ProcessEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.ProcessHierarchyEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.RelationalTableEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.SchemaTypeEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.TopicEvent;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
 import org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema;
 import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
+import org.odpi.openmetadata.accessservices.dataengine.model.EventType;
 import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
@@ -29,6 +32,7 @@ import org.odpi.openmetadata.accessservices.dataengine.model.ProcessHierarchy;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
+import org.odpi.openmetadata.accessservices.dataengine.model.Topic;
 import org.odpi.openmetadata.accessservices.dataengine.rest.FindRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -70,7 +74,7 @@ public class DataEngineEventClient implements DataEngineClient {
         ProcessEvent event = new ProcessEvent();
         event.setUserId(userId);
         event.setExternalSourceName(externalSource);
-        event.setEventType(DataEngineEventType.PROCESS_EVENT);
+        event.setDataEngineEventType(DataEngineEventType.PROCESS_EVENT);
         event.setProcess(process);
 
         topicConnector.sendEvent(event);
@@ -84,7 +88,7 @@ public class DataEngineEventClient implements DataEngineClient {
         DeleteEvent event = new DeleteEvent();
         event.setUserId(userId);
         event.setExternalSourceName(externalSource);
-        event.setEventType(DataEngineEventType.DELETE_PROCESS_EVENT);
+        event.setDataEngineEventType(DataEngineEventType.DELETE_PROCESS_EVENT);
         event.setQualifiedName(qualifiedName);
         event.setGuid(guid);
         event.setDeleteSemantic(deleteSemantic);
@@ -104,7 +108,7 @@ public class DataEngineEventClient implements DataEngineClient {
         DataEngineRegistrationEvent event = new DataEngineRegistrationEvent();
         event.setUserId(userId);
         event.setExternalSourceName(externalSource);
-        event.setEventType(DataEngineEventType.DATA_ENGINE_REGISTRATION_EVENT);
+        event.setDataEngineEventType(DataEngineEventType.DATA_ENGINE_REGISTRATION_EVENT);
         event.setSoftwareServerCapability(softwareServerCapability);
 
         topicConnector.sendEvent(event);
@@ -120,7 +124,7 @@ public class DataEngineEventClient implements DataEngineClient {
     public void deleteExternalDataEngine(String userId, String qualifiedName, String guid) throws InvalidParameterException,
                                                                                                   ConnectorCheckedException {
         DeleteEvent event = getDeleteEvent(userId, qualifiedName, guid);
-        event.setEventType(DataEngineEventType.DELETE_DATA_ENGINE_EVENT);
+        event.setDataEngineEventType(DataEngineEventType.DELETE_DATA_ENGINE_EVENT);
 
         topicConnector.sendEvent(event);
     }
@@ -136,7 +140,7 @@ public class DataEngineEventClient implements DataEngineClient {
         SchemaTypeEvent event = new SchemaTypeEvent();
         event.setUserId(userId);
         event.setExternalSourceName(externalSource);
-        event.setEventType(DataEngineEventType.SCHEMA_TYPE_EVENT);
+        event.setDataEngineEventType(DataEngineEventType.SCHEMA_TYPE_EVENT);
         event.setSchemaType(schemaType);
 
         topicConnector.sendEvent(event);
@@ -151,7 +155,7 @@ public class DataEngineEventClient implements DataEngineClient {
     @Override
     public void deleteSchemaType(String userId, String qualifiedName, String guid) throws InvalidParameterException, ConnectorCheckedException {
         DeleteEvent event = getDeleteEvent(userId, qualifiedName, guid);
-        event.setEventType(DataEngineEventType.DELETE_SCHEMA_TYPE_EVENT);
+        event.setDataEngineEventType(DataEngineEventType.DELETE_SCHEMA_TYPE_EVENT);
 
         topicConnector.sendEvent(event);
     }
@@ -169,7 +173,7 @@ public class DataEngineEventClient implements DataEngineClient {
         PortImplementationEvent event = new PortImplementationEvent();
         event.setUserId(userId);
         event.setExternalSourceName(externalSource);
-        event.setEventType(DataEngineEventType.PORT_IMPLEMENTATION_EVENT);
+        event.setDataEngineEventType(DataEngineEventType.PORT_IMPLEMENTATION_EVENT);
         event.setPortImplementation(portImplementation);
         event.setProcessQualifiedName(processQualifiedName);
 
@@ -186,7 +190,7 @@ public class DataEngineEventClient implements DataEngineClient {
     public void deletePortImplementation(String userId, String qualifiedName, String guid) throws InvalidParameterException,
                                                                                                   ConnectorCheckedException {
         DeleteEvent event = getDeleteEvent(userId, qualifiedName, guid);
-        event.setEventType(DataEngineEventType.DELETE_PORT_IMPLEMENTATION_EVENT);
+        event.setDataEngineEventType(DataEngineEventType.DELETE_PORT_IMPLEMENTATION_EVENT);
 
         topicConnector.sendEvent(event);
     }
@@ -204,7 +208,7 @@ public class DataEngineEventClient implements DataEngineClient {
         PortAliasEvent event = new PortAliasEvent();
         event.setUserId(userId);
         event.setExternalSourceName(externalSource);
-        event.setEventType(DataEngineEventType.PORT_ALIAS_EVENT);
+        event.setDataEngineEventType(DataEngineEventType.PORT_ALIAS_EVENT);
         event.setPortAlias(portAlias);
         event.setProcessQualifiedName(processQualifiedName);
 
@@ -220,7 +224,7 @@ public class DataEngineEventClient implements DataEngineClient {
     @Override
     public void deletePortAlias(String userId, String qualifiedName, String guid) throws InvalidParameterException, ConnectorCheckedException {
         DeleteEvent event = getDeleteEvent(userId, qualifiedName, guid);
-        event.setEventType(DataEngineEventType.DELETE_PORT_ALIAS_EVENT);
+        event.setDataEngineEventType(DataEngineEventType.DELETE_PORT_ALIAS_EVENT);
 
         topicConnector.sendEvent(event);
     }
@@ -237,7 +241,7 @@ public class DataEngineEventClient implements DataEngineClient {
         ProcessHierarchyEvent event = new ProcessHierarchyEvent();
         event.setUserId(userId);
         event.setExternalSourceName(externalSource);
-        event.setEventType(DataEngineEventType.PROCESS_HIERARCHY_EVENT);
+        event.setDataEngineEventType(DataEngineEventType.PROCESS_HIERARCHY_EVENT);
         event.setProcessHierarchy(processHierarchy);
 
         topicConnector.sendEvent(event);
@@ -258,7 +262,7 @@ public class DataEngineEventClient implements DataEngineClient {
         LineageMappingsEvent event = new LineageMappingsEvent();
         event.setUserId(userId);
         event.setExternalSourceName(externalSource);
-        event.setEventType(DataEngineEventType.LINEAGE_MAPPINGS_EVENT);
+        event.setDataEngineEventType(DataEngineEventType.LINEAGE_MAPPINGS_EVENT);
         event.setLineageMappings(lineageMappings);
 
         topicConnector.sendEvent(event);
@@ -293,7 +297,7 @@ public class DataEngineEventClient implements DataEngineClient {
         DatabaseEvent event = new DatabaseEvent();
         event.setUserId(userId);
         event.setExternalSourceName(externalSource);
-        event.setEventType(DataEngineEventType.DATABASE_EVENT);
+        event.setDataEngineEventType(DataEngineEventType.DATABASE_EVENT);
         event.setDatabase(database);
         event.setIncomplete(incomplete);
 
@@ -312,7 +316,7 @@ public class DataEngineEventClient implements DataEngineClient {
         DatabaseSchemaEvent event = new DatabaseSchemaEvent();
         event.setUserId(userId);
         event.setExternalSourceName(externalSource);
-        event.setEventType(DataEngineEventType.DATABASE_SCHEMA_EVENT);
+        event.setDataEngineEventType(DataEngineEventType.DATABASE_SCHEMA_EVENT);
         event.setDatabaseSchema(databaseSchema);
         event.setDatabaseQualifiedName(databaseQualifiedName);
         event.setIncomplete(incomplete);
@@ -333,7 +337,7 @@ public class DataEngineEventClient implements DataEngineClient {
         RelationalTableEvent event = new RelationalTableEvent();
         event.setUserId(userId);
         event.setExternalSourceName(externalSource);
-        event.setEventType(DataEngineEventType.RELATIONAL_TABLE_EVENT);
+        event.setDataEngineEventType(DataEngineEventType.RELATIONAL_TABLE_EVENT);
         event.setRelationalTable(relationalTable);
         event.setIncomplete(incomplete);
         event.setDatabaseSchemaQualifiedName(databaseSchemaQualifiedName);
@@ -352,7 +356,7 @@ public class DataEngineEventClient implements DataEngineClient {
         DataFileEvent event = new DataFileEvent();
         event.setUserId(userId);
         event.setExternalSourceName(externalSource);
-        event.setEventType(DataEngineEventType.DATA_FILE_EVENT);
+        event.setDataEngineEventType(DataEngineEventType.DATA_FILE_EVENT);
         event.setDataFile(dataFile);
         event.setIncomplete(incomplete);
 
@@ -368,7 +372,7 @@ public class DataEngineEventClient implements DataEngineClient {
     @Override
     public void deleteDatabase(String userId, String qualifiedName, String guid) throws InvalidParameterException, ConnectorCheckedException {
         DeleteEvent event = getDeleteEvent(userId, qualifiedName, guid);
-        event.setEventType(DataEngineEventType.DELETE_DATABASE_EVENT);
+        event.setDataEngineEventType(DataEngineEventType.DELETE_DATABASE_EVENT);
 
         topicConnector.sendEvent(event);
     }
@@ -379,7 +383,7 @@ public class DataEngineEventClient implements DataEngineClient {
     @Override
     public void deleteDatabaseSchema(String userId, String qualifiedName, String guid) throws InvalidParameterException, ConnectorCheckedException {
         DeleteEvent event = getDeleteEvent(userId, qualifiedName, guid);
-        event.setEventType(DataEngineEventType.DELETE_DATABASE_SCHEMA_EVENT);
+        event.setDataEngineEventType(DataEngineEventType.DELETE_DATABASE_SCHEMA_EVENT);
 
         topicConnector.sendEvent(event);
     }
@@ -390,7 +394,7 @@ public class DataEngineEventClient implements DataEngineClient {
     @Override
     public void deleteRelationalTable(String userId, String qualifiedName, String guid) throws InvalidParameterException, ConnectorCheckedException {
         DeleteEvent event = getDeleteEvent(userId, qualifiedName, guid);
-        event.setEventType(DataEngineEventType.DELETE_RELATIONAL_TABLE_EVENT);
+        event.setDataEngineEventType(DataEngineEventType.DELETE_RELATIONAL_TABLE_EVENT);
 
         topicConnector.sendEvent(event);
     }
@@ -401,7 +405,7 @@ public class DataEngineEventClient implements DataEngineClient {
     @Override
     public void deleteDataFile(String userId, String qualifiedName, String guid) throws InvalidParameterException, ConnectorCheckedException {
         DeleteEvent event = getDeleteEvent(userId, qualifiedName, guid);
-        event.setEventType(DataEngineEventType.DELETE_DATA_FILE_EVENT);
+        event.setDataEngineEventType(DataEngineEventType.DELETE_DATA_FILE_EVENT);
 
         topicConnector.sendEvent(event);
     }
@@ -412,7 +416,7 @@ public class DataEngineEventClient implements DataEngineClient {
     @Override
     public void deleteFolder(String userId, String qualifiedName, String guid) throws InvalidParameterException, ConnectorCheckedException {
         DeleteEvent event = getDeleteEvent(userId, qualifiedName, guid);
-        event.setEventType(DataEngineEventType.DELETE_FOLDER_EVENT);
+        event.setDataEngineEventType(DataEngineEventType.DELETE_FOLDER_EVENT);
 
         topicConnector.sendEvent(event);
     }
@@ -423,7 +427,7 @@ public class DataEngineEventClient implements DataEngineClient {
     @Override
     public void deleteConnection(String userId, String qualifiedName, String guid) throws InvalidParameterException, ConnectorCheckedException {
         DeleteEvent event = getDeleteEvent(userId, qualifiedName, guid);
-        event.setEventType(DataEngineEventType.DELETE_CONNECTION_EVENT);
+        event.setDataEngineEventType(DataEngineEventType.DELETE_CONNECTION_EVENT);
 
         topicConnector.sendEvent(event);
     }
@@ -434,7 +438,7 @@ public class DataEngineEventClient implements DataEngineClient {
     @Override
     public void deleteEndpoint(String userId, String qualifiedName, String guid) throws InvalidParameterException, ConnectorCheckedException {
         DeleteEvent event = getDeleteEvent(userId, qualifiedName, guid);
-        event.setEventType(DataEngineEventType.DELETE_ENDPOINT_EVENT);
+        event.setDataEngineEventType(DataEngineEventType.DELETE_ENDPOINT_EVENT);
 
         topicConnector.sendEvent(event);
     }
@@ -448,6 +452,64 @@ public class DataEngineEventClient implements DataEngineClient {
 
         throw new FunctionNotSupportedException(DataEngineErrorCode.METHOD_NOT_IMPLEMENTED.getMessageDefinition(methodName),
                 this.getClass().getName(), methodName);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String upsertTopic(String userId, Topic topic) throws InvalidParameterException, ConnectorCheckedException {
+        TopicEvent event = new TopicEvent();
+        event.setUserId(userId);
+        event.setExternalSourceName(externalSource);
+        event.setDataEngineEventType(DataEngineEventType.TOPIC_EVENT);
+        event.setTopic(topic);
+
+        topicConnector.sendEvent(event);
+
+        //async interaction
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String upsertEventType(String userId, EventType eventType, String topicQualifiedName) throws InvalidParameterException,
+                                                                                                        ConnectorCheckedException {
+        EventTypeEvent event = new EventTypeEvent();
+        event.setUserId(userId);
+        event.setExternalSourceName(externalSource);
+        event.setDataEngineEventType(DataEngineEventType.EVENT_TYPE_EVENT);
+        event.setTopicQualifiedName(topicQualifiedName);
+        event.setEventType(eventType);
+
+        topicConnector.sendEvent(event);
+
+        //async interaction
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteTopic(String userId, String qualifiedName, String guid) throws InvalidParameterException, ConnectorCheckedException {
+        DeleteEvent event = getDeleteEvent(userId, qualifiedName, guid);
+        event.setDataEngineEventType(DataEngineEventType.DELETE_TOPIC_EVENT);
+
+        topicConnector.sendEvent(event);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteEventType(String userId, String qualifiedName, String guid) throws InvalidParameterException, ConnectorCheckedException {
+        DeleteEvent event = getDeleteEvent(userId, qualifiedName, guid);
+        event.setDataEngineEventType(DataEngineEventType.DELETE_EVENT_TYPE_EVENT);
+
+        topicConnector.sendEvent(event);
     }
 
     private DeleteEvent getDeleteEvent(String userId, String qualifiedName, String guid) {
