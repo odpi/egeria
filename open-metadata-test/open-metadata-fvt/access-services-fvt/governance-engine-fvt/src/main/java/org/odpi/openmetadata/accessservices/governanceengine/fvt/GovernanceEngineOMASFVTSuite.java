@@ -41,21 +41,21 @@ public class GovernanceEngineOMASFVTSuite extends FVTSuiteBase
         {
             returnCode --;
         }
-        results.printResults();
+        results.printResults(serverName);
 
         results = InvalidParameterTest.performFVT(serverName, serverPlatformRootURL, userId);
         if (! results.isSuccessful())
         {
             returnCode --;
         }
-        results.printResults();
+        results.printResults(serverName);
 
         results = CreateEngineTest.performFVT(serverName, serverPlatformRootURL, userId);
         if (! results.isSuccessful())
         {
             returnCode --;
         }
-        results.printResults();
+        results.printResults(serverName);
 
         return returnCode;
     }

@@ -76,6 +76,7 @@ public class APIParameterListConverter<B> extends DataManagerOMASConverter<B>
 
                     InstanceProperties propertiesCopy = new InstanceProperties(primaryEntity.getProperties());
 
+                    properties.setQualifiedName(this.removeQualifiedName(propertiesCopy));
                     properties.setDisplayName(this.removeDisplayName(propertiesCopy));
                     properties.setDescription(this.removeDescription(propertiesCopy));
                     properties.setIsDeprecated(this.removeIsDeprecated(propertiesCopy));
