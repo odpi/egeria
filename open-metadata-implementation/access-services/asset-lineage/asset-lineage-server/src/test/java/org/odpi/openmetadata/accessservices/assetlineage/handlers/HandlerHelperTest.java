@@ -57,7 +57,7 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GUID_PARAMETER;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_COLUMN;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_TABLE;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_COLUMN;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.SCHEMA_ATTRIBUTE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.UPDATE_TIME;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ZONE_MEMBERSHIP;
 
@@ -382,8 +382,8 @@ class HandlerHelperTest {
     }
 
     @Test
-    void isTabularColumn() {
-        when(repositoryHelper.isTypeOf(SERVICE_NAME, RELATIONAL_COLUMN, TABULAR_COLUMN)).thenReturn(true);
+    void isSchemaAttribute() {
+        when(repositoryHelper.isTypeOf(SERVICE_NAME, RELATIONAL_COLUMN, SCHEMA_ATTRIBUTE)).thenReturn(true);
 
         assertTrue(handlerHelper.isSchemaAttribute(SERVICE_NAME, RELATIONAL_COLUMN));
     }
