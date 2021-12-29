@@ -517,7 +517,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              attachmentTypeName,
                                              null,
                                              userId,
-                                             new Date(),
+                                             effectiveTime,
                                              actionDescription,
                                              methodName);
             }
@@ -6707,7 +6707,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              null,
                                              null,
                                              userId,
-                                             new Date(),
+                                             effectiveTime,
                                              actionDescription,
                                              methodName);
             }
@@ -12716,7 +12716,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                          attachingElementTypeName,
                                          attachmentTypeName,
                                          userId,
-                                         new Date(),
+                                         effectiveTime,
                                          actionDescription,
                                          methodName);
         }
@@ -12732,7 +12732,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              attachingElementTypeName,
                                              attachmentTypeName,
                                              userId,
-                                             new Date(),
+                                             effectiveTime,
                                              actionDescription,
                                              methodName);
             }
