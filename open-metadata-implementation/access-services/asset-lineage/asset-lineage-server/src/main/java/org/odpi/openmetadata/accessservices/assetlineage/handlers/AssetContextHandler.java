@@ -404,8 +404,10 @@ public class AssetContextHandler {
 
     private Set<GraphContext> buildEventSchemaAttributeContext(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
         Set<GraphContext> columnContext = new HashSet<>();
+
         EntityDetail eventType = handlerHelper.addContextForRelationships(userId, entityDetail, ATTRIBUTE_FOR_SCHEMA, columnContext);
         handlerHelper.addContextForRelationships(userId, eventType, SCHEMA_TYPE_OPTION, columnContext);
+
         return columnContext;
     }
 }
