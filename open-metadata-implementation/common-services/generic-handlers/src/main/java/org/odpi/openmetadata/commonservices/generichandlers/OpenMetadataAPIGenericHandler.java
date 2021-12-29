@@ -517,6 +517,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              attachmentTypeName,
                                              null,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -707,6 +708,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              attachmentTypeName,
                                              null,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -882,6 +884,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              attachmentTypeName,
                                              null,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -1444,6 +1447,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                  attachmentTypeName,
                                                  null,
                                                  userId,
+                                                 new Date(),
                                                  actionDescription,
                                                  methodName);
                 }
@@ -4241,6 +4245,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param attachmentTypeName if a new relationship has been established, what is the type name of the entity it is connecting to
      * @param relationshipTypeName if a new relationship has been established, what is the type name of the relationship
      * @param userId who is the calling user?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param actionDescription what is the description of the activity
      * @param methodName calling method
      * @throws UserNotAuthorizedException local server user id not authorized to update latest change
@@ -4254,6 +4259,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                          String       attachmentTypeName,
                                          String       relationshipTypeName,
                                          String       userId,
+                                         Date         effectiveTime,
                                          String       actionDescription,
                                          String       methodName) throws UserNotAuthorizedException,
                                                                          PropertyServerException
@@ -4294,7 +4300,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                    newProperties,
                                                    false,
                                                    false,
-                                                   new Date(),
+                                                   effectiveTime,
                                                    methodName);
             }
         }
@@ -6687,6 +6693,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              entityTypeName,
                                              null,
                                              userId,
+                                             effectiveTime,
                                              actionDescription,
                                              methodName);
             }
@@ -6700,6 +6707,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              null,
                                              null,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -6930,6 +6938,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              entityTypeName,
                                              null,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -6943,6 +6952,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              null,
                                              null,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -7179,6 +7189,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              entityTypeName,
                                              null,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -7747,6 +7758,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                          entityTypeName,
                                          null,
                                          userId,
+                                         effectiveTime,
                                          actionDescription,
                                          methodName);
         }
@@ -12704,6 +12716,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                          attachingElementTypeName,
                                          attachmentTypeName,
                                          userId,
+                                         new Date(),
                                          actionDescription,
                                          methodName);
         }
@@ -12719,6 +12732,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              attachingElementTypeName,
                                              attachmentTypeName,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -12739,6 +12753,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              startingElementTypeName,
                                              attachmentTypeName,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -12761,6 +12776,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              startingElementTypeName,
                                              attachmentTypeName,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -12986,6 +13002,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              attachingElementTypeName,
                                              attachmentTypeName,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -13001,6 +13018,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                  attachingElementTypeName,
                                                  attachmentTypeName,
                                                  userId,
+                                                 new Date(),
                                                  actionDescription,
                                                  methodName);
                 }
@@ -13034,6 +13052,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                  startingElementTypeName,
                                                  attachmentTypeName,
                                                  userId,
+                                                 new Date(),
                                                  actionDescription,
                                                  methodName);
                 }
@@ -13050,6 +13069,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                  startingElementTypeName,
                                                  attachmentTypeName,
                                                  userId,
+                                                 new Date(),
                                                  actionDescription,
                                                  methodName);
                 }
@@ -13325,6 +13345,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                          newAttachingElementTypeName,
                                          attachmentTypeName,
                                          userId,
+                                         new Date(),
                                          actionDescription,
                                          methodName);
 
@@ -13353,6 +13374,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              newAttachingElementTypeName,
                                              attachmentTypeName,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -13386,6 +13408,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              startingElementTypeName,
                                              attachmentTypeName,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -13415,6 +13438,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              startingElementTypeName,
                                              attachmentTypeName,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -13806,6 +13830,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                          attachedElementTypeName,
                                          attachmentTypeName,
                                          userId,
+                                         new Date(),
                                          actionDescription,
                                          methodName);
 
@@ -13833,6 +13858,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              attachedElementTypeName,
                                              attachmentTypeName,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -13853,6 +13879,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              startingElementTypeName,
                                              attachmentTypeName,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -13881,6 +13908,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              startingElementTypeName,
                                              attachmentTypeName,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
