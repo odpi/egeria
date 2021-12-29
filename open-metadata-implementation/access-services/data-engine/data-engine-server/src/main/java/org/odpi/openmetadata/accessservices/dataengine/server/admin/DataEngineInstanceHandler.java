@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngin
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineCommonHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineConnectionAndEndpointHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineDataFileHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineEventTypeHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineFindHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineFolderHierarchyHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEnginePortHandler;
@@ -13,6 +14,7 @@ import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngin
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRelationalDataHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineTopicHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -104,13 +106,14 @@ public class DataEngineInstanceHandler extends OMASServiceInstanceHandler {
      * @throws PropertyServerException    the service name is not known - indicating a logic error
      */
     public DataEngineCommonHandler getCommonHandler(String userId, String serverName, String serviceOperationName) throws
-                                                                                                                    InvalidParameterException,
-                                                                                                                    UserNotAuthorizedException,
-                                                                                                                    PropertyServerException {
+                                                                                                                   InvalidParameterException,
+                                                                                                                   UserNotAuthorizedException,
+                                                                                                                   PropertyServerException {
         DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
 
         return instance.getDataEngineCommonHandler();
     }
+
     /**
      * Retrieve the data engine schema type handler for the access service
      *
@@ -204,15 +207,15 @@ public class DataEngineInstanceHandler extends OMASServiceInstanceHandler {
     /**
      * Retrieve the DataFile handler for the access service
      *
-     * @param userId calling user
-     * @param serverName name of the server tied to the request
+     * @param userId               calling user
+     * @param serverName           name of the server tied to the request
      * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      *
      * @return handler for use by the requested instance
      *
-     * @throws InvalidParameterException no available instance for the requested server
+     * @throws InvalidParameterException  no available instance for the requested server
      * @throws UserNotAuthorizedException user does not have access to the requested server
-     * @throws PropertyServerException the service name is not known - indicating a logic error
+     * @throws PropertyServerException    the service name is not known - indicating a logic error
      */
     public DataEngineDataFileHandler getDataFileHandler(String userId, String serverName, String serviceOperationName)
             throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
@@ -225,15 +228,15 @@ public class DataEngineInstanceHandler extends OMASServiceInstanceHandler {
     /**
      * Retrieve the folder hierarchy handler for the access service
      *
-     * @param userId calling user
-     * @param serverName name of the server tied to the request
+     * @param userId               calling user
+     * @param serverName           name of the server tied to the request
      * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      *
      * @return handler for use by the requested instance
      *
-     * @throws InvalidParameterException no available instance for the requested server
+     * @throws InvalidParameterException  no available instance for the requested server
      * @throws UserNotAuthorizedException user does not have access to the requested server
-     * @throws PropertyServerException the service name is not known - indicating a logic error
+     * @throws PropertyServerException    the service name is not known - indicating a logic error
      */
     public DataEngineFolderHierarchyHandler getFolderHierarchyHandler(String userId, String serverName, String serviceOperationName)
             throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
@@ -246,15 +249,15 @@ public class DataEngineInstanceHandler extends OMASServiceInstanceHandler {
     /**
      * Retrieve the connection and endpoint handler for the access service
      *
-     * @param userId calling user
-     * @param serverName name of the server tied to the request
+     * @param userId               calling user
+     * @param serverName           name of the server tied to the request
      * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      *
      * @return handler for use by the requested instance
      *
-     * @throws InvalidParameterException no available instance for the requested server
+     * @throws InvalidParameterException  no available instance for the requested server
      * @throws UserNotAuthorizedException user does not have access to the requested server
-     * @throws PropertyServerException the service name is not known - indicating a logic error
+     * @throws PropertyServerException    the service name is not known - indicating a logic error
      */
     public DataEngineConnectionAndEndpointHandler getConnectionAndEndpointHandler(String userId, String serverName, String serviceOperationName)
             throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
@@ -267,15 +270,15 @@ public class DataEngineInstanceHandler extends OMASServiceInstanceHandler {
     /**
      * Retrieve the find handler for the access service
      *
-     * @param userId calling user
-     * @param serverName name of the server tied to the request
+     * @param userId               calling user
+     * @param serverName           name of the server tied to the request
      * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      *
      * @return handler for use by the requested instance
      *
-     * @throws InvalidParameterException no available instance for the requested server
+     * @throws InvalidParameterException  no available instance for the requested server
      * @throws UserNotAuthorizedException user does not have access to the requested server
-     * @throws PropertyServerException the service name is not known - indicating a logic error
+     * @throws PropertyServerException    the service name is not known - indicating a logic error
      */
     public DataEngineFindHandler getFindHandler(String userId, String serverName, String serviceOperationName)
             throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
@@ -285,6 +288,47 @@ public class DataEngineInstanceHandler extends OMASServiceInstanceHandler {
         return instance.getDataEngineFindHandler();
     }
 
+    /**
+     * Retrieve the topic handler for the access service
+     *
+     * @param userId               calling user
+     * @param serverName           name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     *
+     * @return handler for use by the requested instance
+     *
+     * @throws InvalidParameterException  no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException    the service name is not known - indicating a logic error
+     */
+    public DataEngineTopicHandler getTopicHandler(String userId, String serverName, String serviceOperationName) throws
+                                                                                                                 InvalidParameterException,
+                                                                                                                 UserNotAuthorizedException,
+                                                                                                                 PropertyServerException {
+        DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
+        return instance.getDataEngineTopicHandler();
+    }
+
+    /**
+     * Retrieve the event type handler for the access service
+     *
+     * @param userId               calling user
+     * @param serverName           name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     *
+     * @return handler for use by the requested instance
+     *
+     * @throws InvalidParameterException  no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException    the service name is not known - indicating a logic error
+     */
+    public DataEngineEventTypeHandler getEventTypeHandler(String userId, String serverName, String serviceOperationName) throws
+                                                                                                                 InvalidParameterException,
+                                                                                                                 UserNotAuthorizedException,
+                                                                                                                 PropertyServerException {
+        DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
+        return instance.getDataEngineEventTypeHandler();
+    }
 }
 
 

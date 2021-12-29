@@ -100,6 +100,41 @@ public class SchemaType extends Referenceable {
     private String type;
 
     /**
+     * Determines if the schema type is deprecated
+     * -- GETTER --
+     * Returns if the schema type is deprecated.
+     * @return if the schema type is deprecated
+     * -- SETTER --
+     * Sets up the value that determines if the schema type is deprecated.
+     * @param isDeprecated value saying if the schema type is deprecated
+     */
+    private boolean isDeprecated;
+
+    /**
+     * The stored description property associated with the schema type
+     *  -- SETTER --
+     *  Set up the stored description property associated with the schema type.
+     *  @param description String text
+     * -- GETTER --
+     * Returns the stored description property for the schema type.
+     * If no description is provided then null is returned.
+     * @return description
+     */
+    private String description;
+
+    /**
+     * The he name of the namespace that this schema type belongs to
+     *  -- SETTER --
+     *  Set up the namespace that this schema type belongs to.
+     *  @param namespace String text
+     * -- GETTER --
+     * Returns the namespace that this schema type belongs to
+     * If no namespace is provided then null is returned.
+     * @return namespace
+     */
+    private String namespace;
+
+    /**
      * The attribute list
      * -- GETTER --
      * Gets attribute list.
@@ -110,5 +145,4 @@ public class SchemaType extends Referenceable {
      */
     @JsonProperty("columns")
     private List<Attribute> attributeList;
-
 }
