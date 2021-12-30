@@ -158,11 +158,80 @@ public class OpenMetadataTypesArchive
         /*
          * Calls for new and changed types go here
          */
+        update0042SoftwareServerCapabilities();
         extend0112Person();
         update0130Projects();
         update0140Communities();
     }
 
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    /**
+     * Allow software server capabilities to be supported by any type of IT Infrastructure - not just SoftwareServers
+     */
+    private void update0042SoftwareServerCapabilities()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateSoftwareServerSupportedCapabilityRelationship());
+    }
+
+
+    private TypeDefPatch updateSoftwareServerSupportedCapabilityRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "SoftwareServerSupportedCapability";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "ITInfrastructure";
+        final String                     end1AttributeName            = "hostedByDeployedITInfrastructure";
+        final String                     end1AttributeDescription     = "IT Infrastructure hosting this capability.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        typeDefPatch.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "SoftwareServerCapability";
+        final String                     end2AttributeName            = "capabilities";
+        final String                     end2AttributeDescription     = "Capabilities deployed on this IT Infrastructure.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        typeDefPatch.setEndDef2(relationshipEndDef);
+
+        return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
 
 
     /**
