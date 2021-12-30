@@ -9,6 +9,7 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.DataFileRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DatabaseRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DatabaseSchemaRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DeleteRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.EventTypeRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.FindRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
@@ -17,6 +18,7 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessHierarchyRequ
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.RelationalTableRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.TopicRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.server.service.DataEngineRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -473,5 +475,70 @@ public class DataEngineResource {
                                    @PathVariable("serverName") String serverName,
                                    @RequestBody FindRequestBody findRequestBody){
         return restAPI.find(userId, serverName, findRequestBody);
+    }
+
+
+    /**
+     * Create or update a Topic entity with all the needed relationships
+     *
+     * @param serverName  name of server instance to call
+     * @param userId      the name of the calling user
+     * @param requestBody properties for the topic
+     *
+     * @return unique identifier of the created entity
+     */
+    @PostMapping(path = "/topics")
+    public GUIDResponse upsertTopic(@PathVariable("userId") String userId,
+                                       @PathVariable("serverName") String serverName,
+                                       @RequestBody TopicRequestBody requestBody) {
+        return restAPI.upsertTopic(userId, serverName, requestBody);
+    }
+
+    /**
+     * Deletes the topic
+     *
+     * @param serverName  name of server instance to call
+     * @param userId      the name of the calling user
+     * @param requestBody properties for the database
+     *
+     * @return void response
+     */
+    @DeleteMapping(path = "/topics")
+    public VoidResponse deleteTopic(@PathVariable("userId") String userId,
+                                       @PathVariable("serverName") String serverName,
+                                       @RequestBody DeleteRequestBody requestBody) {
+        return restAPI.deleteTopic(userId, serverName, requestBody);
+    }
+
+    /**
+     * Create or update a Event Type entity with all the needed relationships
+     *
+     * @param serverName  name of server instance to call
+     * @param userId      the name of the calling user
+     * @param requestBody properties for the event type
+     *
+     * @return unique identifier of the created entity
+     */
+    @PostMapping(path = "/event-types")
+    public GUIDResponse upsertEventType(@PathVariable("userId") String userId,
+                                     @PathVariable("serverName") String serverName,
+                                     @RequestBody EventTypeRequestBody requestBody) {
+        return restAPI.upsertEventType(userId, serverName, requestBody);
+    }
+
+    /**
+     * Deletes the topic
+     *
+     * @param serverName  name of server instance to call
+     * @param userId      the name of the calling user
+     * @param requestBody properties for the database
+     *
+     * @return void response
+     */
+    @DeleteMapping(path = "/event-types")
+    public VoidResponse deleteEventType(@PathVariable("userId") String userId,
+                                        @PathVariable("serverName") String serverName,
+                                        @RequestBody DeleteRequestBody requestBody) {
+        return restAPI.deleteEventType(userId, serverName, requestBody);
     }
 }

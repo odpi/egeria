@@ -65,7 +65,7 @@ public class LineageFVT extends DataEngineFVT{
             String previousAttribute = null;
             for (int i = 0; i < attributes.size() - 1; i++) {
                 String currentAttribute = attributes.get(i);
-                EntityDetail entityDetail = repositoryService.findEntityByQualifiedName(currentAttribute);
+                EntityDetail entityDetail = repositoryService.findEntityByQualifiedName(currentAttribute, TABULAR_COLUMN_TYPE_GUID);
                 validateCurrentAttribute(currentAttribute, entityDetail);
 
                 List<Relationship> relationships = repositoryService.findLineageMappingRelationshipsByGUID(entityDetail.getGUID());

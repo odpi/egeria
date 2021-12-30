@@ -95,7 +95,7 @@ public class RepositoryService {
      * @param entityValue the search criteria used to search for a qualified name
      * @return entity detail
      */
-    public EntityDetail findEntityByQualifiedName(String entityValue) throws UserNotAuthorizedException, FunctionNotSupportedException,
+    public EntityDetail findEntityByQualifiedName(String entityValue, String typeGUID) throws UserNotAuthorizedException, FunctionNotSupportedException,
             InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
         InstanceProperties matchProperties = new InstanceProperties();
 
@@ -107,13 +107,7 @@ public class RepositoryService {
         propertiesMap.put(QUALIFIED_NAME, primitivePropertyValue);
         matchProperties.setInstanceProperties(propertiesMap);
 
-        EntityPropertyFindRequest findRequestParameters = new EntityPropertyFindRequest();
-        findRequestParameters.setTypeGUID(TABULAR_COLUMN_TYPE_GUID);
-        findRequestParameters.setMatchProperties(matchProperties);
-        findRequestParameters.setMatchCriteria(MatchCriteria.ANY);
-        findRequestParameters.setPageSize(PAGE_SIZE);
-
-        List<EntityDetail> entityDetails = client.findEntitiesByProperty(userId, TABULAR_COLUMN_TYPE_GUID, matchProperties,
+        List<EntityDetail> entityDetails = client.findEntitiesByProperty(userId, typeGUID, matchProperties,
                 MatchCriteria.ANY, 0, null, null, null, null, SequencingOrder.ANY, PAGE_SIZE);
 
         if (entityDetails == null || entityDetails.isEmpty()) {
