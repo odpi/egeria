@@ -87,7 +87,7 @@ allprojects {
         springsecurityVersion = '5.6.0'
         tomcatVersion = '9.0.55'
         junitjupiterVersion = '5.8.2'
-        mockitoVersion = '4.1.0'
+        mockitoVersion = '4.2.0'
         junitjupiterVersion = '5.8.1'
         springbootVersion = '2.6.1'
         httpcoreVersion = '4.4.14'
