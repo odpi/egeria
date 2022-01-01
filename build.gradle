@@ -120,7 +120,7 @@ allprojects {
             implementation("io.github.classgraph:classgraph:4.8.138")
             implementation("io.jsonwebtoken:jjwt:0.9.1")
             implementation('io.lettuce:lettuce-core:6.1.5.RELEASE')
-            implementation("io.micrometer:micrometer-registry-prometheus:1.8.0")
+            implementation("io.micrometer:micrometer-registry-prometheus:1.8.1")
             implementation("io.netty:netty-handler:${nettyVersion}")
             implementation("io.netty:netty-common:${nettyVersion}")
             implementation("io.netty:netty-buffer:${nettyVersion}")
