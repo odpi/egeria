@@ -208,7 +208,7 @@ allprojects {
             // testng also used in our 'source' code to support unit tests
             implementation("org.testng:testng:7.4.0")
             runtimeOnly("joda-time:joda-time:2.10.13")
-            implementation("org.yaml:snakeyaml:1.29")
+            implementation("org.yaml:snakeyaml:1.30")
             runtimeOnly("org.antlr:antlr-runtime:3.5.2")
             runtimeOnly("org.apache.jena:jena-arq:${jenaVersion}")
             runtimeOnly("org.codehaus.jackson:jackson-mapper-asl:1.9.14-atlassian-6")
