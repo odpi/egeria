@@ -74,7 +74,7 @@ allprojects {
     // Assign variables for any constraints where we have multiples at same version
 
     ext {
-        logbackVersion = '1.2.7'
+        logbackVersion = '1.2.10'
         jacksonVersion = '2.12.2'
         nettyVersion = '4.1.70.Final'
         luceneVersion = '8.11.0'
