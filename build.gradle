@@ -108,7 +108,7 @@ allprojects {
             implementation("com.fasterxml:classmate:1.5.1")
             implementation("com.github.jsonld-java:jsonld-java:0.13.3")
             implementation("com.google.crypto.tink:tink:1.6.1")
-            implementation("com.github.spotbugs:spotbugs-annotations:4.5.0")
+            implementation("com.github.spotbugs:spotbugs-annotations:4.5.2")
             implementation("com.google.code.findbugs:jsr305:3.0.2")
             implementation("com.google.guava:guava:31.0.1-jre")
             implementation("com.mikesamuel:json-sanitizer:1.2.3")
