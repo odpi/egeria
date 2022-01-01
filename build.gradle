@@ -89,7 +89,7 @@ allprojects {
         junitjupiterVersion = '5.8.2'
         mockitoVersion = '4.1.0'
         junitjupiterVersion = '5.8.1'
-        springbootVersion = '2.6.1'
+        springbootVersion = '2.6.2'
         httpcoreVersion = '4.4.14'
         jenaVersion = '4.2.0'
         elasticsearchVersion = '7.15.2'
