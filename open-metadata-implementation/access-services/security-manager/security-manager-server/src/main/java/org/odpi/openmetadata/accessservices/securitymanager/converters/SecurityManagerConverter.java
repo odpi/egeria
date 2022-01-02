@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.securitymanager.converters;
 
-import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.SoftwareServerCapabilityElement;
+import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.SecurityManagerElement;
 import org.odpi.openmetadata.accessservices.securitymanager.properties.SecurityManagerProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -15,7 +15,7 @@ import java.lang.reflect.InvocationTargetException;
 
 /**
  * SecurityManagerConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- * EntityDetail object into a SoftwareServerCapabilityElement bean.
+ * EntityDetail object into a SecurityManagerElement bean.
  */
 public class SecurityManagerConverter<B> extends SecurityManagerOMASConverter<B>
 {
@@ -56,10 +56,10 @@ public class SecurityManagerConverter<B> extends SecurityManagerOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof SoftwareServerCapabilityElement)
+            if (returnBean instanceof SecurityManagerElement)
             {
-                SoftwareServerCapabilityElement bean                      = (SoftwareServerCapabilityElement) returnBean;
-                SecurityManagerProperties       securityManagerProperties = new SecurityManagerProperties();
+                SecurityManagerElement    bean                      = (SecurityManagerElement) returnBean;
+                SecurityManagerProperties securityManagerProperties = new SecurityManagerProperties();
 
                 if (entity != null)
                 {
@@ -71,7 +71,7 @@ public class SecurityManagerConverter<B> extends SecurityManagerOMASConverter<B>
                     securityManagerProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     securityManagerProperties.setDisplayName(this.removeName(instanceProperties));
                     securityManagerProperties.setDescription(this.removeDescription(instanceProperties));
-                    securityManagerProperties.setTypeDescription(this.removeDeployedImplementationType(instanceProperties));
+                    securityManagerProperties.setTypeDescription(this.removeCapabilityType(instanceProperties));
                     securityManagerProperties.setVersion(this.removeCapabilityVersion(instanceProperties));
                     securityManagerProperties.setPatchLevel(this.removePatchLevel(instanceProperties));
                     securityManagerProperties.setSource(this.removeSource(instanceProperties));

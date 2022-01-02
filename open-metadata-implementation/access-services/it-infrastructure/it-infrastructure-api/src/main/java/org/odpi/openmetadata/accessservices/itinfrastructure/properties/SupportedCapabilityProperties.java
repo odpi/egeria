@@ -26,6 +26,8 @@ public class SupportedCapabilityProperties extends ConfigurationItemRelationship
 
     private Date              deploymentTime         = null;
     private String            deployer               = null;
+    private String            deployerTypeName       = null;
+    private String            deployerPropertyName   = null;
     private OperationalStatus serverCapabilityStatus = null;
 
 
@@ -51,6 +53,8 @@ public class SupportedCapabilityProperties extends ConfigurationItemRelationship
         {
             deploymentTime = template.getDeploymentTime();
             deployer = template.getDeployer();
+            deployerTypeName = template.getDeployerTypeName();
+            deployerPropertyName = template.getDeployerPropertyName();
             serverCapabilityStatus = template.getServerCapabilityStatus();
         }
     }
@@ -101,6 +105,50 @@ public class SupportedCapabilityProperties extends ConfigurationItemRelationship
 
 
     /**
+     * Return the type name of the element used to represent the deployer.
+     *
+     * @return string name
+     */
+    public String getDeployerTypeName()
+    {
+        return deployerTypeName;
+    }
+
+
+    /**
+     * Set up the type name of the element used to represent the deployer.
+     *
+     * @param deployerTypeName string name
+     */
+    public void setDeployerTypeName(String deployerTypeName)
+    {
+        this.deployerTypeName = deployerTypeName;
+    }
+
+
+    /**
+     * Return the property name from the element used to represent the deployer.
+     *
+     * @return string name
+     */
+    public String getDeployerPropertyName()
+    {
+        return deployerPropertyName;
+    }
+
+
+    /**
+     * Set up the property name from the element used to represent the deployer.
+     *
+     * @param deployerPropertyName string name
+     */
+    public void setDeployerPropertyName(String deployerPropertyName)
+    {
+        this.deployerPropertyName = deployerPropertyName;
+    }
+
+
+    /**
      * Return whether the capability is ready to use.
      *
      * @return operational status enum
@@ -133,6 +181,8 @@ public class SupportedCapabilityProperties extends ConfigurationItemRelationship
         return "SupportedCapabilityProperties{" +
                        "deploymentTime=" + deploymentTime +
                        ", deployer='" + deployer + '\'' +
+                       ", deployerTypeName='" + deployerTypeName + '\'' +
+                       ", deployerPropertyName='" + deployerPropertyName + '\'' +
                        ", serverCapabilityStatus=" + serverCapabilityStatus +
                        ", effectiveFrom=" + getEffectiveFrom() +
                        ", effectiveTo=" + getEffectiveTo() +
@@ -164,6 +214,8 @@ public class SupportedCapabilityProperties extends ConfigurationItemRelationship
         SupportedCapabilityProperties that = (SupportedCapabilityProperties) objectToCompare;
         return Objects.equals(deploymentTime, that.deploymentTime) &&
                        Objects.equals(deployer, that.deployer) &&
+                       Objects.equals(deployerTypeName, that.deployerTypeName) &&
+                       Objects.equals(deployerPropertyName, that.deployerPropertyName) &&
                        serverCapabilityStatus == that.serverCapabilityStatus;
     }
 
@@ -176,6 +228,6 @@ public class SupportedCapabilityProperties extends ConfigurationItemRelationship
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), deploymentTime, deployer, serverCapabilityStatus);
+        return Objects.hash(super.hashCode(), deploymentTime, deployer, deployerTypeName, deployerPropertyName, serverCapabilityStatus);
     }
 }

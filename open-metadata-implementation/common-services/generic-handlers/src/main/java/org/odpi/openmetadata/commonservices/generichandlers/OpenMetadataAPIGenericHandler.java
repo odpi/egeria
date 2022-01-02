@@ -14291,7 +14291,7 @@ public class OpenMetadataAPIGenericHandler<B>
             EntityDetail integrator = this.getEntityFromRepository(userId,
                                                                    externalSourceGUID,
                                                                    guidParameterName,
-                                                                   OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                                   OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                                    null,
                                                                    null,
                                                                    forLineage,

@@ -777,7 +777,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
         List<EntityDetail> processEntities = externalIdentifierHandler.getElementEntitiesForScope(userId,
                                                                                                   assetManagerGUID,
                                                                                                   assetManagerGUIDParameterName,
-                                                                                                  OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                                                                  OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                                                                   OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
                                                                                                   startFrom,
                                                                                                   validatedPageSize,
