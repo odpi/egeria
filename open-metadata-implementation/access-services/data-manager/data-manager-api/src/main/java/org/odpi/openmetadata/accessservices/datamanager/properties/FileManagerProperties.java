@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.datamanager.properties;
 /**
  * FileSystemProperties describes an application that manages a collection of files.
  */
-public class FileManagerProperties extends SoftwareServerCapabilitiesProperties
+public class FileManagerProperties extends SoftwareCapabilitiesProperties
 {
     private static final long    serialVersionUID = 1L;
 
@@ -35,7 +35,7 @@ public class FileManagerProperties extends SoftwareServerCapabilitiesProperties
      *
      * @param template object to copy
      */
-    public FileManagerProperties(SoftwareServerCapabilitiesProperties template)
+    public FileManagerProperties(SoftwareCapabilitiesProperties template)
     {
         super(template);
     }

@@ -266,7 +266,7 @@ class ExchangeHandlerBase
                                                                   correlationProperties.getAssetManagerGUID(),
                                                                   assetManagerGUIDParameterName,
                                                                   correlationProperties.getAssetManagerName(),
-                                                                  OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                                  OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                                   getPermittedSynchronization(correlationProperties.getSynchronizationDirection()),
                                                                   correlationProperties.getSynchronizationDescription(),
                                                                   null,
@@ -355,7 +355,7 @@ class ExchangeHandlerBase
                                                                     correlationProperties.getAssetManagerGUID(),
                                                                     scopeGUIDParameterName,
                                                                     correlationProperties.getAssetManagerName(),
-                                                                    OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                                    OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                                     null,
                                                                     methodName);
         }
@@ -398,7 +398,7 @@ class ExchangeHandlerBase
                                                                         elementGUIDParameterName,
                                                                         elementTypeName,
                                                                         assetManagerGUID,
-                                                                        OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                                        OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                                         assetManagerName,
                                                                         0,
                                                                         invalidParameterHandler.getMaxPagingSize(),

@@ -358,7 +358,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                       externalSourceName,
                                       softwareServerCapabilityGUID,
                                       softwareServerCapabilityGUIDParameterName,
-                                      OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                      OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                       assetGUID,
                                       assetGUIDParameterName,
                                       OpenMetadataAPIMapper.ASSET_TYPE_NAME,

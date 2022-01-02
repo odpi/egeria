@@ -1,12 +1,12 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.accessservices.assetmanager.metadataelements;
+package org.odpi.openmetadata.accessservices.securitymanager.metadataelements;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.SoftwareCapabilitiesProperties;
+import org.odpi.openmetadata.accessservices.securitymanager.properties.SecurityManagerProperties;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -15,26 +15,24 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * AssetManagerElement contains the properties and header for a software server capabilities entity retrieved from the metadata
- * repository that represents the asset manager that is using the Asset Manager OMAS.  This element is created
- * in the open metadata ecosystem and does not need the metadata correlation properties that other elements that
- * being correlated with elements in the external asset manager needs.
+ * SecurityManagerElement contains the properties and header for a software server capabilities entity retrieved from the metadata
+ * repository.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class AssetManagerElement implements Serializable
+public class SecurityManagerElement implements MetadataElement, Serializable
 {
     private static final long     serialVersionUID = 1L;
 
-    private ElementHeader                  elementHeader                  = null;
-    private SoftwareCapabilitiesProperties softwareCapabilitiesProperties = null;
+    private ElementHeader             elementHeader             = null;
+    private SecurityManagerProperties securityManagerProperties = null;
 
 
     /**
      * Default constructor
      */
-    public AssetManagerElement()
+    public SecurityManagerElement()
     {
         super();
     }
@@ -45,12 +43,12 @@ public class AssetManagerElement implements Serializable
      *
      * @param template object to copy
      */
-    public AssetManagerElement(AssetManagerElement template)
+    public SecurityManagerElement(SecurityManagerElement template)
     {
         if (template != null)
         {
             elementHeader = template.getElementHeader();
-            softwareCapabilitiesProperties = template.getSoftwareCapabilitiesProperties();
+            securityManagerProperties = template.getSecurityManagerProperties();
         }
     }
 
@@ -60,6 +58,7 @@ public class AssetManagerElement implements Serializable
      *
      * @return element header object
      */
+    @Override
     public ElementHeader getElementHeader()
     {
         return elementHeader;
@@ -71,6 +70,7 @@ public class AssetManagerElement implements Serializable
      *
      * @param elementHeader element header object
      */
+    @Override
     public void setElementHeader(ElementHeader elementHeader)
     {
         this.elementHeader = elementHeader;
@@ -82,20 +82,20 @@ public class AssetManagerElement implements Serializable
      *
      * @return properties bean
      */
-    public SoftwareCapabilitiesProperties getSoftwareCapabilitiesProperties()
+    public SecurityManagerProperties getSecurityManagerProperties()
     {
-        return softwareCapabilitiesProperties;
+        return securityManagerProperties;
     }
 
 
     /**
      * Set up the properties of the software server capability.
      *
-     * @param softwareCapabilitiesProperties properties bean
+     * @param securityManagerProperties properties bean
      */
-    public void setSoftwareCapabilitiesProperties(SoftwareCapabilitiesProperties softwareCapabilitiesProperties)
+    public void setSecurityManagerProperties(SecurityManagerProperties securityManagerProperties)
     {
-        this.softwareCapabilitiesProperties = softwareCapabilitiesProperties;
+        this.securityManagerProperties = securityManagerProperties;
     }
 
 
@@ -107,9 +107,9 @@ public class AssetManagerElement implements Serializable
     @Override
     public String toString()
     {
-        return "SoftwareCapabilityElement{" +
+        return "SecurityManagerElement{" +
                 "elementHeader=" + elementHeader +
-                ", softwareCapabilitiesProperties=" + softwareCapabilitiesProperties +
+                ", securityManagerProperties=" + securityManagerProperties +
                 '}';
     }
 
@@ -135,9 +135,9 @@ public class AssetManagerElement implements Serializable
         {
             return false;
         }
-        AssetManagerElement that = (AssetManagerElement) objectToCompare;
+        SecurityManagerElement that = (SecurityManagerElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
-                Objects.equals(softwareCapabilitiesProperties, that.softwareCapabilitiesProperties);
+                Objects.equals(securityManagerProperties, that.securityManagerProperties);
     }
 
 
@@ -149,6 +149,6 @@ public class AssetManagerElement implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, softwareCapabilitiesProperties);
+        return Objects.hash(super.hashCode(), elementHeader, securityManagerProperties);
     }
 }

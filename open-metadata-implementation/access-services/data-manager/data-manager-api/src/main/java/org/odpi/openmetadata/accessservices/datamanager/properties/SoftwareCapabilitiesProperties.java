@@ -1,6 +1,6 @@
-/* SPDX-License-Identifier: Apache 2.0 */
+/* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetowner.properties;
+package org.odpi.openmetadata.accessservices.datamanager.properties;
 
 import com.fasterxml.jackson.annotation.*;
 
@@ -10,19 +10,21 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * SoftwareServerCapabilityProperties describe the properties needed to describe a specific software server's capability.
+ * SoftwareCapabilitiesProperties describe the properties for a capability deployed to a software server.
  */
-@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown=true)
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = FileSystemProperties.class, name = "FileSystemProperties")
-})
-public class SoftwareServerCapabilityProperties extends ReferenceableProperties
+@JsonSubTypes(
+        {
+                @JsonSubTypes.Type(value = DatabaseManagerProperties.class, name = "DatabaseManagerProperties"),
+                @JsonSubTypes.Type(value = FileSystemProperties.class, name = "FileSystemProperties"),
+                @JsonSubTypes.Type(value = FileManagerProperties.class, name = "FileManagerProperties"),
+        })
+public class SoftwareCapabilitiesProperties extends ReferenceableProperties
 {
     private static final long    serialVersionUID = 1L;
 
@@ -37,7 +39,7 @@ public class SoftwareServerCapabilityProperties extends ReferenceableProperties
     /**
      * Default constructor.
      */
-    public SoftwareServerCapabilityProperties()
+    public SoftwareCapabilitiesProperties()
     {
         super();
     }
@@ -48,7 +50,7 @@ public class SoftwareServerCapabilityProperties extends ReferenceableProperties
      *
      * @param template object to copy
      */
-    public SoftwareServerCapabilityProperties(SoftwareServerCapabilityProperties template)
+    public SoftwareCapabilitiesProperties(SoftwareCapabilitiesProperties template)
     {
         super(template);
 
@@ -87,7 +89,7 @@ public class SoftwareServerCapabilityProperties extends ReferenceableProperties
 
 
     /**
-     * Return the description of the discovery engine.
+     * Return the description of the capability.
      *
      * @return string description
      */
@@ -98,7 +100,7 @@ public class SoftwareServerCapabilityProperties extends ReferenceableProperties
 
 
     /**
-     * Set up the description of the discovery engine.
+     * Set up the description of the capability.
      *
      * @param description string
      */
@@ -109,7 +111,7 @@ public class SoftwareServerCapabilityProperties extends ReferenceableProperties
 
 
     /**
-     * Return the description of the type of discovery engine this is.
+     * Return the description of the type of capability this is.
      *
      * @return string description
      */
@@ -120,7 +122,7 @@ public class SoftwareServerCapabilityProperties extends ReferenceableProperties
 
 
     /**
-     * Set up the description of the type of discovery engine this is.
+     * Set up the description of the type of capability this is.
      *
      * @param typeDescription string
      */
@@ -131,7 +133,7 @@ public class SoftwareServerCapabilityProperties extends ReferenceableProperties
 
 
     /**
-     * Return the version of the discovery engine.
+     * Return the version of the capability.
      *
      * @return version string
      */
@@ -142,7 +144,7 @@ public class SoftwareServerCapabilityProperties extends ReferenceableProperties
 
 
     /**
-     * Set up the version string of the discovery engine.
+     * Set up the version string of the capability.
      *
      * @param version string
      */
@@ -153,7 +155,7 @@ public class SoftwareServerCapabilityProperties extends ReferenceableProperties
 
 
     /**
-     * Return the patch level of the discovery engine.
+     * Return the patch level of the capability.
      *
      * @return patch level string
      */
@@ -164,7 +166,7 @@ public class SoftwareServerCapabilityProperties extends ReferenceableProperties
 
 
     /**
-     * Set up the patch level of the discovery engine.
+     * Set up the patch level of the capability.
      *
      * @param patchLevel string
      */
@@ -175,7 +177,7 @@ public class SoftwareServerCapabilityProperties extends ReferenceableProperties
 
 
     /**
-     * Return the source of the discovery engine implementation.
+     * Return the source of the capability implementation.
      *
      * @return string url
      */
@@ -186,7 +188,7 @@ public class SoftwareServerCapabilityProperties extends ReferenceableProperties
 
 
     /**
-     * Set up the source of the discovery engine implementation.
+     * Set up the source of the capability implementation.
      *
      * @param source string url
      */
@@ -204,16 +206,17 @@ public class SoftwareServerCapabilityProperties extends ReferenceableProperties
     @Override
     public String toString()
     {
-        return "SoftwareServerCapabilityProperties{" +
+        return "SoftwareCapabilitiesProperties{" +
                 "displayName='" + displayName + '\'' +
                 ", description='" + description + '\'' +
                 ", typeDescription='" + typeDescription + '\'' +
                 ", version='" + version + '\'' +
                 ", patchLevel='" + patchLevel + '\'' +
                 ", source='" + source + '\'' +
-                ", typeName='" + getTypeName() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
+                ", vendorProperties=" + getVendorProperties() +
+                ", typeName='" + getTypeName() + '\'' +
                 ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }
@@ -240,7 +243,7 @@ public class SoftwareServerCapabilityProperties extends ReferenceableProperties
         {
             return false;
         }
-        SoftwareServerCapabilityProperties that = (SoftwareServerCapabilityProperties) objectToCompare;
+        SoftwareCapabilitiesProperties that = (SoftwareCapabilitiesProperties) objectToCompare;
         return Objects.equals(getDisplayName(), that.getDisplayName()) &&
                 Objects.equals(getDescription(), that.getDescription()) &&
                 Objects.equals(getTypeDescription(), that.getTypeDescription()) &&
