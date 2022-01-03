@@ -7868,7 +7868,14 @@ public class OMRSRepositoryRESTServices
             {
                 OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-                metadataCollection.saveClassificationReferenceCopy(userId, requestBody.getEntity(), requestBody.getClassification());
+                if (requestBody.getEntity() != null)
+                {
+                    metadataCollection.saveClassificationReferenceCopy(userId, requestBody.getEntity(), requestBody.getClassification());
+                }
+                else
+                {
+                    metadataCollection.saveClassificationReferenceCopy(userId, requestBody.getEntityProxy(), requestBody.getClassification());
+                }
             }
         }
         catch (RepositoryErrorException  error)

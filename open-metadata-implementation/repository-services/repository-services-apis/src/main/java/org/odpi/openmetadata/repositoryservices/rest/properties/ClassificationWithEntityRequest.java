@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 
 import java.util.Objects;
 
@@ -26,6 +27,7 @@ public class ClassificationWithEntityRequest extends OMRSAPIRequest
 
     private Classification classification = null;
     private EntityDetail   entity         = null;
+    private EntityProxy    entityProxy   = null;
 
 
     /**
@@ -48,8 +50,9 @@ public class ClassificationWithEntityRequest extends OMRSAPIRequest
 
         if (template != null)
         {
-            this.classification           = template.getClassification();
-            this.entity                   = template.getEntity();
+            this.classification = template.getClassification();
+            this.entity         = template.getEntity();
+            this.entityProxy    = template.getEntityProxy();
         }
     }
 
@@ -99,6 +102,28 @@ public class ClassificationWithEntityRequest extends OMRSAPIRequest
 
 
     /**
+     * Return the entity where the classification belongs.
+     *
+     * @return full entity
+     */
+    public EntityProxy getEntityProxy()
+    {
+        return entityProxy;
+    }
+
+
+    /**
+     * Set up the entity where the classification belongs.
+     *
+     * @param entity proxy entity
+     */
+    public void setEntityProxy(EntityProxy entity)
+    {
+        this.entityProxy = entity;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -107,8 +132,9 @@ public class ClassificationWithEntityRequest extends OMRSAPIRequest
     public String toString()
     {
         return "ClassificationWithEntityRequest{" +
-                "classification=" + classification +
-                ", entity=" + entity +
+                       "classification=" + classification +
+                       ", entity=" + entity +
+                       ", entityProxy=" + entityProxy +
                 '}';
     }
 

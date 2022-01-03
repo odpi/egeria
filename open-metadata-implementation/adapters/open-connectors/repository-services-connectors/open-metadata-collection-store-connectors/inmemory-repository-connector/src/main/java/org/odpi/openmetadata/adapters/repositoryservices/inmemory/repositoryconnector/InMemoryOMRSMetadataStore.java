@@ -363,7 +363,6 @@ class InMemoryOMRSMetadataStore
      */
     synchronized void updateRelationshipInStore(Relationship    relationship)
     {
-
         Relationship    oldRelationship = relationshipStore.put(relationship.getGUID(), relationship);
 
         if (oldRelationship != null)
