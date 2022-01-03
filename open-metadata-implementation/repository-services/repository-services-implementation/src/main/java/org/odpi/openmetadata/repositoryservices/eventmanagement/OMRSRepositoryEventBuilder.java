@@ -577,6 +577,46 @@ public abstract class OMRSRepositoryEventBuilder extends OMRSRepositoryEventProc
 
 
     /**
+     * A new classification has been added to an entity.
+     *
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
+     *                   local repository, or event mapper name.
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param entity details of the entity with the new classification added.
+     * @param classification new classification
+     */
+    public void processClassifiedEntityEvent(String         sourceName,
+                                             String         originatorMetadataCollectionId,
+                                             String         originatorServerName,
+                                             String         originatorServerType,
+                                             String         originatorOrganizationName,
+                                             EntityProxy    entity,
+                                             Classification classification)
+    {
+        OMRSEventOriginator eventOriginator = new OMRSEventOriginator();
+
+        eventOriginator.setMetadataCollectionId(originatorMetadataCollectionId);
+        eventOriginator.setServerName(originatorServerName);
+        eventOriginator.setServerType(originatorServerType);
+        eventOriginator.setOrganizationName(originatorOrganizationName);
+
+        OMRSInstanceEvent instanceEvent = new OMRSInstanceEvent(OMRSInstanceEventType.CLASSIFIED_ENTITY_EVENT,
+                                                                entity,
+                                                                null,
+                                                                classification);
+
+
+        instanceEvent.setEventOriginator(eventOriginator);
+
+        this.sendInstanceEvent(sourceName, instanceEvent);
+    }
+
+
+    /**
      * A classification has been removed from an entity.
      *
      * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
@@ -595,6 +635,46 @@ public abstract class OMRSRepositoryEventBuilder extends OMRSRepositoryEventProc
                                                String         originatorServerType,
                                                String         originatorOrganizationName,
                                                EntityDetail   entity,
+                                               Classification originalClassification)
+    {
+        OMRSEventOriginator eventOriginator = new OMRSEventOriginator();
+
+        eventOriginator.setMetadataCollectionId(originatorMetadataCollectionId);
+        eventOriginator.setServerName(originatorServerName);
+        eventOriginator.setServerType(originatorServerType);
+        eventOriginator.setOrganizationName(originatorOrganizationName);
+
+        OMRSInstanceEvent instanceEvent = new OMRSInstanceEvent(OMRSInstanceEventType.DECLASSIFIED_ENTITY_EVENT,
+                                                                entity,
+                                                                originalClassification,
+                                                                null);
+
+
+        instanceEvent.setEventOriginator(eventOriginator);
+
+        this.sendInstanceEvent(sourceName, instanceEvent);
+    }
+
+
+    /**
+     * A classification has been removed from an entity.
+     *
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
+     *                   local repository, or event mapper name.
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param entity details of the entity after the classification has been removed.
+     * @param originalClassification classification that was removed
+     */
+    public void processDeclassifiedEntityEvent(String         sourceName,
+                                               String         originatorMetadataCollectionId,
+                                               String         originatorServerName,
+                                               String         originatorServerType,
+                                               String         originatorOrganizationName,
+                                               EntityProxy    entity,
                                                Classification originalClassification)
     {
         OMRSEventOriginator eventOriginator = new OMRSEventOriginator();
@@ -636,6 +716,48 @@ public abstract class OMRSRepositoryEventBuilder extends OMRSRepositoryEventProc
                                                String         originatorServerType,
                                                String         originatorOrganizationName,
                                                EntityDetail   entity,
+                                               Classification originalClassification,
+                                               Classification classification)
+    {
+        OMRSEventOriginator eventOriginator = new OMRSEventOriginator();
+
+        eventOriginator.setMetadataCollectionId(originatorMetadataCollectionId);
+        eventOriginator.setServerName(originatorServerName);
+        eventOriginator.setServerType(originatorServerType);
+        eventOriginator.setOrganizationName(originatorOrganizationName);
+
+        OMRSInstanceEvent instanceEvent = new OMRSInstanceEvent(OMRSInstanceEventType.RECLASSIFIED_ENTITY_EVENT,
+                                                                entity,
+                                                                originalClassification,
+                                                                classification);
+
+
+        instanceEvent.setEventOriginator(eventOriginator);
+
+        this.sendInstanceEvent(sourceName, instanceEvent);
+    }
+
+
+    /**
+     * An existing classification has been changed on an entity.
+     *
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
+     *                   local repository, or event mapper name.
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param entity details of the entity after the classification has been changed.
+     * @param originalClassification classification that was removed
+     * @param classification new classification
+     */
+    public void processReclassifiedEntityEvent(String         sourceName,
+                                               String         originatorMetadataCollectionId,
+                                               String         originatorServerName,
+                                               String         originatorServerType,
+                                               String         originatorOrganizationName,
+                                               EntityProxy   entity,
                                                Classification originalClassification,
                                                Classification classification)
     {
