@@ -195,7 +195,7 @@ allprojects {
             implementation("org.apache.lucene:lucene-core:${luceneVersion}")
             implementation("org.apache.lucene:lucene-analyzers-common:${luceneVersion}")
             implementation("org.apache.lucene:lucene-queryparser:${luceneVersion}")
-            implementation("org.apache.lucene:lucene-spatial:${luceneVersion})
+            implementation("org.apache.lucene:lucene-spatial:${luceneVersion}")
             implementation("org.apache.lucene:lucene-spatial-extras:${luceneVersion}")
             implementation("org.apache.tinkerpop:tinkergraph-gremlin:${gremlinVersion}")
             implementation("org.apache.tinkerpop:gremlin-driver:${gremlinVersion}")
@@ -268,7 +268,7 @@ allprojects {
             runtimeOnly("org.xerial.snappy:snappy-java:${snappyVersion}")
             runtimeOnly("org.janusgraph:janusgraph-es:${janusVersion}")
             runtimeOnly("org.xerial.snappy:snappy-java:${snappyVersion}")
-	        runtimeOnly("javax.servlet:javax.servlet-api:${servletVersion}");
+	        runtimeOnly("javax.servlet:javax.servlet-api:${servletVersion}")
             testImplementation("junit:junit:${junitVersion}")
             testImplementation("org.glassfish:javax.json:${glassfishVersion}")
             testImplementation("org.junit.jupiter:junit-jupiter:${junitjupiterVersion}")
