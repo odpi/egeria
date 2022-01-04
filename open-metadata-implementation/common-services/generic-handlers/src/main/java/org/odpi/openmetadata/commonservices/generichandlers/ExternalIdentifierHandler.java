@@ -1534,6 +1534,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                                       null,
                                                                       null,
+                                                                      0,
                                                                       false,
                                                                       false,
                                                                       supportedZones,

@@ -53,7 +53,7 @@ public class RESTClient
         {
             this.clientConnector = factory.getClientConnector();
         }
-        catch (Exception     error)
+        catch (Exception error)
         {
             throw new InvalidParameterException(OpenAPIIntegrationConnectorErrorCode.NULL_URL.getMessageDefinition(serverName, error.getMessage()),
                                                 this.getClass().getName(),

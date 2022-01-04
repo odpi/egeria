@@ -26,7 +26,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = ConnectorTypeProperties.class, name = "ConnectorTypeProperties"),
                 @JsonSubTypes.Type(value = EndpointProperties.class, name = "EndpointProperties"),
                 @JsonSubTypes.Type(value = OperatingPlatformProperties.class, name = "OperatingPlatformProperties"),
-                @JsonSubTypes.Type(value = SoftwareServerCapabilityProperties.class, name = "SoftwareServerCapabilityProperties"),
+                @JsonSubTypes.Type(value = SoftwareCapabilityProperties.class, name = "SoftwareCapabilityProperties"),
         })
 public class ConfigurationItemProperties extends ReferenceableProperties
 {

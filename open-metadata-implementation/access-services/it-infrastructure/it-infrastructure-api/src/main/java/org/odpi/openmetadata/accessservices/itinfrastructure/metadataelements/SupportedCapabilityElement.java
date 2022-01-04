@@ -6,7 +6,6 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ServerAssetUseProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.SupportedCapabilityProperties;
 
 import java.io.Serializable;
@@ -25,9 +24,9 @@ public class SupportedCapabilityElement implements MetadataElement, Serializable
 {
     private static final long     serialVersionUID = 1L;
 
-    private ElementHeader                   elementHeader = null;
-    private SupportedCapabilityProperties   supportedCapabilityProperties = null;
-    private SoftwareServerCapabilityElement capabilityElement             = null;
+    private ElementHeader                 elementHeader                 = null;
+    private SupportedCapabilityProperties supportedCapabilityProperties = null;
+    private SoftwareCapabilityElement     capabilityElement             = null;
 
 
     /**
@@ -106,7 +105,7 @@ public class SupportedCapabilityElement implements MetadataElement, Serializable
      *
      * @return properties
      */
-    public SoftwareServerCapabilityElement getCapabilityElement()
+    public SoftwareCapabilityElement getCapabilityElement()
     {
         return capabilityElement;
     }
@@ -117,7 +116,7 @@ public class SupportedCapabilityElement implements MetadataElement, Serializable
      *
      * @param capabilityElement  properties
      */
-    public void setCapabilityElement(SoftwareServerCapabilityElement capabilityElement)
+    public void setCapabilityElement(SoftwareCapabilityElement capabilityElement)
     {
         this.capabilityElement = capabilityElement;
     }

@@ -713,6 +713,7 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                            OpenMetadataAPIMapper.GOVERNANCE_ACTION_FLOW_TYPE_GUID,
                                            OpenMetadataAPIMapper.GOVERNANCE_ACTION_FLOW_TYPE_NAME,
                                            OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                                           0,
                                            false,
                                            false,
                                            supportedZones,

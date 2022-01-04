@@ -74,6 +74,7 @@ public class EventTypeConverter<B> extends DataManagerOMASConverter<B>
 
                     InstanceProperties propertiesCopy = new InstanceProperties(entity.getProperties());
 
+                    eventType.setQualifiedName(this.removeQualifiedName(propertiesCopy));
                     eventType.setDisplayName(this.removeDisplayName(propertiesCopy));
                     eventType.setDescription(this.removeDescription(propertiesCopy));
                     eventType.setIsDeprecated(this.removeIsDeprecated(propertiesCopy));
