@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.viewservices.serverauthor.handlers;
 
 import org.odpi.openmetadata.adminservices.client.*;
-import org.odpi.openmetadata.adminservices.client.MetadataServerConfigurationClient;
+import org.odpi.openmetadata.adminservices.client.MetadataAccessServerConfigurationClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.*;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
@@ -261,9 +261,9 @@ public class ServerAuthorViewHandler {
                                        ) throws ServerAuthorViewServiceException {
 
         try {
-            MetadataServerConfigurationClient configurationClient = new MetadataServerConfigurationClient(this.userId,
-                                                                                                          serverToBeConfiguredName,
-                                                                                                          this.platformURL
+            MetadataAccessServerConfigurationClient configurationClient = new MetadataAccessServerConfigurationClient(this.userId,
+                                                                                                                      serverToBeConfiguredName,
+                                                                                                                      this.platformURL
             );
             configurationClient.setInMemLocalRepository();
         } catch (OMAGNotAuthorizedException error) {
@@ -286,9 +286,9 @@ public class ServerAuthorViewHandler {
      */
     public void setGraphLocalRepository(String className, String methodName, String serverToBeConfiguredName, Map<String, Object> storageProperties) throws ServerAuthorViewServiceException {
         try {
-            MetadataServerConfigurationClient configurationClient = new MetadataServerConfigurationClient(this.userId,
-                                                                                                          serverToBeConfiguredName,
-                                                                                                          this.platformURL
+            MetadataAccessServerConfigurationClient configurationClient = new MetadataAccessServerConfigurationClient(this.userId,
+                                                                                                                      serverToBeConfiguredName,
+                                                                                                                      this.platformURL
             );
             configurationClient.setGraphLocalRepository(storageProperties);
         } catch (OMAGNotAuthorizedException error) {
@@ -310,9 +310,9 @@ public class ServerAuthorViewHandler {
      */
     public void setReadOnlyLocalRepository(String className, String methodName, String serverToBeConfiguredName) throws ServerAuthorViewServiceException {
         try {
-            MetadataServerConfigurationClient configurationClient = new MetadataServerConfigurationClient(this.userId,
-                                                                                                          serverToBeConfiguredName,
-                                                                                                          this.platformURL
+            MetadataAccessServerConfigurationClient configurationClient = new MetadataAccessServerConfigurationClient(this.userId,
+                                                                                                                      serverToBeConfiguredName,
+                                                                                                                      this.platformURL
             );
             configurationClient.setReadOnlyLocalRepository();
         } catch (OMAGNotAuthorizedException error) {
@@ -334,9 +334,9 @@ public class ServerAuthorViewHandler {
      */
     public void setPluginRepositoryConnection(String className, String methodName, String serverToBeConfiguredName, Connection connection) throws ServerAuthorViewServiceException {
         try {
-            MetadataServerConfigurationClient configurationClient = new MetadataServerConfigurationClient(this.userId,
-                                                                                                          serverToBeConfiguredName,
-                                                                                                          this.platformURL
+            MetadataAccessServerConfigurationClient configurationClient = new MetadataAccessServerConfigurationClient(this.userId,
+                                                                                                                      serverToBeConfiguredName,
+                                                                                                                      this.platformURL
             );
             configurationClient.setPluginRepositoryConnection(connection);
         } catch (OMAGNotAuthorizedException error) {
@@ -975,9 +975,9 @@ public class ServerAuthorViewHandler {
                                     ) throws ServerAuthorViewServiceException {
         final String methodName = "addCohortRegistration";
         try {
-            MetadataServerConfigurationClient client = new MetadataServerConfigurationClient(this.userId,
-                                                                                             serverToBeConfiguredName,
-                                                                                             this.platformURL);
+            MetadataAccessServerConfigurationClient client = new MetadataAccessServerConfigurationClient(this.userId,
+                                                                                                         serverToBeConfiguredName,
+                                                                                                         this.platformURL);
             client.addCohortRegistration(cohortName,null);
         } catch (OMAGInvalidParameterException error) {
             throw ServerAuthorExceptionHandler.mapOMAGInvalidParameterException(className, methodName, error);
@@ -999,9 +999,9 @@ public class ServerAuthorViewHandler {
     public void removeCohortRegistration(String serverToBeConfiguredName, String cohortName ) throws ServerAuthorViewServiceException {
         final String methodName = "removeCohortRegistration";
         try {
-            MetadataServerConfigurationClient client = new MetadataServerConfigurationClient(this.userId,
-                                                                                             serverToBeConfiguredName,
-                                                                                             this.platformURL);
+            MetadataAccessServerConfigurationClient client = new MetadataAccessServerConfigurationClient(this.userId,
+                                                                                                         serverToBeConfiguredName,
+                                                                                                         this.platformURL);
             client.clearCohortRegistration(cohortName);
         } catch (OMAGInvalidParameterException error) {
             throw ServerAuthorExceptionHandler.mapOMAGInvalidParameterException(className, methodName, error);

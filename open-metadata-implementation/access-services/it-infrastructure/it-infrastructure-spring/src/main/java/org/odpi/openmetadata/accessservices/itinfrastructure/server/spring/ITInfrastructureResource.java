@@ -832,16 +832,16 @@ public class ITInfrastructureResource
 
 
     /* =====================================================================================================================
-     * The software server capability links assets to the hosting server.
+     * The software capability links assets to the hosting server.
      */
 
 
     /**
-     * Create a new metadata element to represent a software server capability.
+     * Create a new metadata element to represent a software capability.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param infrastructureManagerIsHome should the software server capability be marked as owned by the infrastructure manager so others can not update?
+     * @param infrastructureManagerIsHome should the software capability be marked as owned by the infrastructure manager so others can not update?
      * @param requestBody properties to store
      *
      * @return unique identifier of the new metadata element or
@@ -849,23 +849,23 @@ public class ITInfrastructureResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/software-server-capabilities")
+    @PostMapping(path = "/software-capabilities")
 
-    public GUIDResponse createSoftwareServerCapability(@PathVariable String                              serverName,
-                                                       @PathVariable String                              userId,
-                                                       @RequestParam boolean                             infrastructureManagerIsHome,
-                                                       @RequestBody  SoftwareServerCapabilityRequestBody requestBody)
+    public GUIDResponse createSoftwareCapability(@PathVariable String                        serverName,
+                                                 @PathVariable String                        userId,
+                                                 @RequestParam boolean                       infrastructureManagerIsHome,
+                                                 @RequestBody  SoftwareCapabilityRequestBody requestBody)
     {
-        return restAPI.createSoftwareServerCapability(serverName, userId, infrastructureManagerIsHome, requestBody);
+        return restAPI.createSoftwareCapability(serverName, userId, infrastructureManagerIsHome, requestBody);
     }
 
 
     /**
-     * Create a new metadata element to represent a software server capability using an existing metadata element as a template.
+     * Create a new metadata element to represent a software capability using an existing metadata element as a template.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param infrastructureManagerIsHome should the software server capability be marked as owned by the infrastructure manager so others can not update?
+     * @param infrastructureManagerIsHome should the software capability be marked as owned by the infrastructure manager so others can not update?
      * @param templateGUID unique identifier of the metadata element to copy
      * @param requestBody properties that override the template
      *
@@ -874,20 +874,20 @@ public class ITInfrastructureResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/software-server-capabilities/from-template/{templateGUID}")
+    @PostMapping(path = "/software-capabilities/from-template/{templateGUID}")
 
-    public GUIDResponse createSoftwareServerCapabilityFromTemplate(@PathVariable String              serverName,
-                                                                   @PathVariable String              userId,
-                                                                   @PathVariable String              templateGUID,
-                                                                   @RequestParam boolean             infrastructureManagerIsHome,
-                                                                   @RequestBody  TemplateRequestBody requestBody)
+    public GUIDResponse createSoftwareCapabilityFromTemplate(@PathVariable String              serverName,
+                                                             @PathVariable String              userId,
+                                                             @PathVariable String              templateGUID,
+                                                             @RequestParam boolean             infrastructureManagerIsHome,
+                                                             @RequestBody  TemplateRequestBody requestBody)
     {
-        return restAPI.createSoftwareServerCapabilityFromTemplate(serverName, userId, templateGUID, infrastructureManagerIsHome, requestBody);
+        return restAPI.createSoftwareCapabilityFromTemplate(serverName, userId, templateGUID, infrastructureManagerIsHome, requestBody);
     }
 
 
     /**
-     * Update the metadata element representing a software server capability.
+     * Update the metadata element representing a software capability.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
@@ -900,44 +900,44 @@ public class ITInfrastructureResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/software-server-capabilities/{capabilityGUID}")
+    @PostMapping(path = "/software-capabilities/{capabilityGUID}")
 
-    public VoidResponse updateSoftwareServerCapability(@PathVariable String                              serverName,
-                                                       @PathVariable String                              userId,
-                                                       @PathVariable String                              capabilityGUID,
-                                                       @RequestParam boolean                             isMergeUpdate,
-                                                       @RequestBody  SoftwareServerCapabilityRequestBody requestBody)
+    public VoidResponse updateSoftwareCapability(@PathVariable String                        serverName,
+                                                 @PathVariable String                        userId,
+                                                 @PathVariable String                        capabilityGUID,
+                                                 @RequestParam boolean                       isMergeUpdate,
+                                                 @RequestBody  SoftwareCapabilityRequestBody requestBody)
     {
-        return restAPI.updateSoftwareServerCapability(serverName, userId, capabilityGUID, isMergeUpdate, requestBody);
+        return restAPI.updateSoftwareCapability(serverName, userId, capabilityGUID, isMergeUpdate, requestBody);
     }
 
 
     /**
-     * Remove the metadata element representing a software server capability.
+     * Remove the metadata element representing a software capability.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
      * @param capabilityGUID unique identifier of the metadata element to remove
-     * @param requestBody unique identifier of software server capability representing the caller
+     * @param requestBody unique identifier of software capability representing the caller
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/software-server-capabilities/{capabilityGUID}/delete")
+    @PostMapping(path = "/software-capabilities/{capabilityGUID}/delete")
 
-    public VoidResponse removeSoftwareServerCapability(@PathVariable String                    serverName,
-                                                       @PathVariable String                    userId,
-                                                       @PathVariable String                    capabilityGUID,
-                                                       @RequestBody  MetadataSourceRequestBody requestBody)
+    public VoidResponse removeSoftwareCapability(@PathVariable String                    serverName,
+                                                 @PathVariable String                    userId,
+                                                 @PathVariable String                    capabilityGUID,
+                                                 @RequestBody  MetadataSourceRequestBody requestBody)
     {
-        return restAPI.removeSoftwareServerCapability(serverName, userId, capabilityGUID, requestBody);
+        return restAPI.removeSoftwareCapability(serverName, userId, capabilityGUID, requestBody);
     }
 
 
     /**
-     * Retrieve the list of software server capability metadata elements that contain the search string.
+     * Retrieve the list of software capability metadata elements that contain the search string.
      * The search string is treated as a regular expression.
      *
      * @param serverName name of the service to route the request to.
@@ -951,20 +951,20 @@ public class ITInfrastructureResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/software-server-capabilities/by-search-string")
+    @PostMapping(path = "/software-capabilities/by-search-string")
 
-    public SoftwareServerCapabilityListResponse findSoftwareServerCapabilities(@PathVariable String                  serverName,
-                                                                               @PathVariable String                  userId,
-                                                                               @RequestParam int                     startFrom,
-                                                                               @RequestParam int                     pageSize,
-                                                                               @RequestBody  SearchStringRequestBody requestBody)
+    public SoftwareCapabilityListResponse findSoftwareCapabilities(@PathVariable String                  serverName,
+                                                                   @PathVariable String                  userId,
+                                                                   @RequestParam int                     startFrom,
+                                                                   @RequestParam int                     pageSize,
+                                                                   @RequestBody  SearchStringRequestBody requestBody)
     {
-        return restAPI.findSoftwareServerCapabilities(serverName, userId, startFrom, pageSize, requestBody);
+        return restAPI.findSoftwareCapabilities(serverName, userId, startFrom, pageSize, requestBody);
     }
 
 
     /**
-     * Retrieve the list of software server capability metadata elements with a matching qualified or display name.
+     * Retrieve the list of software capability metadata elements with a matching qualified or display name.
      * There are no wildcards supported on this request.
      *
      * @param serverName name of the service to route the request to.
@@ -978,20 +978,20 @@ public class ITInfrastructureResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/software-server-capabilities/by-name")
+    @PostMapping(path = "/software-capabilities/by-name")
 
-    public SoftwareServerCapabilityListResponse getSoftwareServerCapabilitiesByName(@PathVariable String          serverName,
-                                                                                    @PathVariable String          userId,
-                                                                                    @RequestParam int             startFrom,
-                                                                                    @RequestParam int             pageSize,
-                                                                                    @RequestBody  NameRequestBody requestBody)
+    public SoftwareCapabilityListResponse getSoftwareCapabilitiesByName(@PathVariable String          serverName,
+                                                                        @PathVariable String          userId,
+                                                                        @RequestParam int             startFrom,
+                                                                        @RequestParam int             pageSize,
+                                                                        @RequestBody  NameRequestBody requestBody)
     {
-        return restAPI.getSoftwareServerCapabilitiesByName(serverName, userId, startFrom, pageSize, requestBody);
+        return restAPI.getSoftwareCapabilitiesByName(serverName, userId, startFrom, pageSize, requestBody);
     }
 
 
     /**
-     * Retrieve the software server capability metadata element with the supplied unique identifier.
+     * Retrieve the software capability metadata element with the supplied unique identifier.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
@@ -1002,27 +1002,27 @@ public class ITInfrastructureResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/software-server-capabilities/{guid}")
+    @GetMapping(path = "/software-capabilities/{guid}")
 
-    public SoftwareServerCapabilityResponse getSoftwareServerCapabilityByGUID(@PathVariable String serverName,
-                                                                              @PathVariable String userId,
-                                                                              @PathVariable String guid)
+    public SoftwareCapabilityResponse getSoftwareCapabilityByGUID(@PathVariable String serverName,
+                                                                  @PathVariable String userId,
+                                                                  @PathVariable String guid)
     {
-        return restAPI.getSoftwareServerCapabilityByGUID(serverName, userId, guid);
+        return restAPI.getSoftwareCapabilityByGUID(serverName, userId, guid);
     }
 
 
     /*
-     * A software server capability works with assets
+     * A software capability works with assets
      */
 
     /**
-     * Create a new metadata relationship to represent the use of an asset by a software server capability.
+     * Create a new metadata relationship to represent the use of an asset by a software capability.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param infrastructureManagerIsHome should the software server capability be marked as owned by the infrastructure manager so others can not update?
-     * @param capabilityGUID unique identifier of a software server capability
+     * @param infrastructureManagerIsHome should the software capability be marked as owned by the infrastructure manager so others can not update?
+     * @param capabilityGUID unique identifier of a software capability
      * @param assetGUID unique identifier of an asset
      * @param requestBody properties about the ServerAssetUse relationship
      *
@@ -1031,7 +1031,7 @@ public class ITInfrastructureResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/server-asset-uses/software-server-capabilities/{capabilityGUID}/assets/{assetGUID}")
+    @PostMapping(path = "/server-asset-uses/software-capabilities/{capabilityGUID}/assets/{assetGUID}")
 
     public GUIDResponse createServerAssetUse(@PathVariable String                    serverName,
                                              @PathVariable String                    userId,
@@ -1045,11 +1045,11 @@ public class ITInfrastructureResource
 
 
     /**
-     * Update the metadata relationship to represent the use of an asset by a software server capability.
+     * Update the metadata relationship to represent the use of an asset by a software capability.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param serverAssetUseGUID unique identifier of the relationship between a software server capability and an asset
+     * @param serverAssetUseGUID unique identifier of the relationship between a software capability and an asset
      * @param isMergeUpdate are unspecified properties unchanged (true) or removed?
      * @param requestBody new properties for the ServerAssetUse relationship
      *
@@ -1071,12 +1071,12 @@ public class ITInfrastructureResource
 
 
     /**
-     * Remove the metadata relationship to represent the use of an asset by a software server capability.
+     * Remove the metadata relationship to represent the use of an asset by a software capability.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param serverAssetUseGUID unique identifier of the relationship between a software server capability and an asset
-     * @param requestBody unique identifier of software server capability representing the caller
+     * @param serverAssetUseGUID unique identifier of the relationship between a software capability and an asset
+     * @param requestBody unique identifier of software capability representing the caller
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid
@@ -1095,11 +1095,11 @@ public class ITInfrastructureResource
 
 
     /**
-     * Return the list of server asset use relationships associated with a software server capability.
+     * Return the list of server asset use relationships associated with a software capability.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param capabilityGUID unique identifier of the software server capability to query
+     * @param capabilityGUID unique identifier of the software capability to query
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param requestBody values to search for.
@@ -1109,7 +1109,7 @@ public class ITInfrastructureResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/server-asset-uses/software-server-capabilities/{capabilityGUID}")
+    @PostMapping(path = "/server-asset-uses/software-capabilities/{capabilityGUID}")
 
     public ServerAssetUseListResponse getServerAssetUsesForCapability(@PathVariable String             serverName,
                                                                       @PathVariable String             userId,
@@ -1123,7 +1123,7 @@ public class ITInfrastructureResource
 
 
     /**
-     * Return the list of software server capabilities that make use of a specific asset.
+     * Return the list of software capabilities that make use of a specific asset.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
@@ -1151,11 +1151,11 @@ public class ITInfrastructureResource
 
 
     /**
-     * Retrieve the list of relationships between a specific software server capability and a specific asset.
+     * Retrieve the list of relationships between a specific software capability and a specific asset.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param capabilityGUID unique identifier of a software server capability
+     * @param capabilityGUID unique identifier of a software capability
      * @param assetGUID unique identifier of an asset
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -1166,7 +1166,7 @@ public class ITInfrastructureResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/server-asset-uses/software-server-capabilities/{capabilityGUID}/assets/{assetGUID}/by-elements")
+    @PostMapping(path = "/server-asset-uses/software-capabilities/{capabilityGUID}/assets/{assetGUID}/by-elements")
 
     public ServerAssetUseListResponse getServerAssetUsesForElements(@PathVariable String                   serverName,
                                                                     @PathVariable String                   userId,

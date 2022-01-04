@@ -1,13 +1,15 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.accessservices.datamanager.metadataelements;
+package org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseManagerProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.SoftwareServerCapabilitiesProperties;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ITProfileProperties;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.SoftwareCapabilityProperties;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -16,24 +18,31 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * SoftwareServerCapabilityElement contains the properties and header for a software server capabilities entity retrieved from the metadata
- * repository.
+ * SoftwareCapabilityElement contains the properties and header for a software server capability retrieved from the metadata repository.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SoftwareServerCapabilityElement implements MetadataElement, Serializable
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+              include = JsonTypeInfo.As.PROPERTY,
+              property = "class")
+@JsonSubTypes(
+        {
+                @JsonSubTypes.Type(value = SoftwareServerCapabilityElement.class, name = "SoftwareServerCapabilityElement"),
+        })
+@SuppressWarnings(value = "deprecated")
+public class SoftwareCapabilityElement implements MetadataElement, Serializable
 {
-    private static final long     serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-    private ElementHeader                        elementHeader = null;
-    private SoftwareServerCapabilitiesProperties softwareServerCapabilitiesProperties = null;
+    private SoftwareCapabilityProperties properties    = null;
+    private ElementHeader                elementHeader = null;
 
 
     /**
      * Default constructor
      */
-    public SoftwareServerCapabilityElement()
+    public SoftwareCapabilityElement()
     {
         super();
     }
@@ -44,12 +53,12 @@ public class SoftwareServerCapabilityElement implements MetadataElement, Seriali
      *
      * @param template object to copy
      */
-    public SoftwareServerCapabilityElement(SoftwareServerCapabilityElement template)
+    public SoftwareCapabilityElement(SoftwareCapabilityElement template)
     {
         if (template != null)
         {
             elementHeader = template.getElementHeader();
-            softwareServerCapabilitiesProperties = template.getSoftwareServerCapabilitiesProperties();
+            properties = template.getProperties();
         }
     }
 
@@ -79,24 +88,24 @@ public class SoftwareServerCapabilityElement implements MetadataElement, Seriali
 
 
     /**
-     * Return the properties of the software server capability.
+     * Return the properties for the software server capability.
      *
-     * @return properties bean
+     * @return asset properties (using appropriate subclass)
      */
-    public SoftwareServerCapabilitiesProperties getSoftwareServerCapabilitiesProperties()
+    public SoftwareCapabilityProperties getProperties()
     {
-        return softwareServerCapabilitiesProperties;
+        return properties;
     }
 
 
     /**
-     * Set up the properties of the software server capability.
+     * Set up the properties for the software server capability.
      *
-     * @param softwareServerCapabilitiesProperties properties bean
+     * @param properties asset properties
      */
-    public void setSoftwareServerCapabilitiesProperties(SoftwareServerCapabilitiesProperties softwareServerCapabilitiesProperties)
+    public void setProperties(SoftwareCapabilityProperties properties)
     {
-        this.softwareServerCapabilitiesProperties = softwareServerCapabilitiesProperties;
+        this.properties = properties;
     }
 
 
@@ -108,10 +117,10 @@ public class SoftwareServerCapabilityElement implements MetadataElement, Seriali
     @Override
     public String toString()
     {
-        return "SoftwareServerCapabilityElement{" +
-                "elementHeader=" + elementHeader +
-                ", softwareServerCapabilitiesProperties=" + softwareServerCapabilitiesProperties +
-                '}';
+        return "SoftwareCapabilityElement{" +
+                       "properties=" + properties +
+                       ", elementHeader=" + elementHeader +
+                       '}';
     }
 
 
@@ -132,9 +141,9 @@ public class SoftwareServerCapabilityElement implements MetadataElement, Seriali
         {
             return false;
         }
-        SoftwareServerCapabilityElement that = (SoftwareServerCapabilityElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader) &&
-                Objects.equals(softwareServerCapabilitiesProperties, that.softwareServerCapabilitiesProperties);
+        SoftwareCapabilityElement that = (SoftwareCapabilityElement) objectToCompare;
+        return Objects.equals(getProperties(), that.getProperties()) &&
+                       Objects.equals(getElementHeader(), that.getElementHeader());
     }
 
 
@@ -146,6 +155,6 @@ public class SoftwareServerCapabilityElement implements MetadataElement, Seriali
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, softwareServerCapabilitiesProperties);
+        return Objects.hash(super.hashCode(), elementHeader, properties);
     }
 }

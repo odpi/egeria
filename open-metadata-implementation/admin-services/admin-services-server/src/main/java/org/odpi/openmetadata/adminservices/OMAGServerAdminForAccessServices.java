@@ -1240,6 +1240,76 @@ public class OMAGServerAdminForAccessServices
 
 
     /**
+     * Set up the default remote enterprise topic.  This allows a remote process to monitor enterprise topic events.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param configurationProperties additional properties for the cohort
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or null userId parameter.
+     */
+    public VoidResponse addRemoteEnterpriseTopic(String               userId,
+                                                 String               serverName,
+                                                 Map<String, Object>  configurationProperties)
+    {
+        final String methodName = "addRemoteEnterpriseTopic";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            EventBusConfig   eventBusConfig  = errorHandler.validateEventBusIsSet(serverName, serverConfig, methodName);
+
+            ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
+
+            EnterpriseAccessConfig enterpriseAccessConfig = this.getEnterpriseAccessConfig(serverConfig);
+
+            if (enterpriseAccessConfig == null)
+            {
+                /*
+                 * Set up the enterprise repository services if this is the first access service.
+                 */
+                OMRSConfigurationFactory configurationFactory = new OMRSConfigurationFactory();
+                enterpriseAccessConfig = configurationFactory.getDefaultEnterpriseAccessConfig(serverConfig.getLocalServerName(),
+                                                                                               serverConfig.getLocalServerId());
+            }
+
+            enterpriseAccessConfig.setRemoteEnterpriseOMRSTopicConnection(connectorConfigurationFactory.getDefaultRemoteEnterpriseOMRSTopicConnection(serverName,
+                                                                                                                                                      configurationProperties,
+                                                                                                                                                      eventBusConfig.getConnectorProvider(),
+                                                                                                                                                      eventBusConfig.getTopicURLRoot(),
+                                                                                                                                                      serverConfig.getLocalServerId(),
+                                                                                                                                                      eventBusConfig.getConfigurationProperties()));
+            this.setEnterpriseAccessConfig(userId, serverName, enterpriseAccessConfig);
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Exception  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
      * Set up the configuration that controls the enterprise repository services.  These services are part
      * of the Open Metadata Repository Services (OMRS).  They provide federated queries and federated event
      * notifications that cover metadata from the local repository plus any repositories connected via

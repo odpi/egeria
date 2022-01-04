@@ -1051,7 +1051,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
 
     ENTERPRISE_TOPIC_DISCONNECT_ERROR("OMRS-AUDIT-9012",
                                       OMRSAuditLogRecordSeverity.EXCEPTION,
-                                      "Disconnecting from the enterprise topic connector generated an exception with message {0}",
+                                      "Disconnecting from the {0} enterprise topic connector generated a {1} exception with message {2}",
                                       "The server may not have disconnected from the topic cleanly.",
                                       "Review the exception and resolve any issues with the topic listener that it documents."),
 

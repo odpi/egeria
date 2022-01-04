@@ -25,7 +25,7 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
 {
     private static AccessServiceDescription myDescription = AccessServiceDescription.COMMUNITY_PROFILE_OMAS;
 
-    private SoftwareServerCapabilityHandler<MetadataSourceElement> metadataSourceHandler;
+    private SoftwareCapabilityHandler<MetadataSourceElement>       metadataSourceHandler;
     private UserIdentityHandler<UserIdentityElement>               userIdentityHandler;
     private ActorProfileHandler<PersonalProfileUniverse>           personalProfileHandler;
     private ActorProfileHandler<ActorProfileElement>               actorProfileHandler;
@@ -86,19 +86,19 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
 
         if (repositoryHandler != null)
         {
-            this.metadataSourceHandler = new SoftwareServerCapabilityHandler<>(new MetadataSourceConverter<>(repositoryHelper, serviceName,serverName),
-                                                                               MetadataSourceElement.class,
-                                                                               serviceName,
-                                                                               serverName,
-                                                                               invalidParameterHandler,
-                                                                               repositoryHandler,
-                                                                               repositoryHelper,
-                                                                               localServerUserId,
-                                                                               securityVerifier,
-                                                                               supportedZones,
-                                                                               defaultZones,
-                                                                               publishZones,
-                                                                               auditLog);
+            this.metadataSourceHandler = new SoftwareCapabilityHandler<>(new MetadataSourceConverter<>(repositoryHelper, serviceName,serverName),
+                                                                         MetadataSourceElement.class,
+                                                                         serviceName,
+                                                                         serverName,
+                                                                         invalidParameterHandler,
+                                                                         repositoryHandler,
+                                                                         repositoryHelper,
+                                                                         localServerUserId,
+                                                                         securityVerifier,
+                                                                         supportedZones,
+                                                                         defaultZones,
+                                                                         publishZones,
+                                                                         auditLog);
 
             this.personalProfileHandler = new ActorProfileHandler<>(new PersonalProfileConverter<>(repositoryHelper, serviceName,serverName),
                                                                     PersonalProfileUniverse.class,
@@ -285,11 +285,13 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
      * @return handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    public SoftwareServerCapabilityHandler<MetadataSourceElement> getMetadataSourceHandler() throws PropertyServerException
+    public SoftwareCapabilityHandler<MetadataSourceElement> getMetadataSourceHandler() throws PropertyServerException
     {
         final String methodName = "getMetadataSourceHandler";
 
-        validateActiveRepository(methodName);return metadataSourceHandler;
+        validateActiveRepository(methodName);
+
+        return metadataSourceHandler;
     }
 
 
