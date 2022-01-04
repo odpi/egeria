@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.datamanager.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.datamanager.properties.SoftwareServerCapabilitiesProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.SoftwareCapabilitiesProperties;
 
 import java.util.Objects;
 
@@ -15,12 +15,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * SoftwareServerCapabilityRequestBody describes the basic properties of a software server capability.
+ * SoftwareCapabilityRequestBody describes the basic properties of a software server capability.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SoftwareServerCapabilityRequestBody extends SoftwareServerCapabilitiesProperties
+public class SoftwareCapabilityRequestBody extends SoftwareCapabilitiesProperties
 {
     private static final long    serialVersionUID = 1L;
 
@@ -30,7 +30,7 @@ public class SoftwareServerCapabilityRequestBody extends SoftwareServerCapabilit
     /**
      * Default constructor
      */
-    public SoftwareServerCapabilityRequestBody()
+    public SoftwareCapabilityRequestBody()
     {
         super();
     }
@@ -41,7 +41,7 @@ public class SoftwareServerCapabilityRequestBody extends SoftwareServerCapabilit
      *
      * @param template object to copy
      */
-    public SoftwareServerCapabilityRequestBody(SoftwareServerCapabilityRequestBody template)
+    public SoftwareCapabilityRequestBody(SoftwareCapabilityRequestBody template)
     {
         super(template);
 
@@ -58,7 +58,7 @@ public class SoftwareServerCapabilityRequestBody extends SoftwareServerCapabilit
      *
      * @param template object to copy
      */
-    public SoftwareServerCapabilityRequestBody(SoftwareServerCapabilitiesProperties template)
+    public SoftwareCapabilityRequestBody(SoftwareCapabilitiesProperties template)
     {
         super(template);
     }
@@ -116,7 +116,7 @@ public class SoftwareServerCapabilityRequestBody extends SoftwareServerCapabilit
     @Override
     public String toString()
     {
-        return "SoftwareServerCapabilityRequestBody{" +
+        return "SoftwareCapabilityRequestBody{" +
                 "externalSourceGUID='" + externalSourceGUID + '\'' +
                 ", externalSourceName='" + externalSourceName + '\'' +
                 ", displayName='" + getDisplayName() + '\'' +
@@ -155,7 +155,7 @@ public class SoftwareServerCapabilityRequestBody extends SoftwareServerCapabilit
         {
             return false;
         }
-        SoftwareServerCapabilityRequestBody that = (SoftwareServerCapabilityRequestBody) objectToCompare;
+        SoftwareCapabilityRequestBody that = (SoftwareCapabilityRequestBody) objectToCompare;
         return Objects.equals(externalSourceGUID, that.externalSourceGUID) &&
                 Objects.equals(externalSourceName, that.externalSourceName);
     }

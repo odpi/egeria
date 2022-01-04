@@ -493,7 +493,7 @@ public class ITInfrastructureRESTClient extends OCFRESTClient
 
 
     /**
-     * Issue a GET REST call that returns a SoftwareServerCapabilityElement in a response object.
+     * Issue a GET REST call that returns a SoftwareCapabilityElement in a response object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
@@ -504,13 +504,13 @@ public class ITInfrastructureRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    public SoftwareServerCapabilityResponse callSoftwareServerCapabilityGetRESTCall(String    methodName,
-                                                                                    String    urlTemplate,
-                                                                                    Object... params) throws InvalidParameterException,
+    public SoftwareCapabilityResponse callSoftwareServerCapabilityGetRESTCall(String    methodName,
+                                                                              String    urlTemplate,
+                                                                              Object... params) throws InvalidParameterException,
                                                                                                              UserNotAuthorizedException,
                                                                                                              PropertyServerException
     {
-        SoftwareServerCapabilityResponse restResult = this.callGetRESTCall(methodName, SoftwareServerCapabilityResponse.class, urlTemplate, params);
+        SoftwareCapabilityResponse restResult = this.callGetRESTCall(methodName, SoftwareCapabilityResponse.class, urlTemplate, params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 
@@ -529,13 +529,13 @@ public class ITInfrastructureRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    public SoftwareServerCapabilityListResponse callSoftwareServerCapabilityListGetRESTCall(String    methodName,
-                                                                                            String    urlTemplate,
-                                                                                            Object... params)  throws InvalidParameterException,
+    public SoftwareCapabilityListResponse callSoftwareServerCapabilityListGetRESTCall(String    methodName,
+                                                                                      String    urlTemplate,
+                                                                                      Object... params)  throws InvalidParameterException,
                                                                                                                       UserNotAuthorizedException,
                                                                                                                       PropertyServerException
     {
-        SoftwareServerCapabilityListResponse restResult = this.callGetRESTCall(methodName, SoftwareServerCapabilityListResponse.class, urlTemplate, params);
+        SoftwareCapabilityListResponse restResult = this.callGetRESTCall(methodName, SoftwareCapabilityListResponse.class, urlTemplate, params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 
@@ -555,14 +555,14 @@ public class ITInfrastructureRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    public SoftwareServerCapabilityListResponse callSoftwareServerCapabilityListPostRESTCall(String    methodName,
-                                                                                             String    urlTemplate,
-                                                                                             Object    requestBody,
-                                                                                             Object... params)  throws InvalidParameterException,
+    public SoftwareCapabilityListResponse callSoftwareServerCapabilityListPostRESTCall(String    methodName,
+                                                                                       String    urlTemplate,
+                                                                                       Object    requestBody,
+                                                                                       Object... params)  throws InvalidParameterException,
                                                                                                                        UserNotAuthorizedException,
                                                                                                                        PropertyServerException
     {
-        SoftwareServerCapabilityListResponse restResult = this.callPostRESTCall(methodName, SoftwareServerCapabilityListResponse.class, urlTemplate, requestBody, params);
+        SoftwareCapabilityListResponse restResult = this.callPostRESTCall(methodName, SoftwareCapabilityListResponse.class, urlTemplate, requestBody, params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 
