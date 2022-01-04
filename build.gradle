@@ -75,7 +75,7 @@ allprojects {
 
     ext {
         logbackVersion = '1.2.10'
-        jacksonVersion = '2.12.2'
+        jacksonVersion = '2.13.1'
         nettyVersion = '4.1.72.Final'
         luceneVersion = '8.11.1'
         gremlinVersion = '3.5.1'
@@ -83,12 +83,12 @@ allprojects {
         springdataVersion = '2.6.0'
         janusVersion = '0.6.0'
         springwebVersion = '5.3.14'
-        springldapVersion = '2.3.4.RELEASE'
+        springldapVersion = '2.3.5.RELEASE'
         tomcatVersion = '9.0.56'
         springsecurityVersion = '5.6.1'
         junitjupiterVersion = '5.8.2'
         mockitoVersion = '4.2.0'
-        junitjupiterVersion = '5.8.1'
+        junitjupiterVersion = '5.8.2'
         httpcoreVersion = '4.4.15'
         springbootVersion = '2.6.2'
         jenaVersion = '4.2.0'
@@ -146,7 +146,7 @@ allprojects {
             implementation("org.apache.lucene:lucene-core:${luceneVersion}")
             implementation("org.apache.lucene:lucene-analyzers-common:${luceneVersion}")
             implementation("org.apache.lucene:lucene-queryparser:${luceneVersion}")
-            implementation("org.apache.lucene:lucene-spatial:8.4.1")
+            implementation("org.apache.lucene:lucene-spatial:${luceneVersion})
             implementation("org.apache.lucene:lucene-spatial-extras:${luceneVersion}")
             implementation("org.apache.tinkerpop:tinkergraph-gremlin:${gremlinVersion}")
             implementation("org.apache.tinkerpop:gremlin-driver:${gremlinVersion}")
@@ -169,7 +169,7 @@ allprojects {
             implementation("org.janusgraph:janusgraph-core:${janusVersion}")
             implementation("org.janusgraph:janusgraph-inmemory:${janusVersion}")
             implementation("org.janusgraph:janusgraph-driver:${janusVersion}")
-            implementation("org.javassist:3.27.0-GA")
+            implementation("org.javassist:3.28.0-GA")
             implementation("org.quartz-scheduler:quartz:2.3.2")
             implementation("org.reflections:reflections:0.10.2")
             implementation("org.springdoc:springdoc-openapi-ui:1.6.3")
@@ -218,20 +218,20 @@ allprojects {
             runtimeOnly("org.janusgraph:janusgraph-lucene:${janusVersion}")
             runtimeOnly("org.xerial.snappy:snappy-java:1.1.8.4")
             runtimeOnly("org.janusgraph:janusgraph-es:${janusVersion}")
-            runtimeOnly("org.xerial.snappy:snappy-java:1.1.8.2")
+            runtimeOnly("org.xerial.snappy:snappy-java:1.1.8.4")
 	        runtimeOnly("javax.servlet:javax.servlet-api:4.0.1");
             testImplementation("junit:junit:4.13.2")
             testImplementation("org.glassfish:javax.json:1.1.4")
             testImplementation("org.junit.jupiter:junit-jupiter:${junitjupiterVersion}")
             testImplementation("org.junit.jupiter:junit-jupiter-api:${junitjupiterVersion}")
             testImplementation("org.junit.jupiter:junit-jupiter-engine:${junitjupiterVersion}")
-            testImplementation("org.junit.jupiter:junit-platform-runner:1.7.0")
-            testImplementation("org.junit.jupiter:junit-platform-suite-api:1.7.0")
+            testImplementation("org.junit.jupiter:junit-platform-runner:1.8.2")
+            testImplementation("org.junit.jupiter:junit-platform-suite-api:1.8.2")
             testImplementation("org.mockito:mockito-core:${mockitoVersion}")
             testImplementation("org.mockito:mockito-junit-jupiter:${mockitoVersion}")
             testImplementation("org.mockito:mockito-inline:${mockitoVersion}")
             testImplementation("org.slf4j:slf4j-simple:1.7.32")
-            testImplementation("org.testng:testng:7.3.0")
+            testImplementation("org.testng:testng:7.4.0")
             testImplementation("org.hamcrest:hamcrest:2.2")
             implementation("org.apache.thrift:libthrift:0.15.0")
         }
