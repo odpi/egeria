@@ -39,11 +39,11 @@ class CommunityProfileInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException the service name is not known - indicating a logic error
      */
-    SoftwareServerCapabilityHandler<MetadataSourceElement> getMetadataSourceHandler(String userId,
-                                                                                    String serverName,
-                                                                                    String serviceOperationName) throws InvalidParameterException,
-                                                                                                                        UserNotAuthorizedException,
-                                                                                                                        PropertyServerException
+    SoftwareCapabilityHandler<MetadataSourceElement> getMetadataSourceHandler(String userId,
+                                                                              String serverName,
+                                                                              String serviceOperationName) throws InvalidParameterException,
+                                                                                                                  UserNotAuthorizedException,
+                                                                                                                  PropertyServerException
     {
         CommunityProfileServicesInstance instance = (CommunityProfileServicesInstance)super.getServerServiceInstance(userId,
                                                                                                                      serverName,

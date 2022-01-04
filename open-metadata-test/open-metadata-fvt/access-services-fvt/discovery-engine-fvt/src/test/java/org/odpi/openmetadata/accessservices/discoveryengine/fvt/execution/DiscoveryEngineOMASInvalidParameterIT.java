@@ -36,7 +36,7 @@ public class DiscoveryEngineOMASInvalidParameterIT
     {
         FVTResults results = InvalidParameterTest.performFVT(serverName, StringUtils.defaultIfEmpty(System.getProperty("fvt.url"),FVTConstants.SERVER_PLATFORM_URL_ROOT), FVTConstants.USERID);
 
-        results.printResults();
+        results.printResults(serverName);
         if (! results.isSuccessful())
         {
             throw new FVTTestFailureException(results);

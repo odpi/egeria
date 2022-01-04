@@ -11,7 +11,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * SoftwareServerCapabilitiesProperties describes a functional capability of a
+ * SoftwareCapabilitiesProperties describes a functional capability of a
  * software server.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
@@ -24,7 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = AssetManagerProperties.class, name = "AssetManagerProperties")
         })
-public class SoftwareServerCapabilitiesProperties extends SupplementaryProperties
+public class SoftwareCapabilitiesProperties extends SupplementaryProperties
 {
     private static final long serialVersionUID = 1L;
 
@@ -39,7 +39,7 @@ public class SoftwareServerCapabilitiesProperties extends SupplementaryPropertie
     /**
      * Default constructor.
      */
-    public SoftwareServerCapabilitiesProperties()
+    public SoftwareCapabilitiesProperties()
     {
         super();
     }
@@ -50,7 +50,7 @@ public class SoftwareServerCapabilitiesProperties extends SupplementaryPropertie
      *
      * @param template object to copy
      */
-    public SoftwareServerCapabilitiesProperties(SoftwareServerCapabilitiesProperties template)
+    public SoftwareCapabilitiesProperties(SoftwareCapabilitiesProperties template)
     {
         super(template);
 
@@ -206,7 +206,7 @@ public class SoftwareServerCapabilitiesProperties extends SupplementaryPropertie
     @Override
     public String toString()
     {
-        return "SoftwareServerCapabilitiesProperties{" +
+        return "SoftwareCapabilitiesProperties{" +
                        "technicalName='" + technicalName + '\'' +
                        ", technicalDescription='" + technicalDescription + '\'' +
                        ", typeDescription='" + typeDescription + '\'' +
@@ -249,7 +249,7 @@ public class SoftwareServerCapabilitiesProperties extends SupplementaryPropertie
         {
             return false;
         }
-        SoftwareServerCapabilitiesProperties that = (SoftwareServerCapabilitiesProperties) objectToCompare;
+        SoftwareCapabilitiesProperties that = (SoftwareCapabilitiesProperties) objectToCompare;
         return Objects.equals(getTechnicalName(), that.getTechnicalName()) &&
                        Objects.equals(getTechnicalDescription(), that.getTechnicalDescription()) &&
                        Objects.equals(getTypeDescription(), that.getTypeDescription()) &&

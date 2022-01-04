@@ -709,7 +709,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
         List<EntityDetail> glossaryEntities = externalIdentifierHandler.getElementEntitiesForScope(userId,
                                                                                                    assetManagerGUID,
                                                                                                    assetManagerGUIDParameterName,
-                                                                                                   OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                                                                   OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                                                                    OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
                                                                                                    startFrom,
                                                                                                    pageSize,

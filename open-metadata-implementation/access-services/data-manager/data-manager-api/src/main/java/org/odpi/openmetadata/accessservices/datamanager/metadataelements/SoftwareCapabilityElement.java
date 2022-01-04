@@ -1,12 +1,12 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.accessservices.securitymanager.metadataelements;
+package org.odpi.openmetadata.accessservices.datamanager.metadataelements;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.securitymanager.properties.SecurityManagerProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.SoftwareCapabilitiesProperties;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -15,24 +15,24 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * SoftwareServerCapabilityElement contains the properties and header for a software server capabilities entity retrieved from the metadata
+ * SoftwareCapabilityElement contains the properties and header for a software server capabilities entity retrieved from the metadata
  * repository.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SoftwareServerCapabilityElement implements MetadataElement, Serializable
+public class SoftwareCapabilityElement implements MetadataElement, Serializable
 {
     private static final long     serialVersionUID = 1L;
 
-    private ElementHeader             elementHeader             = null;
-    private SecurityManagerProperties securityManagerProperties = null;
+    private ElementHeader                  elementHeader                  = null;
+    private SoftwareCapabilitiesProperties softwareCapabilitiesProperties = null;
 
 
     /**
      * Default constructor
      */
-    public SoftwareServerCapabilityElement()
+    public SoftwareCapabilityElement()
     {
         super();
     }
@@ -43,12 +43,12 @@ public class SoftwareServerCapabilityElement implements MetadataElement, Seriali
      *
      * @param template object to copy
      */
-    public SoftwareServerCapabilityElement(SoftwareServerCapabilityElement template)
+    public SoftwareCapabilityElement(SoftwareCapabilityElement template)
     {
         if (template != null)
         {
             elementHeader = template.getElementHeader();
-            securityManagerProperties = template.getSecurityManagerProperties();
+            softwareCapabilitiesProperties = template.getSoftwareCapabilitiesProperties();
         }
     }
 
@@ -82,20 +82,20 @@ public class SoftwareServerCapabilityElement implements MetadataElement, Seriali
      *
      * @return properties bean
      */
-    public SecurityManagerProperties getSecurityManagerProperties()
+    public SoftwareCapabilitiesProperties getSoftwareCapabilitiesProperties()
     {
-        return securityManagerProperties;
+        return softwareCapabilitiesProperties;
     }
 
 
     /**
      * Set up the properties of the software server capability.
      *
-     * @param securityManagerProperties properties bean
+     * @param softwareCapabilitiesProperties properties bean
      */
-    public void setSecurityManagerProperties(SecurityManagerProperties securityManagerProperties)
+    public void setSoftwareCapabilitiesProperties(SoftwareCapabilitiesProperties softwareCapabilitiesProperties)
     {
-        this.securityManagerProperties = securityManagerProperties;
+        this.softwareCapabilitiesProperties = softwareCapabilitiesProperties;
     }
 
 
@@ -107,9 +107,9 @@ public class SoftwareServerCapabilityElement implements MetadataElement, Seriali
     @Override
     public String toString()
     {
-        return "SoftwareServerCapabilityElement{" +
+        return "SoftwareCapabilityElement{" +
                 "elementHeader=" + elementHeader +
-                ", securityManagerProperties=" + securityManagerProperties +
+                ", softwareCapabilitiesProperties=" + softwareCapabilitiesProperties +
                 '}';
     }
 
@@ -131,13 +131,9 @@ public class SoftwareServerCapabilityElement implements MetadataElement, Seriali
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
-        SoftwareServerCapabilityElement that = (SoftwareServerCapabilityElement) objectToCompare;
+        SoftwareCapabilityElement that = (SoftwareCapabilityElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
-                Objects.equals(securityManagerProperties, that.securityManagerProperties);
+                Objects.equals(softwareCapabilitiesProperties, that.softwareCapabilitiesProperties);
     }
 
 
@@ -149,6 +145,6 @@ public class SoftwareServerCapabilityElement implements MetadataElement, Seriali
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, securityManagerProperties);
+        return Objects.hash(super.hashCode(), elementHeader, softwareCapabilitiesProperties);
     }
 }

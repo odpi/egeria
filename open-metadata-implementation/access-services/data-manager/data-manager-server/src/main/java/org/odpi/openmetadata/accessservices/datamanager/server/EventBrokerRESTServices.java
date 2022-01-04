@@ -130,7 +130,7 @@ public class EventBrokerRESTServices
                                                      requestBody.getExternalSourceName(),
                                                      requestBody.getExternalSourceGUID(),
                                                      eventBrokerGUIDParameterName,
-                                                     OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                     OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                      topicGUID,
                                                      topicGUIDParameterName,
                                                      OpenMetadataAPIMapper.TOPIC_TYPE_NAME,
@@ -163,7 +163,7 @@ public class EventBrokerRESTServices
                                                      null,
                                                      requestBody.getExternalSourceGUID(),
                                                      eventBrokerGUIDParameterName,
-                                                     OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                     OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                      topicGUID,
                                                      topicGUIDParameterName,
                                                      OpenMetadataAPIMapper.TOPIC_TYPE_NAME,
@@ -262,7 +262,7 @@ public class EventBrokerRESTServices
                                                  handler.getExternalSourceID(eventBrokerIsHome, requestBody.getExternalSourceName()),
                                                  requestBody.getExternalSourceGUID(),
                                                  eventBrokerGUIDParameterName,
-                                                 OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                 OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                  topicGUID,
                                                  topicGUIDParameterName,
                                                  OpenMetadataAPIMapper.TOPIC_TYPE_NAME,
@@ -718,7 +718,7 @@ public class EventBrokerRESTServices
             List<TopicElement> topicAssets = handler.getAttachedElements(userId,
                                                                          eventBrokerGUID,
                                                                          eventBrokerGUIDParameterName,
-                                                                         OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                                         OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                                          OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                                          OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
                                                                          OpenMetadataAPIMapper.TOPIC_TYPE_NAME,
@@ -1113,9 +1113,11 @@ public class EventBrokerRESTServices
                                                                            searchStringParameterName,
                                                                            startFrom,
                                                                            pageSize,
+                                                                           new Date(),
                                                                            methodName);
 
-                response.setElementList(setUpVendorProperties(userId, eventTypes, handler, methodName));
+                setUpVendorProperties(userId, eventTypes, handler, methodName);
+                response.setElementList(eventTypes);
             }
             else
             {
@@ -1173,9 +1175,11 @@ public class EventBrokerRESTServices
                                                                                  topicGUIDParameterName,
                                                                                  startFrom,
                                                                                  pageSize,
+                                                                                 new Date(),
                                                                                  methodName);
 
-            response.setElementList(setUpVendorProperties(userId, eventTypes, handler, methodName));
+            setUpVendorProperties(userId, eventTypes, handler, methodName);
+            response.setElementList(eventTypes);
         }
         catch (Exception error)
         {
@@ -1229,7 +1233,8 @@ public class EventBrokerRESTServices
                                                                               pageSize,
                                                                               methodName);
 
-            response.setElementList(setUpVendorProperties(userId, eventTypes, handler, methodName));
+            setUpVendorProperties(userId, eventTypes, handler, methodName);
+            response.setElementList(eventTypes);
         }
         catch (Exception error)
         {
@@ -1279,10 +1284,16 @@ public class EventBrokerRESTServices
             {
                 EventTypeHandler<EventTypeElement> handler = instanceHandler.getEventTypeHandler(userId, serverName, methodName);
 
-                List<EventTypeElement> eventTypes = handler.getEventTypesByName(userId, requestBody.getName(), nameParameterName, startFrom, pageSize,
+                List<EventTypeElement> eventTypes = handler.getEventTypesByName(userId,
+                                                                                requestBody.getName(),
+                                                                                nameParameterName,
+                                                                                startFrom,
+                                                                                pageSize,
+                                                                                new Date(),
                                                                                 methodName);
 
-                response.setElementList(setUpVendorProperties(userId, eventTypes, handler, methodName));
+                setUpVendorProperties(userId, eventTypes, handler, methodName);
+                response.setElementList(eventTypes);
             }
             else
             {
@@ -1332,7 +1343,9 @@ public class EventBrokerRESTServices
 
             EventTypeElement eventType = handler.getEventTypeByGUID(userId, guid, eventTypeGUIDParameterName, methodName);
 
-            response.setElement(setUpVendorProperties(userId, eventType, handler, methodName));
+            setUpVendorProperties(userId, eventType, handler, methodName);
+
+            response.setElement(eventType);
         }
         catch (Exception error)
         {
@@ -1426,16 +1439,14 @@ public class EventBrokerRESTServices
      * @param handler handler used to retrieve the vendor properties
      * @param methodName calling method
      *
-     * @return updated results
-     *
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    private List<EventTypeElement> setUpVendorProperties(String                              userId,
-                                                         List<EventTypeElement>             retrievedResults,
-                                                         EventTypeHandler<EventTypeElement> handler,
-                                                         String                             methodName) throws InvalidParameterException,
+    private void setUpVendorProperties(String                              userId,
+                                       List<EventTypeElement>             retrievedResults,
+                                       EventTypeHandler<EventTypeElement> handler,
+                                       String                             methodName) throws InvalidParameterException,
                                                                                                                UserNotAuthorizedException,
                                                                                                                PropertyServerException
     {
@@ -1449,8 +1460,6 @@ public class EventBrokerRESTServices
                 }
             }
         }
-
-        return retrievedResults;
     }
 
 
@@ -1468,10 +1477,10 @@ public class EventBrokerRESTServices
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    private EventTypeElement setUpVendorProperties(String                             userId,
-                                                   EventTypeElement                   element,
-                                                   EventTypeHandler<EventTypeElement> handler,
-                                                   String                             methodName) throws InvalidParameterException,
+    private void setUpVendorProperties(String                             userId,
+                                       EventTypeElement                   element,
+                                       EventTypeHandler<EventTypeElement> handler,
+                                       String                             methodName) throws InvalidParameterException,
                                                                                                          UserNotAuthorizedException,
                                                                                                          PropertyServerException
     {
@@ -1486,7 +1495,5 @@ public class EventBrokerRESTServices
                                                                        elementGUIDParameterName,
                                                                        methodName));
         }
-
-        return element;
     }
 }

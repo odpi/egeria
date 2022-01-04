@@ -32,9 +32,9 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
     private RepositoryHandler       repositoryHandler;
     private InvalidParameterHandler invalidParameterHandler;
 
-    private SoftwareServerCapabilityHandler<FILESYSTEM> fileSystemHandler;
-    private AssetHandler<FOLDER>                        folderHandler;
-    private AssetHandler<FILE>                          fileHandler;
+    private SoftwareCapabilityHandler<FILESYSTEM> fileSystemHandler;
+    private AssetHandler<FOLDER>                  folderHandler;
+    private AssetHandler<FILE>                    fileHandler;
 
     private ConnectionHandler<OpenMetadataAPIDummyBean>                                connectionHandler;
     private SchemaAttributeHandler<OpenMetadataAPIDummyBean, OpenMetadataAPIDummyBean> schemaAttributeHandler;
@@ -91,22 +91,22 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         this.serverName              = serverName;
         this.localServerUserId       = localServerUserId;
         this.invalidParameterHandler = invalidParameterHandler;
-        this.repositoryHandler = repositoryHandler;
+        this.repositoryHandler       = repositoryHandler;
         this.repositoryHelper        = repositoryHelper;
 
-        this.fileSystemHandler       = new SoftwareServerCapabilityHandler<>(fileSystemConverter,
-                                                                             fileSystemBeanClass,
-                                                                             serviceName,
-                                                                             serverName,
-                                                                             invalidParameterHandler,
-                                                                             repositoryHandler,
-                                                                             repositoryHelper,
-                                                                             localServerUserId,
-                                                                             securityVerifier,
-                                                                             supportedZones,
-                                                                             defaultZones,
-                                                                             publishZones,
-                                                                             auditLog);
+        this.fileSystemHandler       = new SoftwareCapabilityHandler<>(fileSystemConverter,
+                                                                       fileSystemBeanClass,
+                                                                       serviceName,
+                                                                       serverName,
+                                                                       invalidParameterHandler,
+                                                                       repositoryHandler,
+                                                                       repositoryHelper,
+                                                                       localServerUserId,
+                                                                       securityVerifier,
+                                                                       supportedZones,
+                                                                       defaultZones,
+                                                                       publishZones,
+                                                                       auditLog);
 
         this.folderHandler          = new AssetHandler<>(folderConverter,
                                                          folderBeanClass,
@@ -530,7 +530,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
             if (repositoryHandler.isEntityATypeOf(userId,
                                                   connectToGUID,
                                                   connectToParameterName,
-                                                  OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                  OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                   new Date(),
                                                   methodName))
             {
@@ -539,7 +539,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                    externalSourceName,
                                                    connectToGUID,
                                                    connectToParameterName,
-                                                   OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                   OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                    folderGUID,
                                                    folderParameterName,
                                                    OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
@@ -741,7 +741,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                            externalSourceName,
                                            fileSystemGUID,
                                            fileSystemGUIDParameterName,
-                                           OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                           OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                            folderGUID,
                                            folderGUIDParameterName,
                                            OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
@@ -787,7 +787,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                externalSourceName,
                                                fileSystemGUID,
                                                fileSystemGUIDParameterName,
-                                               OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                               OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                folderGUID,
                                                folderGUIDParameterName,
                                                OpenMetadataAPIMapper.FILE_FOLDER_TYPE_GUID,
@@ -1105,8 +1105,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
              * is created for the file system if it does not exist already.
              */
             fileSystemGUID = fileSystemHandler.getBeanGUIDByQualifiedName(userId,
-                                                                          OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_GUID,
-                                                                          OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                                          OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_GUID,
+                                                                          OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                                           fileSystemName,
                                                                           pathNameParameterName,
                                                                           false,
@@ -1184,7 +1184,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                    externalSourceName,
                                                    fileParentGUID,
                                                    pathNameParameterName,
-                                                   OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                   OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                    fileAssetGUID,
                                                    fileAssetParameterName,
                                                    OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
@@ -1888,6 +1888,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param columnHeaders does the first line of the file contain the column names. If not pass the list of column headers.
      * @param delimiterCharacter what is the delimiter character - null for default of comma
      * @param quoteCharacter what is the character to group a field that contains delimiter characters
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of GUIDs from the top level to the root of the pathname
@@ -1905,6 +1906,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                              List<String> columnHeaders,
                                              Character    delimiterCharacter,
                                              Character    quoteCharacter,
+                                             Date         effectiveTime,
                                              String       methodName) throws InvalidParameterException,
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
@@ -1976,6 +1978,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                                   OpenMetadataAPIMapper.CSV_FILE_TYPE_NAME,
                                                                                   OpenMetadataAPIMapper.TABULAR_SCHEMA_TYPE_TYPE_GUID,
                                                                                   OpenMetadataAPIMapper.TABULAR_SCHEMA_TYPE_TYPE_NAME,
+                                                                                  effectiveTime,
                                                                                   methodName);
 
             int columnCount = 0;
@@ -2502,7 +2505,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         return fileSystemHandler.getBeanFromRepository(userId,
                                                        softwareServerCapabilityGUID,
                                                        guidParameterName,
-                                                       OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                       OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                        false,
                                                        false,
                                                        new Date(),
@@ -2532,8 +2535,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                             PropertyServerException
     {
         return fileSystemHandler.getBeanByQualifiedName(userId,
-                                                        OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_GUID,
-                                                        OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                        OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_GUID,
+                                                        OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                         uniqueName,
                                                         parameterName,
                                                         methodName);
@@ -2561,11 +2564,11 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException
     {
-        return fileSystemHandler.getSoftwareServerCapabilityGUIDsByClassification(userId,
-                                                                                  OpenMetadataAPIMapper.FILE_SYSTEM_CLASSIFICATION_TYPE_NAME,
-                                                                                  startingFrom,
-                                                                                  pageSize,
-                                                                                  methodName);
+        return fileSystemHandler.getSoftwareCapabilityGUIDsByClassification(userId,
+                                                                            OpenMetadataAPIMapper.FILE_SYSTEM_CLASSIFICATION_TYPE_NAME,
+                                                                            startingFrom,
+                                                                            pageSize,
+                                                                            methodName);
     }
 
 
@@ -2761,7 +2764,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         return folderHandler.getAttachedElementGUIDs(userId,
                                                      fileSystemGUID,
                                                      fileSystemParameterName,
-                                                     OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                     OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                      OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                      OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
                                                      OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,

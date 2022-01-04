@@ -9,7 +9,6 @@ import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstanceHandl
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
 class SecurityManagerInstanceHandler extends OMASServiceInstanceHandler
 {
@@ -35,19 +34,19 @@ class SecurityManagerInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
-    SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> getSoftwareServerCapabilityHandler(String userId,
-                                                                                                        String serverName,
-                                                                                                        String serviceOperationName) throws InvalidParameterException,
-                                                                                                                                         UserNotAuthorizedException,
-                                                                                                                                         PropertyServerException
+    SoftwareCapabilityHandler<SecurityManagerElement> getSoftwareCapabilityHandler(String userId,
+                                                                                   String serverName,
+                                                                                   String serviceOperationName) throws InvalidParameterException,
+                                                                                                                       UserNotAuthorizedException,
+                                                                                                                       PropertyServerException
     {
         SecurityManagerServicesInstance instance = (SecurityManagerServicesInstance)super.getServerServiceInstance(userId,
-                                                                                                           serverName,
-                                                                                                           serviceOperationName);
+                                                                                                                   serverName,
+                                                                                                                   serviceOperationName);
 
         if (instance != null)
         {
-            return instance.getSecurityManagerIntegratorHandler();
+            return instance.getSoftwareCapabilityHandler();
         }
 
         return null;

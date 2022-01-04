@@ -116,6 +116,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
      * @param qualifiedName unique name for the schema attribute - used in other configuration
      * @param displayName short display name for the schema attribute
      * @param description description of the schema attribute
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the new metadata element
@@ -133,6 +134,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                     String qualifiedName,
                                                     String displayName,
                                                     String description,
+                                                    Date   effectiveTime,
                                                     String methodName) throws InvalidParameterException,
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException
@@ -144,8 +146,6 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
         invalidParameterHandler.validateGUID(parentElementGUID, parentElementGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
-
-        Date effectiveTime = new Date();
 
         SchemaAttributeBuilder builder = new SchemaAttributeBuilder(qualifiedName,
                                                                     displayName,
@@ -229,6 +229,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
      * @param qualifiedName unique identifier for this schema type
      * @param qualifiedNameParameterName name of parameter supplying the qualified name
      * @param schemaAttributeBuilder builder containing the properties of the schema type
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the new schema attribute already linked to its parent
@@ -245,6 +246,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                               String                 qualifiedName,
                                               String                 qualifiedNameParameterName,
                                               SchemaAttributeBuilder schemaAttributeBuilder,
+                                              Date                   effectiveTime,
                                               String                 methodName) throws InvalidParameterException,
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
@@ -262,7 +264,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                  false,
                                                                  false,
                                                                  supportedZones,
-                                                                 null,
+                                                                 effectiveTime,
                                                                  methodName);
 
         String parentAttributeTypeName             = OpenMetadataAPIMapper.COMPLEX_SCHEMA_TYPE_TYPE_NAME;
@@ -353,6 +355,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
      * @param additionalProperties any arbitrary properties not part of the type system
      * @param typeName name of the type that is a subtype of DeployedDatabaseSchema - or null to create standard type
      * @param extendedProperties properties from any subtype
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the new schema attribute already linked to its parent
@@ -393,6 +396,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                               Map<String, String>  additionalProperties,
                                               String               typeName,
                                               Map<String, Object>  extendedProperties,
+                                              Date                 effectiveTime,
                                               String               methodName) throws InvalidParameterException,
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
@@ -471,6 +475,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                 qualifiedName,
                                                 qualifiedNameParameterName,
                                                 schemaAttributeBuilder,
+                                                effectiveTime,
                                                 methodName);
     }
 
@@ -642,6 +647,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
      * @param omittedClassificationName   String the name of a classification that must not be on the schema attribute or linked schema type entity.
      * @param startFrom   int      starting position for first returned element.
      * @param pageSize    int      maximum number of elements to return on the call.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName     calling method
      *
      * @return a schema attributes response
@@ -656,6 +662,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                           String omittedClassificationName,
                                                                           int    startFrom,
                                                                           int    pageSize,
+                                                                          Date   effectiveTime,
                                                                           String methodName) throws InvalidParameterException,
                                                                                                     PropertyServerException,
                                                                                                     UserNotAuthorizedException
@@ -669,6 +676,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                             supportedZones,
                                                             startFrom,
                                                             pageSize,
+                                                            effectiveTime,
                                                             methodName);
     }
 
@@ -685,7 +693,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
      * @param requiredClassificationName  String the name of the classification that must be on the schema attribute or linked schema type entity.
      * @param omittedClassificationName   String the name of a classification that must not be on the schema attribute or linked schema type entity.
      * @param serviceSupportedZones list of zone names for calling service
-     * @param startFrom   int      starting position for first returned element.
+   v  * @param startFrom   int      starting position for first returned element.
      * @param pageSize    int      maximum number of elements to return on the call.
      * @param methodName     calling method
      *
@@ -703,6 +711,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                           List<String> serviceSupportedZones,
                                                                           int          startFrom,
                                                                           int          pageSize,
+                                                                          Date         effectiveTime,
                                                                           String       methodName) throws InvalidParameterException,
                                                                                                           PropertyServerException,
                                                                                                           UserNotAuthorizedException
@@ -725,12 +734,13 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                 typeName,
                                                                 requiredClassificationName,
                                                                 omittedClassificationName,
+                                                                0,
                                                                 false,
                                                                 false,
                                                                 serviceSupportedZones,
                                                                 startFrom,
                                                                 pageSize,
-                                                                new Date(),
+                                                                effectiveTime,
                                                                 methodName);
 
         List<SCHEMA_ATTRIBUTE>  results = new ArrayList<>();
@@ -748,6 +758,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                   schemaAttributeEntity.getGUID(),
                                                                   schemaAttributeGUIDParameterName,
                                                                   schemaAttributeEntity,
+                                                                  effectiveTime,
                                                                   methodName));
                 }
             }
@@ -775,6 +786,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
      * @param schemaAttributeTypeName sub type of schema attribute or null
      * @param startFrom   int      starting position for first returned element.
      * @param pageSize    int      maximum number of elements to return on the call.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName     calling method
      *
      * @return a schema attributes response
@@ -788,6 +800,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                               String schemaAttributeTypeName,
                                                               int    startFrom,
                                                               int    pageSize,
+                                                              Date   effectiveTime,
                                                               String methodName) throws InvalidParameterException,
                                                                                         PropertyServerException,
                                                                                         UserNotAuthorizedException
@@ -801,7 +814,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                  false,
                                                                  false,
                                                                  supportedZones,
-                                                                 null,
+                                                                 effectiveTime,
                                                                  methodName);
 
         if ((parentEntity != null) && (parentEntity.getType() != null))
@@ -815,6 +828,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                       supportedZones,
                                                       startFrom,
                                                       pageSize,
+                                                      effectiveTime,
                                                       methodName);
             }
             else
@@ -828,6 +842,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                     supportedZones,
                                                                     startFrom,
                                                                     pageSize,
+                                                                    effectiveTime,
                                                                     methodName);
             }
         }
@@ -847,6 +862,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
      * @param schemaAttributeGUIDParameterName String name of the parameter supplying the guid.
      * @param startFrom   int      starting position for first returned element.
      * @param pageSize    int      maximum number of elements to return on the call.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName     calling method
      *
      * @return a schema attributes response
@@ -854,16 +870,25 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
      * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public List<SCHEMA_ATTRIBUTE> getNestedSchemaAttributes(String       userId,
-                                                            String       schemaAttributeGUID,
-                                                            String       schemaAttributeGUIDParameterName,
-                                                            int          startFrom,
-                                                            int          pageSize,
-                                                            String       methodName) throws InvalidParameterException,
-                                                                                            PropertyServerException,
-                                                                                            UserNotAuthorizedException
+    public List<SCHEMA_ATTRIBUTE> getNestedSchemaAttributes(String userId,
+                                                            String schemaAttributeGUID,
+                                                            String schemaAttributeGUIDParameterName,
+                                                            int    startFrom,
+                                                            int    pageSize,
+                                                            Date   effectiveTime,
+                                                            String methodName) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
     {
-        return getNestedSchemaAttributes(userId, schemaAttributeGUID, schemaAttributeGUIDParameterName, OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME, supportedZones, startFrom, pageSize, methodName);
+        return getNestedSchemaAttributes(userId,
+                                         schemaAttributeGUID,
+                                         schemaAttributeGUIDParameterName,
+                                         OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                         supportedZones,
+                                         startFrom,
+                                         pageSize,
+                                         effectiveTime,
+                                         methodName);
     }
 
 
@@ -880,6 +905,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
      * @param serviceSupportedZones list of zone names for calling service
      * @param startFrom   int      starting position for first returned element.
      * @param pageSize    int      maximum number of elements to return on the call.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName     calling method
      *
      * @return a schema attributes response
@@ -894,6 +920,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                             List<String> serviceSupportedZones,
                                                             int          startFrom,
                                                             int          pageSize,
+                                                            Date         effectiveTime,
                                                             String       methodName) throws InvalidParameterException,
                                                                                             PropertyServerException,
                                                                                             UserNotAuthorizedException
@@ -916,12 +943,13 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                 resultTypeName,
                                                                 null,
                                                                 null,
+                                                                2,
                                                                 false,
                                                                 false,
                                                                 serviceSupportedZones,
                                                                 startFrom,
                                                                 pageSize,
-                                                                new Date(),
+                                                                effectiveTime,
                                                                 methodName);
 
         List<SCHEMA_ATTRIBUTE>  results = new ArrayList<>();
@@ -939,6 +967,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                   schemaAttributeEntity.getGUID(),
                                                                   nestedSchemaAttributeGUIDParameterName,
                                                                   schemaAttributeEntity,
+                                                                  effectiveTime,
                                                                   methodName));
                 }
             }
@@ -958,7 +987,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                          false,
                                                          false,
                                                          supportedZones,
-                                                         null,
+                                                         effectiveTime,
                                                          methodName);
 
             if (entity != null)
@@ -974,6 +1003,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                supportedZones,
                                                                startFrom,
                                                                pageSize,
+                                                               effectiveTime,
                                                                methodName);
             }
         }
@@ -994,15 +1024,17 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
      *
      * @param userId calling user
      * @param schemaAttributeEntity details from the repository
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return list of schema attribute relationships populated with information from the repository
      * @throws InvalidParameterException  the parameters are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    private List<Relationship> getSchemaAttributeRelationships(String        userId,
+    private List<Relationship> getSchemaAttributeRelationships(String       userId,
                                                                EntityDetail schemaAttributeEntity,
-                                                               String        methodName) throws InvalidParameterException,
+                                                               Date         effectiveTime,
+                                                               String       methodName) throws InvalidParameterException,
                                                                                                 PropertyServerException,
                                                                                                 UserNotAuthorizedException
     {
@@ -1019,7 +1051,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                    OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                                    0,
                                                                    invalidParameterHandler.getMaxPagingSize(),
-                                                                   null,
+                                                                   effectiveTime,
                                                                    methodName);
 
         if (relationships != null)
@@ -1061,6 +1093,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
      * @param schemaAttributeGUID unique identifier of schema attribute
      * @param schemaAttributeGUIDParameterName parameter passing the schemaAttributeGUID
      * @param schemaAttributeEntity entity retrieved for the schema attribute
+     * @param effectiveTime time that the element should be active
      * @param methodName calling method
      * @return a new schema attribute object, or null if the schema attribute is either not visible to the user, or its classifications
      *         are not what are requested.
@@ -1073,6 +1106,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                           String       schemaAttributeGUID,
                                                           String       schemaAttributeGUIDParameterName,
                                                           EntityDetail schemaAttributeEntity,
+                                                          Date         effectiveTime,
                                                           String       methodName) throws InvalidParameterException,
                                                                                              PropertyServerException,
                                                                                              UserNotAuthorizedException
@@ -1107,7 +1141,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                              schemaTypeName,
                                                                              typeClassification.getProperties(),
                                                                              schemaAttributeEntity.getClassifications(),
-                                                                             null,
+                                                                             effectiveTime,
                                                                              methodName);
                 }
             }
@@ -1130,12 +1164,12 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                       OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                                       OpenMetadataAPIMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID,
                                                                       OpenMetadataAPIMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_NAME,
-                                                                      null,
+                                                                      effectiveTime,
                                                                       methodName);
             }
 
 
-            List<Relationship> attributeRelationships = this.getSchemaAttributeRelationships(userId, schemaAttributeEntity, methodName);
+            List<Relationship> attributeRelationships = this.getSchemaAttributeRelationships(userId, schemaAttributeEntity, effectiveTime, methodName);
 
             return schemaAttributeConverter.getNewSchemaAttributeBean(beanClass,
                                                                       schemaAttributeEntity,
@@ -1154,6 +1188,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
      *
      * @param userId calling userId
      * @param schemaAttributeEntities list of retrieved entities
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return list of new schema attributes
      *
@@ -1163,6 +1198,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
      */
     private List<SCHEMA_ATTRIBUTE> getSchemaAttributesFromEntities(String             userId,
                                                                    List<EntityDetail> schemaAttributeEntities,
+                                                                   Date               effectiveTime,
                                                                    String             methodName) throws InvalidParameterException,
                                                                                                          PropertyServerException,
                                                                                                          UserNotAuthorizedException
@@ -1181,6 +1217,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                            entity.getGUID(),
                                                                            parameterName,
                                                                            entity,
+                                                                           effectiveTime,
                                                                            methodName));
                 }
             }
@@ -1206,6 +1243,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
      * @param expectedTypeName type or subtype of schema attribute
      * @param requiredClassificationName a classification that must be either on the schema attribute or its type.
      * @param omittedClassificationName a classification that must NOT be on either the schema attribute or its type.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return guid of new schema
      *
@@ -1219,6 +1257,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                String expectedTypeName,
                                                String requiredClassificationName,
                                                String omittedClassificationName,
+                                               Date   effectiveTime,
                                                String methodName) throws InvalidParameterException,
                                                                          PropertyServerException,
                                                                          UserNotAuthorizedException
@@ -1240,7 +1279,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                           false,
                                                                           false,
                                                                           supportedZones,
-                                                                          null,
+                                                                          effectiveTime,
                                                                           methodName);
 
         /*
@@ -1251,6 +1290,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                  schemaAttributeGUID,
                                                  schemaAttributeGUIDParameterName,
                                                  schemaAttributeEntity,
+                                                 effectiveTime,
                                                  methodName);
     }
 
@@ -1266,6 +1306,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
      * @param omittedClassificationName  String name of classification that must not be present
      * @param elementStart   int      starting position for first returned element.
      * @param maxElements    int      maximum number of elements to return on the call.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName     calling method
      *
      * @return a schema attributes response
@@ -1281,6 +1322,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                             String       omittedClassificationName,
                                                             int          elementStart,
                                                             int          maxElements,
+                                                            Date         effectiveTime,
                                                             String       methodName) throws InvalidParameterException,
                                                                                             PropertyServerException,
                                                                                             UserNotAuthorizedException
@@ -1294,6 +1336,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                          supportedZones,
                                          elementStart,
                                          maxElements,
+                                         effectiveTime,
                                          methodName);
     }
 
@@ -1310,6 +1353,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
      * @param serviceSupportedZones zones that assets must be;ong in to be visible
      * @param startFrom   int      starting position for first returned element
      * @param pageSize    int      maximum number of elements to return on the call
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName     calling method
      *
      * @return a schema attributes response
@@ -1326,6 +1370,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                             List<String> serviceSupportedZones,
                                                             int          startFrom,
                                                             int          pageSize,
+                                                            Date         effectiveTime,
                                                             String       methodName) throws InvalidParameterException,
                                                                                             PropertyServerException,
                                                                                             UserNotAuthorizedException
@@ -1352,10 +1397,10 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                               null,
                                                                               startFrom,
                                                                               pageSize,
-                                                                              new Date(),
+                                                                              effectiveTime,
                                                                               methodName);
 
-        return this.getSchemaAttributesFromEntities(userId, schemaAttributeEntities, methodName);
+        return this.getSchemaAttributesFromEntities(userId, schemaAttributeEntities, effectiveTime, methodName);
     }
 
 
@@ -1372,6 +1417,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
      * @param omittedClassificationName   String the name of a classification that must not be on the entity.
      * @param startFrom  index of the list ot start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching schema attribute elements
@@ -1380,18 +1426,19 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<SCHEMA_ATTRIBUTE>   findSchemaAttributes(String       userId,
-                                                         String       searchString,
-                                                         String       searchStringParameterName,
-                                                         String       resultTypeGUID,
-                                                         String       resultTypeName,
-                                                         String       requiredClassificationName,
-                                                         String       omittedClassificationName,
-                                                         int          startFrom,
-                                                         int          pageSize,
-                                                         String       methodName) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException
+    public List<SCHEMA_ATTRIBUTE>   findSchemaAttributes(String userId,
+                                                         String searchString,
+                                                         String searchStringParameterName,
+                                                         String resultTypeGUID,
+                                                         String resultTypeName,
+                                                         String requiredClassificationName,
+                                                         String omittedClassificationName,
+                                                         int    startFrom,
+                                                         int    pageSize,
+                                                         Date   effectiveTime,
+                                                         String methodName) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
     {
         List<EntityDetail> schemaAttributeEntities = this.findEntities(userId,
                                                                        searchString,
@@ -1403,10 +1450,10 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                        null,
                                                                        startFrom,
                                                                        pageSize,
-                                                                       null,
+                                                                       effectiveTime,
                                                                        methodName);
 
-        return this.getSchemaAttributesFromEntities(userId, schemaAttributeEntities, methodName);
+        return this.getSchemaAttributesFromEntities(userId, schemaAttributeEntities, effectiveTime, methodName);
     }
 
 
@@ -1523,6 +1570,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                    isMergeUpdate,
                                    methodName);
     }
+
 
     /**
      * Update a schema attribute

@@ -9,12 +9,16 @@ import org.odpi.openmetadata.accessservices.dataengine.LineageSetupService;
 import org.odpi.openmetadata.accessservices.dataengine.PortSetupService;
 import org.odpi.openmetadata.accessservices.dataengine.ProcessSetupService;
 import org.odpi.openmetadata.accessservices.dataengine.SoftwareServerCapabilitySetupService;
+import org.odpi.openmetadata.accessservices.dataengine.TopicAndEventTypeSetupService;
+import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
 import org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema;
+import org.odpi.openmetadata.accessservices.dataengine.model.EventType;
 import org.odpi.openmetadata.accessservices.dataengine.model.Port;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
+import org.odpi.openmetadata.accessservices.dataengine.model.Topic;
 import org.odpi.openmetadata.http.HttpHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 
@@ -49,6 +53,10 @@ public class DataEngineFVT {
     protected static final String ENDPOINT_TYPE_GUID = "dbc20663-d705-4ff0-8424-80c262c6b8e7";
     protected static final String FILE_FOLDER_TYPE_GUID = "229ed5cc-de31-45fc-beb4-9919fd247398";
     protected static final String TABULAR_SCHEMA_TYPE_TYPE_GUID = "248975ec-8019-4b8a-9caf-084c8b724233";
+    protected static final String TOPIC_TYPE_GUID = "29100f49-338e-4361-b05d-7e4e8e818325";
+    protected static final String EVENT_TYPE_TYPE_GUID = "8bc88aba-d7e4-4334-957f-cfe8e8eadc32";
+    protected static final String EVENT_SCHEMA_ATTRIBUTE_TYPE_GUID = "5be4ee8f-4d0c-45cd-a411-22a468950342";
+    protected static final String TABULAR_COLUMN_TYPE_GUID = "d81a0425-4e9b-4f31-bc1c-e18c3566da10";
 
     protected static final String DESCRIPTION = "description";
     protected static final String NAME = "name";
@@ -64,6 +72,7 @@ public class DataEngineFVT {
     protected static final String IMPORTED_FROM = "importedFrom";
     protected static final String OWNER = "owner";
     protected static final String PORT_TYPE = "portType";
+    protected static final String TOPIC_TYPE = "topicType";
 
     protected static final String DATA_ENGINE = "DataEngine";
     protected static final String ADMIN = "admin";
@@ -79,6 +88,7 @@ public class DataEngineFVT {
     protected final PortSetupService portSetupService = new PortSetupService();
     protected final ConnectionAndEndpointSetupService connectionAndEndpointSetupService = new ConnectionAndEndpointSetupService();
     protected final FindSetupService findSetupService = new FindSetupService();
+    protected final TopicAndEventTypeSetupService topicAndEventTypeSetupService = new TopicAndEventTypeSetupService();
 
     protected EntityDetail assertProcess(Process process, List<EntityDetail> processes) {
         assertNotNull(processes);
@@ -164,4 +174,28 @@ public class DataEngineFVT {
         return portImplementationAsEntityDetail;
     }
 
+    protected EntityDetail assertTopic(Topic topic, List<EntityDetail> topics) {
+        assertNotNull(topics);
+        assertEquals(1, topics.size());
+
+        EntityDetail topicAsEntityDetail = topics.get(0);
+        assertEquals(topic.getDisplayName(), topicAsEntityDetail.getProperties().getPropertyValue(NAME).valueAsString());
+        assertEquals(topic.getDescription(), topicAsEntityDetail.getProperties().getPropertyValue(DESCRIPTION).valueAsString());
+        assertEquals(topic.getTopicType(), topicAsEntityDetail.getProperties().getPropertyValue(TOPIC_TYPE).valueAsString());
+
+        return topicAsEntityDetail;
+    }
+
+    protected void assertEventType(EventType eventType, EntityDetail eventTypeAsEntityDetail) {
+        assertNotNull(eventTypeAsEntityDetail);
+
+        assertEquals(eventType.getDisplayName(), eventTypeAsEntityDetail.getProperties().getPropertyValue(DISPLAY_NAME).valueAsString());
+        assertEquals(eventType.getDescription(), eventTypeAsEntityDetail.getProperties().getPropertyValue(DESCRIPTION).valueAsString());
+    }
+
+    protected void assertEventSchemaAttribute(Attribute attribute, EntityDetail attributeAsEntityDetail) {
+        assertNotNull(attributeAsEntityDetail);
+
+        assertEquals(attribute.getDisplayName(), attributeAsEntityDetail.getProperties().getPropertyValue(DISPLAY_NAME).valueAsString());
+    }
 }

@@ -10,13 +10,13 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.Co
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ElementStub;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.EndpointElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ServerAssetUseElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareServerCapabilityElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareCapabilityElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ConnectionProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ConnectorTypeProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.EndpointProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ServerAssetUseProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ServerAssetUseType;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.SoftwareServerCapabilityProperties;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.SoftwareCapabilityProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
@@ -31,7 +31,7 @@ import org.odpi.openmetadata.commonservices.generichandlers.ConnectionHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ConnectorTypeHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.EndpointHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
-import org.odpi.openmetadata.commonservices.generichandlers.SoftwareServerCapabilityHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.SoftwareCapabilityHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -2189,16 +2189,16 @@ public class ITInfrastructureRESTServices
 
 
     /* =====================================================================================================================
-     * The software server capability links assets to the hosting server.
+     * The software capability links assets to the hosting server.
      */
 
 
     /**
-     * Create a new metadata element to represent a software server capability.
+     * Create a new metadata element to represent a software capability.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param infrastructureManagerIsHome should the software server capability be marked as owned by the infrastructure manager so others can not update?
+     * @param infrastructureManagerIsHome should the software capability be marked as owned by the infrastructure manager so others can not update?
      * @param requestBody properties to store
      *
      * @return unique identifier of the new metadata element or
@@ -2206,12 +2206,12 @@ public class ITInfrastructureRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GUIDResponse createSoftwareServerCapability(String                              serverName,
+    public GUIDResponse createSoftwareCapability(String                              serverName,
                                                        String                              userId,
                                                        boolean                             infrastructureManagerIsHome,
-                                                       SoftwareServerCapabilityRequestBody requestBody)
+                                                       SoftwareCapabilityRequestBody requestBody)
     {
-        final String methodName = "createSoftwareServerCapability";
+        final String methodName = "createSoftwareCapability";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -2222,7 +2222,7 @@ public class ITInfrastructureRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> handler = instanceHandler.getSoftwareServerCapabilityHandler(userId, serverName, methodName);
+            SoftwareCapabilityHandler<SoftwareCapabilityElement> handler = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -2230,7 +2230,7 @@ public class ITInfrastructureRESTServices
 
                 if (infrastructureManagerIsHome)
                 {
-                    capabilityGUID = handler.createSoftwareServerCapability(userId,
+                    capabilityGUID = handler.createSoftwareCapability(userId,
                                                                             requestBody.getExternalSourceGUID(),
                                                                             requestBody.getExternalSourceName(),
                                                                             requestBody.getTypeName(),
@@ -2251,7 +2251,7 @@ public class ITInfrastructureRESTServices
                 }
                 else
                 {
-                    capabilityGUID = handler.createSoftwareServerCapability(userId,
+                    capabilityGUID = handler.createSoftwareCapability(userId,
                                                                             null,
                                                                             null,
                                                                             requestBody.getTypeName(),
@@ -2290,12 +2290,12 @@ public class ITInfrastructureRESTServices
 
 
     /**
-     * Create a new metadata element to represent a software server capability using an existing metadata element as a template.
+     * Create a new metadata element to represent a software capability using an existing metadata element as a template.
      *
      * @param serverName name of the service to route the request to.
      *
      * @param userId calling user
-     * @param infrastructureManagerIsHome should the software server capability be marked as owned by the infrastructure manager so others can not update?
+     * @param infrastructureManagerIsHome should the software capability be marked as owned by the infrastructure manager so others can not update?
      * @param templateGUID unique identifier of the metadata element to copy
      * @param requestBody properties that override the template
      *
@@ -2304,13 +2304,13 @@ public class ITInfrastructureRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GUIDResponse createSoftwareServerCapabilityFromTemplate(String              serverName,
+    public GUIDResponse createSoftwareCapabilityFromTemplate(String              serverName,
                                                                    String              userId,
                                                                    String              templateGUID,
                                                                    boolean             infrastructureManagerIsHome,
                                                                    TemplateRequestBody requestBody)
     {
-        final String methodName                 = "createSoftwareServerCapabilityFromTemplate";
+        final String methodName                 = "createSoftwareCapabilityFromTemplate";
         final String templateGUIDParameterName  = "templateGUID";
         final String qualifiedNameParameterName = "qualifiedName";
 
@@ -2323,7 +2323,7 @@ public class ITInfrastructureRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> handler = instanceHandler.getSoftwareServerCapabilityHandler(userId, serverName, methodName);
+            SoftwareCapabilityHandler<SoftwareCapabilityElement> handler = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -2331,7 +2331,7 @@ public class ITInfrastructureRESTServices
 
                 if (infrastructureManagerIsHome)
                 {
-                    capabilityGUID = handler.createSoftwareServerCapabilityFromTemplate(userId,
+                    capabilityGUID = handler.createSoftwareCapabilityFromTemplate(userId,
                                                                                         requestBody.getExternalSourceGUID(),
                                                                                         requestBody.getExternalSourceName(),
                                                                                         templateGUID,
@@ -2344,7 +2344,7 @@ public class ITInfrastructureRESTServices
                 }
                 else
                 {
-                    capabilityGUID = handler.createSoftwareServerCapabilityFromTemplate(userId,
+                    capabilityGUID = handler.createSoftwareCapabilityFromTemplate(userId,
                                                                                         null,
                                                                                         null,
                                                                                         templateGUID,
@@ -2375,7 +2375,7 @@ public class ITInfrastructureRESTServices
 
 
     /**
-     * Update the metadata element representing a software server capability.
+     * Update the metadata element representing a software capability.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
@@ -2388,13 +2388,13 @@ public class ITInfrastructureRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse updateSoftwareServerCapability(String                              serverName,
+    public VoidResponse updateSoftwareCapability(String                              serverName,
                                                        String                              userId,
                                                        String                              capabilityGUID,
                                                        boolean                             isMergeUpdate,
-                                                       SoftwareServerCapabilityRequestBody requestBody)
+                                                       SoftwareCapabilityRequestBody requestBody)
     {
-        final String methodName                  = "updateSoftwareServerCapability";
+        final String methodName                  = "updateSoftwareCapability";
         final String elementGUIDParameterName    = "capabilityGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
@@ -2406,11 +2406,11 @@ public class ITInfrastructureRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> handler = instanceHandler.getSoftwareServerCapabilityHandler(userId, serverName, methodName);
+            SoftwareCapabilityHandler<SoftwareCapabilityElement> handler = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                handler.updateSoftwareServerCapability(userId,
+                handler.updateSoftwareCapability(userId,
                                                requestBody.getExternalSourceGUID(),
                                                requestBody.getExternalSourceName(),
                                                capabilityGUID,
@@ -2455,24 +2455,24 @@ public class ITInfrastructureRESTServices
 
 
     /**
-     * Remove the metadata element representing a software server capability.
+     * Remove the metadata element representing a software capability.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
      * @param capabilityGUID unique identifier of the metadata element to remove
-     * @param requestBody unique identifier of software server capability representing the caller
+     * @param requestBody unique identifier of software capability representing the caller
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse removeSoftwareServerCapability(String                    serverName,
+    public VoidResponse removeSoftwareCapability(String                    serverName,
                                                        String                    userId,
                                                        String                    capabilityGUID,
                                                        MetadataSourceRequestBody requestBody)
     {
-        final String methodName = "removeSoftwareServerCapability";
+        final String methodName = "removeSoftwareCapability";
         final String elementGUIDParameterName    = "capabilityGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
@@ -2484,7 +2484,7 @@ public class ITInfrastructureRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> handler = instanceHandler.getSoftwareServerCapabilityHandler(userId, serverName, methodName);
+            SoftwareCapabilityHandler<SoftwareCapabilityElement> handler = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -2493,8 +2493,8 @@ public class ITInfrastructureRESTServices
                                                requestBody.getExternalSourceName(),
                                                capabilityGUID,
                                                elementGUIDParameterName,
-                                               OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_GUID,
-                                               OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                               OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_GUID,
+                                               OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                null,
                                                null,
                                                false,
@@ -2519,7 +2519,7 @@ public class ITInfrastructureRESTServices
 
 
     /**
-     * Retrieve the list of software server capability metadata elements that contain the search string.
+     * Retrieve the list of software capability metadata elements that contain the search string.
      * The search string is treated as a regular expression.
      *
      * @param serverName name of the service to route the request to.
@@ -2533,19 +2533,19 @@ public class ITInfrastructureRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public SoftwareServerCapabilityListResponse findSoftwareServerCapabilities(String                  serverName,
-                                                                               String                  userId,
-                                                                               int                     startFrom,
-                                                                               int                     pageSize,
-                                                                               SearchStringRequestBody requestBody)
+    public SoftwareCapabilityListResponse findSoftwareCapabilities(String                  serverName,
+                                                                         String                  userId,
+                                                                         int                     startFrom,
+                                                                         int                     pageSize,
+                                                                         SearchStringRequestBody requestBody)
     {
-        final String methodName                = "findSoftwareServerCapabilities";
+        final String methodName                = "findSoftwareCapabilities";
         final String searchStringParameterName = "searchString";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        SoftwareServerCapabilityListResponse response = new SoftwareServerCapabilityListResponse();
-        AuditLog                             auditLog = null;
+        SoftwareCapabilityListResponse response = new SoftwareCapabilityListResponse();
+        AuditLog                       auditLog = null;
 
         try
         {
@@ -2553,13 +2553,87 @@ public class ITInfrastructureRESTServices
 
             if (requestBody != null)
             {
-                SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> handler = instanceHandler.getSoftwareServerCapabilityHandler(userId, serverName, methodName);
+                SoftwareCapabilityHandler<SoftwareCapabilityElement> handler = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, methodName);
 
-                List<SoftwareServerCapabilityElement> capabilities = handler.findBeans(userId,
-                                                                                       requestBody.getSearchString(),
-                                                                                       searchStringParameterName,
-                                                                                       OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_GUID,
-                                                                                       OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                List<SoftwareCapabilityElement> capabilities = handler.findBeans(userId,
+                                                                                 requestBody.getSearchString(),
+                                                                                 searchStringParameterName,
+                                                                                 OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_GUID,
+                                                                                 OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                                 null,
+                                                                                 startFrom,
+                                                                                 pageSize,
+                                                                                 new Date(),
+                                                                                 methodName);
+
+                response.setElementList(setUpVendorProperties(userId, capabilities, handler, methodName));
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of software capability metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param userId calling user
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param requestBody values to search for
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public SoftwareCapabilityListResponse getSoftwareCapabilitiesByName(String          serverName,
+                                                                              String          userId,
+                                                                              int             startFrom,
+                                                                              int             pageSize,
+                                                                              NameRequestBody requestBody)
+    {
+        final String methodName        = "getSoftwareCapabilitiesByName";
+        final String nameParameterName = "name";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        SoftwareCapabilityListResponse response = new SoftwareCapabilityListResponse();
+        AuditLog                       auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                SoftwareCapabilityHandler<SoftwareCapabilityElement> handler = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, methodName);
+
+                List<String> specificMatchPropertyNames = new ArrayList<>();
+                specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
+                specificMatchPropertyNames.add(OpenMetadataAPIMapper.NAME_PROPERTY_NAME);
+                specificMatchPropertyNames.add(OpenMetadataAPIMapper.CAPABILITY_TYPE_PROPERTY_NAME);
+                specificMatchPropertyNames.add(OpenMetadataAPIMapper.CAPABILITY_TYPE_PROPERTY_NAME_DEP1);
+                specificMatchPropertyNames.add(OpenMetadataAPIMapper.CAPABILITY_TYPE_PROPERTY_NAME_DEP2);
+
+                List<SoftwareCapabilityElement> capabilities = handler.getBeansByValue(userId,
+                                                                                       requestBody.getName(),
+                                                                                       nameParameterName,
+                                                                                       OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_GUID,
+                                                                                       OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                                       specificMatchPropertyNames,
+                                                                                       true,
+                                                                                       null,
+                                                                                       null,
+                                                                                       false,
+                                                                                       false,
                                                                                        null,
                                                                                        startFrom,
                                                                                        pageSize,
@@ -2580,79 +2654,7 @@ public class ITInfrastructureRESTServices
 
 
     /**
-     * Retrieve the list of software server capability metadata elements with a matching qualified or display name.
-     * There are no wildcards supported on this request.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param userId calling user
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param requestBody values to search for
-     *
-     * @return list of matching metadata elements or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public SoftwareServerCapabilityListResponse getSoftwareServerCapabilitiesByName(String          serverName,
-                                                                                    String          userId,
-                                                                                    int             startFrom,
-                                                                                    int             pageSize,
-                                                                                    NameRequestBody requestBody)
-    {
-        final String methodName        = "getSoftwareServerCapabilitiesByName";
-        final String nameParameterName = "name";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        SoftwareServerCapabilityListResponse response = new SoftwareServerCapabilityListResponse();
-        AuditLog                             auditLog = null;
-
-        try
-        {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> handler = instanceHandler.getSoftwareServerCapabilityHandler(userId, serverName, methodName);
-
-                List<String> specificMatchPropertyNames = new ArrayList<>();
-                specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
-                specificMatchPropertyNames.add(OpenMetadataAPIMapper.NAME_PROPERTY_NAME);
-                specificMatchPropertyNames.add(OpenMetadataAPIMapper.DEPLOYED_IMPLEMENTATION_TYPE_PROPERTY_NAME);
-
-                List<SoftwareServerCapabilityElement> capabilities = handler.getBeansByValue(userId,
-                                                                                             requestBody.getName(),
-                                                                                             nameParameterName,
-                                                                                             OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_GUID,
-                                                                                             OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
-                                                                                             specificMatchPropertyNames,
-                                                                                             true,
-                                                                                             null,
-                                                                                             null,
-                                                                                             false,
-                                                                                             false,
-                                                                                             null,
-                                                                                             startFrom,
-                                                                                             pageSize,
-                                                                                             new Date(),
-                                                                                             methodName);
-
-                response.setElementList(setUpVendorProperties(userId, capabilities, handler, methodName));
-            }
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Retrieve the software server capability metadata element with the supplied unique identifier.
+     * Retrieve the software capability metadata element with the supplied unique identifier.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
@@ -2663,32 +2665,32 @@ public class ITInfrastructureRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public SoftwareServerCapabilityResponse getSoftwareServerCapabilityByGUID(String serverName,
-                                                                              String userId,
-                                                                              String guid)
+    public SoftwareCapabilityResponse getSoftwareCapabilityByGUID(String serverName,
+                                                                        String userId,
+                                                                        String guid)
     {
-        final String methodName = "getSoftwareServerCapabilityByGUID";
+        final String methodName = "getSoftwareCapabilityByGUID";
         final String guidParameterName = "guid";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        SoftwareServerCapabilityResponse response = new SoftwareServerCapabilityResponse();
-        AuditLog         auditLog = null;
+        SoftwareCapabilityResponse response = new SoftwareCapabilityResponse();
+        AuditLog                   auditLog = null;
 
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> handler = instanceHandler.getSoftwareServerCapabilityHandler(userId, serverName, methodName);
+            SoftwareCapabilityHandler<SoftwareCapabilityElement> handler = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, methodName);
 
-            SoftwareServerCapabilityElement capability = handler.getBeanFromRepository(userId,
-                                                                                       guid,
-                                                                                       guidParameterName,
-                                                                                       OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
-                                                                                       false,
-                                                                                       false,
-                                                                                       new Date(),
-                                                                                       methodName);
+            SoftwareCapabilityElement capability = handler.getBeanFromRepository(userId,
+                                                                                 guid,
+                                                                                 guidParameterName,
+                                                                                 OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                                 false,
+                                                                                 false,
+                                                                                 new Date(),
+                                                                                 methodName);
 
             response.setElement(setUpVendorProperties(userId, capability, handler, methodName));
         }
@@ -2718,16 +2720,16 @@ public class ITInfrastructureRESTServices
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    private List<SoftwareServerCapabilityElement> setUpVendorProperties(String                                                           userId,
-                                                                        List<SoftwareServerCapabilityElement>                            retrievedResults,
-                                                                        SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> handler,
-                                                                        String                                                           methodName) throws InvalidParameterException,
+    private List<SoftwareCapabilityElement> setUpVendorProperties(String                                                           userId,
+                                                                  List<SoftwareCapabilityElement>                            retrievedResults,
+                                                                  SoftwareCapabilityHandler<SoftwareCapabilityElement> handler,
+                                                                  String                                                           methodName) throws InvalidParameterException,
                                                                                                                                                             UserNotAuthorizedException,
                                                                                                                                                             PropertyServerException
     {
         if (retrievedResults != null)
         {
-            for (SoftwareServerCapabilityElement element : retrievedResults)
+            for (SoftwareCapabilityElement element : retrievedResults)
             {
                 if (element != null)
                 {
@@ -2754,10 +2756,10 @@ public class ITInfrastructureRESTServices
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    private SoftwareServerCapabilityElement setUpVendorProperties(String                                                           userId,
-                                                                  SoftwareServerCapabilityElement                                  element,
-                                                                  SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> handler,
-                                                                  String                                                           methodName) throws InvalidParameterException,
+    private SoftwareCapabilityElement setUpVendorProperties(String                                                           userId,
+                                                            SoftwareCapabilityElement element,
+                                                            SoftwareCapabilityHandler<SoftwareCapabilityElement> handler,
+                                                            String                                                           methodName) throws InvalidParameterException,
                                                                                                                                                       UserNotAuthorizedException,
                                                                                                                                                       PropertyServerException
     {
@@ -2765,7 +2767,7 @@ public class ITInfrastructureRESTServices
 
         if (element != null)
         {
-            SoftwareServerCapabilityProperties properties = element.getProperties();
+            SoftwareCapabilityProperties properties = element.getProperties();
 
             properties.setVendorProperties(handler.getVendorProperties(userId,
                                                                        element.getElementHeader().getGUID(),
@@ -2778,16 +2780,16 @@ public class ITInfrastructureRESTServices
 
 
     /*
-     * A software server capability works with assets
+     * A software capability works with assets
      */
 
     /**
-     * Create a new metadata relationship to represent the use of an asset by a software server capability.
+     * Create a new metadata relationship to represent the use of an asset by a software capability.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param infrastructureManagerIsHome should the software server capability be marked as owned by the infrastructure manager so others can not update?
-     * @param capabilityGUID unique identifier of a software server capability
+     * @param infrastructureManagerIsHome should the software capability be marked as owned by the infrastructure manager so others can not update?
+     * @param capabilityGUID unique identifier of a software capability
      * @param assetGUID unique identifier of an asset
      * @param requestBody properties about the ServerAssetUse relationship
      *
@@ -2816,7 +2818,7 @@ public class ITInfrastructureRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> handler = instanceHandler.getSoftwareServerCapabilityHandler(userId, serverName, methodName);
+            SoftwareCapabilityHandler<SoftwareCapabilityElement> handler = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, methodName);
 
             String guid;
 
@@ -2827,7 +2829,7 @@ public class ITInfrastructureRESTServices
                                                     requestBody.getExternalSourceName(),
                                                     capabilityGUID,
                                                     capabilityGUIDParameterName,
-                                                    OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                    OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                     assetGUID,
                                                     assetGUIDParameterName,
                                                     OpenMetadataAPIMapper.ASSET_TYPE_NAME,
@@ -2849,7 +2851,7 @@ public class ITInfrastructureRESTServices
                                                     null,
                                                     capabilityGUID,
                                                     capabilityGUIDParameterName,
-                                                    OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                    OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                     assetGUID,
                                                     assetGUIDParameterName,
                                                     OpenMetadataAPIMapper.ASSET_TYPE_NAME,
@@ -2951,11 +2953,11 @@ public class ITInfrastructureRESTServices
 
 
     /**
-     * Update the metadata relationship to represent the use of an asset by a software server capability.
+     * Update the metadata relationship to represent the use of an asset by a software capability.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param serverAssetUseGUID unique identifier of the relationship between a software server capability and an asset
+     * @param serverAssetUseGUID unique identifier of the relationship between a software capability and an asset
      * @param isMergeUpdate are unspecified properties unchanged (true) or removed?
      * @param requestBody new properties for the ServerAssetUse relationship
      *
@@ -2982,7 +2984,7 @@ public class ITInfrastructureRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> handler = instanceHandler.getSoftwareServerCapabilityHandler(userId, serverName, methodName);
+            SoftwareCapabilityHandler<SoftwareCapabilityElement> handler = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, methodName);
 
             handler.updateRelationshipProperties(userId,
                                                  requestBody.getExternalSourceGUID(),
@@ -3009,12 +3011,12 @@ public class ITInfrastructureRESTServices
 
 
     /**
-     * Remove the metadata relationship to represent the use of an asset by a software server capability.
+     * Remove the metadata relationship to represent the use of an asset by a software capability.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param serverAssetUseGUID unique identifier of the relationship between a software server capability and an asset
-     * @param requestBody unique identifier of software server capability representing the caller
+     * @param serverAssetUseGUID unique identifier of the relationship between a software capability and an asset
+     * @param requestBody unique identifier of software capability representing the caller
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid
@@ -3038,7 +3040,7 @@ public class ITInfrastructureRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> handler = instanceHandler.getSoftwareServerCapabilityHandler(userId, serverName, methodName);
+            SoftwareCapabilityHandler<SoftwareCapabilityElement> handler = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, methodName);
 
             handler.deleteRelationship(userId,
                                        requestBody.getExternalSourceGUID(),
@@ -3061,11 +3063,11 @@ public class ITInfrastructureRESTServices
 
 
     /**
-     * Return the list of server asset use relationships associated with a software server capability.
+     * Return the list of server asset use relationships associated with a software capability.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param capabilityGUID unique identifier of the software server capability to query
+     * @param capabilityGUID unique identifier of the software capability to query
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param requestBody values to search for.
@@ -3094,13 +3096,13 @@ public class ITInfrastructureRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> handler = instanceHandler.getSoftwareServerCapabilityHandler(userId, serverName, methodName);
-            AssetHandler<AssetElement>                                       assetHandler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            SoftwareCapabilityHandler<SoftwareCapabilityElement> handler      = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement>                                 assetHandler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             List<Relationship> relationships = handler.getAttachmentLinks(userId,
                                                                           capabilityGUID,
                                                                           elementGUIDParameterName,
-                                                                          OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                                          OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                                           OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                                           OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
                                                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
@@ -3130,7 +3132,7 @@ public class ITInfrastructureRESTServices
 
 
     /**
-     * Return the list of software server capabilities that make use of a specific asset.
+     * Return the list of software capabilities that make use of a specific asset.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
@@ -3163,8 +3165,8 @@ public class ITInfrastructureRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> handler = instanceHandler.getSoftwareServerCapabilityHandler(userId, serverName, methodName);
-            AssetHandler<AssetElement>                                       assetHandler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            SoftwareCapabilityHandler<SoftwareCapabilityElement> handler      = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement>                                 assetHandler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             List<Relationship> relationships = handler.getAttachmentLinks(userId,
                                                                           assetGUID,
@@ -3172,7 +3174,7 @@ public class ITInfrastructureRESTServices
                                                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                           OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                                           OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
-                                                                          OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                                          OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                                           startFrom,
                                                                           pageSize,
                                                                           requestBody.getEffectiveTime(),
@@ -3199,11 +3201,11 @@ public class ITInfrastructureRESTServices
 
 
     /**
-     * Retrieve the list of relationships between a specific software server capability and a specific asset.
+     * Retrieve the list of relationships between a specific software capability and a specific asset.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param capabilityGUID unique identifier of a software server capability
+     * @param capabilityGUID unique identifier of a software capability
      * @param assetGUID unique identifier of an asset
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -3234,13 +3236,13 @@ public class ITInfrastructureRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> handler = instanceHandler.getSoftwareServerCapabilityHandler(userId, serverName, methodName);
-            AssetHandler<AssetElement>                                       assetHandler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            SoftwareCapabilityHandler<SoftwareCapabilityElement> handler      = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement>                                 assetHandler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             List<Relationship> relationships = handler.getAttachmentLinks(userId,
                                                                           capabilityGUID,
                                                                           capabilityGUIDParameterName,
-                                                                          OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                                          OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                                           OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                                           OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
                                                                           assetGUID,
@@ -3298,8 +3300,8 @@ public class ITInfrastructureRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> handler = instanceHandler.getSoftwareServerCapabilityHandler(userId, serverName, methodName);
-            AssetHandler<AssetElement>                                       assetHandler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            SoftwareCapabilityHandler<SoftwareCapabilityElement> handler      = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement>                                 assetHandler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             Relationship relationship = handler.getAttachmentLink(userId,
                                                                   guid,

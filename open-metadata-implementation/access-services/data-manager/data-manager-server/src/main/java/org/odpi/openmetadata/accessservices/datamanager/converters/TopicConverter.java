@@ -74,6 +74,7 @@ public class TopicConverter<B> extends DataManagerOMASConverter<B>
                     topicProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     topicProperties.setDisplayName(this.removeName(instanceProperties));
                     topicProperties.setDescription(this.removeDescription(instanceProperties));
+                    topicProperties.setTopicType(this.removeTopicType(instanceProperties));
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are

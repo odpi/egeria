@@ -12,10 +12,10 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import java.util.Map;
 
 /**
- * MetadataServerConfigurationClient provides the configuration client for a metadata server.
+ * MetadataAccessServerConfigurationClient provides the configuration client for a metadata server.
  * A metadata server is a metadata access point with a native open metadata repository.
  */
-public class MetadataServerConfigurationClient extends MetadataAccessPointConfigurationClient
+public class MetadataAccessServerConfigurationClient extends MetadataAccessPointConfigurationClient
 {
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -26,9 +26,9 @@ public class MetadataServerConfigurationClient extends MetadataAccessPointConfig
      * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
-    public MetadataServerConfigurationClient(String adminUserId,
-                                             String serverName,
-                                             String serverPlatformRootURL) throws OMAGInvalidParameterException
+    public MetadataAccessServerConfigurationClient(String adminUserId,
+                                                   String serverName,
+                                                   String serverPlatformRootURL) throws OMAGInvalidParameterException
     {
         super(adminUserId, serverName, serverPlatformRootURL);
     }
@@ -46,11 +46,11 @@ public class MetadataServerConfigurationClient extends MetadataAccessPointConfig
      * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
-    public MetadataServerConfigurationClient(String adminUserId,
-                                             String serverName,
-                                             String serverPlatformRootURL,
-                                             String connectionUserId,
-                                             String connectionPassword) throws OMAGInvalidParameterException
+    public MetadataAccessServerConfigurationClient(String adminUserId,
+                                                   String serverName,
+                                                   String serverPlatformRootURL,
+                                                   String connectionUserId,
+                                                   String connectionPassword) throws OMAGInvalidParameterException
     {
         super(adminUserId, serverName, serverPlatformRootURL, connectionUserId, connectionPassword);
     }

@@ -1344,12 +1344,12 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
 
 
     /**
-     * Retrieve the list of schema attributes associated with a schemaType.
+     * Retrieve the list of schema attributes associated with a schema element.
      *
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param schemaTypeGUID unique identifier of the schemaType of interest
+     * @param parentSchemaElementGUID unique identifier of the schema element of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -1360,23 +1360,23 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<SchemaAttributeElement>    getAttributesForSchemaType(String userId,
-                                                                      String assetManagerGUID,
-                                                                      String assetManagerName,
-                                                                      String schemaTypeGUID,
-                                                                      int    startFrom,
-                                                                      int    pageSize) throws InvalidParameterException,
+    public List<SchemaAttributeElement> getNestedSchemaAttributes(String userId,
+                                                                  String assetManagerGUID,
+                                                                  String assetManagerName,
+                                                                  String parentSchemaElementGUID,
+                                                                  int    startFrom,
+                                                                  int    pageSize) throws InvalidParameterException,
                                                                                               UserNotAuthorizedException,
                                                                                               PropertyServerException
     {
-        final String methodName        = "getAttributesForSchemaType";
-        final String guidParameterName = "schemaTypeGUID";
+        final String methodName        = "getNestedSchemaAttributes";
+        final String guidParameterName = "parentSchemaElementGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(schemaTypeGUID, guidParameterName, methodName);
+        invalidParameterHandler.validateGUID(parentSchemaElementGUID, guidParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-types/{2}/schema-attributes/retrieve?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-elements/{2}/schema-attributes/retrieve?startFrom={3}&pageSize={4}";
 
         SchemaAttributeElementsResponse restResult = restClient.callSchemaAttributesPostRESTCall(methodName,
                                                                                                  urlTemplate,
@@ -1384,7 +1384,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
                                                                                                                                        assetManagerName),
                                                                                                  serverName,
                                                                                                  userId,
-                                                                                                 schemaTypeGUID,
+                                                                                                 parentSchemaElementGUID,
                                                                                                  startFrom,
                                                                                                  validatedPageSize);
 

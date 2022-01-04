@@ -396,7 +396,7 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                     supportedZones,
                                     builder.getInstanceProperties(methodName),
                                     isMergeUpdate,
-                                    new Date(),
+                                    null,
                                     methodName);
     }
 
@@ -437,7 +437,7 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                     qualifiedName,
                                     false,
                                     false,
-                                    new Date(),
+                                    null,
                                     methodName);
     }
 
@@ -451,6 +451,7 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
      * @param searchStringParameterName name of parameter supplying the search string
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -464,6 +465,7 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                   String searchStringParameterName,
                                   int    startFrom,
                                   int    pageSize,
+                                  Date   effectiveTime,
                                   String methodName) throws InvalidParameterException,
                                                             UserNotAuthorizedException,
                                                             PropertyServerException
@@ -476,7 +478,7 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                               null,
                               startFrom,
                               pageSize,
-                              null,
+                              effectiveTime,
                               methodName);
     }
 
@@ -490,6 +492,7 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
      * @param eventSetGUIDParameterName name of the parameter supplying eventSetGUID
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of metadata elements describing the event types associated with the requested event set
@@ -503,6 +506,7 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                               String eventSetGUIDParameterName,
                                               int    startFrom,
                                               int    pageSize,
+                                              Date   effectiveTime,
                                               String methodName) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
@@ -516,7 +520,7 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                         OpenMetadataAPIMapper.EVENT_TYPE_TYPE_NAME,
                                         startFrom,
                                         pageSize,
-                                        null,
+                                        effectiveTime,
                                         methodName);
     }
 
@@ -530,6 +534,7 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
      * @param nameParameterName parameter supplying name
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -543,6 +548,7 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                          String nameParameterName,
                                          int    startFrom,
                                          int    pageSize,
+                                         Date   effectiveTime,
                                          String methodName) throws InvalidParameterException,
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException
@@ -569,7 +575,7 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     startFrom,
                                     pageSize,
-                                    null,
+                                    effectiveTime,
                                     methodName);
     }
 

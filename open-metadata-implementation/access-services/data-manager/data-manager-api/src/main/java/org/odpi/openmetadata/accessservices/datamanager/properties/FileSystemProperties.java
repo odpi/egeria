@@ -8,7 +8,7 @@ import java.util.Objects;
 /**
  * FileSystemProperties describes the root node of a file system.
  */
-public class FileSystemProperties extends SoftwareServerCapabilitiesProperties
+public class FileSystemProperties extends SoftwareCapabilitiesProperties
 {
     private static final long    serialVersionUID = 1L;
 
@@ -47,7 +47,7 @@ public class FileSystemProperties extends SoftwareServerCapabilitiesProperties
      *
      * @param template object to copy
      */
-    public FileSystemProperties(SoftwareServerCapabilitiesProperties template)
+    public FileSystemProperties(SoftwareCapabilitiesProperties template)
     {
         super(template);
     }

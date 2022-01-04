@@ -638,7 +638,7 @@ public class DisplayApplicationRESTServices
             List<FormElement> formAssets = handler.getAttachedElements(userId,
                                                                        applicationGUID,
                                                                        applicationGUIDParameterName,
-                                                                       OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                                       OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                                        OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                                        OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
                                                                        OpenMetadataAPIMapper.FORM_TYPE_NAME,
@@ -815,7 +815,7 @@ public class DisplayApplicationRESTServices
                                                  handler.getExternalSourceID(applicationIsHome, requestBody.getExternalSourceName()),
                                                  requestBody.getExternalSourceGUID(),
                                                  applicationGUIDParameterName,
-                                                 OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                 OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                  reportGUID,
                                                  reportGUIDParameterName,
                                                  OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_NAME,
@@ -916,7 +916,7 @@ public class DisplayApplicationRESTServices
                                                  handler.getExternalSourceID(applicationIsHome, requestBody.getExternalSourceName()),
                                                  requestBody.getExternalSourceGUID(),
                                                  applicationGUIDParameterName,
-                                                 OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                 OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                  reportGUID,
                                                  reportGUIDParameterName,
                                                  OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_NAME,
@@ -1394,7 +1394,7 @@ public class DisplayApplicationRESTServices
             List<ReportElement> reportAssets = handler.getAttachedElements(userId,
                                                                            applicationGUID,
                                                                            applicationGUIDParameterName,
-                                                                           OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                                           OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                                            OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                                            OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
                                                                            OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_NAME,
@@ -1529,7 +1529,7 @@ public class DisplayApplicationRESTServices
                                                  handler.getExternalSourceID(applicationIsHome, requestBody.getExternalSourceName()),
                                                  requestBody.getExternalSourceGUID(),
                                                  applicationGUIDParameterName,
-                                                 OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                 OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                  queryGUID,
                                                  queryGUIDParameterName,
                                                  OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_NAME,
@@ -1630,7 +1630,7 @@ public class DisplayApplicationRESTServices
                                                  handler.getExternalSourceID(applicationIsHome, requestBody.getExternalSourceName()),
                                                  requestBody.getExternalSourceGUID(),
                                                  applicationGUIDParameterName,
-                                                 OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                 OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                  queryGUID,
                                                  queryGUIDParameterName,
                                                  OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_NAME,
@@ -2063,7 +2063,7 @@ public class DisplayApplicationRESTServices
             List<QueryElement> queryAssets = handler.getAttachedElements(userId,
                                                                          applicationGUID,
                                                                          applicationGUIDParameterName,
-                                                                         OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                                         OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                                          OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                                          OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
                                                                          OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_NAME,
@@ -2202,6 +2202,7 @@ public class DisplayApplicationRESTServices
                                                                 typeName,
                                                                 requestBody.getExtendedProperties(),
                                                                 requestBody.getVendorProperties(),
+                                                                new Date(),
                                                                 methodName);
                 }
                 else
@@ -2221,6 +2222,7 @@ public class DisplayApplicationRESTServices
                                                                 typeName,
                                                                 requestBody.getExtendedProperties(),
                                                                 requestBody.getVendorProperties(),
+                                                                new Date(),
                                                                 methodName);
                 }
 
@@ -2293,6 +2295,7 @@ public class DisplayApplicationRESTServices
                                                                              requestBody.getQualifiedName(),
                                                                              requestBody.getDisplayName(),
                                                                              requestBody.getDescription(),
+                                                                             new Date(),
                                                                              methodName));
                 }
                 else
@@ -2305,6 +2308,7 @@ public class DisplayApplicationRESTServices
                                                                              requestBody.getQualifiedName(),
                                                                              requestBody.getDisplayName(),
                                                                              requestBody.getDescription(),
+                                                                             new Date(),
                                                                              methodName));
                 }
             }
@@ -2492,6 +2496,7 @@ public class DisplayApplicationRESTServices
                                                                                  requestBody.getSearchString(),
                                                                                  startFrom,
                                                                                  pageSize,
+                                                                                 new Date(),
                                                                                  methodName);
 
                 response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
@@ -2549,6 +2554,7 @@ public class DisplayApplicationRESTServices
                                                                                  parentGUID,
                                                                                  startFrom,
                                                                                  pageSize,
+                                                                                 new Date(),
                                                                                  methodName);
 
             response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
@@ -2602,7 +2608,7 @@ public class DisplayApplicationRESTServices
                                                                                                                                               serverName,
                                                                                                                                               methodName);
 
-                List<DataContainerElement> elements = handler.getDataContainersByName(userId, requestBody.getName(), startFrom, pageSize, methodName);
+                List<DataContainerElement> elements = handler.getDataContainersByName(userId, requestBody.getName(), startFrom, pageSize, new Date(), methodName);
 
                 response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
             }
@@ -2651,7 +2657,7 @@ public class DisplayApplicationRESTServices
 
             DisplayDataContainerHandler<DataContainerElement, SchemaTypeElement> handler = instanceHandler.getDisplayDataContainerHandler(userId, serverName, methodName);
 
-            DataContainerElement element = handler.getDataContainerByGUID(userId, guid, methodName);
+            DataContainerElement element = handler.getDataContainerByGUID(userId, guid, new Date(), methodName);
 
             response.setElement(setUpVendorProperties(userId, element, handler, methodName));
         }

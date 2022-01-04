@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetmanager.converters;
 
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.SoftwareServerCapabilityElement;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.SoftwareCapabilityElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -15,7 +15,7 @@ import java.lang.reflect.InvocationTargetException;
 
 /**
  * AssetManagerConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- * EntityDetail object into a SoftwareServerCapabilityElement bean.
+ * EntityDetail object into a SoftwareCapabilityElement bean.
  */
 public class AssetManagerConverter<B> extends AssetManagerOMASConverter<B>
 {
@@ -56,10 +56,10 @@ public class AssetManagerConverter<B> extends AssetManagerOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof SoftwareServerCapabilityElement)
+            if (returnBean instanceof SoftwareCapabilityElement)
             {
-                SoftwareServerCapabilityElement bean = (SoftwareServerCapabilityElement) returnBean;
-                AssetManagerProperties assetManagerProperties = new AssetManagerProperties();
+                SoftwareCapabilityElement bean                   = (SoftwareCapabilityElement) returnBean;
+                AssetManagerProperties    assetManagerProperties = new AssetManagerProperties();
 
                 if (entity != null)
                 {
@@ -71,7 +71,7 @@ public class AssetManagerConverter<B> extends AssetManagerOMASConverter<B>
                     assetManagerProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     assetManagerProperties.setDisplayName(this.removeName(instanceProperties));
                     assetManagerProperties.setDescription(this.removeDescription(instanceProperties));
-                    assetManagerProperties.setTypeDescription(this.removeDeployedImplementationType(instanceProperties));
+                    assetManagerProperties.setTypeDescription(this.removeCapabilityType(instanceProperties));
                     assetManagerProperties.setVersion(this.removeCapabilityVersion(instanceProperties));
                     assetManagerProperties.setPatchLevel(this.removePatchLevel(instanceProperties));
                     assetManagerProperties.setSource(this.removeSource(instanceProperties));
@@ -83,7 +83,7 @@ public class AssetManagerConverter<B> extends AssetManagerOMASConverter<B>
                     assetManagerProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
                     assetManagerProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
-                    bean.setSoftwareServerCapabilitiesProperties(assetManagerProperties);
+                    bean.setSoftwareCapabilitiesProperties(assetManagerProperties);
                 }
                 else
                 {

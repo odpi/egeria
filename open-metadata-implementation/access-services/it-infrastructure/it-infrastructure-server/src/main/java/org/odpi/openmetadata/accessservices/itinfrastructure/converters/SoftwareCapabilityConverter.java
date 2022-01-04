@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.itinfrastructure.converters;
 
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareServerCapabilityElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.SoftwareServerCapabilityProperties;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareCapabilityElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.SoftwareCapabilityProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -14,10 +14,10 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import java.lang.reflect.InvocationTargetException;
 
 /**
- * SoftwareServerCapabilityConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- * EntityDetail object into a SoftwareServerCapabilityElement bean.
+ * SoftwareCapabilityConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
+ * EntityDetail object into a SoftwareCapabilityElement bean.
  */
-public class SoftwareServerCapabilityConverter<B> extends ITInfrastructureOMASConverter<B>
+public class SoftwareCapabilityConverter<B> extends ITInfrastructureOMASConverter<B>
 {
     /**
      * Constructor
@@ -26,9 +26,9 @@ public class SoftwareServerCapabilityConverter<B> extends ITInfrastructureOMASCo
      * @param serviceName name of this component
      * @param serverName local server name
      */
-    public SoftwareServerCapabilityConverter(OMRSRepositoryHelper repositoryHelper,
-                                             String               serviceName,
-                                             String               serverName)
+    public SoftwareCapabilityConverter(OMRSRepositoryHelper repositoryHelper,
+                                       String               serviceName,
+                                       String               serverName)
     {
         super(repositoryHelper, serviceName, serverName);
     }
@@ -56,10 +56,10 @@ public class SoftwareServerCapabilityConverter<B> extends ITInfrastructureOMASCo
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof SoftwareServerCapabilityElement)
+            if (returnBean instanceof SoftwareCapabilityElement)
             {
-                SoftwareServerCapabilityElement    bean                    = (SoftwareServerCapabilityElement) returnBean;
-                SoftwareServerCapabilityProperties capabilityProperties = new SoftwareServerCapabilityProperties();
+                SoftwareCapabilityElement    bean                 = (SoftwareCapabilityElement) returnBean;
+                SoftwareCapabilityProperties capabilityProperties = new SoftwareCapabilityProperties();
 
                 if (entity != null)
                 {
@@ -74,7 +74,7 @@ public class SoftwareServerCapabilityConverter<B> extends ITInfrastructureOMASCo
                     capabilityProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     capabilityProperties.setDisplayName(this.removeName(instanceProperties));
                     capabilityProperties.setDescription(this.removeDescription(instanceProperties));
-                    capabilityProperties.setTypeDescription(this.removeDeployedImplementationType(instanceProperties));
+                    capabilityProperties.setTypeDescription(this.removeCapabilityType(instanceProperties));
                     capabilityProperties.setVersion(this.removeCapabilityVersion(instanceProperties));
                     capabilityProperties.setPatchLevel(this.removePatchLevel(instanceProperties));
                     capabilityProperties.setSource(this.removeSource(instanceProperties));

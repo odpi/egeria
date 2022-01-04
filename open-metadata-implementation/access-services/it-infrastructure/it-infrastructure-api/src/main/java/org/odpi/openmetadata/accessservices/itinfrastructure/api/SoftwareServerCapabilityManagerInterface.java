@@ -38,6 +38,7 @@ public interface SoftwareServerCapabilityManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Deprecated
     String createSoftwareServerCapability(String                             userId,
                                           String                             infrastructureManagerGUID,
                                           String                             infrastructureManagerName,
@@ -64,6 +65,7 @@ public interface SoftwareServerCapabilityManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Deprecated
     String createSoftwareServerCapabilityFromTemplate(String             userId,
                                                       String             infrastructureManagerGUID,
                                                       String             infrastructureManagerName,
@@ -88,6 +90,7 @@ public interface SoftwareServerCapabilityManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Deprecated
     void updateSoftwareServerCapability(String                             userId,
                                         String                             infrastructureManagerGUID,
                                         String                             infrastructureManagerName,
@@ -110,6 +113,7 @@ public interface SoftwareServerCapabilityManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Deprecated
     void removeSoftwareServerCapability(String userId,
                                         String infrastructureManagerGUID,
                                         String infrastructureManagerName,
@@ -134,6 +138,7 @@ public interface SoftwareServerCapabilityManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Deprecated
     List<SoftwareServerCapabilityElement> findSoftwareServerCapabilities(String userId,
                                                                          String searchString,
                                                                          Date   effectiveTime,
@@ -159,6 +164,7 @@ public interface SoftwareServerCapabilityManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Deprecated
     List<SoftwareServerCapabilityElement> getSoftwareServerCapabilitiesByName(String userId,
                                                                               String name,
                                                                               Date   effectiveTime,
@@ -180,180 +186,10 @@ public interface SoftwareServerCapabilityManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Deprecated
     SoftwareServerCapabilityElement getSoftwareServerCapabilityByGUID(String userId,
                                                                       String guid) throws InvalidParameterException,
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException;
 
-
-    /*
-     * A software server capability works with assets
-     */
-
-    /**
-     * Create a new metadata relationship to represent the use of an asset by a software server capability.
-     *
-     * @param userId calling user
-     * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
-     * @param infrastructureManagerName unique name of software server capability representing the caller
-     * @param infrastructureManagerIsHome should the software server capability be marked as owned by the infrastructure manager so others can not update?
-     * @param capabilityGUID unique identifier of a software server capability
-     * @param assetGUID unique identifier of an asset
-     * @param properties properties about the ServerAssetUse relationship
-     *
-     * @return unique identifier of the new ServerAssetUse relationship
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    String createServerAssetUse(String                   userId,
-                                String                   infrastructureManagerGUID,
-                                String                   infrastructureManagerName,
-                                boolean                  infrastructureManagerIsHome,
-                                String                   capabilityGUID,
-                                String                   assetGUID,
-                                ServerAssetUseProperties properties) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException;
-
-
-    /**
-     * Update the metadata relationship to represent the use of an asset by a software server capability.
-     *
-     * @param userId calling user
-     * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
-     * @param infrastructureManagerName unique name of software server capability representing the caller
-     * @param serverAssetUseGUID unique identifier of the relationship between a software server capability and an asset
-     * @param isMergeUpdate are unspecified properties unchanged (true) or removed?
-     * @param properties new properties for the ServerAssetUse relationship
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    void updateServerAssetUse(String                   userId,
-                              String                   infrastructureManagerGUID,
-                              String                   infrastructureManagerName,
-                              String                   serverAssetUseGUID,
-                              boolean                  isMergeUpdate,
-                              ServerAssetUseProperties properties) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException;
-
-
-    /**
-     * Remove the metadata relationship to represent the use of an asset by a software server capability.
-     *
-     * @param userId calling user
-     * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
-     * @param infrastructureManagerName unique name of software server capability representing the caller
-     * @param serverAssetUseGUID unique identifier of the relationship between a software server capability and an asset
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    void removeServerAssetUse(String userId,
-                              String infrastructureManagerGUID,
-                              String infrastructureManagerName,
-                              String serverAssetUseGUID) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException;
-
-
-    /**
-     * Return the list of server asset use relationships associated with a software server capability.
-     *
-     * @param userId calling user
-     * @param capabilityGUID unique identifier of the software server capability to query
-     * @param useType value to search for.  Null means all use types.
-     * @param effectiveTime effective time for the query
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     *
-     * @return list of matching relationships
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    List<ServerAssetUseElement> getServerAssetUsesForCapability(String             userId,
-                                                                String             capabilityGUID,
-                                                                ServerAssetUseType useType,
-                                                                Date               effectiveTime,
-                                                                int                startFrom,
-                                                                int                pageSize) throws InvalidParameterException,
-                                                                                                    UserNotAuthorizedException,
-                                                                                                    PropertyServerException;
-
-
-    /**
-     * Return the list of software server capabilities that make use of a specific asset.
-     *
-     * @param userId calling user
-     * @param assetGUID unique identifier of the asset to query
-     * @param useType Optionally restrict the search to a specific user type.  Null means all use types.
-     * @param effectiveTime effective time for the query
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     *
-     * @return list of matching relationships
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    List<ServerAssetUseElement> getCapabilityUsesForAsset(String             userId,
-                                                          String             assetGUID,
-                                                          ServerAssetUseType useType,
-                                                          Date               effectiveTime,
-                                                          int                startFrom,
-                                                          int                pageSize) throws InvalidParameterException,
-                                                                                              UserNotAuthorizedException,
-                                                                                              PropertyServerException;
-
-
-    /**
-     * Retrieve the list of relationships between a specific software server capability and a specific asset.
-     *
-     * @param userId calling user
-     * @param capabilityGUID unique identifier of a software server capability
-     * @param assetGUID unique identifier of an asset
-     * @param effectiveTime effective time for the query
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     *
-     * @return list of matching relationships
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    List<ServerAssetUseElement> getServerAssetUsesForElements(String userId,
-                                                              String capabilityGUID,
-                                                              String assetGUID,
-                                                              Date   effectiveTime,
-                                                              int    startFrom,
-                                                              int    pageSize) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException;
-
-
-    /**
-     * Retrieve the server asset use type relationship with the supplied unique identifier.
-     *
-     * @param userId calling user
-     * @param guid unique identifier of the requested metadata element
-     *
-     * @return requested relationship
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    ServerAssetUseElement getServerAssetUseByGUID(String userId,
-                                                  String guid) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException;
 }

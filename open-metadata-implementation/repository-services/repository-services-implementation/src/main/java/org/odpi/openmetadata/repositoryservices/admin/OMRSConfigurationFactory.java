@@ -256,6 +256,7 @@ public class OMRSConfigurationFactory
 
     /**
      * Return the default settings for the enterprise repository services' configuration.
+     * Note the remote enterprise topic connector is null.  This is only set up by an explicit call.
      *
      * @param localServerName name of the local server
      * @param localServerId identifier of the server - used to pick up the right offset for the inbound messages.
