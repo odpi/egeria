@@ -8,7 +8,7 @@ import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.Ele
 import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.PersonRoleAppointee;
 import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.PersonRoleElement;
 import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.SecurityGroupElement;
-import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.SoftwareServerCapabilityElement;
+import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.SecurityManagerElement;
 import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.UserIdentityElement;
 import org.odpi.openmetadata.accessservices.securitymanager.properties.AppointmentProperties;
 import org.odpi.openmetadata.accessservices.securitymanager.properties.SecurityGroupProperties;
@@ -40,7 +40,7 @@ import org.odpi.openmetadata.commonservices.generichandlers.ActorProfileHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.GovernanceDefinitionHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.commonservices.generichandlers.PersonRoleHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.SoftwareServerCapabilityHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.SoftwareCapabilityHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.UserIdentityHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -147,28 +147,28 @@ public class SecurityManagerRESTServices
 
             if (requestBody != null)
             {
-                SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> handler = instanceHandler.getSoftwareServerCapabilityHandler(userId,
-                                                                                                                                              serverName,
-                                                                                                                                              methodName);
+                SoftwareCapabilityHandler<SecurityManagerElement> handler = instanceHandler.getSoftwareCapabilityHandler(userId,
+                                                                                                                         serverName,
+                                                                                                                         methodName);
 
-                response.setGUID(handler.createSoftwareServerCapability(userId,
-                                                                        requestBody.getExternalSourceGUID(),
-                                                                        requestBody.getExternalSourceName(),
-                                                                        requestBody.getTypeName(),
-                                                                        null,
-                                                                        requestBody.getQualifiedName(),
-                                                                        requestBody.getDisplayName(),
-                                                                        requestBody.getDescription(),
-                                                                        requestBody.getTypeDescription(),
-                                                                        requestBody.getVersion(),
-                                                                        requestBody.getPatchLevel(),
-                                                                        requestBody.getSource(),
-                                                                        requestBody.getAdditionalProperties(),
-                                                                        requestBody.getExtendedProperties(),
-                                                                        requestBody.getVendorProperties(),
-                                                                        null,
-                                                                        null,
-                                                                        methodName));
+                response.setGUID(handler.createSoftwareCapability(userId,
+                                                                  requestBody.getExternalSourceGUID(),
+                                                                  requestBody.getExternalSourceName(),
+                                                                  requestBody.getTypeName(),
+                                                                  null,
+                                                                  requestBody.getQualifiedName(),
+                                                                  requestBody.getDisplayName(),
+                                                                  requestBody.getDescription(),
+                                                                  requestBody.getTypeDescription(),
+                                                                  requestBody.getVersion(),
+                                                                  requestBody.getPatchLevel(),
+                                                                  requestBody.getSource(),
+                                                                  requestBody.getAdditionalProperties(),
+                                                                  requestBody.getExtendedProperties(),
+                                                                  requestBody.getVendorProperties(),
+                                                                  null,
+                                                                  null,
+                                                                  methodName));
             }
         }
         catch (Exception error)
@@ -210,11 +210,11 @@ public class SecurityManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SoftwareServerCapabilityHandler handler = instanceHandler.getSoftwareServerCapabilityHandler(userId, serverName, methodName);
+            SoftwareCapabilityHandler handler = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, methodName);
 
             response.setGUID(handler.getBeanGUIDByQualifiedName(userId,
-                                                                OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_GUID,
-                                                                OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                                OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_GUID,
+                                                                OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                                 qualifiedName,
                                                                 parameterName,
                                                                 false,

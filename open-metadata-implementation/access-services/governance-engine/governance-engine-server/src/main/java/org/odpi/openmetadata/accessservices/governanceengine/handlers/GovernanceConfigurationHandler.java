@@ -40,15 +40,15 @@ import java.util.Map;
  */
 public class GovernanceConfigurationHandler
 {
-    private String                                                   serviceName;
-    private String                                                   serverName;
-    private RepositoryHandler                                        repositoryHandler;
-    private OMRSRepositoryHelper                                     repositoryHelper;
-    private SoftwareServerCapabilityHandler<GovernanceEngineElement> governanceEngineHandler;
-    private AssetHandler<GovernanceServiceElement>                   governanceServiceHandler;
-    private ConnectionHandler<Connection>                            connectionHandler;
-    private ConnectorTypeHandler<ConnectorType>                      connectorTypeHandler;
-    private InvalidParameterHandler                                  invalidParameterHandler;
+    private String                                             serviceName;
+    private String                                             serverName;
+    private RepositoryHandler                                  repositoryHandler;
+    private OMRSRepositoryHelper                               repositoryHelper;
+    private SoftwareCapabilityHandler<GovernanceEngineElement> governanceEngineHandler;
+    private AssetHandler<GovernanceServiceElement>             governanceServiceHandler;
+    private ConnectionHandler<Connection>                      connectionHandler;
+    private ConnectorTypeHandler<ConnectorType>                connectorTypeHandler;
+    private InvalidParameterHandler                            invalidParameterHandler;
 
 
     /**
@@ -85,21 +85,21 @@ public class GovernanceConfigurationHandler
         this.repositoryHelper = repositoryHelper;
         this.repositoryHandler = repositoryHandler;
 
-        this.governanceEngineHandler = new SoftwareServerCapabilityHandler<>(new GovernanceEngineConverter<>(repositoryHelper,
-                                                                                                             serviceName,
-                                                                                                             serverName),
-                                                                             GovernanceEngineElement.class,
-                                                                             serviceName,
-                                                                             serverName,
-                                                                             invalidParameterHandler,
-                                                                             repositoryHandler,
-                                                                             repositoryHelper,
-                                                                             localServerUserId,
-                                                                             securityVerifier,
-                                                                             supportedZones,
-                                                                             defaultZones,
-                                                                             publishZones,
-                                                                             auditLog);
+        this.governanceEngineHandler = new SoftwareCapabilityHandler<>(new GovernanceEngineConverter<>(repositoryHelper,
+                                                                                                       serviceName,
+                                                                                                       serverName),
+                                                                       GovernanceEngineElement.class,
+                                                                       serviceName,
+                                                                       serverName,
+                                                                       invalidParameterHandler,
+                                                                       repositoryHandler,
+                                                                       repositoryHelper,
+                                                                       localServerUserId,
+                                                                       securityVerifier,
+                                                                       supportedZones,
+                                                                       defaultZones,
+                                                                       publishZones,
+                                                                       auditLog);
 
         this.governanceServiceHandler = new AssetHandler<>(new GovernanceServiceConverter<>(repositoryHelper, serviceName, serverName),
                                                           GovernanceServiceElement.class,
@@ -174,24 +174,24 @@ public class GovernanceConfigurationHandler
 
         invalidParameterHandler.validateName(typeName, typeNameParameterName, methodName);
 
-        return governanceEngineHandler.createSoftwareServerCapability(userId,
-                                                                     null,
-                                                                     null,
-                                                                     typeName,
-                                                                     null,
-                                                                     qualifiedName,
-                                                                     displayName,
-                                                                     description,
-                                                                     null,
-                                                                     null,
-                                                                     null,
-                                                                     null,
-                                                                     null,
-                                                                     null,
-                                                                     null,
-                                                                     null,
-                                                                     null,
-                                                                     methodName);
+        return governanceEngineHandler.createSoftwareCapability(userId,
+                                                                null,
+                                                                null,
+                                                                typeName,
+                                                                null,
+                                                                qualifiedName,
+                                                                displayName,
+                                                                description,
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                methodName);
     }
 
 

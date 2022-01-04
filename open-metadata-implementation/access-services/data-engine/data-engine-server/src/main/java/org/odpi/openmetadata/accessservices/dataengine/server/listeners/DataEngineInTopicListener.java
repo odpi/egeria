@@ -52,7 +52,7 @@ public class DataEngineInTopicListener implements OpenMetadataTopicListener {
                 DataEngineEventHeader dataEngineEventHeader = OBJECT_MAPPER.readValue(dataEngineEvent, DataEngineEventHeader.class);
 
                 if ((dataEngineEventHeader != null)) {
-                    switch (dataEngineEventHeader.getEventType()) {
+                    switch (dataEngineEventHeader.getDataEngineEventType()) {
 
                         case DATA_ENGINE_REGISTRATION_EVENT:
                             dataEngineEventProcessor.processDataEngineRegistrationEvent(dataEngineEvent);
@@ -122,6 +122,18 @@ public class DataEngineInTopicListener implements OpenMetadataTopicListener {
                             break;
                         case DELETE_ENDPOINT_EVENT:
                             dataEngineEventProcessor.processDeleteEndpointEvent(dataEngineEvent);
+                            break;
+                        case TOPIC_EVENT:
+                            dataEngineEventProcessor.processTopicEvent(dataEngineEvent);
+                            break;
+                        case EVENT_TYPE_EVENT:
+                            dataEngineEventProcessor.processEventTypeEvent(dataEngineEvent);
+                            break;
+                        case DELETE_TOPIC_EVENT:
+                            dataEngineEventProcessor.processDeleteTopicEvent(dataEngineEvent);
+                            break;
+                        case DELETE_EVENT_TYPE_EVENT:
+                            dataEngineEventProcessor.processDeleteEventTypeEvent(dataEngineEvent);
                             break;
                         default:
                             log.debug("Ignored instance event - unknown event type");

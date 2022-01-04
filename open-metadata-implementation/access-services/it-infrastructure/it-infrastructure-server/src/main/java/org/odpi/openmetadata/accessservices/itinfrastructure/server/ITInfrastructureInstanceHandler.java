@@ -8,7 +8,7 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.Co
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ContactMethodElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.EndpointElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ITProfileElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareServerCapabilityElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareCapabilityElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.UserIdentityElement;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.generichandlers.ActorProfileHandler;
@@ -17,7 +17,7 @@ import org.odpi.openmetadata.commonservices.generichandlers.ConnectionHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ConnectorTypeHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ContactDetailsHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.EndpointHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.SoftwareServerCapabilityHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.SoftwareCapabilityHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.UserIdentityHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -181,11 +181,11 @@ class ITInfrastructureInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
-    SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> getSoftwareServerCapabilityHandler(String userId,
-                                                                                                        String serverName,
-                                                                                                        String serviceOperationName) throws InvalidParameterException,
-                                                                                                                                            UserNotAuthorizedException,
-                                                                                                                                            PropertyServerException
+    SoftwareCapabilityHandler<SoftwareCapabilityElement> getSoftwareCapabilityHandler(String userId,
+                                                                                      String serverName,
+                                                                                      String serviceOperationName) throws InvalidParameterException,
+                                                                                                                          UserNotAuthorizedException,
+                                                                                                                          PropertyServerException
     {
 
         ITInfrastructureServicesInstance instance = (ITInfrastructureServicesInstance) super.getServerServiceInstance(userId,
@@ -194,7 +194,7 @@ class ITInfrastructureInstanceHandler extends OMASServiceInstanceHandler
 
         if (instance != null)
         {
-            return instance.getSoftwareServerCapabilityHandler();
+            return instance.getSoftwareCapabilityHandler();
         }
 
         return null;

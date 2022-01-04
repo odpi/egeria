@@ -2851,6 +2851,46 @@ public abstract class OpenMetadataAPIGenericConverter<B>
     }
 
 
+
+    /**
+     * Extract and delete the type property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removeCapabilityType(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeCapabilityType";
+
+        if (instanceProperties != null)
+        {
+            String type = repositoryHelper.removeStringProperty(serviceName,
+                                                                OpenMetadataAPIMapper.CAPABILITY_TYPE_PROPERTY_NAME,
+                                                                instanceProperties,
+                                                                methodName);
+            if (type == null)
+            {
+                type = repositoryHelper.removeStringProperty(serviceName,
+                                                             OpenMetadataAPIMapper.CAPABILITY_TYPE_PROPERTY_NAME_DEP1,
+                                                             instanceProperties,
+                                                             methodName);
+            }
+
+            if (type == null)
+            {
+                type = repositoryHelper.removeStringProperty(serviceName,
+                                                             OpenMetadataAPIMapper.CAPABILITY_TYPE_PROPERTY_NAME_DEP2,
+                                                             instanceProperties,
+                                                             methodName);
+            }
+
+            return type;
+        }
+
+        return null;
+    }
+
+
     /**
      * Extract and delete the capabilityVersion property from the supplied instance properties.
      *

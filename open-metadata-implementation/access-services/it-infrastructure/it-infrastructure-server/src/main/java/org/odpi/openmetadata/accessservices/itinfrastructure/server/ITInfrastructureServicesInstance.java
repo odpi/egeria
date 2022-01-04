@@ -8,7 +8,7 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.converters.Connecto
 import org.odpi.openmetadata.accessservices.itinfrastructure.converters.ContactMethodConverter;
 import org.odpi.openmetadata.accessservices.itinfrastructure.converters.EndpointConverter;
 import org.odpi.openmetadata.accessservices.itinfrastructure.converters.ITProfileConverter;
-import org.odpi.openmetadata.accessservices.itinfrastructure.converters.SoftwareServerCapabilityConverter;
+import org.odpi.openmetadata.accessservices.itinfrastructure.converters.SoftwareCapabilityConverter;
 import org.odpi.openmetadata.accessservices.itinfrastructure.converters.UserIdentityConverter;
 import org.odpi.openmetadata.accessservices.itinfrastructure.ffdc.ITInfrastructureErrorCode;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.AssetElement;
@@ -17,7 +17,7 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.Co
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ContactMethodElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.EndpointElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ITProfileElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareServerCapabilityElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareCapabilityElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.UserIdentityElement;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.generichandlers.ActorProfileHandler;
@@ -26,7 +26,7 @@ import org.odpi.openmetadata.commonservices.generichandlers.ConnectionHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ConnectorTypeHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ContactDetailsHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.EndpointHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.SoftwareServerCapabilityHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.SoftwareCapabilityHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.UserIdentityHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
@@ -44,14 +44,14 @@ public class ITInfrastructureServicesInstance extends OMASServiceInstance
 {
     private static AccessServiceDescription myDescription = AccessServiceDescription.IT_INFRASTRUCTURE_OMAS;
 
-    private ConnectionHandler<ConnectionElement>                             connectionHandler;
-    private ConnectorTypeHandler<ConnectorTypeElement>                       connectorTypeHandler;
-    private EndpointHandler<EndpointElement>                                 endpointHandler;
-    private ActorProfileHandler<ITProfileElement>                            itProfileHandler;
-    private UserIdentityHandler<UserIdentityElement>                         userIdentityHandler;
-    private ContactDetailsHandler<ContactMethodElement>                      contactDetailsHandler;
-    private SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> softwareServerCapabilityHandler;
-    private AssetHandler<AssetElement>                                       assetHandler;
+    private ConnectionHandler<ConnectionElement>                 connectionHandler;
+    private ConnectorTypeHandler<ConnectorTypeElement>           connectorTypeHandler;
+    private EndpointHandler<EndpointElement>                     endpointHandler;
+    private ActorProfileHandler<ITProfileElement>                itProfileHandler;
+    private UserIdentityHandler<UserIdentityElement>             userIdentityHandler;
+    private ContactDetailsHandler<ContactMethodElement>          contactDetailsHandler;
+    private SoftwareCapabilityHandler<SoftwareCapabilityElement> softwareCapabilityHandler;
+    private AssetHandler<AssetElement>                           assetHandler;
 
 
     /**
@@ -167,19 +167,19 @@ public class ITInfrastructureServicesInstance extends OMASServiceInstance
                                                                      publishZones,
                                                                      auditLog);
 
-            this.softwareServerCapabilityHandler = new SoftwareServerCapabilityHandler<>(new SoftwareServerCapabilityConverter<>(repositoryHelper, serviceName, serverName),
-                                                                                         SoftwareServerCapabilityElement.class,
-                                                                                         serviceName,
-                                                                                         serverName,
-                                                                                         invalidParameterHandler,
-                                                                                         repositoryHandler,
-                                                                                         repositoryHelper,
-                                                                                         localServerUserId,
-                                                                                         securityVerifier,
-                                                                                         supportedZones,
-                                                                                         defaultZones,
-                                                                                         publishZones,
-                                                                                         auditLog);
+            this.softwareCapabilityHandler = new SoftwareCapabilityHandler<>(new SoftwareCapabilityConverter<>(repositoryHelper, serviceName, serverName),
+                                                                             SoftwareCapabilityElement.class,
+                                                                             serviceName,
+                                                                             serverName,
+                                                                             invalidParameterHandler,
+                                                                             repositoryHandler,
+                                                                             repositoryHelper,
+                                                                             localServerUserId,
+                                                                             securityVerifier,
+                                                                             supportedZones,
+                                                                             defaultZones,
+                                                                             publishZones,
+                                                                             auditLog);
 
             this.assetHandler = new AssetHandler<>(new AssetConverter<>(repositoryHelper, serviceName, serverName),
                                                    AssetElement.class,
@@ -327,12 +327,12 @@ public class ITInfrastructureServicesInstance extends OMASServiceInstance
      * @return  handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> getSoftwareServerCapabilityHandler() throws PropertyServerException
+    SoftwareCapabilityHandler<SoftwareCapabilityElement> getSoftwareCapabilityHandler() throws PropertyServerException
     {
         final String methodName = "getSoftwareServerCapabilityHandler";
 
         validateActiveRepository(methodName);
 
-        return softwareServerCapabilityHandler;
+        return softwareCapabilityHandler;
     }
 }

@@ -67,7 +67,7 @@ Once you have an instance of the client, you can use it to create, update or del
 * Create/Update/Delete a database schema
 * Create/Update/Delete a relational table with columns
 * Create/Update/Delete a data file with columns, endpoint, connection, connector type and corresponding schema type attached
- 
+* Create/Update/Delete a topic with event types and event schema attributes
 
 > Note: The equivalent REST interfaces are documented in the
 [data-engine-server](../../../../data-engine-server/README.md)

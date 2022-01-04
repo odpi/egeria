@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.assetmanager.server;
 
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ElementHeader;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataCorrelationHeader;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.SoftwareServerCapabilityElement;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.SoftwareCapabilityElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
@@ -18,7 +18,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.ExternalIdentifierHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
-import org.odpi.openmetadata.commonservices.generichandlers.SoftwareServerCapabilityHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.SoftwareCapabilityHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -131,28 +131,28 @@ public class AssetManagerRESTServices
 
             if (assetManagerProperties != null)
             {
-                SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> handler = instanceHandler.getAssetManagerHandler(userId,
-                                                                                                                                  serverName,
-                                                                                                                                  methodName);
+                SoftwareCapabilityHandler<SoftwareCapabilityElement> handler = instanceHandler.getAssetManagerHandler(userId,
+                                                                                                                      serverName,
+                                                                                                                      methodName);
 
-                response.setGUID(handler.createSoftwareServerCapability(userId,
-                                                                        null,
-                                                                        null,
-                                                                        OpenMetadataAPIMapper.CATALOG_TYPE_NAME,
-                                                                        OpenMetadataAPIMapper.ASSET_MANAGER_TYPE_NAME,
-                                                                        assetManagerProperties.getQualifiedName(),
-                                                                        assetManagerProperties.getDisplayName(),
-                                                                        assetManagerProperties.getDescription(),
-                                                                        assetManagerProperties.getTypeDescription(),
-                                                                        assetManagerProperties.getVersion(),
-                                                                        assetManagerProperties.getPatchLevel(),
-                                                                        assetManagerProperties.getSource(),
-                                                                        assetManagerProperties.getAdditionalProperties(),
-                                                                        null,
-                                                                        assetManagerProperties.getVendorProperties(),
-                                                                        null,
-                                                                        null,
-                                                                        methodName));
+                response.setGUID(handler.createSoftwareCapability(userId,
+                                                                  null,
+                                                                  null,
+                                                                  OpenMetadataAPIMapper.CATALOG_TYPE_NAME,
+                                                                  OpenMetadataAPIMapper.ASSET_MANAGER_TYPE_NAME,
+                                                                  assetManagerProperties.getQualifiedName(),
+                                                                  assetManagerProperties.getDisplayName(),
+                                                                  assetManagerProperties.getDescription(),
+                                                                  assetManagerProperties.getTypeDescription(),
+                                                                  assetManagerProperties.getVersion(),
+                                                                  assetManagerProperties.getPatchLevel(),
+                                                                  assetManagerProperties.getSource(),
+                                                                  assetManagerProperties.getAdditionalProperties(),
+                                                                  null,
+                                                                  assetManagerProperties.getVendorProperties(),
+                                                                  null,
+                                                                  null,
+                                                                  methodName));
             }
             else
             {
@@ -211,13 +211,13 @@ public class AssetManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> handler = instanceHandler.getAssetManagerHandler(userId,
-                                                                                                                              serverName,
-                                                                                                                              methodName);
+            SoftwareCapabilityHandler<SoftwareCapabilityElement> handler = instanceHandler.getAssetManagerHandler(userId,
+                                                                                                                  serverName,
+                                                                                                                  methodName);
 
             response.setGUID(handler.getBeanGUIDByQualifiedName(userId,
-                                                                OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_GUID,
-                                                                OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                                OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_GUID,
+                                                                OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                                 qualifiedName,
                                                                 nameParameterName,
                                                                 false,
@@ -314,7 +314,7 @@ public class AssetManagerRESTServices
                                                 requestBody.getAssetManagerGUID(),
                                                 assetManagerGUIDParameterName,
                                                 requestBody.getAssetManagerName(),
-                                                OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                 permittedSynchronizationOrdinal,
                                                 requestBody.getSynchronizationDescription(),
                                                 null,
@@ -413,7 +413,7 @@ public class AssetManagerRESTServices
                                                 requestBody.getAssetManagerGUID(),
                                                 assetManagerGUIDParameterName,
                                                 requestBody.getAssetManagerName(),
-                                                OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                 permittedSynchronizationOrdinal,
                                                 requestBody.getSynchronizationDescription(),
                                                 null,
@@ -596,7 +596,7 @@ public class AssetManagerRESTServices
                                                requestBody.getAssetManagerGUID(),
                                                assetManagerGUIDParameterName,
                                                requestBody.getAssetManagerName(),
-                                               OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                               OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                null,
                                                methodName);
             }

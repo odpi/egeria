@@ -35,15 +35,15 @@ import java.util.Map;
  */
 public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
 {
-    private String                                                     serviceName;
-    private String                                                     serverName;
-    private RepositoryHandler                                          repositoryHandler;
-    private OMRSRepositoryHelper                                       repositoryHelper;
-    private SoftwareServerCapabilityHandler<DiscoveryEngineProperties> discoveryEngineHandler;
-    private AssetHandler<DiscoveryServiceProperties>                   discoveryServiceHandler;
-    private ConnectionHandler<Connection>                              connectionHandler;
-    private ConnectorTypeHandler<ConnectorType>                        connectorTypeHandler;
-    private InvalidParameterHandler                                    invalidParameterHandler;
+    private String                                               serviceName;
+    private String                                               serverName;
+    private RepositoryHandler                                    repositoryHandler;
+    private OMRSRepositoryHelper                                 repositoryHelper;
+    private SoftwareCapabilityHandler<DiscoveryEngineProperties> discoveryEngineHandler;
+    private AssetHandler<DiscoveryServiceProperties>             discoveryServiceHandler;
+    private ConnectionHandler<Connection>                        connectionHandler;
+    private ConnectorTypeHandler<ConnectorType>                  connectorTypeHandler;
+    private InvalidParameterHandler                              invalidParameterHandler;
 
 
     /**
@@ -80,21 +80,21 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
         this.repositoryHelper = repositoryHelper;
         this.repositoryHandler = repositoryHandler;
 
-        this.discoveryEngineHandler = new SoftwareServerCapabilityHandler<>(new DiscoveryEnginePropertiesConverter<>(repositoryHelper,
-                                                                                                                     serviceName,
-                                                                                                                     serverName),
-                                                                            DiscoveryEngineProperties.class,
-                                                                            serviceName,
-                                                                            serverName,
-                                                                            invalidParameterHandler,
-                                                                            repositoryHandler,
-                                                                            repositoryHelper,
-                                                                            localServerUserId,
-                                                                            securityVerifier,
-                                                                            supportedZones,
-                                                                            defaultZones,
-                                                                            publishZones,
-                                                                            auditLog);
+        this.discoveryEngineHandler = new SoftwareCapabilityHandler<>(new DiscoveryEnginePropertiesConverter<>(repositoryHelper,
+                                                                                                               serviceName,
+                                                                                                               serverName),
+                                                                      DiscoveryEngineProperties.class,
+                                                                      serviceName,
+                                                                      serverName,
+                                                                      invalidParameterHandler,
+                                                                      repositoryHandler,
+                                                                      repositoryHelper,
+                                                                      localServerUserId,
+                                                                      securityVerifier,
+                                                                      supportedZones,
+                                                                      defaultZones,
+                                                                      publishZones,
+                                                                      auditLog);
 
         this.discoveryServiceHandler = new AssetHandler<>(new DiscoveryServicePropertiesConverter<>(repositoryHelper, serviceName, serverName),
                                                           DiscoveryServiceProperties.class,
@@ -164,24 +164,24 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
     {
         final String methodName = "createDiscoveryEngine";
 
-        return discoveryEngineHandler.createSoftwareServerCapability(userId,
-                                                                     null,
-                                                                     null,
-                                                                     OpenMetadataAPIMapper.DISCOVERY_ENGINE_TYPE_NAME,
-                                                                     null,
-                                                                     qualifiedName,
-                                                                     displayName,
-                                                                     description,
-                                                                     null,
-                                                                     null,
-                                                                     null,
-                                                                     null,
-                                                                     null,
-                                                                     null,
-                                                                     null,
-                                                                     null,
-                                                                     null,
-                                                                     methodName);
+        return discoveryEngineHandler.createSoftwareCapability(userId,
+                                                               null,
+                                                               null,
+                                                               OpenMetadataAPIMapper.DISCOVERY_ENGINE_TYPE_NAME,
+                                                               null,
+                                                               qualifiedName,
+                                                               displayName,
+                                                               description,
+                                                               null,
+                                                               null,
+                                                               null,
+                                                               null,
+                                                               null,
+                                                               null,
+                                                               null,
+                                                               null,
+                                                               null,
+                                                               methodName);
     }
 
 
