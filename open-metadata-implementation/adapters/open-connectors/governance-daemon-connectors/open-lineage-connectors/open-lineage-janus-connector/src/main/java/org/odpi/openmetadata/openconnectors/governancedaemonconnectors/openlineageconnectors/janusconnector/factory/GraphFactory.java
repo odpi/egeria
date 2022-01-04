@@ -17,7 +17,6 @@ import org.janusgraph.core.schema.JanusGraphManagement;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph.LineageGraphConnector;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph.LineageGraphConnectorProvider;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph.LineageGraphRemoteConnectorProvider;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode;
@@ -35,7 +34,6 @@ import java.util.stream.Stream;
 
 import static org.apache.tinkerpop.gremlin.process.traversal.AnonymousTraversalSource.traversal;
 import static org.janusgraph.util.system.ConfigurationUtil.loadMapConfiguration;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.GRAPH_TRAVERSAL_EMPTY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ASSET_LINEAGE_LAST_UPDATE_TIMESTAMP;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_GUID;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_VERSION;
@@ -81,26 +79,15 @@ public class GraphFactory extends IndexingFactory {
      * @throws OpenLineageException if init fails
      */
     public void openGraph(String providerClass, ConnectionProperties connectionProperties, AuditLog auditLog) throws JanusConnectorException, OpenLineageException {
-        boolean startError = false;
         super.auditLog = auditLog;
         if (providerClass.equals(LineageGraphConnectorProvider.class.getName())) {
             isRemoteGraph = false;
             this.localGraph = openEmbeddedGraph(connectionProperties.getConfigurationProperties());
-            startError = this.localGraph == null;
         }
 
         if (providerClass.equals(LineageGraphRemoteConnectorProvider.class.getName())) {
             isRemoteGraph = true;
             this.remoteTraversal = openRemoteGraph(connectionProperties.getConfigurationProperties());
-            startError = this.remoteTraversal == null;
-        }
-        if (startError) {
-            log.error(EMPTY_GRAPH_TRAVERSAL);
-            JanusConnectorErrorCode errorCode = GRAPH_TRAVERSAL_EMPTY;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
-                    EMPTY_GRAPH_TRAVERSAL, INITIALIZE_GRAPH_DB, LineageGraphConnector.class.getName());
-            throw new OpenLineageException(500, errorCode.getClass().getName(), errorMessage, errorCode.getErrorMessage(),
-                    errorCode.getSystemAction(), errorCode.getUserAction());
         }
     }
 
