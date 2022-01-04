@@ -92,7 +92,7 @@ allprojects {
         httpcoreVersion = '4.4.15'
         springbootVersion = '2.6.2'
         jenaVersion = '4.2.0'
-        elasticsearchVersion = '7.16.2'
+        elasticsearchVersion = '7.15.2'
     }
 
     dependencies {
