@@ -100,6 +100,7 @@ allprojects {
         jacksonaslVersion = '1.9.14-atlassian-6'
         jakartaannotationVersion = '1.3.5'
         jakartapersistenceVersion = '2.2.3'
+	jakartavalidationVersion = '3.0.0'
         janusVersion = '0.6.0'
         javassistVersion = '3.28.0-GA'
         jaxbVersion = '2.3.1'
@@ -181,6 +182,7 @@ allprojects {
             implementation("io.openlineage:openlineage-java:${openlineageVersion}")
             implementation("jakarta.annotation:jakarta.annotation-api:${jakartaannotationVersion}")
             implementation("jakarta.persistence:jakarta.persistence-api:${jakartapersistenceVersion}")
+            implementation("jakarta.validation:jakarta.validation-api:${jakartavalidationVersion}")
             implementation("javax.validation:validation-api:${validationVersion}")
             implementation("javax.xml.bind:jaxb-api:${jaxbVersion}")
             implementation("org.apache.avro:avro:${avroVersion}")
