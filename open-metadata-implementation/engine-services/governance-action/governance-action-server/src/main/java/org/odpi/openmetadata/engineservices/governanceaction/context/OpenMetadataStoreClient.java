@@ -692,7 +692,7 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
 
 
     /**
-     * Link elements as peer duplicates. Create a simple relationship between two elements. These elements must be of the same type.
+     * Link elements as peer duplicates. Create a simple relationship between two elements.
      * If the relationship already exists, the properties are updated.
      *
      * @param metadataElement1GUID unique identifier of the metadata element at end 1 of the relationship

@@ -1029,7 +1029,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
 
 
     /**
-     * Link elements as peer duplicates. Create a simple relationship between two elements. These elements must be of the same type.
+     * Link elements as peer duplicates. Create a simple relationship between two elements.
      * If the relationship already exists, the properties are updated.
      *
      * @param userId caller's userId
