@@ -576,7 +576,7 @@ public class GovernanceEngineOMASResource
     }
 
     /**
-     * Create a simple relationship between two elements.  These elements must be of the same type.  If the relationship already exists,
+     * Create a simple relationship between two elements. If the relationship already exists,
      * the properties are updated.
      *
      * @param serverName name of the service to route the request to.
