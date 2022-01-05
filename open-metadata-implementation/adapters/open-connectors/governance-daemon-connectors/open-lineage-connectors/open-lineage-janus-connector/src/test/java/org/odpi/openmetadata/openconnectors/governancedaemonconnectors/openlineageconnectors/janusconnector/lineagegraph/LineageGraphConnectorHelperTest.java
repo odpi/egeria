@@ -3,22 +3,22 @@
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.lineagegraph;
 
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
-import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.janusgraph.core.JanusGraphFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.factory.GraphFactory;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph.LineageGraphConnectorHelper;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.ffdc.JanusConnectorException;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DATA_FILE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.GLOSSARY_TERM;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.LINEAGE_MAPPING;
@@ -39,20 +39,16 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 public class LineageGraphConnectorHelperTest {
 
     static LineageGraphConnectorHelper lineageGraphConnectorHelper;
+    private static final String CONNECTOR_PROVIDER_NAME = "org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph.LineageGraphConnectorProvider";
 
     @BeforeAll
-    public static void beforeClass() {
-        Graph graph = JanusGraphFactory.build().set("storage.backend", "inmemory").open();
-        GraphTraversalSource g = graph.traversal();
+    public static void beforeClass() throws JanusConnectorException, OpenLineageException {
         GraphFactory graphFactory = new GraphFactory();
-        when(graphFactory.getGraphTraversalSource()).thenReturn(g);
+        graphFactory.openGraph(CONNECTOR_PROVIDER_NAME, Collections.singletonMap("storage.backend", "inmemory"), null);
         lineageGraphConnectorHelper = new LineageGraphConnectorHelper(graphFactory, true);
-
-        addColumnLineageData(g);
-
-        addGlossaryLineageData(g);
-
-        addTableLineageData(g);
+        addColumnLineageData(graphFactory.getGraphTraversalSource());
+        addGlossaryLineageData(graphFactory.getGraphTraversalSource());
+        addTableLineageData(graphFactory.getGraphTraversalSource());
     }
 
 

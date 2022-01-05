@@ -140,7 +140,8 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         this.auditLog = auditLog;
         try {
             graphFactory = new GraphFactory();
-            graphFactory.openGraph(connectionProperties.getConnectorType().getConnectorProviderClassName(), connectionProperties, auditLog);
+            graphFactory.openGraph(connectionProperties.getConnectorType().getConnectorProviderClassName(),
+                    connectionProperties.getConfigurationProperties(), auditLog);
             this.helper = new LineageGraphConnectorHelper(graphFactory, graphFactory.isSupportingTransactions());
 
         } catch (JanusConnectorException error) {
