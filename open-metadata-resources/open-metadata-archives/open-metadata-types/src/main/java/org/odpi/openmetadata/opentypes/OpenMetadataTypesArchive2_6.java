@@ -379,7 +379,7 @@ public class OpenMetadataTypesArchive2_6
 
         final int    element99Ordinal         = 99;
         final String element99Value           = "Other";
-        final String element99Description     = "Another confidence level.";
+        final String element99Description     = "Another impact level.";
         final String element99DescriptionGUID = null;
 
         elementDef = archiveHelper.getEnumElementDef(element99Ordinal,

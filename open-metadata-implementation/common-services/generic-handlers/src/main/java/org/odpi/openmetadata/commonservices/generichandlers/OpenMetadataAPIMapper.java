@@ -378,23 +378,30 @@ public class OpenMetadataAPIMapper
     public static final String ENCRYPTION_METHOD_PROPERTY_NAME           = "encryptionMethod";                     /* from Endpoint entity */
 
 
-    public static final String SOFTWARE_SERVER_CAPABILITY_TYPE_GUID   = "fe30a033-8f86-4d17-8986-e6166fa24177";
-    public static final String SOFTWARE_SERVER_CAPABILITY_TYPE_NAME   = "SoftwareServerCapability";
+    public static final String SOFTWARE_CAPABILITY_TYPE_GUID   = "54055c38-b9ad-4a66-a75b-14dc643d4c69";
+    public static final String SOFTWARE_CAPABILITY_TYPE_NAME   = "SoftwareCapability";
     /* Referenceable */
 
-    public static final String CAPABILITY_VERSION_PROPERTY_NAME     = "capabilityVersion";       /* from SoftwareServerCapability entity */
-    public static final String CAPABILITY_VERSION_PROPERTY_NAME_DEP = "version";       /* from SoftwareServerCapability entity */
-    public static final String PATCH_LEVEL_PROPERTY_NAME            = "patchLevel";    /* from SoftwareServerCapability entity */
+    public static final String SOFTWARE_SERVER_CAPABILITY_TYPE_GUID   = "fe30a033-8f86-4d17-8986-e6166fa24177";
+    public static final String SOFTWARE_SERVER_CAPABILITY_TYPE_NAME   = "SoftwareServerCapability";
+    /* SoftwareCapability */
 
-    public static final String SUPPORTED_CAPABILITY_TYPE_GUID         = "8b7d7da5-0668-4174-a43b-8f8c6c068dd0";
-    public static final String SUPPORTED_CAPABILITY_TYPE_NAME         = "SoftwareServerSupportedCapability";
-    /* End 1 = SoftwareServer; End 2 = SoftwareServerCapability */
+    public static final String CAPABILITY_TYPE_PROPERTY_NAME        = "capabilityType";             /* from SoftwareCapability entity */
+    public static final String CAPABILITY_TYPE_PROPERTY_NAME_DEP1   = "type";                       /* from SoftwareServerCapability entity */
+    public static final String CAPABILITY_TYPE_PROPERTY_NAME_DEP2   = "deployedImplementationType"; /* from SoftwareServerCapability entity */
+    public static final String CAPABILITY_VERSION_PROPERTY_NAME     = "capabilityVersion";          /* from SoftwareCapability entity */
+    public static final String CAPABILITY_VERSION_PROPERTY_NAME_DEP = "version";       /* from SoftwareCapability entity */
+    public static final String PATCH_LEVEL_PROPERTY_NAME            = "patchLevel";    /* from SoftwareCapability entity */
+
+    public static final String SUPPORTED_CAPABILITY_TYPE_GUID         = "2480aa71-44c5-414d-8b32-9c4340786d77";
+    public static final String SUPPORTED_CAPABILITY_TYPE_NAME         = "SupportedSoftwareCapability";
+    /* End 1 = ITInfrastructure; End 2 = SoftwareCapability */
 
     public static final String SERVER_CAPABILITY_STATUS_PROPERTY_NAME = "serverCapabilityStatus";  /* from SoftwareServerSupportedCapability */
 
     public static final String SERVER_ASSET_USE_TYPE_GUID                = "56315447-88a6-4235-ba91-fead86524ebf";  /* from Area 0 */
     public static final String SERVER_ASSET_USE_TYPE_NAME                = "ServerAssetUse";
-    /* End1 = SoftwareServerCapability; End 2 = Asset */
+    /* End1 = SoftwareCapability; End 2 = Asset */
 
     public static final String USE_TYPE_PROPERTY_NAME                    = "useType";                       /* from ServerAssetUse relationship */
     public static final String MINIMUM_INSTANCES_PROPERTY_NAME           = "minimumInstances";              /* from ServerAssetUse relationship */
@@ -928,18 +935,18 @@ public class OpenMetadataAPIMapper
 
     public static final String FILE_SYSTEM_CLASSIFICATION_TYPE_GUID = "cab5ba1d-cfd3-4fca-857d-c07711fc4157";
     public static final String FILE_SYSTEM_CLASSIFICATION_TYPE_NAME = "FileSystem";
-    /* SoftwareServerCapability */
+    /* SoftwareCapability */
 
     public static final String FORMAT_PROPERTY_NAME                  = "format";                /* from FileSystem */
     public static final String ENCRYPTION_PROPERTY_NAME              = "encryption";            /* from FileSystem */
 
     public static final String FILE_MANAGER_CLASSIFICATION_TYPE_GUID = "eadec807-02f0-4d6f-911c-261eddd0c2f5";
     public static final String FILE_MANAGER_CLASSIFICATION_TYPE_NAME = "FileManager";
-    /* SoftwareServerCapability */
+    /* SoftwareCapability */
 
     public static final String NOTIFICATION_MANAGER_CLASSIFICATION_GUID   = "3e7502a7-396a-4737-a106-378c9c94c1057";
     public static final String NOTIFICATION_MANAGER_CLASSIFICATION_NAME   = "NotificationManager";
-    /* SoftwareServerCapability */
+    /* SoftwareCapability */
 
     public static final String ENTERPRISE_ACCESS_LAYER_TYPE_GUID     = "39444bf9-638e-4124-a5f9-1b8f3e1b008b";
     public static final String ENTERPRISE_ACCESS_LAYER_TYPE_NAME     = "EnterpriseAccessLayer";
@@ -2050,7 +2057,7 @@ public class OpenMetadataAPIMapper
     public static final String EVENT_TYPE_LIST_TYPE_NAME                = "EventTypeList";
     /* ComplexSchemaType */
 
-    public static final String EVENT_TYPE_TYPE_GUID                     = "bead9aa4-214a-4596-8036-aa78395bbfb1";   /* from Area 5 */
+    public static final String EVENT_TYPE_TYPE_GUID                     = "8bc88aba-d7e4-4334-957f-cfe8e8eadc32";   /* from Area 5 */
     public static final String EVENT_TYPE_TYPE_NAME                     = "EventType";
     /* ComplexSchemaType */
 
@@ -2058,7 +2065,7 @@ public class OpenMetadataAPIMapper
     public static final String EVENT_SCHEMA_ATTRIBUTE_TYPE_NAME         = "EventSchemaAttribute";
     /* SchemaAttribute */
 
-    public static final String EVENT_SET_TYPE_GUID                      = "8bc88aba-d7e4-4334-957f-cfe8e8eadc32";   /* from Area 5 */
+    public static final String EVENT_SET_TYPE_GUID                      = "bead9aa4-214a-4596-8036-aa78395bbfb1";   /* from Area 5 */
     public static final String EVENT_SET_TYPE_NAME                      = "EventSet";
     /* Collection */
 

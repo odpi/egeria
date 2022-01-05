@@ -29,7 +29,7 @@ public class AnalyticsModelingOMASSynchronizationIT
     {
         FVTResults results = SynchronizationTest.performFVT(serverName, StringUtils.defaultIfEmpty(System.getProperty("fvt.url"),FVTConstants.SERVER_PLATFORM_URL_ROOT), FVTConstants.USERID);
 
-        results.printResults();
+        results.printResults(serverName);
         assertTrue(results.isSuccessful());
     }
 }

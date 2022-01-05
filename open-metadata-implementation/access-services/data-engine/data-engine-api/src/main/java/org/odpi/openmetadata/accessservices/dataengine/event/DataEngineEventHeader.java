@@ -41,7 +41,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = DatabaseEvent.class, name = "DatabaseEvent"),
         @JsonSubTypes.Type(value = DatabaseSchemaEvent.class, name = "DatabaseSchemaEvent"),
         @JsonSubTypes.Type(value = RelationalTableEvent.class, name = "RelationalTableEvent"),
-        @JsonSubTypes.Type(value = DataFileEvent.class, name = "DataFileEvent")
+        @JsonSubTypes.Type(value = DataFileEvent.class, name = "DataFileEvent"),
+        @JsonSubTypes.Type(value = TopicEvent.class, name = "TopicEvent"),
+        @JsonSubTypes.Type(value = EventTypeEvent.class, name = "EventTypeEvent")
 })
 @Getter
 @Setter
@@ -69,9 +71,9 @@ public abstract class DataEngineEventHeader implements Serializable {
      * @return the Data Engine event type
      * -- SETTER --
      * Sets the Data Engine event type
-     * @param eventType the Data Engine event type
+     * @param dataEngineEventType the Data Engine event type
      */
-    private DataEngineEventType eventType = null;
+    private DataEngineEventType dataEngineEventType;
 
     /**
      * The external source type unique name

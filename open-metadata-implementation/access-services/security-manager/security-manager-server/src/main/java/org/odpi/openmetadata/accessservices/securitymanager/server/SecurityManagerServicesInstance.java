@@ -25,12 +25,12 @@ public class SecurityManagerServicesInstance extends OMASServiceInstance
 {
     private static AccessServiceDescription myDescription = AccessServiceDescription.SECURITY_MANAGER_OMAS;
 
-    private SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> securityManagerIntegratorHandler;
-    private GovernanceDefinitionHandler<SecurityGroupElement>      securityGroupHandler;
-    private UserIdentityHandler<UserIdentityElement>               userIdentityHandler;
-    private ContactDetailsHandler<ContactMethodElement>            contactDetailsHandler;
-    private ActorProfileHandler<ActorProfileElement>               actorProfileHandler;
-    private PersonRoleHandler<PersonRoleElement>                   personRoleHandler;
+    private SoftwareCapabilityHandler<SecurityManagerElement> softwareCapabilityHandler;
+    private GovernanceDefinitionHandler<SecurityGroupElement> securityGroupHandler;
+    private UserIdentityHandler<UserIdentityElement>          userIdentityHandler;
+    private ContactDetailsHandler<ContactMethodElement>       contactDetailsHandler;
+    private ActorProfileHandler<ActorProfileElement>          actorProfileHandler;
+    private PersonRoleHandler<PersonRoleElement>              personRoleHandler;
 
 
     /**
@@ -80,19 +80,19 @@ public class SecurityManagerServicesInstance extends OMASServiceInstance
         }
 
 
-        this.securityManagerIntegratorHandler = new SoftwareServerCapabilityHandler<>(new SecurityManagerConverter<>(repositoryHelper, serviceName, serverName),
-                                                                                      SoftwareServerCapabilityElement.class,
-                                                                                      serviceName,
-                                                                                      serverName,
-                                                                                      invalidParameterHandler,
-                                                                                      repositoryHandler,
-                                                                                      repositoryHelper,
-                                                                                      localServerUserId,
-                                                                                      securityVerifier,
-                                                                                      supportedZones,
-                                                                                      defaultZones,
-                                                                                      publishZones,
-                                                                                      auditLog);
+        this.softwareCapabilityHandler = new SoftwareCapabilityHandler<>(new SecurityManagerConverter<>(repositoryHelper, serviceName, serverName),
+                                                                         SecurityManagerElement.class,
+                                                                         serviceName,
+                                                                         serverName,
+                                                                         invalidParameterHandler,
+                                                                         repositoryHandler,
+                                                                         repositoryHelper,
+                                                                         localServerUserId,
+                                                                         securityVerifier,
+                                                                         supportedZones,
+                                                                         defaultZones,
+                                                                         publishZones,
+                                                                         auditLog);
 
         this.userIdentityHandler = new UserIdentityHandler<>(new UserIdentityConverter<>(repositoryHelper, serviceName, serverName),
                                                              UserIdentityElement.class,
@@ -174,13 +174,13 @@ public class SecurityManagerServicesInstance extends OMASServiceInstance
      * @return  handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> getSecurityManagerIntegratorHandler() throws PropertyServerException
+    SoftwareCapabilityHandler<SecurityManagerElement> getSoftwareCapabilityHandler() throws PropertyServerException
     {
-        final String methodName = "getSecurityManagerIntegratorHandler";
+        final String methodName = "getSoftwareCapabilityHandler";
 
         validateActiveRepository(methodName);
 
-        return securityManagerIntegratorHandler;
+        return softwareCapabilityHandler;
     }
 
 

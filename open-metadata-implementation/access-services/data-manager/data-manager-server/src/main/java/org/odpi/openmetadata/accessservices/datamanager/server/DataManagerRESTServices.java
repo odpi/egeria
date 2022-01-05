@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.datamanager.server;
 
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.SoftwareServerCapabilityElement;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.SoftwareCapabilityElement;
 import org.odpi.openmetadata.accessservices.datamanager.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
@@ -12,7 +12,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
-import org.odpi.openmetadata.commonservices.generichandlers.SoftwareServerCapabilityHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.SoftwareCapabilityHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 
 import org.slf4j.LoggerFactory;
@@ -109,9 +109,9 @@ public class DataManagerRESTServices
 
             if (requestBody != null)
             {
-                SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> handler = instanceHandler.getSoftwareServerCapabilityHandler(userId,
-                                                                                                                                              serverName,
-                                                                                                                                              methodName);
+                SoftwareCapabilityHandler<SoftwareCapabilityElement> handler = instanceHandler.getSoftwareServerCapabilityHandler(userId,
+                                                                                                                                  serverName,
+                                                                                                                                  methodName);
 
                 response.setGUID(handler.createFileSystem(userId,
                                                           requestBody.getExternalSourceGUID(),
@@ -172,28 +172,28 @@ public class DataManagerRESTServices
 
             if (requestBody != null)
             {
-                SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> handler = instanceHandler.getSoftwareServerCapabilityHandler(userId,
-                                                                                                                                              serverName,
-                                                                                                                                              methodName);
+                SoftwareCapabilityHandler<SoftwareCapabilityElement> handler = instanceHandler.getSoftwareServerCapabilityHandler(userId,
+                                                                                                                                  serverName,
+                                                                                                                                  methodName);
 
-                response.setGUID(handler.createSoftwareServerCapability(userId,
-                                                                        requestBody.getExternalSourceGUID(),
-                                                                        requestBody.getExternalSourceName(),
-                                                                        OpenMetadataAPIMapper.DATA_MANAGER_TYPE_NAME,
-                                                                        OpenMetadataAPIMapper.FILE_MANAGER_CLASSIFICATION_TYPE_NAME,
-                                                                        requestBody.getQualifiedName(),
-                                                                        requestBody.getDisplayName(),
-                                                                        requestBody.getDescription(),
-                                                                        requestBody.getTypeDescription(),
-                                                                        requestBody.getVersion(),
-                                                                        requestBody.getPatchLevel(),
-                                                                        requestBody.getSource(),
-                                                                        requestBody.getAdditionalProperties(),
-                                                                        requestBody.getExtendedProperties(),
-                                                                        requestBody.getVendorProperties(),
-                                                                        null,
-                                                                        null,
-                                                                        methodName));
+                response.setGUID(handler.createSoftwareCapability(userId,
+                                                                  requestBody.getExternalSourceGUID(),
+                                                                  requestBody.getExternalSourceName(),
+                                                                  OpenMetadataAPIMapper.DATA_MANAGER_TYPE_NAME,
+                                                                  OpenMetadataAPIMapper.FILE_MANAGER_CLASSIFICATION_TYPE_NAME,
+                                                                  requestBody.getQualifiedName(),
+                                                                  requestBody.getDisplayName(),
+                                                                  requestBody.getDescription(),
+                                                                  requestBody.getTypeDescription(),
+                                                                  requestBody.getVersion(),
+                                                                  requestBody.getPatchLevel(),
+                                                                  requestBody.getSource(),
+                                                                  requestBody.getAdditionalProperties(),
+                                                                  requestBody.getExtendedProperties(),
+                                                                  requestBody.getVendorProperties(),
+                                                                  null,
+                                                                  null,
+                                                                  methodName));
             }
         }
         catch (Exception error)
@@ -234,27 +234,27 @@ public class DataManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> handler = instanceHandler.getSoftwareServerCapabilityHandler(userId,
-                                                                                                                                          serverName,
-                                                                                                                                          methodName);
-            response.setGUID(handler.createSoftwareServerCapability(userId,
-                                                                    requestBody.getExternalSourceGUID(),
-                                                                    requestBody.getExternalSourceName(),
-                                                                    OpenMetadataAPIMapper.DATABASE_MANAGER_TYPE_NAME,
-                                                                    null,
-                                                                    requestBody.getQualifiedName(),
-                                                                    requestBody.getDisplayName(),
-                                                                    requestBody.getDescription(),
-                                                                    requestBody.getTypeDescription(),
-                                                                    requestBody.getVersion(),
-                                                                    requestBody.getPatchLevel(),
-                                                                    requestBody.getSource(),
-                                                                    requestBody.getAdditionalProperties(),
-                                                                    requestBody.getExtendedProperties(),
-                                                                    requestBody.getVendorProperties(),
-                                                                    null,
-                                                                    null,
-                                                                    methodName));
+            SoftwareCapabilityHandler<SoftwareCapabilityElement> handler = instanceHandler.getSoftwareServerCapabilityHandler(userId,
+                                                                                                                              serverName,
+                                                                                                                              methodName);
+            response.setGUID(handler.createSoftwareCapability(userId,
+                                                              requestBody.getExternalSourceGUID(),
+                                                              requestBody.getExternalSourceName(),
+                                                              OpenMetadataAPIMapper.DATABASE_MANAGER_TYPE_NAME,
+                                                              null,
+                                                              requestBody.getQualifiedName(),
+                                                              requestBody.getDisplayName(),
+                                                              requestBody.getDescription(),
+                                                              requestBody.getTypeDescription(),
+                                                              requestBody.getVersion(),
+                                                              requestBody.getPatchLevel(),
+                                                              requestBody.getSource(),
+                                                              requestBody.getAdditionalProperties(),
+                                                              requestBody.getExtendedProperties(),
+                                                              requestBody.getVendorProperties(),
+                                                              null,
+                                                              null,
+                                                              methodName));
         }
         catch (Exception error)
         {
@@ -295,27 +295,27 @@ public class DataManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> handler = instanceHandler.getSoftwareServerCapabilityHandler(userId,
-                                                                                                                                          serverName,
-                                                                                                                                          methodName);
-            response.setGUID(handler.createSoftwareServerCapability(userId,
-                                                                    requestBody.getExternalSourceGUID(),
-                                                                    requestBody.getExternalSourceName(),
-                                                                    OpenMetadataAPIMapper.API_MANAGER_TYPE_NAME,
-                                                                    null,
-                                                                    requestBody.getQualifiedName(),
-                                                                    requestBody.getDisplayName(),
-                                                                    requestBody.getDescription(),
-                                                                    requestBody.getTypeDescription(),
-                                                                    requestBody.getVersion(),
-                                                                    requestBody.getPatchLevel(),
-                                                                    requestBody.getSource(),
-                                                                    requestBody.getAdditionalProperties(),
-                                                                    requestBody.getExtendedProperties(),
-                                                                    requestBody.getVendorProperties(),
-                                                                    null,
-                                                                    null,
-                                                                    methodName));
+            SoftwareCapabilityHandler<SoftwareCapabilityElement> handler = instanceHandler.getSoftwareServerCapabilityHandler(userId,
+                                                                                                                              serverName,
+                                                                                                                              methodName);
+            response.setGUID(handler.createSoftwareCapability(userId,
+                                                              requestBody.getExternalSourceGUID(),
+                                                              requestBody.getExternalSourceName(),
+                                                              OpenMetadataAPIMapper.API_MANAGER_TYPE_NAME,
+                                                              null,
+                                                              requestBody.getQualifiedName(),
+                                                              requestBody.getDisplayName(),
+                                                              requestBody.getDescription(),
+                                                              requestBody.getTypeDescription(),
+                                                              requestBody.getVersion(),
+                                                              requestBody.getPatchLevel(),
+                                                              requestBody.getSource(),
+                                                              requestBody.getAdditionalProperties(),
+                                                              requestBody.getExtendedProperties(),
+                                                              requestBody.getVendorProperties(),
+                                                              null,
+                                                              null,
+                                                              methodName));
         }
         catch (Exception error)
         {
@@ -355,27 +355,27 @@ public class DataManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> handler = instanceHandler.getSoftwareServerCapabilityHandler(userId,
-                                                                                                                                          serverName,
-                                                                                                                                          methodName);
-            response.setGUID(handler.createSoftwareServerCapability(userId,
-                                                                    requestBody.getExternalSourceGUID(),
-                                                                    requestBody.getExternalSourceName(),
-                                                                    OpenMetadataAPIMapper.EVENT_BROKER_TYPE_NAME,
-                                                                    null,
-                                                                    requestBody.getQualifiedName(),
-                                                                    requestBody.getDisplayName(),
-                                                                    requestBody.getDescription(),
-                                                                    requestBody.getTypeDescription(),
-                                                                    requestBody.getVersion(),
-                                                                    requestBody.getPatchLevel(),
-                                                                    requestBody.getSource(),
-                                                                    requestBody.getAdditionalProperties(),
-                                                                    requestBody.getExtendedProperties(),
-                                                                    requestBody.getVendorProperties(),
-                                                                    null,
-                                                                    null,
-                                                                    methodName));
+            SoftwareCapabilityHandler<SoftwareCapabilityElement> handler = instanceHandler.getSoftwareServerCapabilityHandler(userId,
+                                                                                                                              serverName,
+                                                                                                                              methodName);
+            response.setGUID(handler.createSoftwareCapability(userId,
+                                                              requestBody.getExternalSourceGUID(),
+                                                              requestBody.getExternalSourceName(),
+                                                              OpenMetadataAPIMapper.EVENT_BROKER_TYPE_NAME,
+                                                              null,
+                                                              requestBody.getQualifiedName(),
+                                                              requestBody.getDisplayName(),
+                                                              requestBody.getDescription(),
+                                                              requestBody.getTypeDescription(),
+                                                              requestBody.getVersion(),
+                                                              requestBody.getPatchLevel(),
+                                                              requestBody.getSource(),
+                                                              requestBody.getAdditionalProperties(),
+                                                              requestBody.getExtendedProperties(),
+                                                              requestBody.getVendorProperties(),
+                                                              null,
+                                                              null,
+                                                              methodName));
         }
         catch (Exception error)
         {
@@ -415,27 +415,27 @@ public class DataManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> handler = instanceHandler.getSoftwareServerCapabilityHandler(userId,
-                                                                                                                                          serverName,
-                                                                                                                                          methodName);
-            response.setGUID(handler.createSoftwareServerCapability(userId,
-                                                                    requestBody.getExternalSourceGUID(),
-                                                                    requestBody.getExternalSourceName(),
-                                                                    OpenMetadataAPIMapper.APPLICATION_TYPE_NAME,
-                                                                    null,
-                                                                    requestBody.getQualifiedName(),
-                                                                    requestBody.getDisplayName(),
-                                                                    requestBody.getDescription(),
-                                                                    requestBody.getTypeDescription(),
-                                                                    requestBody.getVersion(),
-                                                                    requestBody.getPatchLevel(),
-                                                                    requestBody.getSource(),
-                                                                    requestBody.getAdditionalProperties(),
-                                                                    requestBody.getExtendedProperties(),
-                                                                    requestBody.getVendorProperties(),
-                                                                    null,
-                                                                    null,
-                                                                    methodName));
+            SoftwareCapabilityHandler<SoftwareCapabilityElement> handler = instanceHandler.getSoftwareServerCapabilityHandler(userId,
+                                                                                                                              serverName,
+                                                                                                                              methodName);
+            response.setGUID(handler.createSoftwareCapability(userId,
+                                                              requestBody.getExternalSourceGUID(),
+                                                              requestBody.getExternalSourceName(),
+                                                              OpenMetadataAPIMapper.APPLICATION_TYPE_NAME,
+                                                              null,
+                                                              requestBody.getQualifiedName(),
+                                                              requestBody.getDisplayName(),
+                                                              requestBody.getDescription(),
+                                                              requestBody.getTypeDescription(),
+                                                              requestBody.getVersion(),
+                                                              requestBody.getPatchLevel(),
+                                                              requestBody.getSource(),
+                                                              requestBody.getAdditionalProperties(),
+                                                              requestBody.getExtendedProperties(),
+                                                              requestBody.getVendorProperties(),
+                                                              null,
+                                                              null,
+                                                              methodName));
         }
         catch (Exception error)
         {
@@ -475,27 +475,27 @@ public class DataManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> handler = instanceHandler.getSoftwareServerCapabilityHandler(userId,
-                                                                                                                                          serverName,
-                                                                                                                                          methodName);
-            response.setGUID(handler.createSoftwareServerCapability(userId,
-                                                                    requestBody.getExternalSourceGUID(),
-                                                                    requestBody.getExternalSourceName(),
-                                                                    OpenMetadataAPIMapper.ENGINE_TYPE_NAME,
-                                                                    null,
-                                                                    requestBody.getQualifiedName(),
-                                                                    requestBody.getDisplayName(),
-                                                                    requestBody.getDescription(),
-                                                                    requestBody.getTypeDescription(),
-                                                                    requestBody.getVersion(),
-                                                                    requestBody.getPatchLevel(),
-                                                                    requestBody.getSource(),
-                                                                    requestBody.getAdditionalProperties(),
-                                                                    requestBody.getExtendedProperties(),
-                                                                    requestBody.getVendorProperties(),
-                                                                    null,
-                                                                    null,
-                                                                    methodName));
+            SoftwareCapabilityHandler<SoftwareCapabilityElement> handler = instanceHandler.getSoftwareServerCapabilityHandler(userId,
+                                                                                                                              serverName,
+                                                                                                                              methodName);
+            response.setGUID(handler.createSoftwareCapability(userId,
+                                                              requestBody.getExternalSourceGUID(),
+                                                              requestBody.getExternalSourceName(),
+                                                              OpenMetadataAPIMapper.ENGINE_TYPE_NAME,
+                                                              null,
+                                                              requestBody.getQualifiedName(),
+                                                              requestBody.getDisplayName(),
+                                                              requestBody.getDescription(),
+                                                              requestBody.getTypeDescription(),
+                                                              requestBody.getVersion(),
+                                                              requestBody.getPatchLevel(),
+                                                              requestBody.getSource(),
+                                                              requestBody.getAdditionalProperties(),
+                                                              requestBody.getExtendedProperties(),
+                                                              requestBody.getVendorProperties(),
+                                                              null,
+                                                              null,
+                                                              methodName));
         }
         catch (Exception error)
         {
@@ -538,11 +538,11 @@ public class DataManagerRESTServices
 
             if (requestBody != null)
             {
-                SoftwareServerCapabilityHandler handler = instanceHandler.getSoftwareServerCapabilityHandler(userId, serverName, methodName);
+                SoftwareCapabilityHandler handler = instanceHandler.getSoftwareServerCapabilityHandler(userId, serverName, methodName);
 
                 response.setGUID(handler.getBeanGUIDByQualifiedName(userId,
-                                                                    OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                                    OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_GUID,
+                                                                    OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                                     requestBody.getName(),
                                                                     parameterName,
                                                                     false,

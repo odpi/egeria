@@ -89,9 +89,9 @@ public class SecurityManagerOMASResource
      */
     @PostMapping(path = "/metadata-sources/security-managers")
 
-    public GUIDResponse   createSecurityManagerInCatalog(@PathVariable String                    serverName,
-                                                         @PathVariable String                    userId,
-                                                         @RequestBody SecurityManagerRequestBody requestBody)
+    public GUIDResponse   createSecurityManagerInCatalog(@PathVariable String                     serverName,
+                                                         @PathVariable String                     userId,
+                                                         @RequestBody  SecurityManagerRequestBody requestBody)
     {
         return restAPI.createSecurityManagerInCatalog(serverName, userId, requestBody);
     }
