@@ -15,7 +15,6 @@ import org.janusgraph.core.JanusGraph;
 import org.janusgraph.core.JanusGraphFactory;
 import org.janusgraph.core.schema.JanusGraphManagement;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph.LineageGraphConnectorProvider;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph.LineageGraphRemoteConnectorProvider;
@@ -71,23 +70,22 @@ public class GraphFactory extends IndexingFactory {
     /**
      * Set the config for Janus Graph.
      *
-     * @param providerClass        - Provider Class name to be used
-     * @param connectionProperties - POJO for the configuration used to create the connector.
-     * @param auditLog             - Used for logging errors
-     *
+     * @param providerClass           - Provider Class name to be used
+     * @param configurationProperties - The configuration properties for janusGraph
+     * @param auditLog                - Used for logging errors
      * @throws JanusConnectorException if init fails
-     * @throws OpenLineageException if init fails
+     * @throws OpenLineageException    if init fails
      */
-    public void openGraph(String providerClass, ConnectionProperties connectionProperties, AuditLog auditLog) throws JanusConnectorException, OpenLineageException {
+    public void openGraph(String providerClass, Map<String, Object> configurationProperties, AuditLog auditLog) throws JanusConnectorException, OpenLineageException {
         super.auditLog = auditLog;
         if (providerClass.equals(LineageGraphConnectorProvider.class.getName())) {
             isRemoteGraph = false;
-            this.localGraph = openEmbeddedGraph(connectionProperties.getConfigurationProperties());
+            this.localGraph = openEmbeddedGraph(configurationProperties);
         }
 
         if (providerClass.equals(LineageGraphRemoteConnectorProvider.class.getName())) {
             isRemoteGraph = true;
-            this.remoteTraversal = openRemoteGraph(connectionProperties.getConfigurationProperties());
+            this.remoteTraversal = openRemoteGraph(configurationProperties);
         }
     }
 
