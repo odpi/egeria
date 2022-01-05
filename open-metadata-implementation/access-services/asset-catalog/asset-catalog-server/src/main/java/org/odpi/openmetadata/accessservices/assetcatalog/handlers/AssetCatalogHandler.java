@@ -398,7 +398,7 @@ public class AssetCatalogHandler {
         if (CollectionUtils.isNotEmpty(searchParameters.getEntityTypes())) {
             typesFilter = commonHandler.getTypesGUID(userId, searchParameters.getEntityTypes());
             if (CollectionUtils.isEmpty(typesFilter)) {
-                ExceptionMessageDefinition messageDefinition = AssetCatalogErrorCode.TYPE_DEF_NOT_FOUND.getMessageDefinition(sourceName);
+                ExceptionMessageDefinition messageDefinition = AssetCatalogErrorCode.TYPE_DEF_NOT_FOUND.getMessageDefinition();
                 throw new EntityNotKnownException(messageDefinition, this.getClass().getName(), messageDefinition.getUserAction());
             }
             result = collectSearchedEntitiesByType(userId, searchCriteria, searchParameters, typesFilter);
