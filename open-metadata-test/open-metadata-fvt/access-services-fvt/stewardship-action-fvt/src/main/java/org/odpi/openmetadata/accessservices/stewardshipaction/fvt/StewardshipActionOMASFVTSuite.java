@@ -38,7 +38,7 @@ public class StewardshipActionOMASFVTSuite extends FVTSuiteBase
         {
             returnCode --;
         }
-        results.printResults();
+        results.printResults(serverName);
 
 
         results = DuplicateAssetTest.performFVT(serverName, serverPlatformRootURL, userId);
@@ -46,7 +46,7 @@ public class StewardshipActionOMASFVTSuite extends FVTSuiteBase
         {
             returnCode --;
         }
-        results.printResults();
+        results.printResults(serverName);
 
         return returnCode;
     }

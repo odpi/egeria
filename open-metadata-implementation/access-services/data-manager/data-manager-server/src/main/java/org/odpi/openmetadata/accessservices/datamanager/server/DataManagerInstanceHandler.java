@@ -66,11 +66,11 @@ class DataManagerInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
-    SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> getSoftwareServerCapabilityHandler(String userId,
-                                                                                                        String serverName,
-                                                                                                        String serviceOperationName) throws InvalidParameterException,
-                                                                                                                                            UserNotAuthorizedException,
-                                                                                                                                            PropertyServerException
+    SoftwareCapabilityHandler<SoftwareCapabilityElement> getSoftwareServerCapabilityHandler(String userId,
+                                                                                            String serverName,
+                                                                                            String serviceOperationName) throws InvalidParameterException,
+                                                                                                                                UserNotAuthorizedException,
+                                                                                                                                PropertyServerException
     {
         DataManagerServicesInstance instance = (DataManagerServicesInstance)super.getServerServiceInstance(userId,
                                                                                                            serverName,

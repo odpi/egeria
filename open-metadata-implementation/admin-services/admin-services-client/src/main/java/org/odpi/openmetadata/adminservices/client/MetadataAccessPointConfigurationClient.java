@@ -530,6 +530,29 @@ public class MetadataAccessPointConfigurationClient extends CohortMemberConfigur
 
 
     /**
+     * Set up the default remote enterprise topic.  This allows a remote process to monitor enterprise topic events.
+     *
+     * @param configurationProperties additional properties for the cohort
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public void addRemoteEnterpriseTopic(Map<String, Object>  configurationProperties) throws OMAGNotAuthorizedException,
+                                                                                              OMAGInvalidParameterException,
+                                                                                              OMAGConfigurationErrorException
+    {
+        final String methodName  = "setEnterpriseAccessConfig";
+        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/enterprise-access/remote-topic";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        configurationProperties,
+                                        adminUserId,
+                                        serverName);
+    }
+
+
+    /**
      * Set up the configuration that controls the enterprise repository services.  These services are part
      * of the Open Metadata Repository Services (OMRS).  They provide federated queries and federated event
      * notifications that cover metadata from the local repository plus any repositories connected via
@@ -547,7 +570,7 @@ public class MetadataAccessPointConfigurationClient extends CohortMemberConfigur
                                                                                                 OMAGConfigurationErrorException
     {
         final String methodName  = "setEnterpriseAccessConfig";
-        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/enterprise-services/configuration";
+        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/enterprise-access/configuration";
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,

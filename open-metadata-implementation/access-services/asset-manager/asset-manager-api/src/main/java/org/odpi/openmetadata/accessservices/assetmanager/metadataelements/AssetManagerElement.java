@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.assetmanager.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.SoftwareServerCapabilitiesProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.SoftwareCapabilitiesProperties;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -27,8 +27,8 @@ public class AssetManagerElement implements Serializable
 {
     private static final long     serialVersionUID = 1L;
 
-    private ElementHeader                        elementHeader = null;
-    private SoftwareServerCapabilitiesProperties softwareServerCapabilitiesProperties = null;
+    private ElementHeader                  elementHeader                  = null;
+    private SoftwareCapabilitiesProperties softwareCapabilitiesProperties = null;
 
 
     /**
@@ -50,7 +50,7 @@ public class AssetManagerElement implements Serializable
         if (template != null)
         {
             elementHeader = template.getElementHeader();
-            softwareServerCapabilitiesProperties = template.getSoftwareServerCapabilitiesProperties();
+            softwareCapabilitiesProperties = template.getSoftwareCapabilitiesProperties();
         }
     }
 
@@ -82,20 +82,20 @@ public class AssetManagerElement implements Serializable
      *
      * @return properties bean
      */
-    public SoftwareServerCapabilitiesProperties getSoftwareServerCapabilitiesProperties()
+    public SoftwareCapabilitiesProperties getSoftwareCapabilitiesProperties()
     {
-        return softwareServerCapabilitiesProperties;
+        return softwareCapabilitiesProperties;
     }
 
 
     /**
      * Set up the properties of the software server capability.
      *
-     * @param softwareServerCapabilitiesProperties properties bean
+     * @param softwareCapabilitiesProperties properties bean
      */
-    public void setSoftwareServerCapabilitiesProperties(SoftwareServerCapabilitiesProperties softwareServerCapabilitiesProperties)
+    public void setSoftwareCapabilitiesProperties(SoftwareCapabilitiesProperties softwareCapabilitiesProperties)
     {
-        this.softwareServerCapabilitiesProperties = softwareServerCapabilitiesProperties;
+        this.softwareCapabilitiesProperties = softwareCapabilitiesProperties;
     }
 
 
@@ -107,9 +107,9 @@ public class AssetManagerElement implements Serializable
     @Override
     public String toString()
     {
-        return "SoftwareServerCapabilityElement{" +
+        return "SoftwareCapabilityElement{" +
                 "elementHeader=" + elementHeader +
-                ", softwareServerCapabilitiesProperties=" + softwareServerCapabilitiesProperties +
+                ", softwareCapabilitiesProperties=" + softwareCapabilitiesProperties +
                 '}';
     }
 
@@ -137,7 +137,7 @@ public class AssetManagerElement implements Serializable
         }
         AssetManagerElement that = (AssetManagerElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
-                Objects.equals(softwareServerCapabilitiesProperties, that.softwareServerCapabilitiesProperties);
+                Objects.equals(softwareCapabilitiesProperties, that.softwareCapabilitiesProperties);
     }
 
 
@@ -149,6 +149,6 @@ public class AssetManagerElement implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, softwareServerCapabilitiesProperties);
+        return Objects.hash(super.hashCode(), elementHeader, softwareCapabilitiesProperties);
     }
 }

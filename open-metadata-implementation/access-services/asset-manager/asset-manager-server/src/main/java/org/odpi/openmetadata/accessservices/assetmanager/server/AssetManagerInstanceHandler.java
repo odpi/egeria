@@ -38,9 +38,9 @@ class AssetManagerInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
-    SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> getAssetManagerHandler(String userId,
-                                                                                            String serverName,
-                                                                                            String serviceOperationName) throws InvalidParameterException,
+    SoftwareCapabilityHandler<SoftwareCapabilityElement> getAssetManagerHandler(String userId,
+                                                                                String serverName,
+                                                                                String serviceOperationName) throws InvalidParameterException,
                                                                                                                                 UserNotAuthorizedException,
                                                                                                                                 PropertyServerException
     {

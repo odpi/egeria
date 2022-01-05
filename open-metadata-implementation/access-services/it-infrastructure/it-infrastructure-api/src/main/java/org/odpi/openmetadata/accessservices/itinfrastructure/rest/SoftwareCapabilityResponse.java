@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareServerCapabilityElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareCapabilityElement;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -15,23 +15,23 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * SoftwareServerCapabilityResponse is a response object for passing back a single software server capability
+ * SoftwareCapabilityResponse is a response object for passing back a single software server capability
  * element or an exception if the request failed.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SoftwareServerCapabilityResponse extends ITInfrastructureOMASAPIResponse
+public class SoftwareCapabilityResponse extends ITInfrastructureOMASAPIResponse
 {
     private static final long    serialVersionUID = 1L;
 
-    private SoftwareServerCapabilityElement element = null;
+    private SoftwareCapabilityElement element = null;
 
 
     /**
      * Default constructor
      */
-    public SoftwareServerCapabilityResponse()
+    public SoftwareCapabilityResponse()
     {
     }
 
@@ -41,7 +41,7 @@ public class SoftwareServerCapabilityResponse extends ITInfrastructureOMASAPIRes
      *
      * @param template object to copy
      */
-    public SoftwareServerCapabilityResponse(SoftwareServerCapabilityResponse template)
+    public SoftwareCapabilityResponse(SoftwareCapabilityResponse template)
     {
         super(template);
 
@@ -57,7 +57,7 @@ public class SoftwareServerCapabilityResponse extends ITInfrastructureOMASAPIRes
      *
      * @return result object
      */
-    public SoftwareServerCapabilityElement getElement()
+    public SoftwareCapabilityElement getElement()
     {
         return element;
     }
@@ -68,7 +68,7 @@ public class SoftwareServerCapabilityResponse extends ITInfrastructureOMASAPIRes
      *
      * @param element result object
      */
-    public void setElement(SoftwareServerCapabilityElement element)
+    public void setElement(SoftwareCapabilityElement element)
     {
         this.element = element;
     }
@@ -82,7 +82,7 @@ public class SoftwareServerCapabilityResponse extends ITInfrastructureOMASAPIRes
     @Override
     public String toString()
     {
-        return "SoftwareServerCapabilityResponse{" +
+        return "SoftwareCapabilityResponse{" +
                 "element=" + element +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
@@ -119,7 +119,7 @@ public class SoftwareServerCapabilityResponse extends ITInfrastructureOMASAPIRes
         {
             return false;
         }
-        SoftwareServerCapabilityResponse that = (SoftwareServerCapabilityResponse) objectToCompare;
+        SoftwareCapabilityResponse that = (SoftwareCapabilityResponse) objectToCompare;
         return Objects.equals(element, that.element);
     }
 

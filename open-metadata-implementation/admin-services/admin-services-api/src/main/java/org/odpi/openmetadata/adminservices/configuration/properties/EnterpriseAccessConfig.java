@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.Objects;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -30,6 +32,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *         enterpriseOMRSTopicProtocolVersion - the protocol version for the events passed on the
  *                                            enterprise OMRS topic.
  *     </li>
+ *     <li>
+ *         remoteEnterpriseOMRSTopicConnection - connection for the remote (external) enterprise OMRS Topic connector.
+ *     </li>
  * </ul>
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -39,10 +44,11 @@ public class EnterpriseAccessConfig extends AdminServicesConfigHeader
 {
     private static final long    serialVersionUID = 1L;
 
-    private String                           enterpriseMetadataCollectionName   = null;
-    private String                           enterpriseMetadataCollectionId     = null;
-    private Connection                       enterpriseOMRSTopicConnection      = null;
-    private OpenMetadataEventProtocolVersion enterpriseOMRSTopicProtocolVersion = null;
+    private String                           enterpriseMetadataCollectionName    = null;
+    private String                           enterpriseMetadataCollectionId      = null;
+    private Connection                       enterpriseOMRSTopicConnection       = null;
+    private OpenMetadataEventProtocolVersion enterpriseOMRSTopicProtocolVersion  = null;
+    private Connection                       remoteEnterpriseOMRSTopicConnection = null;
 
 
     /**
@@ -62,6 +68,15 @@ public class EnterpriseAccessConfig extends AdminServicesConfigHeader
     public EnterpriseAccessConfig(EnterpriseAccessConfig  template)
     {
         super(template);
+
+        if (template != null)
+        {
+            this.enterpriseMetadataCollectionName = template.getEnterpriseMetadataCollectionName();
+            this.enterpriseMetadataCollectionId = template.getEnterpriseMetadataCollectionId();
+            this.enterpriseOMRSTopicConnection = template.getEnterpriseOMRSTopicConnection();
+            this.enterpriseOMRSTopicProtocolVersion = template.getEnterpriseOMRSTopicProtocolVersion();
+            this.remoteEnterpriseOMRSTopicConnection = template.getRemoteEnterpriseOMRSTopicConnection();
+        }
     }
 
 
@@ -74,16 +89,19 @@ public class EnterpriseAccessConfig extends AdminServicesConfigHeader
      *                                      connected open metadata repositories.
      * @param enterpriseOMRSTopicConnection connection for the OMRS Topic connector.
      * @param enterpriseOMRSTopicProtocolVersion protocol version enum
+     * @param remoteEnterpriseOMRSTopicConnection connection to publish OMRS events to external parties
      */
     public EnterpriseAccessConfig(String                           enterpriseMetadataCollectionName,
                                   String                           enterpriseMetadataCollectionId,
                                   Connection                       enterpriseOMRSTopicConnection,
-                                  OpenMetadataEventProtocolVersion enterpriseOMRSTopicProtocolVersion)
+                                  OpenMetadataEventProtocolVersion enterpriseOMRSTopicProtocolVersion,
+                                  Connection                       remoteEnterpriseOMRSTopicConnection)
     {
         this.enterpriseMetadataCollectionName = enterpriseMetadataCollectionName;
         this.enterpriseMetadataCollectionId = enterpriseMetadataCollectionId;
         this.enterpriseOMRSTopicConnection = enterpriseOMRSTopicConnection;
         this.enterpriseOMRSTopicProtocolVersion = enterpriseOMRSTopicProtocolVersion;
+        this.remoteEnterpriseOMRSTopicConnection = remoteEnterpriseOMRSTopicConnection;
     }
 
 
@@ -180,11 +198,43 @@ public class EnterpriseAccessConfig extends AdminServicesConfigHeader
 
 
     /**
+     * Return the optional connection for an external topic for enterprise events.
+     *
+     * @return connection
+     */
+    public Connection getRemoteEnterpriseOMRSTopicConnection()
+    {
+        return remoteEnterpriseOMRSTopicConnection;
+    }
+
+
+    /**
+     * Set up the optional connection for an external topic for enterprise events.
+     *
+     * @param remoteEnterpriseOMRSTopicConnection connection
+     */
+    public void setRemoteEnterpriseOMRSTopicConnection(Connection remoteEnterpriseOMRSTopicConnection)
+    {
+        this.remoteEnterpriseOMRSTopicConnection = remoteEnterpriseOMRSTopicConnection;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return JSON style description of variables.
      */
-
+    @Override
+    public String toString()
+    {
+        return "EnterpriseAccessConfig{" +
+                       "enterpriseMetadataCollectionName='" + enterpriseMetadataCollectionName + '\'' +
+                       ", enterpriseMetadataCollectionId='" + enterpriseMetadataCollectionId + '\'' +
+                       ", enterpriseOMRSTopicConnection=" + enterpriseOMRSTopicConnection +
+                       ", enterpriseOMRSTopicProtocolVersion=" + enterpriseOMRSTopicProtocolVersion +
+                       ", remoteEnterpriseOMRSTopicConnection=" + remoteEnterpriseOMRSTopicConnection +
+                       '}';
+    }
 
 
     /**
@@ -193,7 +243,24 @@ public class EnterpriseAccessConfig extends AdminServicesConfigHeader
      * @param objectToCompare object
      * @return boolean result
      */
-
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        {
+            return false;
+        }
+        EnterpriseAccessConfig that = (EnterpriseAccessConfig) objectToCompare;
+        return Objects.equals(enterpriseMetadataCollectionName, that.enterpriseMetadataCollectionName) &&
+                       Objects.equals(enterpriseMetadataCollectionId, that.enterpriseMetadataCollectionId) &&
+                       Objects.equals(enterpriseOMRSTopicConnection, that.enterpriseOMRSTopicConnection) &&
+                       enterpriseOMRSTopicProtocolVersion == that.enterpriseOMRSTopicProtocolVersion &&
+                       Objects.equals(remoteEnterpriseOMRSTopicConnection, that.remoteEnterpriseOMRSTopicConnection);
+    }
 
 
 
@@ -202,4 +269,10 @@ public class EnterpriseAccessConfig extends AdminServicesConfigHeader
      *
      * @return in hash code
      */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(enterpriseMetadataCollectionName, enterpriseMetadataCollectionId, enterpriseOMRSTopicConnection,
+                            enterpriseOMRSTopicProtocolVersion, remoteEnterpriseOMRSTopicConnection);
+    }
 }

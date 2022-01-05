@@ -1477,6 +1477,7 @@ public class OCFMetadataRESTServices
                                                                              instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                                                              elementStart,
                                                                              maxElements,
+                                                                             new Date(),
                                                                              methodName));
         }
         catch (Exception error)

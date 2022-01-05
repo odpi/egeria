@@ -650,12 +650,12 @@ public interface SchemaExchangeInterface
 
 
     /**
-     * Retrieve the list of schema attributes associated with a schemaType.
+     * Retrieve the list of schema attributes associated with a schema element.
      *
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param schemaTypeGUID unique identifier of the schemaType of interest
+     * @param parentSchemaElementGUID unique identifier of the schema element of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -665,12 +665,12 @@ public interface SchemaExchangeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<SchemaAttributeElement>    getAttributesForSchemaType(String userId,
-                                                               String assetManagerGUID,
-                                                               String assetManagerName,
-                                                               String schemaTypeGUID,
-                                                               int    startFrom,
-                                                               int    pageSize) throws InvalidParameterException,
+    List<SchemaAttributeElement> getNestedSchemaAttributes(String userId,
+                                                           String assetManagerGUID,
+                                                           String assetManagerName,
+                                                           String parentSchemaElementGUID,
+                                                           int    startFrom,
+                                                           int    pageSize) throws InvalidParameterException,
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException;
 

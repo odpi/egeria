@@ -129,7 +129,7 @@ public class ImportsTest extends AnalyticsModelingTestBase
 				| ClassificationErrorException | StatusNotSupportedException | FunctionNotSupportedException
 				| UserNotAuthorizedException | EntityNotKnownException | EntityProxyOnlyException | PagingErrorException
 				| EntityNotDeletedException e) {
-            throw new FVTUnexpectedCondition(TESTCASENAME, "Test Setup failed");
+            throw new FVTUnexpectedCondition(TESTCASENAME, "Test Setup failed", e);
 
 		}
 
