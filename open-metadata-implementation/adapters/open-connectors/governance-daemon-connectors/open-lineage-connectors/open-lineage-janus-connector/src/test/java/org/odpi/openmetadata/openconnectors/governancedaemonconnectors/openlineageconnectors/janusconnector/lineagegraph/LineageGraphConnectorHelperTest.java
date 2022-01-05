@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.factory.GraphFactory;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph.LineageGraphConnectorHelper;
 
 import java.util.HashSet;
@@ -17,6 +18,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DATA_FILE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.GLOSSARY_TERM;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.LINEAGE_MAPPING;
@@ -42,7 +44,9 @@ public class LineageGraphConnectorHelperTest {
     public static void beforeClass() {
         Graph graph = JanusGraphFactory.build().set("storage.backend", "inmemory").open();
         GraphTraversalSource g = graph.traversal();
-        lineageGraphConnectorHelper = new LineageGraphConnectorHelper(g, true);
+        GraphFactory graphFactory = new GraphFactory();
+        when(graphFactory.getGraphTraversalSource()).thenReturn(g);
+        lineageGraphConnectorHelper = new LineageGraphConnectorHelper(graphFactory, true);
 
         addColumnLineageData(g);
 
