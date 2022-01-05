@@ -50,6 +50,11 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DATA_FILE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DATA_FILE_AND_SUBTYPES;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DOCUMENT;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.EVENT_SCHEMA_ATTRIBUTE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.EVENT_TYPE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.EVENT_TYPE_KEY;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.EVENT_TYPE_LIST;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.EVENT_TYPE_LIST_KEY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.FILE_FOLDER;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.FILE_FOLDER_KEY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.FOLDER_HIERARCHY;
@@ -72,6 +77,8 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TABULAR_COLUMN;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TABULAR_FILE_COLUMN;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TABULAR_SCHEMA_TYPE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TOPIC;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TOPIC_KEY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TRANSFORMATION_PROJECT_KEY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.CONDENSED_NODE_DISPLAY_NAME;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.DESTINATION_CONDENSATION;
@@ -128,7 +135,8 @@ public class LineageGraphConnectorHelper {
     private final String[] glossaryTermAndClassificationEdges = {EDGE_LABEL_SEMANTIC_ASSIGNMENT, EDGE_LABEL_RELATED_TERM,
             EDGE_LABEL_SYNONYM, EDGE_LABEL_ANTONYM, EDGE_LABEL_REPLACEMENT_TERM, EDGE_LABEL_TRANSLATION, EDGE_LABEL_IS_A_RELATIONSHIP,
             EDGE_LABEL_CLASSIFICATION, EDGE_LABEL_TERM_CATEGORIZATION};
-    private final String[] relationalColumnAndClassificationEdges = {NESTED_SCHEMA_ATTRIBUTE, EDGE_LABEL_CLASSIFICATION, EDGE_LABEL_SEMANTIC_ASSIGNMENT};
+    private final String[] relationalColumnAndClassificationEdges =
+            {NESTED_SCHEMA_ATTRIBUTE, EDGE_LABEL_CLASSIFICATION, EDGE_LABEL_SEMANTIC_ASSIGNMENT};
     private final String[] tabularColumnAndClassificationEdges = {ATTRIBUTE_FOR_SCHEMA, EDGE_LABEL_CLASSIFICATION, EDGE_LABEL_SEMANTIC_ASSIGNMENT};
 
     public LineageGraphConnectorHelper(GraphTraversalSource graphTraversalSource, boolean supportingTransactions) {
@@ -142,7 +150,7 @@ public class LineageGraphConnectorHelper {
      * found, than DataFlow relationships are used for traversal. In case of columns, DataFlow relationships are
      * directly used
      *
-     * @param guid             queried entity
+     * @param guid queried entity
      *
      * @return graph in an Open Lineage specific format
      */
@@ -199,7 +207,7 @@ public class LineageGraphConnectorHelper {
      * are found, than DataFlow relationships are used for traversal. In case of columns, DataFlow relationships are
      * directly used
      *
-     * @param guid             queried entity
+     * @param guid queried entity
      *
      * @return graph in an Open Lineage specific format
      */
@@ -211,7 +219,7 @@ public class LineageGraphConnectorHelper {
         if (ASSETS.contains(label)) {
             // lineage based on edges of type LINEAGE_MAPPING, is to be done only for assets
             destinationsList = queryDestinations(guid, LINEAGE_MAPPING);
-            if (CollectionUtils.isNotEmpty(destinationsList)  && !destinationsList.equals(Collections.singletonList(queriedVertex))) {
+            if (CollectionUtils.isNotEmpty(destinationsList) && !destinationsList.equals(Collections.singletonList(queriedVertex))) {
                 return Optional.of(getCondensedLineage(guid, g, getLineageVertices(destinationsList), DESTINATION_CONDENSATION));
             }
         }
@@ -463,7 +471,6 @@ public class LineageGraphConnectorHelper {
      * @param lineageVertices  list of ultimate vertices
      * @param condensationType the type of the condensation
      *
-     *
      * @return the subgraph in an Open Lineage specific format
      */
     private LineageVerticesAndEdges getCondensedLineage(String guid, GraphTraversalSource g, Set<LineageVertex> lineageVertices,
@@ -489,12 +496,12 @@ public class LineageGraphConnectorHelper {
                                                       LineageVertex condensedVertex, String condensationType) {
         Set<LineageEdge> lineageEdges = new HashSet<>();
 
-        if(SOURCE_CONDENSATION.equalsIgnoreCase(condensationType)) {
+        if (SOURCE_CONDENSATION.equalsIgnoreCase(condensationType)) {
             lineageEdges.add(new LineageEdge(EDGE_LABEL_CONDENSED, condensedVertex.getNodeID(), queriedVertex.getNodeID()));
             lineageVertices.forEach(ultimateVertex -> lineageEdges.add(new LineageEdge(EDGE_LABEL_CONDENSED, ultimateVertex.getNodeID(),
                     condensedVertex.getNodeID())));
         }
-        if(DESTINATION_CONDENSATION.equalsIgnoreCase(condensationType)) {
+        if (DESTINATION_CONDENSATION.equalsIgnoreCase(condensationType)) {
             lineageEdges.add(new LineageEdge(EDGE_LABEL_CONDENSED, queriedVertex.getNodeID(), condensedVertex.getNodeID()));
             lineageVertices.forEach(ultimateVertex -> lineageEdges.add(new LineageEdge(EDGE_LABEL_CONDENSED, condensedVertex.getNodeID(),
                     ultimateVertex.getNodeID())));
@@ -721,7 +728,7 @@ public class LineageGraphConnectorHelper {
             return;
         }
 
-        lineageVertices.stream().filter(this::needsAdditionalNodeContext).forEach(lineageVertex -> {
+        lineageVertices.forEach(lineageVertex -> {
             Vertex graphVertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, lineageVertex.getGuid()).next();
             commitTransaction();
             Object vertexId = graphVertex.id();
@@ -735,8 +742,14 @@ public class LineageGraphConnectorHelper {
                 case RELATIONAL_COLUMN:
                     properties = getRelationalColumnProperties(g, vertexId);
                     break;
+                case EVENT_SCHEMA_ATTRIBUTE:
+                    properties = getEventSchemaAttributeProperties(g, vertexId);
+                    break;
                 case RELATIONAL_TABLE:
                     properties = getRelationalTableProperties(g, vertexId);
+                    break;
+                case TOPIC:
+                    properties = getTopicProperties(g, vertexId);
                     break;
                 case DATA_FILE:
                 case AVRO_FILE:
@@ -761,19 +774,11 @@ public class LineageGraphConnectorHelper {
         });
     }
 
-
-    private boolean needsAdditionalNodeContext(LineageVertex lineageVertex) {
-        List<String> types = new ArrayList<>();
-        types.addAll(DATA_FILE_AND_SUBTYPES);
-        types.addAll(Arrays.asList(RELATIONAL_TABLE, GLOSSARY_TERM, GLOSSARY_CATEGORY, PROCESS,
-                TABULAR_COLUMN, TABULAR_FILE_COLUMN, RELATIONAL_COLUMN, NODE_LABEL_SUB_PROCESS));
-        return types.contains(lineageVertex.getNodeType());
-    }
-
     private Map<String, String> getRelationalColumnProperties(GraphTraversalSource g, Object vertexId) {
         Map<String, String> properties = new HashMap<>();
 
-        GraphTraversal<Vertex, Vertex> tableAsset = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(1).or(hasLabel(RELATIONAL_TABLE));
+        GraphTraversal<Vertex, Vertex> tableAsset =
+                g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(1).or(hasLabel(RELATIONAL_TABLE));
         commitTransaction();
         if (tableAsset.hasNext()) {
             Vertex tableAssetVertex = tableAsset.next();
@@ -786,7 +791,8 @@ public class LineageGraphConnectorHelper {
 
     private Map<String, String> getTabularColumnProperties(GraphTraversalSource g, Object vertexId) {
         Map<String, String> properties = new HashMap<>();
-        GraphTraversal<Vertex, Map<Object, List<String>>> tabularSchemaType = g.V(vertexId).emit().repeat(bothE().outV().simplePath()).times(1).or(hasLabel(TABULAR_SCHEMA_TYPE)).valueMap();
+        GraphTraversal<Vertex, Map<Object, List<String>>> tabularSchemaType =
+                g.V(vertexId).emit().repeat(bothE().outV().simplePath()).times(1).or(hasLabel(TABULAR_SCHEMA_TYPE)).valueMap();
         if (tabularSchemaType.hasNext()) {
             properties.put(SCHEMA_TYPE_KEY, getDisplayNameForVertex(tabularSchemaType.next()));
         }
@@ -966,6 +972,7 @@ public class LineageGraphConnectorHelper {
             case TABULAR_FILE_COLUMN:
             case TABULAR_COLUMN:
             case RELATIONAL_COLUMN:
+            case EVENT_SCHEMA_ATTRIBUTE:
                 return Optional.of(EDGE_LABEL_COLUMN_DATA_FLOW);
             case DATA_FILE:
             case AVRO_FILE:
@@ -976,6 +983,7 @@ public class LineageGraphConnectorHelper {
             case MEDIA_FILE:
             case DOCUMENT:
             case RELATIONAL_TABLE:
+            case TOPIC:
                 return Optional.of(EDGE_LABEL_TABLE_DATA_FLOW);
             default:
                 return Optional.empty();
@@ -1002,5 +1010,40 @@ public class LineageGraphConnectorHelper {
         lineageVertex.setProperties(properties);
 
         return lineageVertex;
+    }
+
+    private Map<String, String> getTopicProperties(GraphTraversalSource g, Object vertexId) {
+        Map<String, String> properties = new HashMap<>();
+
+        Iterator<Vertex> eventTypeList = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(1).or(hasLabel(EVENT_TYPE_LIST));
+        commitTransaction();
+        if (eventTypeList.hasNext()) {
+            properties.put(EVENT_TYPE_LIST_KEY, getDisplayNameForVertex(eventTypeList.next()));
+        }
+
+        return properties;
+    }
+
+    private Map<String, String> getEventSchemaAttributeProperties(GraphTraversalSource g, Object vertexId) {
+        Map<String, String> properties = new HashMap<>();
+        Iterator<Vertex> eventType = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(1).or(hasLabel(EVENT_TYPE));
+        commitTransaction();
+        if (eventType.hasNext()) {
+            properties.put(EVENT_TYPE_KEY, getDisplayNameForVertex(eventType.next()));
+        }
+
+        Iterator<Vertex> eventTypeList = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(2).or(hasLabel(EVENT_TYPE_LIST));
+        commitTransaction();
+        if (eventTypeList.hasNext()) {
+            properties.put(EVENT_TYPE_LIST_KEY, getDisplayNameForVertex(eventTypeList.next()));
+        }
+
+        Iterator<Vertex> topic = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(3).or(hasLabel(TOPIC));
+        commitTransaction();
+        if (topic.hasNext()) {
+            properties.put(TOPIC_KEY, getDisplayNameForVertex(topic.next()));
+        }
+
+        return properties;
     }
 }

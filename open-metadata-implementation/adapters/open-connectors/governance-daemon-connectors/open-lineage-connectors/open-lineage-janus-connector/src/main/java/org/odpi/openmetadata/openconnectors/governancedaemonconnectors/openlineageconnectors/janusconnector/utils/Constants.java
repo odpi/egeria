@@ -37,12 +37,16 @@ public final class Constants {
     public static final String PROCESS = "Process";
     public static final String ENDPOINT = "Endpoint";
     public static final String COLLECTION = "Collection";
+    public static final String TOPIC = "Topic";
+    public static final String EVENT_SCHEMA_ATTRIBUTE = "EventSchemaAttribute";
+    public static final String EVENT_TYPE_LIST = "EventTypeList";
+    public static final String EVENT_TYPE = "EventType";
 
     public static final Collection<String> DATA_FILE_AND_SUBTYPES = Arrays.asList(DATA_FILE, AVRO_FILE, CSV_FILE, JSON_FILE,
             KEYSTORE_FILE, LOG_FILE, MEDIA_FILE, DOCUMENT);
 
     public static final Collection<String> ASSETS = Arrays.asList(RELATIONAL_TABLE, DATA_FILE, AVRO_FILE, CSV_FILE, JSON_FILE,
-            KEYSTORE_FILE, LOG_FILE, MEDIA_FILE, DOCUMENT);
+            KEYSTORE_FILE, LOG_FILE, MEDIA_FILE, DOCUMENT, TOPIC);
 
     public static final String RELATIONAL_TABLE_KEY = "relationalTable";
     public static final String TRANSFORMATION_PROJECT_KEY = "transformationProject";
@@ -52,6 +56,9 @@ public final class Constants {
     public static final String FILE_FOLDER_KEY = "fileFolder";
     public static final String CONNECTION_KEY = "connection";
     public static final String GLOSSARY_KEY = "glossary";
+    public static final String EVENT_TYPE_LIST_KEY = "eventTypeList";
+    public static final String EVENT_TYPE_KEY = "eventType";
+    public static final String TOPIC_KEY = "topic";
 
     //Relationships Type
     public static final String SCHEMA_ATTRIBUTE_TYPE = "SchemaAttributeType";
