@@ -233,7 +233,7 @@
         <maven-install.version>3.0.0-M1</maven-install.version>
         <maven-compiler.version>3.8.1</maven-compiler.version>
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
-        <owasp.version>6.5.1</owasp.version>
+        <owasp.version>6.5.2</owasp.version>
         <maven-pmd.version>3.15.0</maven-pmd.version>
         <spotbugs-maven.version>4.5.2.0</spotbugs-maven.version>
         <maven-download.version>1.6.7</maven-download.version>
