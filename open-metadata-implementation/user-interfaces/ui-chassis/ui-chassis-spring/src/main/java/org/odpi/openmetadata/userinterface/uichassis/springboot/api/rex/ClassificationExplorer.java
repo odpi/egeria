@@ -34,6 +34,9 @@ public class ClassificationExplorer {
     }
     public void addInheritedAttributes(List<TypeDefAttribute> inheritedAttrs) {
         if (inheritedAttrs != null) {
+            if (inheritedAttributes == null) {
+                inheritedAttributes = new ArrayList<>();
+            }
             inheritedAttributes.addAll(inheritedAttrs);
         }
     }
