@@ -101,7 +101,8 @@ test {
     group = 'verification'
     outputs.upToDateWhen {return false}
     systemProperties = [
-            'fvt.url': 'https://localhost:10453'
+            'fvt.url': 'https://localhost:10453',
+            'junit.jupiter.testclass.order.default': 'org.junit.jupiter.api.ClassOrderer$ClassName'
     ]
     useJUnitPlatform()
     testLogging.showStandardStreams = true
