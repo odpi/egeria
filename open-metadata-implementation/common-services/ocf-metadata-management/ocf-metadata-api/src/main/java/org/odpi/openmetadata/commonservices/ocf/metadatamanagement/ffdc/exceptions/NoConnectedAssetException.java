@@ -65,7 +65,7 @@ public class NoConnectedAssetException extends OCFCheckedExceptionBase
     public NoConnectedAssetException(ExceptionMessageDefinition messageDefinition,
                                      String                     className,
                                      String                     actionDescription,
-                                     Throwable                  caughtError)
+                                     Exception                  caughtError)
     {
         super(messageDefinition, className, actionDescription, caughtError);
     }
@@ -84,7 +84,7 @@ public class NoConnectedAssetException extends OCFCheckedExceptionBase
     public NoConnectedAssetException(ExceptionMessageDefinition messageDefinition,
                                      String                     className,
                                      String                     actionDescription,
-                                     Throwable                  caughtError,
+                                     Exception                  caughtError,
                                      Map<String, Object>        relatedProperties)
     {
         super(messageDefinition, className, actionDescription, caughtError, relatedProperties);
@@ -190,7 +190,7 @@ public class NoConnectedAssetException extends OCFCheckedExceptionBase
                                      String    errorMessage,
                                      String    systemAction,
                                      String    userAction,
-                                     Throwable caughtError,
+                                     Exception caughtError,
                                      String connectionGUID)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
