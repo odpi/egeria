@@ -1546,7 +1546,7 @@ public class DinoViewHandler {
              */
             AuditLogServicesClient auditLogServicesClient = this.getAuditLogServicesClient(userId, serverName, platformRootURL);
 
-            return auditLogServicesClient.getAuditLog(userId);
+            return auditLogServicesClient.getAuditLogReport(userId);
 
         }
         catch (RepositoryErrorException exc) {
