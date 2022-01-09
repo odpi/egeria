@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.archiveutilities;
 
+import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationEntityExtension;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.utilities.OMRSRepositoryPropertiesUtilities;
 import org.slf4j.Logger;
@@ -19,7 +20,7 @@ import java.util.*;
  * OMRSArchiveBuilder creates an in-memory copy of an open metadata archive that can be saved to disk or processed
  * by a server.
  */
-public class OMRSArchiveBuilder
+public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder
 {
     /*
      * Archive properties supplied on the constructor
@@ -130,6 +131,17 @@ public class OMRSArchiveBuilder
 
 
     /**
+     * Constructor used when content of dependent archives is not needed in the maps.
+     *
+     * @param properties filled out archive properties
+     */
+    public OMRSArchiveBuilder(OpenMetadataArchiveProperties properties)
+    {
+        this.archiveProperties = properties;
+    }
+
+
+    /**
      * Full constructor.
      *
      * It passes parameters used to build the open metadata archive's property header including the
@@ -157,6 +169,47 @@ public class OMRSArchiveBuilder
                               String                     originatorLicense,
                               Date                       creationDate,
                               List<OpenMetadataArchive>  dependsOnArchives)
+    {
+        this.setArchiveProperties(archiveGUID,
+                                  archiveName,
+                                  archiveDescription,
+                                  archiveType,
+                                  archiveVersion,
+                                  originatorName,
+                                  originatorLicense,
+                                  creationDate,
+                                  dependsOnArchives);
+    }
+
+
+    /**
+     * Set up archive header and initialize the maps assuming it is building a new archive.
+     *
+     * It passes parameters used to build the open metadata archive's property header including the
+     * default license string.  This determines the license and copyright for all instances in the
+     * archive that do not have their own explicit license string.  The default license string
+     * will be inserted into each instance with a null license when it is loaded into an open metadata
+     * repository.
+     *
+     * @param archiveGUID unique identifier for this open metadata archive.
+     * @param archiveName name of the open metadata archive.
+     * @param archiveDescription description of the open metadata archive.
+     * @param archiveType enum describing the type of archive this is.
+     * @param archiveVersion descriptive name for the version of the archive.
+     * @param originatorName name of the originator (person or organization) of the archive.
+     * @param originatorLicense default license string for content.
+     * @param creationDate data that this archive was created.
+     * @param dependsOnArchives list of archives that this archive depends on (null for no dependencies).
+     */
+    public void setArchiveProperties(String                     archiveGUID,
+                                     String                     archiveName,
+                                     String                     archiveDescription,
+                                     OpenMetadataArchiveType    archiveType,
+                                     String                     archiveVersion,
+                                     String                     originatorName,
+                                     String                     originatorLicense,
+                                     Date                       creationDate,
+                                     List<OpenMetadataArchive>  dependsOnArchives)
     {
         final String methodName = "OMRSArchiveBuilder constructor";
 
@@ -351,6 +404,17 @@ public class OMRSArchiveBuilder
 
 
     /**
+     * Return the archive properties as will appear in the archive.  Null is returned if archive properties not set up.
+     *
+     * @return property bean
+     */
+    public OpenMetadataArchiveProperties getArchiveProperties()
+    {
+        return this.archiveProperties;
+    }
+
+
+    /**
      * Update the maps with new TypeDefs.
      *
      * @param typeDef type definition
@@ -526,7 +590,7 @@ public class OMRSArchiveBuilder
      * @param collectionDefName type to retrieve
      * @return CollectionDef type
      */
-    CollectionDef getCollectionDef(String  collectionDefName)
+    public CollectionDef getCollectionDef(String  collectionDefName)
     {
         final String methodName = "getCollectionDef";
 
@@ -615,7 +679,7 @@ public class OMRSArchiveBuilder
      * @param enumDefName type to retrieve
      * @return EnumDef object
      */
-    EnumDef getEnumDef(String    enumDefName)
+    public EnumDef getEnumDef(String    enumDefName)
     {
         final String methodName = "getEnumDef";
 
@@ -1333,7 +1397,7 @@ public class OMRSArchiveBuilder
 
 
     /**
-     * Retrieve an entity from the archive.
+     * Retrieve a relationship from the archive.
      *
      * @param guid unique identifier
      * @return requested relationship
