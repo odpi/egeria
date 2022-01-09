@@ -31,6 +31,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>open-metadata-archive-file-connector</module>
+        <module>open-metadata-archive-directory-connector</module>
     </modules>
 
 </project>
