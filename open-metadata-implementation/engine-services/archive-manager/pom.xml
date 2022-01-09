@@ -8,7 +8,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <artifactId>open-metadata-implementation</artifactId>
+        <artifactId>engine-services</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>3.5-SNAPSHOT</version>
     </parent>
@@ -21,17 +21,18 @@
         <url>http://github.com/odpi/egeria/tree/master</url>
     </scm>
 
-    <name>Open Metadata Engine Services (OMES)</name>
+    <name>Archive Manager OMES</name>
     <description>
-        Provides the engine services that run in an Engine Host OMAG Server.
+        Archive Manager Open Engine Services (OMES) hosts Archive Engines running Archive Services on demand.
     </description>
 
-    <artifactId>engine-services</artifactId>
+    <artifactId>archive-manager</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>archive-manager</module>
-        <module>asset-analysis</module>
-        <module>governance-action</module>
+        <module>archive-manager-api</module>
+        <module>archive-manager-client</module>
+        <module>archive-manager-server</module>
+        <module>archive-manager-spring</module>
     </modules>
 
 </project>
