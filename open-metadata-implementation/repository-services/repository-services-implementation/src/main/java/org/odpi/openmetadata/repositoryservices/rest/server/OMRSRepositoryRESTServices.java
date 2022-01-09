@@ -7,6 +7,7 @@ import org.odpi.openmetadata.adminservices.configuration.registration.CommonServ
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.MessageFormatter;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
@@ -106,10 +107,11 @@ public class OMRSRepositoryRESTServices
      *
      * @param localServerName               name of this local server
      * @param masterAuditLog                top level audit Log destination
-     * @param localRepositoryConnector      link to the local repository responsible for servicing the REST calls.
+     * @param localRepositoryConnector      link to the local repository responsible for servicing the REST calls
      *                                      If localRepositoryConnector is null when a REST calls is received, the request
-     *                                      is rejected.
+     *                                      is rejected
      * @param enterpriseRepositoryConnector link to the repository responsible for servicing the REST calls to the enterprise.
+     * @param remoteEnterpriseTopicConnection connection object to pass to client to enable it to listen on enterprise topic events - may be null
      * @param metadataHighwayManager        manager of the cohort managers
      * @param localServerURL                URL of the local server
      * @param auditLog                      auditLog destination
@@ -119,6 +121,7 @@ public class OMRSRepositoryRESTServices
                                              OMRSAuditLog                 masterAuditLog,
                                              LocalOMRSRepositoryConnector localRepositoryConnector,
                                              OMRSRepositoryConnector      enterpriseRepositoryConnector,
+                                             Connection                   remoteEnterpriseTopicConnection,
                                              OMRSMetadataHighwayManager   metadataHighwayManager,
                                              String                       localServerURL,
                                              AuditLog                     auditLog,
@@ -128,6 +131,7 @@ public class OMRSRepositoryRESTServices
                                            masterAuditLog,
                                            localRepositoryConnector,
                                            enterpriseRepositoryConnector,
+                                           remoteEnterpriseTopicConnection,
                                            metadataHighwayManager,
                                            localServerURL,
                                            serviceName,
@@ -8559,6 +8563,65 @@ public class OMRSRepositoryRESTServices
 
         return response;
     }
+
+
+
+
+    /*
+     * =============================================================
+     * Enterprise Methods
+     */
+
+
+    /**
+     * Return the connection for remote access to the enterprise topic connector.
+     * May be null if remote access to this topic is not configured in the OMAG Server.
+     *
+     * @param serverName unique identifier for requested server
+     * @param userId unique identifier for requesting server
+     * @return null or connection object or
+     *  InvalidParameterException unknown servername
+     *  UserNotAuthorizedException unsupported userId
+     *  RepositoryErrorException null local repository
+     */
+    public ConnectionResponse getEnterpriseOMRSTopicConnection(String userId,
+                                                               String serverName)
+    {
+        final String methodName = "getEnterpriseOMRSTopicConnection";
+
+        ConnectionResponse response = new ConnectionResponse();
+
+        log.debug("Calling method: " + methodName);
+
+
+        try
+        {
+            OMRSRepositoryServicesInstance instance = instanceHandler.getInstance(userId, serverName, methodName);
+
+            response.setConnection(instance.getRemoteEnterpriseOMRSTopicConnection());
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (Exception error)
+        {
+            captureGenericException(response, error, userId, serverName, methodName);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
 
 
     /*
