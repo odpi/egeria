@@ -174,7 +174,7 @@ public class ConnectedAssetLicenses extends AssetLicenses
                 return resultList;
             }
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             restExceptionHandler.handleUnexpectedException(error, methodName, serverName, omasServerURL);
         }
