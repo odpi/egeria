@@ -119,7 +119,7 @@ public class TagRequestBodyTest
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -128,7 +128,7 @@ public class TagRequestBodyTest
         {
             validateResultObject(objectMapper.readValue(jsonString, TagRequestBody.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -142,7 +142,7 @@ public class TagRequestBodyTest
         {
             jsonString = objectMapper.writeValueAsString(superObject);
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -151,7 +151,7 @@ public class TagRequestBodyTest
         {
             validateResultObject((TagRequestBody) objectMapper.readValue(jsonString, OCFOMASAPIRequestBody.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
