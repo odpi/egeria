@@ -45,12 +45,12 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
     private String              localServerUserId   = null;
     private String              localServerPassword = null;
 
-    private String              restURLRoot;                /* Initialized in constructor */
-    private String              serviceURLMarker;           /* Initialized in constructor */
-    private RESTClientConnector restClient;                 /* Initialized in constructor */
-    private String              repositoryName;             /* Initialized in constructor */
+    protected String              restURLRoot;                /* Initialized in constructor */
+    private   String              serviceURLMarker;           /* Initialized in constructor */
+    protected RESTClientConnector restClient;                 /* Initialized in constructor */
+    protected String              repositoryName;             /* Initialized in constructor */
 
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    protected InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
     protected AuditLog auditLog = null;
 
@@ -183,7 +183,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                     MetadataCollectionIdResponse.class,
                                                     restURLRoot + rootServiceNameInURL + serviceURLMarker + operationSpecificURL);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
            throw new RepositoryErrorException(OMRSErrorCode.REMOTE_REPOSITORY_ERROR.getMessageDefinition(methodName,
                                                                                                          repositoryName,
@@ -4981,7 +4981,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         {
             return clientFactory.getClientConnector();
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
            throw new InvalidParameterException(OMRSErrorCode.NO_REST_CLIENT.getMessageDefinition(serverName, error.getMessage()),
                                                this.getClass().getName(),
@@ -5475,7 +5475,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                               operationSpecificURL,
                                               params);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             throw new RepositoryErrorException(OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR.getMessageDefinition(methodName,
                                                                                                              repositoryName,
@@ -5512,7 +5512,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                request,
                                                params);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             throw new RepositoryErrorException(OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR.getMessageDefinition(methodName,
                                                                                                              repositoryName,
@@ -5833,9 +5833,9 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @throws InvalidParameterException encoded exception from the server
      * @throws RepositoryErrorException invalid parameter is "serverName"
      */
-    private void detectAndThrowInvalidParameterException(String          methodName,
-                                                         OMRSAPIResponse restResult) throws InvalidParameterException,
-                                                                                            RepositoryErrorException
+    protected void detectAndThrowInvalidParameterException(String          methodName,
+                                                           OMRSAPIResponse restResult) throws InvalidParameterException,
+                                                                                              RepositoryErrorException
     {
         final String exceptionClassName = InvalidParameterException.class.getName();
         final String propertyName = "parameterName";
@@ -6321,8 +6321,8 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @param restResult response from the rest call.  This generated in the remote server.
      * @throws UserNotAuthorizedException encoded exception from the server
      */
-    private void detectAndThrowUserNotAuthorizedException(String          methodName,
-                                                          OMRSAPIResponse restResult) throws UserNotAuthorizedException
+    protected void detectAndThrowUserNotAuthorizedException(String          methodName,
+                                                            OMRSAPIResponse restResult) throws UserNotAuthorizedException
     {
         final String   exceptionClassName = UserNotAuthorizedException.class.getName();
 
@@ -6357,8 +6357,8 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @param restResult response from the REST API call.
      * @throws RepositoryErrorException resulting exception if response includes an exception.
      */
-    private void detectAndThrowRepositoryErrorException(String          methodName,
-                                                        OMRSAPIResponse restResult) throws RepositoryErrorException
+    protected void detectAndThrowRepositoryErrorException(String          methodName,
+                                                          OMRSAPIResponse restResult) throws RepositoryErrorException
     {
         if (restResult == null)
         {
