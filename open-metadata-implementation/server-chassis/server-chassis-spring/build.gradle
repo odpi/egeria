@@ -78,6 +78,7 @@ dependencies {
     runtimeOnly project(':open-metadata-implementation:governance-servers:integration-daemon-services:integration-daemon-services-spring')
     runtimeOnly project(':open-metadata-implementation:governance-servers:engine-host-services:engine-host-services-spring')
     runtimeOnly project(':open-metadata-implementation:engine-services:asset-analysis:asset-analysis-spring')
+    runtimeOnly project(':open-metadata-implementation:engine-services:archive-manager:archive-manager-spring')
     runtimeOnly project(':open-metadata-implementation:engine-services:governance-action:governance-action-spring')
     runtimeOnly project(':open-metadata-implementation:integration-services:analytics-integrator:analytics-integrator-spring')
     runtimeOnly project(':open-metadata-implementation:integration-services:api-integrator:api-integrator-spring')
