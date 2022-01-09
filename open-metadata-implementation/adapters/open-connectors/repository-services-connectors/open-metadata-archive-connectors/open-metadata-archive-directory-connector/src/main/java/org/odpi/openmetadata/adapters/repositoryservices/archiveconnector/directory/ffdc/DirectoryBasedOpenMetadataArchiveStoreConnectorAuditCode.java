@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.file.ffdc;
+package org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.directory.ffdc;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
@@ -8,7 +8,7 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
 
 
 /**
- * The FileBasedOpenMetadataArchiveStoreConnectorAuditCode is used to define the message content for the Audit Log.
+ * The DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode is used to define the message content for the Audit Log.
  *
  * The 5 fields in the enum are:
  * <ul>
@@ -19,23 +19,21 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
  *     <li>UserAction - describes how a user should correct the situation</li>
  * </ul>
  */
-public enum FileBasedOpenMetadataArchiveStoreConnectorAuditCode implements AuditLogMessageSet
+public enum DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode implements AuditLogMessageSet
 {
-    OPENING_FILE("OCF-FILE-OPEN-METADATA-ARCHIVE-STORE-CONNECTOR-0001",
+    OPENING_FILE("OCF-DIRECTORY-OPEN-METADATA-ARCHIVE-STORE-CONNECTOR-0001",
               OMRSAuditLogRecordSeverity.STARTUP,
-              "Opening file \"{0}\" for Open Metadata Archive Store",
-              "The local server is requesting the contents of the open metadata archive store which is located in the named file.",
-              "Validate that the file name is correct.  Look particularly for extraneous quotes, " +
-                      "incorrect directory name (relative files are read from the perspective of the server's home directory) or incorrect characters.  " +
-                      "Once the file name is corrected (either in the server's configuration or the command that loaded the archive) then retry the" +
-                      "mechanism that loads the archive."),
+              "Opening directory \"{0}\" for Open Metadata Archive Store",
+              "The caller is requesting the contents of the open metadata archive store which is located in the named directory.",
+              "Validate that the directory name is correct.  "),
 
-    BAD_FILE("OCF-FILE-OPEN-METADATA-ARCHIVE-STORE-CONNECTOR-0002",
+    BAD_FILE("OCF-DIRECTORY-OPEN-METADATA-ARCHIVE-STORE-CONNECTOR-0002",
               OMRSAuditLogRecordSeverity.EXCEPTION,
-              "Unable to open file \"{0}\".  Message from {1} exception was {2}",
-              "The server is is unable to open an open metadata archive store.",
-              "Use the information from the exception to determine the cause of the error.  For example, is the filename correct?  " +
-                      "Does the caller have permission to access the file?  Once the cause of the error is corrected, restart the caller."),
+              "Unable to open directory \"{0}\".  Message from {1} exception was {2}",
+              "The caller is is unable to open an open metadata archive.",
+              "Use the information from the exception to determine the cause of the error.  For example, is the directory (folder) name correct?  " +
+                      "Look particularly for extraneous quotes, " +
+                      "incorrect directory name (relative files are read from the perspective of the caller's home directory) or incorrect characters.  Does the server have permission to access the direcxtory?  Once the cause of the error is corrected, restart the caller."),
 
     ;
 
@@ -43,10 +41,10 @@ public enum FileBasedOpenMetadataArchiveStoreConnectorAuditCode implements Audit
 
 
     /**
-     * The constructor for FileBasedOpenMetadataArchiveStoreConnectorAuditCode expects to be passed one of the enumeration rows defined in
-     * FileBasedOpenMetadataArchiveStoreConnectorAuditCode above.   For example:
+     * The constructor for DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode expects to be passed one of the enumeration rows defined in
+     * DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode above.   For example:
      *
-     *     FileBasedOpenMetadataArchiveStoreConnectorAuditCode   auditCode = FileBasedOpenMetadataArchiveStoreConnectorAuditCode.BAD_FILE;
+     *     DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode   auditCode = DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode.BAD_FILE;
      *
      * This will expand out to the 4 parameters shown below.
      *
@@ -56,7 +54,7 @@ public enum FileBasedOpenMetadataArchiveStoreConnectorAuditCode implements Audit
      * @param systemAction description of the action taken by the system when the condition happened
      * @param userAction instructions for resolving the situation, if any
      */
-    FileBasedOpenMetadataArchiveStoreConnectorAuditCode(String                     messageId,
+    DirectoryBasedOpenMetadataArchiveStoreConnectorAuditCode(String                     messageId,
                                                         OMRSAuditLogRecordSeverity severity,
                                                         String                     message,
                                                         String                     systemAction,
