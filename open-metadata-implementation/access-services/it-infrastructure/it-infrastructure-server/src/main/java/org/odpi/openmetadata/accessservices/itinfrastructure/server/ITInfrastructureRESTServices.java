@@ -1266,10 +1266,12 @@ public class ITInfrastructureRESTServices
 
 
     /**
-     * Remove the metadata element representing a endpoint.
+     * Remove the metadata element representing a connector type.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
+     * @param connectorTypeGUID unique identifier of the element to remove
+     *
      * @param requestBody external source identifiers
      *
      * @return void or
