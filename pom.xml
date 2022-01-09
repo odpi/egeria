@@ -866,6 +866,34 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>archive-manager-api</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>archive-manager-client</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>archive-manager-server</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>archive-manager-spring</artifactId>
+                <scope>runtime</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>asset-analysis-api</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
@@ -1974,6 +2002,13 @@
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>open-metadata-archive-file-connector</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>open-metadata-archive-directory-connector</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
