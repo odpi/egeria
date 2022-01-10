@@ -81,5 +81,5 @@ public final class Constants {
     public static final String NESTED_FILE = "NestedFile";
     public static final String NESTED_SCHEMA_ATTRIBUTE = "NestedSchemaAttribute";
     public static final String FOLDER_HIERARCHY = "FolderHierarchy";
-
+    public static final String SCHEMA_TYPE_OPTION = "SchemaTypeOption";
 }

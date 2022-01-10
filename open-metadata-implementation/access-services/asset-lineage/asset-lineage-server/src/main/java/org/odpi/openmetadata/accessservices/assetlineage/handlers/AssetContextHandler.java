@@ -402,12 +402,23 @@ public class AssetContextHandler {
         return new RelationshipsContext(entityDetail.getGUID(), context);
     }
 
+    /**
+     * Builds the event schema attribute context
+     *
+     * @param userId       the unique identifier for the user
+     * @param entityDetail the entity for which the context is build
+     *
+     * @return the topic context
+     *
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     */
     private Set<GraphContext> buildEventSchemaAttributeContext(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
         Set<GraphContext> columnContext = new HashSet<>();
 
         EntityDetail eventType = handlerHelper.addContextForRelationships(userId, entityDetail, ATTRIBUTE_FOR_SCHEMA, columnContext);
-        handlerHelper.addContextForRelationships(userId, eventType, SCHEMA_TYPE_OPTION, columnContext);
+        EntityDetail eventTypeList = handlerHelper.addContextForRelationships(userId, eventType, SCHEMA_TYPE_OPTION, columnContext);
 
+        handlerHelper.addContextForRelationships(userId, eventTypeList, ASSET_SCHEMA_TYPE, columnContext);
         return columnContext;
     }
 }
