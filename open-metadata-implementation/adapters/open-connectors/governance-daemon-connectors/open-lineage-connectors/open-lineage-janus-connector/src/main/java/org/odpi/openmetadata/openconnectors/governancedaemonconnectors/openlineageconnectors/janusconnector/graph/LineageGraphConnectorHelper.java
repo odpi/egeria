@@ -1024,7 +1024,7 @@ public class LineageGraphConnectorHelper {
         Map<String, String> properties = new HashMap<>();
 
         Iterator<Vertex> eventTypeList = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(1).or(hasLabel(EVENT_TYPE_LIST));
-        commitTransaction();
+        commitTransaction(g);
         if (eventTypeList.hasNext()) {
             properties.put(EVENT_TYPE_LIST_KEY, getDisplayNameForVertex(eventTypeList.next()));
         }
@@ -1035,19 +1035,19 @@ public class LineageGraphConnectorHelper {
     private Map<String, String> getEventSchemaAttributeProperties(GraphTraversalSource g, Object vertexId) {
         Map<String, String> properties = new HashMap<>();
         Iterator<Vertex> eventType = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(1).or(hasLabel(EVENT_TYPE));
-        commitTransaction();
+        commitTransaction(g);
         if (eventType.hasNext()) {
             properties.put(EVENT_TYPE_KEY, getDisplayNameForVertex(eventType.next()));
         }
 
         Iterator<Vertex> eventTypeList = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(2).or(hasLabel(EVENT_TYPE_LIST));
-        commitTransaction();
+        commitTransaction(g);
         if (eventTypeList.hasNext()) {
             properties.put(EVENT_TYPE_LIST_KEY, getDisplayNameForVertex(eventTypeList.next()));
         }
 
         Iterator<Vertex> topic = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(3).or(hasLabel(TOPIC));
-        commitTransaction();
+        commitTransaction(g);
         if (topic.hasNext()) {
             properties.put(TOPIC_KEY, getDisplayNameForVertex(topic.next()));
         }
