@@ -35,7 +35,8 @@ import java.util.Map;
  * of the server name, server type and organization name.  It also supports the setting up of the
  * Open Metadata Repository Services' local repository and cohort.
  */
-public class OMAGServerAdminServices {
+public class OMAGServerAdminServices
+{
     private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerAdminServices.class),
                                                                       CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName());
 
@@ -55,14 +56,16 @@ public class OMAGServerAdminServices {
      * OMAGInvalidParameterException invalid serverName or serverType parameter.
      */
     public ServerTypeClassificationResponse getServerTypeClassification(String userId,
-                                                                        String serverName) {
+                                                                        String serverName)
+    {
         final String methodName = "getServerTypeClassification";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         ServerTypeClassificationResponse response = new ServerTypeClassificationResponse();
 
-        try {
+        try
+        {
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
@@ -70,11 +73,17 @@ public class OMAGServerAdminServices {
             ServerTypeClassificationSummary summary = new ServerTypeClassificationSummary(classifier.getServerType());
 
             response.setServerTypeClassification(summary);
-        } catch (OMAGInvalidParameterException error) {
+        }
+        catch (OMAGInvalidParameterException error)
+        {
             exceptionHandler.captureInvalidParameterException(response, error);
-        } catch (OMAGNotAuthorizedException error) {
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
             exceptionHandler.captureNotAuthorizedException(response, error);
-        } catch (Exception error) {
+        }
+        catch (Exception error)
+        {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
@@ -103,14 +112,16 @@ public class OMAGServerAdminServices {
      */
     public VoidResponse setServerType(String userId,
                                       String serverName,
-                                      String typeName) {
+                                      String typeName)
+    {
         final String methodName = "setServerType";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
-        try {
+        try
+        {
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
@@ -118,17 +129,22 @@ public class OMAGServerAdminServices {
 
             List<String> configAuditTrail = serverConfig.getAuditTrail();
 
-            if (configAuditTrail == null) {
+            if (configAuditTrail == null)
+            {
                 configAuditTrail = new ArrayList<>();
             }
 
-            if ((typeName != null) && (typeName.length() == 0)) {
+            if ((typeName != null) && (typeName.length() == 0))
+            {
                 typeName = null;
             }
 
-            if (typeName == null) {
+            if (typeName == null)
+            {
                 configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for local server type name.");
-            } else {
+            }
+            else
+            {
                 configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for local server type name to " + typeName + ".");
             }
 
@@ -136,11 +152,17 @@ public class OMAGServerAdminServices {
             serverConfig.setLocalServerType(typeName);
 
             configStore.saveServerConfig(serverName, methodName, serverConfig);
-        } catch (OMAGInvalidParameterException error) {
+        }
+        catch (OMAGInvalidParameterException error)
+        {
             exceptionHandler.captureInvalidParameterException(response, error);
-        } catch (OMAGNotAuthorizedException error) {
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
             exceptionHandler.captureNotAuthorizedException(response, error);
-        } catch (Exception error) {
+        }
+        catch (Exception error)
+        {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
@@ -163,14 +185,16 @@ public class OMAGServerAdminServices {
      */
     public VoidResponse setOrganizationName(String userId,
                                             String serverName,
-                                            String name) {
+                                            String name)
+    {
         final String methodName = "setOrganizationName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
-        try {
+        try
+        {
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
@@ -178,17 +202,22 @@ public class OMAGServerAdminServices {
 
             List<String> configAuditTrail = serverConfig.getAuditTrail();
 
-            if (configAuditTrail == null) {
+            if (configAuditTrail == null)
+            {
                 configAuditTrail = new ArrayList<>();
             }
 
-            if (name != null && (name.length() == 0)) {
+            if (name != null && (name.length() == 0))
+            {
                 name = null;
             }
 
-            if (name == null) {
+            if (name == null)
+            {
                 configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for local server's owning organization's name.");
-            } else {
+            }
+            else
+            {
                 configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for local server's owning organization's name to " + name + ".");
             }
 
@@ -196,11 +225,17 @@ public class OMAGServerAdminServices {
             serverConfig.setOrganizationName(name);
 
             configStore.saveServerConfig(serverName, methodName, serverConfig);
-        } catch (OMAGInvalidParameterException error) {
+        }
+        catch (OMAGInvalidParameterException error)
+        {
             exceptionHandler.captureInvalidParameterException(response, error);
-        } catch (OMAGNotAuthorizedException error) {
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
             exceptionHandler.captureNotAuthorizedException(response, error);
-        } catch (Exception error) {
+        }
+        catch (Exception error)
+        {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
@@ -208,6 +243,7 @@ public class OMAGServerAdminServices {
 
         return response;
     }
+
 
     /**
      * Set up the description of this server. The default value is null.
@@ -219,10 +255,10 @@ public class OMAGServerAdminServices {
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or organizationName parameter.
      */
-
     public VoidResponse setServerDescription(String userId,
                                              String serverName,
-                                             String description) {
+                                             String description)
+    {
 
         final String methodName = "setServerDescription";
 
@@ -230,7 +266,8 @@ public class OMAGServerAdminServices {
 
         VoidResponse response = new VoidResponse();
 
-        try {
+        try
+        {
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
@@ -238,17 +275,22 @@ public class OMAGServerAdminServices {
 
             List<String> configAuditTrail = serverConfig.getAuditTrail();
 
-            if (configAuditTrail == null) {
+            if (configAuditTrail == null)
+            {
                 configAuditTrail = new ArrayList<>();
             }
 
-            if (description != null && (description.length() == 0)) {
+            if (description != null && (description.length() == 0))
+            {
                 description = null;
             }
 
-            if (description == null) {
+            if (description == null)
+            {
                 configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for local server's description.");
-            } else {
+            }
+            else
+            {
                 configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for local server's description to " + description + ".");
             }
 
@@ -256,11 +298,17 @@ public class OMAGServerAdminServices {
             serverConfig.setLocalServerDescription(description);
 
             configStore.saveServerConfig(serverName, methodName, serverConfig);
-        } catch (OMAGInvalidParameterException error) {
+        }
+        catch (OMAGInvalidParameterException error)
+        {
             exceptionHandler.captureInvalidParameterException(response, error);
-        } catch (OMAGNotAuthorizedException error) {
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
             exceptionHandler.captureNotAuthorizedException(response, error);
-        } catch (Exception error) {
+        }
+        catch (Exception error)
+        {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
@@ -268,6 +316,7 @@ public class OMAGServerAdminServices {
 
         return response;
     }
+
 
     /**
      * Set up the user id to use when there is no external user driving the work (for example when processing events

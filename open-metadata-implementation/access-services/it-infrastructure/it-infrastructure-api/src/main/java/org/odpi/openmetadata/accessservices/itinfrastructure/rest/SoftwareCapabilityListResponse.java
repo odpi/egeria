@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareServerCapabilityElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareCapabilityElement;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,23 +17,23 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * SoftwareServerCapabilityListResponse is a response object for passing back a a list of software server capabilities
+ * SoftwareCapabilityListResponse is a response object for passing back a a list of software server capabilities
  * or an exception if the request failed.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SoftwareServerCapabilityListResponse extends ITInfrastructureOMASAPIResponse
+public class SoftwareCapabilityListResponse extends ITInfrastructureOMASAPIResponse
 {
     private static final long    serialVersionUID = 1L;
 
-    private List<SoftwareServerCapabilityElement> elementList = null;
+    private List<SoftwareCapabilityElement> elementList = null;
 
 
     /**
      * Default constructor
      */
-    public SoftwareServerCapabilityListResponse()
+    public SoftwareCapabilityListResponse()
     {
     }
 
@@ -43,7 +43,7 @@ public class SoftwareServerCapabilityListResponse extends ITInfrastructureOMASAP
      *
      * @param template object to copy
      */
-    public SoftwareServerCapabilityListResponse(SoftwareServerCapabilityListResponse template)
+    public SoftwareCapabilityListResponse(SoftwareCapabilityListResponse template)
     {
         super(template);
 
@@ -59,7 +59,7 @@ public class SoftwareServerCapabilityListResponse extends ITInfrastructureOMASAP
      *
      * @return result object
      */
-    public List<SoftwareServerCapabilityElement> getElementList()
+    public List<SoftwareCapabilityElement> getElementList()
     {
         if (elementList == null)
         {
@@ -81,7 +81,7 @@ public class SoftwareServerCapabilityListResponse extends ITInfrastructureOMASAP
      *
      * @param elementList result object
      */
-    public void setElementList(List<SoftwareServerCapabilityElement> elementList)
+    public void setElementList(List<SoftwareCapabilityElement> elementList)
     {
         this.elementList = elementList;
     }
@@ -95,7 +95,7 @@ public class SoftwareServerCapabilityListResponse extends ITInfrastructureOMASAP
     @Override
     public String toString()
     {
-        return "SoftwareServerCapabilityListResponse{" +
+        return "SoftwareCapabilityListResponse{" +
                 "elementList=" + elementList +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
@@ -131,7 +131,7 @@ public class SoftwareServerCapabilityListResponse extends ITInfrastructureOMASAP
         {
             return false;
         }
-        SoftwareServerCapabilityListResponse that = (SoftwareServerCapabilityListResponse) objectToCompare;
+        SoftwareCapabilityListResponse that = (SoftwareCapabilityListResponse) objectToCompare;
         return Objects.equals(elementList, that.elementList);
     }
 

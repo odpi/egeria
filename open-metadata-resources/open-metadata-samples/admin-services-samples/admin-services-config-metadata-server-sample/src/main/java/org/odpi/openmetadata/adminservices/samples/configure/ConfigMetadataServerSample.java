@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.adminservices.samples.configure;
 
-import org.odpi.openmetadata.adminservices.client.MetadataServerConfigurationClient;
+import org.odpi.openmetadata.adminservices.client.MetadataAccessServerConfigurationClient;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * ConfigMetadataServerSample illustrates how to use the MetadataServerConfigurationClient
+ * ConfigMetadataServerSample illustrates how to use the MetadataAccessServerConfigurationClient
  * to configure a Metadata Server.
  */
 public class ConfigMetadataServerSample
@@ -42,7 +42,7 @@ public class ConfigMetadataServerSample
     private static final String[] supportedZones = { "quarantine", "clinical-trials", "research", "data-lake", "trash-can" };
     private static final String[] defaultZones   = { "quarantine" };
 
-    private MetadataServerConfigurationClient configurationClient;
+    private MetadataAccessServerConfigurationClient configurationClient;
 
 
     /**
@@ -64,7 +64,7 @@ public class ConfigMetadataServerSample
         System.out.println();
         System.out.println("Configuring server: " + metadataServerName);
 
-        configurationClient = new MetadataServerConfigurationClient(adminUserId, metadataServerName, adminPlatformURLRoot);
+        configurationClient = new MetadataAccessServerConfigurationClient(adminUserId, metadataServerName, adminPlatformURLRoot);
     }
 
 
@@ -92,7 +92,7 @@ public class ConfigMetadataServerSample
         System.out.println();
         System.out.println("Configuring server: " + metadataServerName);
 
-        configurationClient = new MetadataServerConfigurationClient(adminUserId, metadataServerName, adminPlatformURLRoot, connectionUserId, connectionPassword);
+        configurationClient = new MetadataAccessServerConfigurationClient(adminUserId, metadataServerName, adminPlatformURLRoot, connectionUserId, connectionPassword);
     }
 
 

@@ -316,6 +316,25 @@ public class ConfigAccessServicesResource
 
 
     /**
+     * Set up the default remote enterprise topic.  This allows a remote process to monitor enterprise topic events.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param configurationProperties additional properties for the cohort
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or null userId parameter.
+     */
+    @PostMapping(path = "/enterprise-access/remote-topic")
+    public VoidResponse addRemoteEnterpriseTopic(@PathVariable String               userId,
+                                                 @PathVariable String               serverName,
+                                                 @RequestBody  Map<String, Object>  configurationProperties)
+    {
+        return adminAPI.addRemoteEnterpriseTopic(userId, serverName, configurationProperties);
+    }
+
+
+    /**
      * Set up the configuration that controls the enterprise repository services.  These services are part
      * of the Open Metadata Repository Services (OMRS).  They provide federated queries and federated event
      * notifications that cover metadata from the local repository plus any repositories connected via

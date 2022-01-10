@@ -29,7 +29,7 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
 {
     private static AccessServiceDescription myDescription = AccessServiceDescription.ASSET_MANAGER_OMAS;
 
-    private SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement>    assetManagerHandler;
+    private SoftwareCapabilityHandler<SoftwareCapabilityElement>                assetManagerHandler;
     private ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> externalIdentifierHandler;
     private DataAssetExchangeHandler                                            dataAssetExchangeHandler;
     private GlossaryExchangeHandler                                             glossaryExchangeHandler;
@@ -86,19 +86,19 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
         }
 
 
-        this.assetManagerHandler = new SoftwareServerCapabilityHandler<>(new AssetManagerConverter<>(repositoryHelper, serviceName, serverName),
-                                                                         SoftwareServerCapabilityElement.class,
-                                                                         serviceName,
-                                                                         serverName,
-                                                                         invalidParameterHandler,
-                                                                         repositoryHandler,
-                                                                         repositoryHelper,
-                                                                         localServerUserId,
-                                                                         securityVerifier,
-                                                                         supportedZones,
-                                                                         defaultZones,
-                                                                         publishZones,
-                                                                         auditLog);
+        this.assetManagerHandler = new SoftwareCapabilityHandler<>(new AssetManagerConverter<>(repositoryHelper, serviceName, serverName),
+                                                                   SoftwareCapabilityElement.class,
+                                                                   serviceName,
+                                                                   serverName,
+                                                                   invalidParameterHandler,
+                                                                   repositoryHandler,
+                                                                   repositoryHelper,
+                                                                   localServerUserId,
+                                                                   securityVerifier,
+                                                                   supportedZones,
+                                                                   defaultZones,
+                                                                   publishZones,
+                                                                   auditLog);
 
         this.externalIdentifierHandler = new ExternalIdentifierHandler<>(new ExternalIdentifierConverter<>(repositoryHelper, serviceName, serverName),
                                                                          MetadataCorrelationHeader.class,
@@ -214,7 +214,7 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
      * @return  handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> getAssetManagerIntegratorHandler() throws PropertyServerException
+    SoftwareCapabilityHandler<SoftwareCapabilityElement> getAssetManagerIntegratorHandler() throws PropertyServerException
     {
         final String methodName = "getAssetManagerIntegratorHandler";
 

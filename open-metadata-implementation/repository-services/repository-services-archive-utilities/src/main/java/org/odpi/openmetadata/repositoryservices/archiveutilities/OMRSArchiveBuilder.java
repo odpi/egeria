@@ -828,6 +828,79 @@ public class OMRSArchiveBuilder
     }
 
 
+
+    /**
+     * Retrieve the relationshipDef or null if it is not defined.
+     *
+     * @param relationshipDefName name of the relationship
+     * @return the retrieved relationship def
+     */
+    public RelationshipDef  getRelationshipDef(String   relationshipDefName)
+    {
+        final String methodName = "getRelationshipDef";
+
+        log.debug("Retrieving RelationshipDef: " + relationshipDefName);
+
+        if (relationshipDefName != null)
+        {
+            RelationshipDef retrievedRelationshipDef = relationshipDefMap.get(relationshipDefName);
+
+            if (retrievedRelationshipDef == null)
+            {
+                throw new OMRSLogicErrorException(OMRSErrorCode.MISSING_TYPE_IN_ARCHIVE.getMessageDefinition(relationshipDefName,
+                                                                                                             TypeDefCategory.RELATIONSHIP_DEF.getName()),
+                                                  this.getClass().getName(),
+                                                  methodName);
+            }
+
+            return retrievedRelationshipDef;
+        }
+        else
+        {
+            throw new OMRSLogicErrorException(OMRSErrorCode.MISSING_NAME_FOR_ARCHIVE.getMessageDefinition(TypeDefCategory.RELATIONSHIP_DEF.getName()),
+                                              this.getClass().getName(),
+                                              methodName);
+        }
+    }
+
+
+
+    /**
+     * Retrieve the relationshipDef or null if it is not defined.
+     *
+     * @param classificationDef name of the classification
+     * @return the retrieved classification def
+     */
+    public ClassificationDef  getClassificationDef(String   classificationDef)
+    {
+        final String methodName = "getClassificationDef";
+
+        log.debug("Retrieving getClassificationDef: " + classificationDef);
+
+        if (classificationDef != null)
+        {
+            ClassificationDef retrievedClassificationDef = classificationDefMap.get(classificationDef);
+
+            if (retrievedClassificationDef == null)
+            {
+                throw new OMRSLogicErrorException(OMRSErrorCode.MISSING_TYPE_IN_ARCHIVE.getMessageDefinition(classificationDef,
+                                                                                                             TypeDefCategory.CLASSIFICATION_DEF.getName()),
+                                                  this.getClass().getName(),
+                                                  methodName);
+            }
+
+            return retrievedClassificationDef;
+        }
+        else
+        {
+            throw new OMRSLogicErrorException(OMRSErrorCode.MISSING_NAME_FOR_ARCHIVE.getMessageDefinition(TypeDefCategory.CLASSIFICATION_DEF.getName()),
+                                              this.getClass().getName(),
+                                              methodName);
+        }
+    }
+
+
+
     /**
      * Add a new RelationshipDef to the archive.
      *

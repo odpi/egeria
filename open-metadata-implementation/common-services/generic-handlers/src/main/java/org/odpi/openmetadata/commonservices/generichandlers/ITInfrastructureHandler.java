@@ -599,8 +599,8 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
      * @param externalSourceName name of the software server capability entity that represented the external source
      * @param softwareServerGUID unique identifier of the software server
      * @param softwareServerGUIDParameterName parameter supplying the softwareServerGUID
-     * @param softwareServerCapabilityGUID unique identifier of the software server capability
-     * @param softwareServerCapabilityGUIDParameterName parameter supplying the softwareServerCapabilityGUID
+     * @param softwareCapabilityGUID unique identifier of the software server capability
+     * @param softwareCapabilityGUIDParameterName parameter supplying the softwareCapabilityGUID
      * @param deploymentTime date/time that the capability was deployed
      * @param deployer user who issued the deploy command
      * @param serverCapabilityStatus operational status of the capability
@@ -612,21 +612,21 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupSoftwareServerSupportedCapability(String userId,
-                                                       String externalSourceGUID,
-                                                       String externalSourceName,
-                                                       String softwareServerGUID,
-                                                       String softwareServerGUIDParameterName,
-                                                       String softwareServerCapabilityGUID,
-                                                       String softwareServerCapabilityGUIDParameterName,
-                                                       Date   deploymentTime,
-                                                       String deployer,
-                                                       int    serverCapabilityStatus,
-                                                       Date   effectiveFrom,
-                                                       Date   effectiveTo,
-                                                       String methodName) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+    public void setupSupportedSoftwareCapability(String userId,
+                                                 String externalSourceGUID,
+                                                 String externalSourceName,
+                                                 String softwareServerGUID,
+                                                 String softwareServerGUIDParameterName,
+                                                 String softwareCapabilityGUID,
+                                                 String softwareCapabilityGUIDParameterName,
+                                                 Date   deploymentTime,
+                                                 String deployer,
+                                                 int    serverCapabilityStatus,
+                                                 Date   effectiveFrom,
+                                                 Date   effectiveTo,
+                                                 String methodName) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
         ITInfrastructureBuilder builder = new ITInfrastructureBuilder(repositoryHelper, serviceName, serverName);
 
@@ -640,10 +640,10 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                   externalSourceName,
                                   softwareServerGUID,
                                   softwareServerGUIDParameterName,
-                                  OpenMetadataAPIMapper.SOFTWARE_SERVER_TYPE_NAME,
-                                  softwareServerCapabilityGUID,
-                                  softwareServerCapabilityGUIDParameterName,
-                                  OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                  OpenMetadataAPIMapper.IT_INFRASTRUCTURE_TYPE_NAME,
+                                  softwareCapabilityGUID,
+                                  softwareCapabilityGUIDParameterName,
+                                  OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                   false,
                                   false,
                                   supportedZones,
@@ -662,8 +662,8 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
      * @param externalSourceName name of the software server capability entity that represented the external source
      * @param softwareServerGUID unique identifier of the software server
      * @param softwareServerGUIDParameterName parameter supplying the softwareServerGUID
-     * @param softwareServerCapabilityGUID unique identifier of the software server capability
-     * @param softwareServerCapabilityGUIDParameterName parameter supplying the softwareServerCapabilityGUID
+     * @param softwareCapabilityGUID unique identifier of the software server capability
+     * @param softwareCapabilityGUIDParameterName parameter supplying the softwareCapabilityGUID
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
@@ -671,17 +671,17 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearSoftwareServerSupportedCapability(String userId,
-                                                       String externalSourceGUID,
-                                                       String externalSourceName,
-                                                       String softwareServerGUID,
-                                                       String softwareServerGUIDParameterName,
-                                                       String softwareServerCapabilityGUID,
-                                                       String softwareServerCapabilityGUIDParameterName,
-                                                       Date   effectiveTime,
-                                                       String methodName) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+    public void clearSupportedSoftwareCapability(String userId,
+                                                 String externalSourceGUID,
+                                                 String externalSourceName,
+                                                 String softwareServerGUID,
+                                                 String softwareServerGUIDParameterName,
+                                                 String softwareCapabilityGUID,
+                                                 String softwareCapabilityGUIDParameterName,
+                                                 Date   effectiveTime,
+                                                 String methodName) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
         this.unlinkElementFromElement(userId,
                                       false,
@@ -689,11 +689,11 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                       externalSourceName,
                                       softwareServerGUID,
                                       softwareServerGUIDParameterName,
-                                      OpenMetadataAPIMapper.SOFTWARE_SERVER_TYPE_NAME,
-                                      softwareServerCapabilityGUID,
-                                      softwareServerCapabilityGUIDParameterName,
-                                      OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_GUID,
-                                      OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                      OpenMetadataAPIMapper.IT_INFRASTRUCTURE_TYPE_NAME,
+                                      softwareCapabilityGUID,
+                                      softwareCapabilityGUIDParameterName,
+                                      OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_GUID,
+                                      OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                       false,
                                       false,
                                       OpenMetadataAPIMapper.SUPPORTED_CAPABILITY_TYPE_GUID,
@@ -709,8 +709,8 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
      * @param userId calling user
      * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
      * @param externalSourceName name of the software server capability entity that represented the external source
-     * @param softwareServerCapabilityGUID unique identifier of the software server capability
-     * @param softwareServerCapabilityGUIDParameterName parameter supplying the softwareServerCapabilityGUID
+     * @param softwareCapabilityGUID unique identifier of the software server capability
+     * @param softwareCapabilityGUIDParameterName parameter supplying the softwareCapabilityGUID
      * @param assetGUID unique identifier of the asset
      * @param assetGUIDParameterName parameter supplying the assetGUID
      * @param description description of the use
@@ -723,20 +723,20 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupSoftwareServerCapabilityAssetUse(String userId,
-                                                      String externalSourceGUID,
-                                                      String externalSourceName,
-                                                      String softwareServerCapabilityGUID,
-                                                      String softwareServerCapabilityGUIDParameterName,
-                                                      String assetGUID,
-                                                      String assetGUIDParameterName,
-                                                      String description,
-                                                      int    useType,
-                                                      Date   effectiveFrom,
-                                                      Date   effectiveTo,
-                                                      String methodName) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
+    public void setupSoftwareCapabilityAssetUse(String userId,
+                                                String externalSourceGUID,
+                                                String externalSourceName,
+                                                String softwareCapabilityGUID,
+                                                String softwareCapabilityGUIDParameterName,
+                                                String assetGUID,
+                                                String assetGUIDParameterName,
+                                                String description,
+                                                int    useType,
+                                                Date   effectiveFrom,
+                                                Date   effectiveTo,
+                                                String methodName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
         ITInfrastructureBuilder builder = new ITInfrastructureBuilder(repositoryHelper, serviceName, serverName);
 
@@ -745,9 +745,9 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
         this.linkElementToElement(userId,
                                   externalSourceGUID,
                                   externalSourceName,
-                                  softwareServerCapabilityGUID,
-                                  softwareServerCapabilityGUIDParameterName,
-                                  OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                  softwareCapabilityGUID,
+                                  softwareCapabilityGUIDParameterName,
+                                  OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                   assetGUID,
                                   assetGUIDParameterName,
                                   OpenMetadataAPIMapper.ASSET_TYPE_NAME,
@@ -767,8 +767,8 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
      * @param userId calling user
      * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
      * @param externalSourceName name of the software server capability entity that represented the external source
-     * @param softwareServerCapabilityGUID unique identifier of the software server capability
-     * @param softwareServerCapabilityGUIDParameterName parameter supplying the assetGUID
+     * @param softwareCapabilityGUID unique identifier of the software server capability
+     * @param softwareCapabilityGUIDParameterName parameter supplying the assetGUID
      * @param assetGUID unique identifier of the asset
      * @param assetGUIDParameterName parameter supplying the assetGUID
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -778,25 +778,25 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearSoftwareServerCapabilityAssetUse(String userId,
-                                                      String externalSourceGUID,
-                                                      String externalSourceName,
-                                                      String softwareServerCapabilityGUID,
-                                                      String softwareServerCapabilityGUIDParameterName,
-                                                      String assetGUID,
-                                                      String assetGUIDParameterName,
-                                                      Date   effectiveTime,
-                                                      String methodName) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
+    public void clearSoftwareCapabilityAssetUse(String userId,
+                                                String externalSourceGUID,
+                                                String externalSourceName,
+                                                String softwareCapabilityGUID,
+                                                String softwareCapabilityGUIDParameterName,
+                                                String assetGUID,
+                                                String assetGUIDParameterName,
+                                                Date   effectiveTime,
+                                                String methodName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
         this.unlinkElementFromElement(userId,
                                       false,
                                       externalSourceGUID,
                                       externalSourceName,
-                                      softwareServerCapabilityGUID,
-                                      softwareServerCapabilityGUIDParameterName,
-                                      OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                      softwareCapabilityGUID,
+                                      softwareCapabilityGUIDParameterName,
+                                      OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                       assetGUID,
                                       assetGUIDParameterName,
                                       OpenMetadataAPIMapper.ASSET_TYPE_GUID,
@@ -1213,8 +1213,8 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
      * Mark the software server capability as a Cloud Service.
      *
      * @param userId calling user
-     * @param softwareServerCapabilityGUID unique identifier of software server capability
-     * @param softwareServerCapabilityGUIDParameterName parameter name supplying softwareServerCapabilityGUID
+     * @param softwareCapabilityGUID unique identifier of software server capability
+     * @param softwareCapabilityGUIDParameterName parameter name supplying softwareCapabilityGUID
      * @param offeringName name of the service
      * @param serviceType type of service
      * @param methodName calling method
@@ -1224,23 +1224,23 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
      * @throws UserNotAuthorizedException security access problem
      */
     public void  addCloudServiceClassification(String userId,
-                                                String softwareServerCapabilityGUID,
-                                                String softwareServerCapabilityGUIDParameterName,
-                                                String offeringName,
-                                                String serviceType,
-                                                String methodName) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+                                               String softwareCapabilityGUID,
+                                               String softwareCapabilityGUIDParameterName,
+                                               String offeringName,
+                                               String serviceType,
+                                               String methodName) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(softwareServerCapabilityGUID, softwareServerCapabilityGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(softwareCapabilityGUID, softwareCapabilityGUIDParameterName, methodName);
 
         ITInfrastructureBuilder builder = new ITInfrastructureBuilder(repositoryHelper, serviceName, serverName);
 
         this.setClassificationInRepository(userId,
-                                           softwareServerCapabilityGUID,
-                                           softwareServerCapabilityGUIDParameterName,
-                                           OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                           softwareCapabilityGUID,
+                                           softwareCapabilityGUIDParameterName,
+                                           OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                            OpenMetadataAPIMapper.CLOUD_SERVICE_CLASSIFICATION_GUID,
                                            OpenMetadataAPIMapper.CLOUD_SERVICE_CLASSIFICATION_NAME,
                                            builder.getCloudServiceProperties(offeringName, serviceType, methodName),
@@ -1252,24 +1252,24 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
      * Remove the Cloud Service designation from a software server capability.
      *
      * @param userId calling user
-     * @param softwareServerCapabilityGUID unique identifier of software server capability
-     * @param softwareServerCapabilityGUIDParameterName parameter name supplying softwareServerCapabilityGUID
+     * @param softwareCapabilityGUID unique identifier of software server capability
+     * @param softwareCapabilityGUIDParameterName parameter name supplying softwareCapabilityGUID
      * @param methodName calling method
      * @throws InvalidParameterException entity not known, null userId or guid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
     public void  removeCloudServiceClassification(String userId,
-                                                  String softwareServerCapabilityGUID,
-                                                  String softwareServerCapabilityGUIDParameterName,
+                                                  String softwareCapabilityGUID,
+                                                  String softwareCapabilityGUIDParameterName,
                                                   String methodName) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException
     {
         this.removeClassificationFromRepository(userId,
-                                                softwareServerCapabilityGUID,
-                                                softwareServerCapabilityGUIDParameterName,
-                                                OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                softwareCapabilityGUID,
+                                                softwareCapabilityGUIDParameterName,
+                                                OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                 OpenMetadataAPIMapper.CLOUD_SERVICE_CLASSIFICATION_GUID,
                                                 OpenMetadataAPIMapper.CLOUD_SERVICE_CLASSIFICATION_NAME,
                                                 methodName);

@@ -78,19 +78,20 @@ public class OMRSOperationalServices
     private String                         localServerURL;                /* Initialized in constructor */
     private int                            maxPageSize;                   /* Initialized in constructor */
 
-    private String                         localMetadataCollectionId        = null;
+    private String                         localMetadataCollectionId          = null;
 
-    private OMRSRepositoryContentManager   localRepositoryContentManager    = null;
-    private OMRSRepositoryEventManager     localRepositoryEventManager      = null;
-    private OMRSMetadataHighwayManager     metadataHighwayManager           = null;
-    private OMRSEnterpriseConnectorManager enterpriseConnectorManager       = null;
-    private String                         enterpriseMetadataCollectionId   = null;
-    private String                         enterpriseMetadataCollectionName = null;
-    private OMRSTopicConnector             enterpriseOMRSTopicConnector     = null;
-    private LocalOMRSRepositoryConnector   localRepositoryConnector         = null;
-    private OMRSArchiveManager             archiveManager                   = null;
-    private OMRSAuditLogDestination        auditLogDestination              = null;
-    private OMRSAuditLog                   auditLog                         = null;
+    private OMRSRepositoryContentManager   localRepositoryContentManager      = null;
+    private OMRSRepositoryEventManager     localRepositoryEventManager        = null;
+    private OMRSMetadataHighwayManager     metadataHighwayManager             = null;
+    private OMRSEnterpriseConnectorManager enterpriseConnectorManager         = null;
+    private String                         enterpriseMetadataCollectionId     = null;
+    private String                         enterpriseMetadataCollectionName   = null;
+    private OMRSTopicConnector             enterpriseOMRSTopicConnector       = null;
+    private OMRSTopicConnector             remoteEnterpriseOMRSTopicConnector = null;
+    private LocalOMRSRepositoryConnector   localRepositoryConnector           = null;
+    private OMRSArchiveManager             archiveManager                     = null;
+    private OMRSAuditLogDestination        auditLogDestination                = null;
+    private OMRSAuditLog                   auditLog                           = null;
 
 
 
@@ -348,6 +349,7 @@ public class OMRSOperationalServices
                                                                           maxPageSize,
                                                                           localRepositoryContentManager);
         enterpriseOMRSTopicConnector = initializeEnterpriseOMRSTopicConnector(enterpriseAccessConfig);
+        remoteEnterpriseOMRSTopicConnector = initializeRemoteEnterpriseOMRSTopicConnector(enterpriseAccessConfig);
 
         /*
          * The archive manager loads pre-defined types and instances that are stored in open metadata archives.
@@ -387,8 +389,22 @@ public class OMRSOperationalServices
             if (enterpriseOMRSTopicConnector != null)
             {
                 OMRSRepositoryEventPublisher
-                        enterpriseEventPublisher = new OMRSRepositoryEventPublisher("Local Repository to Enterprise",
+                        enterpriseEventPublisher = new OMRSRepositoryEventPublisher("Local Repository to Local Enterprise",
                                                                                     enterpriseOMRSTopicConnector,
+                                                                                    auditLog.createNewAuditLog(OMRSAuditingComponent.EVENT_PUBLISHER));
+
+                this.localRepositoryEventManager.registerRepositoryEventProcessor(enterpriseEventPublisher);
+            }
+
+            /*
+             * If the remote enterprise repository services topic is active, then register an event publisher for it.
+             * This topic is active if the server is explicitly configured for it.
+             */
+            if (remoteEnterpriseOMRSTopicConnector != null)
+            {
+                OMRSRepositoryEventPublisher
+                        enterpriseEventPublisher = new OMRSRepositoryEventPublisher("Local Repository to Remote Enterprise",
+                                                                                    remoteEnterpriseOMRSTopicConnector,
                                                                                     auditLog.createNewAuditLog(OMRSAuditingComponent.EVENT_PUBLISHER));
 
                 this.localRepositoryEventManager.registerRepositoryEventProcessor(enterpriseEventPublisher);
@@ -521,21 +537,6 @@ public class OMRSOperationalServices
      *
      * @param repositoryServicesConfig current configuration values
      */
-    public void initializeEngineHostServer(RepositoryServicesConfig repositoryServicesConfig)
-    {
-        final String   actionDescription = "Initialize Repository Services for Engine Hosting OMAG Server";
-        final String   methodName        = "initializeEngineHostServer";
-
-        initializeSimpleServer(repositoryServicesConfig, actionDescription, methodName);
-    }
-
-
-    /**
-     * Initialize the OMRS component for the Open Metadata Repository Services (OMRS).  The configuration
-     * is taken as is.  Any configuration errors are reported as exceptions.
-     *
-     * @param repositoryServicesConfig current configuration values
-     */
     public void initializeViewServer(RepositoryServicesConfig repositoryServicesConfig)
     {
         final String   actionDescription = "Initialize Repository Services for View Server";
@@ -627,6 +628,31 @@ public class OMRSOperationalServices
         return enterpriseOMRSTopicConnector;
     }
 
+
+    /**
+     * Return the connector to the Remote Enterprise OMRS Topic.  If null is returned it means the Remote Enterprise OMRS Topic
+     * is not needed.  A configuration error exception is thrown if there is a problem with the connection properties
+     *
+     * @param enterpriseAccessConfig configuration from the OMAG server
+     * @return connector to the Remote Enterprise OMRS Topic or null
+     */
+    private OMRSTopicConnector  initializeRemoteEnterpriseOMRSTopicConnector(EnterpriseAccessConfig  enterpriseAccessConfig)
+    {
+        OMRSTopicConnector    enterpriseOMRSTopicConnector = null;
+
+        if (enterpriseAccessConfig != null)
+        {
+            Connection        enterpriseOMRSTopicConnection = enterpriseAccessConfig.getRemoteEnterpriseOMRSTopicConnection();
+
+            if (enterpriseOMRSTopicConnection != null)
+            {
+                enterpriseOMRSTopicConnector = getTopicConnector("Remote Enterprise Access",
+                                                                  enterpriseOMRSTopicConnection);
+            }
+        }
+
+        return enterpriseOMRSTopicConnector;
+    }
 
     /**
      * Initialize the OMRSEnterpriseConnectorManager and the EnterpriseOMRSConnector class.  If the
@@ -891,6 +917,26 @@ public class OMRSOperationalServices
             metadataHighwayManager.disconnect(permanent);
         }
 
+        /*
+         * Shutdown publishing events from all cohorts to external listeners
+         */
+        if (remoteEnterpriseOMRSTopicConnector != null)
+        {
+            try
+            {
+                remoteEnterpriseOMRSTopicConnector.disconnect();
+            }
+            catch (Exception  error)
+            {
+                auditLog.logMessage(actionDescription, OMRSAuditCode.ENTERPRISE_TOPIC_DISCONNECT_ERROR.getMessageDefinition("remote" ,
+                                                                                                                            error.getClass().getName(),
+                                                                                                                            error.getMessage()));
+            }
+        }
+
+        /*
+         * Shutdown publishing events from all cohorts to OMASs
+         */
         if (enterpriseOMRSTopicConnector != null)
         {
             try
@@ -899,12 +945,14 @@ public class OMRSOperationalServices
             }
             catch (Exception  error)
             {
-                auditLog.logMessage(actionDescription, OMRSAuditCode.ENTERPRISE_TOPIC_DISCONNECT_ERROR.getMessageDefinition());
+                auditLog.logMessage(actionDescription, OMRSAuditCode.ENTERPRISE_TOPIC_DISCONNECT_ERROR.getMessageDefinition("local" ,
+                                                                                                                            error.getClass().getName(),
+                                                                                                                            error.getMessage()));
             }
         }
 
         /*
-         * This will disconnect all repository connectors, both local and remote.
+         * This will disconnect all repository connectors, both local and remote so federated queries are no longer enabled.
          */
         if (enterpriseConnectorManager != null)
         {

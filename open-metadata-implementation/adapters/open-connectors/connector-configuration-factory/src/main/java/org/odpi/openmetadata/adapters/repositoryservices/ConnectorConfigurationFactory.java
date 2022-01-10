@@ -555,6 +555,43 @@ public class ConnectorConfigurationFactory
     }
 
 
+
+    /**
+     * Return the default connection for the enterprise OMRS topic.  This uses an in-memory event bus connector
+     *
+     * @param localServerName   name of local server
+     * @param configurationProperties name value property pairs for the topic connection
+     * @param eventBusConnectorProvider class name of the event bus connector's provider
+     * @param topicURLRoot root name for the topic URL
+     * @param serverId identifier of the server - used to pick up the right offset for the inbound messages.
+     * @param eventBusConfigurationProperties name value property pairs for the event bus connection
+     * @return Connection object
+     */
+    public Connection getDefaultRemoteEnterpriseOMRSTopicConnection(String              localServerName,
+                                                                    Map<String, Object> configurationProperties,
+                                                                    String              eventBusConnectorProvider,
+                                                                    String              topicURLRoot,
+                                                                    String              serverId,
+                                                                    Map<String, Object> eventBusConfigurationProperties)
+    {
+        String topicName = defaultEnterpriseTopicConnectorRootName + localServerName + defaultSingleOMRSTopicLeafName;
+
+        VirtualConnection connection = new VirtualConnection();
+
+        connection.setConnectorType(getConnectorType(OMRS_TOPIC_PROVIDER));
+        connection.setConfigurationProperties(configurationProperties);
+        connection.setEmbeddedConnections(getEmbeddedEventBusConnection("Remote Enterprise OMRS Events",
+                                                                        null,
+                                                                        eventBusConnectorProvider,
+                                                                        topicURLRoot,
+                                                                        topicName,
+                                                                        serverId,
+                                                                        eventBusConfigurationProperties));
+
+        return connection;
+    }
+
+
     /**
      * Return the connection for the single OMRS topic for the named cohort.
      *
