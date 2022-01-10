@@ -144,6 +144,7 @@ public class DirectoryBasedOpenMetadataArchiveStoreConnector extends OpenMetadat
      *
      * @return properties structure stored as a file encoded in JSON
      */
+    @Override
     public OpenMetadataArchiveProperties getArchiveProperties()
     {
         final String methodName = "getArchiveProperties";
@@ -379,6 +380,7 @@ public class DirectoryBasedOpenMetadataArchiveStoreConnector extends OpenMetadat
      * @param creationDate data that this archive was created.
      * @param dependsOnArchives list of archives that this archive depends on (null for no dependencies).
      */
+    @Override
     public void setArchiveProperties(String                     archiveGUID,
                                      String                     archiveName,
                                      String                     archiveDescription,
@@ -409,6 +411,7 @@ public class DirectoryBasedOpenMetadataArchiveStoreConnector extends OpenMetadat
      *
      * @param primitiveDef type to add nulls are ignored
      */
+    @Override
     public void addPrimitiveDef(PrimitiveDef   primitiveDef)
     {
         final String methodName = "addPrimitiveDef";
@@ -430,6 +433,7 @@ public class DirectoryBasedOpenMetadataArchiveStoreConnector extends OpenMetadat
      * @param primitiveDefName primitive to retrieve
      * @return PrimitiveDef type
      */
+    @Override
     public PrimitiveDef getPrimitiveDef(String   primitiveDefName)
     {
         log.debug("Retrieving PrimitiveDef: " + primitiveDefName);
@@ -443,6 +447,7 @@ public class DirectoryBasedOpenMetadataArchiveStoreConnector extends OpenMetadat
      *
      * @param collectionDef type to add
      */
+    @Override
     public void addCollectionDef(CollectionDef  collectionDef)
     {
         final String methodName = "addCollectionDef";
@@ -464,6 +469,7 @@ public class DirectoryBasedOpenMetadataArchiveStoreConnector extends OpenMetadat
      * @param collectionDefName type to retrieve
      * @return CollectionDef type
      */
+    @Override
     public CollectionDef getCollectionDef(String  collectionDefName)
     {
         log.debug("Retrieving CollectionDef: " + collectionDefName);
@@ -477,6 +483,7 @@ public class DirectoryBasedOpenMetadataArchiveStoreConnector extends OpenMetadat
      *
      * @param enumDef type to add
      */
+    @Override
     public void addEnumDef(EnumDef    enumDef)
     {
         final String methodName = "addEnumDef";
@@ -498,6 +505,7 @@ public class DirectoryBasedOpenMetadataArchiveStoreConnector extends OpenMetadat
      * @param enumDefName type to retrieve
      * @return EnumDef object
      */
+    @Override
     public EnumDef getEnumDef(String    enumDefName)
     {
         log.debug("Retrieving EnumDef: " + enumDefName);
@@ -511,6 +519,7 @@ public class DirectoryBasedOpenMetadataArchiveStoreConnector extends OpenMetadat
      *
      * @param classificationDef type to add
      */
+    @Override
     public void addClassificationDef(ClassificationDef   classificationDef)
     {
         final String methodName = "addClassificationDef";
@@ -526,6 +535,7 @@ public class DirectoryBasedOpenMetadataArchiveStoreConnector extends OpenMetadat
      *
      * @param entityDef type to add
      */
+    @Override
     public void addEntityDef(EntityDef    entityDef)
     {
         final String methodName = "addEntityDef";
@@ -542,6 +552,7 @@ public class DirectoryBasedOpenMetadataArchiveStoreConnector extends OpenMetadat
      * @param entityDefName name of the entity
      * @return the retrieved entity def
      */
+    @Override
     public EntityDef  getEntityDef(String   entityDefName)
     {
         log.debug("Retrieving EntityDef: " + entityDefName);
@@ -556,6 +567,7 @@ public class DirectoryBasedOpenMetadataArchiveStoreConnector extends OpenMetadat
      * @param relationshipDefName name of the relationship
      * @return the retrieved relationship def
      */
+    @Override
     public RelationshipDef  getRelationshipDef(String relationshipDefName)
     {
         log.debug("Retrieving RelationshipDef: " + relationshipDefName);
@@ -571,6 +583,7 @@ public class DirectoryBasedOpenMetadataArchiveStoreConnector extends OpenMetadat
      * @param classificationDefName name of the classification
      * @return the retrieved classification def
      */
+    @Override
     public ClassificationDef  getClassificationDef(String classificationDefName)
     {
         log.debug("Retrieving getClassificationDef: " + classificationDefName);
@@ -585,6 +598,7 @@ public class DirectoryBasedOpenMetadataArchiveStoreConnector extends OpenMetadat
      *
      * @param relationshipDef type to add
      */
+    @Override
     public void addRelationshipDef(RelationshipDef   relationshipDef)
     {
         final String methodName = "addRelationshipDef";
@@ -601,6 +615,7 @@ public class DirectoryBasedOpenMetadataArchiveStoreConnector extends OpenMetadat
      * @param typeName name of type
      * @return TypeDefPatch
      */
+    @Override
     public TypeDefPatch  getPatchForType(String  typeName)
     {
         return archiveBuilder.getPatchForType(typeName);
@@ -612,6 +627,7 @@ public class DirectoryBasedOpenMetadataArchiveStoreConnector extends OpenMetadat
      *
      * @param typeDefPatch patch
      */
+    @Override
     public void addTypeDefPatch(TypeDefPatch  typeDefPatch)
     {
         final String methodName = "addTypeDefPatch";
@@ -628,6 +644,7 @@ public class DirectoryBasedOpenMetadataArchiveStoreConnector extends OpenMetadat
      * @param typeName name ot type
      * @return type definition
      */
+    @Override
     public TypeDef getTypeDefByName(String  typeName)
     {
         return archiveBuilder.getTypeDefByName(typeName);
@@ -639,6 +656,7 @@ public class DirectoryBasedOpenMetadataArchiveStoreConnector extends OpenMetadat
      *
      * @param entity instance to add
      */
+    @Override
     public void addEntity(EntityDetail   entity)
     {
         final String methodName = "addEntity";
@@ -653,6 +671,7 @@ public class DirectoryBasedOpenMetadataArchiveStoreConnector extends OpenMetadat
      * @param guid unique identifier
      * @return requested entity
      */
+    @Override
     public EntityDetail getEntity(String   guid)
     {
         final String methodName = "getEntity";
@@ -679,6 +698,7 @@ public class DirectoryBasedOpenMetadataArchiveStoreConnector extends OpenMetadat
      *
      * @param relationship instance to add
      */
+    @Override
     public void addRelationship(Relationship  relationship)
     {
         final String methodName = "addRelationship";
@@ -693,6 +713,7 @@ public class DirectoryBasedOpenMetadataArchiveStoreConnector extends OpenMetadat
      * @param guid unique identifier
      * @return requested relationship
      */
+    @Override
     public Relationship getRelationship(String   guid)
     {
         final String methodName = "getRelationship";
@@ -719,6 +740,7 @@ public class DirectoryBasedOpenMetadataArchiveStoreConnector extends OpenMetadat
      *
      * @param classification instance to add
      */
+    @Override
     public void addClassification(ClassificationEntityExtension classification)
     {
         final String methodName = "addClassification";
