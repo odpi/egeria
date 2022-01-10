@@ -341,9 +341,9 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
 
             commitTransaction(g);
             g = graphFactory.getGraphTraversalSource();
-            g.V(columnIn.id()).addE(EDGE_LABEL_COLUMN_DATA_FLOW).to(g.V(subProcess.id())).next();
-            g.V(subProcess.id()).addE(EDGE_LABEL_COLUMN_DATA_FLOW).to(g.V(columnOut.id())).next();
-            g.V(subProcess.id()).addE(EDGE_LABEL_INCLUDED_IN).to(g.V(process.id())).next();
+            g.V(columnIn.id()).addE(EDGE_LABEL_COLUMN_DATA_FLOW).to(__.V(subProcess.id())).next();
+            g.V(subProcess.id()).addE(EDGE_LABEL_COLUMN_DATA_FLOW).to(__.V(columnOut.id())).next();
+            g.V(subProcess.id()).addE(EDGE_LABEL_INCLUDED_IN).to(__.V(process.id())).next();
             commitTransaction(g);
 
             addAssetToProcessEdges(columnIn, process, columnOut);
@@ -365,7 +365,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         if (assetIn.isPresent()) {
             Iterator<Vertex> tableVertex = localG.V(assetIn.get().id()).outE(EDGE_LABEL_TABLE_DATA_FLOW).inV().hasId(process.id());
             if (!tableVertex.hasNext()) {
-                localG.V(assetIn.get().id()).addE(EDGE_LABEL_TABLE_DATA_FLOW).to(localG.V(process.id())).next();
+                localG.V(assetIn.get().id()).addE(EDGE_LABEL_TABLE_DATA_FLOW).to(__.V(process.id())).next();
             }
         }
 
@@ -373,7 +373,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         if (assetOut.isPresent()) {
             Iterator<Vertex> tableVertex = localG.V(assetOut.get().id()).inE(EDGE_LABEL_TABLE_DATA_FLOW).outV().hasId(process.id());
             if (!tableVertex.hasNext()) {
-                localG.V(process.id()).addE(EDGE_LABEL_TABLE_DATA_FLOW).to(localG.V(assetOut.get().id())).next();
+                localG.V(process.id()).addE(EDGE_LABEL_TABLE_DATA_FLOW).to(__.V(assetOut.get().id())).next();
             }
         }
         commitTransaction(localG);
