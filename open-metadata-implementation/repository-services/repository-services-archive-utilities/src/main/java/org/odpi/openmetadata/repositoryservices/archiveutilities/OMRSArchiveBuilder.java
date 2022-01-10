@@ -201,6 +201,7 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder
      * @param creationDate data that this archive was created.
      * @param dependsOnArchives list of archives that this archive depends on (null for no dependencies).
      */
+    @Override
     public void setArchiveProperties(String                     archiveGUID,
                                      String                     archiveName,
                                      String                     archiveDescription,
@@ -408,6 +409,7 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder
      *
      * @return property bean
      */
+    @Override
     public OpenMetadataArchiveProperties getArchiveProperties()
     {
         return this.archiveProperties;
@@ -441,12 +443,12 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder
     }
 
 
-
     /**
      * Add a new PrimitiveDef to the archive.
      *
      * @param primitiveDef type to add nulls are ignored
      */
+    @Override
     public void addPrimitiveDef(PrimitiveDef   primitiveDef)
     {
         final String methodName = "addPrimitiveDef";
@@ -501,6 +503,7 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder
      * @param primitiveDefName primitive to retrieve
      * @return PrimitiveDef type
      */
+    @Override
     public PrimitiveDef getPrimitiveDef(String   primitiveDefName)
     {
         final String methodName = "getPrimitiveDef";
@@ -535,6 +538,7 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder
      *
      * @param collectionDef type to add
      */
+    @Override
     public void addCollectionDef(CollectionDef  collectionDef)
     {
         final String methodName = "addCollectionDef";
@@ -590,6 +594,7 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder
      * @param collectionDefName type to retrieve
      * @return CollectionDef type
      */
+    @Override
     public CollectionDef getCollectionDef(String  collectionDefName)
     {
         final String methodName = "getCollectionDef";
@@ -624,6 +629,7 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder
      *
      * @param enumDef type to add
      */
+    @Override
     public void addEnumDef(EnumDef    enumDef)
     {
         final String methodName = "addEnumDef";
@@ -679,6 +685,7 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder
      * @param enumDefName type to retrieve
      * @return EnumDef object
      */
+    @Override
     public EnumDef getEnumDef(String    enumDefName)
     {
         final String methodName = "getEnumDef";
@@ -713,6 +720,7 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder
      *
      * @param classificationDef type to add
      */
+    @Override
     public void addClassificationDef(ClassificationDef   classificationDef)
     {
         final String methodName = "addClassificationDef";
@@ -788,6 +796,7 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder
      *
      * @param entityDef type to add
      */
+    @Override
     public void addEntityDef(EntityDef    entityDef)
     {
         final String methodName = "addEntityDef";
@@ -863,6 +872,7 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder
      * @param entityDefName name of the entity
      * @return the retrieved entity def
      */
+    @Override
     public EntityDef  getEntityDef(String   entityDefName)
     {
         final String methodName = "getEntityDef";
@@ -892,13 +902,13 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder
     }
 
 
-
     /**
      * Retrieve the relationshipDef or null if it is not defined.
      *
      * @param relationshipDefName name of the relationship
      * @return the retrieved relationship def
      */
+    @Override
     public RelationshipDef  getRelationshipDef(String   relationshipDefName)
     {
         final String methodName = "getRelationshipDef";
@@ -928,13 +938,13 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder
     }
 
 
-
     /**
      * Retrieve the relationshipDef or null if it is not defined.
      *
      * @param classificationDef name of the classification
      * @return the retrieved classification def
      */
+    @Override
     public ClassificationDef  getClassificationDef(String   classificationDef)
     {
         final String methodName = "getClassificationDef";
@@ -964,12 +974,12 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder
     }
 
 
-
     /**
      * Add a new RelationshipDef to the archive.
      *
      * @param relationshipDef type to add
      */
+    @Override
     public void addRelationshipDef(RelationshipDef   relationshipDef)
     {
         final String methodName = "addRelationshipDef";
@@ -1208,6 +1218,7 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder
      * @param typeName name of type
      * @return TypeDefPatch
      */
+    @Override
     public TypeDefPatch  getPatchForType(String  typeName)
     {
         TypeDef  typeDef = this.getTypeDefByName(typeName);
@@ -1256,6 +1267,7 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder
      *
      * @param typeDefPatch patch
      */
+    @Override
     public void addTypeDefPatch(TypeDefPatch  typeDefPatch)
     {
         if (typeDefPatch != null)
@@ -1276,6 +1288,7 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder
      * @param typeName name ot type
      * @return type definition
      */
+    @Override
     public TypeDef getTypeDefByName(String  typeName)
     {
         Object  namedObject = nameMap.get(typeName);
@@ -1296,6 +1309,7 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder
      *
      * @param entity instance to add
      */
+    @Override
     public void addEntity(EntityDetail   entity)
     {
         final String methodName = "addEntity";
@@ -1338,6 +1352,7 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder
      * @param guid unique identifier
      * @return requested entity
      */
+    @Override
     public EntityDetail getEntity(String   guid)
     {
         final String methodName = "getEntity";
@@ -1360,6 +1375,7 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder
      *
      * @param relationship instance to add
      */
+    @Override
     public void addRelationship(Relationship  relationship)
     {
         final String methodName = "addRelationship";
@@ -1402,6 +1418,7 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder
      * @param guid unique identifier
      * @return requested relationship
      */
+    @Override
     public Relationship getRelationship(String   guid)
     {
         final String methodName = "getRelationship";
@@ -1424,6 +1441,7 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder
      *
      * @param classification instance to add
      */
+    @Override
     public void addClassification(ClassificationEntityExtension classification)
     {
         final String methodName = "addClassification";
