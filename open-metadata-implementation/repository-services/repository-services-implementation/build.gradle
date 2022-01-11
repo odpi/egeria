@@ -17,6 +17,7 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:connector-configuration-factory')
     implementation project(':open-metadata-implementation:common-services:multi-tenant')
     testImplementation 'org.testng:testng'
+    testImplementation 'org.mockito:mockito-core'
 }
 
 description = 'Repository Services Implementation'
