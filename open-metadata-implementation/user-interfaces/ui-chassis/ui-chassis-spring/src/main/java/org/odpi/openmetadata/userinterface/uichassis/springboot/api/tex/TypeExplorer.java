@@ -196,7 +196,7 @@ public class TypeExplorer {
                 String superTypeName = superType.getName();
                 // find supertype in explorer
                 ClassificationExplorer superTypeExplorer = classifications.get(superTypeName);
-                superTypeExplorer.addSubTypName(classificationTypeName);
+                superTypeExplorer.addSubTypeName(classificationTypeName);
             }
         }
 
