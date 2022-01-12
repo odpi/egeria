@@ -61,7 +61,7 @@ allprojects {
     apply plugin: 'maven-publish'
 
     repositories {
-        jcenter()
+        mavenCentral()
             maven {
                 url "https://maven.atlassian.com/3rdparty"
             }
