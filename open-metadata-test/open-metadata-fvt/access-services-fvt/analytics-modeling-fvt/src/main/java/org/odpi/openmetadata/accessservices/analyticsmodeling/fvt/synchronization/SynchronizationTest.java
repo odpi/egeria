@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import java.lang.*;
+
 import org.odpi.openmetadata.accessservices.analyticsmodeling.client.SynchronizationClient;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.fvt.RepositoryService;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.fvt.common.AnalyticsModelingTestBase;
@@ -95,7 +97,9 @@ public class SynchronizationTest extends AnalyticsModelingTestBase
         RepositoryService repositoryClient = thisTest.getRepositoryServiceClient(serverName, userId, serverPlatformRootURL, TESTCASENAME);
         
         testCreateArtifact(repositoryClient, client, userId);
+        Thread.sleep(10000);
         testUpdateArtifact(repositoryClient, client, userId);
+        Thread.sleep(10000);
         testDeleteArtifact(client, userId);
         
     }
