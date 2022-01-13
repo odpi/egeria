@@ -97,9 +97,21 @@ public class SynchronizationTest extends AnalyticsModelingTestBase
         RepositoryService repositoryClient = thisTest.getRepositoryServiceClient(serverName, userId, serverPlatformRootURL, TESTCASENAME);
         
         testCreateArtifact(repositoryClient, client, userId);
-        Thread.sleep(10000);
+        try {
+          Thread.sleep(10000);
+        }
+        catch(Exception e)
+        {
+          System.out.println(e);
+        }
         testUpdateArtifact(repositoryClient, client, userId);
-        Thread.sleep(10000);
+        try {
+          Thread.sleep(10000);
+        }
+        catch(Exception e)
+        {
+          System.out.println(e);
+        }
         testDeleteArtifact(client, userId);
         
     }
