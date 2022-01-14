@@ -14,18 +14,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
-import static org.mockito.Mockito.*;
 import static org.testng.Assert.assertEquals;
 
-
-public class OMRSRepositoryContentManagerTest {
-
-
-
+public class OMRSRepositoryContentManagerTest
+{
     @Test
-    public void testGetInstanceType() throws TypeErrorException {
-
-        AuditLog auditLog = mock(AuditLog.class);
+    public void testGetInstanceType() throws TypeErrorException
+    {
+        AuditLog auditLog = new AuditLog(null, 1, null, null, null);
         OMRSRepositoryContentManager testSubject = new OMRSRepositoryContentManager("testserver", auditLog);
 
         List<InstanceStatus> validInstanceStatusList = new LinkedList<>();
