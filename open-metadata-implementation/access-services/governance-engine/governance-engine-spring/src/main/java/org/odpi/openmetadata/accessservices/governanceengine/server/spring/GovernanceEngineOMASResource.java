@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.governanceengine.rest.ActionTargetStatusRequestBody;
 import org.odpi.openmetadata.accessservices.governanceengine.rest.CompletionStatusRequestBody;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.DuplicatesRequestBody;
 import org.odpi.openmetadata.accessservices.governanceengine.rest.FindRequestBody;
 import org.odpi.openmetadata.accessservices.governanceengine.rest.GovernanceActionElementResponse;
 import org.odpi.openmetadata.accessservices.governanceengine.rest.GovernanceActionElementsResponse;
@@ -591,7 +592,7 @@ public class GovernanceEngineOMASResource
     @PostMapping(path = "/open-metadata-store/related-elements/link-as-peer-duplicate")
     public VoidResponse linkElementsAsPeerDuplicates(@PathVariable String                        serverName,
                                                      @PathVariable String                        userId,
-                                                     @RequestBody  NewRelatedElementsRequestBody requestBody)
+                                                     @RequestBody  DuplicatesRequestBody         requestBody)
     {
         return restAPI.linkElementsAsDuplicates(serverName, userId, requestBody);
     }

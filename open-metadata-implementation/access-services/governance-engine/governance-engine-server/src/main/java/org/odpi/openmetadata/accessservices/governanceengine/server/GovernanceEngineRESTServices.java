@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.governanceengine.handlers.MetadataEl
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionElement;
 import org.odpi.openmetadata.accessservices.governanceengine.rest.ActionTargetStatusRequestBody;
 import org.odpi.openmetadata.accessservices.governanceengine.rest.CompletionStatusRequestBody;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.DuplicatesRequestBody;
 import org.odpi.openmetadata.accessservices.governanceengine.rest.FindRequestBody;
 import org.odpi.openmetadata.accessservices.governanceengine.rest.GovernanceActionElementResponse;
 import org.odpi.openmetadata.accessservices.governanceengine.rest.GovernanceActionElementsResponse;
@@ -1178,9 +1179,9 @@ public class GovernanceEngineRESTServices
      * PropertyServerException problem accessing property server
      * UserNotAuthorizedException security access problem
      */
-    public VoidResponse linkElementsAsDuplicates(String                        serverName,
-                                                 String                        userId,
-                                                 NewRelatedElementsRequestBody requestBody)
+    public VoidResponse linkElementsAsDuplicates(String                serverName,
+                                                 String                userId,
+                                                 DuplicatesRequestBody requestBody)
     {
         final String methodName = "linkElementsAsDuplicates";
 
@@ -1206,12 +1207,12 @@ public class GovernanceEngineRESTServices
                                                      requestBody.getMetadataElement2GUID(),
                                                      element2GUIDParameterName,
                                                      true,
-                                                     1,
-                                                     null,
-                                                     null,
-                                                     null,
-                                                     null,
-                                                     null,
+                                                     requestBody.getStatusIdentifier(),
+                                                     requestBody.getSteward(),
+                                                     requestBody.getStewardTypeName(),
+                                                     requestBody.getStewardPropertyName(),
+                                                     requestBody.getSource(),
+                                                     requestBody.getNotes(),
                                                      methodName);
             }
             else

@@ -1035,6 +1035,12 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
      * @param userId caller's userId
      * @param metadataElement1GUID unique identifier of the metadata element at end 1 of the relationship
      * @param metadataElement2GUID unique identifier of the metadata element at end 2 of the relationship
+     * @param statusIdentifier what is the status of this relationship (negative means untrusted, 0 means unverified and positive means trusted)
+     * @param steward identifier of the steward
+     * @param stewardTypeName type of element used to identify the steward
+     * @param stewardPropertyName property name used to identify steward
+     * @param source source of the duplicate detection processing
+     * @param notes notes for the steward
      * @throws InvalidParameterException the unique identifier's of the metadata elements are null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
      * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of relationship
@@ -1043,9 +1049,15 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
     @Override
     public void linkElementsAsPeerDuplicates(String userId,
                                              String metadataElement1GUID,
-                                             String metadataElement2GUID) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+                                             String metadataElement2GUID,
+                                             int    statusIdentifier,
+                                             String steward,
+                                             String stewardTypeName,
+                                             String stewardPropertyName,
+                                             String source,
+                                             String notes) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
     {
         String methodName = "linkElementsAsPeerDuplicates";
         final String end1ParameterName = "metadataElement1GUID";
@@ -1056,10 +1068,16 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         invalidParameterHandler.validateGUID(metadataElement1GUID, end1ParameterName, methodName);
         invalidParameterHandler.validateGUID(metadataElement2GUID, end2ParameterName, methodName);
 
-        NewRelatedElementsRequestBody requestBody = new NewRelatedElementsRequestBody();
+        DuplicatesRequestBody requestBody = new DuplicatesRequestBody();
 
         requestBody.setMetadataElement1GUID(metadataElement1GUID);
         requestBody.setMetadataElement2GUID(metadataElement2GUID);
+        requestBody.setStatusIdentifier(statusIdentifier);
+        requestBody.setSteward(steward);
+        requestBody.setStewardTypeName(stewardTypeName);
+        requestBody.setStewardPropertyName(stewardPropertyName);
+        requestBody.setSource(source);
+        requestBody.setNotes(notes);
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformURLRoot + urlTemplate,
