@@ -26,12 +26,17 @@ public class ClassificationExplorer {
 
     public List<String> getSubTypeNames() { return subTypeNames; }
 
-    public void addSubTypName(String subTypeName) {
+    public void addSubTypeName(String subTypeName) {
+        if (subTypeNames == null) {
+            subTypeNames = new ArrayList<>();
+        }
         subTypeNames.add(subTypeName);
     }
-
     public void addInheritedAttributes(List<TypeDefAttribute> inheritedAttrs) {
         if (inheritedAttrs != null) {
+            if (inheritedAttributes == null) {
+                inheritedAttributes = new ArrayList<>();
+            }
             inheritedAttributes.addAll(inheritedAttrs);
         }
     }
