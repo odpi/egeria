@@ -45,10 +45,13 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
      * Initialize the topic listener.
      *
      * @param supportedZones list of zones for the visible assets
-     * @param serviceName this is the full name of the service - used for error logging in base class
      * @param publisher this is the out topic publisher.
-     * @param repositoryHelper repository helper
+     * @param serverUserId this servers user id for accessing the repositories
      * @param auditLog logging destination
+     * @param serviceName this is the full name of the service - used for error logging in base class
+     * @param repositoryHelper repository helper
+     * @param serverName this server
+     * @param instance server instance
      */
     public DataManagerOMRSTopicListener(List<String>                 supportedZones,
                                         DataManagerOutTopicPublisher publisher,

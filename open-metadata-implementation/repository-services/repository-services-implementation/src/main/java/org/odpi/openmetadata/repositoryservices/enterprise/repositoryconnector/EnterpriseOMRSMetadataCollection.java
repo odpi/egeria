@@ -4553,6 +4553,27 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
+     * Save the classification as a reference copy.  The id of the home metadata collection is already set up in the
+     * classification.  The entity may be either a locally homed entity or a reference copy.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entity entity that the classification is attached to.
+     * @param classification classification to save.
+     *
+     * @throws FunctionNotSupportedException the repository does not support reference copies of instances.
+     */
+    @Override
+    public void saveClassificationReferenceCopy(String         userId,
+                                                EntityProxy    entity,
+                                                Classification classification) throws FunctionNotSupportedException
+    {
+        final String methodName = "saveClassificationReferenceCopy";
+
+        throwNotEnterpriseFunction(methodName);
+    }
+
+
+    /**
      * Remove the reference copy of the classification from the local repository. This method can be used to
      * remove reference copies from the local cohort, repositories that have left the cohort,
      * or relationships that have come from open metadata archives.

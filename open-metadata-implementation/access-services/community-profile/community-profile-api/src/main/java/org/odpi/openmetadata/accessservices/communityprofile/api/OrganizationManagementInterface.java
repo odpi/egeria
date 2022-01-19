@@ -56,6 +56,7 @@ public interface OrganizationManagementInterface
      * @param actorProfileGUID unique identifier of actor profile
      * @param isMergeUpdate are unspecified properties unchanged (true) or replaced with null?
      * @param properties properties to change
+     * @param contributionRecord additional properties for contribution record.
      *
      * @throws InvalidParameterException guid, qualifiedName or userId is null; qualifiedName is not unique; guid is not known
      * @throws PropertyServerException problem accessing property server

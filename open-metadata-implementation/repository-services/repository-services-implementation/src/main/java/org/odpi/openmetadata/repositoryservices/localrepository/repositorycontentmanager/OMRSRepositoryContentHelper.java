@@ -1506,6 +1506,45 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
     }
 
     /**
+     * Add a classification to an existing entity.
+     *
+     * @param sourceName        source of the request (used for logging)
+     * @param entity            entity to update
+     * @param newClassification classification to update
+     * @param methodName        calling method
+     * @return updated entity
+     */
+    @Override
+    public EntityProxy addClassificationToEntity(String         sourceName,
+                                                  EntityProxy    entity,
+                                                  Classification newClassification,
+                                                  String         methodName)
+    {
+
+        if (newClassification != null)
+        {
+            EntityProxy updatedEntity = new EntityProxy(entity);
+
+            updatedEntity.setClassifications(this.addClassificationToList(sourceName,
+                                                                          entity.getClassifications(),
+                                                                          newClassification,
+                                                                          methodName));
+            return updatedEntity;
+        }
+        else
+        {
+            final String thisMethodName = "addClassificationToEntity(proxy)";
+
+            throw new OMRSLogicErrorException(OMRSErrorCode.NULL_CLASSIFICATION_CREATED.getMessageDefinition(sourceName,
+                                                                                                             thisMethodName,
+                                                                                                             methodName),
+                                              this.getClass().getName(),
+                                              methodName);
+        }
+    }
+
+
+    /**
      * Return the names classification from an existing entity.
      *
      * @param sourceName         source of the request (used for logging)

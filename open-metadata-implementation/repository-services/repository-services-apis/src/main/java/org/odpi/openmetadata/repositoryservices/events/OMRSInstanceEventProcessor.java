@@ -11,7 +11,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  * metadata instance events for an Open Metadata Repository.  Instance events are used to replicate metadata
  * instances across an Open Metadata Repository Cohort.
  */
-public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventProcessorInterface
+public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventProcessorInterface,
+                                                            OMRSInstanceEventProcessorClassificationExtension
 {
     private String  eventProcessorName;
 
@@ -151,7 +152,7 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
      * @param entity  details of the entity with the new classification added. No guarantee this is all of the classifications.
      * @param classification new classification
      */
-    @SuppressWarnings(value = "unused")
+    @SuppressWarnings(value = {"unused", "deprecation"})
     public  void processClassifiedEntityEvent(String         sourceName,
                                               String         originatorMetadataCollectionId,
                                               String         originatorServerName,
@@ -166,6 +167,31 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
                                      originatorServerType,
                                      originatorOrganizationName,
                                      entity);
+    }
+
+
+    /**
+     * A new classification has been added to an entity.
+     *
+     * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
+     *                   local repository, or event mapper name.
+     * @param originatorMetadataCollectionId  unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName  name of the server that the event came from.
+     * @param originatorServerType  type of server that the event came from.
+     * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
+     * @param entity  proxy of the entity with the new classification added. No guarantee this is all of the classifications.
+     * @param classification new classification
+     */
+    @SuppressWarnings(value = "unused")
+    public void processClassifiedEntityEvent(String         sourceName,
+                                             String         originatorMetadataCollectionId,
+                                             String         originatorServerName,
+                                             String         originatorServerType,
+                                             String         originatorOrganizationName,
+                                             EntityProxy    entity,
+                                             Classification classification)
+    {
     }
 
 
@@ -206,7 +232,7 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
      * @param entity  details of the entity after the classification has been removed. No guarantee this is all of the classifications.
      * @param originalClassification classification that was removed
      */
-    @SuppressWarnings(value = "unused")
+    @SuppressWarnings(value = {"unused", "deprecation"})
     public  void processDeclassifiedEntityEvent(String         sourceName,
                                                 String         originatorMetadataCollectionId,
                                                 String         originatorServerName,
@@ -221,6 +247,31 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
                                        originatorServerType,
                                        originatorOrganizationName,
                                        entity);
+    }
+
+
+    /**
+     * A classification has been removed from an entity.
+     *
+     * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
+     *                   local repository, or event mapper name.
+     * @param originatorMetadataCollectionId  unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName  name of the server that the event came from.
+     * @param originatorServerType  type of server that the event came from.
+     * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
+     * @param entity  proxy of the entity after the classification has been removed. No guarantee this is all of the classifications.
+     * @param originalClassification classification that was removed
+     */
+    @SuppressWarnings(value = "unused")
+    public void processDeclassifiedEntityEvent(String         sourceName,
+                                               String         originatorMetadataCollectionId,
+                                               String         originatorServerName,
+                                               String         originatorServerType,
+                                               String         originatorOrganizationName,
+                                               EntityProxy    entity,
+                                               Classification originalClassification)
+    {
     }
 
 
@@ -263,7 +314,7 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
      * @param originalClassification classification that was removed
      * @param classification new classification
      */
-    @SuppressWarnings(value = "unused")
+    @SuppressWarnings(value = {"unused", "deprecation"})
     public  void processReclassifiedEntityEvent(String         sourceName,
                                                 String         originatorMetadataCollectionId,
                                                 String         originatorServerName,
@@ -279,6 +330,33 @@ public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventPro
                                        originatorServerType,
                                        originatorOrganizationName,
                                        entity);
+    }
+
+
+    /**
+     * An existing classification has been changed on an entity.
+     *
+     * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
+     *                   local repository, or event mapper name.
+     * @param originatorMetadataCollectionId  unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName  name of the server that the event came from.
+     * @param originatorServerType  type of server that the event came from.
+     * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
+     * @param entity  proxy of the entity after the classification has been changed. No guarantee this is all of the classifications.
+     * @param originalClassification classification that was removed
+     * @param classification new classification
+     */
+    @SuppressWarnings(value = "unused")
+    public void processReclassifiedEntityEvent(String         sourceName,
+                                               String         originatorMetadataCollectionId,
+                                               String         originatorServerName,
+                                               String         originatorServerType,
+                                               String         originatorOrganizationName,
+                                               EntityProxy    entity,
+                                               Classification originalClassification,
+                                               Classification classification)
+    {
     }
 
 

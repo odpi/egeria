@@ -28,6 +28,8 @@ public interface GovernanceZonesInterface
      * @param userId calling user
      * @param properties  properties for a governance zone
      *
+     * @return unique identifier of the governance zone
+     *
      * @throws InvalidParameterException qualifiedName or userId is null; qualifiedName is not unique
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
