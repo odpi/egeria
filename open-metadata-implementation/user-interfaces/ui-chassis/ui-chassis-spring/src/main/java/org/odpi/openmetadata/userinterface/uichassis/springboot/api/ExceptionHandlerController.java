@@ -236,3 +236,4 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
                 UserInterfaceErrorCodes.INVALID_SEARCH_REQUEST.getHttpErrorCode(), request);
     }
 }
+
