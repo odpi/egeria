@@ -19,13 +19,13 @@
         <url>http://github.com/odpi/egeria/tree/master</url>
     </scm>
 
-    <name>OMAS FV and SV Tests</name>
+    <name>OMVS FV and SV Tests</name>
     <description>
-        The open metadata access services test module contains Functional Verification Test (FVT) and System
+        The open metadata View services test module contains Functional Verification Test (FVT) and System
         Verification Test (SVT) resources.
     </description>
 
-    <artifactId>access-services-fvt</artifactId>
+    <artifactId>view-services-fvt</artifactId>
 
     <build>
         <plugins>
@@ -59,19 +59,7 @@
 
     <packaging>pom</packaging>
     <modules>
-        <module>analytics-modeling-fvt</module>
-        <module>asset-consumer-fvt</module>
-        <module>asset-manager-fvt</module>
-        <module>asset-owner-fvt</module>
-        <module>community-profile-fvt</module>
-        <module>data-engine-fvt</module>
-        <module>data-manager-fvt</module>
-        <module>digital-architecture-fvt</module>
-        <module>discovery-engine-fvt</module>
-        <module>governance-engine-fvt</module>
-        <module>governance-program-fvt</module>
-        <module>stewardship-action-fvt</module>
-        <module>subject-area-fvt</module>
+        <module>glossary-author-fvt</module>
     </modules>
 
 </project>
