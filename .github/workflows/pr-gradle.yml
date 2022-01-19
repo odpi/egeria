@@ -24,7 +24,8 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
       - name: Build with Gradle
-        run: ./gradlew build
+        # For a build machine environment, force a more clean build 
+        run: ./gradlew clean build --no-build-cache --no-configure-on-demand --priority normal --no-watch-fs --refresh-dependencies
       - name: Upload Test coverage report
         uses: actions/upload-artifact@v2
         with:
