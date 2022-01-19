@@ -33,7 +33,8 @@ public class AssetManagerOMRSTopicListener extends OMRSTopicListenerBase
      *
      * @param serviceName this is the full name of the service - used for error logging in base class
      * @param localServerUserId userId used by this server for metadata governance
-     * @param eventPublisher this is the out topic publisher.
+     * @param eventPublisher this is the out topic publisher
+     * @param dataAssetExchangeHandler handler for retrieving asset information
      * @param auditLog logging destination
      */
     public AssetManagerOMRSTopicListener(String                        serviceName,

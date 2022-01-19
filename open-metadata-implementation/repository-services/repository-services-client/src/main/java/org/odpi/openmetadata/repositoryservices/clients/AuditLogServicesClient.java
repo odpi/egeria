@@ -155,21 +155,6 @@ public class AuditLogServicesClient implements AuditLoggingComponent
 
 
 
-    /* APIs to implement
-
-     Stem URL for all APIS:
-       "/servers/{serverName}/open-metadata/repository-services/users/{userId}")
-
-        Get the audit log for the server...
-        @GetMapping(path = "/audit-log/report") - AuditLogResponse getAuditLog - no body
-
-     */
-
-
-
-
-
-
     /**
      * Returns the audit log for the server.
      *
@@ -179,25 +164,23 @@ public class AuditLogServicesClient implements AuditLoggingComponent
      * @throws RepositoryErrorException there is a problem communicating with the remote server.
      * @throws UserNotAuthorizedException the user is not authorized to perform the operation requested
      */
-
-
-
-    public OMRSAuditLogReport getAuditLog(String   userId) throws InvalidParameterException,
-                                                                         RepositoryErrorException,
-                                                                         UserNotAuthorizedException
+    public OMRSAuditLogReport getAuditLogReport(String   userId) throws InvalidParameterException,
+                                                                        RepositoryErrorException,
+                                                                        UserNotAuthorizedException
     {
-        final String methodName  = "getAuditLog";
+        final String methodName  = "getAuditLogReport";
         final String operationSpecificURL = "/audit-log/report";
 
-        AuditLogReportResponse restResult = null;
+        AuditLogReportResponse restResult;
 
-        try {
+        try
+        {
             restResult = restClient.callGetRESTCall(methodName,
                                                     AuditLogReportResponse.class,
                                                     restURLRoot + rootServiceNameInURL + userIdInURL + operationSpecificURL,
                                                     userId);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             throw new RepositoryErrorException(OMRSErrorCode.REMOTE_REPOSITORY_ERROR.getMessageDefinition(methodName,
                                                                                                           serverName,
@@ -264,7 +247,7 @@ public class AuditLogServicesClient implements AuditLoggingComponent
         {
             return clientFactory.getClientConnector();
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
            throw new InvalidParameterException(OMRSErrorCode.NO_REST_CLIENT.getMessageDefinition(serverName, error.getMessage()),
                                                this.getClass().getName(),
@@ -299,13 +282,6 @@ public class AuditLogServicesClient implements AuditLoggingComponent
                                     operationSpecificURL,
                                     params);
     }
-
-
-
-
-
-
-
 
 
     /**
@@ -349,7 +325,7 @@ public class AuditLogServicesClient implements AuditLoggingComponent
                                               operationSpecificURL,
                                               params);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             throw new RepositoryErrorException(OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR.getMessageDefinition(methodName,
                                                                                                              serverName,
@@ -386,7 +362,7 @@ public class AuditLogServicesClient implements AuditLoggingComponent
                                                request,
                                                params);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             throw new RepositoryErrorException(OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR.getMessageDefinition(methodName,
                                                                                                              serverName,

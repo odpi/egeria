@@ -217,7 +217,7 @@ public class EngineHostOperationalServices
         {
             throw error;
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             auditLog.logException(actionDescription,
                                   EngineHostServicesAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(localServerName,
@@ -469,7 +469,7 @@ public class EngineHostOperationalServices
                                                           methodName,
                                                           error);
             }
-            catch (Throwable error)
+            catch (Exception error)
             {
                 auditLog.logException(methodName,
                                       EngineHostServicesAuditCode.BAD_ENGINE_SERVICE_ADMIN_CLASS.getMessageDefinition(engineServiceConfig.getEngineServiceName(),
@@ -511,7 +511,7 @@ public class EngineHostOperationalServices
         if (accessServiceRootURL == null)
         {
             final String actionDescription = "Validate engine services configuration.";
-            final String methodName        = "getAccessServiceRootURL";
+            final String methodName        = "getPartnerServiceRootURL";
 
             auditLog.logMessage(actionDescription,
                                 EngineHostServicesAuditCode.NO_CONFIG_OMAS_SERVER_URL.getMessageDefinition(localServerName,
@@ -541,7 +541,7 @@ public class EngineHostOperationalServices
         if (accessServiceServerName == null)
         {
             final String actionDescription = "Validate engine service configuration.";
-            final String methodName        = "getAccessServiceServerName";
+            final String methodName        = "getPartnerServiceServerName";
 
             auditLog.logMessage(actionDescription,
                                 EngineHostServicesAuditCode.NO_CONFIG_OMAS_SERVER_NAME.getMessageDefinition(localServerName,

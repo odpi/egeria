@@ -124,7 +124,7 @@ public class ConnectedAssetRelatedAssetProperties extends org.odpi.openmetadata.
         {
             throw error;
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             restExceptionHandler.handleUnexpectedException(error, methodName, serverName, omasServerURL);
         }

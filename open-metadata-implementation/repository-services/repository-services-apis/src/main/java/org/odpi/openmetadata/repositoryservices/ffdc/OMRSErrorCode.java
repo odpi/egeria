@@ -830,6 +830,17 @@ public enum OMRSErrorCode implements ExceptionMessageSet
              "Connector {0} is unable to send a null event",
              "There is an internal problem in the open metadata repository code logic.",
              "Report this to the Egeria team via a GitHub issue so that it can be checked and fixed."),
+    NULL_CONNECTOR_RETURNED(500, "OMRS-TOPIC-CONNECTOR-500-006",
+             "The requested connector for connection named {0} has not been created.  The connection was provided by the {1} service" +
+                                    " running in OMAG Server at {2}",
+             "The system is unable to create a connector which means some of its services will not work.",
+             "This problem is likely to be caused by an incorrect connection object.  Check the settings on the remoteEnterpriseTopicConnection in the server configuration " +
+                                    "and correct if necessary.  If the connection is correct, contact the Egeria community for help."),
+    WRONG_TYPE_OF_CONNECTOR(500, "OMRS-TOPIC-CONNECTOR-500-007",
+             "The connector generated from the connection named {0} return by the {1} service running in OMAG Server at {2} is " +
+                                    "not of the required type. It should be an instance of {3}",
+             "The system is unable to create the required connector which means some of its services will not work.",
+             "Verify that the OMAG server is running and the OMAS service is correctly configured."),
     METHOD_NOT_IMPLEMENTED(501, "OMRS-METADATA-COLLECTION-501-001",
             "OMRSMetadataInstanceStore method {0} for OMRS Connector {1} to repository type {2} is not implemented",
             "A method in MetadataCollectionBase was called which means that the connector's OMRSMetadataInstanceStore " +
@@ -950,10 +961,10 @@ public enum OMRSErrorCode implements ExceptionMessageSet
 
 
     /**
-     * The constructor for DiscoveryEngineServicesErrorCode expects to be passed one of the enumeration rows defined in
+     * The constructor for OMRSErrorCode expects to be passed one of the enumeration rows defined in
      * DiscoveryEngineServicesErrorCode above.   For example:
      *
-     *     DiscoveryEngineServicesErrorCode   errorCode = DiscoveryEngineServicesErrorCode.UNKNOWN_ENDPOINT;
+     *     OMRSErrorCode   errorCode = OMRSErrorCode.UNKNOWN_ENDPOINT;
      *
      * This will expand out to the 5 parameters shown below.
      *

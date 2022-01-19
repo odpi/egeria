@@ -187,6 +187,7 @@ public class GovernanceZoneRESTServices
      * @param serverName name of the server instance to connect to
      * @param userId calling user
      * @param zoneGUID unique identifier of zone
+     * @param requestBody null request body
      *
      * @return void or
      *  InvalidParameterException guid or userId is null; guid is not known

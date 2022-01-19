@@ -194,7 +194,7 @@ public class ConnectedAssetCommentReplies extends AssetCommentReplies
                 return resultList;
             }
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             restExceptionHandler.handleUnexpectedException(error, methodName, serverName, omasServerURL);
         }

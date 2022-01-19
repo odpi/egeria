@@ -33,9 +33,9 @@ public enum FileBasedOpenMetadataArchiveStoreConnectorAuditCode implements Audit
     BAD_FILE("OCF-FILE-OPEN-METADATA-ARCHIVE-STORE-CONNECTOR-0002",
               OMRSAuditLogRecordSeverity.EXCEPTION,
               "Unable to open file \"{0}\".  Message from {1} exception was {2}",
-              "The server is is unable to open its Cohort Registry Store.",
-              "Use the information from the exception to determine the cause of the error.  For example, is the file name correct?  " +
-                      "Does the server have permission to access the file?  Once the cause of the error is corrected, restart the server."),
+              "The server is is unable to open an open metadata archive store.",
+              "Use the information from the exception to determine the cause of the error.  For example, is the filename correct?  " +
+                      "Does the caller have permission to access the file?  Once the cause of the error is corrected, restart the caller."),
 
     ;
 

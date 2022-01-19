@@ -6,7 +6,6 @@ package org.odpi.openmetadata.accessservices.governanceengine.outtopic;
 import org.odpi.openmetadata.accessservices.governanceengine.connectors.outtopic.GovernanceEngineOutTopicServerConnector;
 import org.odpi.openmetadata.accessservices.governanceengine.events.*;
 import org.odpi.openmetadata.accessservices.governanceengine.ffdc.GovernanceEngineAuditCode;
-import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionElement;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogGovernanceEvent;
 
@@ -210,7 +209,7 @@ public class GovernanceEngineOutTopicPublisher
      * @param error this is the exception that was thrown
      * @param methodName this is the calling method
      */
-    private void logUnexpectedPublishingException(Throwable  error,
+    private void logUnexpectedPublishingException(Exception  error,
                                                   String     methodName)
     {
         if (outTopicAuditLog != null)

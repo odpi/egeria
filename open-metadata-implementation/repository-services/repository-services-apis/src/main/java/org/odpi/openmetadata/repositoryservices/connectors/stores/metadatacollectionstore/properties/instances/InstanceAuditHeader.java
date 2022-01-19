@@ -158,7 +158,6 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
 
         if (template != null)
         {
-            this.headerVersion = template.getHeaderVersion();
             this.type = template.getType();
             this.instanceProvenanceType = template.getInstanceProvenanceType();
             this.metadataCollectionId = template.getMetadataCollectionId();
@@ -175,34 +174,6 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
             this.statusOnDelete = template.getStatusOnDelete();
             this.mappingProperties = template.getMappingProperties();
         }
-    }
-
-
-    /**
-     * Return the version of this header.  This is used by the OMRS to determine if it is back level and
-     * should not process events from a source that is more advanced because it does not have the ability
-     * to receive all of the header properties.
-     *
-     * @return long version number - the value is incremented each time a new non-informational field is added
-     * to the audit header.
-     */
-    public long getHeaderVersion()
-    {
-        return headerVersion;
-    }
-
-
-    /**
-     * Return the version of this header.  This is used by the OMRS to determine if it is back level and
-     * should not process events from a source that is more advanced because it does not have the ability
-     * to receive all of the header properties.
-     *
-     * @param headerVersion long version number - the value is incremented each time a new non-informational field is added
-     * to the audit header.
-     */
-    public void setHeaderVersion(long headerVersion)
-    {
-        this.headerVersion = headerVersion;
     }
 
 

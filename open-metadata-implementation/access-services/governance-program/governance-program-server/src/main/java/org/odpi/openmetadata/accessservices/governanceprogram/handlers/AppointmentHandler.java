@@ -157,7 +157,9 @@ public class AppointmentHandler
      * to the role.
      *
      * @param userId the name of the calling user.
-     * @param governanceRoleGUID unique identifier (guid) of the governance role.
+     * @param governanceRoleGUID unique identifier (guid) of the governance role
+     * @param methodName calling method
+     *
      * @return governance role object
      * @throws InvalidParameterException the unique identifier of the governance role is either null or invalid.
      * @throws PropertyServerException the server is not available.

@@ -491,6 +491,8 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
      * The search string is treated as a regular expression.
      *
      * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
