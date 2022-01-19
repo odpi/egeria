@@ -729,20 +729,6 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
                                            Classification newClassification,
                                            String         methodName);
 
-    /**
-     * Add a classification to an existing entity proxy
-     *
-     * @param sourceName         source of the request (used for logging)
-     * @param entity             entity to update
-     * @param newClassification  classification to update
-     * @param methodName         calling method
-     * @return updated entity
-     */
-    EntityProxy addClassificationToEntity(String         sourceName,
-                                          EntityProxy    entity,
-                                          Classification newClassification,
-                                          String         methodName);
-
 
     /**
      * Add a classification to an existing entity.
