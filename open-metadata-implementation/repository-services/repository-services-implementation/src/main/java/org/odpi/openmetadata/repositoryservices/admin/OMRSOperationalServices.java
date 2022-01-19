@@ -80,18 +80,18 @@ public class OMRSOperationalServices
 
     private String                         localMetadataCollectionId          = null;
 
-    private OMRSRepositoryContentManager   localRepositoryContentManager      = null;
-    private OMRSRepositoryEventManager     localRepositoryEventManager        = null;
-    private OMRSMetadataHighwayManager     metadataHighwayManager             = null;
-    private OMRSEnterpriseConnectorManager enterpriseConnectorManager         = null;
-    private String                         enterpriseMetadataCollectionId     = null;
-    private String                         enterpriseMetadataCollectionName   = null;
-    private OMRSTopicConnector             enterpriseOMRSTopicConnector       = null;
-    private OMRSTopicConnector             remoteEnterpriseOMRSTopicConnector = null;
-    private LocalOMRSRepositoryConnector   localRepositoryConnector           = null;
-    private OMRSArchiveManager             archiveManager                     = null;
-    private OMRSAuditLogDestination        auditLogDestination                = null;
-    private OMRSAuditLog                   auditLog                           = null;
+    private OMRSRepositoryContentManager   localRepositoryContentManager       = null;
+    private OMRSRepositoryEventManager     localRepositoryEventManager         = null;
+    private OMRSMetadataHighwayManager     metadataHighwayManager              = null;
+    private OMRSEnterpriseConnectorManager enterpriseConnectorManager          = null;
+    private String                         enterpriseMetadataCollectionId      = null;
+    private String                         enterpriseMetadataCollectionName    = null;
+    private OMRSTopicConnector             enterpriseOMRSTopicConnector        = null;
+    private OMRSTopicConnector             remoteEnterpriseOMRSTopicConnector  = null;
+    private LocalOMRSRepositoryConnector   localRepositoryConnector            = null;
+    private OMRSArchiveManager             archiveManager                      = null;
+    private OMRSAuditLogDestination        auditLogDestination                 = null;
+    private OMRSAuditLog                   auditLog                            = null;
 
 
 
@@ -490,6 +490,7 @@ public class OMRSOperationalServices
                                                          auditLog,
                                                          localRepositoryConnector,
                                                          this.getEnterpriseOMRSRepositoryConnector(OMRSAuditingComponent.REST_SERVICES.getComponentName()),
+                                                         this.getRemoteEnterpriseOMRSTopicConnection(enterpriseAccessConfig),
                                                          metadataHighwayManager,
                                                          localServerURL,
                                                          auditLog.createNewAuditLog(OMRSAuditingComponent.REST_SERVICES),
@@ -592,6 +593,7 @@ public class OMRSOperationalServices
                                                          null,
                                                          null,
                                                          null,
+                                                         null,
                                                          auditLog.createNewAuditLog(OMRSAuditingComponent.REST_SERVICES),
                                                          maxPageSize);
 
@@ -653,6 +655,25 @@ public class OMRSOperationalServices
 
         return enterpriseOMRSTopicConnector;
     }
+
+
+    /**
+     * Return the connection of the Remote Enterprise OMRS Topic.  If null is returned it means the Remote Enterprise OMRS Topic
+     * is not needed.
+     *
+     * @param enterpriseAccessConfig configuration from the OMAG server
+     * @return connection for the Remote Enterprise OMRS Topic or null
+     */
+    private Connection getRemoteEnterpriseOMRSTopicConnection(EnterpriseAccessConfig  enterpriseAccessConfig)
+    {
+        if (enterpriseAccessConfig != null)
+        {
+            return enterpriseAccessConfig.getRemoteEnterpriseOMRSTopicConnection();
+        }
+
+        return null;
+    }
+
 
     /**
      * Initialize the OMRSEnterpriseConnectorManager and the EnterpriseOMRSConnector class.  If the

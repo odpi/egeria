@@ -15,7 +15,7 @@ discovery requests to analyse the content of an [asset's](../access-services/doc
 metadata ecosystem or the assets it supports.
 
 These engines are supported by the
-[Asset Analysis OMES](asset-analysis) and
+[Archive Manager OMES](asset-analysis) and
 [Governance Action OMES](governance-action) respectively.
 
 ----

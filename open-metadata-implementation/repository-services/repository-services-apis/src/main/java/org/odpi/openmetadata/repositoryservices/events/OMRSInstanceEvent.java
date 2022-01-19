@@ -25,6 +25,7 @@ public class OMRSInstanceEvent extends OMRSEvent
     private String         instanceGUID           = null;
     private EntityDetail   originalEntity         = null;
     private EntityDetail   entity                 = null;
+    private EntityProxy    entityProxy            = null;
     private Relationship   originalRelationship   = null;
     private Relationship   relationship           = null;
     private Classification originalClassification = null;
@@ -74,6 +75,7 @@ public class OMRSInstanceEvent extends OMRSEvent
             this.instanceGUID = instanceSection.getInstanceGUID();
             this.originalEntity = instanceSection.getOriginalEntity();
             this.entity = instanceSection.getEntity();
+            this.entityProxy = instanceSection.getEntityProxy();
             this.originalRelationship = instanceSection.getOriginalRelationship();
             this.relationship = instanceSection.getRelationship();
             this.originalClassification = instanceSection.getOriginalClassification();
@@ -130,11 +132,44 @@ public class OMRSInstanceEvent extends OMRSEvent
     }
 
 
+
+
     /**
-     * Constructor for instance events related to a change to an entity.
+     * Constructor for instance events related to a change to an entity's classification.
      *
      * @param instanceEventType type of event
-     * @param entity new values for entity that changed
+     * @param entityProxy  entity that changed
+     * @param originalClassification original Classification value (if existed)
+     * @param classification new classification (if relevant)
+     */
+    public OMRSInstanceEvent(OMRSInstanceEventType instanceEventType,
+                             EntityProxy           entityProxy,
+                             Classification        originalClassification,
+                             Classification        classification)
+    {
+        super(OMRSEventCategory.INSTANCE);
+
+        this.instanceEventType = instanceEventType;
+        this.entityProxy = entityProxy;
+        this.originalClassification = originalClassification;
+        this.classification = classification;
+
+        InstanceType type = entityProxy.getType();
+        if (type != null)
+        {
+            this.typeDefGUID = type.getTypeDefGUID();
+            this.typeDefName = type.getTypeDefName();
+        }
+
+        this.instanceGUID = entityProxy.getGUID();
+    }
+
+
+    /**
+     * Constructor for instance events related to a change to an entity's classification.
+     *
+     * @param instanceEventType type of event
+     * @param entity entity that changed
      * @param originalClassification original Classification value (if existed)
      * @param classification new classification (if relevant)
      */
@@ -461,6 +496,17 @@ public class OMRSInstanceEvent extends OMRSEvent
 
 
     /**
+     * Return the entity proxy (if applicable) or null.
+     *
+     * @return EntityProxy object
+     */
+    public EntityProxy getEntityProxy()
+    {
+        return entityProxy;
+    }
+
+
+    /**
      * Return the original relationship instance (if applicable) or null.
      *
      * @return Relationship object
@@ -589,6 +635,7 @@ public class OMRSInstanceEvent extends OMRSEvent
         instanceSection.setInstanceGUID(this.instanceGUID);
         instanceSection.setOriginalEntity(this.originalEntity);
         instanceSection.setEntity(this.entity);
+        instanceSection.setEntityProxy(this.entityProxy);
         instanceSection.setOriginalRelationship(this.originalRelationship);
         instanceSection.setRelationship(this.relationship);
         instanceSection.setOriginalClassification(this.originalClassification);
@@ -621,6 +668,7 @@ public class OMRSInstanceEvent extends OMRSEvent
                 ", instanceGUID='" + instanceGUID + '\'' +
                 ", originalEntity=" + originalEntity +
                 ", entity=" + entity +
+                ", entityProxy=" + entityProxy +
                 ", originalRelationship=" + originalRelationship +
                 ", relationship=" + relationship +
                 ", originalClassification=" + originalClassification +

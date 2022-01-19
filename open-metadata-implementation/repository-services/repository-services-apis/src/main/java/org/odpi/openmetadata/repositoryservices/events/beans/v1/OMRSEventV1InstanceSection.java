@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceGraph;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
@@ -34,6 +35,7 @@ public class OMRSEventV1InstanceSection implements Serializable
     private String         instanceGUID                     = null;
     private EntityDetail   originalEntity                   = null;
     private EntityDetail   entity                           = null;
+    private EntityProxy    entityProxy                      = null;
     private Relationship   originalRelationship             = null;
     private Relationship   relationship                     = null;
     private Classification originalClassification           = null;
@@ -107,6 +109,10 @@ public class OMRSEventV1InstanceSection implements Serializable
     {
         this.entity = entity;
     }
+
+    public EntityProxy getEntityProxy() { return entityProxy; }
+
+    public void setEntityProxy(EntityProxy entityProxy) { this.entityProxy = entityProxy; }
 
     public Relationship getOriginalRelationship()
     {

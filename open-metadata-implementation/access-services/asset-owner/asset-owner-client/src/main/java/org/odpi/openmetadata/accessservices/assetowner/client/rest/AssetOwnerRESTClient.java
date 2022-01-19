@@ -387,6 +387,7 @@ public class AssetOwnerRESTClient extends OCFRESTClient
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody additional parameters
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return ValidValuesResponse
