@@ -129,9 +129,7 @@ public enum GovernanceActionAuditCode implements AuditLogMessageSet
     GOVERNANCE_ACTION_SERVICE_RETURNED("OMES-GOVERNANCE-ACTION-0020",
                                        OMRSAuditLogRecordSeverity.INFO,
                                        "The {0} governance action service {1} for request type {2} is continuing to run in a background thread",
-                                       "A governance action service has returned from the start() method and without setting up the completion status prior to returning.  " +
-                                               "The Governance Action OMES will call disconnect() on the governance action service since it is complete.  " +
-                                               "The Governance Action entity in the ",
+                                       "A governance action service has returned from the start() method and without setting up the completion status prior to returning.",
                                        "Validate that this governance action service should still be running.  Typically you would expect a WatchdogGovernanceActionService to" +
                                                "still be running at this stage because it will have registered a listener. The other types of governance action services should have completed during " +
                                                "start() unless they are managing their own thread(s)."),

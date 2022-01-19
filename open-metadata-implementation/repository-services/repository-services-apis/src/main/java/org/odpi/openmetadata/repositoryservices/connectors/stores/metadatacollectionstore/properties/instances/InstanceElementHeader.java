@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.RepositoryElementHeader;
 
 import java.io.Serializable;
 
@@ -11,7 +12,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * InstanceElementHeader provides a common base for all instance information from the metadata collection.
- * It implements Serializable.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -27,16 +27,19 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = InstanceType.class, name = "InstanceType"),
         @JsonSubTypes.Type(value = InstancePropertyValue.class, name = "InstancePropertyValue")
 })
-public abstract class InstanceElementHeader implements Serializable
+public abstract class InstanceElementHeader extends RepositoryElementHeader
 {
     private static final long serialVersionUID = 1L;
 
+    public static final long  CURRENT_INSTANCE_HEADER_VERSION = 1;
 
     /**
      * Default Constructor sets the instance to nulls
      */
     public InstanceElementHeader()
     {
+        super();
+
         /*
          * Nothing to do.
          */
@@ -50,6 +53,8 @@ public abstract class InstanceElementHeader implements Serializable
      */
     public InstanceElementHeader(InstanceElementHeader   template)
     {
+        super (template);
+
         /*
          * Nothing to do.
          */

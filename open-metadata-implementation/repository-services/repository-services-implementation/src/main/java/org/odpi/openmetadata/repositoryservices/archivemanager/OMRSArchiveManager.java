@@ -5,6 +5,7 @@ package org.odpi.openmetadata.repositoryservices.archivemanager;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchive;
 
+import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcessorClassificationExtension;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 
@@ -476,49 +477,53 @@ public class OMRSArchiveManager
                 }
             }
 
-
-            if (classifications != null)
+            if (instanceProcessor instanceof OMRSInstanceEventProcessorClassificationExtension)
             {
-                for (ClassificationEntityExtension classificationEntityExtension : classifications)
+                OMRSInstanceEventProcessorClassificationExtension classificationInstanceProcessor = (OMRSInstanceEventProcessorClassificationExtension)instanceProcessor;
+
+                if (classifications != null)
                 {
-                    if (classificationEntityExtension != null)
+                    for (ClassificationEntityExtension classificationEntityExtension : classifications)
                     {
-                        Classification classification = classificationEntityExtension.getClassification();
-
-                        this.setInstanceAuditHeader(localMetadataCollectionId,
-                                                    homeMetadataCollectionId,
-                                                    archiveName,
-                                                    originatorName,
-                                                    archiveCreationTime,
-                                                    provenanceType,
-                                                    originatorLicense,
-                                                    classification);
-
-                        classificationEntityExtension.setClassification(classification);
-
-                        // Todo
-                        /* new methods required
-                        if (classification.getVersion() == 1L)
+                        if (classificationEntityExtension != null)
                         {
-                            instanceProcessor.processNewClassificationEvent(archiveId,
-                                                                            homeMetadataCollectionId,
-                                                                            originatorServerName,
-                                                                            originatorServerType,
-                                                                            originatorOrganizationName,
-                                                                            classificationEntityExtension);
-                        }
-                        else
-                        {
-                            instanceProcessor.processUpdatedClassificationEvent(archiveId,
-                                                                                homeMetadataCollectionId,
-                                                                                originatorServerName,
-                                                                                originatorServerType,
-                                                                                originatorOrganizationName,
-                                                                                classificationEntityExtension);
-                        }
+                            Classification classification = classificationEntityExtension.getClassification();
 
-                        instanceCount ++;
-                        */
+                            this.setInstanceAuditHeader(localMetadataCollectionId,
+                                                        homeMetadataCollectionId,
+                                                        archiveName,
+                                                        originatorName,
+                                                        archiveCreationTime,
+                                                        provenanceType,
+                                                        originatorLicense,
+                                                        classification);
+
+                            classificationEntityExtension.setClassification(classification);
+
+                            if (classification.getVersion() == 1L)
+                            {
+                                classificationInstanceProcessor.processClassifiedEntityEvent(archiveId,
+                                                                                             homeMetadataCollectionId,
+                                                                                             archiveName,
+                                                                                             originatorServerType,
+                                                                                             originatorOrganizationName,
+                                                                                             classificationEntityExtension.getEntityToClassify(),
+                                                                                             classification);
+                            }
+                            else
+                            {
+                                classificationInstanceProcessor.processReclassifiedEntityEvent(archiveId,
+                                                                                               homeMetadataCollectionId,
+                                                                                               archiveName,
+                                                                                               originatorServerType,
+                                                                                               originatorOrganizationName,
+                                                                                               classificationEntityExtension.getEntityToClassify(),
+                                                                                               null,
+                                                                                               classification);
+                            }
+
+                            instanceCount ++;
+                        }
                     }
                 }
             }

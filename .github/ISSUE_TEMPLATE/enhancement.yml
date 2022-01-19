@@ -16,13 +16,7 @@ body:
           required: true
   - type: textarea
     attributes:
-      label: Current Behavior
-      description: What capability is missing, or not offering what you need?
-    validations:
-      required: true
-  - type: textarea
-    attributes:
-      label: Expected Behavior
+      label: Please describe the new behavior that that will improve Egeria
       description: Summarise what you'd like to see changed or added
     validations:
       required: true
@@ -48,4 +42,3 @@ body:
       description: Let us know if you'd be able to be involved in designing and implementing this enhancement
       options:
         - label: I can work on this
-          required: true

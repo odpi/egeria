@@ -522,18 +522,15 @@ public class GovernanceEngineConfigurationClient
      * @throws PropertyServerException problem retrieving the governance service definitions.
      */
     public  List<GovernanceServiceElement> getAllGovernanceServices(String  userId,
-                                                                    String  governanceServiceType,
                                                                     int     startingFrom,
                                                                     int     maximumResults) throws InvalidParameterException,
                                                                                                    UserNotAuthorizedException,
                                                                                                    PropertyServerException
     {
         final String methodName = "getAllGovernanceServices";
-        final String serviceTypeParameterName = "governanceServiceType";
         final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-services?startingFrom={2}&maximumResults={3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(governanceServiceType, serviceTypeParameterName, methodName);
         invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
         GovernanceServiceElementsResponse restResult = restClient.callGovernanceServicesGetRESTCall(methodName,
