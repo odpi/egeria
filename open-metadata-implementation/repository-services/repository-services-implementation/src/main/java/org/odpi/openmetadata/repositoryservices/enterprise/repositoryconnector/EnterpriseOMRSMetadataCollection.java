@@ -3251,16 +3251,16 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
         FederationControl federationControl = new SequentialFederationControl(userId, cohortConnectors, auditLog, methodName);
         ClassifyEntityExecutor executor = new ClassifyEntityExecutor(userId,
-                entityProxy.getGUID(),
-                entityProxy,
-                classificationName,
-                null,
-                null,
-                null,
-                null,
-                classificationProperties,
-                auditLog,
-                methodName);
+                                                                     entityProxy.getGUID(),
+                                                                     entityProxy,
+                                                                     classificationName,
+                                                                     null,
+                                                                     null,
+                                                                     null,
+                                                                     null,
+                                                                     classificationProperties,
+                                                                     auditLog,
+                                                                     methodName);
 
         /*
          * Ready to process the request.  Create requests occur in the first repository that accepts the call.
@@ -3405,11 +3405,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         /*
          * Validate parameters
          */
-        this.classifyEntityParameterValidation(userId,
-                entityProxy.getGUID(),
-                classificationName,
-                classificationProperties,
-                methodName);
+        this.classifyEntityParameterValidation(userId, entityProxy.getGUID(), classificationName, classificationProperties, methodName);
 
         /*
          * Locate entity and check classification is not already present.
@@ -3427,16 +3423,16 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
         FederationControl federationControl = new SequentialFederationControl(userId, cohortConnectors, auditLog, methodName);
         ClassifyEntityExecutor executor = new ClassifyEntityExecutor(userId,
-                entityProxy.getGUID(),
-                entityProxy,
-                classificationName,
-                externalSourceGUID,
-                externalSourceName,
-                classificationOrigin,
-                classificationOriginGUID,
-                classificationProperties,
-                auditLog,
-                methodName);
+                                                                     entityProxy.getGUID(),
+                                                                     entityProxy,
+                                                                     classificationName,
+                                                                     externalSourceGUID,
+                                                                     externalSourceName,
+                                                                     classificationOrigin,
+                                                                     classificationOriginGUID,
+                                                                     classificationProperties,
+                                                                     auditLog,
+                                                                     methodName);
 
         /*
          * Ready to process the request.  Create requests occur in the first repository that accepts the call.
@@ -3518,11 +3514,11 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
     public Classification declassifyEntity(String      userId,
                                            EntityProxy entityProxy,
                                            String      classificationName) throws InvalidParameterException,
-            RepositoryErrorException,
-            EntityNotKnownException,
-            ClassificationErrorException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                                  RepositoryErrorException,
+                                                                                  EntityNotKnownException,
+                                                                                  ClassificationErrorException,
+                                                                                  FunctionNotSupportedException,
+                                                                                  UserNotAuthorizedException
     {
         final String  methodName = "declassifyEntity (EntityProxy)";
 

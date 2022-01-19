@@ -103,12 +103,15 @@ public class ClassifyEntityExecutor extends RepositoryExecutorBase
              */
             if ((externalSourceGUID == null) && (classificationOrigin == ClassificationOrigin.ASSIGNED))
             {
-                if(entityProxy == null) {
+                if (entityProxy == null)
+                {
                     updatedEntity = metadataCollection.classifyEntity(userId,
                                                                       entityGUID,
                                                                       classificationName,
                                                                       classificationProperties);
-                }else{
+                }
+                else
+                {
                     addedClassification = metadataCollection.classifyEntity(userId,
                                                                             entityProxy,
                                                                             classificationName,
@@ -117,7 +120,8 @@ public class ClassifyEntityExecutor extends RepositoryExecutorBase
             }
             else
             {
-                if(entityProxy == null) {
+                if (entityProxy == null)
+                {
                     updatedEntity = metadataCollection.classifyEntity(userId,
                                                                       entityGUID,
                                                                       classificationName,
@@ -126,7 +130,9 @@ public class ClassifyEntityExecutor extends RepositoryExecutorBase
                                                                       classificationOrigin,
                                                                       classificationOriginGUID,
                                                                       classificationProperties);
-                }else{
+                }
+                else
+                {
                     addedClassification = metadataCollection.classifyEntity(userId,
                                                                             entityProxy,
                                                                             classificationName,

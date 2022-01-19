@@ -2147,7 +2147,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
          * Locate entity
          */
         EntitySummary entity = repositoryStore.getEntity(entityGUID);
-        if (entity == null){
+        if (entity == null)
+        {
             repositoryStore.addEntityProxyToStore(entityProxy);
             entity = repositoryStore.getEntityProxy(entityGUID);
         }
@@ -2211,7 +2212,9 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
             repositoryStore.updateEntityInStore(updatedEntity);
             // The repository store maintains an entity proxy for use with relationships
             repositoryStore.updateEntityProxyInStore(repositoryHelper.getNewEntityProxy(repositoryName, updatedEntity));
-        }else{
+        }
+        else
+        {
             EntityProxy updatedProxy = repositoryHelper.addClassificationToEntity(repositoryName,
                                                                                   (EntityProxy) entity,
                                                                                   newClassification,
@@ -2426,7 +2429,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
          * Locate entity
          */
         EntitySummary entity = repositoryStore.getEntity(entityGUID);
-        if (entity == null){
+        if (entity == null)
+        {
             repositoryStore.addEntityProxyToStore(entityProxy);
             entity = repositoryStore.getEntityProxy(entityGUID);
         }
@@ -2439,19 +2443,19 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         InstanceType entityType = entity.getType();
 
         repositoryValidator.validateClassification(repositoryName,
-                classificationParameterName,
-                classificationName,
-                entityType.getTypeDefName(),
-                methodName);
+                                                   classificationParameterName,
+                                                   classificationName,
+                                                   entityType.getTypeDefName(),
+                                                   methodName);
 
         Classification newClassification;
         try
         {
             repositoryValidator.validateClassificationProperties(repositoryName,
-                    classificationName,
-                    propertiesParameterName,
-                    classificationProperties,
-                    methodName);
+                                                                 classificationName,
+                                                                 propertiesParameterName,
+                                                                 classificationProperties,
+                                                                 methodName);
 
             /*
              * Validation complete - build the new classification
@@ -2459,27 +2463,27 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
             if (externalSourceGUID == null)
             {
                 newClassification = repositoryHelper.getNewClassification(repositoryName,
-                        null,
-                        InstanceProvenanceType.LOCAL_COHORT,
-                        userId,
-                        classificationName,
-                        entityType.getTypeDefName(),
-                        classificationOrigin,
-                        classificationOriginGUID,
-                        classificationProperties);
+                                                                         null,
+                                                                         InstanceProvenanceType.LOCAL_COHORT,
+                                                                         userId,
+                                                                         classificationName,
+                                                                         entityType.getTypeDefName(),
+                                                                         classificationOrigin,
+                                                                         classificationOriginGUID,
+                                                                         classificationProperties);
             }
             else
             {
                 newClassification = repositoryHelper.getNewClassification(repositoryName,
-                        externalSourceGUID,
-                        externalSourceName,
-                        InstanceProvenanceType.EXTERNAL_SOURCE,
-                        userId,
-                        classificationName,
-                        entityType.getTypeDefName(),
-                        classificationOrigin,
-                        classificationOriginGUID,
-                        classificationProperties);
+                                                                          externalSourceGUID,
+                                                                          externalSourceName,
+                                                                          InstanceProvenanceType.EXTERNAL_SOURCE,
+                                                                          userId,
+                                                                          classificationName,
+                                                                          entityType.getTypeDefName(),
+                                                                          classificationOrigin,
+                                                                          classificationOriginGUID,
+                                                                          classificationProperties);
                 newClassification.setMetadataCollectionName(externalSourceName);
                 newClassification.setReplicatedBy(metadataCollectionId);
             }
@@ -2500,7 +2504,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         /*
          * Validation complete - ok to update entity
          */
-        if(entity instanceof EntityDetail){
+        if (entity instanceof EntityDetail)
+        {
             EntityDetail updatedEntity = repositoryHelper.addClassificationToEntity(repositoryName,
                                                                                     (EntityDetail) entity,
                                                                                     newClassification,
@@ -2508,7 +2513,9 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
             repositoryStore.updateEntityInStore(updatedEntity);
             // The repository store maintains an entity proxy for use with relationships
             repositoryStore.updateEntityProxyInStore(repositoryHelper.getNewEntityProxy(repositoryName, updatedEntity));
-        }else{
+        }
+        else
+        {
             EntityProxy updatedProxy = repositoryHelper.addClassificationToEntity(repositoryName,
                                                                                   (EntityProxy) entity,
                                                                                   newClassification,
@@ -2615,7 +2622,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
          * Locate entity
          */
         EntitySummary entity = repositoryStore.getEntity(entityGUID);
-        if(entity == null){
+        if (entity == null)
+        {
             entity = repositoryStore.getEntityProxy(entityGUID);
         }
 
@@ -2627,7 +2635,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                                                   classificationName,
                                                                                   methodName);
 
-        if(entity instanceof EntityDetail) {
+        if (entity instanceof EntityDetail)
+        {
             EntityDetail updatedEntity = repositoryHelper.deleteClassificationFromEntity(repositoryName,
                                                                                          (EntityDetail) entity,
                                                                                          classificationName,
@@ -2635,7 +2644,9 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
             repositoryStore.updateEntityInStore(updatedEntity);
             // The repository store maintains an entity proxy for use with relationships
             repositoryStore.updateEntityProxyInStore(repositoryHelper.getNewEntityProxy(repositoryName, updatedEntity));
-        }else{
+        }
+        else
+        {
             EntityProxy updatedEntity = repositoryHelper.deleteClassificationFromEntity(repositoryName,
                                                                                         (EntityProxy) entity,
                                                                                         classificationName,
@@ -2763,7 +2774,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
          * Locate entity
          */
         EntitySummary entity = repositoryStore.getEntity(entityGUID);
-        if(entity == null){
+        if (entity == null)
+        {
             repositoryStore.addEntityProxyToStore(entityProxy);
             entity = repositoryStore.getEntityProxy(entityGUID);
         }
@@ -2780,7 +2792,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         newClassification.setProperties(properties);
         repositoryHelper.incrementVersion(userId, classification, newClassification);
 
-        if(entity instanceof EntityDetail){
+        if( entity instanceof EntityDetail)
+        {
             EntityDetail updatedEntity = repositoryHelper.updateClassificationInEntity(repositoryName,
                                                                                        userId,
                                                                                        (EntityDetail) entity,
@@ -2789,11 +2802,13 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
             repositoryStore.updateEntityInStore(updatedEntity);
             // The repository store maintains an entity proxy for use with relationships
             repositoryStore.updateEntityProxyInStore(repositoryHelper.getNewEntityProxy(repositoryName, updatedEntity));
-        }else{
+        }
+        else
+        {
             EntityProxy updatedProxy = repositoryHelper.addClassificationToEntity(repositoryName,
-                    (EntityProxy) entity,
-                    newClassification,
-                    methodName);
+                                                                                  (EntityProxy) entity,
+                                                                                  newClassification,
+                                                                                  methodName);
             repositoryStore.updateEntityProxyInStore(updatedProxy);
         }
 

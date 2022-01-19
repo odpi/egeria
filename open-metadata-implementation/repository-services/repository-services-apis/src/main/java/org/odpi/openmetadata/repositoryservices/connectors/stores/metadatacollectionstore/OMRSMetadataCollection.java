@@ -1868,8 +1868,10 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
                                                         classificationName,
                                                         classificationProperties);
 
-        for(Classification classification : entityDetail.getClassifications()){
-            if(classification.getName().equals(classificationName)){
+        for (Classification classification : entityDetail.getClassifications())
+        {
+            if (classification.getName().equals(classificationName))
+            {
                 return classification;
             }
         }
@@ -1973,8 +1975,10 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
                                                         classificationOriginGUID,
                                                         classificationProperties);
 
-        for(Classification classification : entityDetail.getClassifications()){
-            if(classification.getName().equals(classificationName)){
+        for (Classification classification : entityDetail.getClassifications())
+        {
+            if (classification.getName().equals(classificationName))
+            {
                 return classification;
             }
         }
@@ -2097,8 +2101,10 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
                                                                     classificationName,
                                                                     properties);
 
-        for(Classification classification : entityDetail.getClassifications()){
-            if(classification.getName().equals(classificationName)){
+        for (Classification classification : entityDetail.getClassifications())
+        {
+            if (classification.getName().equals(classificationName))
+            {
                 return classification;
             }
         }

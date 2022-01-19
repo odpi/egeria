@@ -4257,11 +4257,12 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                          String               classificationName,
                                                          InstanceProperties   classificationProperties,
                                                          String               methodName) throws InvalidParameterException,
-            RepositoryErrorException,
-            PropertyErrorException,
-            UserNotAuthorizedException
+                                                                                                 RepositoryErrorException,
+                                                                                                 PropertyErrorException,
+                                                                                                 UserNotAuthorizedException
     {
-        if(entityProxy == null){
+        if (entityProxy == null)
+        {
             throw new InvalidParameterException(OMRSErrorCode.NULL_ENTITY_PROXY.getMessageDefinition(repositoryName, "entityProxy", methodName),
                     this.getClass().getName(),
                     methodName,

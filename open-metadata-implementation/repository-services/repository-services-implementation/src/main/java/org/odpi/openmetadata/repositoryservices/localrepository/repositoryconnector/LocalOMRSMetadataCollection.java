@@ -4558,10 +4558,10 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         try
         {
             securityVerifier.validateUserForEntityClassificationAdd(userId,
-                    metadataCollectionName,
-                    entityProxy,
-                    classificationName,
-                    classificationProperties);
+                                                                    metadataCollectionName,
+                                                                    entityProxy,
+                                                                    classificationName,
+                                                                    classificationProperties);
         }
         catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
         {
@@ -4771,10 +4771,10 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         try
         {
             securityVerifier.validateUserForEntityClassificationAdd(userId,
-                    metadataCollectionName,
-                    entityProxy,
-                    classificationName,
-                    classificationProperties);
+                                                                    metadataCollectionName,
+                                                                    entityProxy,
+                                                                    classificationName,
+                                                                    classificationProperties);
         }
         catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
         {
@@ -4940,9 +4940,9 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         try
         {
             securityVerifier.validateUserForEntityClassificationDelete(userId,
-                    metadataCollectionName,
-                    entityProxy,
-                    classificationName);
+                                                                       metadataCollectionName,
+                                                                       entityProxy,
+                                                                       classificationName);
         }
         catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
         {
@@ -5124,10 +5124,10 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         try
         {
             securityVerifier.validateUserForEntityClassificationUpdate(userId,
-                    metadataCollectionName,
-                    entityProxy,
-                    classificationName,
-                    properties);
+                                                                       metadataCollectionName,
+                                                                       entityProxy,
+                                                                       classificationName,
+                                                                       properties);
         }
         catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
         {

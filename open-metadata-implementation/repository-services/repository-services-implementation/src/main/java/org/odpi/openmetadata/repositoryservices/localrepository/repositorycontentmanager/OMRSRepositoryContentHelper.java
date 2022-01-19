@@ -1488,9 +1488,9 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
             EntityProxy updatedEntity = new EntityProxy(entity);
 
             updatedEntity.setClassifications(this.addClassificationToList(sourceName,
-                    entity.getClassifications(),
-                    newClassification,
-                    methodName));
+                                                                          entity.getClassifications(),
+                                                                          newClassification,
+                                                                          methodName));
             return updatedEntity;
         }
         else
@@ -1498,10 +1498,10 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
             final String thisMethodName = "addClassificationToEntity";
 
             throw new OMRSLogicErrorException(OMRSErrorCode.NULL_CLASSIFICATION_CREATED.getMessageDefinition(sourceName,
-                    thisMethodName,
-                    methodName),
-                    this.getClass().getName(),
-                    methodName);
+                                                                                                             thisMethodName,
+                                                                                                             methodName),
+                                                                                                             this.getClass().getName(),
+                                                                                                             methodName);
         }
     }
 
@@ -1676,8 +1676,8 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
             throw new OMRSLogicErrorException(OMRSErrorCode.NULL_CLASSIFICATION_CREATED.getMessageDefinition(sourceName,
                                                                                                              thisMethodName,
                                                                                                              methodName),
-                                              this.getClass().getName(),
-                                              methodName);
+                                                                                                             this.getClass().getName(),
+                                                                                                             methodName);
         }
     }
 
@@ -1712,10 +1712,10 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
             final String thisMethodName = "updateClassificationInEntity";
 
             throw new OMRSLogicErrorException(OMRSErrorCode.NULL_CLASSIFICATION_CREATED.getMessageDefinition(sourceName,
-                    thisMethodName,
-                    methodName),
-                    this.getClass().getName(),
-                    methodName);
+                                                                                                             thisMethodName,
+                                                                                                             methodName),
+                                                                                                             this.getClass().getName(),
+                                                                                                             methodName);
         }
     }
 
@@ -1766,8 +1766,8 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
                                                                                                                 sourceName,
                                                                                                                 oldClassificationName,
                                                                                                                 entity.getGUID()),
-                                                       this.getClass().getName(),
-                                                       methodName);
+                                                                                                                this.getClass().getName(),
+                                                                                                                methodName);
             }
 
             if (entityClassificationsMap.isEmpty())
@@ -1790,8 +1790,8 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
             throw new OMRSLogicErrorException(OMRSErrorCode.NULL_CLASSIFICATION_NAME.getMessageDefinition(sourceName,
                                                                                                           thisMethodName,
                                                                                                           methodName),
-                                              this.getClass().getName(),
-                                              methodName);
+                                                                                                          this.getClass().getName(),
+                                                                                                          methodName);
         }
     }
 
@@ -1838,11 +1838,11 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
             if (oldClassification == null)
             {
                 throw new ClassificationErrorException(OMRSErrorCode.ENTITY_NOT_CLASSIFIED.getMessageDefinition(methodName,
-                        sourceName,
-                        oldClassificationName,
-                        entity.getGUID()),
-                        this.getClass().getName(),
-                        methodName);
+                                                                                                                sourceName,
+                                                                                                                oldClassificationName,
+                                                                                                                entity.getGUID()),
+                                                                                                                this.getClass().getName(),
+                                                                                                                methodName);
             }
 
             if (entityClassificationsMap.isEmpty())
@@ -1863,10 +1863,10 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
             final String thisMethodName = "deleteClassificationFromEntity";
 
             throw new OMRSLogicErrorException(OMRSErrorCode.NULL_CLASSIFICATION_NAME.getMessageDefinition(sourceName,
-                    thisMethodName,
-                    methodName),
-                    this.getClass().getName(),
-                    methodName);
+                                                                                                          thisMethodName,
+                                                                                                          methodName),
+                                                                                                          this.getClass().getName(),
+                                                                                                          methodName);
         }
     }
 

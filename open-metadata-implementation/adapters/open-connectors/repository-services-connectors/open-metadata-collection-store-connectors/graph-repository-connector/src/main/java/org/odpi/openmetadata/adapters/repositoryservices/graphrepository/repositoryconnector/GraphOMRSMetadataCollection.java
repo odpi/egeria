@@ -2440,7 +2440,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         {
             throw error;
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             throw new ClassificationErrorException(OMRSErrorCode.INVALID_CLASSIFICATION_FOR_ENTITY.getMessageDefinition(),
                     this.getClass().getName(),
