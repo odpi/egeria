@@ -1171,6 +1171,7 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
         {
             instanceType = new InstanceType();
 
+            instanceType.setHeaderVersion(InstanceElementHeader.CURRENT_INSTANCE_HEADER_VERSION);
             instanceType.setTypeDefCategory(typeDef.getCategory());
             instanceType.setTypeDefGUID(typeDef.getGUID());
             instanceType.setTypeDefName(typeDef.getName());
@@ -1401,5 +1402,25 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
         entityProxy.setClassifications(entity.getClassifications());
 
         return entityProxy;
+    }
+
+
+    /**
+     * Build a classification entity extension that is used to pass a classification in an archive.
+     *
+     * @param entity entity proxy to shoe where the classification should be attached
+     * @param classification classification to attach
+     * @return new object
+     */
+    public ClassificationEntityExtension getClassificationEntityExtension(EntityProxy    entity,
+                                                                          Classification classification)
+    {
+        ClassificationEntityExtension classificationEntityExtension = new ClassificationEntityExtension();
+
+        classificationEntityExtension.setHeaderVersion(InstanceElementHeader.CURRENT_INSTANCE_HEADER_VERSION);
+        classificationEntityExtension.setEntityToClassify(entity);
+        classificationEntityExtension.setClassification(classification);
+
+        return classificationEntityExtension;
     }
 }

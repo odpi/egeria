@@ -181,6 +181,10 @@
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>archive-manager-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>governance-action-client</artifactId>
         </dependency>
         <dependency>
