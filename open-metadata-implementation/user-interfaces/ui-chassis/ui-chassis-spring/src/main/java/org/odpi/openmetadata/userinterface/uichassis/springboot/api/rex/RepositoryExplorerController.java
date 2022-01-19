@@ -3,7 +3,9 @@
 package org.odpi.openmetadata.userinterface.uichassis.springboot.api.rex;
 
 
-import org.odpi.openmetadata.repositoryservices.clients.*;
+import org.odpi.openmetadata.repositoryservices.clients.EnterpriseRepositoryServicesClient;
+import org.odpi.openmetadata.repositoryservices.clients.LocalRepositoryServicesClient;
+import org.odpi.openmetadata.repositoryservices.clients.MetadataCollectionServicesClient;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -21,8 +23,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefGallery;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
-
-
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
@@ -34,7 +34,15 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorEx
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.api.SecureController;
-
+import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.rex.BadPropertyException;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.rex.BadTypeException;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.rex.EntityNotFoundException;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.rex.RepositoryUnreachableException;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.rex.RexInvalidParameterException;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.rex.RexSearchException;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.rex.RexSubGraphNotFoundException;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.rex.UnsupportedFunctionException;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.rex.UsernameNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -75,12 +83,14 @@ public class RepositoryExplorerController extends SecureController
     private static final String THERE_WAS_A_PROBLEM_WITH_PROPERTY_INFORMATION_PLEASE_CHECK_AND_RETRY = "There was a problem with Property information - please check and retry";
     private static final String THE_UI_TRIED_TO_USE_AN_UNSUPPORTED_FUNCTION = "The UI tried to use an unsupported function";
     private static final String INVALID_PARAMETER_IN_REX_REQUEST = "The request body used in the request to /api/instances/rex-traversal contained an invalid parameter or was missing a parameter. Please check the client code.";
+    private static final String THERE_WAS_A_PROBLEM_WITH_PAGING_PLEASE_CHECK_AND_RETRY = "There was a problem with Paging - please check and retry";
     private static final String TAG_NAME = "tagName";
     private static final String DATA_FIELD_NAME = "dataFieldName";
     private static final String ATTACHMENT_TYPE = "attachmentType";
     private static final String DISPLAY_NAME = "displayName";
     private static final String QUALIFIED_NAME = "qualifiedName";
     private static final String ENTITY_GUID = "entityGUID";
+
     private static String className = RepositoryExplorerController.class.getName();
     private static final Logger LOG = LoggerFactory.getLogger(className);
 
@@ -127,9 +137,7 @@ public class RepositoryExplorerController extends SecureController
         catch (Exception e) {
 
             exceptionMessage = "The request body used in the request to /api/types/rexTypeExplorer contained an invalid parameter or was missing a parameter. Please check the client code.";
-            // For any of the above exceptions, incorporate the exception message into a response object
-            texResp = new TypeExplorerResponse(400, exceptionMessage, null);
-            return texResp;
+            throw new RexInvalidParameterException(exceptionMessage);
         }
 
 
@@ -144,29 +152,19 @@ public class RepositoryExplorerController extends SecureController
                 texResp = new TypeExplorerResponse(200, "", tex);
 
             } else {
-
-                texResp = new TypeExplorerResponse(400, "Could not retrieve type information", null);
+                throw new BadTypeException("Could not retrieve type information");
             }
             return texResp;
         }
         catch (UserNotAuthorizedException e) {
-
-            exceptionMessage = USERNAME_NOT_AUTHORIZED_TO_PERFORM_THE_REQUEST;
+            throw new UsernameNotAuthorizedException(USERNAME_NOT_AUTHORIZED_TO_PERFORM_THE_REQUEST);
         }
         catch (RepositoryErrorException e) {
-
-            exceptionMessage = REPOSITORY_COULD_NOT_BE_REACHED;
+            throw new RepositoryUnreachableException(REPOSITORY_COULD_NOT_BE_REACHED);
         }
         catch (InvalidParameterException e) {
-
-            exceptionMessage = REQUEST_HAS_AN_INVALID_PARAMETER;
+            throw new RexInvalidParameterException(REQUEST_HAS_AN_INVALID_PARAMETER);
         }
-
-        // For any of the above exceptions, incorporate the exception message into a response object
-        texResp = new TypeExplorerResponse(400, exceptionMessage, null);
-
-        return texResp;
-
     }
 
 
@@ -334,8 +332,7 @@ public class RepositoryExplorerController extends SecureController
         catch (Exception e) {
             exceptionMessage = "The request body used in the request to /api/instances/rex-pre-traversal contained an invalid parameter or was missing a parameter. Please check the client code.";
             // For any of the above exceptions, incorporate the exception message into a response object
-            rexPreTraversalResponse = new RexPreTraversalResponse(400, exceptionMessage, null);
-            return rexPreTraversalResponse;
+            throw new RexInvalidParameterException(exceptionMessage);
         }
 
         // Pre-traversal the filters are always empty
@@ -351,9 +348,8 @@ public class RepositoryExplorerController extends SecureController
             InstanceGraph instGraph = this.getTraversal(userId, serverName, serverURLRoot, enterpriseOption, entityGUID, entityTypeGUIDs, relationshipTypeGUIDs, classificationNames, depth);
 
             if (instGraph == null) {
-                String excMsg = "Could not retrieve subgraph for entity with guid"+entityGUID;
-                rexPreTraversalResponse = new RexPreTraversalResponse(400, excMsg, null);
-                return rexPreTraversalResponse;
+                String excMsg = "Could not retrieve subgraph for entity with guid" + entityGUID;
+                throw new RexSubGraphNotFoundException(excMsg);
             }
             // Parse the RexTraversal into a RexPreTraversal for the PreTraversalResponse
             RexPreTraversal rexPreTraversal = new RexPreTraversal();
@@ -376,41 +372,30 @@ public class RepositoryExplorerController extends SecureController
             return rexPreTraversalResponse;
         }
         catch (UserNotAuthorizedException e) {
-
-            exceptionMessage = USERNAME_NOT_AUTHORIZED_TO_PERFORM_THE_REQUEST;
+            throw new UsernameNotAuthorizedException(USERNAME_NOT_AUTHORIZED_TO_PERFORM_THE_REQUEST);
         }
         catch (RepositoryErrorException e) {
-
-            exceptionMessage = REPOSITORY_COULD_NOT_BE_REACHED;
+            throw new RepositoryUnreachableException(REPOSITORY_COULD_NOT_BE_REACHED);
         }
         catch (InvalidParameterException e) {
-
-            exceptionMessage = REQUEST_HAS_AN_INVALID_PARAMETER;
+            throw new RexInvalidParameterException(REQUEST_HAS_AN_INVALID_PARAMETER);
         }
         catch (EntityNotKnownException e) {
-
-            exceptionMessage = COULD_NOT_FIND_AN_ENTITY_WITH_THE_GUID_SPECIFIED;
+            throw new EntityNotFoundException(COULD_NOT_FIND_AN_ENTITY_WITH_THE_GUID_SPECIFIED);
         }
         catch (EntityProxyOnlyException e) {
-
-            exceptionMessage = THE_SYSTEM_COULD_ONLY_FIND_AN_ENTITY_PROXY_USING_THE_GUID_SPECIFIED;
+            throw new EntityNotFoundException(THE_SYSTEM_COULD_ONLY_FIND_AN_ENTITY_PROXY_USING_THE_GUID_SPECIFIED);
         }
         catch (TypeErrorException e) {
-
-            exceptionMessage = THERE_WAS_A_PROBLEM_WITH_TYPE_INFORMATION_PLEASE_CHECK_AND_RETRY;
+            throw new BadTypeException(THERE_WAS_A_PROBLEM_WITH_TYPE_INFORMATION_PLEASE_CHECK_AND_RETRY);
         }
         catch (PropertyErrorException e) {
-
-            exceptionMessage = THERE_WAS_A_PROBLEM_WITH_PROPERTY_INFORMATION_PLEASE_CHECK_AND_RETRY;
+            throw new BadPropertyException(THERE_WAS_A_PROBLEM_WITH_PROPERTY_INFORMATION_PLEASE_CHECK_AND_RETRY);
         }
         catch (FunctionNotSupportedException e) {
-
-            exceptionMessage = THE_UI_TRIED_TO_USE_AN_UNSUPPORTED_FUNCTION;
+            throw new UnsupportedFunctionException(THE_UI_TRIED_TO_USE_AN_UNSUPPORTED_FUNCTION);
         }
-        // For any of the above exceptions, incorporate the exception message into a response object
-        rexPreTraversalResponse = new RexPreTraversalResponse(400, exceptionMessage, null);
 
-        return rexPreTraversalResponse;
 
     }
 
@@ -496,10 +481,8 @@ public class RepositoryExplorerController extends SecureController
             classificationNames   = body.getClassificationNames();
         }
         catch (Exception e) {
-            exceptionMessage = INVALID_PARAMETER_IN_REX_REQUEST;
-            // For any of the above exceptions, incorporate the exception message into a response object
-            rexTraversalResponse = new RexTraversalResponse(400, exceptionMessage, null);
-            return rexTraversalResponse;
+            throw new RexInvalidParameterException(INVALID_PARAMETER_IN_REX_REQUEST);
+
         }
 
         // If a filter typeGUID was not selected in the UI then it will not appear in the body.
@@ -621,48 +604,34 @@ public class RepositoryExplorerController extends SecureController
             } else {
 
                 String excMsg = "Could not retrieve subgraph for entity with guid" + entityGUID;
-                rexTraversalResponse = new RexTraversalResponse(400, excMsg, null);
-
+                throw new RexSubGraphNotFoundException(excMsg);
             }
             return rexTraversalResponse;
         }
         catch (UserNotAuthorizedException e) {
-
-            exceptionMessage = USERNAME_NOT_AUTHORIZED_TO_PERFORM_THE_REQUEST;
+            throw new UsernameNotAuthorizedException(USERNAME_NOT_AUTHORIZED_TO_PERFORM_THE_REQUEST);
         }
         catch (RepositoryErrorException e) {
-
-            exceptionMessage = REPOSITORY_COULD_NOT_BE_REACHED;
+            throw new RepositoryUnreachableException(REPOSITORY_COULD_NOT_BE_REACHED);
         }
         catch (InvalidParameterException e) {
-
-            exceptionMessage = REQUEST_HAS_AN_INVALID_PARAMETER;
+            throw new RexInvalidParameterException(REQUEST_HAS_AN_INVALID_PARAMETER);
         }
         catch (EntityNotKnownException e) {
-
-            exceptionMessage = COULD_NOT_FIND_AN_ENTITY_WITH_THE_GUID_SPECIFIED;
+            throw new EntityNotFoundException(COULD_NOT_FIND_AN_ENTITY_WITH_THE_GUID_SPECIFIED);
         }
         catch (EntityProxyOnlyException e) {
-
-            exceptionMessage = THE_SYSTEM_COULD_ONLY_FIND_AN_ENTITY_PROXY_USING_THE_GUID_SPECIFIED;
+            throw new EntityNotFoundException(THE_SYSTEM_COULD_ONLY_FIND_AN_ENTITY_PROXY_USING_THE_GUID_SPECIFIED);
         }
         catch (TypeErrorException e) {
-
-            exceptionMessage = THERE_WAS_A_PROBLEM_WITH_TYPE_INFORMATION_PLEASE_CHECK_AND_RETRY;
+            throw new BadTypeException(THERE_WAS_A_PROBLEM_WITH_TYPE_INFORMATION_PLEASE_CHECK_AND_RETRY);
         }
         catch (PropertyErrorException e) {
-
-            exceptionMessage = THERE_WAS_A_PROBLEM_WITH_PROPERTY_INFORMATION_PLEASE_CHECK_AND_RETRY;
+            throw new BadPropertyException(THERE_WAS_A_PROBLEM_WITH_PROPERTY_INFORMATION_PLEASE_CHECK_AND_RETRY);
         }
         catch (FunctionNotSupportedException e) {
-
-            exceptionMessage = THE_UI_TRIED_TO_USE_AN_UNSUPPORTED_FUNCTION;
+            throw new UnsupportedFunctionException(THE_UI_TRIED_TO_USE_AN_UNSUPPORTED_FUNCTION);
         }
-        // For any of the above exceptions, incorporate the exception message into a response object
-        rexTraversalResponse = new RexTraversalResponse(400, exceptionMessage, null);
-
-        return rexTraversalResponse;
-
     }
 
 
@@ -1104,12 +1073,8 @@ public class RepositoryExplorerController extends SecureController
             entityGUID          = body.getEntityGUID();
         }
         catch (Exception e) {
-            exceptionMessage = INVALID_PARAMETER_IN_REX_REQUEST;
-            // For any of the above exceptions, incorporate the exception message into a response object
-            response = new RexEntityDetailResponse(400, exceptionMessage, null);
-            return response;
+            throw new RexInvalidParameterException(INVALID_PARAMETER_IN_REX_REQUEST);
         }
-
 
         String userId = getUser(request);
 
@@ -1127,31 +1092,20 @@ public class RepositoryExplorerController extends SecureController
             return response;
         }
         catch (UserNotAuthorizedException e) {
-
-            exceptionMessage = USERNAME_NOT_AUTHORIZED_TO_PERFORM_THE_REQUEST;
+            throw new UsernameNotAuthorizedException(USERNAME_NOT_AUTHORIZED_TO_PERFORM_THE_REQUEST);
         }
         catch (RepositoryErrorException e) {
-
-            exceptionMessage = REPOSITORY_COULD_NOT_BE_REACHED;
+            throw new RepositoryUnreachableException(REPOSITORY_COULD_NOT_BE_REACHED);
         }
         catch (InvalidParameterException e) {
-
-            exceptionMessage = REQUEST_HAS_AN_INVALID_PARAMETER;
+            throw new RexInvalidParameterException(REQUEST_HAS_AN_INVALID_PARAMETER);
         }
         catch (EntityNotKnownException e) {
-
-            exceptionMessage = COULD_NOT_FIND_AN_ENTITY_WITH_THE_GUID_SPECIFIED;
+            throw new EntityNotFoundException(COULD_NOT_FIND_AN_ENTITY_WITH_THE_GUID_SPECIFIED);
         }
         catch (EntityProxyOnlyException e) {
-
-            exceptionMessage = THE_SYSTEM_COULD_ONLY_FIND_AN_ENTITY_PROXY_USING_THE_GUID_SPECIFIED;
+            throw new EntityNotFoundException(THE_SYSTEM_COULD_ONLY_FIND_AN_ENTITY_PROXY_USING_THE_GUID_SPECIFIED);
         }
-
-        // For any of the above exceptions, incorporate the exception message into a response object
-        response = new RexEntityDetailResponse(400, exceptionMessage, null);
-
-        return response;
-
     }
 
 
@@ -1266,10 +1220,7 @@ public class RepositoryExplorerController extends SecureController
             relationshipGUID    = body.getRelationshipGUID();
         }
         catch (Exception e) {
-            exceptionMessage = INVALID_PARAMETER_IN_REX_REQUEST;
-            // For any of the above exceptions, incorporate the exception message into a response object
-            response = new RexRelationshipResponse(400, exceptionMessage, null);
-            return response;
+            throw new RexInvalidParameterException(INVALID_PARAMETER_IN_REX_REQUEST);
         }
 
 
@@ -1299,27 +1250,17 @@ public class RepositoryExplorerController extends SecureController
             return response;
         }
         catch (UserNotAuthorizedException e) {
-
-            exceptionMessage = USERNAME_NOT_AUTHORIZED_TO_PERFORM_THE_REQUEST;
+            throw new UsernameNotAuthorizedException(USERNAME_NOT_AUTHORIZED_TO_PERFORM_THE_REQUEST);
         }
         catch (RepositoryErrorException e) {
-
-            exceptionMessage = REPOSITORY_COULD_NOT_BE_REACHED;
+            throw new RepositoryUnreachableException(REPOSITORY_COULD_NOT_BE_REACHED);
         }
         catch (InvalidParameterException e) {
-
-            exceptionMessage = REQUEST_HAS_AN_INVALID_PARAMETER;
+            throw new RexInvalidParameterException(REQUEST_HAS_AN_INVALID_PARAMETER);
         }
         catch (RelationshipNotKnownException e) {
-
-            exceptionMessage = "The system could not find an relationship with the GUID specified - please check the GUID and try again";
+            throw new RexInvalidParameterException("The system could not find an relationship with the GUID specified - please check the GUID and try again");
         }
-
-        // For any of the above exceptions, incorporate the exception message into a response object
-        response = new RexRelationshipResponse(400, exceptionMessage, null);
-
-        return response;
-
     }
 
     //
@@ -1423,10 +1364,7 @@ public class RepositoryExplorerController extends SecureController
             searchText          = body.getSearchText();
         }
         catch (Exception e) {
-            exceptionMessage = INVALID_PARAMETER_IN_REX_REQUEST;
-            // For any of the above exceptions, incorporate the exception message into a response object
-            response = new RexSearchResponse(400, exceptionMessage, null, null, searchCategory, null, null);
-            return response;
+            throw new RexSearchException(INVALID_PARAMETER_IN_REX_REQUEST, searchCategory);
         }
 
 
@@ -1450,60 +1388,44 @@ public class RepositoryExplorerController extends SecureController
 
                 Map<String, RexEntityDigest> digestMap = new HashMap<>();
 
-                for (int e=0; e < entities.size(); e++) {
-                     EntityDetail entityDetail = entities.get(e);
-                     String label = this.chooseLabelForEntity(entityDetail, typeExplorer);
+                for (EntityDetail entityDetail : entities) {
+                    String label = this.chooseLabelForEntity(entityDetail, typeExplorer);
 
-                     RexEntityDigest entityDigest = new RexEntityDigest(entityDetail.getGUID(), label, 0, entityDetail.getMetadataCollectionName());
+                    RexEntityDigest entityDigest = new RexEntityDigest(entityDetail.getGUID(), label, 0, entityDetail.getMetadataCollectionName());
 
-                     digestMap.put(entityDetail.getGUID(), entityDigest);
+                    digestMap.put(entityDetail.getGUID(), entityDigest);
 
                 }
-
 
                 response = new RexSearchResponse(200, "", serverName, searchText, searchCategory, digestMap, null);
 
             } else {
-
-                String excMsg = "Could not find any entities that matched "+searchText;
-                response = new RexSearchResponse(400, excMsg, serverName, searchText, searchCategory, null, null);
-
+                String excMsg = "Could not find any entities that matched " + searchText;
+                throw new RexSearchException(excMsg, serverName, searchText, searchCategory);
             }
-
             return response;
         }
         catch (UserNotAuthorizedException e) {
-
-            exceptionMessage = USERNAME_NOT_AUTHORIZED_TO_PERFORM_THE_REQUEST;
+            throw new UsernameNotAuthorizedException(USERNAME_NOT_AUTHORIZED_TO_PERFORM_THE_REQUEST);
         }
         catch (RepositoryErrorException e) {
-
-            exceptionMessage = REPOSITORY_COULD_NOT_BE_REACHED;
+            throw new RepositoryUnreachableException(REPOSITORY_COULD_NOT_BE_REACHED);
         }
         catch (InvalidParameterException e) {
-
-            exceptionMessage = REQUEST_HAS_AN_INVALID_PARAMETER;
+            throw new RexInvalidParameterException(REQUEST_HAS_AN_INVALID_PARAMETER);
         }
         catch (TypeErrorException e) {
-
-            exceptionMessage = THERE_WAS_A_PROBLEM_WITH_TYPE_INFORMATION_PLEASE_CHECK_AND_RETRY;
+            throw new BadTypeException(THERE_WAS_A_PROBLEM_WITH_TYPE_INFORMATION_PLEASE_CHECK_AND_RETRY);
         }
         catch (PropertyErrorException e) {
-
-            exceptionMessage = THERE_WAS_A_PROBLEM_WITH_PROPERTY_INFORMATION_PLEASE_CHECK_AND_RETRY;
+            throw new BadPropertyException(THERE_WAS_A_PROBLEM_WITH_PROPERTY_INFORMATION_PLEASE_CHECK_AND_RETRY);
         }
         catch (PagingErrorException e) {
-
-            exceptionMessage = "There was a problem with Paging - please check and retry";
+            throw new RexInvalidParameterException(THERE_WAS_A_PROBLEM_WITH_PAGING_PLEASE_CHECK_AND_RETRY);
         }
         catch (FunctionNotSupportedException e) {
-
-            exceptionMessage = THE_UI_TRIED_TO_USE_AN_UNSUPPORTED_FUNCTION;
+            throw new UnsupportedFunctionException(THE_UI_TRIED_TO_USE_AN_UNSUPPORTED_FUNCTION);
         }
-        // For any of the above exceptions, incorporate the exception message into a response object
-        response = new RexSearchResponse(400, exceptionMessage, serverName, searchText, searchCategory, null, null);
-
-        return response;
 
     }
 
@@ -1598,19 +1520,14 @@ public class RepositoryExplorerController extends SecureController
         String searchText;
 
         try {
-            serverName             = body.getServerName();
-            serverURLRoot          = body.getServerURLRoot();
-            enterpriseOption       = body.getEnterpriseOption();
-            relationshipTypeName   = body.getTypeName();
-            searchText             = body.getSearchText();
+            serverName = body.getServerName();
+            serverURLRoot = body.getServerURLRoot();
+            enterpriseOption = body.getEnterpriseOption();
+            relationshipTypeName = body.getTypeName();
+            searchText = body.getSearchText();
+        } catch (Exception e) {
+            throw new RexSearchException(INVALID_PARAMETER_IN_REX_REQUEST, searchCategory);
         }
-        catch (Exception e) {
-            exceptionMessage = INVALID_PARAMETER_IN_REX_REQUEST;
-            // For any of the above exceptions, incorporate the exception message into a response object
-            response = new RexSearchResponse(400, exceptionMessage, null, null, searchCategory, null, null);
-            return response;
-        }
-
 
         String userId = getUser(request);
 
@@ -1645,52 +1562,29 @@ public class RepositoryExplorerController extends SecureController
                     digestMap.put(relationship.getGUID(), relationshipDigest);
 
                 }
-
-
                 response = new RexSearchResponse(200, "", serverName, searchText, searchCategory, null, digestMap);
 
             } else {
 
-                String excMsg = "Could not find any entities that matched "+searchText;
-                response = new RexSearchResponse(400, excMsg, serverName, searchText, searchCategory, null, null);
-
+                String excMsg = "Could not find any entities that matched " + searchText;
+                throw new RexSearchException(excMsg, serverName, searchText, searchCategory);
             }
-
             return response;
+        } catch (UserNotAuthorizedException e) {
+            throw new UsernameNotAuthorizedException(USERNAME_NOT_AUTHORIZED_TO_PERFORM_THE_REQUEST);
+        } catch (RepositoryErrorException e) {
+            throw new RepositoryUnreachableException(REPOSITORY_COULD_NOT_BE_REACHED);
+        } catch (InvalidParameterException e) {
+            throw new RexInvalidParameterException(REQUEST_HAS_AN_INVALID_PARAMETER);
+        } catch (TypeErrorException e) {
+            throw new BadTypeException(THERE_WAS_A_PROBLEM_WITH_TYPE_INFORMATION_PLEASE_CHECK_AND_RETRY);
+        } catch (PropertyErrorException e) {
+            throw new BadPropertyException(THERE_WAS_A_PROBLEM_WITH_PROPERTY_INFORMATION_PLEASE_CHECK_AND_RETRY);
+        } catch (PagingErrorException e) {
+            throw new RexInvalidParameterException(THERE_WAS_A_PROBLEM_WITH_PAGING_PLEASE_CHECK_AND_RETRY);
+        } catch (FunctionNotSupportedException e) {
+            throw new UnsupportedFunctionException(THE_UI_TRIED_TO_USE_AN_UNSUPPORTED_FUNCTION);
         }
-        catch (UserNotAuthorizedException e) {
-
-            exceptionMessage = USERNAME_NOT_AUTHORIZED_TO_PERFORM_THE_REQUEST;
-        }
-        catch (RepositoryErrorException e) {
-
-            exceptionMessage = REPOSITORY_COULD_NOT_BE_REACHED;
-        }
-        catch (InvalidParameterException e) {
-
-            exceptionMessage = REQUEST_HAS_AN_INVALID_PARAMETER;
-        }
-        catch (TypeErrorException e) {
-
-            exceptionMessage = THERE_WAS_A_PROBLEM_WITH_TYPE_INFORMATION_PLEASE_CHECK_AND_RETRY;
-        }
-        catch (PropertyErrorException e) {
-
-            exceptionMessage = THERE_WAS_A_PROBLEM_WITH_PROPERTY_INFORMATION_PLEASE_CHECK_AND_RETRY;
-        }
-        catch (PagingErrorException e) {
-
-            exceptionMessage = "There was a problem with Paging - please check and retry";
-        }
-        catch (FunctionNotSupportedException e) {
-
-            exceptionMessage = THE_UI_TRIED_TO_USE_AN_UNSUPPORTED_FUNCTION;
-        }
-        // For any of the above exceptions, incorporate the exception message into a response object
-        response = new RexSearchResponse(400, exceptionMessage, serverName, searchText, searchCategory, null, null);
-
-        return response;
-
     }
 
 

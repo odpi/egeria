@@ -4,33 +4,34 @@ package org.odpi.openmetadata.userinterface.uichassis.springboot.api.tex;
 
 
 import org.odpi.openmetadata.repositoryservices.clients.LocalRepositoryServicesClient;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
-import org.odpi.openmetadata.userinterface.uichassis.springboot.api.SecureController;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.List;
-import java.util.Map;
-
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDefCategory;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.ClassificationDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EnumDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefGallery;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
-
+import org.odpi.openmetadata.userinterface.uichassis.springboot.api.SecureController;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.rex.BadTypeException;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.rex.RepositoryUnreachableException;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.rex.RexInvalidParameterException;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.rex.UsernameNotAuthorizedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -87,27 +88,20 @@ public class TypeExplorerController extends SecureController
             if (tex != null) {
                 texResp = new TypeExplorerResponse(200, "", tex);
             } else {
-                texResp = new TypeExplorerResponse(400, "Could not retrieve type information", null);
+                throw new BadTypeException("Could not retrieve type information");
             }
             return texResp;
         }
         catch (UserNotAuthorizedException e) {
-
-            exceptionMessage = "Sorry - this username was not authorized to perform the request";
+            throw new UsernameNotAuthorizedException("Sorry - this username was not authorized to perform the request");
         }
         catch (RepositoryErrorException e) {
+            throw new RepositoryUnreachableException("The repository could not be reached, please check the server name and URL root and verify that the server is running ");
 
-            exceptionMessage = "The repository could not be reached, please check the server name and URL root and verify that the server is running ";
         }
         catch (InvalidParameterException e) {
-
-            exceptionMessage = "The request to load type information reported an invalid parameter, please check the server name and URL root parameters";
+            throw new RexInvalidParameterException("The request to load type information reported an invalid parameter, please check the server name and URL root parameters");
         }
-        // For any of the above exceptions, incorporate the exception message into a response object
-        texResp = new TypeExplorerResponse(400, exceptionMessage, null);
-
-        return texResp;
-
     }
 
 

@@ -1,0 +1,18 @@
+package org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.rex;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(HttpStatus.NOT_IMPLEMENTED)
+public class UnsupportedFunctionException extends RuntimeException {
+
+    private String message;
+
+    public UnsupportedFunctionException(String message) {
+        this.message = message;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+}
