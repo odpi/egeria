@@ -27,6 +27,13 @@ public enum EngineServiceDescription implements Serializable
                            "https://odpi.github.io/egeria-docs/services/omes/governance-action/overview/",
                            "Governance Engine OMAS"),
 
+    ARCHIVE_MANAGER_OMES(6002,
+                           "Archive Manager",
+                           "Archive Manager OMES",
+                           "archive-manager",
+                           "Maintains open metadata archives based on the activity in the connected cohorts.",
+                           "https://odpi.github.io/egeria-docs/services/omes/archive-manager/overview/",
+                           "Open Metadata Repository Services (OMRS)"),
     ;
 
     private static final long     serialVersionUID    = 1L;
@@ -37,7 +44,7 @@ public enum EngineServiceDescription implements Serializable
     private String engineServiceURLMarker;
     private String engineServiceDescription;
     private String engineServiceWiki;
-    private String engineServicePartnerOMAS;
+    private String engineServicePartnerService;
 
 
     /**
@@ -49,7 +56,7 @@ public enum EngineServiceDescription implements Serializable
      * @param engineServiceURLMarker string used in URLs
      * @param engineServiceDescription short description for this engine service
      * @param engineServiceWiki wiki page for the engine service for this engine service
-     * @param engineServicePartnerOMAS name of the OMAS that is partnered with this engine service
+     * @param engineServicePartnerService name of the OMAS that is partnered with this engine service
      */
     EngineServiceDescription(int    engineServiceCode,
                              String engineServiceName,
@@ -57,7 +64,7 @@ public enum EngineServiceDescription implements Serializable
                              String engineServiceURLMarker,
                              String engineServiceDescription,
                              String engineServiceWiki,
-                             String engineServicePartnerOMAS)
+                             String engineServicePartnerService)
     {
         /*
          * Save the values supplied
@@ -68,7 +75,7 @@ public enum EngineServiceDescription implements Serializable
         this.engineServiceURLMarker    = engineServiceURLMarker;
         this.engineServiceDescription  = engineServiceDescription;
         this.engineServiceWiki         = engineServiceWiki;
-        this.engineServicePartnerOMAS  = engineServicePartnerOMAS;
+        this.engineServicePartnerService = engineServicePartnerService;
     }
 
 
@@ -143,8 +150,8 @@ public enum EngineServiceDescription implements Serializable
      *
      * @return  Full name of OMAS
      */
-    public String getEngineServicePartnerOMAS()
+    public String getEngineServicePartnerService()
     {
-        return engineServicePartnerOMAS;
+        return engineServicePartnerService;
     }
 }

@@ -70,8 +70,8 @@ public class AssetAnalysisAdmin extends EngineServiceAdmin
              * to store the resulting analysis results in Annotations.
              * Open metadata is accessed through the Discovery Engine OMAS.
              */
-            String             accessServiceRootURL    = this.getAccessServiceRootURL(engineServiceConfig);
-            String             accessServiceServerName = this.getAccessServiceServerName(engineServiceConfig);
+            String             accessServiceRootURL    = this.getPartnerServiceRootURL(engineServiceConfig);
+            String             accessServiceServerName = this.getPartnerServiceServerName(engineServiceConfig);
             List<EngineConfig> discoveryEngines        = this.getEngines(engineServiceConfig);
 
             /*
@@ -142,7 +142,7 @@ public class AssetAnalysisAdmin extends EngineServiceAdmin
 
             return governanceEngineHandlers;
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             auditLog.logException(actionDescription,
                                   AssetAnalysisAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(localServerName, error.getMessage()),
@@ -197,7 +197,7 @@ public class AssetAnalysisAdmin extends EngineServiceAdmin
                                                                           auditLog);
 
                 }
-                catch (Throwable  error)
+                catch (Exception  error)
                 {
                     /*
                      * Unable to create a client to the Discovery Engine.  This is a config problem that is not possible to

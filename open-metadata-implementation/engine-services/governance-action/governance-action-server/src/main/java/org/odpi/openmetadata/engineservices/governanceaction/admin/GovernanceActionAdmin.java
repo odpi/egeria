@@ -68,8 +68,8 @@ public class GovernanceActionAdmin extends EngineServiceAdmin
              * The governance action services need access to an open metadata server to retrieve information about the elements they are governing.
              * Open metadata is accessed through the Governance Action Engine OMAS.
              */
-            String             accessServiceRootURL    = this.getAccessServiceRootURL(engineServiceConfig);
-            String             accessServiceServerName = this.getAccessServiceServerName(engineServiceConfig);
+            String             accessServiceRootURL    = this.getPartnerServiceRootURL(engineServiceConfig);
+            String             accessServiceServerName = this.getPartnerServiceServerName(engineServiceConfig);
             List<EngineConfig> governanceActionEngines = this.getEngines(engineServiceConfig);
 
             /*
@@ -148,7 +148,7 @@ public class GovernanceActionAdmin extends EngineServiceAdmin
 
             return governanceEngineHandlers;
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             auditLog.logException(actionDescription,
                                   GovernanceActionAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(localServerName, error.getMessage()),

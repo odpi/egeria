@@ -298,6 +298,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
                                                                                                                       requestType,
                                                                                                                       completionStatus.getName(),
                                                                                                                       Long.toString(endTime.getTime() - startTime.getTime())));
+                super.disconnect();
             }
         }
         catch (Exception  error)
@@ -319,6 +320,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
                 if (completionStatus == null)
                 {
                     governanceContext.recordCompletionStatus(CompletionStatus.FAILED, null);
+                    super.disconnect();
                 }
             }
             catch (Exception statusError)

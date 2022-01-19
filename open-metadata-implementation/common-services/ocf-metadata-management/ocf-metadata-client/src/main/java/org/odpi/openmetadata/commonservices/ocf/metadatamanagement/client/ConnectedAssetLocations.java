@@ -173,7 +173,7 @@ public class ConnectedAssetLocations extends AssetLocations
                 return resultList;
             }
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             restExceptionHandler.handleUnexpectedException(error, methodName, serverName, omasServerURL);
         }

@@ -72,6 +72,7 @@ public class SecurityGroupResource
     /**
      * Update an existing security group.
      *
+     * @param serverName called server
      * @param userId calling user
      * @param securityGroupGUID unique identifier of the definition to update
      * @param isMergeUpdate are unspecified properties unchanged (true) or removed?

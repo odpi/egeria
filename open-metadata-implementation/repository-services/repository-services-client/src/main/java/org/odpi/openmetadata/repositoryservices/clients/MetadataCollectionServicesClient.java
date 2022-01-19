@@ -45,12 +45,12 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
     private String              localServerUserId   = null;
     private String              localServerPassword = null;
 
-    private String              restURLRoot;                /* Initialized in constructor */
-    private String              serviceURLMarker;           /* Initialized in constructor */
-    private RESTClientConnector restClient;                 /* Initialized in constructor */
-    private String              repositoryName;             /* Initialized in constructor */
+    protected String              restURLRoot;                /* Initialized in constructor */
+    private   String              serviceURLMarker;           /* Initialized in constructor */
+    protected RESTClientConnector restClient;                 /* Initialized in constructor */
+    protected String              repositoryName;             /* Initialized in constructor */
 
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    protected InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
     protected AuditLog auditLog = null;
 
@@ -183,7 +183,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                     MetadataCollectionIdResponse.class,
                                                     restURLRoot + rootServiceNameInURL + serviceURLMarker + operationSpecificURL);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
            throw new RepositoryErrorException(OMRSErrorCode.REMOTE_REPOSITORY_ERROR.getMessageDefinition(methodName,
                                                                                                          repositoryName,
@@ -4481,6 +4481,63 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
     }
 
 
+
+    /**
+     * Save the classification as a reference copy.  The id of the home metadata collection is already set up in the
+     * classification.  The entity may be either a locally homed entity or a reference copy.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entity entity that the classification is attached to.
+     * @param classification classification to save.
+     *
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection.
+     * @throws EntityConflictException the new entity conflicts with an existing entity.
+     * @throws InvalidEntityException the new entity has invalid contents.
+     * @throws FunctionNotSupportedException the repository does not support reference copies of instances.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public void saveClassificationReferenceCopy(String         userId,
+                                                EntityProxy    entity,
+                                                Classification classification) throws InvalidParameterException,
+                                                                                      RepositoryErrorException,
+                                                                                      TypeErrorException,
+                                                                                      EntityConflictException,
+                                                                                      InvalidEntityException,
+                                                                                      PropertyErrorException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      FunctionNotSupportedException
+    {
+        final String methodName  = "saveClassificationReferenceCopy(proxy)";
+        final String operationSpecificURL = "instances/entities/classifications/reference-copy";
+
+        ClassificationWithEntityRequest requestBody = new ClassificationWithEntityRequest();
+        requestBody.setEntityProxy(entity);
+        requestBody.setClassification(classification);
+
+        VoidResponse restResult = this.callVoidPostRESTCall(methodName,
+                                                            restURLRoot + rootServiceNameInURL + userIdInURL + serviceURLMarker + operationSpecificURL,
+                                                            requestBody,
+                                                            userId);
+
+        this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowTypeErrorException(methodName, restResult);
+        this.detectAndThrowPropertyErrorException(methodName, restResult);
+        this.detectAndThrowEntityConflictException(methodName, restResult);
+        this.detectAndThrowInvalidEntityException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        this.detectAndThrowRepositoryErrorException(methodName, restResult);
+    }
+
+
     /**
      * Remove the reference copy of the classification from the local repository. This method can be used to
      * remove reference copies from the local cohort, repositories that have left the cohort,
@@ -4924,7 +4981,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
         {
             return clientFactory.getClientConnector();
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
            throw new InvalidParameterException(OMRSErrorCode.NO_REST_CLIENT.getMessageDefinition(serverName, error.getMessage()),
                                                this.getClass().getName(),
@@ -5418,7 +5475,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                               operationSpecificURL,
                                               params);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             throw new RepositoryErrorException(OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR.getMessageDefinition(methodName,
                                                                                                              repositoryName,
@@ -5455,7 +5512,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
                                                request,
                                                params);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             throw new RepositoryErrorException(OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR.getMessageDefinition(methodName,
                                                                                                              repositoryName,
@@ -5776,9 +5833,9 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @throws InvalidParameterException encoded exception from the server
      * @throws RepositoryErrorException invalid parameter is "serverName"
      */
-    private void detectAndThrowInvalidParameterException(String          methodName,
-                                                         OMRSAPIResponse restResult) throws InvalidParameterException,
-                                                                                            RepositoryErrorException
+    protected void detectAndThrowInvalidParameterException(String          methodName,
+                                                           OMRSAPIResponse restResult) throws InvalidParameterException,
+                                                                                              RepositoryErrorException
     {
         final String exceptionClassName = InvalidParameterException.class.getName();
         final String propertyName = "parameterName";
@@ -6264,8 +6321,8 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @param restResult response from the rest call.  This generated in the remote server.
      * @throws UserNotAuthorizedException encoded exception from the server
      */
-    private void detectAndThrowUserNotAuthorizedException(String          methodName,
-                                                          OMRSAPIResponse restResult) throws UserNotAuthorizedException
+    protected void detectAndThrowUserNotAuthorizedException(String          methodName,
+                                                            OMRSAPIResponse restResult) throws UserNotAuthorizedException
     {
         final String   exceptionClassName = UserNotAuthorizedException.class.getName();
 
@@ -6300,8 +6357,8 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * @param restResult response from the REST API call.
      * @throws RepositoryErrorException resulting exception if response includes an exception.
      */
-    private void detectAndThrowRepositoryErrorException(String          methodName,
-                                                        OMRSAPIResponse restResult) throws RepositoryErrorException
+    protected void detectAndThrowRepositoryErrorException(String          methodName,
+                                                          OMRSAPIResponse restResult) throws RepositoryErrorException
     {
         if (restResult == null)
         {

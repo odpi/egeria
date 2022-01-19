@@ -177,6 +177,34 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
 
 
     /**
+     * Register a listener object.  This object will be supplied with all of the events
+     * received on the topic.
+     *
+     * @param topicListener object implementing the OMRSTopicRepositoryEventListener interface
+     * @param serviceName name of the service that the listener is from
+     */
+    @Override
+    public void registerListener(OMRSTopicRepositoryEventListener topicListener,
+                                 String                           serviceName)
+    {
+        if (topicListener != null)
+        {
+            internalTopicListeners.add(new OMRSTopicListenerWrapper(topicListener,
+                                                                    serviceName,
+                                                                    auditLog.createNewAuditLog(OMRSAuditingComponent.ENTERPRISE_TOPIC_LISTENER)));
+        }
+        else
+        {
+            final String            methodName = "registerListener";
+
+            throw new OMRSLogicErrorException(OMRSErrorCode.NULL_OPEN_METADATA_TOPIC_LISTENER.getMessageDefinition(connectionName),
+                                              this.getClass().getName(),
+                                              methodName);
+        }
+    }
+
+
+    /**
      * Indicates that the connector is completely configured and can begin processing.
      * OMRSTopicConnector needs to pass on the start() to its embedded connectors.
      *

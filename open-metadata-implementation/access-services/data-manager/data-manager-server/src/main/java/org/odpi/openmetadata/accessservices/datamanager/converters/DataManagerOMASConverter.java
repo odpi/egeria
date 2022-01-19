@@ -298,6 +298,7 @@ public class DataManagerOMASConverter<B> extends OpenMetadataAPIGenericConverter
     /**
      * Extract the requested classification from the entity.
      *
+     * @param classificationName name of classification
      * @param entity entity containing the classifications
      * @return list of bean classifications
      */

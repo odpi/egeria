@@ -143,7 +143,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                 serverSecurityConnector.setLocalServerUserId(localServerUserId);
                 serverSecurityConnector.start();
             }
-            catch (Throwable error)
+            catch (Exception error)
             {
                 /*
                  * The assumption is that any exceptions creating the new connector are down to a bad connection
