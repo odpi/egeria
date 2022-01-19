@@ -187,7 +187,7 @@ public class ConnectedAssetNoteLogs extends AssetNoteLogs
                 return resultList;
             }
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             restExceptionHandler.handleUnexpectedException(error, methodName, serverName, omasServerURL);
         }

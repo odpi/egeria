@@ -290,7 +290,6 @@ public class SubjectAreaManager implements SubjectAreasInterface
      * @throws InvalidParameterException one of the guids is null or not known
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
-     * @throws PropertyServerException
      */
     @Override
     public void linkSubjectAreasInHierarchy(String userId,

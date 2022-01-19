@@ -800,7 +800,39 @@ public class ReadOnlyOMRSMetadataCollection extends InMemoryOMRSMetadataCollecti
                                                                                       PropertyErrorException
     {
         if ((entity != null) && ((entity.getInstanceProvenanceType() == InstanceProvenanceType.CONTENT_PACK) ||
-                                         (entity.getInstanceProvenanceType() == InstanceProvenanceType.EXPORT_ARCHIVE)))
+                                 (entity.getInstanceProvenanceType() == InstanceProvenanceType.EXPORT_ARCHIVE)))
+        {
+            super.saveClassificationReferenceCopy(userId, entity, classification);
+        }
+    }
+
+
+    /**
+     * Save the classification as a reference copy.  The id of the home metadata collection is already set up in the
+     * classification.  The entity may be either a locally homed entity or a reference copy.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entity entity that the classification is attached to.
+     * @param classification classification to save.
+     *
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection.
+     */
+    @Override
+    public void saveClassificationReferenceCopy(String         userId,
+                                                EntityProxy    entity,
+                                                Classification classification) throws InvalidParameterException,
+                                                                                      RepositoryErrorException,
+                                                                                      TypeErrorException,
+                                                                                      PropertyErrorException
+    {
+        if ((entity != null) && ((entity.getInstanceProvenanceType() == InstanceProvenanceType.CONTENT_PACK) ||
+                                 (entity.getInstanceProvenanceType() == InstanceProvenanceType.EXPORT_ARCHIVE)))
         {
             super.saveClassificationReferenceCopy(userId, entity, classification);
         }

@@ -40,8 +40,9 @@ public class DigitalServiceBuilder extends ReferenceableBuilder
     /**
      * Create constructor
      *
-     * @param displayName version of the digital service
+     * @param displayName short name of the digital service
      * @param description description of the digital service
+     * @param versionNumber version of the digital service
      * @param repositoryHelper helper methods
      * @param serviceName name of this OMAS
      * @param serverName name of local server

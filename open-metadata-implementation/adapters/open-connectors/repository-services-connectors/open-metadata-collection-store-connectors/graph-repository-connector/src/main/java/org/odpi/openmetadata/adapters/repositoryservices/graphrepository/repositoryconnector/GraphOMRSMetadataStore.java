@@ -495,6 +495,145 @@ class GraphOMRSMetadataStore {
     }
 
 
+    /*
+     *  If there is no entity that has the GUID of the entity to be saved, create an entity detail using the passed entity.
+     *
+     *  If there is an entity with the same GUID this is not always an error condition: There may already be an
+     *  entity in the store that has the same GUID, for either of the following reasons:
+     *  1) A request to save a reference copy pertains to either creation of a ref copy or update of a ref copy. It would
+     *     be an error if the existing entity has a different metadataCollectionId to the entity to be saved. In this case
+     *     an exception is thrown.
+     *  2) There may already be a proxy (e.g. from earlier creation of a relationship). Because we are being passed a
+     *     full entity detail to save as a reference copy, the ref copy replaces the proxy. But the reference copy must
+     *     have the same metadataCollectionId as the proxy, else there has been confusion as to who owns the entity
+     *
+     *  In summary
+     *  - if no entity, create the ref copy
+     *  - if existing entity,
+     *     - if its a proxy
+     *           check the metadataCollectionId matches the one passed.
+     *           if matching metadataCollectionId
+     *               update the existing entity, replacing the proxy with the ref copy; the proxy flag will be cleared.
+     *           else
+     *               error
+     *     - else not a proxy
+     *           if matching metadataCollectionId
+     *               update the existing entity
+     *           else
+     *               error
+     *
+     *  This can be simplified to:
+     *  - if no entity
+     *        create the ref copy
+     *  - if existing entity,
+     *        if matching metadataCollectionId
+     *             update the existing entity, clearing proxy flag if it was set
+     *         else
+     *             error
+     */
+    synchronized void saveEntityReferenceCopyToStore(EntityProxy entity)
+
+            throws InvalidParameterException,
+                   RepositoryErrorException
+
+    {
+
+        final String methodName = "saveEntityReferenceCopyToStore(proxy)";
+
+        Vertex vertex;
+
+        GraphTraversalSource g = instanceGraph.traversal();
+        Iterator<Vertex> vertexIt = g.V().hasLabel("Entity").has(PROPERTY_KEY_ENTITY_GUID, entity.getGUID());
+
+        if (vertexIt.hasNext())
+        {
+
+            vertex = vertexIt.next();
+            log.debug("{} found existing vertex {}", methodName, vertex);
+
+            /*
+             * Check the metadataCollectionId is not local and that it matches the metadataCollectionId of the
+             * passed entity
+             */
+            String vertexMetadataCollectionId = entityMapper.getEntityMetadataCollectionId(vertex);
+
+            if (metadataCollectionId.equals(entity.getMetadataCollectionId())
+                        || !vertexMetadataCollectionId.equals(entity.getMetadataCollectionId()))
+            {
+
+                /*
+                 *  Error condition
+                 *  Either the locsl repository is being asked to save a reference copy of something it already owns,
+                 *  or it already has a proxy or reference copy of an entity from a repository other than the one that
+                 *  submitted this reference copy.
+                 */
+
+                log.error("{} found an existing vertex from a different source, with metadataCollectionId {}", methodName, vertexMetadataCollectionId);
+                g.tx().rollback();
+
+                throw new InvalidParameterException(
+                        GraphOMRSErrorCode.ENTITY_ALREADY_EXISTS.getMessageDefinition(
+                                entity.getGUID(), methodName,
+                                this.getClass().getName(),
+                                repositoryName),
+                        this.getClass().getName(),
+                        methodName,
+                        "entity");
+            }
+
+        }
+        else
+        {
+
+            // No existing vertex found - create one
+            log.debug("{} create vertex for entity {}", methodName, entity.getGUID());
+            vertex = g.addV("Entity").next();
+        }
+
+        /*
+         * Whether this just created a new vertex or is reusing an existing vertex (for a reference copy or proxy),
+         * populate the vertex.
+         * The mapping of an entity detail to the vertex will clear the proxy flag, even if previously set.
+         */
+
+
+        try
+        {
+            entityMapper.mapEntityProxyToVertex(entity, vertex);
+
+            // Create a vertex per classification and link them to the entity vertex
+            List<Classification> classifications = entity.getClassifications();
+            if (classifications != null)
+            {
+                for (Classification classification : classifications)
+                {
+                    log.debug("{} add classification: {} ", methodName, classification.getName());
+                    Vertex classificationVertex = g.addV("Classification").next();
+                    classificationMapper.mapClassificationToVertex(classification, classificationVertex);
+                    vertex.addEdge("Classifier", classificationVertex);
+                }
+            }
+
+        }
+        catch (Exception e)
+        {
+            log.error("{} Caught exception from entity mapper {}", methodName, e.getMessage());
+            g.tx().rollback();
+
+            throw new RepositoryErrorException(
+                    GraphOMRSErrorCode.ENTITY_NOT_CREATED.getMessageDefinition(
+                            entity.getGUID(), methodName,
+                            this.getClass().getName(),
+                            repositoryName),
+                    this.getClass().getName(),
+                    methodName, e);
+        }
+
+
+        g.tx().commit();
+    }
+
+
     synchronized EntityDetail getEntityDetailFromStore(String guid)
 
     throws EntityNotKnownException,
@@ -1150,6 +1289,64 @@ class GraphOMRSMetadataStore {
                 {
 
                     entityMapper.mapEntityDetailToVertex(entity, vertex);
+
+                    updateEntityClassifications(entity, vertex, g);
+                }
+
+            }
+            catch (Exception e)
+            {
+                log.error("{} caught exception {}", methodName, e.getMessage());
+                g.tx().rollback();
+
+                throw new RepositoryErrorException(
+                        GraphOMRSErrorCode.ENTITY_NOT_UPDATED.getMessageDefinition(
+                                entity.getGUID(), methodName,
+                                this.getClass().getName(),
+                                repositoryName),
+                        this.getClass().getName(),
+                        methodName, e);
+            }
+        }
+
+        log.debug("{} commit entity update tx: ", methodName);
+        g.tx().commit();
+
+    }
+
+
+    synchronized void updateEntityInStore(EntityProxy entity)
+
+            throws RepositoryErrorException
+
+    {
+
+        String methodName = "updateEntityInStore(proxy)";
+
+        // Look in the graph
+        String guid = entity.getGUID();
+        GraphTraversalSource g = instanceGraph.traversal();
+
+        GraphTraversal<Vertex, Vertex> gt = g.V().hasLabel("Entity").has(PROPERTY_KEY_ENTITY_GUID, guid);
+
+        // Only looking for non-proxy entities:
+        gt = gt.has(PROPERTY_KEY_ENTITY_IS_PROXY, false);
+
+        if (gt.hasNext())
+        {
+
+            Vertex vertex = gt.next();
+            log.debug("{} found entity vertex {}", methodName, vertex);
+
+            try
+            {
+
+                // Check if we have stumbled on a proxy somehow, and if so avoid processing it.
+                Boolean isProxy = entityMapper.isProxy(vertex);
+                if (!isProxy)
+                {
+
+                    entityMapper.mapEntityProxyToVertex(entity, vertex);
 
                     updateEntityClassifications(entity, vertex, g);
                 }

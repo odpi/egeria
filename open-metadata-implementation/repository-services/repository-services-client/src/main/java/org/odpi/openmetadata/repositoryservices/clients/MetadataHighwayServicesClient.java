@@ -169,7 +169,7 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
                                                     restURLRoot + rootServiceNameInURL + userIdInURL + operationSpecificURL,
                                                     userId);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             throw new RepositoryErrorException(OMRSErrorCode.REMOTE_REPOSITORY_ERROR.getMessageDefinition(methodName,
                                                                                                           serverName,
@@ -221,7 +221,7 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
                                                     restURLRoot + rootServiceNameInURL + userIdInURL + operationSpecificURL,
                                                     userId);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             throw new RepositoryErrorException(OMRSErrorCode.REMOTE_REPOSITORY_ERROR.getMessageDefinition(methodName,
                                                                                                           serverName,
@@ -271,7 +271,7 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
                                                     restURLRoot + rootServiceNameInURL + userIdInURL + operationSpecificURL,
                                                     userId);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             throw new RepositoryErrorException(OMRSErrorCode.REMOTE_REPOSITORY_ERROR.getMessageDefinition(methodName,
                                                                                                           serverName,
@@ -337,7 +337,7 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
         {
             return clientFactory.getClientConnector();
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
            throw new InvalidParameterException(OMRSErrorCode.NO_REST_CLIENT.getMessageDefinition(serverName, error.getMessage()),
                                                this.getClass().getName(),
@@ -444,7 +444,7 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
                                               operationSpecificURL,
                                               params);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             throw new RepositoryErrorException(OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR.getMessageDefinition(methodName,
                                                                                                              serverName,
@@ -481,7 +481,7 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
                                                request,
                                                params);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             throw new RepositoryErrorException(OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR.getMessageDefinition(methodName,
                                                                                                              serverName,

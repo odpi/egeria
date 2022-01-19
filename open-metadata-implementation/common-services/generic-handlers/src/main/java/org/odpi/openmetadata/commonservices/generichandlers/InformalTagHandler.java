@@ -264,15 +264,15 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @throws PropertyServerException there is a problem adding the asset properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void   updateTagDescription(String       userId,
-                                       String       externalSourceGUID,
-                                       String       externalSourceName,
-                                       String       tagGUID,
-                                       String       tagGUIDParameterName,
-                                       String       tagDescription,
-                                       String       methodName) throws InvalidParameterException,
-                                                                       PropertyServerException,
-                                                                       UserNotAuthorizedException
+    public void updateTagDescription(String userId,
+                                     String externalSourceGUID,
+                                     String externalSourceName,
+                                     String tagGUID,
+                                     String tagGUIDParameterName,
+                                     String tagDescription,
+                                     String methodName) throws InvalidParameterException,
+                                                               PropertyServerException,
+                                                               UserNotAuthorizedException
     {
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
@@ -285,13 +285,13 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     externalSourceName,
                                     tagGUID,
                                     tagGUIDParameterName,
-                                    OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_GUID,
-                                    OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                    OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_GUID,
+                                    OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
                                     false,
                                     false,
                                     supportedZones,
                                     properties,
-                                    false,
+                                    true,
                                     new Date(),
                                     methodName);
     }
@@ -314,14 +314,14 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @throws PropertyServerException there is a problem updating the asset properties in the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void   deleteTag(String       userId,
-                            String       externalSourceGUID,
-                            String       externalSourceName,
-                            String       tagGUID,
-                            String       tagGUIDParameterName,
-                            String       methodName) throws InvalidParameterException,
-                                                            PropertyServerException,
-                                                            UserNotAuthorizedException
+    public void   deleteTag(String userId,
+                            String externalSourceGUID,
+                            String externalSourceName,
+                            String tagGUID,
+                            String tagGUIDParameterName,
+                            String methodName) throws InvalidParameterException,
+                                                      PropertyServerException,
+                                                      UserNotAuthorizedException
     {
         this.deleteBeanInRepository(userId,
                                     externalSourceGUID,

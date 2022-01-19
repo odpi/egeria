@@ -132,7 +132,7 @@ public class CommunityProfileOutTopicPublisher
      * @param relationshipGUID unique identifier for the relationship
      * @param relationshipTypeName type of relationship
      * @param relationshipElementStub encoded header of the relationship
-     * @param endTwoElementStub encoded header of the entity at end 1 of the relationship
+     * @param endOneElementStub encoded header of the entity at end 1 of the relationship
      * @param endTwoElementStub encoded header of the entity at end 2 of the relationship
      */
     public void sendRelationshipEvent(CommunityProfileOutboundEventType eventType,
