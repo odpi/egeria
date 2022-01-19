@@ -165,7 +165,7 @@ public class DiscoveryServiceHandler extends GovernanceServiceHandler
 
             super.recordCompletionStatus(CompletionStatus.ACTIONED, null, null, null);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             auditLog.logException(actionDescription,
                                   AssetAnalysisAuditCode.DISCOVERY_SERVICE_FAILED.getMessageDefinition(governanceServiceName,
@@ -184,7 +184,7 @@ public class DiscoveryServiceHandler extends GovernanceServiceHandler
                 DiscoveryAnalysisReportStore discoveryReport = discoveryContext.getAnnotationStore().getDiscoveryReport();
                 discoveryReport.setDiscoveryRequestStatus(DiscoveryRequestStatus.FAILED);
             }
-            catch (Throwable statusError)
+            catch (Exception statusError)
             {
                 auditLog.logException(actionDescription,
                                       AssetAnalysisAuditCode.EXC_ON_ERROR_STATUS_UPDATE.getMessageDefinition(governanceEngineProperties.getQualifiedName(),

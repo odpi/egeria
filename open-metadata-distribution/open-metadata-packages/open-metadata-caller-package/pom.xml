@@ -45,6 +45,10 @@
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>archive-manager-spring</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-catalog-spring</artifactId>
         </dependency>
         <dependency>

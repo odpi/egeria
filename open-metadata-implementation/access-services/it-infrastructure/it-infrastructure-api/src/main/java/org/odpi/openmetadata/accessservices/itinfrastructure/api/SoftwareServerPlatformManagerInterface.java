@@ -104,12 +104,13 @@ public interface SoftwareServerPlatformManagerInterface
      * @param infrastructureManagerName unique name of software server capability representing the infrastructure manager
      * @param platformGUID unique identifier of the platform 
      * @param hostGUID unique identifier of the host
+     * @param deploymentProperties relationship properties
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    String deploySoftwareServerPlatformToHost(String                       userId,
+    void   deploySoftwareServerPlatformToHost(String                       userId,
                                               String                       infrastructureManagerGUID,
                                               String                       infrastructureManagerName,
                                               String                       platformGUID,

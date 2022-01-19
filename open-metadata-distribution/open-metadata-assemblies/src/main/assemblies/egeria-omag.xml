@@ -13,7 +13,7 @@
     <baseDirectory>egeria-omag-${open-metadata.version}</baseDirectory>
 
     <!-- Option Include any of our third party dependencies in lib -->
-    <!-- In theory each moduleset below should be placing it's OWN dependencies into it's working location-->
+    <!-- In theory each module set below should be placing it's OWN dependencies into it's working location-->
     <!-- However this is currently not working. references to issues below -->
     <!-- so for now dependencies are added here -->
     <!--dependencySets>
@@ -77,6 +77,7 @@
                 <include>org.odpi.egeria:open-lineage-janus-connector:*</include>
                 <include>org.odpi.egeria:elasticsearch-integration-connector:*</include>
                 <include>org.odpi.egeria:open-metadata-archive-file-connector:*</include>
+                <include>org.odpi.egeria:open-metadata-archive-directory-connector:*</include>
                 <!-- included as we use for the tutorial environment for access control -->
                 <include>org.odpi.egeria:open-metadata-security-samples:*</include>
                 <include>org.odpi.egeria:spring-rest-client-connector:*</include>
