@@ -13,14 +13,6 @@ import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.L
 import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.OpenLineageServiceException;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.TermNotFoundException;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.UserNotAuthorizedException;
-import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.rex.BadPropertyException;
-import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.rex.BadTypeException;
-import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.rex.EntityNotFoundException;
-import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.rex.RexInvalidParameterException;
-import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.rex.RexSearchException;
-import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.rex.RexSubGraphNotFoundException;
-import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.rex.UnsupportedFunctionException;
-import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.rex.UsernameNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -164,75 +156,5 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
         Map<String, Object> errorAttributes = this.errorAttributes.getErrorAttributes(request, UserInterfaceErrorCodes.CATEGORY_NOT_FOUND);
         return handleExceptionInternal(ex, errorAttributes, new HttpHeaders(),
                 UserInterfaceErrorCodes.CATEGORY_NOT_FOUND.getHttpErrorCode(), request);
-    }
-
-    @ExceptionHandler(value = {UsernameNotAuthorizedException.class})
-    protected ResponseEntity<Object> handleUsernameNotAuthorizedException(UsernameNotAuthorizedException ex, WebRequest request) {
-        LOG.error(ex.getMessage(), ex);
-        Map<String, Object> errorAttributes = this.errorAttributes.getErrorAttributes(request, UserInterfaceErrorCodes.USERNAME_NOT_AUTHORIZED_TO_PERFORM_THE_REQUEST);
-        return handleExceptionInternal(ex, errorAttributes, new HttpHeaders(),
-                UserInterfaceErrorCodes.USERNAME_NOT_AUTHORIZED_TO_PERFORM_THE_REQUEST.getHttpErrorCode(), request);
-    }
-
-    @ExceptionHandler(value = {RexInvalidParameterException.class})
-    protected ResponseEntity<Object> handleRexInvalidParameterException(RexInvalidParameterException ex, WebRequest request) {
-        LOG.error(ex.getMessage(), ex);
-        Map<String, Object> errorAttributes = this.errorAttributes.getErrorAttributes(request, UserInterfaceErrorCodes.REX_INVALID_PARAMETER_REQUEST);
-        errorAttributes.put("message", ex.getMessage());
-        return handleExceptionInternal(ex, errorAttributes, new HttpHeaders(),
-                UserInterfaceErrorCodes.REX_INVALID_PARAMETER_REQUEST.getHttpErrorCode(), request);
-    }
-
-    @ExceptionHandler(value = {EntityNotFoundException.class})
-    protected ResponseEntity<Object> handleEntityNotFoundException(EntityNotFoundException ex, WebRequest request) {
-        LOG.error(ex.getMessage(), ex);
-        Map<String, Object> errorAttributes = this.errorAttributes.getErrorAttributes(request, UserInterfaceErrorCodes.ENTITY_NOT_FOUND);
-
-        return handleExceptionInternal(ex, errorAttributes, new HttpHeaders(),
-                UserInterfaceErrorCodes.ENTITY_NOT_FOUND.getHttpErrorCode(), request);
-    }
-
-    @ExceptionHandler(value = {UnsupportedFunctionException.class})
-    protected ResponseEntity<Object> handleUnsupportedFunctionException(UnsupportedFunctionException ex, WebRequest request) {
-        LOG.error(ex.getMessage(), ex);
-        Map<String, Object> errorAttributes = this.errorAttributes.getErrorAttributes(request, UserInterfaceErrorCodes.OPERATION_NOT_SUPPORTED);
-
-        return handleExceptionInternal(ex, errorAttributes, new HttpHeaders(),
-                UserInterfaceErrorCodes.OPERATION_NOT_SUPPORTED.getHttpErrorCode(), request);
-    }
-
-    @ExceptionHandler(value = {BadTypeException.class})
-    protected ResponseEntity<Object> handleBadTypeException(BadTypeException ex, WebRequest request) {
-        LOG.error(ex.getMessage(), ex);
-        Map<String, Object> errorAttributes = this.errorAttributes.getErrorAttributes(request, UserInterfaceErrorCodes.BAD_TYPE_INFORMATION);
-
-        return handleExceptionInternal(ex, errorAttributes, new HttpHeaders(),
-                UserInterfaceErrorCodes.BAD_TYPE_INFORMATION.getHttpErrorCode(), request);
-    }
-
-    @ExceptionHandler(value = {BadPropertyException.class})
-    protected ResponseEntity<Object> handleBadPropertyException(BadPropertyException ex, WebRequest request) {
-        LOG.error(ex.getMessage(), ex);
-        Map<String, Object> errorAttributes = this.errorAttributes.getErrorAttributes(request, UserInterfaceErrorCodes.BAD_PROPERTY_INFORMATION);
-
-        return handleExceptionInternal(ex, errorAttributes, new HttpHeaders(),
-                UserInterfaceErrorCodes.BAD_PROPERTY_INFORMATION.getHttpErrorCode(), request);
-    }
-
-    @ExceptionHandler(value = {RexSubGraphNotFoundException.class})
-    protected ResponseEntity<Object> handleRexSubGraphNotFoundException(RexSubGraphNotFoundException ex, WebRequest request) {
-        LOG.error(ex.getMessage(), ex);
-        Map<String, Object> errorAttributes = this.errorAttributes.getErrorAttributes(request, UserInterfaceErrorCodes.REX_SUBGRAPH_NOT_FOUND);
-
-        return handleExceptionInternal(ex, errorAttributes, new HttpHeaders(),
-                UserInterfaceErrorCodes.REX_SUBGRAPH_NOT_FOUND.getHttpErrorCode(), request);
-    }
-
-    @ExceptionHandler(value = {RexSearchException.class})
-    protected ResponseEntity<Object> handleRexSearchException(RexSearchException ex, WebRequest request) {
-        LOG.error(ex.getMessage(), ex);
-        Map<String, Object> errorAttributes = this.errorAttributes.getRexSearchErrorAttributes(request, UserInterfaceErrorCodes.INVALID_SEARCH_REQUEST, ex);
-        return handleExceptionInternal(ex, errorAttributes, new HttpHeaders(),
-                UserInterfaceErrorCodes.INVALID_SEARCH_REQUEST.getHttpErrorCode(), request);
     }
 }
