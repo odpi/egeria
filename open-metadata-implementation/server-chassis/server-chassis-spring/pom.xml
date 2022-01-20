@@ -157,6 +157,12 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>archive-manager-spring</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>stewardship-action-spring</artifactId>
             <scope>runtime</scope>
         </dependency>
@@ -579,6 +585,12 @@
                 <dependency>
                     <groupId>org.odpi.egeria</groupId>
                     <artifactId>asset-owner-spring</artifactId>
+                    <scope>runtime</scope>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.odpi.egeria</groupId>
+                    <artifactId>archive-manager-spring</artifactId>
                     <scope>runtime</scope>
                 </dependency>
 

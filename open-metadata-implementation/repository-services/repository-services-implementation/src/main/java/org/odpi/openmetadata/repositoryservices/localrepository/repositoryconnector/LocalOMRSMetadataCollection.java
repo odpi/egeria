@@ -6602,7 +6602,74 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         if (entity.getHeaderVersion() <= InstanceAuditHeader.CURRENT_AUDIT_HEADER_VERSION)
         {
             /*
-             * Remove classification
+             * Save classification
+             */
+            realMetadataCollection.saveClassificationReferenceCopy(userId, entity, classification);
+        }
+    }
+
+
+    /**
+     * Save the classification as a reference copy.  The id of the home metadata collection is already set up in the
+     * classification.  The entity may be either a locally homed entity or a reference copy.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entity entity that the classification is attached to.
+     * @param classification classification to save.
+     *
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection.
+     * @throws EntityConflictException the new entity conflicts with an existing entity.
+     * @throws InvalidEntityException the new entity has invalid contents.
+     * @throws FunctionNotSupportedException the repository does not support reference copies of instances.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public void saveClassificationReferenceCopy(String         userId,
+                                                EntityProxy    entity,
+                                                Classification classification) throws InvalidParameterException,
+                                                                                      RepositoryErrorException,
+                                                                                      TypeErrorException,
+                                                                                      EntityConflictException,
+                                                                                      InvalidEntityException,
+                                                                                      PropertyErrorException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      FunctionNotSupportedException
+    {
+        final String  methodName = "saveClassificationReferenceCopy";
+        final String  instanceParameterName = "entity";
+
+        /*
+         * Validate parameters
+         */
+        this.basicRequestValidation(userId, methodName);
+        if (entity == null)
+        {
+            throw new InvalidParameterException(OMRSErrorCode.NULL_REFERENCE_INSTANCE.getMessageDefinition(repositoryName, methodName),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                instanceParameterName);
+        }
+
+        repositoryValidator.validateInstanceType(repositoryName, entity);
+        repositoryValidator.validateHomeMetadataGUID(repositoryName, instanceParameterName, entity.getMetadataCollectionId(), methodName);
+
+        /*
+         * Validate that this instance is not from a future version of this OMRS with header values that
+         * this version of the implementation does not understand.  Only save it if it is from the same or
+         * past version of the OMRS.
+         */
+        if (entity.getHeaderVersion() <= InstanceAuditHeader.CURRENT_AUDIT_HEADER_VERSION)
+        {
+            /*
+             * Save classification
              */
             realMetadataCollection.saveClassificationReferenceCopy(userId, entity, classification);
         }

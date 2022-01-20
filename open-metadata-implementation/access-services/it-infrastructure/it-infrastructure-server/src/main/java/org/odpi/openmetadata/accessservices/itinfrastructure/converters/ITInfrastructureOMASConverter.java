@@ -96,6 +96,7 @@ public class ITInfrastructureOMASConverter<B> extends OpenMetadataAPIGenericConv
      *
      * @param beanClass name of the class to create
      * @param header header from the entity containing the properties
+     * @param entityClassifications classifications associated with the header
      * @param methodName calling method
      * @return filled out element header
      * @throws PropertyServerException there is a problem in the use of the generic handlers because
@@ -264,6 +265,7 @@ public class ITInfrastructureOMASConverter<B> extends OpenMetadataAPIGenericConv
     /**
      * Extract the requested classification from the entity.
      *
+     * @param classificationName name of classification
      * @param entity entity containing the classifications
      * @return list of bean classifications
      */

@@ -1859,4 +1859,29 @@ public class EnterpriseRepositoryServicesResource
     {
         return restAPI.restoreRelationship(serverName, userId, deletedRelationshipGUID);
     }
+
+
+
+    /* ======================================================================
+     * Remote Enterprise OMRS Topic Connection
+     */
+
+    /**
+     * Return the connection for remote access to the enterprise topic connector.
+     * May be null if remote access to this topic is not configured in the OMAG Server.
+     *
+     * @param serverName unique identifier for requested server
+     * @param userId unique identifier for requesting server
+     * @return null or connection object or
+     *  InvalidParameterException unknown servername
+     *  UserNotAuthorizedException unsupported userId
+     *  RepositoryErrorException null local repository
+     */
+    @GetMapping(path = "/remote-topic-connection")
+
+    public ConnectionResponse getEnterpriseOMRSTopicConnection(@PathVariable String serverName,
+                                                               @PathVariable String userId)
+    {
+        return restAPI.getEnterpriseOMRSTopicConnection(serverName, userId);
+    }
 }

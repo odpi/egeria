@@ -168,7 +168,7 @@ public class ConnectedAssetClientBase
         {
             throw error;
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             throw new PropertyServerException(OMAGOCFErrorCode.NO_ASSET_PROPERTIES.getMessageDefinition(assetGUID,
                                                                                                         error.getClass().getName(),
@@ -247,7 +247,7 @@ public class ConnectedAssetClientBase
              */
             newConnector.initializeConnectedAssetProperties(connectedAssetProperties);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             /*
              * Ignore error - connectedAssetProperties is left at null.

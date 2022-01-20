@@ -304,6 +304,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
      *
      * @param userId calling user
      * @param correlationProperties  properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param assetManagerIsHome ensure that only the process manager can update this process
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
      * @param methodName calling method
@@ -2644,6 +2645,8 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
      * @param sourceElementGUID unique identifier of the source
      * @param methodName calling method
      *
+     * @return list of mapping elements
+     *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -2672,6 +2675,8 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
      * @param userId calling user
      * @param destinationElementGUID unique identifier of the destination
      * @param methodName calling method
+     *
+     * @return list of mapping elements
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
