@@ -57,7 +57,7 @@ include(':open-metadata-implementation:adapters:open-connectors:integration-conn
 include(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openlineage-integration-connectors')
 include(':open-metadata-implementation:adapters:open-connectors:integration-connectors:elasticsearch-integration-connector')
 include(':open-metadata-implementation:adapters:open-connectors:integration-connectors')
-include(':open-metadata-test:open-metadata-fvt:access-services-fvt:glossary-author-fvt')
+include(':open-metadata-test:open-metadata-fvt:view-services-fvt:glossary-author-fvt')
 // todo - convert to integration connectors and governance action connectors
 //include(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:view-generator-connectors')
 //include(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:security-officer-connectors:security-officer-tag-connector')
