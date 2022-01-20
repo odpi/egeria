@@ -298,6 +298,7 @@ public class GovernanceActionProcessResource
      * @param serverName name of the service to route the request to
      * @param userId calling user
      * @param actionTypeGUID unique identifier of the metadata element to remove
+     * @param requestBody null request body
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid
@@ -447,6 +448,7 @@ public class GovernanceActionProcessResource
      * @param serverName name of the service to route the request to
      * @param userId calling user
      * @param processGUID unique identifier of the governance action process
+     * @param requestBody null request body
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid

@@ -126,7 +126,7 @@ public class CommentResponseTest
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -135,7 +135,7 @@ public class CommentResponseTest
         {
             validateResultObject(objectMapper.readValue(jsonString, CommentResponse.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

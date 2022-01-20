@@ -120,7 +120,7 @@ public class ValidValueResponseTest
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -129,7 +129,7 @@ public class ValidValueResponseTest
         {
             validateResultObject(objectMapper.readValue(jsonString, ValidValueResponse.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
