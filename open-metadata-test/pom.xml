@@ -39,7 +39,7 @@
             <id>egeria-fvt</id>
             <activation>
                 <property>
-                    <name>!skipTests</name>
+                    <name>!skipFVT</name>
                 </property>
             </activation>
             <modules>
