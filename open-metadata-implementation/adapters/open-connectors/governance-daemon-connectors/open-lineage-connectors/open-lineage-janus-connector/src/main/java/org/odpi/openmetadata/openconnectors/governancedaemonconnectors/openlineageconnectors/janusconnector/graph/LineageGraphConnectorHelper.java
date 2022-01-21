@@ -489,6 +489,8 @@ public class LineageGraphConnectorHelper {
 
         addColumnProperties(lineageVertices);
 
+        addIncompleteClassifications(lineageVertices, lineageEdges);
+
         return new LineageVerticesAndEdges(lineageVertices, lineageEdges);
     }
 
@@ -660,7 +662,7 @@ public class LineageGraphConnectorHelper {
 
         for(LineageVertex lineageVertex : lineageVertices) {
             Graph graph = (Graph) g.V().has(PROPERTY_KEY_ENTITY_GUID, lineageVertex.getGuid()).bothE(EDGE_LABEL_CLASSIFICATION)
-                    .bothV().hasLabel(INCOMPLETE).subgraph(CLASSIFICATION_GRAPH).cap(CLASSIFICATION_GRAPH).next();
+                    .inV().hasLabel(INCOMPLETE).bothE().subgraph(CLASSIFICATION_GRAPH).cap(CLASSIFICATION_GRAPH).next();
             incompleteVertices.addAll(getLineageVertices(graph));
             incompleteEdges.addAll(getLineageEdges(graph));
         }
