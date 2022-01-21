@@ -4127,5 +4127,23 @@
                 </plugins>
             </build>
         </profile>
+        <!-- Warning - skips most checks, but does a quick(er) compile for quick turnaround time -->
+        <profile>
+            <id>quick</id>
+            <activation>
+                <property>
+                    <name>quick</name>
+                </property>
+            </activation>
+            <properties>
+                <rat.skip>true</rat.skip>
+                <skipTests>true</skipTests>
+                <skipFVT>true</skipFVT>
+                <maven.javadoc.skip>true</maven.javadoc.skip>
+                <maven.source.skip>true</maven.source.skip>
+                <enforcer.skip>true</enforcer.skip>
+                <jacoco.skip>true</jacoco.skip>
+            </properties>
+        </profile>
     </profiles>
 </project>
