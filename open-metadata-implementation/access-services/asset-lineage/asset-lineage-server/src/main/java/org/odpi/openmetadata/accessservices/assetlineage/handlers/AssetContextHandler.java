@@ -165,9 +165,6 @@ public class AssetContextHandler {
      */
     public Map<String, RelationshipsContext> buildColumnContext(String userId, LineageEntity lineageEntity)
             throws OCFCheckedExceptionBase {
-        if (!handlerHelper.isSchemaAttribute(userId, lineageEntity.getTypeDefName())) {
-            return new HashMap<>();
-        }
         EntityDetail entityDetail = handlerHelper.getEntityDetails(userId, lineageEntity.getGuid(), SCHEMA_ATTRIBUTE);
 
         return buildSchemaElementContext(userId, entityDetail);
@@ -184,12 +181,8 @@ public class AssetContextHandler {
      *
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
-    public Optional<LineageEntity> buildAssetEntityContext(String userId, String guid, String typeDefName) throws OCFCheckedExceptionBase {
+    public Optional<LineageEntity> buildEntityContext(String userId, String guid, String typeDefName) throws OCFCheckedExceptionBase {
         EntityDetail entityDetail = handlerHelper.getEntityDetails(userId, guid, typeDefName);
-        if (!handlerHelper.isTableOrDataStore(userId, entityDetail)) {
-            return Optional.empty();
-        }
-
         return Optional.of(handlerHelper.getLineageEntity(entityDetail));
     }
 

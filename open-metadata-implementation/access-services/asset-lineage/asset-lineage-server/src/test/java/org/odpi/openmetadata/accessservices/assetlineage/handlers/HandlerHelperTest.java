@@ -358,30 +358,6 @@ class HandlerHelperTest {
     }
 
     @Test
-    void isTableOrDataStore() {
-        EntityDetail entityDetail = mockEntityDetailWithType(DATA_STORE);
-        when(repositoryHelper.isTypeOf(SERVICE_NAME, DATA_STORE, DATA_STORE)).thenReturn(true);
-
-        assertTrue(handlerHelper.isTableOrDataStore(SERVICE_NAME, entityDetail));
-    }
-
-    @Test
-    void isDataStore() {
-        EntityDetail entityDetail = mockEntityDetailWithType(DATA_STORE);
-        when(repositoryHelper.isTypeOf(SERVICE_NAME, DATA_STORE, DATA_STORE)).thenReturn(true);
-
-        assertTrue(handlerHelper.isDataStore(SERVICE_NAME, entityDetail));
-    }
-
-    @Test
-    void isTable() {
-        EntityDetail entityDetail = mockEntityDetailWithType(RELATIONAL_TABLE);
-        when(repositoryHelper.isTypeOf(SERVICE_NAME, RELATIONAL_TABLE, RELATIONAL_TABLE)).thenReturn(true);
-
-        assertTrue(handlerHelper.isTable(SERVICE_NAME, entityDetail));
-    }
-
-    @Test
     void isSchemaAttribute() {
         when(repositoryHelper.isTypeOf(SERVICE_NAME, RELATIONAL_COLUMN, SCHEMA_ATTRIBUTE)).thenReturn(true);
 

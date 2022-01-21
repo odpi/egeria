@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
 import org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants;
+import org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageTypesValidator;
 import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -52,26 +53,25 @@ public class HandlerHelper {
 
     private static final String GUID_PARAMETER = "guid";
 
-    private final Set<String> lineageClassificationTypes;
     private final RepositoryHandler repositoryHandler;
     private final OMRSRepositoryHelper repositoryHelper;
     private final InvalidParameterHandler invalidParameterHandler;
 
     private final Converter converter;
+    private final AssetLineageTypesValidator assetLineageTypesValidator;
 
     /**
      * Construct the handler information needed to interact with the repository services
-     *
-     * @param invalidParameterHandler handler for invalid parameters
+     *  @param invalidParameterHandler handler for invalid parameters
      * @param repositoryHelper        helper used by the converters
      * @param repositoryHandler       handler for calling the repository services
      */
     public HandlerHelper(InvalidParameterHandler invalidParameterHandler, OMRSRepositoryHelper repositoryHelper, RepositoryHandler repositoryHandler,
-                         Converter converter, Set<String> lineageClassificationTypes) {
+                         Converter converter, AssetLineageTypesValidator assetLineageTypesValidator) {
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
         this.repositoryHandler = repositoryHandler;
-        this.lineageClassificationTypes = lineageClassificationTypes;
+        this.assetLineageTypesValidator = assetLineageTypesValidator;
         this.converter = converter;
     }
 
@@ -256,23 +256,7 @@ public class HandlerHelper {
     }
 
 
-    /**
-     * Extract the lineage classifications from the list of classifications assigned
-     *
-     * @param classifications the list of available classifications
-     *
-     * @return a list of lineage classifications
-     */
-    private List<Classification> filterLineageClassifications(List<Classification> classifications) {
-        if (CollectionUtils.isNotEmpty(classifications)) {
-            return classifications.stream()
-                    .filter(classification -> classification.getType() != null)
-                    .filter(classification -> lineageClassificationTypes.contains(classification.getType().getTypeDefName()))
-                    .collect(Collectors.toList());
-        } else {
-            return Collections.emptyList();
-        }
-    }
+
 
     private LineageEntity getClassificationVertex(Classification classification, String entityGUID) {
         LineageEntity classificationVertex = new LineageEntity();
@@ -364,7 +348,7 @@ public class HandlerHelper {
      * @return a set of {@link GraphContext} containing the lineage context for the classifications
      */
     public RelationshipsContext buildContextForLineageClassifications(EntityDetail entityDetail) {
-        List<Classification> classifications = filterLineageClassifications(entityDetail.getClassifications());
+        List<Classification> classifications = assetLineageTypesValidator.filterLineageClassifications(entityDetail.getClassifications());
 
         LineageEntity originalEntityVertex = converter.createLineageEntity(entityDetail);
 
@@ -441,18 +425,6 @@ public class HandlerHelper {
     }
 
     /**
-     * Verifies if the entity is of type RelationalTable, DataStore or subtype
-     *
-     * @param serviceName  the service name
-     * @param entityDetail the entity detail
-     *
-     * @return true if the entity is of type RelationalTable, Asset or subtype, false otherwise
-     */
-    public boolean isTableOrDataStore(String serviceName, EntityDetail entityDetail) {
-        return isDataStore(serviceName, entityDetail) || isTable(serviceName, entityDetail);
-    }
-
-    /**
      * Verifies if the entity is of type DataStore or subtype
      *
      * @param serviceName  the service name
@@ -463,7 +435,6 @@ public class HandlerHelper {
     public boolean isDataStore(String serviceName, EntityDetail entityDetail) {
         return repositoryHelper.isTypeOf(serviceName, entityDetail.getType().getTypeDefName(), DATA_STORE);
     }
-
 
     /**
      * Verifies if the entity is of type RelationalTable or subtype

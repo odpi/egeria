@@ -193,22 +193,10 @@ class AssetContextHandlerTest {
         LineageEntity lineageEntity = mockLineageEntity(RELATIONAL_TABLE);
         EntityDetail entityDetail = mockEntityDetail(RELATIONAL_TABLE);
         when(handlerHelper.getEntityDetails(USER, GUID, RELATIONAL_TABLE)).thenReturn(entityDetail);
-        when(handlerHelper.isTableOrDataStore(USER, entityDetail)).thenReturn(true);
-
         when(handlerHelper.getLineageEntity(entityDetail)).thenReturn(lineageEntity);
 
-        assetContextHandler.buildAssetEntityContext(USER, GUID, RELATIONAL_TABLE);
+        assetContextHandler.buildEntityContext(USER, GUID, RELATIONAL_TABLE);
         verify(handlerHelper, times(1)).getLineageEntity(entityDetail);
-    }
-
-    @Test
-    void buildAssetEntityContext_notValidType() throws OCFCheckedExceptionBase {
-        EntityDetail entityDetail = mockEntityDetail(TABULAR_COLUMN);
-        when(handlerHelper.getEntityDetails(USER, GUID, TABULAR_COLUMN)).thenReturn(entityDetail);
-        when(handlerHelper.isTableOrDataStore(USER, entityDetail)).thenReturn(false);
-
-        assetContextHandler.buildAssetEntityContext(USER, GUID, TABULAR_COLUMN);
-        verify(handlerHelper, times(0)).getLineageEntity(entityDetail);
     }
 
     @Test
