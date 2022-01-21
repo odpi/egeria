@@ -48,8 +48,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>glossary-author-view-spring</artifactId>
-            <scope>compile</scope>
+            <artifactId>ffdc-services</artifactId>
         </dependency>
 
         <dependency>
@@ -145,7 +144,14 @@
                                 <argument>-Dloader.path=${fvt.distdir}/server/lib</argument>
                                 <argument>-Dspringdoc.api-docs.enabled=false</argument>
                                 <argument>-Djavax.net.ssl.trustStore=${fvt.distdir}/truststore.p12</argument>
+                                <argument>-Djavax.net.ssl.trustStorePassword=egeria</argument>
                                 <argument>-Dserver.ssl.trust-store=${fvt.distdir}/truststore.p12</argument>
+                                <argument>-Dserver.ssl.trust-store-password=egeria</argument>
+                                <argument>-Djavax.net.ssl.keyStore=${fvt.distdir}/keystore.p12</argument>
+                                <argument>-Djavax.net.ssl.keyStorePassword=egeria</argument>
+<!--
+                                <argument>-Djavax.net.debug=ssl:handshake:verbose:keymanager:trustmanager</argument>
+-->
                                 <argument>-jar</argument>
                                 <argument>${fvt.distdir}/server/server-chassis-spring-${open-metadata.version}.jar</argument>
                             </arguments>
