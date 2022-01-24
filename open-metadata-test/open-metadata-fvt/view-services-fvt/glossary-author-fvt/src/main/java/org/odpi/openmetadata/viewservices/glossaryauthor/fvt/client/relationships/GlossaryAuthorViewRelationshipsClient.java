@@ -51,8 +51,6 @@ public class GlossaryAuthorViewRelationshipsClient implements GlossaryAuthorView
         this.client = client;
     }
 
-    private final Map<Class<?>, GlossaryAuthorViewRelationshipsClient> cache = new HashMap<>();
-
 
     @Override
     public Relationship create(String userId, Relationship relationship) throws PropertyServerException, InvalidParameterException, UserNotAuthorizedException {
