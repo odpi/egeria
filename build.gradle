@@ -100,7 +100,7 @@ allprojects {
         jacksonaslVersion = '1.9.14-atlassian-6'
         jakartaannotationVersion = '1.3.5'
         jakartapersistenceVersion = '2.2.3'
-	jakartavalidationVersion = '3.0.0'
+	    jakartavalidationVersion = '3.0.0'
         janusVersion = '0.6.0'
         javassistVersion = '3.28.0-GA'
         jaxbVersion = '2.3.1'

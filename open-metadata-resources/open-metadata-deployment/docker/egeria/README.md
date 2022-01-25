@@ -5,7 +5,6 @@
 
 [![GitHub](https://img.shields.io/github/license/odpi/egeria)](LICENSE)
 [![Maven Central](https://img.shields.io/maven-central/v/org.odpi.egeria/egeria)](https://mvnrepository.com/artifact/org.odpi.egeria)
-[![Azure](https://dev.azure.com/ODPi/Egeria/_apis/build/status/Egeria/Egeria%20-%20Merge?branchName=master)](https://dev.azure.com/odpi/Egeria/_build)
 
 # Egeria - Open Metadata and Governance
   
@@ -24,20 +23,9 @@ This *nix based image contains all the required runtime artifacts for egeria - f
 
 Specifically it contains the full [egeria assembly](https://github.com/odpi/egeria/blob/master/open-metadata-distribution/open-metadata-assemblies/src/main/assemblies/egeria-omag.xml)
 
-## Using this image as part of our Lab Tutorials
+## Usage
 
-This docker image is primarily intended to be used as part of a series of tutorials we offer to demonstrate and explain
-egeria. The environments documented there will allow you to get an example environment up and running in very little time within a kubernetes cluster.
- 
-* [Open Metadata Tutorials](https://egeria.odpi.org/open-metadata-resources/open-metadata-tutorials/)
-
-## Build Information
-* [Build pipeline](https://dev.azure.com/ODPi/Egeria/_build?definitionId=12&_a=summary)
-* [Source](https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/docker/egeria)
-
-## Useage
-
-It's recommended you use the tutorials above to get started. Below are some examples of using the image standalone. Refer to the main Egeria docs for further information
+It's recommended you use the Egeria tutorials to get started. Below are some examples of using the image standalone. Refer to the main Egeria docs for further information
 
 ### Launch a container running the latest version of egeria in the background (version 2.0 and above)
 
