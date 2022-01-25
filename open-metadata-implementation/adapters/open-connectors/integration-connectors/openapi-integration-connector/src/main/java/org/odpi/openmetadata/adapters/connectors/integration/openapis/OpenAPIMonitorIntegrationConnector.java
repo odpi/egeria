@@ -12,7 +12,6 @@ import org.odpi.openmetadata.accessservices.datamanager.properties.APIOperationP
 import org.odpi.openmetadata.accessservices.datamanager.properties.APIProperties;
 import org.odpi.openmetadata.accessservices.datamanager.properties.EndpointProperties;
 import org.odpi.openmetadata.adapters.connectors.integration.openapis.ffdc.OpenAPIIntegrationConnectorAuditCode;
-
 import org.odpi.openmetadata.adapters.connectors.integration.openapis.ffdc.OpenAPIIntegrationConnectorErrorCode;
 import org.odpi.openmetadata.adapters.connectors.integration.openapis.properties.OpenAPIOperation;
 import org.odpi.openmetadata.adapters.connectors.integration.openapis.properties.OpenAPIPathDescription;
@@ -182,7 +181,7 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector
                     {
                         ObjectMapper         objectMapper = new ObjectMapper();
                         OpenAPISpecification openAPISpecification = objectMapper.readValue(openAPIJSON, OpenAPISpecification.class);
-                        String                title = "<Untitled>";
+                        String               title = "<Untitled>";
 
                         if (openAPISpecification != null)
                         {

@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetowner.converters;
 
 import org.odpi.openmetadata.accessservices.assetowner.metadataelements.*;
-import org.odpi.openmetadata.accessservices.assetowner.properties.ElementClassification;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ElementClassification;
 import org.odpi.openmetadata.accessservices.assetowner.properties.OwnerType;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
@@ -110,50 +110,7 @@ abstract class AssetOwnerOMASConverter<B> extends OpenMetadataAPIGenericConverte
 
             elementHeader.setOrigin(elementOrigin);
 
-            return elementHeader;
-        }
-        else
-        {
-            super.handleMissingMetadataInstance(beanClass.getName(),
-                                                TypeDefCategory.ENTITY_DEF,
-                                                methodName);
-        }
-
-        return null;
-    }
-
-
-
-    /**
-     * Extract the properties from the entity or relationship.
-     *
-     * @param beanClass name of the class to create
-     * @param header header from the entity containing the properties
-     * @param methodName calling method
-     * @return filled out element header
-     * @throws PropertyServerException there is a problem in the use of the generic handlers because
-     * the converter has been configured with a type of bean that is incompatible with the handler
-     */
-    public ElementHeader getMetadataElementHeader(Class<B>       beanClass,
-                                                  InstanceHeader header,
-                                                  String         methodName) throws PropertyServerException
-    {
-        if (header != null)
-        {
-            ElementHeader elementHeader = new ElementHeader();
-
-            elementHeader.setGUID(header.getGUID());
-            elementHeader.setType(this.getElementType(header));
-
-            ElementOrigin elementOrigin = new ElementOrigin();
-
-            elementOrigin.setSourceServer(serverName);
-            elementOrigin.setOriginCategory(this.getElementOriginCategory(header.getInstanceProvenanceType()));
-            elementOrigin.setHomeMetadataCollectionId(header.getMetadataCollectionId());
-            elementOrigin.setHomeMetadataCollectionName(header.getMetadataCollectionName());
-            elementOrigin.setLicense(header.getInstanceLicense());
-
-            elementHeader.setOrigin(elementOrigin);
+            elementHeader.setVersions(this.getElementVersions(header));
 
             return elementHeader;
         }
@@ -166,8 +123,6 @@ abstract class AssetOwnerOMASConverter<B> extends OpenMetadataAPIGenericConverte
 
         return null;
     }
-
-
 
 
     /**
@@ -219,7 +174,7 @@ abstract class AssetOwnerOMASConverter<B> extends OpenMetadataAPIGenericConverte
     {
         if (entityProxy != null)
         {
-            ElementHeader elementHeader = getMetadataElementHeader(beanClass, entityProxy, methodName);
+            ElementHeader elementHeader = getMetadataElementHeader(beanClass, entityProxy, entityProxy.getClassifications(), methodName);
             ElementStub   elementStub   = new ElementStub(elementHeader);
 
             elementStub.setUniqueName(repositoryHelper.getStringProperty(serviceName,
@@ -281,6 +236,27 @@ abstract class AssetOwnerOMASConverter<B> extends OpenMetadataAPIGenericConverte
         }
 
         return elementType;
+    }
+
+
+    /**
+     * Extract detail of the version of the element and the user's maintaining it.
+     *
+     * @param header audit header from the repository
+     * @return ElementVersions object
+     */
+    ElementVersions getElementVersions(InstanceAuditHeader header)
+    {
+        ElementVersions elementVersions = new ElementVersions();
+
+        elementVersions.setCreatedBy(header.getCreatedBy());
+        elementVersions.setCreateTime(header.getCreateTime());
+        elementVersions.setUpdatedBy(header.getUpdatedBy());
+        elementVersions.setUpdateTime(header.getUpdateTime());
+        elementVersions.setMaintainedBy(header.getMaintainedBy());
+        elementVersions.setVersion(header.getVersion());
+
+        return elementVersions;
     }
 
 

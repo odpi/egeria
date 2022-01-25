@@ -69,7 +69,7 @@ public class GovernanceDefinitionConverter<B> extends GovernanceProgramOMASConve
 
                 if (primaryEntity != null)
                 {
-                    bean.setElementHeader(this.getMetadataElementHeader(beanClass, primaryEntity, methodName));
+                    bean.setElementHeader(this.getMetadataElementHeader(beanClass, primaryEntity, primaryEntity.getClassifications(), methodName));
 
                     /*
                      * The initial set of values come from the entity.
@@ -95,7 +95,6 @@ public class GovernanceDefinitionConverter<B> extends GovernanceProgramOMASConve
                     {
                         governanceDefinitionProperties = new GovernanceDefinitionProperties();
                     }
-
 
                     governanceDefinitionProperties.setDocumentIdentifier(this.removeQualifiedName(instanceProperties));
                     governanceDefinitionProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));

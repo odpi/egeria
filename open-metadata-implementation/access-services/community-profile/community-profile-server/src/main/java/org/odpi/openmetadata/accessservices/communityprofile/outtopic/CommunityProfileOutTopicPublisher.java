@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.communityprofile.outtopic;
 import org.odpi.openmetadata.accessservices.communityprofile.connectors.outtopic.CommunityProfileOutTopicServerConnector;
 import org.odpi.openmetadata.accessservices.communityprofile.ffdc.CommunityProfileAuditCode;
 import org.odpi.openmetadata.accessservices.communityprofile.events.*;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.ElementStub;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ElementStub;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 
 
@@ -88,7 +88,7 @@ public class CommunityProfileOutTopicPublisher
      * @param classificationName if a classification has changed this identifies which classification
      * @param elementStub encoded header of the entity
      */
-    public void sentEntityEvent(CommunityProfileOutboundEventType eventType,
+    public void sendEntityEvent(CommunityProfileOutboundEventType eventType,
                                 String                            elementGUID,
                                 String                            elementTypeName,
                                 String                            classificationName,
@@ -132,10 +132,10 @@ public class CommunityProfileOutTopicPublisher
      * @param relationshipGUID unique identifier for the relationship
      * @param relationshipTypeName type of relationship
      * @param relationshipElementStub encoded header of the relationship
-     * @param endTwoElementStub encoded header of the entity at end 1 of the relationship
+     * @param endOneElementStub encoded header of the entity at end 1 of the relationship
      * @param endTwoElementStub encoded header of the entity at end 2 of the relationship
      */
-    public void sentRelationshipEvent(CommunityProfileOutboundEventType eventType,
+    public void sendRelationshipEvent(CommunityProfileOutboundEventType eventType,
                                       String                            relationshipGUID,
                                       String                            relationshipTypeName,
                                       ElementStub                       relationshipElementStub,
@@ -171,11 +171,13 @@ public class CommunityProfileOutTopicPublisher
      *
      * @param profileElementStub profile of person
      * @param contributingUserId the userId that took them to the plateau
+     * @param isPublic can this be sent to colleagues
      * @param pointsTotal the number of points that the person has achieved
      * @param plateau the plateau achieved
      */
     public void sendKarmaPointPlateauEvent(ElementStub  profileElementStub,
                                            String       contributingUserId,
+                                           boolean      isPublic,
                                            long         pointsTotal,
                                            long         plateau)
     {
@@ -184,6 +186,7 @@ public class CommunityProfileOutTopicPublisher
         event.setEventType(CommunityProfileOutboundEventType.KARMA_POINT_PLATEAU_EVENT);
         event.setPrincipleElement(profileElementStub);
         event.setUserId(contributingUserId);
+        event.setIsPublic(isPublic);
         event.setPointsTotal(pointsTotal);
         event.setPlateau(plateau);
 

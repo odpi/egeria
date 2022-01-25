@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     name: "Gradle"
     steps:
       - uses: actions/checkout@v2
@@ -18,13 +18,14 @@ jobs:
           distribution: 'adopt'
           java-version: '11'
       - name: Cache Gradle packages
-        uses: actions/cache@v2.1.6
+        uses: actions/cache@v2.1.7
         with:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
       - name: Build with Gradle
-        run: ./gradlew build
+        # For a build machine environment, force a more clean build 
+        run: ./gradlew clean build --no-build-cache --no-configure-on-demand --priority normal --no-watch-fs --refresh-dependencies
       - name: Upload Test coverage report
         uses: actions/upload-artifact@v2
         with:

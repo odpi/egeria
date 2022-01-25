@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.communityprofile.server;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.MetadataSourceElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.MetadataSourceElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.MetadataSourceProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.MetadataSourceResponse;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
@@ -14,7 +14,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
-import org.odpi.openmetadata.commonservices.generichandlers.SoftwareServerCapabilityHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.SoftwareCapabilityHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
 
@@ -115,26 +115,26 @@ public class CommunityProfileRESTServices
 
             if (requestBody != null)
             {
-                SoftwareServerCapabilityHandler<MetadataSourceElement> handler = instanceHandler.getMetadataSourceHandler(userId, serverName, methodName);
+                SoftwareCapabilityHandler<MetadataSourceElement> handler = instanceHandler.getMetadataSourceHandler(userId, serverName, methodName);
 
-                response.setGUID(handler.createSoftwareServerCapability(userId,
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        requestBody.getQualifiedName(),
-                                                                        requestBody.getDisplayName(),
-                                                                        requestBody.getDescription(),
-                                                                        requestBody.getTypeDescription(),
-                                                                        requestBody.getVersion(),
-                                                                        requestBody.getPatchLevel(),
-                                                                        requestBody.getSource(),
-                                                                        requestBody.getAdditionalProperties(),
-                                                                        requestBody.getVendorProperties(),
-                                                                        null,
-                                                                        null,
-                                                                        methodName));
+                response.setGUID(handler.createSoftwareCapability(userId,
+                                                                  null,
+                                                                  null,
+                                                                  null,
+                                                                  null,
+                                                                  requestBody.getQualifiedName(),
+                                                                  requestBody.getDisplayName(),
+                                                                  requestBody.getDescription(),
+                                                                  requestBody.getTypeDescription(),
+                                                                  requestBody.getVersion(),
+                                                                  requestBody.getPatchLevel(),
+                                                                  requestBody.getSource(),
+                                                                  requestBody.getAdditionalProperties(),
+                                                                  null,
+                                                                  requestBody.getVendorProperties(),
+                                                                  null,
+                                                                  null,
+                                                                  methodName));
             }
             else
             {
@@ -181,11 +181,11 @@ public class CommunityProfileRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SoftwareServerCapabilityHandler<MetadataSourceElement> handler = instanceHandler.getMetadataSourceHandler(userId, serverName, methodName);
+            SoftwareCapabilityHandler<MetadataSourceElement> handler = instanceHandler.getMetadataSourceHandler(userId, serverName, methodName);
 
             response.setGUID(handler.getBeanGUIDByQualifiedName(userId,
-                                                                OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_GUID,
-                                                                OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                                OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_GUID,
+                                                                OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                                 qualifiedName,
                                                                 parameterName,
                                                                 false,
@@ -233,12 +233,12 @@ public class CommunityProfileRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SoftwareServerCapabilityHandler<MetadataSourceElement> handler = instanceHandler.getMetadataSourceHandler(userId, serverName, methodName);
+            SoftwareCapabilityHandler<MetadataSourceElement> handler = instanceHandler.getMetadataSourceHandler(userId, serverName, methodName);
 
             response.setElement(handler.getBeanFromRepository(userId,
                                                               metadataSourceGUID,
                                                               metadataSourceGUIDParameterName,
-                                                              OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                              OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                               false,
                                                               false,
                                                               new Date(),
@@ -286,17 +286,17 @@ public class CommunityProfileRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SoftwareServerCapabilityHandler<MetadataSourceElement> handler = instanceHandler.getMetadataSourceHandler(userId, serverName, methodName);
+            SoftwareCapabilityHandler<MetadataSourceElement> handler = instanceHandler.getMetadataSourceHandler(userId, serverName, methodName);
 
-            handler.addSoftwareServerCapabilityClassification(userId,
-                                                              null,
-                                                              null,
-                                                              metadataSourceGUID,
-                                                              metadataSourceGUIDParameterName,
-                                                              OpenMetadataAPIMapper.USER_PROFILE_MANAGER_TYPE_NAME,
-                                                              null,
-                                                              null,
-                                                              methodName);
+            handler.addSoftwareCapabilityClassification(userId,
+                                                        null,
+                                                        null,
+                                                        metadataSourceGUID,
+                                                        metadataSourceGUIDParameterName,
+                                                        OpenMetadataAPIMapper.USER_PROFILE_MANAGER_TYPE_NAME,
+                                                        null,
+                                                        null,
+                                                        methodName);
         }
         catch (Exception error)
         {
@@ -341,17 +341,17 @@ public class CommunityProfileRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SoftwareServerCapabilityHandler<MetadataSourceElement> handler = instanceHandler.getMetadataSourceHandler(userId, serverName, methodName);
+            SoftwareCapabilityHandler<MetadataSourceElement> handler = instanceHandler.getMetadataSourceHandler(userId, serverName, methodName);
 
-            handler.addSoftwareServerCapabilityClassification(userId,
-                                                              null,
-                                                              null,
-                                                              metadataSourceGUID,
-                                                              metadataSourceGUIDParameterName,
-                                                              OpenMetadataAPIMapper.USER_ACCESS_DIRECTORY_TYPE_NAME,
-                                                              null,
-                                                              null,
-                                                              methodName);
+            handler.addSoftwareCapabilityClassification(userId,
+                                                        null,
+                                                        null,
+                                                        metadataSourceGUID,
+                                                        metadataSourceGUIDParameterName,
+                                                        OpenMetadataAPIMapper.USER_ACCESS_DIRECTORY_TYPE_NAME,
+                                                        null,
+                                                        null,
+                                                        methodName);
         }
         catch (Exception error)
         {
@@ -395,17 +395,17 @@ public class CommunityProfileRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SoftwareServerCapabilityHandler<MetadataSourceElement> handler = instanceHandler.getMetadataSourceHandler(userId, serverName, methodName);
+            SoftwareCapabilityHandler<MetadataSourceElement> handler = instanceHandler.getMetadataSourceHandler(userId, serverName, methodName);
 
-            handler.addSoftwareServerCapabilityClassification(userId,
-                                                              null,
-                                                              null,
-                                                              metadataSourceGUID,
-                                                              metadataSourceGUIDParameterName,
-                                                              OpenMetadataAPIMapper.MASTER_DATA_MANAGER_TYPE_NAME,
-                                                              null,
-                                                              null,
-                                                              methodName);
+            handler.addSoftwareCapabilityClassification(userId,
+                                                        null,
+                                                        null,
+                                                        metadataSourceGUID,
+                                                        metadataSourceGUIDParameterName,
+                                                        OpenMetadataAPIMapper.MASTER_DATA_MANAGER_TYPE_NAME,
+                                                        null,
+                                                        null,
+                                                        methodName);
         }
         catch (Exception error)
         {

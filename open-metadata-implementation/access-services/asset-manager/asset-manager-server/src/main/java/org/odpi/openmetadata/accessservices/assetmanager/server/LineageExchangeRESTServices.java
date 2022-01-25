@@ -12,7 +12,6 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -45,7 +44,6 @@ public class LineageExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param assetManagerIsHome ensure that only the process manager can update this process
-     * @param initialStatus status value for the new process (default = ACTIVE)
      * @param requestBody properties about the process to store
      *
      * @return unique identifier of the new process or
@@ -56,7 +54,6 @@ public class LineageExchangeRESTServices
     public GUIDResponse createProcess(String             serverName,
                                       String             userId,
                                       boolean            assetManagerIsHome,
-                                      ProcessStatus      initialStatus,
                                       ProcessRequestBody requestBody)
     {
         final String methodName = "createProcess";
@@ -78,7 +75,6 @@ public class LineageExchangeRESTServices
                                                        requestBody.getMetadataCorrelationProperties(),
                                                        assetManagerIsHome,
                                                        requestBody.getElementProperties(),
-                                                       initialStatus,
                                                        methodName));
             }
             else
@@ -276,7 +272,6 @@ public class LineageExchangeRESTServices
      * @param assetManagerIsHome ensure that only the process manager can update this process
      * @param parentProcessGUID unique identifier of the process in the external process manager that is to be the parent process
      * @param childProcessGUID unique identifier of the process in the external process manager that is to be the nested sub-process
-     * @param containmentType describes the ownership of the sub-process
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return void or
@@ -284,13 +279,12 @@ public class LineageExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse setupProcessParent(String                             serverName,
-                                           String                             userId,
-                                           String                             parentProcessGUID,
-                                           String                             childProcessGUID,
-                                           boolean                            assetManagerIsHome,
-                                           ProcessContainmentType             containmentType,
-                                           AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse setupProcessParent(String                            serverName,
+                                           String                            userId,
+                                           String                            parentProcessGUID,
+                                           String                            childProcessGUID,
+                                           boolean                           assetManagerIsHome,
+                                           ProcessContainmentTypeRequestBody requestBody)
     {
         final String methodName = "setupProcessParent";
 
@@ -313,7 +307,7 @@ public class LineageExchangeRESTServices
                                            assetManagerIsHome,
                                            parentProcessGUID,
                                            childProcessGUID,
-                                           containmentType,
+                                           requestBody.getProcessContainmentType(),
                                            methodName);
             }
             else
@@ -324,7 +318,7 @@ public class LineageExchangeRESTServices
                                            assetManagerIsHome,
                                            parentProcessGUID,
                                            childProcessGUID,
-                                           containmentType,
+                                           null,
                                            methodName);
             }
         }
@@ -457,6 +451,7 @@ public class LineageExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param processGUID unique identifier of the metadata element to withdraw
+     * @param requestBody asset manager identifiers
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid

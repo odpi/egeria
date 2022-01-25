@@ -28,7 +28,7 @@ import java.util.Map;
         " of the open metadata and governance services within an OMAG Server. This configuration determines which of the Open Metadata and " +
         "Governance (OMAG) services are active.",
         externalDocs=@ExternalDocumentation(description="Further information",
-                url="https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/user/configuring-an-omag-server.html"))
+                url="https://odpi.github.io/egeria-docs/guides/admin/servers/"))
 
 public class ConfigAccessServicesResource
 {
@@ -312,6 +312,25 @@ public class ConfigAccessServicesResource
                                                 @RequestBody  List<AccessServiceConfig> accessServicesConfig)
     {
         return adminAPI.setAccessServicesConfig(userId, serverName, accessServicesConfig);
+    }
+
+
+    /**
+     * Set up the default remote enterprise topic.  This allows a remote process to monitor enterprise topic events.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param configurationProperties additional properties for the cohort
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or null userId parameter.
+     */
+    @PostMapping(path = "/enterprise-access/remote-topic")
+    public VoidResponse addRemoteEnterpriseTopic(@PathVariable String               userId,
+                                                 @PathVariable String               serverName,
+                                                 @RequestBody  Map<String, Object>  configurationProperties)
+    {
+        return adminAPI.addRemoteEnterpriseTopic(userId, serverName, configurationProperties);
     }
 
 

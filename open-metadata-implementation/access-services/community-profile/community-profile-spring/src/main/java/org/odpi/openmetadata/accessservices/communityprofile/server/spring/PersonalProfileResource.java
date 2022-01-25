@@ -15,15 +15,17 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * The GovernanceProgramOMASGovernanceLeadershipResource provides a Spring based server-side REST API
- * that supports the GovernanceLeadershipInterface.   It delegates each request to the
- * GovernanceProgramRESTServices.  This provides the server-side implementation of the Governance Program Open Metadata
- * Assess Service (OMAS) which is used to manage the full lifecycle of a governance program.
+ * The PersonalProfileResource provides a Spring based server-side REST API
+ * that supports the PersonalProfileInterface.   It delegates each request to the
+ * PersonalProfileRESTServices.  This provides the server-side implementation of the Community Profile Open Metadata
+ * Assess Service (OMAS) which is used to manage information about people, roles and organizations.
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/community-profile/users/{userId}")
 
-@Tag(name="Community Profile OMAS", description="The Community Profile OMAS provides APIs and events for tools and applications that are managing information about people and the way they work together.", externalDocs=@ExternalDocumentation(description="Community Profile Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/community-profile/"))
+@Tag(name="Community Profile OMAS", description="The Community Profile OMAS provides APIs and events for tools and applications that are managing information about people and the way they work together.",
+     externalDocs=@ExternalDocumentation(description="Community Profile Open Metadata Access Service (OMAS)",
+                                         url="https://odpi.github.io/egeria-docs/services/omas/community-profile/overview/"))
 
 public class PersonalProfileResource
 {

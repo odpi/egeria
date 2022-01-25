@@ -7,7 +7,7 @@
     <parent>
         <artifactId>open-lineage-connectors</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.4-SNAPSHOT</version>
+        <version>3.5-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -232,7 +232,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-                     <skipTests>true</skipTests>
+                    <excludes>
+                        <exclude>**/OpenLineageGraphValidationTests.java</exclude>
+                    </excludes>
                 </configuration>
              </plugin>
         </plugins>

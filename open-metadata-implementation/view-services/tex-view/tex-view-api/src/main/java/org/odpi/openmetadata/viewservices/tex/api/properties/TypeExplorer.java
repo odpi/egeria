@@ -418,7 +418,7 @@ public class TypeExplorer {
                             this.getClass().getName(),
                             methodName);
                 }
-                superTypeExplorer.addSubTypName(classificationTypeName);
+                superTypeExplorer.addSubTypeName(classificationTypeName);
             }
         }
 

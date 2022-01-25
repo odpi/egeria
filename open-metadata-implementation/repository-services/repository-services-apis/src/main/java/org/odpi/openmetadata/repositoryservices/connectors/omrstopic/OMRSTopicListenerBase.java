@@ -284,7 +284,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
                 }
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             String eventString = NULL_EVENT;
 
@@ -446,7 +446,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
                 }
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             String eventString = NULL_EVENT;
 
@@ -501,34 +501,74 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
                         break;
 
                     case CLASSIFIED_ENTITY_EVENT:
-                        this.processClassifiedEntityEvent(serviceName,
-                                                          instanceEventOriginator.getMetadataCollectionId(),
-                                                          instanceEventOriginator.getServerName(),
-                                                          instanceEventOriginator.getServerType(),
-                                                          instanceEventOriginator.getOrganizationName(),
-                                                          instanceEvent.getEntity(),
-                                                          instanceEvent.getClassification());
+                        if (instanceEvent.getEntity() != null)
+                        {
+                            this.processClassifiedEntityEvent(serviceName,
+                                                              instanceEventOriginator.getMetadataCollectionId(),
+                                                              instanceEventOriginator.getServerName(),
+                                                              instanceEventOriginator.getServerType(),
+                                                              instanceEventOriginator.getOrganizationName(),
+                                                              instanceEvent.getEntity(),
+                                                              instanceEvent.getClassification());
+                        }
+                        else if (instanceEvent.getEntityProxy() != null)
+                        {
+                            this.processClassifiedEntityEvent(serviceName,
+                                                              instanceEventOriginator.getMetadataCollectionId(),
+                                                              instanceEventOriginator.getServerName(),
+                                                              instanceEventOriginator.getServerType(),
+                                                              instanceEventOriginator.getOrganizationName(),
+                                                              instanceEvent.getEntityProxy(),
+                                                              instanceEvent.getClassification());
+                        }
                         break;
 
                     case RECLASSIFIED_ENTITY_EVENT:
-                        this.processReclassifiedEntityEvent(serviceName,
-                                                            instanceEventOriginator.getMetadataCollectionId(),
-                                                            instanceEventOriginator.getServerName(),
-                                                            instanceEventOriginator.getServerType(),
-                                                            instanceEventOriginator.getOrganizationName(),
-                                                            instanceEvent.getEntity(),
-                                                            instanceEvent.getOriginalClassification(),
-                                                            instanceEvent.getClassification());
+                        if (instanceEvent.getEntity() != null)
+                        {
+                            this.processReclassifiedEntityEvent(serviceName,
+                                                                instanceEventOriginator.getMetadataCollectionId(),
+                                                                instanceEventOriginator.getServerName(),
+                                                                instanceEventOriginator.getServerType(),
+                                                                instanceEventOriginator.getOrganizationName(),
+                                                                instanceEvent.getEntity(),
+                                                                instanceEvent.getOriginalClassification(),
+                                                                instanceEvent.getClassification());
+                        }
+                        else if (instanceEvent.getEntityProxy() != null)
+                        {
+                            this.processReclassifiedEntityEvent(serviceName,
+                                                                instanceEventOriginator.getMetadataCollectionId(),
+                                                                instanceEventOriginator.getServerName(),
+                                                                instanceEventOriginator.getServerType(),
+                                                                instanceEventOriginator.getOrganizationName(),
+                                                                instanceEvent.getEntityProxy(),
+                                                                instanceEvent.getOriginalClassification(),
+                                                                instanceEvent.getClassification());
+                        }
                         break;
 
                     case DECLASSIFIED_ENTITY_EVENT:
-                        this.processDeclassifiedEntityEvent(serviceName,
-                                                            instanceEventOriginator.getMetadataCollectionId(),
-                                                            instanceEventOriginator.getServerName(),
-                                                            instanceEventOriginator.getServerType(),
-                                                            instanceEventOriginator.getOrganizationName(),
-                                                            instanceEvent.getEntity(),
-                                                            instanceEvent.getOriginalClassification());
+                        if (instanceEvent.getEntity() != null)
+                        {
+                            this.processDeclassifiedEntityEvent(serviceName,
+                                                                instanceEventOriginator.getMetadataCollectionId(),
+                                                                instanceEventOriginator.getServerName(),
+                                                                instanceEventOriginator.getServerType(),
+                                                                instanceEventOriginator.getOrganizationName(),
+                                                                instanceEvent.getEntity(),
+                                                                instanceEvent.getOriginalClassification());
+                        }
+                        else if (instanceEvent.getEntityProxy() != null)
+                        {
+                            this.processDeclassifiedEntityEvent(serviceName,
+                                                                instanceEventOriginator.getMetadataCollectionId(),
+                                                                instanceEventOriginator.getServerName(),
+                                                                instanceEventOriginator.getServerType(),
+                                                                instanceEventOriginator.getOrganizationName(),
+                                                                instanceEvent.getEntityProxy(),
+                                                                instanceEvent.getOriginalClassification());
+                        }
                         break;
 
                     case DELETED_ENTITY_EVENT:
@@ -810,7 +850,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
                 log.debug("Ignored instance event, null type");
             }
         }
-        catch (Throwable  error)
+        catch (Exception error)
         {
             String eventString = NULL_EVENT;
 
@@ -1377,6 +1417,32 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
     /**
      * A new classification has been added to an entity.
      *
+     * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
+     *                   local repository, or event mapper name.
+     * @param originatorMetadataCollectionId  unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName  name of the server that the event came from.
+     * @param originatorServerType  type of server that the event came from.
+     * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
+     * @param entity  details of the entity with the new classification added. No guarantee this is all of the classifications.
+     * @param classification new classification
+     */
+    @SuppressWarnings(value = "unused")
+    public void processClassifiedEntityEvent(String         sourceName,
+                                             String         originatorMetadataCollectionId,
+                                             String         originatorServerName,
+                                             String         originatorServerType,
+                                             String         originatorOrganizationName,
+                                             EntityProxy    entity,
+                                             Classification classification)
+    {
+        log.debug("Processing classified EntityProxy event from: " + sourceName);
+    }
+
+
+    /**
+     * A new classification has been added to an entity.
+     *
      * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
      *                                       local repository, or event mapper name.
      * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
@@ -1395,6 +1461,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
                                              String       originatorOrganizationName,
                                              EntityDetail entity)
     {
+        log.debug("Processing deprecated classified Entity event from: " + sourceName);
     }
 
 
@@ -1411,7 +1478,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param entity  details of the entity after the classification has been removed. No guarantee this is all of the classifications.
      * @param originalClassification classification that was removed
      */
-    @SuppressWarnings(value = "deprecation")
+    @SuppressWarnings(value = {"deprecation", "unused"})
     public void processDeclassifiedEntityEvent(String         sourceName,
                                                String         originatorMetadataCollectionId,
                                                String         originatorServerName,
@@ -1437,6 +1504,32 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
     /**
      * A classification has been removed from an entity.
      *
+     * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
+     *                   local repository, or event mapper name.
+     * @param originatorMetadataCollectionId  unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName  name of the server that the event came from.
+     * @param originatorServerType  type of server that the event came from.
+     * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
+     * @param entity  details of the entity after the classification has been removed. No guarantee this is all of the classifications.
+     * @param originalClassification classification that was removed
+     */
+    @SuppressWarnings(value = "unused")
+    public void processDeclassifiedEntityEvent(String         sourceName,
+                                               String         originatorMetadataCollectionId,
+                                               String         originatorServerName,
+                                               String         originatorServerType,
+                                               String         originatorOrganizationName,
+                                               EntityProxy    entity,
+                                               Classification originalClassification)
+    {
+        log.debug("Processing declassified EntityProxy event from: " + sourceName);
+    }
+
+
+    /**
+     * A classification has been removed from an entity.
+     *
      * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
      *                                       local repository, or event mapper name.
      * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
@@ -1455,6 +1548,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
                                                String       originatorOrganizationName,
                                                EntityDetail entity)
     {
+        log.debug("Processing deprecated declassified Entity event from: " + sourceName);
     }
 
 
@@ -1497,6 +1591,34 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
 
 
     /**
+     * An existing classification has been changed on an entity.
+     *
+     * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
+     *                   local repository, or event mapper name.
+     * @param originatorMetadataCollectionId  unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName  name of the server that the event came from.
+     * @param originatorServerType  type of server that the event came from.
+     * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
+     * @param entity  details of the entity after the classification has been changed. No guarantee this is all of the classifications.
+     * @param originalClassification classification that was removed
+     * @param classification new classification
+     */
+    @SuppressWarnings(value = "unused")
+    public void processReclassifiedEntityEvent(String         sourceName,
+                                               String         originatorMetadataCollectionId,
+                                               String         originatorServerName,
+                                               String         originatorServerType,
+                                               String         originatorOrganizationName,
+                                               EntityProxy    entity,
+                                               Classification originalClassification,
+                                               Classification classification)
+    {
+        log.debug("Processing reclassified EntityProxy event from: " + sourceName);
+    }
+
+
+    /**
      * An existing classification has been changed on an entity. Only implement one of the processReclassifiedEntityEvent methods
      *
      * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
@@ -1517,6 +1639,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
                                                String       originatorOrganizationName,
                                                EntityDetail entity)
     {
+        log.debug("Processing deprecated reclassified Entity event from: " + sourceName);
     }
 
 
@@ -1567,6 +1690,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param typeDefName                    name of this entity's TypeDef
      * @param instanceGUID                   unique identifier for the entity
      */
+    @SuppressWarnings(value="unused")
     public void processPurgedEntityEvent(String sourceName,
                                          String originatorMetadataCollectionId,
                                          String originatorServerName,
@@ -1881,6 +2005,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param typeDefName                    name of this relationship's TypeDef.
      * @param instanceGUID                   unique identifier for the relationship.
      */
+    @SuppressWarnings(value = "unused")
     public void processPurgedRelationshipEvent(String sourceName,
                                                String originatorMetadataCollectionId,
                                                String originatorServerName,

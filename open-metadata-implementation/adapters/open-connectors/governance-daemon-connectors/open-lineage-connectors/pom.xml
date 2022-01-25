@@ -7,7 +7,7 @@
     <parent>
         <artifactId>governance-daemon-connectors</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.4-SNAPSHOT</version>
+        <version>3.5-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -16,6 +16,11 @@
         <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
         <url>http://github.com/odpi/egeria/tree/master</url>
     </scm>
+
+    <name>Open Lineage Server Connectors</name>
+    <description>
+        Provides connectors for the open lineage server (OLS).
+    </description>
 
     <artifactId>open-lineage-connectors</artifactId>
     <packaging>pom</packaging>

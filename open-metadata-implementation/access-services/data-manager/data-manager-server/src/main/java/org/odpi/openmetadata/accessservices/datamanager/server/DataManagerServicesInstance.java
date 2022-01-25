@@ -26,24 +26,23 @@ public class DataManagerServicesInstance extends OMASServiceInstance
 {
     private static AccessServiceDescription myDescription = AccessServiceDescription.DATA_MANAGER_OMAS;
 
-    private ElementStubConverter<ElementStub>                                elementStubConverter;
-    private OpenMetadataAPIGenericHandler<ElementStub>                       genericHandler;
-    private SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> dataManagerIntegratorHandler;
+    private ElementStubConverter<ElementStub>                    elementStubConverter;
+    private OpenMetadataAPIGenericHandler<ElementStub>           genericHandler;
+    private SoftwareCapabilityHandler<SoftwareCapabilityElement> dataManagerIntegratorHandler;
     private RelationalDataHandler<DatabaseElement,
                                   DatabaseSchemaElement,
                                   DatabaseTableElement,
                                   DatabaseViewElement,
                                   DatabaseColumnElement,
-                                  SchemaTypeElement>                         relationalDataHandler;
+                                  SchemaTypeElement>             relationalDataHandler;
     private FilesAndFoldersHandler<FileSystemElement,
                                    FileFolderElement,
-                                   DataFileElement>                          filesAndFoldersHandler;
+                                   DataFileElement>              filesAndFoldersHandler;
 
     private AssetHandler<TopicElement>                                       topicHandler;
     private EventTypeHandler<EventTypeElement>                               eventTypeHandler;
 
     private AssetHandler<APIElement>                                         apiHandler;
-    private SchemaTypeHandler<APISpecificationElement>                       apiSpecificationHandler;
     private APIOperationHandler<APIOperationElement>                         apiOperationHandler;
     private APIParameterListHandler<APIParameterListElement>                 apiParameterListHandler;
 
@@ -134,19 +133,19 @@ public class DataManagerServicesInstance extends OMASServiceInstance
                                                                   publishZones,
                                                                   auditLog);
 
-        this.dataManagerIntegratorHandler = new SoftwareServerCapabilityHandler<>(new DatabaseManagerConverter<>(repositoryHelper, serviceName,serverName),
-                                                                                  SoftwareServerCapabilityElement.class,
-                                                                                  serviceName,
-                                                                                  serverName,
-                                                                                  invalidParameterHandler,
-                                                                                  repositoryHandler,
-                                                                                  repositoryHelper,
-                                                                                  localServerUserId,
-                                                                                  securityVerifier,
-                                                                                  supportedZones,
-                                                                                  defaultZones,
-                                                                                  publishZones,
-                                                                                  auditLog);
+        this.dataManagerIntegratorHandler = new SoftwareCapabilityHandler<>(new DatabaseManagerConverter<>(repositoryHelper, serviceName,serverName),
+                                                                            SoftwareCapabilityElement.class,
+                                                                            serviceName,
+                                                                            serverName,
+                                                                            invalidParameterHandler,
+                                                                            repositoryHandler,
+                                                                            repositoryHelper,
+                                                                            localServerUserId,
+                                                                            securityVerifier,
+                                                                            supportedZones,
+                                                                            defaultZones,
+                                                                            publishZones,
+                                                                            auditLog);
 
 
         this.relationalDataHandler = new RelationalDataHandler<>(new DatabaseConverter<>(repositoryHelper, serviceName,serverName),
@@ -232,20 +231,6 @@ public class DataManagerServicesInstance extends OMASServiceInstance
                                              defaultZones,
                                              publishZones,
                                              auditLog);
-
-        this.apiSpecificationHandler = new SchemaTypeHandler<>(new APISpecificationConverter<>(repositoryHelper, serviceName,serverName),
-                                                               APISpecificationElement.class,
-                                                               serviceName,
-                                                               serverName,
-                                                               invalidParameterHandler,
-                                                               repositoryHandler,
-                                                               repositoryHelper,
-                                                               localServerUserId,
-                                                               securityVerifier,
-                                                               supportedZones,
-                                                               defaultZones,
-                                                               publishZones,
-                                                               auditLog);
 
 
         this.apiOperationHandler = new APIOperationHandler<>(new APIOperationConverter<>(repositoryHelper, serviceName,serverName),
@@ -487,7 +472,7 @@ public class DataManagerServicesInstance extends OMASServiceInstance
      * @return  handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> getDataManagerIntegratorHandler() throws PropertyServerException
+    SoftwareCapabilityHandler<SoftwareCapabilityElement> getDataManagerIntegratorHandler() throws PropertyServerException
     {
         final String methodName = "getDataManagerIntegratorHandler";
 
@@ -558,22 +543,6 @@ public class DataManagerServicesInstance extends OMASServiceInstance
         validateActiveRepository(methodName);
 
         return apiHandler;
-    }
-
-
-    /**
-     * Return the handler for managing APISpecificationElement objects.
-     *
-     * @return  handler object
-     * @throws PropertyServerException the instance has not been initialized successfully
-     */
-    SchemaTypeHandler<APISpecificationElement> getAPISpecificationHandler() throws PropertyServerException
-    {
-        final String methodName = "getAPISpecificationHandler";
-
-        validateActiveRepository(methodName);
-
-        return apiSpecificationHandler;
     }
 
 

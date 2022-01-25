@@ -3,7 +3,6 @@
 
 package org.odpi.openmetadata.governanceservers.enginehostservices.threads;
 
-import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineEventClient;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;

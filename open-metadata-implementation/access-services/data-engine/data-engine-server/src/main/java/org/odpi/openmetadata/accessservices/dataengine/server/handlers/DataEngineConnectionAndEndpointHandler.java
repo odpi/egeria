@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.odpi.openmetadata.accessservices.dataengine.model.Connection;
 import org.odpi.openmetadata.accessservices.dataengine.model.ConnectorType;
 import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
@@ -123,7 +124,10 @@ public class DataEngineConnectionAndEndpointHandler {
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
         final String methodName = "upsertConnectionAndEndpoint";
-        validateParameters(assetQualifiedName, assetTypeName, networkAddress, externalSourceGUID, externalSourceName, userID, methodName);
+        if (StringUtils.isEmpty(networkAddress)) {
+            return;
+        }
+        validateParameters(assetQualifiedName, assetTypeName, externalSourceGUID, externalSourceName, userID, methodName);
         Optional<EntityDetail> existingAsset = dataEngineCommonHandler.findEntity(userID, assetQualifiedName, assetTypeName);
         if (existingAsset.isEmpty()) {
             log.debug(ASSET_NOT_FOUND, assetQualifiedName);
@@ -283,13 +287,10 @@ public class DataEngineConnectionAndEndpointHandler {
                 ENDPOINT_TYPE_NAME, repositoryHelper, serviceName, serverName);
     }
 
-    private void validateParameters(String qualifiedName, String typeName, String networkAddress,
-                                    String externalSourceGuid, String externalSourceName, String userId, String methodName)
-            throws InvalidParameterException {
-
+    private void validateParameters(String qualifiedName, String typeName, String externalSourceGuid, String externalSourceName,
+                                    String userId, String methodName) throws InvalidParameterException {
         invalidParameterHandler.validateName(qualifiedName, QUALIFIED_NAME, methodName);
         invalidParameterHandler.validateName(typeName, TYPE_NAME, methodName);
-        invalidParameterHandler.validateName(networkAddress, NETWORK_ADDRESS, methodName);
         invalidParameterHandler.validateName(externalSourceGuid, EXTERNAL_SOURCE_GUID, methodName);
         invalidParameterHandler.validateName(externalSourceName, EXTERNAL_SOURCE_NAME, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);

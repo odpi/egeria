@@ -27,7 +27,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 public enum OpenAPIIntegrationConnectorErrorCode implements ExceptionMessageSet
 {
     UNEXPECTED_EXCEPTION(500, "OPEN-API-INTEGRATION-CONNECTOR-500-001",
-                         "The {0} integration connector received an unexpected exception {1} when cataloguing APIs; the error message was: {1}",
+                         "The {0} integration connector received an unexpected exception {1} when cataloguing APIs; the error message was: {2}",
                          "The connector is unable to catalog one or more APIs.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 

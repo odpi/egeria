@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -19,9 +20,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SoftwareServerPlatformProperties extends AssetProperties
+public class SoftwareServerPlatformProperties extends ITInfrastructureProperties
 {
     private static final long    serialVersionUID = 1L;
+
+    private static final String deployedImplementationTypeProperty = "deployedImplementationType";
+    private static final String versionProperty                    = "platformVersion";
+    private static final String sourceProperty                     = "source";
+    private static final String userIdProperty                     = "userId";
 
     private String  platformType    = null;
     private String  platformVersion = null;
@@ -53,6 +59,100 @@ public class SoftwareServerPlatformProperties extends AssetProperties
             platformSource  = template.getSoftwareServerSource();
             platformUserId  = template.getSoftwareServerUserId();
         }
+    }
+
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public SoftwareServerPlatformProperties(AssetProperties template)
+    {
+        super(template);
+
+        if (template != null)
+        {
+            Map<String, Object> assetExtendedProperties = template.getExtendedProperties();
+
+            if (assetExtendedProperties != null)
+            {
+                if (assetExtendedProperties.get(deployedImplementationTypeProperty) != null)
+                {
+                    platformType = assetExtendedProperties.get(deployedImplementationTypeProperty).toString();
+                    assetExtendedProperties.remove(deployedImplementationTypeProperty);
+                }
+
+                if (assetExtendedProperties.get(versionProperty) != null)
+                {
+                    platformVersion = assetExtendedProperties.get(versionProperty).toString();
+                    assetExtendedProperties.remove(versionProperty);
+                }
+
+                if (assetExtendedProperties.get(sourceProperty) != null)
+                {
+                    platformSource = assetExtendedProperties.get(sourceProperty).toString();
+                    assetExtendedProperties.remove(sourceProperty);
+                }
+
+                if (assetExtendedProperties.get(userIdProperty) != null)
+                {
+                    platformUserId = assetExtendedProperties.get(userIdProperty).toString();
+                    assetExtendedProperties.remove(userIdProperty);
+                }
+
+                super.setExtendedProperties(assetExtendedProperties);
+            }
+        }
+    }
+
+
+    /**
+     * Convert this object into an AssetProperties object.  This involves packing the additional properties introduced at this level
+     * into the extended properties.
+     *
+     * @return asset properties
+     */
+    public AssetProperties cloneToAsset()
+    {
+        return this.cloneToAsset("SoftwareServerPlatform");
+    }
+
+
+    /**
+     * Convert this object into an AssetProperties object.  This involves packing the properties introduced at this level
+     * into the extended properties.
+     *
+     * @param subTypeName subtype name
+     * @return asset properties
+     */
+    public AssetProperties cloneToAsset(String subTypeName)
+    {
+        AssetProperties assetProperties = super.cloneToAsset(subTypeName);
+
+        Map<String, Object> assetExtendedProperties = assetProperties.getExtendedProperties();
+
+        if (platformType != null)
+        {
+            assetExtendedProperties.put(deployedImplementationTypeProperty, platformType);
+        }
+        if (platformVersion != null)
+        {
+            assetExtendedProperties.put(platformVersion, versionProperty);
+        }
+        if (platformSource  != null)
+        {
+            assetExtendedProperties.put(sourceProperty, platformSource);
+        }
+        if (platformUserId  != null)
+        {
+            assetExtendedProperties.put(userIdProperty, platformUserId);
+        }
+
+        assetProperties.setExtendedProperties(assetExtendedProperties);
+
+        return assetProperties;
     }
 
 
@@ -157,11 +257,16 @@ public class SoftwareServerPlatformProperties extends AssetProperties
                        ", platformVersion='" + platformVersion + '\'' +
                        ", platformSource='" + platformSource + '\'' +
                        ", platformUserId='" + platformUserId + '\'' +
+                       ", softwareServerType='" + getSoftwareServerType() + '\'' +
+                       ", softwareServerVersion='" + getSoftwareServerVersion() + '\'' +
+                       ", softwareServerSource='" + getSoftwareServerSource() + '\'' +
+                       ", softwareServerUserId='" + getSoftwareServerUserId() + '\'' +
                        ", displayName='" + getDisplayName() + '\'' +
                        ", description='" + getDescription() + '\'' +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
-                       ", classifications=" + getClassifications() +
                        ", vendorProperties=" + getVendorProperties() +
                        ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +

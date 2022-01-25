@@ -58,25 +58,6 @@ public class ServerStatus implements Serializable
 
 
     /**
-     * Constructor used to create the history.
-     *
-     * @param serverName the name of the server
-     * @param isActive whether the server is active
-     * @param serverStartTime the time the server last started
-     * @param serverEndTime the time the server last stopped
-     * @param serverHistory the history of start and end times for the server
-     */
-    public ServerStatus(String serverName, boolean isActive, Date serverStartTime, Date serverEndTime, List<OMAGServerInstanceHistory> serverHistory)
-    {
-        this.serverName      = serverName;
-        this.isActive        = isActive;
-        this.serverStartTime = serverStartTime;
-        this.serverEndTime   = serverEndTime;
-        this.serverHistory   = serverHistory;
-    }
-
-
-    /**
      * Return the server name
      *
      * @return String
@@ -85,6 +66,7 @@ public class ServerStatus implements Serializable
     {
         return serverName;
     }
+
 
     /**
      * Set the name of the server
@@ -106,6 +88,7 @@ public class ServerStatus implements Serializable
         return isActive;
     }
 
+
     /**
      * Set the indication of whether the server is active
      *
@@ -115,6 +98,7 @@ public class ServerStatus implements Serializable
     {
         this.isActive = isActive;
     }
+
 
     /**
      * Return the time that this instance of the server started.
@@ -225,10 +209,6 @@ public class ServerStatus implements Serializable
             return true;
         }
         if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        if (!super.equals(objectToCompare))
         {
             return false;
         }

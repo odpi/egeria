@@ -120,7 +120,7 @@ public class RatingRequestBodyTest
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -129,7 +129,7 @@ public class RatingRequestBodyTest
         {
             validateResultObject(objectMapper.readValue(jsonString, RatingRequestBody.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -143,7 +143,7 @@ public class RatingRequestBodyTest
         {
             jsonString = objectMapper.writeValueAsString(superObject);
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -152,7 +152,7 @@ public class RatingRequestBodyTest
         {
             validateResultObject((RatingRequestBody) objectMapper.readValue(jsonString, OCFOMASAPIRequestBody.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

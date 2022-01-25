@@ -3,10 +3,11 @@
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.*;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.*;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethodProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ContributionRecord;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalProfileProperties;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.ProfileIdentityProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentityProperties;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -20,7 +21,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * PersonalProfileConverter generates a PersonalProfileProperties bean from a PersonalProfileProperties entity.
@@ -85,9 +88,19 @@ public class PersonalProfileConverter<B> extends CommunityProfileOMASConverter<B
                     profileProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     profileProperties.setKnownName(this.removeName(instanceProperties));
                     profileProperties.setDescription(this.removeDescription(instanceProperties));
+                    profileProperties.setTitle(this.removeTitle(instanceProperties));
+                    profileProperties.setInitials(this.removeInitials(instanceProperties));
+                    profileProperties.setGivenNames(this.removeGivenNames(instanceProperties));
+                    profileProperties.setSurname(this.removeSurname(instanceProperties));
                     profileProperties.setFullName(this.removeFullName(instanceProperties));
+                    profileProperties.setPreferredLanguage(this.removePreferredLanguage(instanceProperties));
                     profileProperties.setJobTitle(this.removeJobTitle(instanceProperties));
+                    profileProperties.setEmployeeNumber(this.removeEmployeeNumber(instanceProperties));
+                    profileProperties.setEmployeeType(this.removeEmployeeType(instanceProperties));
+                    profileProperties.setIsPublic(this.removeIsPublic(instanceProperties));
                     profileProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                    profileProperties.setEffectiveFrom(instanceProperties.getEffectiveFromTime());
+                    profileProperties.setEffectiveTo(instanceProperties.getEffectiveToTime());
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are
@@ -98,9 +111,10 @@ public class PersonalProfileConverter<B> extends CommunityProfileOMASConverter<B
 
                     bean.setProfileProperties(profileProperties);
 
+                    Map<String, UserIdentityElement> userIdentities = new HashMap<>();
+
                     if (supplementaryEntities != null)
                     {
-                        List<UserIdentityElement>  userIdentities = new ArrayList<>();
                         List<ContactMethodElement> contactMethods = new ArrayList<>();
 
                         for (EntityDetail entity : supplementaryEntities)
@@ -119,14 +133,18 @@ public class PersonalProfileConverter<B> extends CommunityProfileOMASConverter<B
                                     InstanceProperties entityProperties = new InstanceProperties(entity.getProperties());
 
                                     userProperties.setQualifiedName(this.removeQualifiedName(entityProperties));
+                                    userProperties.setDistinguishedName(this.removeDistinguishedName(instanceProperties));
                                     userProperties.setAdditionalProperties(this.removeAdditionalProperties(entityProperties));
+
+                                    userProperties.setEffectiveFrom(entityProperties.getEffectiveFromTime());
+                                    userProperties.setEffectiveTo(entityProperties.getEffectiveToTime());
 
                                     userProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
                                     userProperties.setExtendedProperties(this.getRemainingExtendedProperties(entityProperties));
 
                                     userBean.setProperties(userProperties);
 
-                                    userIdentities.add(userBean);
+                                    userIdentities.put(entity.getGUID(), userBean);
                                 }
                                 else if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataAPIMapper.CONTRIBUTION_RECORD_TYPE_NAME))
                                 {
@@ -140,8 +158,11 @@ public class PersonalProfileConverter<B> extends CommunityProfileOMASConverter<B
                                     contributionRecord.setQualifiedName(this.removeQualifiedName(entityProperties));
                                     contributionRecord.setAdditionalProperties(this.removeAdditionalProperties(entityProperties));
                                     contributionRecord.setKarmaPoints(this.removeKarmaPoints(entityProperties));
-                                    contributionRecord.setKarmaPointPlateau(karmaPointPlateau);
-
+                                    if ((contributionRecord.getKarmaPoints() > 0) && (karmaPointPlateau > 0))
+                                    {
+                                        contributionRecord.setKarmaPointPlateau(contributionRecord.getKarmaPoints() / karmaPointPlateau);
+                                    }
+                                    contributionRecord.setIsPublic(this.removeIsPublic(entityProperties));
                                     contributionRecord.setTypeName(bean.getElementHeader().getType().getTypeName());
                                     contributionRecord.setExtendedProperties(this.getRemainingExtendedProperties(entityProperties));
                                 }
@@ -154,11 +175,12 @@ public class PersonalProfileConverter<B> extends CommunityProfileOMASConverter<B
 
                                     InstanceProperties entityProperties = new InstanceProperties(entity.getProperties());
 
-                                    contactMethodProperties.setQualifiedName(this.removeQualifiedName(entityProperties));
-                                    contactMethodProperties.setAdditionalProperties(this.removeAdditionalProperties(entityProperties));
                                     contactMethodProperties.setType(this.getContactMethodTypeFromProperties(entityProperties));
                                     contactMethodProperties.setService(this.removeContactMethodService(entityProperties));
                                     contactMethodProperties.setValue(this.removeContactMethodValue(entityProperties));
+
+                                    contactMethodProperties.setEffectiveFrom(entityProperties.getEffectiveFromTime());
+                                    contactMethodProperties.setEffectiveTo(entityProperties.getEffectiveToTime());
 
                                     contactMethodProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
                                     contactMethodProperties.setExtendedProperties(this.getRemainingExtendedProperties(entityProperties));
@@ -174,11 +196,6 @@ public class PersonalProfileConverter<B> extends CommunityProfileOMASConverter<B
                             }
                         }
 
-                        if (! userIdentities.isEmpty())
-                        {
-                            bean.setUserIdentities(userIdentities);
-                        }
-
                         if (! contactMethods.isEmpty())
                         {
                             bean.setContactMethods(contactMethods);
@@ -187,8 +204,9 @@ public class PersonalProfileConverter<B> extends CommunityProfileOMASConverter<B
 
                     if (relationships != null)
                     {
-                        List<ElementStub> peers = new ArrayList<>();
-                        List<ElementStub> roles = new ArrayList<>();
+                        List<ElementStub>            peers = new ArrayList<>();
+                        List<ElementStub>            roles = new ArrayList<>();
+                        List<ProfileIdentityElement> profileIdentities = new ArrayList<>();
 
                         for (Relationship relationship : relationships)
                         {
@@ -212,11 +230,34 @@ public class PersonalProfileConverter<B> extends CommunityProfileOMASConverter<B
 
                                     roles.add(elementStub);
                                 }
+                                else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME))
+                                {
+                                    EntityProxy entityProxy = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);
+
+                                    ProfileIdentityElement    profileIdentityElement    = new ProfileIdentityElement();
+                                    ProfileIdentityProperties profileIdentityProperties = new ProfileIdentityProperties();
+
+                                    InstanceProperties relationshipProperties = relationship.getProperties();
+
+                                    profileIdentityProperties.setRoleTypeName(this.removeDescription(relationshipProperties));
+                                    profileIdentityProperties.setRoleGUID(this.removeDescription(relationshipProperties));
+                                    profileIdentityProperties.setDescription(this.removeDescription(relationshipProperties));
+
+                                    profileIdentityElement.setProfileIdentity(profileIdentityProperties);
+                                    profileIdentityElement.setProperties(userIdentities.get(entityProxy.getGUID()));
+
+                                    profileIdentities.add(profileIdentityElement);
+                                }
                             }
                             else
                             {
                                 handleBadRelationship(beanClass.getName(), relationship, methodName);
                             }
+                        }
+
+                        if (!profileIdentities.isEmpty())
+                        {
+                            bean.setUserIdentities(profileIdentities);
                         }
 
                         if (! peers.isEmpty())

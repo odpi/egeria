@@ -13,7 +13,7 @@
     <baseDirectory>egeria-omag-${open-metadata.version}</baseDirectory>
 
     <!-- Option Include any of our third party dependencies in lib -->
-    <!-- In theory each moduleset below should be placing it's OWN dependencies into it's working location-->
+    <!-- In theory each module set below should be placing it's OWN dependencies into it's working location-->
     <!-- However this is currently not working. references to issues below -->
     <!-- so for now dependencies are added here -->
     <!--dependencySets>
@@ -35,6 +35,7 @@
             <!-- We only pick from this module (submodules included by default) -->
             <includes>
                 <include>org.odpi.egeria:server-chassis-spring:*</include>
+                <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:*</include>
             </includes>
             <!-- Choose the binaries (ie jars) to includes - in this case keeping as a jar -->
             <binaries>
@@ -68,7 +69,7 @@
                 <include>org.odpi.egeria:files-integration-connectors:*</include>
                 <include>org.odpi.egeria:kafka-integration-connector:*</include>
                 <include>org.odpi.egeria:openapi-integration-connector:*</include>
-                <include>org.odpi.egeria:graph-repository-connector:*</include>
+                <include>org.odpi.egeria:openlineage-integration-connectors:*</include>
                 <include>org.odpi.egeria:inmemory-open-metadata-topic-connector:*</include>
                 <include>org.odpi.egeria:inmemory-repository-connector:*</include>
                 <include>org.odpi.egeria:kafka-open-metadata-topic-connector:*</include>
@@ -76,6 +77,7 @@
                 <include>org.odpi.egeria:open-lineage-janus-connector:*</include>
                 <include>org.odpi.egeria:elasticsearch-integration-connector:*</include>
                 <include>org.odpi.egeria:open-metadata-archive-file-connector:*</include>
+                <include>org.odpi.egeria:open-metadata-archive-directory-connector:*</include>
                 <!-- included as we use for the tutorial environment for access control -->
                 <include>org.odpi.egeria:open-metadata-security-samples:*</include>
                 <include>org.odpi.egeria:spring-rest-client-connector:*</include>
@@ -93,6 +95,20 @@
                     <!-- Not needed, as the build process for each connector does not put this into the main jar artifact -->
                     <!--exclude>*jar-with-dependencies.jar</exclude-->
                 </excludes>
+            </binaries>
+        </moduleSet>
+        <moduleSet>
+            <useAllReactorProjects>true</useAllReactorProjects>
+            <!-- Get graph-repository-connector jar-with-dependencies  -->
+            <includes>
+                <include>org.odpi.egeria:graph-repository-connector:*</include>
+            </includes>
+            <binaries>
+                <outputFileNameMapping>${artifact.artifactId}-${artifact.baseVersion}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>
+                <outputDirectory>./server/lib</outputDirectory>
+                <unpack>false</unpack>
+                <includeDependencies>false</includeDependencies>
+                <attachmentClassifier>jar-with-dependencies</attachmentClassifier>
             </binaries>
         </moduleSet>
         <!-- Utilities -->

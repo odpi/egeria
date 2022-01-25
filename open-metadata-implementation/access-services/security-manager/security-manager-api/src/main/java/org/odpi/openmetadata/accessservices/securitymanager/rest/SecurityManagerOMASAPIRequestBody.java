@@ -19,9 +19,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = DataFileRequestBody.class, name = "DataFileRequestBody"),
-        @JsonSubTypes.Type(value = FileSystemRequestBody.class, name = "FileSystemRequestBody"),
-        @JsonSubTypes.Type(value = PathNameRequestBody.class, name = "PathNameRequestBody")
+                      @JsonSubTypes.Type(value = MetadataSourceRequestBody.class, name = "MetadataSourceRequestBody"),
+                      @JsonSubTypes.Type(value = PathNameRequestBody.class, name = "PathNameRequestBody")
 
               })
 public abstract class SecurityManagerOMASAPIRequestBody implements java.io.Serializable

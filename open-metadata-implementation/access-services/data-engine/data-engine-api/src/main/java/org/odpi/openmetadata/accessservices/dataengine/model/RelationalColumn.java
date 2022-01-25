@@ -20,8 +20,19 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @ToString
 @Getter
 @Setter
+/**
+ * RelationalColumn entity is a column within a relational table.
+ */
 public class RelationalColumn extends Attribute {
 
+     /**
+      * The name of the formula
+      * -- GETTER --
+      * Returns the formula.
+      * @return name
+      * -- SETTER --
+      * Sets up the formula.
+      * @param formula formula
+      */
      private String formula;
-
 }

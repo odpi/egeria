@@ -34,133 +34,133 @@ The result looks something like this:
             "serviceName": "Asset Owner",
             "serviceURLMarker": "asset-owner",
             "serviceDescription": "Manage an asset",
-            "serviceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/asset-owner/"
+            "serviceWiki": "https://odpi.github.io/egeria-docs/services/omas/asset-owner/"
         },
         {
             "serviceName": "Stewardship Action",
             "serviceURLMarker": "stewardship-action",
             "serviceDescription": "Manage exceptions and actions from open governance",
-            "serviceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/stewardship-action/"
+            "serviceWiki": "https://odpi.github.io/egeria-docs/services/omas/stewardship-action/"
         },
         {
             "serviceName": "Subject Area",
             "serviceURLMarker": "subject-area",
             "serviceDescription": "Document knowledge about a subject area",
-            "serviceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/subject-area/"
+            "serviceWiki": "https://odpi.github.io/egeria-docs/services/omas/subject-area/"
         },
         {
             "serviceName": "Governance Program",
             "serviceURLMarker": "governance-program",
             "serviceDescription": "Manage the governance program",
-            "serviceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/governance-program/"
+            "serviceWiki": "https://odpi.github.io/egeria-docs/services/omas/governance-program/"
         },
         {
             "serviceName": "Asset Lineage",
             "serviceURLMarker": "asset-lineage",
             "serviceDescription": "Store asset lineage",
-            "serviceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/asset-lineage/"
+            "serviceWiki": "https://odpi.github.io/egeria-docs/services/omas/asset-lineage/"
         },
         {
             "serviceName": "Design Model",
             "serviceURLMarker": "design-model",
             "serviceDescription": "Exchange design model content with tools and standard packages",
-            "serviceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/design-model/"
+            "serviceWiki": "https://odpi.github.io/egeria-docs/services/omas/design-model/"
         },
         {
             "serviceName": "Glossary View",
             "serviceURLMarker": "glossary-view",
             "serviceDescription": "Support glossary terms visualization",
-            "serviceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/glossary-view/"
+            "serviceWiki": "https://odpi.github.io/egeria-docs/services/omas/glossary-view/"
         },
         {
             "serviceName": "Security Manager",
             "serviceURLMarker": "security-officer",
             "serviceDescription": "Set up rules to protect data",
-            "serviceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/security-officer/"
+            "serviceWiki": "https://odpi.github.io/egeria-docs/services/omas/security-officer/"
         },
         {
             "serviceName": "Asset Consumer",
             "serviceURLMarker": "asset-consumer",
             "serviceDescription": "Access assets through connectors",
-            "serviceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/asset-consumer/"
+            "serviceWiki": "https://odpi.github.io/egeria-docs/services/omas/asset-consumer/"
         },
         {
             "serviceName": "IT Infrastructure",
             "serviceURLMarker": "it-infrastructure",
             "serviceDescription": "Manage information about the deployed IT infrastructure",
-            "serviceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/it-infrastructure/"
+            "serviceWiki": "https://odpi.github.io/egeria-docs/services/omas/it-infrastructure/"
         },
         {
             "serviceName": "Asset Catalog",
             "serviceURLMarker": "asset-catalog",
             "serviceDescription": "Search and understand your assets",
-            "serviceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/asset-catalog/"
+            "serviceWiki": "https://odpi.github.io/egeria-docs/services/omas/asset-catalog/"
         },
         {
             "serviceName": "Data Science",
             "serviceURLMarker": "data-science",
             "serviceDescription": "Create and manage data science definitions and models",
-            "serviceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/data-science/"
+            "serviceWiki": "https://odpi.github.io/egeria-docs/services/omas/data-science/"
         },
         {
             "serviceName": "Community Profile",
             "serviceURLMarker": "community-profile",
             "serviceDescription": "Define personal profile and collaborate",
-            "serviceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/community-profile/"
+            "serviceWiki": "https://odpi.github.io/egeria-docs/services/omas/community-profile/"
         },
         {
             "serviceName": "DevOps",
             "serviceURLMarker": "devops",
             "serviceDescription": "Manage a DevOps pipeline",
-            "serviceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/dev-ops/"
+            "serviceWiki": "https://odpi.github.io/egeria-docs/services/omas/dev-ops/"
         },
         {
             "serviceName": "Software Developer",
             "serviceURLMarker": "software-developer",
             "serviceDescription": "Interact with software development tools",
-            "serviceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/software-developer/"
+            "serviceWiki": "https://odpi.github.io/egeria-docs/services/omas/software-developer/"
         },
         {
             "serviceName": "Discovery Engine",
             "serviceURLMarker": "discovery-engine",
             "serviceDescription": "Support for automated metadata discovery engines",
-            "serviceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/discovery-engine/"
+            "serviceWiki": "https://odpi.github.io/egeria-docs/services/omas/discovery-engine/"
         },
         {
             "serviceName": "Data Engine",
             "serviceURLMarker": "data-engine",
             "serviceDescription": "Exchange process models and lineage with a data engine",
-            "serviceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/data-engine/"
+            "serviceWiki": "https://odpi.github.io/egeria-docs/services/omas/data-engine/"
         },
         {
             "serviceName": "Project Management",
             "serviceURLMarker": "project-management",
             "serviceDescription": "Manage data projects",
-            "serviceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/project-management/"
+            "serviceWiki": "https://odpi.github.io/egeria-docs/services/omas/project-management/"
         },
         {
             "serviceName": "Governance Engine",
             "serviceURLMarker": "governance-engine",
             "serviceDescription": "Set up an operational governance engine",
-            "serviceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/governance-engine/"
+            "serviceWiki": "https://odpi.github.io/egeria-docs/services/omas/governance-engine/"
         },
         {
             "serviceName": "Digital Architecture",
             "serviceURLMarker": "digital-architecture",
             "serviceDescription": "Design of the digital services for an organization",
-            "serviceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/digital-architecture/"
+            "serviceWiki": "https://odpi.github.io/egeria-docs/services/omas/digital-architecture/"
         },
         {
             "serviceName": "Data Privacy",
             "serviceURLMarker": "data-privacy",
             "serviceDescription": "Manage governance of privacy",
-            "serviceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/data-privacy/"
+            "serviceWiki": "https://odpi.github.io/egeria-docs/services/omas/data-privacy/"
         },
         {
             "serviceName": "Data Manager",
             "serviceURLMarker": "data-manager",
             "serviceDescription": "Capture changes to the data stores and data set managed by a technology managing collections of data",
-            "serviceWiki": "https://egeria.odpi.org/open-metadata-implementation/access-services/data-manager/"
+            "serviceWiki": "https://odpi.github.io/egeria-docs/services/omas/data-manager/"
         }
     ]
 }

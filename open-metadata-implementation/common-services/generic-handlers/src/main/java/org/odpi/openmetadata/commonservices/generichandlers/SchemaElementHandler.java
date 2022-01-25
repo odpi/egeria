@@ -82,6 +82,7 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
      * @param assetTypeName the name of the asset's type
      * @param schemaTypeTypeGUID unique identifier of the type
      * @param schemaTypeTypeName unique name of the type
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return properties of the anchor schema type for the database schema
      *
@@ -97,6 +98,7 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                   String assetTypeName,
                                   String schemaTypeTypeGUID,
                                   String schemaTypeTypeName,
+                                  Date   effectiveTime,
                                   String methodName) throws InvalidParameterException,
                                                             UserNotAuthorizedException,
                                                             PropertyServerException
@@ -113,7 +115,7 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                                                              assetGUIDParameterName,
                                                                              assetTypeName,
                                                                              OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                                                             null,
+                                                                             effectiveTime,
                                                                              methodName);
 
         if (assetQualifiedName == null)
@@ -141,7 +143,7 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                                                false,
                                                                false,
                                                                supportedZones,
-                                                               null,
+                                                               effectiveTime,
                                                                methodName);
 
         if (schemaTypeEntity == null)
@@ -425,18 +427,20 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
      * @param schemaElementGUID identifier for the parent complex schema type - this could be a schemaAttribute or a
      *                          schema type
      * @param guidParameterName name of guid parameter
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return count of attached objects
      * @throws InvalidParameterException  the parameters are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    int countSchemaAttributes(String   userId,
-                              String   schemaElementGUID,
-                              String   guidParameterName,
-                              String   methodName) throws InvalidParameterException,
-                                                          PropertyServerException,
-                                                          UserNotAuthorizedException
+    int countSchemaAttributes(String userId,
+                              String schemaElementGUID,
+                              String guidParameterName,
+                              Date   effectiveTime,
+                              String methodName) throws InvalidParameterException,
+                                                        PropertyServerException,
+                                                        UserNotAuthorizedException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(schemaElementGUID, guidParameterName, methodName);
@@ -447,7 +451,7 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                                                        OpenMetadataAPIMapper.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
                                                                        OpenMetadataAPIMapper.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
                                                                        false,
-                                                                       new Date(),
+                                                                       effectiveTime,
                                                                        methodName);
 
 
@@ -459,7 +463,7 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                                                        OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
                                                                        OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
                                                                        false,
-                                                                       new Date(),
+                                                                       effectiveTime,
                                                                        methodName);
         }
 

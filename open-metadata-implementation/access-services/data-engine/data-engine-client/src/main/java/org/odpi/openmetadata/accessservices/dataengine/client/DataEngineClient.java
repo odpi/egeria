@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.dataengine.client;
 import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
 import org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema;
+import org.odpi.openmetadata.accessservices.dataengine.model.EventType;
 import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
@@ -13,6 +14,7 @@ import org.odpi.openmetadata.accessservices.dataengine.model.ProcessHierarchy;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
+import org.odpi.openmetadata.accessservices.dataengine.model.Topic;
 import org.odpi.openmetadata.accessservices.dataengine.rest.FindRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -260,8 +262,10 @@ public interface DataEngineClient {
     /**
      * Create or update the database entity
      *
-     * @param userId   the name of the calling user
-     * @param database the database bean
+     * @param userId        the name of the calling user
+     * @param database      the database bean
+     * @param incomplete    determines if the entities inside the database are incomplete or not (database schema
+     *                      and relational tables)
      *
      * @return unique identifier of database in the repository
      *
@@ -270,10 +274,10 @@ public interface DataEngineClient {
      * @throws PropertyServerException    problem accessing the property server
      * @throws ConnectorCheckedException  internal problem with the connector
      */
-    String upsertDatabase(String userId, Database database) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException,
-                                                                   ConnectorCheckedException;
+    String upsertDatabase(String userId, Database database, boolean incomplete) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException,
+                                                                                       ConnectorCheckedException;
 
     /**
      * Create or update the database schema entity
@@ -471,4 +475,74 @@ public interface DataEngineClient {
                                                                                  PropertyServerException,
                                                                                  FunctionNotSupportedException;
 
+    /**
+     * Create or update the topic entity
+     *
+     * @param userId the name of the calling user
+     * @param topic  the topic bean
+     *
+     * @return unique identifier of topic in the repository
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws ConnectorCheckedException  internal problem with the connector
+     */
+    String upsertTopic(String userId, Topic topic) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException,
+                                                          ConnectorCheckedException;
+
+    /**
+     * Create or update the event type entity
+     *
+     * @param userId             the name of the calling user
+     * @param eventType          the event type bean
+     * @param topicQualifiedName the qualified name of the topic
+     *
+     * @return unique identifier of event type in the repository
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws ConnectorCheckedException  internal problem with the connector
+     */
+    String upsertEventType(String userId, EventType eventType, String topicQualifiedName) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException,
+                                                                                                 ConnectorCheckedException;
+
+    /**
+     * Delete the topic
+     *
+     * @param userId        the name of the calling user
+     * @param qualifiedName the qualified name of the topic
+     * @param guid          the unique identifier of the topic
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws ConnectorCheckedException  problem with the underlying connector (if used)
+     */
+    void deleteTopic(String userId, String qualifiedName, String guid) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException,
+                                                                              ConnectorCheckedException;
+
+    /**
+     * Delete the event type
+     *
+     * @param userId        the name of the calling user
+     * @param qualifiedName the qualified name of the event type
+     * @param guid          the unique identifier of the event type
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     * @throws ConnectorCheckedException  problem with the underlying connector (if used)
+     */
+    void deleteEventType(String userId, String qualifiedName, String guid) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  ConnectorCheckedException;
 }

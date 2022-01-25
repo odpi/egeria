@@ -25,7 +25,12 @@ public class SecurityManagerServicesInstance extends OMASServiceInstance
 {
     private static AccessServiceDescription myDescription = AccessServiceDescription.SECURITY_MANAGER_OMAS;
 
-    private SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> securityManagerIntegratorHandler;
+    private SoftwareCapabilityHandler<SecurityManagerElement> softwareCapabilityHandler;
+    private GovernanceDefinitionHandler<SecurityGroupElement> securityGroupHandler;
+    private UserIdentityHandler<UserIdentityElement>          userIdentityHandler;
+    private ContactDetailsHandler<ContactMethodElement>       contactDetailsHandler;
+    private ActorProfileHandler<ActorProfileElement>          actorProfileHandler;
+    private PersonRoleHandler<PersonRoleElement>              personRoleHandler;
 
 
     /**
@@ -43,13 +48,13 @@ public class SecurityManagerServicesInstance extends OMASServiceInstance
      * @throws NewInstanceException a problem occurred during initialization
      */
     public SecurityManagerServicesInstance(OMRSRepositoryConnector repositoryConnector,
-                                        List<String>           supportedZones,
-                                        List<String>           defaultZones,
-                                        List<String>           publishZones,
-                                        AuditLog               auditLog,
-                                        String                 localServerUserId,
-                                        int                    maxPageSize,
-                                        Connection             outTopicEventBusConnection) throws NewInstanceException
+                                           List<String>           supportedZones,
+                                           List<String>           defaultZones,
+                                           List<String>           publishZones,
+                                           AuditLog               auditLog,
+                                           String                 localServerUserId,
+                                           int                    maxPageSize,
+                                           Connection             outTopicEventBusConnection) throws NewInstanceException
     {
         super(myDescription.getAccessServiceFullName(),
               repositoryConnector,
@@ -75,22 +80,90 @@ public class SecurityManagerServicesInstance extends OMASServiceInstance
         }
 
 
-        this.securityManagerIntegratorHandler = new SoftwareServerCapabilityHandler<>(new DatabaseManagerConverter<>(repositoryHelper, serviceName, serverName),
-                                                                                      SoftwareServerCapabilityElement.class,
-                                                                                      serviceName,
-                                                                                      serverName,
-                                                                                      invalidParameterHandler,
-                                                                                      repositoryHandler,
-                                                                                      repositoryHelper,
-                                                                                      localServerUserId,
-                                                                                      securityVerifier,
-                                                                                      supportedZones,
-                                                                                      defaultZones,
-                                                                                      publishZones,
-                                                                                      auditLog);
+        this.softwareCapabilityHandler = new SoftwareCapabilityHandler<>(new SecurityManagerConverter<>(repositoryHelper, serviceName, serverName),
+                                                                         SecurityManagerElement.class,
+                                                                         serviceName,
+                                                                         serverName,
+                                                                         invalidParameterHandler,
+                                                                         repositoryHandler,
+                                                                         repositoryHelper,
+                                                                         localServerUserId,
+                                                                         securityVerifier,
+                                                                         supportedZones,
+                                                                         defaultZones,
+                                                                         publishZones,
+                                                                         auditLog);
+
+        this.userIdentityHandler = new UserIdentityHandler<>(new UserIdentityConverter<>(repositoryHelper, serviceName, serverName),
+                                                             UserIdentityElement.class,
+                                                             serviceName,
+                                                             serverName,
+                                                             invalidParameterHandler,
+                                                             repositoryHandler,
+                                                             repositoryHelper,
+                                                             localServerUserId,
+                                                             securityVerifier,
+                                                             supportedZones,
+                                                             defaultZones,
+                                                             publishZones,
+                                                             auditLog);
 
 
+        this.securityGroupHandler = new GovernanceDefinitionHandler<>(new SecurityGroupConverter<>(repositoryHelper, serviceName, serverName),
+                                                                      SecurityGroupElement.class,
+                                                                      serviceName,
+                                                                      serverName,
+                                                                      invalidParameterHandler,
+                                                                      repositoryHandler,
+                                                                      repositoryHelper,
+                                                                      localServerUserId,
+                                                                      securityVerifier,
+                                                                      supportedZones,
+                                                                      defaultZones,
+                                                                      publishZones,
+                                                                      auditLog);
 
+        this.actorProfileHandler = new ActorProfileHandler<>(new ActorProfileConverter<>(repositoryHelper, serviceName,serverName),
+                                                             ActorProfileElement.class,
+                                                             serviceName,
+                                                             serverName,
+                                                             invalidParameterHandler,
+                                                             repositoryHandler,
+                                                             repositoryHelper,
+                                                             localServerUserId,
+                                                             securityVerifier,
+                                                             supportedZones,
+                                                             defaultZones,
+                                                             publishZones,
+                                                             auditLog);
+
+        this.personRoleHandler = new PersonRoleHandler<>(new PersonRoleConverter<>(repositoryHelper, serviceName,serverName),
+                                                         PersonRoleElement.class,
+                                                         serviceName,
+                                                         serverName,
+                                                         invalidParameterHandler,
+                                                         repositoryHandler,
+                                                         repositoryHelper,
+                                                         localServerUserId,
+                                                         securityVerifier,
+                                                         supportedZones,
+                                                         defaultZones,
+                                                         publishZones,
+                                                         auditLog);
+
+        this.contactDetailsHandler = new ContactDetailsHandler<>(new ContactMethodConverter<>(repositoryHelper, serviceName, serverName),
+                                                                 ContactMethodElement.class,
+                                                                 serviceName,
+                                                                 serverName,
+                                                                 invalidParameterHandler,
+                                                                 repositoryHandler,
+                                                                 repositoryHelper,
+                                                                 localServerUserId,
+                                                                 securityVerifier,
+                                                                 supportedZones,
+                                                                 defaultZones,
+                                                                 publishZones,
+                                                                 auditLog);
     }
 
 
@@ -101,12 +174,78 @@ public class SecurityManagerServicesInstance extends OMASServiceInstance
      * @return  handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> getSecurityManagerIntegratorHandler() throws PropertyServerException
+    SoftwareCapabilityHandler<SecurityManagerElement> getSoftwareCapabilityHandler() throws PropertyServerException
     {
-        final String methodName = "getSecurityManagerIntegratorHandler";
+        final String methodName = "getSoftwareCapabilityHandler";
 
         validateActiveRepository(methodName);
 
-        return securityManagerIntegratorHandler;
+        return softwareCapabilityHandler;
     }
+
+
+
+    /**
+     * Return the handler for user identity requests.
+     *
+     * @return handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    public UserIdentityHandler<UserIdentityElement> getUserIdentityHandler() throws PropertyServerException
+    {
+        final String methodName = "getUserIdentityHandler";
+
+        validateActiveRepository(methodName);
+
+        return userIdentityHandler;
+    }
+
+
+    /**
+     * Return the handler for security group requests.
+     *
+     * @return handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    public GovernanceDefinitionHandler<SecurityGroupElement> getSecurityGroupHandler() throws PropertyServerException
+    {
+        final String methodName = "getSecurityGroupHandler";
+
+        validateActiveRepository(methodName);
+
+        return securityGroupHandler;
+    }
+
+
+    /**
+     * Return the handler for organization requests.
+     *
+     * @return handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    public ActorProfileHandler<ActorProfileElement> getActorProfileHandler() throws PropertyServerException
+    {
+        final String methodName = "getActorProfileHandler";
+
+        validateActiveRepository(methodName);
+
+        return actorProfileHandler;
+    }
+
+
+    /**
+     * Return the handler for role requests.
+     *
+     * @return handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    public PersonRoleHandler<PersonRoleElement> getPersonRoleHandler() throws PropertyServerException
+    {
+        final String methodName = "getPersonRoleHandler";
+
+        validateActiveRepository(methodName);
+
+        return personRoleHandler;
+    }
+
 }

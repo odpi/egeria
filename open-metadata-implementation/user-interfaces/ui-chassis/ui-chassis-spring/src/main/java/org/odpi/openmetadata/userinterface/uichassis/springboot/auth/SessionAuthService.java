@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-public class SessionAuthService extends TokenSettings implements AuthService {
+public class SessionAuthService extends TokenService implements AuthService {
 
     public static final String USER_ATTRIBUTE_NAME = "user";
 

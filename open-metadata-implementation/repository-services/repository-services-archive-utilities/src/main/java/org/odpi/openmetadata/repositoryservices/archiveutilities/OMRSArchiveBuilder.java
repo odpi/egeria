@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.archiveutilities;
 
+import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationEntityExtension;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.utilities.OMRSRepositoryPropertiesUtilities;
 import org.slf4j.Logger;
@@ -19,7 +20,7 @@ import java.util.*;
  * OMRSArchiveBuilder creates an in-memory copy of an open metadata archive that can be saved to disk or processed
  * by a server.
  */
-public class OMRSArchiveBuilder
+public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder
 {
     /*
      * Archive properties supplied on the constructor
@@ -130,6 +131,17 @@ public class OMRSArchiveBuilder
 
 
     /**
+     * Constructor used when content of dependent archives is not needed in the maps.
+     *
+     * @param properties filled out archive properties
+     */
+    public OMRSArchiveBuilder(OpenMetadataArchiveProperties properties)
+    {
+        this.archiveProperties = properties;
+    }
+
+
+    /**
      * Full constructor.
      *
      * It passes parameters used to build the open metadata archive's property header including the
@@ -157,6 +169,48 @@ public class OMRSArchiveBuilder
                               String                     originatorLicense,
                               Date                       creationDate,
                               List<OpenMetadataArchive>  dependsOnArchives)
+    {
+        this.setArchiveProperties(archiveGUID,
+                                  archiveName,
+                                  archiveDescription,
+                                  archiveType,
+                                  archiveVersion,
+                                  originatorName,
+                                  originatorLicense,
+                                  creationDate,
+                                  dependsOnArchives);
+    }
+
+
+    /**
+     * Set up archive header and initialize the maps assuming it is building a new archive.
+     *
+     * It passes parameters used to build the open metadata archive's property header including the
+     * default license string.  This determines the license and copyright for all instances in the
+     * archive that do not have their own explicit license string.  The default license string
+     * will be inserted into each instance with a null license when it is loaded into an open metadata
+     * repository.
+     *
+     * @param archiveGUID unique identifier for this open metadata archive.
+     * @param archiveName name of the open metadata archive.
+     * @param archiveDescription description of the open metadata archive.
+     * @param archiveType enum describing the type of archive this is.
+     * @param archiveVersion descriptive name for the version of the archive.
+     * @param originatorName name of the originator (person or organization) of the archive.
+     * @param originatorLicense default license string for content.
+     * @param creationDate data that this archive was created.
+     * @param dependsOnArchives list of archives that this archive depends on (null for no dependencies).
+     */
+    @Override
+    public void setArchiveProperties(String                     archiveGUID,
+                                     String                     archiveName,
+                                     String                     archiveDescription,
+                                     OpenMetadataArchiveType    archiveType,
+                                     String                     archiveVersion,
+                                     String                     originatorName,
+                                     String                     originatorLicense,
+                                     Date                       creationDate,
+                                     List<OpenMetadataArchive>  dependsOnArchives)
     {
         final String methodName = "OMRSArchiveBuilder constructor";
 
@@ -217,15 +271,15 @@ public class OMRSArchiveBuilder
                                     switch (attributeTypeDef.getCategory())
                                     {
                                         case PRIMITIVE:
-                                            primitiveDefMap.put(attributeTypeDef.getGUID(), (PrimitiveDef) attributeTypeDef);
+                                            primitiveDefMap.put(attributeTypeDef.getName(), (PrimitiveDef) attributeTypeDef);
                                             break;
 
                                         case COLLECTION:
-                                            collectionDefMap.put(attributeTypeDef.getGUID(), (CollectionDef) attributeTypeDef);
+                                            collectionDefMap.put(attributeTypeDef.getName(), (CollectionDef) attributeTypeDef);
                                             break;
 
                                         case ENUM_DEF:
-                                            enumDefMap.put(attributeTypeDef.getGUID(), (EnumDef) attributeTypeDef);
+                                            enumDefMap.put(attributeTypeDef.getName(), (EnumDef) attributeTypeDef);
                                             break;
                                     }
                                 }
@@ -351,6 +405,18 @@ public class OMRSArchiveBuilder
 
 
     /**
+     * Return the archive properties as will appear in the archive.  Null is returned if archive properties not set up.
+     *
+     * @return property bean
+     */
+    @Override
+    public OpenMetadataArchiveProperties getArchiveProperties()
+    {
+        return this.archiveProperties;
+    }
+
+
+    /**
      * Update the maps with new TypeDefs.
      *
      * @param typeDef type definition
@@ -363,19 +429,18 @@ public class OMRSArchiveBuilder
         switch (typeDef.getCategory())
         {
             case ENTITY_DEF:
-                entityDefMap.put(typeDef.getGUID(), (EntityDef) typeDef);
+                entityDefMap.put(typeDef.getName(), (EntityDef) typeDef);
                 break;
 
             case RELATIONSHIP_DEF:
-                relationshipDefMap.put(typeDef.getGUID(), (RelationshipDef) typeDef);
+                relationshipDefMap.put(typeDef.getName(), (RelationshipDef) typeDef);
                 break;
 
             case CLASSIFICATION_DEF:
-                classificationDefMap.put(typeDef.getGUID(), (ClassificationDef) typeDef);
+                classificationDefMap.put(typeDef.getName(), (ClassificationDef) typeDef);
                 break;
         }
     }
-
 
 
     /**
@@ -383,6 +448,7 @@ public class OMRSArchiveBuilder
      *
      * @param primitiveDef type to add nulls are ignored
      */
+    @Override
     public void addPrimitiveDef(PrimitiveDef   primitiveDef)
     {
         final String methodName = "addPrimitiveDef";
@@ -437,6 +503,7 @@ public class OMRSArchiveBuilder
      * @param primitiveDefName primitive to retrieve
      * @return PrimitiveDef type
      */
+    @Override
     public PrimitiveDef getPrimitiveDef(String   primitiveDefName)
     {
         final String methodName = "getPrimitiveDef";
@@ -471,6 +538,7 @@ public class OMRSArchiveBuilder
      *
      * @param collectionDef type to add
      */
+    @Override
     public void addCollectionDef(CollectionDef  collectionDef)
     {
         final String methodName = "addCollectionDef";
@@ -526,7 +594,8 @@ public class OMRSArchiveBuilder
      * @param collectionDefName type to retrieve
      * @return CollectionDef type
      */
-    CollectionDef getCollectionDef(String  collectionDefName)
+    @Override
+    public CollectionDef getCollectionDef(String  collectionDefName)
     {
         final String methodName = "getCollectionDef";
 
@@ -560,6 +629,7 @@ public class OMRSArchiveBuilder
      *
      * @param enumDef type to add
      */
+    @Override
     public void addEnumDef(EnumDef    enumDef)
     {
         final String methodName = "addEnumDef";
@@ -615,7 +685,8 @@ public class OMRSArchiveBuilder
      * @param enumDefName type to retrieve
      * @return EnumDef object
      */
-    EnumDef getEnumDef(String    enumDefName)
+    @Override
+    public EnumDef getEnumDef(String    enumDefName)
     {
         final String methodName = "getEnumDef";
 
@@ -649,6 +720,7 @@ public class OMRSArchiveBuilder
      *
      * @param classificationDef type to add
      */
+    @Override
     public void addClassificationDef(ClassificationDef   classificationDef)
     {
         final String methodName = "addClassificationDef";
@@ -724,6 +796,7 @@ public class OMRSArchiveBuilder
      *
      * @param entityDef type to add
      */
+    @Override
     public void addEntityDef(EntityDef    entityDef)
     {
         final String methodName = "addEntityDef";
@@ -799,6 +872,7 @@ public class OMRSArchiveBuilder
      * @param entityDefName name of the entity
      * @return the retrieved entity def
      */
+    @Override
     public EntityDef  getEntityDef(String   entityDefName)
     {
         final String methodName = "getEntityDef";
@@ -829,10 +903,83 @@ public class OMRSArchiveBuilder
 
 
     /**
+     * Retrieve the relationshipDef or null if it is not defined.
+     *
+     * @param relationshipDefName name of the relationship
+     * @return the retrieved relationship def
+     */
+    @Override
+    public RelationshipDef  getRelationshipDef(String   relationshipDefName)
+    {
+        final String methodName = "getRelationshipDef";
+
+        log.debug("Retrieving RelationshipDef: " + relationshipDefName);
+
+        if (relationshipDefName != null)
+        {
+            RelationshipDef retrievedRelationshipDef = relationshipDefMap.get(relationshipDefName);
+
+            if (retrievedRelationshipDef == null)
+            {
+                throw new OMRSLogicErrorException(OMRSErrorCode.MISSING_TYPE_IN_ARCHIVE.getMessageDefinition(relationshipDefName,
+                                                                                                             TypeDefCategory.RELATIONSHIP_DEF.getName()),
+                                                  this.getClass().getName(),
+                                                  methodName);
+            }
+
+            return retrievedRelationshipDef;
+        }
+        else
+        {
+            throw new OMRSLogicErrorException(OMRSErrorCode.MISSING_NAME_FOR_ARCHIVE.getMessageDefinition(TypeDefCategory.RELATIONSHIP_DEF.getName()),
+                                              this.getClass().getName(),
+                                              methodName);
+        }
+    }
+
+
+    /**
+     * Retrieve the relationshipDef or null if it is not defined.
+     *
+     * @param classificationDef name of the classification
+     * @return the retrieved classification def
+     */
+    @Override
+    public ClassificationDef  getClassificationDef(String   classificationDef)
+    {
+        final String methodName = "getClassificationDef";
+
+        log.debug("Retrieving getClassificationDef: " + classificationDef);
+
+        if (classificationDef != null)
+        {
+            ClassificationDef retrievedClassificationDef = classificationDefMap.get(classificationDef);
+
+            if (retrievedClassificationDef == null)
+            {
+                throw new OMRSLogicErrorException(OMRSErrorCode.MISSING_TYPE_IN_ARCHIVE.getMessageDefinition(classificationDef,
+                                                                                                             TypeDefCategory.CLASSIFICATION_DEF.getName()),
+                                                  this.getClass().getName(),
+                                                  methodName);
+            }
+
+            return retrievedClassificationDef;
+        }
+        else
+        {
+            throw new OMRSLogicErrorException(OMRSErrorCode.MISSING_NAME_FOR_ARCHIVE.getMessageDefinition(TypeDefCategory.CLASSIFICATION_DEF.getName()),
+                                              this.getClass().getName(),
+                                              methodName);
+        }
+    }
+
+
+    /**
      * Add a new RelationshipDef to the archive.
      *
      * @param relationshipDef type to add
      */
+    @Override
     public void addRelationshipDef(RelationshipDef   relationshipDef)
     {
         final String methodName = "addRelationshipDef";
@@ -1071,6 +1218,7 @@ public class OMRSArchiveBuilder
      * @param typeName name of type
      * @return TypeDefPatch
      */
+    @Override
     public TypeDefPatch  getPatchForType(String  typeName)
     {
         TypeDef  typeDef = this.getTypeDefByName(typeName);
@@ -1119,6 +1267,7 @@ public class OMRSArchiveBuilder
      *
      * @param typeDefPatch patch
      */
+    @Override
     public void addTypeDefPatch(TypeDefPatch  typeDefPatch)
     {
         if (typeDefPatch != null)
@@ -1139,6 +1288,7 @@ public class OMRSArchiveBuilder
      * @param typeName name ot type
      * @return type definition
      */
+    @Override
     public TypeDef getTypeDefByName(String  typeName)
     {
         Object  namedObject = nameMap.get(typeName);
@@ -1159,6 +1309,7 @@ public class OMRSArchiveBuilder
      *
      * @param entity instance to add
      */
+    @Override
     public void addEntity(EntityDetail   entity)
     {
         final String methodName = "addEntity";
@@ -1201,6 +1352,7 @@ public class OMRSArchiveBuilder
      * @param guid unique identifier
      * @return requested entity
      */
+    @Override
     public EntityDetail getEntity(String   guid)
     {
         final String methodName = "getEntity";
@@ -1223,6 +1375,7 @@ public class OMRSArchiveBuilder
      *
      * @param relationship instance to add
      */
+    @Override
     public void addRelationship(Relationship  relationship)
     {
         final String methodName = "addRelationship";
@@ -1260,11 +1413,12 @@ public class OMRSArchiveBuilder
 
 
     /**
-     * Retrieve an entity from the archive.
+     * Retrieve a relationship from the archive.
      *
      * @param guid unique identifier
      * @return requested relationship
      */
+    @Override
     public Relationship getRelationship(String   guid)
     {
         final String methodName = "getRelationship";
@@ -1287,6 +1441,7 @@ public class OMRSArchiveBuilder
      *
      * @param classification instance to add
      */
+    @Override
     public void addClassification(ClassificationEntityExtension classification)
     {
         final String methodName = "addClassification";

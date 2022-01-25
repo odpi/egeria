@@ -48,13 +48,13 @@ public class AssetManagerEventClient implements AssetManagerEventInterface
      * @param callerId unique identifier of the caller
      * @throws InvalidParameterException there is a problem with the information about the remote OMAS
      */
-    public AssetManagerEventClient(String                 serverName,
-                                   String                 serverPlatformURLRoot,
-                                   String                 serverUserId,
-                                   String                 serverPassword,
-                                   int                    maxPageSize,
-                                   AuditLog               auditLog,
-                                   String                 callerId) throws InvalidParameterException
+    public AssetManagerEventClient(String   serverName,
+                                   String   serverPlatformURLRoot,
+                                   String   serverUserId,
+                                   String   serverPassword,
+                                   int      maxPageSize,
+                                   AuditLog auditLog,
+                                   String   callerId) throws InvalidParameterException
     {
         final String methodName = "Constructor (with REST Client)";
 
@@ -127,11 +127,11 @@ public class AssetManagerEventClient implements AssetManagerEventInterface
              * The connector is only created if/when a listener is registered to prevent unnecessary load on the
              * event bus.
              */
-            ConnectionResponse restResult = restClient.callConnectionGetRESTCall(methodName,
-                                                                                 serverPlatformURLRoot + urlTemplate,
-                                                                                 serverName,
-                                                                                 userId,
-                                                                                 callerId);
+            ConnectionResponse restResult = restClient.callOCFConnectionGetRESTCall(methodName,
+                                                                                    serverPlatformURLRoot + urlTemplate,
+                                                                                    serverName,
+                                                                                    userId,
+                                                                                    callerId);
 
             Connection      topicConnection = restResult.getConnection();
             ConnectorBroker connectorBroker = new ConnectorBroker();

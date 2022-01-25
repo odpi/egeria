@@ -24,9 +24,31 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @ToString
 public class DatabaseRequestBody extends DataEngineOMASAPIRequestBody {
 
+    /**
+     * The database to be created
+     * -- GETTER --
+     * Return the database bean
+     *
+     * @return the database
+     * -- SETTER --
+     * Set up the database bean
+     * @param database the database
+     */
     @JsonProperty("database")
     private Database database;
 
+    /**
+     * Determines if the entities inside the database are incomplete
+     * -- GETTER --
+     * Return if the entities inside the database are incomplete
+     *
+     * @return if the entities inside the database are incomplete
+     * -- SETTER --
+     * Sets up if the entities inside the database are incomplete
+     * @param incomplete if the entities inside the database are incomplete
+     */
+    @JsonProperty("incomplete")
+    private boolean incomplete;
 }
 
 

@@ -11,7 +11,7 @@ import java.util.List;
 
 
 /**
- * KafkaMonitorIntegrationProvider is the base class provider for the kafka integration connector that extracts topic names from the broker.
+ * KafkaMonitorIntegrationProvider is the connector provider for the kafka integration connector that extracts topic names from the broker.
  */
 public class KafkaMonitorIntegrationProvider extends ConnectorProviderBase
 {

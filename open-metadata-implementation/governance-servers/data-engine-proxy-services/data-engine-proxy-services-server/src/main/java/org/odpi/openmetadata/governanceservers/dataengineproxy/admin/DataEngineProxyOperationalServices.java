@@ -181,7 +181,7 @@ public class DataEngineProxyOperationalServices {
                     changePoller.start();
                 }
                 // TODO: otherwise we likely need to look for and process events
-            } catch (ConnectionCheckedException | ConnectorCheckedException e) {
+            } catch (ConnectorCheckedException | ConnectionCheckedException | UserNotAuthorizedException | InvalidParameterException | PropertyServerException  e) {
                 throw new OMAGConfigurationErrorException(
                         DataEngineProxyErrorCode.ERROR_INITIALIZING_CONNECTION.getMessageDefinition(),
                         this.getClass().getName(),

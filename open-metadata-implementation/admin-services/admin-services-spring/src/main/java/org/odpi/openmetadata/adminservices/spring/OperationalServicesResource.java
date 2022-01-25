@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.adminservices.OMAGServerOperationalServices;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
+import org.odpi.openmetadata.adminservices.rest.OMAGServerStatusResponse;
 import org.odpi.openmetadata.adminservices.rest.SuccessMessageResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
@@ -24,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
         description="The operational administration services support the management " +
                 "of OMAG Server instances.  This includes starting and stopping the servers as well as querying and changing their operational state.",
         externalDocs=@ExternalDocumentation(description="Further information",
-                url="https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/user/operating-omag-server.html"))
+                url="https://odpi.github.io/egeria-docs/guides/operations/operating-omag-server/"))
 
 
 public class OperationalServicesResource
@@ -51,7 +52,7 @@ public class OperationalServicesResource
     @Operation(summary="Activate server with stored configuration document",
                description="Activate the named OMAG server using the appropriate configuration document found in the configuration store.",
             externalDocs=@ExternalDocumentation(description="Configuration Documents",
-                    url="https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/concepts/configuration-document.html"))
+                    url="https://odpi.github.io/egeria-docs/concepts/configuration-document"))
 
     public SuccessMessageResponse activateWithStoredConfig(@PathVariable String userId,
                                                            @PathVariable String serverName)
@@ -78,7 +79,7 @@ public class OperationalServicesResource
             description="Activate the named OMAG server using the supplied configuration document. This configuration " +
                     "document is added to the configuration store, over-writing any previous configuration for this server.",
             externalDocs=@ExternalDocumentation(description="Configuration Documents",
-                    url="https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/concepts/configuration-document.html"))
+                    url="https://odpi.github.io/egeria-docs/concepts/configuration-document"))
 
     public SuccessMessageResponse activateWithSuppliedConfig(@PathVariable String           userId,
                                                              @PathVariable String           serverName,
@@ -155,14 +156,44 @@ public class OperationalServicesResource
                     "document may have changed since the server was started.  This operation makes it possible to verify the " +
                     "configuration values actually being used in the running server. \n" +
                     "\n" +
-                    "Null is returned if the server is not running.",
+                    "An InvalidParameterException is returned if the server is not running.",
             externalDocs=@ExternalDocumentation(description="Configuration Documents",
-                    url="https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/concepts/configuration-document.html"))
+                    url="https://odpi.github.io/egeria-docs/concepts/configuration-document"))
 
     public OMAGServerConfigResponse getActiveConfiguration(@PathVariable String           userId,
                                                            @PathVariable String           serverName)
     {
         return operationalServices.getActiveConfiguration(userId, serverName);
+    }
+
+
+
+    /**
+     * Return the status for the current active instance of the server.  Null is returned if
+     * the server instance is not running.
+     *
+     * @param userId  user that is issuing the request
+     * @param serverName  local server name
+     * @return status of the server or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException the server name is invalid or not running or
+     * OMAGConfigurationErrorException there is a problem using the supplied configuration.
+     */
+    @GetMapping(path = "/instance/status")
+
+    @Operation(summary="Retrieve active server's status",
+               description="Retrieve the status for a running instance of a server. The stored configuration " +
+                                   "document may have changed since the server was started.  This operation makes it possible to verify that " +
+                                   "all of the services. \n" +
+                                   "\n" +
+                                   "An InvalidParameterException is returned if the server is not running.",
+               externalDocs=@ExternalDocumentation(description="OMAG Server",
+                                                   url="https://odpi.github.io/egeria-docs/concepts/omag-server"))
+
+    public OMAGServerStatusResponse getActiveServerStatus(@PathVariable String userId,
+                                                          @PathVariable String serverName)
+    {
+        return operationalServices.getActiveServerStatus(userId, serverName);
     }
 
 
@@ -183,7 +214,7 @@ public class OperationalServicesResource
                                    "archive that is readable through the connector identified by the connection.  " +
                                    "It can be used with OMAG servers that are of type Cohort Member.",
                externalDocs=@ExternalDocumentation(description="Open Metadata Archives",
-                    url="https://egeria.odpi.org/open-metadata-resources/open-metadata-archives/index.html"))
+                    url="https://odpi.github.io/egeria-docs/concepts/open-metadata-archives/"))
 
     public VoidResponse addOpenMetadataArchiveFile(@PathVariable String userId,
                                                    @PathVariable String serverName,
@@ -210,7 +241,7 @@ public class OperationalServicesResource
                                    "archive that is readable through the connector identified by the connection.  " +
                                    "It can be used with OMAG servers that are of type Cohort Member.",
             externalDocs=@ExternalDocumentation(description="Open Metadata Archives",
-                    url="https://egeria.odpi.org/open-metadata-resources/open-metadata-archives/index.html"))
+                    url="https://odpi.github.io/egeria-docs/concepts/open-metadata-archives/"))
 
     public VoidResponse addOpenMetadataArchive(@PathVariable String     userId,
                                                @PathVariable String     serverName,

@@ -81,7 +81,7 @@ public class AssetOwnerFactory
             final int maxPageSize = 100;
             return new AssetOwner(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -126,7 +126,7 @@ public class AssetOwnerFactory
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -137,6 +137,7 @@ public class AssetOwnerFactory
      * Create an asset and return its GUID.
      *
      * @param userId calling user
+     * @param templateGUID unique identifier of template to use
      * @return GUID of asset
      * @throws FVTUnexpectedCondition the test case failed
      */
@@ -169,7 +170,7 @@ public class AssetOwnerFactory
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -213,7 +214,7 @@ public class AssetOwnerFactory
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }

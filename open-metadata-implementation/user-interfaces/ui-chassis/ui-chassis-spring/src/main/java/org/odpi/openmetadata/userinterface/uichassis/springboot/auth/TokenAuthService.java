@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-public class TokenAuthService extends TokenSettings implements AuthService {
+public class TokenAuthService extends TokenService implements AuthService {
 
 
     public void addAuthentication(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {

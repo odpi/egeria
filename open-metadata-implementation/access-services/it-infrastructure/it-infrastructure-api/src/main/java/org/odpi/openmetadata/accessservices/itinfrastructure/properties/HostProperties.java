@@ -16,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class HostProperties extends ConfigurationItemProperties
+public class HostProperties extends ITInfrastructureProperties
 {
     private static final long    serialVersionUID = 1L;
 
@@ -41,6 +41,42 @@ public class HostProperties extends ConfigurationItemProperties
 
 
     /**
+     * Copy/clone constructor.  Note, this is a deep copy
+     *
+     * @param template object to copy
+     */
+    public HostProperties(AssetProperties template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Convert this object into an AssetProperties object.  This involves packing the properties introduced at this level
+     * into the extended properties.
+     *
+     * @return asset properties
+     */
+    public AssetProperties cloneToAsset()
+    {
+        return super.cloneToAsset("Host");
+    }
+
+
+    /**
+     * Convert this object into an AssetProperties object.  This involves packing the properties introduced at this level
+     * into the extended properties.
+     *
+     * @param subTypeName subtype name
+     * @return asset properties
+     */
+    public AssetProperties cloneToAsset(String subTypeName)
+    {
+        return super.cloneToAsset(subTypeName);
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -49,9 +85,12 @@ public class HostProperties extends ConfigurationItemProperties
     public String toString()
     {
         return "HostProperties{" +
-                       "qualifiedName='" + getQualifiedName() + '\'' +
+                       "displayName='" + getDisplayName() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
-                       ", classifications=" + getClassifications() +
                        ", vendorProperties=" + getVendorProperties() +
                        ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +

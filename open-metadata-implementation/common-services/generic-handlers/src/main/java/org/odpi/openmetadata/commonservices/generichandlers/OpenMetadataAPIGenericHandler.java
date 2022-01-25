@@ -517,6 +517,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              attachmentTypeName,
                                              null,
                                              userId,
+                                             effectiveTime,
                                              actionDescription,
                                              methodName);
             }
@@ -707,6 +708,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              attachmentTypeName,
                                              null,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -882,6 +884,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              attachmentTypeName,
                                              null,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -1182,6 +1185,81 @@ public class OpenMetadataAPIGenericHandler<B>
     }
 
 
+
+    /**
+     * Update the properties associated with a relationship.  Effectivity dates are unchanged.
+     *
+     * @param userId caller's userId
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param relationshipGUID unique identifier of the relationship to update
+     * @param relationshipGUIDParameterName  name of the parameter supplying the relationshipGUID
+     * @param relationshipTypeName type name of relationship if known (null is ok)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way; the properties are
+     *                                    not valid for this type of relationship
+     * @throws UserNotAuthorizedException the governance action service is not authorized to update this relationship
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    public void deleteRelationship(String             userId,
+                                   String             externalSourceGUID,
+                                   String             externalSourceName,
+                                   String             relationshipGUID,
+                                   String             relationshipGUIDParameterName,
+                                   String             relationshipTypeName,
+                                   String             methodName) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(relationshipGUID, relationshipGUIDParameterName, methodName);
+
+        Relationship relationship = repositoryHandler.getRelationshipByGUID(userId,
+                                                                            relationshipGUID,
+                                                                            relationshipGUIDParameterName,
+                                                                            relationshipTypeName,
+                                                                            null,
+                                                                            methodName);
+
+        if (this.visibleToUserThroughRelationship(userId, relationship, methodName))
+        {
+
+
+            final String entityOneParameterName = "relationship.getEntityOneProxy().getGUID()";
+            final String entityTwoParameterName = "relationship.getEntityTwoProxy().getGUID()";
+
+            this.validateAnchorEntity(userId,
+                                      relationship.getEntityOneProxy().getGUID(),
+                                      entityOneParameterName,
+                                      OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                      false,
+                                      false,
+                                      false,
+                                      supportedZones,
+                                      null,
+                                      methodName);
+
+            this.validateAnchorEntity(userId,
+                                      relationship.getEntityTwoProxy().getGUID(),
+                                      entityTwoParameterName,
+                                      OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                      false,
+                                      false,
+                                      false,
+                                      supportedZones,
+                                      null,
+                                      methodName);
+
+            repositoryHandler.removeRelationship(userId,
+                                                 externalSourceGUID,
+                                                 externalSourceName,
+                                                 relationship,
+                                                 methodName);
+        }
+    }
+
+
     /**
      * Locate the requested classification in the supplied entity.
      *
@@ -1369,6 +1447,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                  attachmentTypeName,
                                                  null,
                                                  userId,
+                                                 new Date(),
                                                  actionDescription,
                                                  methodName);
                 }
@@ -4166,6 +4245,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param attachmentTypeName if a new relationship has been established, what is the type name of the entity it is connecting to
      * @param relationshipTypeName if a new relationship has been established, what is the type name of the relationship
      * @param userId who is the calling user?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param actionDescription what is the description of the activity
      * @param methodName calling method
      * @throws UserNotAuthorizedException local server user id not authorized to update latest change
@@ -4179,6 +4259,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                          String       attachmentTypeName,
                                          String       relationshipTypeName,
                                          String       userId,
+                                         Date         effectiveTime,
                                          String       actionDescription,
                                          String       methodName) throws UserNotAuthorizedException,
                                                                          PropertyServerException
@@ -4219,7 +4300,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                    newProperties,
                                                    false,
                                                    false,
-                                                   new Date(),
+                                                   effectiveTime,
                                                    methodName);
             }
         }
@@ -4684,6 +4765,62 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                           PropertyServerException,
                                                                           UserNotAuthorizedException
     {
+        return this.getAttachedEntity(userId,
+                                      startingElementGUID,
+                                      startingElementGUIDParameterName,
+                                      startingElementTypeName,
+                                      relationshipTypeGUID,
+                                      relationshipTypeName,
+                                      resultingElementTypeName,
+                                      0,
+                                      forLineage,
+                                      forDuplicateProcessing,
+                                      serviceSupportedZones,
+                                      effectiveTime,
+                                      methodName);
+    }
+
+
+    /**
+     * Return the entity for the required relationship attached to a specific entity.  This method assumes the starting entity has
+     * a validated anchor
+     *
+     * @param userId     calling user
+     * @param startingElementGUID identifier for the entity that the identifier is attached to
+     * @param startingElementGUIDParameterName name of the parameter used to pass the guid
+     * @param startingElementTypeName type name for anchor
+     * @param relationshipTypeGUID unique identifier of the attachment's relationship type
+     * @param relationshipTypeName unique name of the attachment's relationship type
+     * @param resultingElementTypeName unique name of the attached entity's type
+     * @param attachmentEntityEnd which relationship end should the attached entity be located? 0=either end; 1=end1; 2=end2
+     * @param forLineage is this part of a lineage request?
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param serviceSupportedZones supported zones for calling service
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return list of retrieved objects or null if none found
+     *
+     * @throws InvalidParameterException  the input properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the repositories
+     */
+    public EntityDetail getAttachedEntity(String       userId,
+                                          String       startingElementGUID,
+                                          String       startingElementGUIDParameterName,
+                                          String       startingElementTypeName,
+                                          String       relationshipTypeGUID,
+                                          String       relationshipTypeName,
+                                          String       resultingElementTypeName,
+                                          int          attachmentEntityEnd,
+                                          boolean      forLineage,
+                                          boolean      forDuplicateProcessing,
+                                          List<String> serviceSupportedZones,
+                                          Date         effectiveTime,
+                                          String       methodName) throws InvalidParameterException,
+                                                                          PropertyServerException,
+                                                                          UserNotAuthorizedException
+    {
         EntityDetail startingEntity = this.getEntityFromRepository(userId,
                                                                    startingElementGUID,
                                                                    startingElementGUIDParameterName,
@@ -4704,6 +4841,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                              null,
                                                                              0,
                                                                              resultingElementTypeName,
+                                                                             attachmentEntityEnd,
                                                                              forLineage,
                                                                              forDuplicateProcessing,
                                                                              effectiveTime,
@@ -4938,6 +5076,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                         resultingElementTypeName,
                                         null,
                                         null,
+                                        0,
                                         false,
                                         false,
                                         supportedZones,
@@ -4960,6 +5099,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param resultingElementTypeName unique name of the attached entity's type
      * @param requiredClassificationName name of a classification that must be on the entity for a match
      * @param omittedClassificationName name of a classification that must NOT be on the entity for a match
+     * @param attachmentEntityEnd which relationship end should the attached entity be located? 0=either end; 1=end1; 2=end2
      * @param forLineage is this part of a lineage request?
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param serviceSupportedZones supported zones for calling service
@@ -4983,6 +5123,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                   String       resultingElementTypeName,
                                                   String       requiredClassificationName,
                                                   String       omittedClassificationName,
+                                                  int          attachmentEntityEnd,
                                                   boolean      forLineage,
                                                   boolean      forDuplicateProcessing,
                                                   List<String> serviceSupportedZones,
@@ -5013,7 +5154,10 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                           startingElementTypeName,
                                                                           relationshipTypeGUID,
                                                                           relationshipTypeName,
+                                                                          null,
                                                                           resultingElementTypeName,
+                                                                          attachmentEntityEnd,
+                                                                          forDuplicateProcessing,
                                                                           startingFrom,
                                                                           pageSize,
                                                                           effectiveTime,
@@ -5064,6 +5208,47 @@ public class OpenMetadataAPIGenericHandler<B>
             {
                 return visibleEntities;
             }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return a visible relationship retrieved by its GUID.
+     *
+     * @param userId calling user
+     * @param relationshipGUID unique identifier
+     * @param relationshipGUIDParameterName parameter passing the unique identifier
+     * @param relationshipTypeName type of relationship to be retrieved
+     * @param effectiveTime effective time for the retrieval
+     * @param methodName calling method
+     * @return list of retrieved objects or null if none found
+     *
+     * @throws InvalidParameterException  the input properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the repositories
+     */
+    public Relationship getAttachmentLink(String       userId,
+                                          String       relationshipGUID,
+                                          String       relationshipGUIDParameterName,
+                                          String       relationshipTypeName,
+                                          Date         effectiveTime,
+                                          String       methodName) throws InvalidParameterException,
+                                                                          PropertyServerException,
+                                                                          UserNotAuthorizedException
+
+    {
+        Relationship relationship = repositoryHandler.getRelationshipByGUID(userId,
+                                                                            relationshipGUID,
+                                                                            relationshipGUIDParameterName,
+                                                                            relationshipTypeName,
+                                                                            effectiveTime,
+                                                                            methodName);
+
+        if (this.visibleToUserThroughRelationship(userId, relationship, methodName))
+        {
+            return relationship;
         }
 
         return null;
@@ -5233,6 +5418,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                        effectiveTime,
                                        methodName);
     }
+
 
 
     /**
@@ -5640,7 +5826,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                    entityTypeGUID,
                                    entityTypeName,
                                    uniqueParameterValue,
-                                   uniqueParameterValue,
+                                   uniqueParameterName,
                                    this.getEffectiveTime(propertyBuilder.getInstanceProperties(methodName)),
                                    methodName);
         }
@@ -6507,6 +6693,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              entityTypeName,
                                              null,
                                              userId,
+                                             effectiveTime,
                                              actionDescription,
                                              methodName);
             }
@@ -6520,6 +6707,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              null,
                                              null,
                                              userId,
+                                             effectiveTime,
                                              actionDescription,
                                              methodName);
             }
@@ -6750,6 +6938,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              entityTypeName,
                                              null,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -6763,6 +6952,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              null,
                                              null,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -6999,6 +7189,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              entityTypeName,
                                              null,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -7567,6 +7758,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                          entityTypeName,
                                          null,
                                          userId,
+                                         effectiveTime,
                                          actionDescription,
                                          methodName);
         }
@@ -8091,6 +8283,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param relationshipTypeGUID unique identifier of the attachment's relationship type
      * @param relationshipTypeName unique name of the attachment's relationship type
      * @param resultingElementTypeName unique name of the attached entity's type
+     * @param attachmentEntityEnd which relationship end should the attached entity be located? 0=either end; 1=end1; 2=end2
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param serviceSupportedZones supported zones for calling service
@@ -8110,6 +8303,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                 String       relationshipTypeGUID,
                                 String       relationshipTypeName,
                                 String       resultingElementTypeName,
+                                int          attachmentEntityEnd,
                                 boolean      forLineage,
                                 boolean      forDuplicateProcessing,
                                 List<String> serviceSupportedZones,
@@ -8141,6 +8335,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                              null,
                                                                              0,
                                                                              resultingElementTypeName,
+                                                                             attachmentEntityEnd,
                                                                              forLineage,
                                                                              forDuplicateProcessing,
                                                                              effectiveTime,
@@ -8969,7 +9164,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * 2 flags exactValue and ignoreCase are supplied that determine the nature of the regex expression that is created.
      *
      * @param searchCriteria text literal use as the basis of the match, if this empty then match everything ignoring the flags.
-     * @param exactValue the exactValue flag when set means to exactly match the streing, otehrwise it looks for srings starting with the searchCriteria.
+     * @param exactValue the exactValue flag when set means to exactly match the string, otherwise it looks for strings starting with the searchCriteria.
      * @param ignoreCase if set ignore the case on the match, if not set then the case must match.
      * @return a regex expression created to match implement the supplied searchCriteria and flags.
      */
@@ -12521,6 +12716,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                          attachingElementTypeName,
                                          attachmentTypeName,
                                          userId,
+                                         effectiveTime,
                                          actionDescription,
                                          methodName);
         }
@@ -12536,6 +12732,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              attachingElementTypeName,
                                              attachmentTypeName,
                                              userId,
+                                             effectiveTime,
                                              actionDescription,
                                              methodName);
             }
@@ -12556,6 +12753,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              startingElementTypeName,
                                              attachmentTypeName,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -12578,6 +12776,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              startingElementTypeName,
                                              attachmentTypeName,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -12803,6 +13002,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              attachingElementTypeName,
                                              attachmentTypeName,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -12818,6 +13018,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                  attachingElementTypeName,
                                                  attachmentTypeName,
                                                  userId,
+                                                 new Date(),
                                                  actionDescription,
                                                  methodName);
                 }
@@ -12851,6 +13052,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                  startingElementTypeName,
                                                  attachmentTypeName,
                                                  userId,
+                                                 new Date(),
                                                  actionDescription,
                                                  methodName);
                 }
@@ -12867,6 +13069,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                  startingElementTypeName,
                                                  attachmentTypeName,
                                                  userId,
+                                                 new Date(),
                                                  actionDescription,
                                                  methodName);
                 }
@@ -13142,6 +13345,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                          newAttachingElementTypeName,
                                          attachmentTypeName,
                                          userId,
+                                         new Date(),
                                          actionDescription,
                                          methodName);
 
@@ -13170,6 +13374,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              newAttachingElementTypeName,
                                              attachmentTypeName,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -13203,6 +13408,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              startingElementTypeName,
                                              attachmentTypeName,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -13232,6 +13438,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              startingElementTypeName,
                                              attachmentTypeName,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -13623,6 +13830,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                          attachedElementTypeName,
                                          attachmentTypeName,
                                          userId,
+                                         new Date(),
                                          actionDescription,
                                          methodName);
 
@@ -13650,6 +13858,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              attachedElementTypeName,
                                              attachmentTypeName,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -13670,6 +13879,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              startingElementTypeName,
                                              attachmentTypeName,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -13698,6 +13908,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              startingElementTypeName,
                                              attachmentTypeName,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -14108,7 +14319,7 @@ public class OpenMetadataAPIGenericHandler<B>
             EntityDetail integrator = this.getEntityFromRepository(userId,
                                                                    externalSourceGUID,
                                                                    guidParameterName,
-                                                                   OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                                   OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                                    null,
                                                                    null,
                                                                    forLineage,

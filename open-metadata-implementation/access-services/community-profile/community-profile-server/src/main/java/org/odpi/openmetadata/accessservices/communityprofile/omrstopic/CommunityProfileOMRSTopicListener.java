@@ -5,9 +5,9 @@ package org.odpi.openmetadata.accessservices.communityprofile.omrstopic;
 import org.odpi.openmetadata.accessservices.communityprofile.converters.CommunityProfileOMASConverter;
 import org.odpi.openmetadata.accessservices.communityprofile.events.CommunityProfileOutboundEventType;
 import org.odpi.openmetadata.accessservices.communityprofile.ffdc.CommunityProfileAuditCode;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.ContributionRecordElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.ElementStub;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.PersonalProfileUniverse;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ContributionRecordElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ElementStub;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonalProfileUniverse;
 import org.odpi.openmetadata.accessservices.communityprofile.outtopic.CommunityProfileOutTopicPublisher;
 import org.odpi.openmetadata.accessservices.communityprofile.server.CommunityProfileServicesInstance;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
@@ -20,7 +20,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
-import java.util.List;
 
 
 /**
@@ -38,6 +37,7 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
     private CommunityProfileOutTopicPublisher          publisher;
     private OMRSRepositoryHelper                       repositoryHelper;
     private int                                        karmaPointIncrement;
+    private int                                        karmaPointPlateauThreshold;
     private String                                     serverUserId;
     private CommunityProfileOMASConverter<ElementStub> converter;
     private CommunityProfileServicesInstance           instance;
@@ -48,6 +48,7 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
      * along with classes for testing and manipulating instances.
      *
      * @param karmaPointIncrement increment for each personal contribution
+     * @param karmaPointPlateauThreshold number of karma points in a plateau
      * @param publisher object that can set events to listening destinations
      * @param serverUserId userId for requests originated by this server
      * @param auditLog  logging destination
@@ -57,6 +58,7 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
      * @param instance handlers for this server instance
      */
     public CommunityProfileOMRSTopicListener(int                               karmaPointIncrement,
+                                             int karmaPointPlateauThreshold,
                                              CommunityProfileOutTopicPublisher publisher,
                                              String                            serverUserId,
                                              AuditLog                          auditLog,
@@ -70,6 +72,7 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
         this.repositoryHelper = repositoryHelper;
         this.publisher = publisher;
         this.karmaPointIncrement = karmaPointIncrement;
+        this.karmaPointPlateauThreshold = karmaPointPlateauThreshold;
         this.serverUserId = serverUserId;
 
         this.converter = new CommunityProfileOMASConverter<>(repositoryHelper, serviceName, serverName);
@@ -100,50 +103,67 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
 
                 try
                 {
-                    List<PersonalProfileUniverse> personalProfiles = instance.getPersonalProfileHandler().getPersonalProfilesByName(serverUserId,
-                                                                                                                                    contributingUserId,
-                                                                                                                                    userParameterName,
-                                                                                                                                    0,
-                                                                                                                                    0,
-                                                                                                                                    new Date(),
-                                                                                                                                    methodName);
+                    PersonalProfileUniverse personalProfile = instance.getPersonalProfileHandler().getActorProfileForUser(serverUserId,
+                                                                                                                          contributingUserId,
+                                                                                                                          userParameterName,
+                                                                                                                          OpenMetadataAPIMapper.PERSON_TYPE_NAME,
+                                                                                                                          new Date(),
+                                                                                                                          methodName);
 
-                    if (personalProfiles != null)
+                    if (personalProfile != null)
                     {
-                        /*
-                         * There should be only one.
-                         */
-                        if (personalProfiles.size() == 1)
+                        final String profileGUIDParameterName = "personalProfiles.get(0).getElementHeader().getGUID()";
+
+                        ContributionRecordElement contributionRecord = personalProfile.getContributionRecord();
+
+                        long currentPoints = 0;
+                        boolean isPublic = false;
+
+                        if ((contributionRecord != null) && (contributionRecord.getProperties() != null))
                         {
-                            final String profileGUIDParameterName = "personalProfiles.get(0).getElementHeader().getGUID()";
+                            currentPoints = contributionRecord.getProperties().getKarmaPoints();
+                            isPublic = contributionRecord.getProperties().getIsPublic();
+                        }
 
-                            ContributionRecordElement contributionRecord = personalProfiles.get(0).getContributionRecord();
+                        long newPoints = currentPoints + karmaPointIncrement;
 
-                            int currentPlateau = contributionRecord.getProperties().getKarmaPointPlateau();
+                        instance.getContributionRecordHandler().saveContributionRecord(serverUserId,
+                                                                                       personalProfile.getElementHeader().getGUID(),
+                                                                                       profileGUIDParameterName,
+                                                                                       personalProfile.getProfileProperties().getQualifiedName(),
+                                                                                       newPoints,
+                                                                                       false,
+                                                                                       null,
+                                                                                       null,
+                                                                                       null,
+                                                                                       methodName);
 
-                            contributionRecord = instance.getContributionRecordHandler().incrementKarmaPoints(serverUserId,
-                                                                                                              personalProfiles.get(0).getElementHeader().getGUID(),
-                                                                                                              profileGUIDParameterName,
-                                                                                                              personalProfiles.get(0).getProfileProperties().getQualifiedName(),
-                                                                                                              karmaPointIncrement,
-                                                                                                              methodName);
+                        if (karmaPointPlateauThreshold != 0)
+                        {
+                            long currentPlateau = currentPoints / karmaPointPlateauThreshold;
+                            long newPlateau     = newPoints / karmaPointPlateauThreshold;
+
 
                             log.debug("Karma points updated: " + contributingUserId);
 
-                            if (contributionRecord.getProperties().getKarmaPointPlateau() > currentPlateau)
+                            if (newPlateau > currentPlateau)
                             {
-                                auditLog.logMessage(methodName,
-                                                    CommunityProfileAuditCode.KARMA_PLATEAU_AWARD.getMessageDefinition(contributingUserId,
-                                                                                                                       Integer.toString(contributionRecord.getProperties().getKarmaPointPlateau()),
-                                                                                                                       Integer.toString(contributionRecord.getProperties().getKarmaPoints())));
+                                if (isPublic)
+                                {
+                                    auditLog.logMessage(methodName,
+                                                        CommunityProfileAuditCode.KARMA_PLATEAU_AWARD.getMessageDefinition(contributingUserId,
+                                                                                                                           Long.toString(newPlateau),
+                                                                                                                           Long.toString(newPoints)));
+                                }
 
-                                ElementStub elementStub = new ElementStub(personalProfiles.get(0).getElementHeader());
+                                ElementStub elementStub = new ElementStub(personalProfile.getElementHeader());
 
-                                elementStub.setUniqueName(personalProfiles.get(0).getProfileProperties().getQualifiedName());
+                                elementStub.setUniqueName(personalProfile.getProfileProperties().getQualifiedName());
                                 publisher.sendKarmaPointPlateauEvent(elementStub,
                                                                      contributingUserId,
-                                                                     contributionRecord.getProperties().getKarmaPointPlateau(),
-                                                                     contributionRecord.getProperties().getKarmaPoints());
+                                                                     isPublic,
+                                                                     newPlateau,
+                                                                     newPoints);
                             }
                         }
                     }
@@ -210,7 +230,7 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.COMMUNITY_TYPE_NAME)))
                 {
 
-                    publisher.sentEntityEvent(eventType, entity.getGUID(), instanceTypeName, classificationName, elementStub);
+                    publisher.sendEntityEvent(eventType, entity.getGUID(), instanceTypeName, classificationName, elementStub);
                 }
             }
             catch (Exception error)
@@ -274,7 +294,7 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.TEAM_MEMBER_TYPE_NAME)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.COMMUNITY_MEMBERSHIP_TYPE_NAME)))
                 {
-                    publisher.sentRelationshipEvent(eventType, relationship.getGUID(), instanceTypeName, relationshipElementStub, endOneElementStub, endTwoElementStub);
+                    publisher.sendRelationshipEvent(eventType, relationship.getGUID(), instanceTypeName, relationshipElementStub, endOneElementStub, endTwoElementStub);
                 }
             }
             catch (Exception error)

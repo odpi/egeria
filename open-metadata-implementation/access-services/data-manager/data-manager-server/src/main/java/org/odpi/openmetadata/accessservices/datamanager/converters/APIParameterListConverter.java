@@ -48,14 +48,11 @@ public class APIParameterListConverter<B> extends DataManagerOMASConverter<B>
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
-    @SuppressWarnings(value = "unused")
     public B getNewComplexBean(Class<B>           beanClass,
                                EntityDetail       primaryEntity,
                                List<Relationship> relationships,
                                String             methodName) throws PropertyServerException
     {
-        final String thisMethodName = "getNewComplexBean";
-
         try
         {
             /*
@@ -65,7 +62,7 @@ public class APIParameterListConverter<B> extends DataManagerOMASConverter<B>
 
             if (returnBean instanceof APIParameterListElement)
             {
-                if (primaryEntity != null)
+                if ((primaryEntity != null) && (primaryEntity.getProperties() != null))
                 {
                     /*
                      * The API Parameter List has many different subtypes.
@@ -79,6 +76,7 @@ public class APIParameterListConverter<B> extends DataManagerOMASConverter<B>
 
                     InstanceProperties propertiesCopy = new InstanceProperties(primaryEntity.getProperties());
 
+                    properties.setQualifiedName(this.removeQualifiedName(propertiesCopy));
                     properties.setDisplayName(this.removeDisplayName(propertiesCopy));
                     properties.setDescription(this.removeDescription(propertiesCopy));
                     properties.setIsDeprecated(this.removeIsDeprecated(propertiesCopy));

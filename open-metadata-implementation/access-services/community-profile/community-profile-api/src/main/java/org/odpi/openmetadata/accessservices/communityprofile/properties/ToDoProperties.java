@@ -222,11 +222,13 @@ public class ToDoProperties extends ReferenceableProperties
                        ", dueTime=" + dueTime +
                        ", completionTime=" + completionTime +
                        ", status=" + status +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       ", additionalProperties=" + getAdditionalProperties() +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
                        ", vendorProperties=" + getVendorProperties() +
                        ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
                        '}';
     }
 

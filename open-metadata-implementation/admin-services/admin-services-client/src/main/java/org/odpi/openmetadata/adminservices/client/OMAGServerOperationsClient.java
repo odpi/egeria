@@ -8,8 +8,10 @@ import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
+import org.odpi.openmetadata.adminservices.properties.ServerStatus;
 import org.odpi.openmetadata.adminservices.rest.ConnectionResponse;
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
+import org.odpi.openmetadata.adminservices.rest.OMAGServerStatusResponse;
 import org.odpi.openmetadata.adminservices.rest.ServerTypeClassificationResponse;
 import org.odpi.openmetadata.adminservices.rest.ServerTypeClassificationSummary;
 import org.odpi.openmetadata.adminservices.rest.SuccessMessageResponse;
@@ -247,6 +249,30 @@ public class OMAGServerOperationsClient
                                                                                          serverName);
 
         return restResult.getOMAGServerConfig();
+    }
+
+
+    /**
+     * Return the status of a running server (use platform services to find out if the server is running).
+     *
+     * @return status of the server
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public ServerStatus getServerStatus() throws OMAGNotAuthorizedException,
+                                                 OMAGInvalidParameterException,
+                                                 OMAGConfigurationErrorException
+    {
+        final String methodName  = "getServerStatus";
+        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/instance/status";
+
+        OMAGServerStatusResponse restResult = restClient.callOMAGServerStatusGetRESTCall(methodName,
+                                                                                         serverPlatformRootURL + urlTemplate,
+                                                                                         adminUserId,
+                                                                                         serverName);
+
+        return restResult.getServerStatus();
     }
 
 

@@ -10,7 +10,7 @@
     <parent>
         <artifactId>server-chassis</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.4-SNAPSHOT</version>
+        <version>3.5-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -152,6 +152,12 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>discovery-engine-spring</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>archive-manager-spring</artifactId>
             <scope>runtime</scope>
         </dependency>
 
@@ -409,6 +415,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <scope>compile</scope>
@@ -496,6 +507,9 @@
                                 <!-- Spring seems to cause false positives on dependency checker -->
                                 <ignoredUnusedDeclaredDependency>org.springframework.boot:spring-boot-starter-web:*
                                 </ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.springframework.boot:spring-boot-starter-validation:*
+                                </ignoredUnusedDeclaredDependency>
+
                                 <ignoredUnusedDeclaredDependency>
                                     org.springframework.boot:spring-boot-starter-security:*
                                 </ignoredUnusedDeclaredDependency>
@@ -571,6 +585,12 @@
                 <dependency>
                     <groupId>org.odpi.egeria</groupId>
                     <artifactId>asset-owner-spring</artifactId>
+                    <scope>runtime</scope>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.odpi.egeria</groupId>
+                    <artifactId>archive-manager-spring</artifactId>
                     <scope>runtime</scope>
                 </dependency>
 

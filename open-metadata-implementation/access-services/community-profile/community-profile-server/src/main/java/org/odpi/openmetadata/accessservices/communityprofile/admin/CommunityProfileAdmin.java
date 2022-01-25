@@ -84,6 +84,14 @@ public class CommunityProfileAdmin extends AccessServiceAdmin
                                                                    accessServiceConfig.getAccessServiceName(),
                                                                    auditLog);
 
+            int karmaPointIncrement = super.extractKarmaPointIncrement(accessServiceConfig.getAccessServiceOptions(),
+                                                                       accessServiceConfig.getAccessServiceName(),
+                                                                       auditLog);
+
+            int karmaPointPlateau = super.extractKarmaPointPlateau(accessServiceConfig.getAccessServiceOptions(),
+                                                                   accessServiceConfig.getAccessServiceName(),
+                                                                   auditLog);
+
             /*
              * The instance is used to support REST API calls to this server instance.  It is given the
              * OutTopic connection for the client so that the client can query it to connect to the right
@@ -96,9 +104,7 @@ public class CommunityProfileAdmin extends AccessServiceAdmin
                                                                  auditLog,
                                                                  serverUserName,
                                                                  repositoryConnector.getMaxPageSize(),
-                                                                 super.extractKarmaPointPlateau(accessServiceConfig.getAccessServiceOptions(),
-                                                                                                accessServiceConfig.getAccessServiceName(),
-                                                                                                auditLog),
+                                                                 karmaPointPlateau,
                                                                  accessServiceConfig.getAccessServiceOutTopic());
             this.serverName = instance.getServerName();
 
@@ -117,18 +123,17 @@ public class CommunityProfileAdmin extends AccessServiceAdmin
                                                                                      CommunityProfileOutTopicServerProvider.class.getName(),
                                                                                      auditLog);
                 CommunityProfileOutTopicServerConnector outTopicServerConnector = super.getTopicConnector(serverSideOutTopicConnection,
-                                                                                                     CommunityProfileOutTopicServerConnector.class,
-                                                                                                     outTopicAuditLog,
-                                                                                                     AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceFullName(),
-                                                                                                     actionDescription);
+                                                                                                          CommunityProfileOutTopicServerConnector.class,
+                                                                                                          outTopicAuditLog,
+                                                                                                          AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceFullName(),
+                                                                                                          actionDescription);
                 eventPublisher = new CommunityProfileOutTopicPublisher(outTopicServerConnector, endpoint.getAddress(), outTopicAuditLog);
 
                 this.registerWithEnterpriseTopic(AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceFullName(),
                                                  serverName,
                                                  omrsTopicConnector,
-                                                 new CommunityProfileOMRSTopicListener(super.extractKarmaPointIncrement(accessServiceConfig.getAccessServiceOptions(),
-                                                                                                                        accessServiceConfig.getAccessServiceName(),
-                                                                                                                        auditLog),
+                                                 new CommunityProfileOMRSTopicListener(karmaPointIncrement,
+                                                                                       karmaPointPlateau,
                                                                                        eventPublisher,
                                                                                        serverUserName,
                                                                                        outTopicAuditLog,
@@ -173,6 +178,11 @@ public class CommunityProfileAdmin extends AccessServiceAdmin
         if (instance != null)
         {
             this.instance.shutdown();
+        }
+
+        if (eventPublisher != null)
+        {
+            eventPublisher.disconnect();
         }
 
         auditLog.logMessage(actionDescription, CommunityProfileAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(serverName));

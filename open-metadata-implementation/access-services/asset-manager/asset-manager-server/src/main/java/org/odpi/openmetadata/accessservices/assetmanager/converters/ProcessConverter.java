@@ -37,7 +37,7 @@ public class ProcessConverter<B> extends AssetManagerOMASConverter<B>
 
     /**
      * Using the supplied instances, return a new instance of the bean. This is used for beans that have
-     * contain a combination of the properties from an entity and a that os a connected relationship.
+     * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
      * @param entity entity containing the properties
@@ -65,6 +65,7 @@ public class ProcessConverter<B> extends AssetManagerOMASConverter<B>
                 if (entity != null)
                 {
                     bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));
+                    processProperties.setProcessStatus(this.getProcessStatus(entity));
 
                     /*
                      * The initial set of values come from the entity.
@@ -78,7 +79,6 @@ public class ProcessConverter<B> extends AssetManagerOMASConverter<B>
 
                     processProperties.setFormula(this.removeFormula(instanceProperties));
                     processProperties.setImplementationLanguage(this.removeImplementationLanguage(instanceProperties));
-
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are
@@ -108,7 +108,7 @@ public class ProcessConverter<B> extends AssetManagerOMASConverter<B>
 
     /**
      * Using the supplied instances, return a new instance of the bean. This is used for beans that have
-     * contain a combination of the properties from an entity and a that os a connected relationship.
+     * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
      * @param entity entity containing the properties

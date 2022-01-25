@@ -7,7 +7,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 
 /**
  * The KafkaIntegrationConnectorErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
- * the Basic File Connector.  It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
+ * the Kafka monitor integration connector.  It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
  *
  * The 5 fields in the enum are:
  * <ul>
@@ -27,7 +27,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 public enum KafkaIntegrationConnectorErrorCode implements ExceptionMessageSet
 {
     UNEXPECTED_EXCEPTION(500, "KAFKA-INTEGRATION-CONNECTOR-500-001",
-             "The {0} integration connector received an unexpected exception {1} when cataloguing topics; the error message was: {1}",
+             "The {0} integration connector received an unexpected exception {1} when cataloguing topics; the error message was: {2}",
              "The connector is unable to catalog one or more topics.",
              "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
     ;

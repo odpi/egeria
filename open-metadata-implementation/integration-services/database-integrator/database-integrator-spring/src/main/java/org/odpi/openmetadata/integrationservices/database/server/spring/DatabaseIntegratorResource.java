@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name="Database Integrator OMIS", description="Supports the detection and creation of metadata for database management systems (DBMSs).",
         externalDocs=@ExternalDocumentation(description="Database Integrator Open Metadata Integration Service (OMIS)",
-                url="https://egeria.odpi.org/open-metadata-implementation/integration-services/database-integrator"))
+                url="https://odpi.github.io/egeria-docs/services/omis/database-integrator/overview/"))
 
 public class DatabaseIntegratorResource
 {

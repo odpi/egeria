@@ -256,82 +256,88 @@ public class RepositoryHandler
                 {
                     RelationshipDef relationshipDef = (RelationshipDef)typeDef;
 
-                    if ((relationshipDef.getEndDef1().getAttributeCardinality() == RelationshipEndCardinality.AT_MOST_ONE) ||
-                                (relationshipDef.getEndDef2().getAttributeCardinality() == RelationshipEndCardinality.AT_MOST_ONE))
+                    /*
+                     * If the relationship is set up as multi-link it means that every relationship is significant and no deduplication is desirable.
+                     */
+                    if (! relationshipDef.getMultiLink())
                     {
-                        Map<String, Relationship> usedGUIDs = new HashMap<>();
-                        List<Relationship>        results = new ArrayList<>();
-
-                        /*
-                         * Search for duplicates at end 1
-                         */
-                        if (relationshipDef.getEndDef1().getAttributeCardinality() == RelationshipEndCardinality.AT_MOST_ONE)
+                        if ((relationshipDef.getEndDef1().getAttributeCardinality() == RelationshipEndCardinality.AT_MOST_ONE) ||
+                                    (relationshipDef.getEndDef2().getAttributeCardinality() == RelationshipEndCardinality.AT_MOST_ONE))
                         {
-                            for (Relationship relationship : retrievedRelationships)
-                            {
-                                if (relationship != null)
-                                {
-                                    Relationship duplicateRelationship = usedGUIDs.get(relationship.getEntityTwoProxy().getGUID());
+                            Map<String, Relationship> usedGUIDs = new HashMap<>();
+                            List<Relationship>        results = new ArrayList<>();
 
-                                    if ((duplicateRelationship == null) || (errorHandler.validateIsLatestUpdate(duplicateRelationship, relationship)))
+                            /*
+                             * Search for duplicates at end 1
+                             */
+                            if (relationshipDef.getEndDef1().getAttributeCardinality() == RelationshipEndCardinality.AT_MOST_ONE)
+                            {
+                                for (Relationship relationship : retrievedRelationships)
+                                {
+                                    if (relationship != null)
                                     {
-                                        /*
-                                         * Replacing the relationship with the previous one because it is newer.
-                                         */
-                                        usedGUIDs.put(relationship.getEntityTwoProxy().getGUID(), relationship);
+                                        Relationship duplicateRelationship = usedGUIDs.get(relationship.getEntityTwoProxy().getGUID());
+
+                                        if ((duplicateRelationship == null) || (errorHandler.validateIsLatestUpdate(duplicateRelationship, relationship)))
+                                        {
+                                            /*
+                                             * Replacing the relationship with the previous one because it is newer.
+                                             */
+                                            usedGUIDs.put(relationship.getEntityTwoProxy().getGUID(), relationship);
+                                        }
+                                    }
+                                }
+
+                                /*
+                                 * Is end1 independent of end2?
+                                 */
+                                if (! relationshipDef.getEndDef1().getAttributeName().equals(relationshipDef.getEndDef2().getAttributeName()))
+                                {
+                                    /*
+                                     * The attribute names are different at either end of the relationship.  This means the ends have a particular
+                                     * direction and we can process each end independently.
+                                     */
+                                    if (! usedGUIDs.isEmpty())
+                                    {
+                                        results.addAll(usedGUIDs.values());
+                                        usedGUIDs = new HashMap<>();
                                     }
                                 }
                             }
 
                             /*
-                             * Is end1 independent of end2?
+                             * Search for duplicates at end 2 (note check that the relationship is not 0..1 to 0..1)
                              */
-                            if (! relationshipDef.getEndDef1().getAttributeName().equals(relationshipDef.getEndDef2().getAttributeName()))
+                            if ((relationshipDef.getEndDef1().getAttributeCardinality() != RelationshipEndCardinality.AT_MOST_ONE) &&
+                                        (relationshipDef.getEndDef2().getAttributeCardinality() == RelationshipEndCardinality.AT_MOST_ONE))
                             {
-                                /*
-                                 * The attribute names are different at either end of the relationship.  This means the ends have a particular
-                                 * direction and we can process each end independently.
-                                 */
-                                if (! usedGUIDs.isEmpty())
+                                for (Relationship relationship : retrievedRelationships)
                                 {
-                                    results.addAll(usedGUIDs.values());
-                                    usedGUIDs = new HashMap<>();
-                                }
-                            }
-                        }
-
-                        /*
-                         * Search for duplicates at end 2 (note check that the relationship is not 0..1 to 0..1)
-                         */
-                        if ((relationshipDef.getEndDef1().getAttributeCardinality() != RelationshipEndCardinality.AT_MOST_ONE) &&
-                                    (relationshipDef.getEndDef2().getAttributeCardinality() == RelationshipEndCardinality.AT_MOST_ONE))
-                        {
-                            for (Relationship relationship : retrievedRelationships)
-                            {
-                                if (relationship != null)
-                                {
-                                    Relationship duplicateRelationship = usedGUIDs.get(relationship.getEntityOneProxy().getGUID());
-
-                                    if ((duplicateRelationship == null) || (errorHandler.validateIsLatestUpdate(duplicateRelationship, relationship)))
+                                    if (relationship != null)
                                     {
-                                        /*
-                                         * Replacing the existing relationship with the previous one because it is newer.
-                                         */
-                                        usedGUIDs.put(relationship.getEntityOneProxy().getGUID(), relationship);
+                                        Relationship duplicateRelationship = usedGUIDs.get(relationship.getEntityOneProxy().getGUID());
+
+                                        if ((duplicateRelationship == null) || (errorHandler.validateIsLatestUpdate(duplicateRelationship, relationship)))
+                                        {
+                                            /*
+                                             * Replacing the existing relationship with the previous one because it is newer.
+                                             */
+                                            usedGUIDs.put(relationship.getEntityOneProxy().getGUID(), relationship);
+                                        }
                                     }
                                 }
                             }
-                        }
 
-                        /*
-                         * Add filtered relationships to the results.
-                         */
-                        if (! usedGUIDs.isEmpty())
-                        {
-                            results.addAll(usedGUIDs.values());
-                        }
+                            /*
+                             * Add filtered relationships to the results.
+                             */
+                            if (! usedGUIDs.isEmpty())
+                            {
+                                results.addAll(usedGUIDs.values());
+                            }
 
-                        return results;
+                            return results;
+                        }
                     }
                 }
             }
@@ -648,6 +654,7 @@ public class RepositoryHandler
                                                                                                              statusPropertyName,
                                                                                                              statusThreshold,
                                                                                                              this.principleEntity.getType().getTypeDefName(),
+                                                                                                             0,
                                                                                                              forLineage,
                                                                                                              true,
                                                                                                              effectiveTime,
@@ -1873,19 +1880,23 @@ public class RepositoryHandler
                 /*
                  * This is to check that the entity is in an appropriate state to add the classification.
                  */
-               this.getEntityByGUID(userId, entityGUID, entityGUIDParameterName, entityTypeName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+               entityDetail = this.getEntityByGUID(userId, entityGUID, entityGUIDParameterName, entityTypeName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
             }
 
-            EntityDetail newEntity = metadataCollection.classifyEntity(userId,
-                                                                       entityGUID,
-                                                                       classificationTypeName,
-                                                                       externalSourceGUID,
-                                                                       externalSourceName,
-                                                                       classificationOrigin,
-                                                                       classificationOriginGUID,
-                                                                       properties);
+            // create a proxy representation to allow classification of entities incoming from other metadata collections
+            EntityProxy entityProxy = repositoryHelper.getNewEntityProxy(userId, entityDetail);
 
-            if (newEntity == null)
+            Classification newClassification = metadataCollection.classifyEntity(userId,
+                                                                                 entityProxy,
+                                                                                 classificationTypeName,
+                                                                                 externalSourceGUID,
+                                                                                 externalSourceName,
+                                                                                 classificationOrigin,
+                                                                                 classificationOriginGUID,
+                                                                                 properties);
+
+
+            if (newClassification == null)
             {
                 errorHandler.handleNoEntityForClassification(entityGUID,
                                                              classificationTypeGUID,
@@ -1895,7 +1906,14 @@ public class RepositoryHandler
             }
             else
             {
-                return newEntity;
+                // update the entity's classifications list with the one we just added
+                List<Classification> classifications = entityDetail.getClassifications() == null
+                                                            ? new ArrayList<>()
+                                                            : entityDetail.getClassifications();
+                classifications.add(newClassification);
+                entityDetail.setClassifications(classifications);
+
+                return entityDetail;
             }
         }
         catch (UserNotAuthorizedException | PropertyServerException error)
@@ -1998,12 +2016,22 @@ public class RepositoryHandler
                                                 externalSourceName,
                                                 methodName);
 
-                EntityDetail newEntity = metadataCollection.updateEntityClassification(userId,
-                                                                                       entityGUID,
-                                                                                       classificationTypeName,
-                                                                                       newProperties);
+                EntityDetail entityDetail = this.getEntityByGUID(userId,
+                                                                 entityGUID,
+                                                                 entityGUIDParameterName,
+                                                                 entityTypeName,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 effectiveTime,
+                                                                 methodName);
+                EntityProxy entityProxy = repositoryHelper.getNewEntityProxy(userId, entityDetail);
 
-                if (newEntity == null)
+                Classification newClassification = metadataCollection.updateEntityClassification(userId,
+                                                                                                 entityProxy,
+                                                                                                 classificationTypeName,
+                                                                                                 newProperties);
+
+                if (newClassification == null)
                 {
                     errorHandler.handleNoEntityForClassification(entityGUID,
                                                                  classificationTypeGUID,
@@ -2129,9 +2157,21 @@ public class RepositoryHandler
                                                 externalSourceName,
                                                 methodName);
 
-                EntityDetail newEntity = metadataCollection.declassifyEntity(userId, entityGUID, classificationTypeName);
+                EntityDetail entityDetail = this.getEntityByGUID(userId,
+                                                                 entityGUID,
+                                                                 entityGUIDParameterName,
+                                                                 entityTypeName,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 effectiveTime,
+                                                                 methodName);
 
-                if (newEntity == null)
+                // create a proxy representation to allow declassification of entities incoming from other metadata collections
+                EntityProxy entityProxy = repositoryHelper.getNewEntityProxy(userId, entityDetail);
+
+                Classification removedClassification = metadataCollection.declassifyEntity(userId, entityProxy, classificationTypeName);
+
+                if (removedClassification == null)
                 {
                     errorHandler.handleNoEntityForClassification(entityGUID,
                                                                  classificationTypeGUID,
@@ -2742,6 +2782,7 @@ public class RepositoryHandler
                                             null,
                                             0,
                                             null,
+                                            0,
                                             false,
                                             false,
                                             effectiveTime,
@@ -2763,6 +2804,7 @@ public class RepositoryHandler
      * @param statusPropertyName name of the property to check that that the status is acceptable
      * @param statusThreshold the value of status that the relationship property must be equal to or greater
      * @param returningEntityTypeName the type of the resulting entity
+     * @param attachmentEntityEnd which relationship end should the attached entity be located? 0=either end; 1=end1; 2=end2
      * @param forLineage the query is to support lineage retrieval
      * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -2780,6 +2822,7 @@ public class RepositoryHandler
                                                      String       statusPropertyName,
                                                      int          statusThreshold,
                                                      String       returningEntityTypeName,
+                                                     int          attachmentEntityEnd,
                                                      boolean      forLineage,
                                                      boolean      forDuplicateProcessing,
                                                      Date         effectiveTime,
@@ -2830,7 +2873,7 @@ public class RepositoryHandler
                                                                                                     null,
                                                                                                     null,
                                                                                                     null,
-                                                                                                    100);
+                                                                                                    0);
 
                     accumulator.addRelationships(relationships);
                 }
@@ -3691,16 +3734,16 @@ public class RepositoryHandler
         try
         {
             List<EntityDetail> retrievedEntities = metadataCollection.findEntitiesByProperty(userId,
-                                                                                    entityTypeGUID,
-                                                                                    nameProperties,
-                                                                                    MatchCriteria.ANY,
-                                                                                    startingFrom,
-                                                                                    null,
-                                                                                    null,
-                                                                                    null,
-                                                                                    sequencingPropertyName,
-                                                                                    sequencingOrder,
-                                                                                    pageSize);
+                                                                                             entityTypeGUID,
+                                                                                             nameProperties,
+                                                                                             MatchCriteria.ANY,
+                                                                                             startingFrom,
+                                                                                             null,
+                                                                                             null,
+                                                                                             null,
+                                                                                             sequencingPropertyName,
+                                                                                             sequencingOrder,
+                                                                                             pageSize);
 
             return this.validateEntities(userId,
                                          retrievedEntities,

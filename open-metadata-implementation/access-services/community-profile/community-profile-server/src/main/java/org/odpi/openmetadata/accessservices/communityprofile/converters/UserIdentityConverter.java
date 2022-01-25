@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.UserIdentityElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.UserIdentityElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentityProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -37,7 +37,7 @@ public class UserIdentityConverter<B> extends CommunityProfileOMASConverter<B>
 
     /**
      * Using the supplied instances, return a new instance of the bean. This is used for beans that have
-     * contain a combination of the properties from an entity and a that os a connected relationship.
+     * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
      * @param entity entity containing the properties
@@ -72,7 +72,10 @@ public class UserIdentityConverter<B> extends CommunityProfileOMASConverter<B>
                     InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
 
                     properties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    properties.setDistinguishedName(this.removeDistinguishedName(instanceProperties));
                     properties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                    properties.setEffectiveFrom(instanceProperties.getEffectiveFromTime());
+                    properties.setEffectiveTo(instanceProperties.getEffectiveToTime());
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are
@@ -102,7 +105,7 @@ public class UserIdentityConverter<B> extends CommunityProfileOMASConverter<B>
 
     /**
      * Using the supplied instances, return a new instance of the bean. This is used for beans that have
-     * contain a combination of the properties from an entity and a that os a connected relationship.
+     * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
      * @param entity entity containing the properties

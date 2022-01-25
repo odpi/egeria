@@ -94,7 +94,7 @@ To make a new Java package visible to **OMAGServerPlatform**, add its **spring**
 to the **pom.xml** file for **server-chassis-spring** and it will be picked up in the component scan.
 
 For example, this is the snippet of XML in the pom.xml file that adds the
-[Asset Owner OMAS](https://egeria.odpi.org/open-metadata-implementation/access-services/asset-owner) services
+[Asset Owner OMAS](https://odpi.github.io/egeria-docs/services/omas/asset-owner/overview/) services
 to the OMAG server platform.
 
 ```xml
@@ -118,7 +118,7 @@ Once this dependency is on the class-path /info and /health endpoints are availa
 
 In order to expose all endpoints over HTTP, use the following property:
 ```
-management.endpoints.web.exposure.inlude=*
+management.endpoints.web.exposure.include=*
 ```
 
 The `exclude` property lists the IDs of the endpoints that should not be exposed.

@@ -10,7 +10,7 @@
     <parent>
         <artifactId>repository-services-connectors</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.4-SNAPSHOT</version>
+        <version>3.5-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -31,6 +31,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>open-metadata-archive-file-connector</module>
+        <module>open-metadata-archive-directory-connector</module>
     </modules>
 
 </project>

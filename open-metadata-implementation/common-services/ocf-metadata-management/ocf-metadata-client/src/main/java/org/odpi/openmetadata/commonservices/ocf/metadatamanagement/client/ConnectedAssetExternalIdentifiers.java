@@ -141,14 +141,14 @@ public class ConnectedAssetExternalIdentifiers extends AssetExternalIdentifiers
 
         try
         {
-            ExternalIdentifiersResponse restResult = restClient.callExternalIdentifiersGetRESTCall(methodName,
-                                                                                                   omasServerURL + urlTemplate,
-                                                                                                   serverName,
-                                                                                                   serviceName,
-                                                                                                   userId,
-                                                                                                   assetGUID,
-                                                                                                   cacheStartPointer,
-                                                                                                   maximumSize);
+            ExternalIdentifiersResponse restResult = restClient.callOCFExternalIdentifiersGetRESTCall(methodName,
+                                                                                                      omasServerURL + urlTemplate,
+                                                                                                      serverName,
+                                                                                                      serviceName,
+                                                                                                      userId,
+                                                                                                      assetGUID,
+                                                                                                      cacheStartPointer,
+                                                                                                      maximumSize);
 
             restExceptionHandler.detectAndThrowInvalidParameterException(restResult);
             restExceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
@@ -174,7 +174,7 @@ public class ConnectedAssetExternalIdentifiers extends AssetExternalIdentifiers
                 return resultList;
             }
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             restExceptionHandler.handleUnexpectedException(error, methodName, serverName, omasServerURL);
         }

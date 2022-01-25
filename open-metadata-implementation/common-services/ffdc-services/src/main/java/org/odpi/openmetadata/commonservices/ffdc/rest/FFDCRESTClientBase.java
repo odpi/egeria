@@ -246,10 +246,10 @@ public class FFDCRESTClientBase
      * @return response object
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    protected <T> T callPostRESTCallNoParams(String    methodName,
-                                             Class<T>  returnClass,
-                                             String    urlTemplate,
-                                             Object    requestBody) throws PropertyServerException
+    public <T> T callPostRESTCallNoParams(String    methodName,
+                                          Class<T>  returnClass,
+                                          String    urlTemplate,
+                                          Object    requestBody) throws PropertyServerException
     {
         try
         {
@@ -295,6 +295,7 @@ public class FFDCRESTClientBase
 
         return null;
     }
+
 
     /**
      * Issue a POST REST call that returns a response object.  This is typically a create, update, or find with

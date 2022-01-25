@@ -29,6 +29,7 @@ public class GovernanceDefinitionBuilder extends ReferenceableBuilder
     private String       implementationDescription = null;
     private String       namePattern               = null;
     private String       details                   = null;
+    private String       distinguishedName         = null;
 
 
     /**
@@ -49,6 +50,7 @@ public class GovernanceDefinitionBuilder extends ReferenceableBuilder
      * @param implementationDescription for GovernanceControl - how should this be implemented
      * @param namePattern for NamingStandardsRule - the pattern used to for new names
      * @param details for License or Certification - additional details about the definition
+     * @param distinguishedName for Security groups - qualified name for LDAP
      * @param additionalProperties additional properties for a governance definition
      * @param typeGUID unique identifier of the type of the governance definition
      * @param typeName unique name of the type of the governance definition
@@ -72,6 +74,7 @@ public class GovernanceDefinitionBuilder extends ReferenceableBuilder
                                 String               implementationDescription,
                                 String               namePattern,
                                 String               details,
+                                String               distinguishedName,
                                 Map<String, String>  additionalProperties,
                                 String               typeGUID,
                                 String               typeName,
@@ -103,6 +106,7 @@ public class GovernanceDefinitionBuilder extends ReferenceableBuilder
         this.implementationDescription = implementationDescription;
         this.namePattern = namePattern;
         this.details = details;
+        this.distinguishedName = distinguishedName;
     }
 
 
@@ -255,6 +259,12 @@ public class GovernanceDefinitionBuilder extends ReferenceableBuilder
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
                                                                   OpenMetadataAPIMapper.DETAILS_PROPERTY_NAME,
+                                                                  details,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.DISTINGUISHED_NAME_PROPERTY_NAME,
                                                                   details,
                                                                   methodName);
 

@@ -16,7 +16,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorTyp
  */
 public class GovernanceEngineOutTopicClientProvider extends ConnectorProviderBase
 {
-    static final String  connectorTypeGUID = "91bda022-184f-4c1c-b62a-c311f0e724f4";
+    static final String  connectorTypeGUID = "76395ced-d0a8-493b-bc22-83b65d98b977";
     static final String  connectorTypeName = "Governance Engine Out Topic Client Connector";
     static final String  connectorTypeDescription = "Connector supports the receipt of events on the Governance Engine OMAS Out Topic.";
 

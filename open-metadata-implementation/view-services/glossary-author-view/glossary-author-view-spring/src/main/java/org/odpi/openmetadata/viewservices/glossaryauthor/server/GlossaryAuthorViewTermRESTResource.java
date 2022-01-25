@@ -16,14 +16,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 
 /**
- * The GlossaryAuthorRESTServicesInstance provides the org.odpi.openmetadata.viewervices.glossaryauthor.server implementation of the Glossary Author Open Metadata
+ * The GlossaryAuthorRESTServicesInstance provides the server implementation of the Glossary Author Open Metadata
  * View Service (OMVS) for terms.  This interface provides term authoring interfaces for subject area experts.
  */
 
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/view-services/glossary-author/users/{userId}/terms")
 
-@Tag(name = "Glossary Author OMVS", description = "Develop a definition of a subject area by authoring glossaries, including terms for use by a user interface.", externalDocs = @ExternalDocumentation(description = "Glossary Author View Services (OMVS)", url = "https://egeria.odpi.org/open-metadata-implementation/view-services/glossary-author-view/"))
+@Tag(name = "Glossary Author OMVS", description = "Develop a definition of a subject area by authoring glossaries, including terms for use by a user interface.",
+     externalDocs = @ExternalDocumentation(description = "Glossary Author View Services (OMVS)",
+                                           url = "https://odpi.github.io/egeria-docs/services/omvs/glossary-author/overview/"))
 
 public class GlossaryAuthorViewTermRESTResource {
 

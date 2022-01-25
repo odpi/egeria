@@ -36,7 +36,7 @@ public class GovernanceEngineConverter<B> extends GovernanceEngineOMASConverter<
 
     /**
      * Using the supplied instances, return a new instance of the bean. This is used for beans that have
-     * contain a combination of the properties from an entity and a that os a connected relationship.
+     * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
      * @param entity entity containing the properties
@@ -77,7 +77,7 @@ public class GovernanceEngineConverter<B> extends GovernanceEngineOMASConverter<
                 properties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                 properties.setDisplayName(this.removeName(instanceProperties));
                 properties.setDescription(this.removeDescription(instanceProperties));
-                properties.setTypeDescription(this.removeDeployedImplementationType(instanceProperties));
+                properties.setTypeDescription(this.removeCapabilityType(instanceProperties));
                 properties.setVersion(this.removeCapabilityVersion(instanceProperties));
                 properties.setPatchLevel(this.removePatchLevel(instanceProperties));
                 properties.setSource(this.removeSource(instanceProperties));
@@ -98,7 +98,7 @@ public class GovernanceEngineConverter<B> extends GovernanceEngineOMASConverter<
 
     /**
      * Using the supplied instances, return a new instance of the bean. This is used for beans that have
-     * contain a combination of the properties from an entity and a that os a connected relationship.
+     * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
      * @param entity entity containing the properties

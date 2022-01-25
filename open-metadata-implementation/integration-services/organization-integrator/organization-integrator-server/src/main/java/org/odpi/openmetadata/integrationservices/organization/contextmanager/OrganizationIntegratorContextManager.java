@@ -3,7 +3,15 @@
 
 package org.odpi.openmetadata.integrationservices.organization.contextmanager;
 
+import org.odpi.openmetadata.accessservices.communityprofile.client.CommunityProfileEventClient;
+import org.odpi.openmetadata.accessservices.communityprofile.client.MetadataSourceClient;
+import org.odpi.openmetadata.accessservices.communityprofile.client.OrganizationManagement;
+import org.odpi.openmetadata.accessservices.communityprofile.client.SecurityGroupManagement;
+import org.odpi.openmetadata.accessservices.communityprofile.client.UserIdentityManagement;
+import org.odpi.openmetadata.accessservices.communityprofile.client.rest.CommunityProfileRESTClient;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.MetadataSourceProperties;
 import org.odpi.openmetadata.adminservices.configuration.properties.PermittedSynchronization;
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -25,7 +33,10 @@ import java.util.Map;
  */
 public class OrganizationIntegratorContextManager extends IntegrationContextManager
 {
-    private OrganizationIntegratorContext context = null;
+    private MetadataSourceClient    metadataSourceClient    = null;
+    private OrganizationManagement  organizationManagement  = null;
+    private SecurityGroupManagement securityGroupManagement = null;
+    private UserIdentityManagement  userIdentityManagement  = null;
 
     /**
      * Default constructor
@@ -42,18 +53,19 @@ public class OrganizationIntegratorContextManager extends IntegrationContextMana
      * @param partnerOMASPlatformRootURL the network address of the server running the OMAS REST servers
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
+     * @param serviceOptions options from the integration service's configuration
      * @param maxPageSize maximum number of results that can be returned on a single REST call
      * @param auditLog logging destination
      */
-    @Override
-    public void initializeContextManager(String   partnerOMASServerName,
-                                         String   partnerOMASPlatformRootURL,
-                                         String   userId,
-                                         String   password,
-                                         int      maxPageSize,
-                                         AuditLog auditLog)
+    public void initializeContextManager(String              partnerOMASServerName,
+                                         String              partnerOMASPlatformRootURL,
+                                         String              userId,
+                                         String              password,
+                                         Map<String, Object> serviceOptions,
+                                         int                 maxPageSize,
+                                         AuditLog            auditLog)
     {
-        super.initializeContextManager(partnerOMASServerName, partnerOMASPlatformRootURL, userId, password, maxPageSize, auditLog);
+        super.initializeContextManager(partnerOMASServerName, partnerOMASPlatformRootURL, userId, password, serviceOptions, maxPageSize, auditLog);
 
         final String methodName = "initializeContextManager";
 
@@ -70,7 +82,84 @@ public class OrganizationIntegratorContextManager extends IntegrationContextMana
     @Override
     public  void createClients() throws InvalidParameterException
     {
+        CommunityProfileRESTClient restClient;
 
+        if (localServerPassword == null)
+        {
+            restClient = new CommunityProfileRESTClient(partnerOMASServerName,
+                                                        partnerOMASPlatformRootURL,
+                                                        auditLog);
+        }
+        else
+        {
+            restClient = new CommunityProfileRESTClient(partnerOMASServerName,
+                                                        partnerOMASPlatformRootURL,
+                                                        localServerUserId,
+                                                        localServerPassword,
+                                                        auditLog);
+        }
+
+        metadataSourceClient = new MetadataSourceClient(partnerOMASServerName,
+                                                        partnerOMASPlatformRootURL,
+                                                        restClient,
+                                                        maxPageSize);
+
+        organizationManagement = new OrganizationManagement(partnerOMASServerName,
+                                                            partnerOMASPlatformRootURL,
+                                                            restClient,
+                                                            maxPageSize);
+
+        securityGroupManagement = new SecurityGroupManagement(partnerOMASServerName,
+                                                              partnerOMASPlatformRootURL,
+                                                              restClient,
+                                                              maxPageSize);
+
+        userIdentityManagement = new UserIdentityManagement(partnerOMASServerName,
+                                                            partnerOMASPlatformRootURL,
+                                                            restClient,
+                                                            maxPageSize);
+
+    }
+
+
+    /**
+     * Retrieve the metadata source's unique identifier (GUID) or if it is not defined, create the software server capability
+     * for this integrator.
+     *
+     * @param metadataSourceQualifiedName unique name of the software server capability that represents this integration service
+     *
+     * @return unique identifier of the metadata source
+     *
+     * @throws InvalidParameterException one of the parameters passed (probably on initialize) is invalid
+     * @throws UserNotAuthorizedException the integration daemon's userId does not have access to the partner OMAS
+     * @throws PropertyServerException there is a problem in the remote server running the partner OMAS
+     */
+    private String setUpMetadataSource(String   metadataSourceQualifiedName) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        final String metadataSourceQualifiedNameParameterName = "metadataSourceQualifiedName";
+        final String methodName = "setUpMetadataSource";
+
+        InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+
+        invalidParameterHandler.validateName(metadataSourceQualifiedName,
+                                             metadataSourceQualifiedNameParameterName,
+                                             methodName);
+
+
+        String metadataSourceGUID = metadataSourceClient.getMetadataSourceGUID(localServerUserId, metadataSourceQualifiedName);
+
+        if (metadataSourceGUID == null)
+        {
+            MetadataSourceProperties properties = new MetadataSourceProperties();
+
+            properties.setQualifiedName(metadataSourceQualifiedName);
+
+            metadataSourceGUID = metadataSourceClient.createMetadataSource(localServerUserId, properties);
+        }
+
+        return metadataSourceGUID;
     }
 
 
@@ -82,7 +171,6 @@ public class OrganizationIntegratorContextManager extends IntegrationContextMana
      * @param metadataSourceQualifiedName unique name of the software server capability that represents the metadata source.
      * @param integrationConnector connector created from connection integration service configuration
      * @param permittedSynchronization controls the direction(s) that metadata is allowed to flow
-     * @param serviceOptions options from the integration service's configuration
      *
      * @throws InvalidParameterException the connector is not of the correct type
      * @throws UserNotAuthorizedException user not authorized to issue this request
@@ -93,10 +181,9 @@ public class OrganizationIntegratorContextManager extends IntegrationContextMana
                            String                   connectorName,
                            String                   metadataSourceQualifiedName,
                            IntegrationConnector     integrationConnector,
-                           PermittedSynchronization permittedSynchronization,
-                           Map<String, Object>      serviceOptions) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+                           PermittedSynchronization permittedSynchronization) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
         final String  methodName = "setContext";
 
@@ -124,11 +211,23 @@ public class OrganizationIntegratorContextManager extends IntegrationContextMana
 
             OrganizationIntegratorConnector serviceSpecificConnector = (OrganizationIntegratorConnector)integrationConnector;
 
-            if (context == null)
-            {
-                context = new OrganizationIntegratorContext();
-            }
+            String metadataSourceGUID = this.setUpMetadataSource(metadataSourceQualifiedName);
 
+            CommunityProfileEventClient eventClient = new CommunityProfileEventClient(partnerOMASServerName,
+                                                                                      partnerOMASPlatformRootURL,
+                                                                                      localServerUserId,
+                                                                                      localServerPassword,
+                                                                                      connectorId);
+
+            serviceSpecificConnector.setContext(new OrganizationIntegratorContext(organizationManagement,
+                                                                                  securityGroupManagement,
+                                                                                  userIdentityManagement,
+                                                                                  eventClient,
+                                                                                  localServerUserId,
+                                                                                  metadataSourceGUID,
+                                                                                  metadataSourceQualifiedName,
+                                                                                  connectorName,
+                                                                                  auditLog));
         }
         else
         {

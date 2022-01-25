@@ -4234,6 +4234,44 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
         return classifyEntityParameterValidation(userId, entityGUID, classificationName, classificationProperties, methodName);
     }
 
+    /**
+     * Validate the parameters passed to classifyEntity.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityProxy identifier (proxy) for the entity.
+     * @param classificationName String name for the classification.
+     * @param classificationProperties list of properties to set in the classification.
+     * @param methodName calling method
+     *
+     * @return typeDef for the classification
+     *
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    protected TypeDef  classifyEntityParameterValidation(String               userId,
+                                                         EntityProxy          entityProxy,
+                                                         String               classificationName,
+                                                         InstanceProperties   classificationProperties,
+                                                         String               methodName) throws InvalidParameterException,
+                                                                                                 RepositoryErrorException,
+                                                                                                 PropertyErrorException,
+                                                                                                 UserNotAuthorizedException
+    {
+        if (entityProxy == null)
+        {
+            throw new InvalidParameterException(OMRSErrorCode.NULL_ENTITY_PROXY.getMessageDefinition(repositoryName, "entityProxy", methodName),
+                    this.getClass().getName(),
+                    methodName,
+                    "entityProxy");
+        }
+
+        return classifyEntityParameterValidation(userId, entityProxy.getGUID(), classificationName, classificationProperties, methodName);
+    }
+
 
     /**
      * Validate the parameters passed to declassifyEntity.
@@ -6372,6 +6410,48 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
     @Override
     public void saveClassificationReferenceCopy(String         userId,
                                                 EntityDetail   entity,
+                                                Classification classification) throws InvalidParameterException,
+                                                                                      RepositoryErrorException,
+                                                                                      TypeErrorException,
+                                                                                      EntityConflictException,
+                                                                                      InvalidEntityException,
+                                                                                      PropertyErrorException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      FunctionNotSupportedException
+    {
+        /*
+         * This is a new method - if this method is not overridden in the implementing repository connector,
+         * the logic below is executed.
+         */
+        super.saveClassificationReferenceCopy(userId, entity, classification);
+    }
+
+
+    /**
+     * Save the classification as a reference copy.  The id of the home metadata collection is already set up in the
+     * classification.  The entity may be either a locally homed entity or a reference copy.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entity entity that the classification is attached to.
+     * @param classification classification to save.
+     *
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection.
+     * @throws EntityConflictException the new entity conflicts with an existing entity.
+     * @throws InvalidEntityException the new entity has invalid contents.
+     * @throws FunctionNotSupportedException the repository does not support reference copies of instances.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public void saveClassificationReferenceCopy(String         userId,
+                                                EntityProxy    entity,
                                                 Classification classification) throws InvalidParameterException,
                                                                                       RepositoryErrorException,
                                                                                       TypeErrorException,

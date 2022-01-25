@@ -141,14 +141,14 @@ public class ConnectedAssetLikes extends AssetLikes
 
         try
         {
-            LikesResponse restResult = restClient.callLikesGetRESTCall(methodName,
-                                                                       omasServerURL + urlTemplate,
-                                                                       serverName,
-                                                                       serviceName,
-                                                                       userId,
-                                                                       assetGUID,
-                                                                       cacheStartPointer,
-                                                                       maximumSize);
+            LikesResponse restResult = restClient.callOCFLikesGetRESTCall(methodName,
+                                                                          omasServerURL + urlTemplate,
+                                                                          serverName,
+                                                                          serviceName,
+                                                                          userId,
+                                                                          assetGUID,
+                                                                          cacheStartPointer,
+                                                                          maximumSize);
 
             restExceptionHandler.detectAndThrowInvalidParameterException(restResult);
             restExceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
@@ -174,7 +174,7 @@ public class ConnectedAssetLikes extends AssetLikes
                 return resultList;
             }
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             restExceptionHandler.handleUnexpectedException(error, methodName, serverName, omasServerURL);
         }

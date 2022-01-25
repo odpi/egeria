@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.datamanager.properties;
 /**
  * ApplicationProperties describes an collection of processes (application) that implements support for the business.
  */
-public class ApplicationProperties extends SoftwareServerCapabilitiesProperties
+public class ApplicationProperties extends SoftwareCapabilitiesProperties
 {
     private static final long    serialVersionUID = 1L;
 
@@ -35,7 +35,7 @@ public class ApplicationProperties extends SoftwareServerCapabilitiesProperties
      *
      * @param template object to copy
      */
-    public ApplicationProperties(SoftwareServerCapabilitiesProperties template)
+    public ApplicationProperties(SoftwareCapabilitiesProperties template)
     {
         super(template);
     }

@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/asset-owner/users/{userId}")
 
 @Tag(name="Asset Owner OMAS", description="The Asset Owner OMAS provides APIs and notifications for tools and applications supporting the work of Asset Owners in protecting and enhancing their assets.\n" +
-        "\n", externalDocs=@ExternalDocumentation(description="Asset Owner Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/asset-owner/"))
+        "\n", externalDocs=@ExternalDocumentation(description="Asset Owner Open Metadata Access Service (OMAS)",url="https://odpi.github.io/egeria-docs/services/omas/asset-owner/overview/"))
 
 public class FileSystemOnboardingResource
 {
@@ -127,7 +127,7 @@ public class FileSystemOnboardingResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    @PostMapping(path = "/file-systems/{fileSystemGUID}/folders/{fileSystemGUID}/attach")
+    @PostMapping(path = "/file-systems/{fileSystemGUID}/folders/{folderGUID}/attach")
 
     public VoidResponse attachFolderToFileSystem(@PathVariable                  String          serverName,
                                                  @PathVariable                  String          userId,
@@ -153,7 +153,7 @@ public class FileSystemOnboardingResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    @PostMapping(path = "/file-systems/{fileSystemGUID}/folders/{fileSystemGUID}/detach")
+    @PostMapping(path = "/file-systems/{fileSystemGUID}/folders/{folderGUID}/detach")
 
     public VoidResponse detachFolderFromFileSystem(@PathVariable                  String          serverName,
                                                    @PathVariable                  String          userId,

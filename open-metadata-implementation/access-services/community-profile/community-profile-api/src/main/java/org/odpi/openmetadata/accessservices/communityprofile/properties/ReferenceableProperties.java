@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.communityprofile.properties;
 import com.fasterxml.jackson.annotation.*;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -25,13 +26,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = ActorProfileProperties.class, name = "ActorProfileProperties"),
+                @JsonSubTypes.Type(value = AssetProperties.class, name = "AssetProperties"),
                 @JsonSubTypes.Type(value = CommunityProperties.class, name = "CommunityProperties"),
+                @JsonSubTypes.Type(value = CommentProperties.class, name = "CommentProperties"),
                 @JsonSubTypes.Type(value = CollectionProperties.class, name = "CollectionProperties"),
-                @JsonSubTypes.Type(value = ContactMethodProperties.class, name = "ContactMethodProperties"),
                 @JsonSubTypes.Type(value = ContributionRecord.class, name = "ContributionRecord"),
                 @JsonSubTypes.Type(value = MetadataSourceProperties.class, name = "MetadataSourceProperties"),
                 @JsonSubTypes.Type(value = NoteLogEntryProperties.class, name = "NoteLogEntryProperties"),
                 @JsonSubTypes.Type(value = NoteLogHeaderProperties.class, name = "NoteLogHeaderProperties"),
+                @JsonSubTypes.Type(value = ProjectProperties.class, name = "ProjectProperties"),
                 @JsonSubTypes.Type(value = ResourceProperties.class, name = "ResourceProperties"),
                 @JsonSubTypes.Type(value = UserIdentityProperties.class, name = "UserIdentityProperties"),
         })
@@ -39,8 +42,12 @@ public class ReferenceableProperties implements Serializable
 {
     private static final long    serialVersionUID = 1L;
 
+
     private String               qualifiedName        = null;
     private Map<String, String>  additionalProperties = null;
+
+    private Date                 effectiveFrom        = null;
+    private Date                 effectiveTo          = null;
 
     private Map<String, String>  vendorProperties     = null;
 
@@ -67,6 +74,9 @@ public class ReferenceableProperties implements Serializable
         {
             qualifiedName        = template.getQualifiedName();
             additionalProperties = template.getAdditionalProperties();
+
+            effectiveFrom        = template.getEffectiveFrom();
+            effectiveTo          = template.getEffectiveTo();
 
             vendorProperties     = template.getVendorProperties();
 
@@ -129,6 +139,50 @@ public class ReferenceableProperties implements Serializable
         {
             return new HashMap<>(additionalProperties);
         }
+    }
+
+
+    /**
+     * Return the date/time that this element is effective from (null means effective from the epoch).
+     *
+     * @return date object
+     */
+    public Date getEffectiveFrom()
+    {
+        return effectiveFrom;
+    }
+
+
+    /**
+     * Set up the date/time that this element is effective from (null means effective from the epoch).
+     *
+     * @param effectiveFrom date object
+     */
+    public void setEffectiveFrom(Date effectiveFrom)
+    {
+        this.effectiveFrom = effectiveFrom;
+    }
+
+
+    /**
+     * Return the date/time that element is effective to (null means that it is effective indefinitely into the future).
+     *
+     * @return date object
+     */
+    public Date getEffectiveTo()
+    {
+        return effectiveTo;
+    }
+
+
+    /**
+     * Set the date/time that element is effective to (null means that it is effective indefinitely into the future).
+     *
+     * @param effectiveTo date object
+     */
+    public void setEffectiveTo(Date effectiveTo)
+    {
+        this.effectiveTo = effectiveTo;
     }
 
 
@@ -231,12 +285,14 @@ public class ReferenceableProperties implements Serializable
     public String toString()
     {
         return "ReferenceableProperties{" +
-                "qualifiedName='" + qualifiedName + '\'' +
-                ", additionalProperties=" + additionalProperties +
-                ", vendorProperties=" + vendorProperties +
-                ", typeName='" + typeName + '\'' +
-                ", extendedProperties=" + extendedProperties +
-                '}';
+                       "qualifiedName='" + qualifiedName + '\'' +
+                       ", additionalProperties=" + additionalProperties +
+                       ", effectiveFrom=" + effectiveFrom +
+                       ", effectiveTo=" + effectiveTo +
+                       ", vendorProperties=" + vendorProperties +
+                       ", typeName='" + typeName + '\'' +
+                       ", extendedProperties=" + extendedProperties +
+                       '}';
     }
 
 
@@ -259,10 +315,12 @@ public class ReferenceableProperties implements Serializable
         }
         ReferenceableProperties that = (ReferenceableProperties) objectToCompare;
         return Objects.equals(qualifiedName, that.qualifiedName) &&
-                Objects.equals(additionalProperties, that.additionalProperties) &&
-                Objects.equals(vendorProperties, that.vendorProperties) &&
-                Objects.equals(typeName, that.typeName) &&
-                Objects.equals(extendedProperties, that.extendedProperties);
+                       Objects.equals(additionalProperties, that.additionalProperties) &&
+                       Objects.equals(effectiveFrom, that.effectiveFrom) &&
+                       Objects.equals(effectiveTo, that.effectiveTo) &&
+                       Objects.equals(vendorProperties, that.vendorProperties) &&
+                       Objects.equals(typeName, that.typeName) &&
+                       Objects.equals(extendedProperties, that.extendedProperties);
     }
 
 
@@ -274,6 +332,6 @@ public class ReferenceableProperties implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(qualifiedName, additionalProperties, vendorProperties, typeName, extendedProperties);
+        return Objects.hash(qualifiedName, additionalProperties, effectiveFrom, effectiveTo, vendorProperties, typeName, extendedProperties);
     }
 }

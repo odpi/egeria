@@ -141,14 +141,14 @@ public class ConnectedAssetLicenses extends AssetLicenses
 
         try
         {
-            LicensesResponse restResult = restClient.callLicensesGetRESTCall(methodName,
-                                                                             omasServerURL + urlTemplate,
-                                                                             serverName,
-                                                                             serviceName,
-                                                                             userId,
-                                                                             assetGUID,
-                                                                             cacheStartPointer,
-                                                                             maximumSize);
+            LicensesResponse restResult = restClient.callOCFLicensesGetRESTCall(methodName,
+                                                                                omasServerURL + urlTemplate,
+                                                                                serverName,
+                                                                                serviceName,
+                                                                                userId,
+                                                                                assetGUID,
+                                                                                cacheStartPointer,
+                                                                                maximumSize);
 
             restExceptionHandler.detectAndThrowInvalidParameterException(restResult);
             restExceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
@@ -174,7 +174,7 @@ public class ConnectedAssetLicenses extends AssetLicenses
                 return resultList;
             }
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             restExceptionHandler.handleUnexpectedException(error, methodName, serverName, omasServerURL);
         }

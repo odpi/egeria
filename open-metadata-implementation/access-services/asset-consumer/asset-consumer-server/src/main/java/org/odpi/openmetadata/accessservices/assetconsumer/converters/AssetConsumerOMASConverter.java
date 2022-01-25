@@ -106,6 +106,8 @@ public abstract class AssetConsumerOMASConverter<B> extends OpenMetadataAPIGener
 
             elementHeader.setOrigin(elementOrigin);
 
+            elementHeader.setVersions(this.getElementVersions(header));
+
             return elementHeader;
         }
         else
@@ -224,75 +226,12 @@ public abstract class AssetConsumerOMASConverter<B> extends OpenMetadataAPIGener
 
 
     /**
-     * Retrieve a specific named classification.
-     *
-     * @param classificationName name of classification
-     * @param beanClassifications list of classifications retrieved from the repositories
-     * @return null or the requested classification
-     */
-    protected ElementClassification getClassification(String                      classificationName,
-                                                      List<ElementClassification> beanClassifications)
-    {
-        if ((classificationName != null) && (beanClassifications != null))
-        {
-            for (ElementClassification classification : beanClassifications)
-            {
-                if (classification != null)
-                {
-                    if (classification.getClassificationName().equals(classificationName))
-                    {
-                        return classification;
-                    }
-                }
-            }
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Remove the requested classification from the bean classifications and return the resulting list.
-     *
-     * @param classificationName name of the classification
-     * @param beanClassifications list of classifications retrieved from the repositories
-     * @return null or a list of classifications
-     */
-    protected List<ElementClassification> removeClassification(String                      classificationName,
-                                                               List<ElementClassification> beanClassifications)
-    {
-        if ((classificationName != null) && (beanClassifications != null))
-        {
-            List<ElementClassification> results = new ArrayList<>();
-
-            for (ElementClassification classification : beanClassifications)
-            {
-                if (classification != null)
-                {
-                    if (! classification.getClassificationName().equals(classificationName))
-                    {
-                        results.add(classification);
-                    }
-                }
-            }
-
-            if (! results.isEmpty())
-            {
-                return results;
-            }
-        }
-
-        return null;
-    }
-
-
-    /**
      * Convert information from a repository instance into an Open Connector Framework ElementType.
      *
      * @param instanceHeader values from the server
      * @return OCF ElementType object
      */
-    ElementType getElementType(InstanceHeader instanceHeader)
+    ElementType getElementType(InstanceAuditHeader instanceHeader)
     {
         ElementType  elementType = new ElementType();
 
@@ -327,6 +266,27 @@ public abstract class AssetConsumerOMASConverter<B> extends OpenMetadataAPIGener
         }
 
         return elementType;
+    }
+
+
+    /**
+     * Extract detail of the version of the element and the user's maintaining it.
+     *
+     * @param header audit header from the repository
+     * @return ElementVersions object
+     */
+    ElementVersions getElementVersions(InstanceAuditHeader header)
+    {
+        ElementVersions elementVersions = new ElementVersions();
+
+        elementVersions.setCreatedBy(header.getCreatedBy());
+        elementVersions.setCreateTime(header.getCreateTime());
+        elementVersions.setUpdatedBy(header.getUpdatedBy());
+        elementVersions.setUpdateTime(header.getUpdateTime());
+        elementVersions.setMaintainedBy(header.getMaintainedBy());
+        elementVersions.setVersion(header.getVersion());
+
+        return elementVersions;
     }
 
 

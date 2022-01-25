@@ -30,7 +30,7 @@ public class FileBasedAuditLogStoreConnector extends OMRSAuditLogStoreConnectorB
 
     private static final Logger log = LoggerFactory.getLogger(FileBasedAuditLogStoreConnector.class);
 
-    private String configStoreTemplateName  = null;
+    private String logStoreTemplateName = null;
 
 
     /**
@@ -55,19 +55,19 @@ public class FileBasedAuditLogStoreConnector extends OMRSAuditLogStoreConnectorB
 
         if (endpoint != null)
         {
-            configStoreTemplateName = endpoint.getAddress();
+            logStoreTemplateName = endpoint.getAddress();
         }
 
-        if (configStoreTemplateName == null)
+        if (logStoreTemplateName == null)
         {
-            configStoreTemplateName = defaultDirectoryTemplate;
+            logStoreTemplateName = defaultDirectoryTemplate;
         }
 
         try
         {
-            File         configStoreDirectory = new File(configStoreTemplateName);
+            File         auditLogStoreDirectory = new File(logStoreTemplateName);
 
-            FileUtils.forceMkdir(configStoreDirectory);
+            FileUtils.forceMkdir(auditLogStoreDirectory);
         }
         catch (IOException ioException)
         {
@@ -95,7 +95,7 @@ public class FileBasedAuditLogStoreConnector extends OMRSAuditLogStoreConnectorB
             try
             {
                 File configStoreFile =
-                        new File(configStoreTemplateName + "/log-record-" + logRecord.getGUID());
+                        new File(logStoreTemplateName + "/log-record-" + logRecord.getGUID());
                 ObjectMapper objectMapper    = new ObjectMapper();
 
                 String configStoreFileContents = objectMapper.writeValueAsString(logRecord);

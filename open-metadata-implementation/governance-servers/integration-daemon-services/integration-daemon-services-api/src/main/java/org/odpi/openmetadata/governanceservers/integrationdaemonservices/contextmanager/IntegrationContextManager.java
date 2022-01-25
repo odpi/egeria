@@ -13,16 +13,17 @@ import org.odpi.openmetadata.governanceservers.integrationdaemonservices.connect
 import java.util.Map;
 
 /**
- * IntegrationContextManager is the base class for the context manager that is implemented
+ * IntegrationContextManager is the base class for the context manager that is implemented by each integration service.
  */
 public abstract class IntegrationContextManager
 {
-    protected String   partnerOMASPlatformRootURL  = null;
-    protected String   partnerOMASServerName       = null;
-    protected String   localServerUserId           = null;
-    protected String   localServerPassword         = null;
-    protected int      maxPageSize                 = 0;
-    protected AuditLog auditLog                    = null;
+    protected String              partnerOMASPlatformRootURL  = null;
+    protected String              partnerOMASServerName       = null;
+    protected String              localServerUserId           = null;
+    protected String              localServerPassword         = null;
+    protected Map<String, Object> serviceOptions              = null;
+    protected int                 maxPageSize                 = 0;
+    protected AuditLog            auditLog                    = null;
 
 
     /**
@@ -40,20 +41,23 @@ public abstract class IntegrationContextManager
      * @param partnerOMASPlatformRootURL the network address of the server running the OMAS REST servers
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
+     * @param serviceOptions options from the integration service's configuration
      * @param maxPageSize maximum number of results that can be returned on a single REST call
      * @param auditLog logging destination
      */
-    public void initializeContextManager(String   partnerOMASServerName,
-                                         String   partnerOMASPlatformRootURL,
-                                         String   userId,
-                                         String   password,
-                                         int      maxPageSize,
-                                         AuditLog auditLog)
+    public void initializeContextManager(String              partnerOMASServerName,
+                                         String              partnerOMASPlatformRootURL,
+                                         String              userId,
+                                         String              password,
+                                         Map<String, Object> serviceOptions,
+                                         int                 maxPageSize,
+                                         AuditLog            auditLog)
     {
         this.partnerOMASPlatformRootURL = partnerOMASPlatformRootURL;
         this.partnerOMASServerName      = partnerOMASServerName;
         this.localServerUserId          = userId;
         this.localServerPassword        = password;
+        this.serviceOptions             = serviceOptions;
         this.maxPageSize                = maxPageSize;
         this.auditLog                   = auditLog;
     }
@@ -75,7 +79,6 @@ public abstract class IntegrationContextManager
      * @param metadataSourceQualifiedName unique name of the software server capability that represents the metadata source.
      * @param integrationConnector connector created from connection integration service configuration
      * @param permittedSynchronization controls the direction(s) that metadata is allowed to flow
-     * @param serviceOptions options from the integration service's configuration
      *
      * @throws InvalidParameterException the connector is not of the correct type
      * @throws UserNotAuthorizedException user not authorized to issue this request
@@ -85,8 +88,7 @@ public abstract class IntegrationContextManager
                                     String                   connectorName,
                                     String                   metadataSourceQualifiedName,
                                     IntegrationConnector     integrationConnector,
-                                    PermittedSynchronization permittedSynchronization,
-                                    Map<String, Object>      serviceOptions) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException;
+                                    PermittedSynchronization permittedSynchronization) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException;
 }

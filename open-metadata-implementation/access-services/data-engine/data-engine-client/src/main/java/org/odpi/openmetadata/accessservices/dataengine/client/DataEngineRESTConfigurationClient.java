@@ -71,7 +71,7 @@ public class DataEngineRESTConfigurationClient extends DataEngineRESTClient {
         invalidParameterHandler.validateUserId(serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
 
-        return callConnectionGetRESTCall(methodName, serverPlatformURLRoot + IN_TOPIC_CONNECTION_PATH, serverName, userId);
+        return callOCFConnectionGetRESTCall(methodName, serverPlatformURLRoot + IN_TOPIC_CONNECTION_PATH, serverName, userId);
     }
 
 }

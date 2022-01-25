@@ -22,7 +22,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/governance-program/users/{userId}")
 
 @Tag(name="Governance Program OMAS", description="The Governance Program OMAS provides APIs and events for tools and applications focused on defining a data strategy, planning support for a regulation and/or developing a governance program for the data landscape." +
-        "\n", externalDocs=@ExternalDocumentation(description="Governance Program Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/governance-program/"))
+        "\n",
+     externalDocs=@ExternalDocumentation(description="Governance Program Open Metadata Access Service (OMAS)",
+                                         url="https://odpi.github.io/egeria-docs/services/omas/governance-program/overview/"))
 
 public class GovernanceRolesResource
 {
@@ -295,6 +297,8 @@ public class GovernanceRolesResource
      * @param serverName name of server instance to call
      * @param userId the name of the calling user.
      * @param domainIdentifier domain of interest - 0 is all domains
+     * @param startFrom where to start from in the list of definitions
+     * @param pageSize max number of results to return in one call
      * @return list of governance role objects or
      *
      * InvalidParameterException the guid is either null or invalid or
@@ -344,6 +348,9 @@ public class GovernanceRolesResource
      *
      * @param serverName name of server instance to call
      * @param userId the name of the calling user
+     * @param domainIdentifier domain of interest - 0 is all domains
+     * @param startFrom where to start from in the list of definitions
+     * @param pageSize max number of results to return in one call
      *
      * @return list of governance role objects or
      * PropertyServerException the server is not available or

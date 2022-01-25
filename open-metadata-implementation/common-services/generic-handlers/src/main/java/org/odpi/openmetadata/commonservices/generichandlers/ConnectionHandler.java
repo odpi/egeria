@@ -1817,7 +1817,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                     null,
                                     false,
                                     false,
-                                    new Date(),
+                                    null,
                                     methodName);
     }
 
@@ -1888,6 +1888,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                                          OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
                                                                          null,
                                                                          null,
+                                                                         0,
                                                                          false,
                                                                          false,
                                                                          serviceSupportedZones,
@@ -2220,6 +2221,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                                 OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
                                                                 null,
                                                                 null,
+                                                                0,
                                                                 false,
                                                                 false,
                                                                 serviceSupportedZones,

@@ -1222,6 +1222,7 @@ public class SchemaManagerRESTServices
                                                                                  requestBody.getAdditionalProperties(),
                                                                                  requestBody.getTypeName(),
                                                                                  requestBody.getExtendedProperties(),
+                                                                                 new Date(),
                                                                                  methodName);
 
                 if ((schemaAttributeGUID != null) && (requestBody.getVendorProperties() != null))
@@ -1296,6 +1297,7 @@ public class SchemaManagerRESTServices
                                                                                   requestBody.getQualifiedName(),
                                                                                   requestBody.getDisplayName(),
                                                                                   requestBody.getDescription(),
+                                                                                  new Date(),
                                                                                   methodName);
 
                 response.setGUID(schemaTypeGUID);
@@ -1625,7 +1627,7 @@ public class SchemaManagerRESTServices
      * @param serverName name of the service to route the request to.
      * @param userId calling user
      * @param requestBody string to find in the properties
-     * @param typeName optional type name for the schema type - used to restrict the search results
+     * @param typeName optional type name for the schema attribute - used to restrict the search results
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -1670,6 +1672,7 @@ public class SchemaManagerRESTServices
                                                                                     null,
                                                                                     startFrom,
                                                                                     pageSize,
+                                                                                    new Date(),
                                                                                     methodName);
 
                 response.setElementList(setUpVendorProperties(userId, results, handler, methodName));
@@ -1691,7 +1694,7 @@ public class SchemaManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param parentSchemaElementGUID unique identifier of the schemaType of interest
+     * @param parentSchemaElementGUID unique identifier of the schema element of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -1727,6 +1730,7 @@ public class SchemaManagerRESTServices
                                                                                        OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                                                        startFrom,
                                                                                        pageSize,
+                                                                                       new Date(),
                                                                                        methodName);
 
             response.setElementList(setUpVendorProperties(userId, results, handler, methodName));
@@ -1749,7 +1753,7 @@ public class SchemaManagerRESTServices
      * @param serverName name of the service to route the request to.
      * @param userId calling user
      * @param requestBody name to search for
-     * @param typeName optional type name for the schema type - used to restrict the search results
+     * @param typeName optional type name for the schema attribute - used to restrict the search results
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -1766,7 +1770,6 @@ public class SchemaManagerRESTServices
                                                               int             pageSize)
     {
         final String methodName        = "getSchemaAttributesByName";
-        final String nameParameterName = "name";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1787,14 +1790,14 @@ public class SchemaManagerRESTServices
                 if (typeDef != null)
                 {
                     List<SchemaAttributeElement> results = handler.getSchemaAttributesByName(userId,
-                                                                                             requestBody.getName(),
-                                                                                             nameParameterName,
                                                                                              typeDef.getGUID(),
                                                                                              typeDef.getName(),
+                                                                                             requestBody.getName(),
                                                                                              null,
                                                                                              null,
                                                                                              startFrom,
                                                                                              pageSize,
+                                                                                             new Date (),
                                                                                              methodName);
 
                     response.setElementList(setUpVendorProperties(userId, results, handler, methodName));
@@ -1853,6 +1856,7 @@ public class SchemaManagerRESTServices
                                                                        OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                                        null,
                                                                        null,
+                                                                       new Date(),
                                                                        methodName);
 
             response.setElement(setUpVendorProperties(userId, result, handler, methodName));

@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.MetadataSourceElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.MetadataSourceElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.MetadataSourceProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -36,7 +36,7 @@ public class MetadataSourceConverter<B> extends CommunityProfileOMASConverter<B>
 
     /**
      * Using the supplied instances, return a new instance of the bean. This is used for beans that have
-     * contain a combination of the properties from an entity and a that os a connected relationship.
+     * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
      * @param entity entity containing the properties
@@ -74,10 +74,13 @@ public class MetadataSourceConverter<B> extends CommunityProfileOMASConverter<B>
                     metadataSourceProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     metadataSourceProperties.setDisplayName(this.removeName(instanceProperties));
                     metadataSourceProperties.setDescription(this.removeDescription(instanceProperties));
-                    metadataSourceProperties.setTypeDescription(this.removeDeployedImplementationType(instanceProperties));
+                    metadataSourceProperties.setTypeDescription(this.removeCapabilityType(instanceProperties));
                     metadataSourceProperties.setVersion(this.removeCapabilityVersion(instanceProperties));
                     metadataSourceProperties.setPatchLevel(this.removePatchLevel(instanceProperties));
                     metadataSourceProperties.setSource(this.removeSource(instanceProperties));
+
+                    metadataSourceProperties.setEffectiveFrom(instanceProperties.getEffectiveFromTime());
+                    metadataSourceProperties.setEffectiveTo(instanceProperties.getEffectiveToTime());
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are
@@ -107,7 +110,7 @@ public class MetadataSourceConverter<B> extends CommunityProfileOMASConverter<B>
 
     /**
      * Using the supplied instances, return a new instance of the bean. This is used for beans that have
-     * contain a combination of the properties from an entity and a that os a connected relationship.
+     * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
      * @param entity entity containing the properties

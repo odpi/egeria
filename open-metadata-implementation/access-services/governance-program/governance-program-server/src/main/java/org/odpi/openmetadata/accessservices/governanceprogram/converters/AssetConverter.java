@@ -40,7 +40,7 @@ public class AssetConverter<B> extends GovernanceProgramOMASConverter<B>
 
     /**
      * Using the supplied instances, return a new instance of the bean. This is used for beans that have
-     * contain a combination of the properties from an entity and a that of a connected relationship.
+     * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
      * @param entity entity containing the properties
@@ -59,7 +59,7 @@ public class AssetConverter<B> extends GovernanceProgramOMASConverter<B>
 
     /**
      * Using the supplied instances, return a new instance of the bean. This is used for beans that have
-     * contain a combination of the properties from an entity and a that os a connected relationship.
+     * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
      * @param entity entity containing the properties
@@ -112,7 +112,7 @@ public class AssetConverter<B> extends GovernanceProgramOMASConverter<B>
 
                 if (primaryEntity != null)
                 {
-                    bean.setElementHeader(super.getMetadataElementHeader(beanClass, primaryEntity, methodName));
+                    bean.setElementHeader(super.getMetadataElementHeader(beanClass, primaryEntity, primaryEntity.getClassifications(), methodName));
 
                     /*
                      * The initial set of values come from the entity.

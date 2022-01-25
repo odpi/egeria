@@ -5,8 +5,7 @@ package org.odpi.openmetadata.accessservices.communityprofile.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.MetadataSourceElement;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalProfileProperties;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.MetadataSourceElement;
 
 import java.util.Arrays;
 import java.util.Objects;

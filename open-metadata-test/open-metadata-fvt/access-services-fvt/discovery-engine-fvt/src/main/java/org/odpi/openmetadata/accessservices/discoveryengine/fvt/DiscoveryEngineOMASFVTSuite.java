@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.discoveryengine.fvt;
 
 import org.odpi.openmetadata.accessservices.discoveryengine.fvt.clientconstructors.ClientConstructorTest;
+import org.odpi.openmetadata.accessservices.discoveryengine.fvt.discovery.CreateDiscoveryReportTest;
 import org.odpi.openmetadata.accessservices.discoveryengine.fvt.errorhandling.InvalidParameterTest;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.FVTSuiteBase;
@@ -40,14 +41,21 @@ public class DiscoveryEngineOMASFVTSuite extends FVTSuiteBase
         {
             returnCode --;
         }
-        results.printResults();
+        results.printResults(serverName);
 
         results = InvalidParameterTest.performFVT(serverName, serverPlatformRootURL, userId);
         if (! results.isSuccessful())
         {
             returnCode --;
         }
-        results.printResults();
+        results.printResults(serverName);
+
+        results = CreateDiscoveryReportTest.performFVT(serverName, serverPlatformRootURL, userId);
+        if (! results.isSuccessful())
+        {
+            returnCode --;
+        }
+        results.printResults(serverName);
 
         return returnCode;
     }

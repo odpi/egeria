@@ -1467,6 +1467,44 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
         }
     }
 
+    /**
+     * Add a classification to an existing entity proxy
+     *
+     * @param sourceName        source of the request (used for logging)
+     * @param entity            entity to update
+     * @param newClassification classification to update
+     * @param methodName        calling method
+     * @return updated entity
+     */
+    @Override
+    public EntityProxy addClassificationToEntity(String         sourceName,
+                                                 EntityProxy    entity,
+                                                 Classification newClassification,
+                                                 String         methodName)
+    {
+
+        if (newClassification != null)
+        {
+            EntityProxy updatedEntity = new EntityProxy(entity);
+
+            updatedEntity.setClassifications(this.addClassificationToList(sourceName,
+                                                                          entity.getClassifications(),
+                                                                          newClassification,
+                                                                          methodName));
+            return updatedEntity;
+        }
+        else
+        {
+            final String thisMethodName = "addClassificationToEntity";
+
+            throw new OMRSLogicErrorException(OMRSErrorCode.NULL_CLASSIFICATION_CREATED.getMessageDefinition(sourceName,
+                                                                                                             thisMethodName,
+                                                                                                             methodName),
+                                                                                                             this.getClass().getName(),
+                                                                                                             methodName);
+        }
+    }
+
 
     /**
      * Return the names classification from an existing entity.
@@ -1600,8 +1638,46 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
             throw new OMRSLogicErrorException(OMRSErrorCode.NULL_CLASSIFICATION_CREATED.getMessageDefinition(sourceName,
                                                                                                              thisMethodName,
                                                                                                              methodName),
-                                              this.getClass().getName(),
-                                              methodName);
+                                                                                                             this.getClass().getName(),
+                                                                                                             methodName);
+        }
+    }
+
+
+    /**
+     * Replace an existing classification with a new one
+     *
+     * @param sourceName        source of the request (used for logging)
+     * @param userName          name of the editor
+     * @param entity            entity to update
+     * @param newClassification classification to update
+     * @param methodName        calling method
+     * @return updated entity
+     */
+    @Override
+    public EntityProxy updateClassificationInEntity(String         sourceName,
+                                                    String         userName,
+                                                    EntityProxy    entity,
+                                                    Classification newClassification,
+                                                    String         methodName)
+    {
+        if (newClassification != null)
+        {
+            Classification updatedClassification = new Classification(newClassification);
+
+            updatedClassification = incrementVersion(userName, newClassification, updatedClassification);
+
+            return this.addClassificationToEntity(sourceName, entity, updatedClassification, methodName);
+        }
+        else
+        {
+            final String thisMethodName = "updateClassificationInEntity";
+
+            throw new OMRSLogicErrorException(OMRSErrorCode.NULL_CLASSIFICATION_CREATED.getMessageDefinition(sourceName,
+                                                                                                             thisMethodName,
+                                                                                                             methodName),
+                                                                                                             this.getClass().getName(),
+                                                                                                             methodName);
         }
     }
 
@@ -1652,8 +1728,8 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
                                                                                                                 sourceName,
                                                                                                                 oldClassificationName,
                                                                                                                 entity.getGUID()),
-                                                       this.getClass().getName(),
-                                                       methodName);
+                                                                                                                this.getClass().getName(),
+                                                                                                                methodName);
             }
 
             if (entityClassificationsMap.isEmpty())
@@ -1676,11 +1752,85 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
             throw new OMRSLogicErrorException(OMRSErrorCode.NULL_CLASSIFICATION_NAME.getMessageDefinition(sourceName,
                                                                                                           thisMethodName,
                                                                                                           methodName),
-                                              this.getClass().getName(),
-                                              methodName);
+                                                                                                          this.getClass().getName(),
+                                                                                                          methodName);
         }
     }
 
+    /**
+     * Return a oldClassification with the header and type information filled out.  The caller only needs to add properties
+     * to complete the set up of the oldClassification.
+     *
+     * @param sourceName            source of the request (used for logging)
+     * @param entity                entity to update
+     * @param oldClassificationName classification to remove
+     * @param methodName            calling method
+     * @return updated entity
+     * @throws ClassificationErrorException the entity was not classified with this classification
+     */
+    @Override
+    public EntityProxy deleteClassificationFromEntity(String       sourceName,
+                                                      EntityProxy  entity,
+                                                      String       oldClassificationName,
+                                                      String       methodName) throws ClassificationErrorException
+    {
+        EntityProxy updatedEntity = new EntityProxy(entity);
+
+        if (oldClassificationName != null)
+        {
+            /*
+             * Duplicate classifications are not allowed so a hash map is used to remove duplicates.
+             */
+            Map<String, Classification> entityClassificationsMap = new HashMap<>();
+            List<Classification>        entityClassifications    = updatedEntity.getClassifications();
+
+            if (entityClassifications != null)
+            {
+                for (Classification existingClassification : entityClassifications)
+                {
+                    if (existingClassification != null)
+                    {
+                        entityClassificationsMap.put(existingClassification.getName(), existingClassification);
+                    }
+                }
+            }
+
+            Classification oldClassification = entityClassificationsMap.remove(oldClassificationName);
+
+            if (oldClassification == null)
+            {
+                throw new ClassificationErrorException(OMRSErrorCode.ENTITY_NOT_CLASSIFIED.getMessageDefinition(methodName,
+                                                                                                                sourceName,
+                                                                                                                oldClassificationName,
+                                                                                                                entity.getGUID()),
+                                                                                                                this.getClass().getName(),
+                                                                                                                methodName);
+            }
+
+            if (entityClassificationsMap.isEmpty())
+            {
+                updatedEntity.setClassifications(null);
+            }
+            else
+            {
+                entityClassifications = new ArrayList<>(entityClassificationsMap.values());
+
+                updatedEntity.setClassifications(entityClassifications);
+            }
+
+            return updatedEntity;
+        }
+        else
+        {
+            final String thisMethodName = "deleteClassificationFromEntity";
+
+            throw new OMRSLogicErrorException(OMRSErrorCode.NULL_CLASSIFICATION_NAME.getMessageDefinition(sourceName,
+                                                                                                          thisMethodName,
+                                                                                                          methodName),
+                                                                                                          this.getClass().getName(),
+                                                                                                          methodName);
+        }
+    }
 
     /**
      * Merge two sets of instance properties.

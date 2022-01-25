@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.dataengine.model.DataFile;
 import org.odpi.openmetadata.accessservices.dataengine.model.Database;
 import org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema;
 import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
+import org.odpi.openmetadata.accessservices.dataengine.model.EventType;
 import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
@@ -14,12 +15,14 @@ import org.odpi.openmetadata.accessservices.dataengine.model.ProcessHierarchy;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
+import org.odpi.openmetadata.accessservices.dataengine.model.Topic;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineOMASAPIRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineRegistrationRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataFileRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DatabaseRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DatabaseSchemaRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DeleteRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.EventTypeRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.FindRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
@@ -28,6 +31,7 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessHierarchyRequ
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.RelationalTableRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.TopicRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -61,6 +65,8 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
     private static final String CONNECTION_URL_TEMPLATE = DATA_ENGINE_PATH + "connections";
     private static final String ENDPOINT_URL_TEMPLATE = DATA_ENGINE_PATH + "endpoints";
     private static final String FIND_URL_TEMPLATE = DATA_ENGINE_PATH + "find";
+    private static final String TOPIC_URL_TEMPLATE = DATA_ENGINE_PATH + "topics";
+    private static final String EVENT_TYPE_URL_TEMPLATE = DATA_ENGINE_PATH + "event-types";
 
     private static final String PROCESS_METHOD_NAME = "createOrUpdateProcess";
     private static final String PROCESS_DELETE_METHOD_NAME = "deleteProcess";
@@ -86,6 +92,10 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
     private static final String CONNECTION_DELETE_METHOD_NAME = "deleteConnection";
     private static final String ENDPOINT_DELETE_METHOD_NAME = "deleteEndpoint";
     private static final String FIND_METHOD_NAME = "find";
+    private static final String TOPIC_METHOD_NAME = "upsertTopic";
+    private static final String EVENT_TYPE_METHOD_NAME = "upsertEventType";
+    private static final String TOPIC_DELETE_METHOD_NAME = "deleteTopic";
+    private static final String EVENT_TYPE_DELETE_METHOD_NAME = "deleteEventType";
 
     private final String serverPlatformRootURL;
     private String externalSourceName;
@@ -326,8 +336,8 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
      * {@inheritDoc}
      */
     @Override
-    public String upsertDatabase(String userId, Database database) throws InvalidParameterException, UserNotAuthorizedException,
-                                                                          PropertyServerException {
+    public String upsertDatabase(String userId, Database database, boolean incomplete) throws InvalidParameterException,
+            UserNotAuthorizedException, PropertyServerException {
         final String methodName = DATABASE_METHOD_NAME;
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -335,6 +345,7 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         DatabaseRequestBody requestBody = new DatabaseRequestBody();
         requestBody.setDatabase(database);
         requestBody.setExternalSourceName(externalSourceName);
+        requestBody.setIncomplete(incomplete);
 
         return callGUIDPostRESTCall(userId, methodName, DATABASE_URL_TEMPLATE, requestBody);
     }
@@ -491,6 +502,65 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
         invalidParameterHandler.validateUserId(userId, FIND_METHOD_NAME);
 
         return callGUIDListPostRESTCall(FIND_METHOD_NAME, serverPlatformRootURL + FIND_URL_TEMPLATE, findRequestBody, serverName, userId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String upsertTopic(String userId, Topic topic) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        final String methodName = TOPIC_METHOD_NAME;
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        TopicRequestBody requestBody = new TopicRequestBody();
+        requestBody.setTopic(topic);
+        requestBody.setExternalSourceName(externalSourceName);
+
+        return callGUIDPostRESTCall(userId, methodName, TOPIC_URL_TEMPLATE, requestBody);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String upsertEventType(String userId, EventType eventType, String topicQualifiedName) throws InvalidParameterException,
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        PropertyServerException {
+        final String methodName = EVENT_TYPE_METHOD_NAME;
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        EventTypeRequestBody requestBody = new EventTypeRequestBody();
+        requestBody.setEventType(eventType);
+        requestBody.setExternalSourceName(externalSourceName);
+        requestBody.setTopicQualifiedName(topicQualifiedName);
+
+        return callGUIDPostRESTCall(userId, methodName, EVENT_TYPE_URL_TEMPLATE, requestBody);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteTopic(String userId, String qualifiedName, String guid) throws InvalidParameterException, PropertyServerException {
+        invalidParameterHandler.validateUserId(userId, TOPIC_DELETE_METHOD_NAME);
+
+        DeleteRequestBody requestBody = getDeleteRequestBody(qualifiedName, guid);
+
+        callVoidDeleteRESTCall(userId, TOPIC_DELETE_METHOD_NAME, TOPIC_URL_TEMPLATE, requestBody);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteEventType(String userId, String qualifiedName, String guid) throws InvalidParameterException, PropertyServerException {
+        invalidParameterHandler.validateUserId(userId, EVENT_TYPE_DELETE_METHOD_NAME);
+
+        DeleteRequestBody requestBody = getDeleteRequestBody(qualifiedName, guid);
+
+        callVoidDeleteRESTCall(userId, EVENT_TYPE_DELETE_METHOD_NAME, EVENT_TYPE_URL_TEMPLATE, requestBody);
     }
 
     private void callVoidPostRESTCall(String userId, String methodName, String urlTemplate, DataEngineOMASAPIRequestBody requestBody,

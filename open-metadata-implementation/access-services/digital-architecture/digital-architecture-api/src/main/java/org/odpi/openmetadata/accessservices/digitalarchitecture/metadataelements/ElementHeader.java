@@ -2,10 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -14,6 +18,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * ElementHeader provides the common identifier and type information for all properties objects
  * that link off of the asset and have a guid associated with them.  This typically means it is
  * represented by an entity in the metadata repository.
+ *
+ * In addition are useful attachments that are found connected to the metadata element.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -25,11 +31,13 @@ public class ElementHeader implements Serializable
     /*
      * Common header for first class elements from a metadata repository
      */
-    private String        guid = null;
-    private ElementType   type = null;
-    private ElementOrigin origin = null;
+    private String          guid = null;
+    private ElementType     type = null;
+    private ElementOrigin   origin = null;
+    private ElementVersions versions = null;
 
-    private List<ElementClassification> classifications = null;
+    private List<ElementClassification> classifications  = null;
+
 
     /**
      * Default constructor used by subclasses
@@ -48,10 +56,11 @@ public class ElementHeader implements Serializable
     {
         if (template != null)
         {
-            guid   = template.getGUID();
-            type   = template.getType();
-            origin = template.getOrigin();
-            classifications = template.getClassifications();
+            guid             = template.getGUID();
+            type             = template.getType();
+            origin           = template.getOrigin();
+            versions         = template.getVersions();
+            classifications  = template.getClassifications();
         }
     }
 
@@ -131,6 +140,28 @@ public class ElementHeader implements Serializable
 
 
     /**
+     * Return detail of the element's current version and the users responsible for maintaining it.
+     *
+     * @return ElementVersion object
+     */
+    public ElementVersions getVersions()
+    {
+        return versions;
+    }
+
+
+    /**
+     * Set up detail of the element's current version and the users responsible for maintaining it.
+     *
+     * @param versions ElementVersion object
+     */
+    public void setVersions(ElementVersions versions)
+    {
+        this.versions = versions;
+    }
+
+
+    /**
      * Return the list of classifications associated with the metadata element.
      *
      * @return Classifications  list of classifications
@@ -172,13 +203,15 @@ public class ElementHeader implements Serializable
     public String toString()
     {
         return "ElementHeader{" +
-                "guid='" + guid + '\'' +
-                ", type=" + type +
-                ", origin=" + origin +
-                ", classifications=" + classifications +
-                ", GUID='" + getGUID() + '\'' +
-                '}';
+                       "guid='" + guid + '\'' +
+                       ", type=" + type +
+                       ", origin=" + origin +
+                       ", versions=" + versions +
+                       ", classifications=" + classifications +
+                       ", GUID='" + getGUID() + '\'' +
+                       '}';
     }
+
 
     /**
      * Compare the values of the supplied object with those stored in the current object.
@@ -193,15 +226,16 @@ public class ElementHeader implements Serializable
         {
             return true;
         }
-        if (!(objectToCompare instanceof ElementHeader))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
         ElementHeader that = (ElementHeader) objectToCompare;
-        return Objects.equals(getType(), that.getType()) &&
-                Objects.equals(guid, that.guid) &&
-                Objects.equals(getOrigin(), that.getOrigin()) &&
-                Objects.equals(classifications, that.classifications);
+        return Objects.equals(guid, that.guid) &&
+                       Objects.equals(type, that.type) &&
+                       Objects.equals(origin, that.origin) &&
+                       Objects.equals(versions, that.versions) &&
+                       Objects.equals(classifications, that.classifications);
     }
 
 
@@ -213,6 +247,6 @@ public class ElementHeader implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(guid, type, origin, classifications);
+        return Objects.hash(guid, type, origin, versions, classifications);
     }
 }

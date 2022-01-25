@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 
-public class RedisAuthService extends TokenSettings implements AuthService{
+public class RedisAuthService extends TokenService implements AuthService{
 
     @Autowired
     TokenRedisClient tokenRedisClient;
@@ -71,8 +71,9 @@ public class RedisAuthService extends TokenSettings implements AuthService{
      * {@inheritDoc}
      *
      * creates a token without expiration
-     * expiration is to be validated against redis
+     * but expiration date is to be validated against redis
      */
+    @Override
     public String createTokenForUser(TokenUser user, String secret) {
         return Jwts.builder()
                 .setId(UUID.randomUUID().toString())

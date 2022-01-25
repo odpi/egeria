@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "e328f625-7139-41b4-adb2-a6810f3b5e88",
+		"_postman_id": "ab10dfa2-2450-4249-b2ab-8e3d637df92f",
 		"name": "DataEngine - asset endpoints",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -89,6 +89,41 @@
 			"response": []
 		},
 		{
+			"name": "1.2.0 Create Database, Database Schema, Relational Table - all props",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"database\": {\n        \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-all-props\",\n        \"displayName\": \"MINIMAL-all-props\",\n        \"description\": \"DB2 MINIMAL\",\n        \"databaseType\": \"DB2\",\n        \"databaseVersion\": \"10.05.0002\",\n        \"databaseInstance\": \"db2inst1\",\n        \"databaseImportedFrom\": \"DB2Connector 9.1\",\n        \"createTime\": \"1588160311000\",\n        \"modifiedTime\": \"1588160311000\",\n        \"pathName\": \"pathName\",\n        \"encodingType\": \"type\",\n        \"encodingLanguage\": \"lang\",\n        \"encodingDescription\": \"props\",\n        \"owner\": \"Administrator IIS\",\n        \"ownerType\": \"USER_ID\",\n        \"protocol\": \"ftp\",\n        \"networkAddress\": \"localhost\",\n        \"zoneMembership\": [\n            \"default\"\n        ],\n        \"otherOriginValues\": {\n            \"prop\": \"oherOrigin\"\n        },\n        \"schema\": {\n            \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-all-props::(database_schema)=DB2INST1-all-props\",\n            \"displayName\": \"DB2INST1-all-props\",\n            \"description\": \"DB2INST1 database schema\",\n            \"owner\": \"Administrator IIS\",\n            \"ownerType\": \"USER_ID\",\n            \"zoneMembership\": [\n                \"default\"\n            ],\n            \"otherOriginValues\": {\n                \"prop\": \"otherOrigin\"\n            }\n        },\n        \"tables\": [\n            {\n                \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-all-props::(database_schema)=DB2INST1::(database_table)=EMPLNAME\",\n                \"displayName\": \"EMPLNAME\",\n                \"description\": \"EMPLNAME desc\",\n                \"isDeprecated\": false,\n                \"aliases\": [\n                    \"EMPLNAME2\"\n                ],\n                \"columns\": [\n                    {\n                        \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-all-props::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=EMPID\",\n                        \"displayName\": \"EMPID\",\n                        \"minCardinality\": 1,\n                        \"maxCardinality\": 1,\n                        \"isDeprecated\": false,\n                        \"isNullable\": false,\n                        \"allowsDuplicateValues\": true,\n                        \"position\": 1,\n                        \"dataType\": \"INTEGER\",\n                        \"orderedValues\": true,\n                        \"defaultValueOverride\": \"defaultOverride\",\n                        \"defaltValue\": \"defaultValue\",\n                        \"nativeClass\": \"nativeClass\",\n                        \"aliases\": [\n                            \"ID\"\n                        ],\n                        \"sortOrder\": \"ASCENDING\",\n                        \"description\": \"id column\",\n                        \"significantDigits\": 0,\n                        \"precision\": 0,\n                        \"fixedValue\": \"1\",\n                        \"formula\": \"formula\"\n                    },\n                    {\n                        \"qualifiedName\": \"(host)=HOST::(database)=MINIMA-all-propsL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=FNAME\",\n                        \"displayName\": \"FNAME\",\n                        \"minCardinality\": 1,\n                        \"maxCardinality\": 1,\n                        \"isDeprecated\": false,\n                        \"isNullable\": false,\n                        \"minimuumLength\": 0,\n                        \"length\": 50,\n                        \"allowsDuplicateValues\": true,\n                        \"position\": 2,\n                        \"dataType\": \"STRING\",\n                        \"orderedValues\": true,\n                        \"defaultValueOverride\": \"defaultOverride\",\n                        \"defaltValue\": \"defaultValue\",\n                        \"nativeClass\": \"nativeClass\",\n                        \"aliases\": [\n                            \"First\"\n                        ],\n                        \"sortOrder\": \"UNSORTED\",\n                        \"description\": \"first column\",\n                        \"significantDigits\": 0,\n                        \"precision\": 0,\n                        \"fixedValue\": \"name\",\n                        \"formula\": \"formula\"\n                    },\n                    {\n                        \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-all-props::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=SURNAME\",\n                        \"displayName\": \"SURNAME\",\n                        \"minCardinality\": 1,\n                        \"maxCardinality\": 1,\n                        \"isDeprecated\": false,\n                        \"isNullable\": false,\n                        \"minimuumLength\": 0,\n                        \"length\": 50,\n                        \"allowsDuplicateValues\": true,\n                        \"position\": 3,\n                        \"dataType\": \"STRING\",\n                        \"orderedValues\": true,\n                        \"defaultValueOverride\": \"defaultOverride\",\n                        \"defaltValue\": \"defaultValue\",\n                        \"nativeClass\": \"nativeClass\",\n                        \"aliases\": [\n                            \"Last\"\n                        ],\n                        \"sortOrder\": \"UNSORTED\",\n                        \"description\": \"surname column\",\n                        \"significantDigits\": 0,\n                        \"precision\": 0,\n                        \"fixedValue\": \"name\",\n                        \"formula\": \"formula\"\n                    },\n                    {\n                        \"qualifiedName\": \"(host)=HOST::(database)=MINIMAL-all-props::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=LOCID\",\n                        \"displayName\": \"LOCID\",\n                        \"minCardinality\": 1,\n                        \"maxCardinality\": 1,\n                        \"isDeprecated\": false,\n                        \"isNullable\": false,\n                        \"allowsDuplicateValues\": true,\n                        \"position\": 4,\n                        \"dataType\": \"INTEGER\",\n                        \"orderedValues\": true,\n                        \"defaultValueOverride\": \"defaultOverride\",\n                        \"defaltValue\": \"defaultValue\",\n                        \"nativeClass\": \"nativeClass\",\n                        \"aliases\": [\n                            \"Location\"\n                        ],\n                        \"sortOrder\": \"ASCENDING\",\n                        \"description\": \"locid column\",\n                        \"significantDigits\": 0,\n                        \"precision\": 0,\n                        \"fixedValue\": \"1\",\n                        \"formula\": \"formula\"\n                    }\n                ]\n            }\n        ]\n    },\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/databases",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"databases"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "1.2 Create Database - required props only",
 			"request": {
 				"method": "POST",
@@ -124,7 +159,7 @@
 			"response": []
 		},
 		{
-			"name": "1.3 Create Database - all props",
+			"name": "1.3 Create Database - all props, only database",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -308,7 +343,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n   \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"file\": {\n        \"fileType\": \"DataFile\",\n        \"qualifiedName\": \"(host)=HOST::(data_file)=DATAFILE.DAT\",\n        \"displayName\": \"dataFile.dat\",\n        \"pathName\": \"/home/files/dataFile.dat\",\n        \"networkAddress\" : \"localhost\",\n        \"columns\": [\n            {\n                \"qualifiedName\": \"(data_file)=DATAFILE.DAT::(data_file_record)=schema::(data_file_field)=COLUMN-A\",\n                \"displayName\": \"column-a\"\n            },\n            {\n                \"qualifiedName\": \"(data_file)=DATAFILE.DAT::(data_file_record)=schema::(data_file_field)=COLUMN-B\",\n                \"displayName\": \"column-b\"\n            }\n        ]\n    }\n}",
+					"raw": "{\n   \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"file\": {\n        \"fileType\": \"DataFile\",\n        \"qualifiedName\": \"(host)=HOST::(data_file)=DATAFILE.DAT\",\n        \"displayName\": \"dataFile.dat\",\n        \"columns\": [\n            {\n                \"qualifiedName\": \"(data_file)=DATAFILE.DAT::(data_file_record)=schema::(data_file_field)=COLUMN-A\",\n                \"displayName\": \"column-a\"\n            },\n            {\n                \"qualifiedName\": \"(data_file)=DATAFILE.DAT::(data_file_record)=schema::(data_file_field)=COLUMN-B\",\n                \"displayName\": \"column-b\"\n            }\n        ]\n    }\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -374,7 +409,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"file\": {\n        \"fileType\": \"CSVFile\",\n        \"qualifiedName\": \"(file)=CSVFILE.CSV\",\n        \"displayName\": \"csvFile.csv\",\n        \"pathName\": \"/home/files/csvFile.csv\",\n        \"networkAddress\" : \"localhost\",\n        \"columns\": [\n            {\n                \"qualifiedName\": \"(file)=CSVFILE.CSV::(column)=COLUMN-A\",\n                \"displayName\": \"column-a\"\n            },\n            {\n                \"qualifiedName\": \"(file)=CSVFILE.CSV::(column)=COLUMN-B\",\n                \"displayName\": \"column-b\"\n            }\n        ]\n    }\n}",
+					"raw": "{\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"file\": {\n        \"fileType\": \"CSVFile\",\n        \"qualifiedName\": \"(file)=CSVFILE.CSV\",\n        \"displayName\": \"csvFile.csv\",\n        \"columns\": [\n            {\n                \"qualifiedName\": \"(file)=CSVFILE.CSV::(column)=COLUMN-A\",\n                \"displayName\": \"column-a\"\n            },\n            {\n                \"qualifiedName\": \"(file)=CSVFILE.CSV::(column)=COLUMN-B\",\n                \"displayName\": \"column-b\"\n            }\n        ]\n    }\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -2915,6 +2950,204 @@
 						"users",
 						"{{user-id}}",
 						"find"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "9.1  Create topic required props",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"topic\": {\n        \"qualifiedName\": \"(topic)=test-topic-basic\",\n        \"displayName\": \"test-topic-basic\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/topics",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"topics"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "9.2  Create topic all props",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"topic\": {\n        \"qualifiedName\": \"(topic)=test-topic\",\n        \"displayName\": \"test-topic\",\n        \"topicType\": \"topic-type\",\n        \"description\": \"topic description\",\n        \"otherOriginValues\": {\n            \"prop\": \"oherOrigin\"\n        },\n        \"owner\": \"owner\",\n        \"ownerType\": \"USER_ID\",\n        \"zoneMembership\": [\n            \"ZONE_1\"\n        ],\n        \"additionalProperties\": {\n            \"key1\": \"value1\",\n            \"key2\": \"value2\"\n        },\n        \"eventTypes\": [\n            {\n                \"qualifiedName\": \"(topic)=test-topic::(eventType)=test-event\",\n                \"displayName\": \"test-event\",\n                \"author\": \"author\",\n                \"usage\": \"usage\",\n                \"encodingStandard\": \"encoding\",\n                \"versionNumber\": \"versionNumber\",\n                \"isDeprecated\": false,\n                \"description\": \"event type description\",\n                \"eventSchemaAttributes\": [\n                    {\n                        \"qualifiedName\": \"(topic)=test-topic::(eventType)=test-event::(eventAttribute)=test-event-attribute\",\n                        \"displayName\": \"test-event-attribute\",\n                        \"minCardinality\": 1,\n                        \"maxCardinality\": 1,\n                        \"isDeprecated\": false,\n                        \"isNullable\": false,\n                        \"allowsDuplicateValues\": true,\n                        \"position\": 1,\n                        \"dataType\": \"INTEGER\"\n                    }\n                ]\n            }\n        ]\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/topics",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"topics"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "9.3  Create event type required props",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"topicQualifiedName\": \"(topic)=test-topic-basic\",\n    \"eventType\": {\n        \"qualifiedName\": \"(topic)=test-topic-basic::(eventType)=test-event-basic\",\n        \"displayName\": \"test-event-basic\",\n        \"eventSchemaAttributes\": [\n            {\n                \"qualifiedName\": \"(topic)=test-topic-basic::(eventType)=test-event-basic::(eventAttribute)=test-event-attribute-basic\",\n                \"displayName\": \"test-event-attribute-basic\"\n            }\n        ]\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/event-types",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"event-types"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "9.4  Create event type all props",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"topicQualifiedName\": \"(topic)=test-topic\",\n    \"eventType\": {\n        \"qualifiedName\": \"(topic)=test-topic::(eventType)=test-event-2\",\n        \"displayName\": \"test-event-2\",\n        \"author\": \"author\",\n        \"usage\": \"usage\",\n        \"encodingStandard\": \"encoding\",\n        \"versionNumber\": \"versionNumber\",\n        \"isDeprecated\": false,\n        \"description\": \"event type description\",\n        \"eventSchemaAttributes\": [\n            {\n                \"qualifiedName\": \"(topic)=test-topic::(eventType)=test-event-2::(eventAttribute)=test-event-attribute-2\",\n                \"displayName\": \"test-event-attribute-2\",\n                \"minCardinality\": 1,\n                \"maxCardinality\": 1,\n                \"isDeprecated\": false,\n                \"isNullable\": false,\n                \"allowsDuplicateValues\": true,\n                \"position\": 1,\n                \"dataType\": \"INTEGER\"\n            }\n        ]\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/event-types",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"event-types"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "9.5. Delete topic",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"qualifiedName\": \"(topic)=test-topic\",\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/topics",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"topics"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "9.6 Delete event type",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"qualifiedName\": \"(topic)=test-topic::(eventType)=test-event\",\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/event-types",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"event-types"
 					]
 				}
 			},

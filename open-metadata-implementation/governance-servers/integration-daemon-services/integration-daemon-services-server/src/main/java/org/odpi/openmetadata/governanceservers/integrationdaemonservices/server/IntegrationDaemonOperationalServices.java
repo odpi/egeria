@@ -5,6 +5,8 @@ package org.odpi.openmetadata.governanceservers.integrationdaemonservices.server
 import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
+import org.odpi.openmetadata.adminservices.properties.OMAGServerServiceStatus;
+import org.odpi.openmetadata.adminservices.properties.ServerActiveStatus;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.contextmanager.IntegrationContextManager;
@@ -33,8 +35,10 @@ public class IntegrationDaemonOperationalServices
     private int                            maxPageSize;                   /* Initialized in constructor */
 
 
-    private AuditLog                       auditLog     = null;
-    private IntegrationDaemonInstance      integrationDaemonInstance = null;
+    private AuditLog                        auditLog                  = null;
+    private IntegrationDaemonInstance       integrationDaemonInstance = null;
+    private Map<String, ServerActiveStatus> serviceStatusMap          = new HashMap<>();
+
 
     /**
      * Constructor used at server startup.
@@ -97,7 +101,6 @@ public class IntegrationDaemonOperationalServices
              * Initialize each of the integration services and accumulate the integration connector handlers for the
              * integration daemon handler.
              */
-            List<String>                           activatedServicesList = new ArrayList<>();
             List<IntegrationConnectorHandler>      daemonConnectorHandlers = new ArrayList<>();
             Map<String, IntegrationServiceHandler> integrationServiceHandlerMap = new HashMap<>();
 
@@ -105,6 +108,8 @@ public class IntegrationDaemonOperationalServices
             {
                 if (integrationServiceConfig != null)
                 {
+                    this.setServerServiceActiveStatus(integrationServiceConfig.getIntegrationServiceFullName(), ServerActiveStatus.STARTING);
+
                     String                    partnerOMASRootURL          = this.getPartnerOMASRootURL(integrationServiceConfig);
                     String                    partnerOMASServerName       = this.getPartnerOMASServerName(integrationServiceConfig);
                     String                    integrationServiceURLMarker = this.getServiceURLMarker(integrationServiceConfig);
@@ -125,6 +130,7 @@ public class IntegrationDaemonOperationalServices
                                                             partnerOMASRootURL,
                                                             localServerUserId,
                                                             localServerPassword,
+                                                            integrationServiceConfig.getIntegrationServiceOptions(),
                                                             maxPageSize,
                                                             auditLog);
 
@@ -142,7 +148,7 @@ public class IntegrationDaemonOperationalServices
                     }
 
                     integrationServiceHandlerMap.put(integrationServiceURLMarker, integrationServiceHandler);
-                    activatedServicesList.add(integrationServiceConfig.getIntegrationServiceFullName());
+                    this.setServerServiceActiveStatus(integrationServiceConfig.getIntegrationServiceFullName(), ServerActiveStatus.RUNNING);
                 }
             }
 
@@ -170,7 +176,7 @@ public class IntegrationDaemonOperationalServices
 
             auditLog.logMessage(actionDescription, IntegrationDaemonServicesAuditCode.SERVER_INITIALIZED.getMessageDefinition(localServerName));
 
-            return activatedServicesList;
+            return new ArrayList<>(serviceStatusMap.keySet());
         }
         catch (InvalidParameterException error)
         {
@@ -180,7 +186,7 @@ public class IntegrationDaemonOperationalServices
         {
             throw error;
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             auditLog.logException(actionDescription,
                                   IntegrationDaemonServicesAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(localServerName, error.getMessage()),
@@ -192,6 +198,41 @@ public class IntegrationDaemonOperationalServices
                                                       methodName,
                                                       error);
         }
+    }
+
+
+    /**
+     * Set the status of a particular service.
+     *
+     * @param serviceName name of service
+     * @param activeStatus new status
+     */
+    private synchronized void setServerServiceActiveStatus(String serviceName, ServerActiveStatus activeStatus)
+    {
+        serviceStatusMap.put(serviceName, activeStatus);
+    }
+
+
+    /**
+     * Return a summary of the status of this server and the services within it.
+     *
+     * @return server status
+     */
+    public List<OMAGServerServiceStatus> getServiceStatuses()
+    {
+        List<OMAGServerServiceStatus> serviceStatuses = new ArrayList<>();
+
+        for (String serviceName : serviceStatusMap.keySet())
+        {
+            OMAGServerServiceStatus serviceStatus = new OMAGServerServiceStatus();
+
+            serviceStatus.setServiceName(serviceName);
+            serviceStatus.setServiceStatus(serviceStatusMap.get(serviceName));
+
+            serviceStatuses.add(serviceStatus);
+        }
+
+        return serviceStatuses;
     }
 
 
@@ -377,7 +418,17 @@ public class IntegrationDaemonOperationalServices
 
         auditLog.logMessage(actionDescription, IntegrationDaemonServicesAuditCode.SERVER_SHUTTING_DOWN.getMessageDefinition(localServerName));
 
+        for (String serviceName : serviceStatusMap.keySet())
+        {
+            serviceStatusMap.put(serviceName, ServerActiveStatus.STOPPING);
+        }
+
         integrationDaemonInstance.shutdown();
+
+        for (String serviceName : serviceStatusMap.keySet())
+        {
+            serviceStatusMap.put(serviceName, ServerActiveStatus.INACTIVE);
+        }
 
         auditLog.logMessage(actionDescription, IntegrationDaemonServicesAuditCode.SERVER_SHUTDOWN.getMessageDefinition(localServerName));
     }

@@ -141,14 +141,14 @@ public class ConnectedAssetExternalReferences extends AssetExternalReferences
 
         try
         {
-            ExternalReferencesResponse restResult = restClient.callExternalReferencesGetRESTCall(methodName,
-                                                                                                 omasServerURL + urlTemplate,
-                                                                                                 serverName,
-                                                                                                 serviceName,
-                                                                                                 userId,
-                                                                                                 assetGUID,
-                                                                                                 cacheStartPointer,
-                                                                                                 maximumSize);
+            ExternalReferencesResponse restResult = restClient.callOCFExternalReferencesGetRESTCall(methodName,
+                                                                                                    omasServerURL + urlTemplate,
+                                                                                                    serverName,
+                                                                                                    serviceName,
+                                                                                                    userId,
+                                                                                                    assetGUID,
+                                                                                                    cacheStartPointer,
+                                                                                                    maximumSize);
 
             restExceptionHandler.detectAndThrowInvalidParameterException(restResult);
             restExceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
@@ -174,7 +174,7 @@ public class ConnectedAssetExternalReferences extends AssetExternalReferences
                 return resultList;
             }
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             restExceptionHandler.handleUnexpectedException(error, methodName, serverName, omasServerURL);
         }

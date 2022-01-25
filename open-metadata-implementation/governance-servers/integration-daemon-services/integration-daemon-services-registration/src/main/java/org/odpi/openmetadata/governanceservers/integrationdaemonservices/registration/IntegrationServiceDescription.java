@@ -16,7 +16,7 @@ public enum IntegrationServiceDescription implements Serializable
                             "Catalog Integrator OMIS",
                             "catalog-integrator",
                             "Exchange metadata with third party data catalogs.",
-                            "https://egeria.odpi.org/open-metadata-implementation/integration-services/catalog-integrator/",
+                            "https://odpi.github.io/egeria-docs/services/omis/catalog-integrator/overview/",
                             "Asset Manager OMAS",
                             PermittedSynchronization.BOTH_DIRECTIONS),
 
@@ -25,7 +25,7 @@ public enum IntegrationServiceDescription implements Serializable
                         "API Integrator OMIS",
                         "api-integrator",
                             "Exchange metadata with third party API Gateways.",
-                            "https://egeria.odpi.org/open-metadata-implementation/integration-services/api-integrator/",
+                            "https://odpi.github.io/egeria-docs/services/omis/api-integrator/overview/",
                             "Data Manager OMAS",
                             PermittedSynchronization.FROM_THIRD_PARTY),
 
@@ -34,7 +34,7 @@ public enum IntegrationServiceDescription implements Serializable
                             "Topic Integrator OMIS",
                             "topic-integrator",
                             "Exchange metadata with third party event-based brokers.",
-                            "https://egeria.odpi.org/open-metadata-implementation/integration-services/topic-integrator/",
+                            "https://odpi.github.io/egeria-docs/services/omis/topic-integrator/overview/",
                             "Data Manager OMAS",
                             PermittedSynchronization.FROM_THIRD_PARTY),
 
@@ -43,7 +43,7 @@ public enum IntegrationServiceDescription implements Serializable
                           "Display Integrator OMIS",
                           "display-integrator",
                           "Exchange metadata with applications that display data to users.",
-                          "https://egeria.odpi.org/open-metadata-implementation/integration-services/display-integrator/",
+                          "https://odpi.github.io/egeria-docs/services/omis/display-integrator/overview/",
                           "Data Manager OMAS",
                           PermittedSynchronization.FROM_THIRD_PARTY),
 
@@ -52,7 +52,7 @@ public enum IntegrationServiceDescription implements Serializable
                                   "Database Integrator OMIS",
                                   "database-integrator",
                                   "Extract metadata such as schema, tables and columns from database managers.",
-                                  "https://egeria.odpi.org/open-metadata-implementation/integration-services/database-integrator/",
+                                  "https://odpi.github.io/egeria-docs/services/omis/database-integrator/overview/",
                                   "Data Manager OMAS",
                                   PermittedSynchronization.FROM_THIRD_PARTY),
 
@@ -61,7 +61,7 @@ public enum IntegrationServiceDescription implements Serializable
                           "Files Integrator OMIS",
                           "files-integrator",
                           "Extract metadata about files stored in a file system or file manager.",
-                          "https://egeria.odpi.org/open-metadata-implementation/integration-services/files-integrator/",
+                          "https://odpi.github.io/egeria-docs/services/omis/files-integrator/overview/",
                           "Data Manager OMAS",
                           PermittedSynchronization.FROM_THIRD_PARTY),
 
@@ -70,7 +70,7 @@ public enum IntegrationServiceDescription implements Serializable
                           "Lineage Integrator OMIS",
                           "lineage-integrator",
                           "Manage capture of lineage from a third party tool.",
-                          "https://egeria.odpi.org/open-metadata-implementation/integration-services/lineage-integrator/",
+                          "https://odpi.github.io/egeria-docs/services/omis/lineage-integrator/overview/",
                           "Asset Manager OMAS",
                           PermittedSynchronization.FROM_THIRD_PARTY),
 
@@ -79,7 +79,7 @@ public enum IntegrationServiceDescription implements Serializable
                                       "Organization Integrator OMIS",
                                       "organization-integrator",
                                       "Load information about the teams and people in an organization and return collaboration activity.",
-                                      "https://egeria.odpi.org/open-metadata-implementation/integration-services/organization-integrator/",
+                                      "https://odpi.github.io/egeria-docs/services/omis/organization-integrator/overview/",
                                       "Community Profile OMAS",
                                       PermittedSynchronization.FROM_THIRD_PARTY),
 
@@ -88,7 +88,7 @@ public enum IntegrationServiceDescription implements Serializable
                                       "Security Integrator OMIS",
                                       "security-integrator",
                                       "Distribute security properties to security enforcement points.",
-                                      "https://egeria.odpi.org/open-metadata-implementation/integration-services/security-integrator/",
+                                      "https://odpi.github.io/egeria-docs/services/omis/security-integrator/overview/",
                                       "Security Manager OMAS",
                                       PermittedSynchronization.TO_THIRD_PARTY),
 
@@ -97,19 +97,27 @@ public enum IntegrationServiceDescription implements Serializable
                             "Analytics Integrator OMIS",
                             "analytics-integrator",
                             "Exchange metadata with third party analytics tools.",
-                            "https://egeria.odpi.org/open-metadata-implementation/integration-services/analytics-integrator/",
+                            "https://odpi.github.io/egeria-docs/services/omis/analytics-integrator/overview/",
                             "Analytics Modeling OMAS",
                             PermittedSynchronization.BOTH_DIRECTIONS),
-
 
     SEARCH_INTEGRATOR_OMIS(4010,
             "Search Integrator",
             "Search Integrator OMIS",
             "search-integrator",
-            "Store metadata with a third party technology that is focused on search efficiency",
-            "https://egeria.odpi.org/open-metadata-implementation/integration-services/search-integrator/",
+            "Store metadata with a third party technology that is focused on search efficiency.",
+            "https://odpi.github.io/egeria-docs/services/omis/search-integrator/overview/",
             "Asset Catalog OMAS",
-            PermittedSynchronization.BOTH_DIRECTIONS)
+            PermittedSynchronization.BOTH_DIRECTIONS),
+
+    INFRASTRUCTURE_INTEGRATOR_OMIS(4011,
+                           "Infrastructure Integrator",
+                           "Infrastructure Integrator OMIS",
+                           "infrastructure-integrator",
+                           "Exchange information relating to IT infrastructure such as hosts, platforms, servers, server capabilities and services.",
+                           "https://odpi.github.io/egeria-docs/services/omis/infrastructure-integrator/overview/",
+                           "IT infrastructure OMAS",
+                           PermittedSynchronization.BOTH_DIRECTIONS)
     ;
 
     private static final long     serialVersionUID    = 1L;

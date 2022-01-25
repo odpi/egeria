@@ -80,7 +80,11 @@ public enum DataEngineErrorCode implements ExceptionMessageSet {
     METHOD_NOT_IMPLEMENTED(501, "OMAS-DATA-ENGINE-500-002",
             "Method {0} is not implemented",
             "The system performs no action as the method is not implemented.",
-            "No action suggested.");
+            "No action suggested."),
+    TOPIC_NOT_FOUND(400, "OMAS-DATA-ENGINE-400-011",
+            "Topic with qualifiedName {0} was not found",
+            "The system is unable to create a new event type attached to a topic",
+            "Correct the code in the caller to provide the correct topic qualified name.");
 
     private static final long serialVersionUID = 1L;
 

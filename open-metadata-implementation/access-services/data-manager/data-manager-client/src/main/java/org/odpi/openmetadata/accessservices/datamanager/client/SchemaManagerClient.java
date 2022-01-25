@@ -1315,7 +1315,7 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      *
      * @param userId calling user
      * @param searchString string to find in the properties
-     * @param typeName optional type name for the schema type - used to restrict the search results
+     * @param typeName optional type name for the schema attribute - used to restrict the search results
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -1372,7 +1372,7 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      * Retrieve the list of schema attributes associated with a StructSchemaType or nested underneath a schema attribute.
      *
      * @param userId calling user
-     * @param parentSchemaElementGUID unique identifier of the schemaType of interest
+     * @param parentSchemaElementGUID unique identifier of the schema element of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -1398,7 +1398,7 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(parentSchemaElementGUID, elementGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + schemaElementURLTemplatePrefix + "/{2}/nested-attributes";
+        final String urlTemplate = serverPlatformURLRoot + schemaElementURLTemplatePrefix + "/{2}/nested-attributes?startFrom={3}&pageSize={4}";
 
         SchemaAttributesResponse restResult = restClient.callSchemaAttributesGetRESTCall(methodName,
                                                                                          urlTemplate,
@@ -1418,7 +1418,7 @@ public abstract class SchemaManagerClient implements SchemaManagerInterface
      *
      * @param userId calling user
      * @param name name to search for
-     * @param typeName optional type name for the schema type - used to restrict the search results
+     * @param typeName optional type name for the schema attribute - used to restrict the search results
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *

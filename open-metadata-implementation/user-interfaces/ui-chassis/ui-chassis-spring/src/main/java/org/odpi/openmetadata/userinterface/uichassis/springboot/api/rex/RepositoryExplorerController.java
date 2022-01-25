@@ -66,6 +66,21 @@ import java.util.Map;
 public class RepositoryExplorerController extends SecureController
 {
 
+    private static final String USERNAME_NOT_AUTHORIZED_TO_PERFORM_THE_REQUEST = "Sorry - this username was not authorized to perform the request";
+    private static final String REPOSITORY_COULD_NOT_BE_REACHED = "The repository could not be reached, please check the server name and URL root and verify that the server is running ";
+    private static final String REQUEST_HAS_AN_INVALID_PARAMETER = "The request to load type information reported an invalid parameter, please check the server name and URL root parameters";
+    private static final String COULD_NOT_FIND_AN_ENTITY_WITH_THE_GUID_SPECIFIED = "The system could not find an entity with the GUID specified - please check the GUID and try again";
+    private static final String THE_SYSTEM_COULD_ONLY_FIND_AN_ENTITY_PROXY_USING_THE_GUID_SPECIFIED = "The system could only find an entity proxy using the GUID specified - please check the GUID and try again";
+    private static final String THERE_WAS_A_PROBLEM_WITH_TYPE_INFORMATION_PLEASE_CHECK_AND_RETRY = "There was a problem with Type information - please check and retry";
+    private static final String THERE_WAS_A_PROBLEM_WITH_PROPERTY_INFORMATION_PLEASE_CHECK_AND_RETRY = "There was a problem with Property information - please check and retry";
+    private static final String THE_UI_TRIED_TO_USE_AN_UNSUPPORTED_FUNCTION = "The UI tried to use an unsupported function";
+    private static final String INVALID_PARAMETER_IN_REX_REQUEST = "The request body used in the request to /api/instances/rex-traversal contained an invalid parameter or was missing a parameter. Please check the client code.";
+    private static final String TAG_NAME = "tagName";
+    private static final String DATA_FIELD_NAME = "dataFieldName";
+    private static final String ATTACHMENT_TYPE = "attachmentType";
+    private static final String DISPLAY_NAME = "displayName";
+    private static final String QUALIFIED_NAME = "qualifiedName";
+    private static final String ENTITY_GUID = "entityGUID";
     private static String className = RepositoryExplorerController.class.getName();
     private static final Logger LOG = LoggerFactory.getLogger(className);
 
@@ -136,15 +151,15 @@ public class RepositoryExplorerController extends SecureController
         }
         catch (UserNotAuthorizedException e) {
 
-            exceptionMessage = "Sorry - this username was not authorized to perform the request";
+            exceptionMessage = USERNAME_NOT_AUTHORIZED_TO_PERFORM_THE_REQUEST;
         }
         catch (RepositoryErrorException e) {
 
-            exceptionMessage = "The repository could not be reached, please check the server name and URL root and verify that the server is running ";
+            exceptionMessage = REPOSITORY_COULD_NOT_BE_REACHED;
         }
         catch (InvalidParameterException e) {
 
-            exceptionMessage = "The request to load type information reported an invalid parameter, please check the server name and URL root parameters";
+            exceptionMessage = REQUEST_HAS_AN_INVALID_PARAMETER;
         }
 
         // For any of the above exceptions, incorporate the exception message into a response object
@@ -168,70 +183,61 @@ public class RepositoryExplorerController extends SecureController
     InvalidParameterException
     {
 
-        try {
-
-            /*
-             *  Switch between local and enterprise services clients depending
-             *  on enterprise option...
-             */
-            MetadataCollectionServicesClient repositoryServicesClient;
-            if (!enterpriseOption) {
-                repositoryServicesClient = this.getLocalRepositoryServicesClient(serverName, serverURLRoot);
-            }
-            else {
-                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(serverName, serverURLRoot);
-            }
-
-            TypeExplorer tex = new TypeExplorer();
-
-            TypeDefGallery typeDefGallery = repositoryServicesClient.getAllTypes(userId);
-
-            List<TypeDef> typeDefs = typeDefGallery.getTypeDefs();
-            for (TypeDef typeDef : typeDefs) {
-                TypeDefCategory tdCat = typeDef.getCategory();
-                switch (tdCat) {
-                    case ENTITY_DEF:
-                        EntityExplorer eex = new EntityExplorer((EntityDef) typeDef);
-                        tex.addEntityExplorer(typeDef.getName(), eex);
-                        break;
-                    case RELATIONSHIP_DEF:
-                        RelationshipExplorer rex = new RelationshipExplorer((RelationshipDef) typeDef);
-                        tex.addRelationshipExplorer(typeDef.getName(), rex);
-                        break;
-                    case CLASSIFICATION_DEF:
-                        ClassificationExplorer cex = new ClassificationExplorer((ClassificationDef) typeDef);
-                        tex.addClassificationExplorer(typeDef.getName(), cex);
-                        break;
-                    default:
-                        // Ignore this typeDef and continue with next
-                        break;
-                }
-            }
-
-            // Include EnumDefs in the TEX
-            List<AttributeTypeDef> attributeTypeDefs = typeDefGallery.getAttributeTypeDefs();
-            for (AttributeTypeDef attributeTypeDef : attributeTypeDefs) {
-                AttributeTypeDefCategory tdCat = attributeTypeDef.getCategory();
-                switch (tdCat) {
-                    case ENUM_DEF:
-                        tex.addEnumExplorer(attributeTypeDef.getName(), (EnumDef)attributeTypeDef);
-                        break;
-                    default:
-                        // Ignore this AttributeTypeDef and continue with next
-                        break;
-                }
-            }
-
-            // All typeDefs processed, resolve linkages and return the TEX object
-            tex.resolve();
-            return tex;
-
+        /*
+         *  Switch between local and enterprise services clients depending
+         *  on enterprise option...
+         */
+        MetadataCollectionServicesClient repositoryServicesClient;
+        if (!enterpriseOption) {
+            repositoryServicesClient = this.getLocalRepositoryServicesClient(serverName, serverURLRoot);
         }
-        catch ( UserNotAuthorizedException |
-                RepositoryErrorException   |
-                InvalidParameterException e ) {
-            throw e;
+        else {
+            repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(serverName, serverURLRoot);
         }
+
+        TypeExplorer tex = new TypeExplorer();
+
+        TypeDefGallery typeDefGallery = repositoryServicesClient.getAllTypes(userId);
+
+        List<TypeDef> typeDefs = typeDefGallery.getTypeDefs();
+        for (TypeDef typeDef : typeDefs) {
+            TypeDefCategory tdCat = typeDef.getCategory();
+            switch (tdCat) {
+                case ENTITY_DEF:
+                    EntityExplorer eex = new EntityExplorer((EntityDef) typeDef);
+                    tex.addEntityExplorer(typeDef.getName(), eex);
+                    break;
+                case RELATIONSHIP_DEF:
+                    RelationshipExplorer rex = new RelationshipExplorer((RelationshipDef) typeDef);
+                    tex.addRelationshipExplorer(typeDef.getName(), rex);
+                    break;
+                case CLASSIFICATION_DEF:
+                    ClassificationExplorer cex = new ClassificationExplorer((ClassificationDef) typeDef);
+                    tex.addClassificationExplorer(typeDef.getName(), cex);
+                    break;
+                default:
+                    // Ignore this typeDef and continue with next
+                    break;
+            }
+        }
+
+        // Include EnumDefs in the TEX
+        List<AttributeTypeDef> attributeTypeDefs = typeDefGallery.getAttributeTypeDefs();
+        for (AttributeTypeDef attributeTypeDef : attributeTypeDefs) {
+            AttributeTypeDefCategory tdCat = attributeTypeDef.getCategory();
+            switch (tdCat) {
+                case ENUM_DEF:
+                    tex.addEnumExplorer(attributeTypeDef.getName(), (EnumDef)attributeTypeDef);
+                    break;
+                default:
+                    // Ignore this AttributeTypeDef and continue with next
+                    break;
+            }
+        }
+
+        // All typeDefs processed, resolve linkages and return the TEX object
+        tex.resolve();
+        return tex;
 
     }
 
@@ -263,9 +269,8 @@ public class RepositoryExplorerController extends SecureController
          * exception can be wrapped and a suitable indication sent in the REST Response.
          */
         String restURLRoot = serverURLRoot + "/servers/" + serverName;
-        LocalRepositoryServicesClient client = new LocalRepositoryServicesClient(serverName, restURLRoot);
 
-        return client;
+        return new LocalRepositoryServicesClient(serverName, restURLRoot);
     }
 
     /**
@@ -295,9 +300,8 @@ public class RepositoryExplorerController extends SecureController
          * exception can be wrapped and a suitable indication sent in the REST Response.
          */
         String restURLRoot = serverURLRoot + "/servers/" + serverName;
-        EnterpriseRepositoryServicesClient client = new EnterpriseRepositoryServicesClient(serverName, restURLRoot);
 
-        return client;
+        return new EnterpriseRepositoryServicesClient(serverName, restURLRoot);
     }
 
     /*
@@ -342,138 +346,125 @@ public class RepositoryExplorerController extends SecureController
 
         String userId = getUser(request);
 
-
-
-        // No need for a gen on a preTraversal so set up dummy value;
-        Integer gen = -1;
-
         try {
 
             InstanceGraph instGraph = this.getTraversal(userId, serverName, serverURLRoot, enterpriseOption, entityGUID, entityTypeGUIDs, relationshipTypeGUIDs, classificationNames, depth);
 
-            if (instGraph != null) {
-
-                // Parse the RexTraversal into a RexPreTraversal for the PreTraversalResponse
-                RexPreTraversal rexPreTraversal = new RexPreTraversal();
-
-
-                rexPreTraversal.setEntityGUID(entityGUID);
-                rexPreTraversal.setDepth(depth);
-
-                // Process entities
-                List<EntityDetail> entities = instGraph.getEntities();
-                Map<String,RexTypeStats> entityCountsByType = new HashMap<>();
-                Map<String,RexTypeStats> classificationCountsByType = new HashMap<>();
-                if (entities != null) {
-                    for (EntityDetail ent : entities) {
-                        // Process entity type information
-                        /* Skip the entity that the traversal started from.
-                         * Counting the starting entity will distort the counts
-                         */
-                        if (! ent.getGUID().equals(entityGUID)) {
-
-                            InstanceType instanceType = ent.getType();
-                            String typeGUID = instanceType.getTypeDefGUID();
-                            String typeName = instanceType.getTypeDefName();
-                            if (entityCountsByType.get(typeName) == null) {
-                                // First sight of an instance of this type
-                                RexTypeStats stats = new RexTypeStats(typeGUID, 1);
-                                entityCountsByType.put(typeName, stats);
-                            } else {
-                                // Add to the count of instances of this type
-                                Integer existingCount = entityCountsByType.get(typeName).getCount();
-                                entityCountsByType.get(typeName).setCount(existingCount + 1);
-                            }
-                            // Process entity classification information
-                            List<Classification> classifications = ent.getClassifications();
-                            if (classifications != null) {
-                                for (Classification classification : classifications) {
-                                    String classificationName = classification.getName();
-                                    if (classificationCountsByType.get(classificationName) == null) {
-                                        // First sight of an instance of this type
-                                        RexTypeStats stats = new RexTypeStats(null, 1);
-                                        classificationCountsByType.put(classificationName, stats);
-                                    } else {
-                                        // Add to the count of instances of this type
-                                        Integer existingCount = classificationCountsByType.get(classificationName).getCount();
-                                        classificationCountsByType.get(classificationName).setCount(existingCount + 1);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                // Process relationships
-                List<Relationship> relationships = instGraph.getRelationships();
-                Map<String,RexTypeStats> relationshipCountsByType = new HashMap<>();
-                if (relationships != null) {
-                    for (Relationship rel : relationships) {
-                        InstanceType instanceType = rel.getType();
-                        String typeGUID = instanceType.getTypeDefGUID();
-                        String typeName = instanceType.getTypeDefName();
-                        if (relationshipCountsByType.get(typeName) == null) {
-                            // First sight of an instance of this type
-                            RexTypeStats stats = new RexTypeStats(typeGUID, 1);
-                            relationshipCountsByType.put(typeName, stats);
-                        } else {
-                            // Add to the count of instances of this type
-                            Integer existingCount = relationshipCountsByType.get(typeName).getCount();
-                            relationshipCountsByType.get(typeName).setCount(existingCount + 1);
-                        }
-                    }
-                }
-                // Update the rexPreTraversal
-                rexPreTraversal.setEntityInstanceCounts(entityCountsByType);
-                rexPreTraversal.setRelationshipInstanceCounts(relationshipCountsByType);
-                rexPreTraversal.setClassificationInstanceCounts(classificationCountsByType);
-
-                rexPreTraversalResponse = new RexPreTraversalResponse(200, "", rexPreTraversal);
-
-            } else {
-
+            if (instGraph == null) {
                 String excMsg = "Could not retrieve subgraph for entity with guid"+entityGUID;
                 rexPreTraversalResponse = new RexPreTraversalResponse(400, excMsg, null);
-
+                return rexPreTraversalResponse;
             }
+            // Parse the RexTraversal into a RexPreTraversal for the PreTraversalResponse
+            RexPreTraversal rexPreTraversal = new RexPreTraversal();
+            rexPreTraversal.setEntityGUID(entityGUID);
+            rexPreTraversal.setDepth(depth);
+
+            // Process entities
+            Map<String, RexTypeStats> entityCountsByType = new HashMap<>();
+            Map<String, RexTypeStats> classificationCountsByType = new HashMap<>();
+
+            processEntities(entityGUID, instGraph, entityCountsByType, classificationCountsByType);
+            // Process relationships
+            Map<String, RexTypeStats> relationshipCountsByType = processRelationships(instGraph);
+            // Update the rexPreTraversal
+            rexPreTraversal.setEntityInstanceCounts(entityCountsByType);
+            rexPreTraversal.setRelationshipInstanceCounts(relationshipCountsByType);
+            rexPreTraversal.setClassificationInstanceCounts(classificationCountsByType);
+
+            rexPreTraversalResponse = new RexPreTraversalResponse(200, "", rexPreTraversal);
             return rexPreTraversalResponse;
         }
         catch (UserNotAuthorizedException e) {
 
-            exceptionMessage = "Sorry - this username was not authorized to perform the request";
+            exceptionMessage = USERNAME_NOT_AUTHORIZED_TO_PERFORM_THE_REQUEST;
         }
         catch (RepositoryErrorException e) {
 
-            exceptionMessage = "The repository could not be reached, please check the server name and URL root and verify that the server is running ";
+            exceptionMessage = REPOSITORY_COULD_NOT_BE_REACHED;
         }
         catch (InvalidParameterException e) {
 
-            exceptionMessage = "The request to load type information reported an invalid parameter, please check the server name and URL root parameters";
+            exceptionMessage = REQUEST_HAS_AN_INVALID_PARAMETER;
         }
         catch (EntityNotKnownException e) {
 
-            exceptionMessage = "The system could not find an entity with the GUID specified - please check the GUID and try again";
+            exceptionMessage = COULD_NOT_FIND_AN_ENTITY_WITH_THE_GUID_SPECIFIED;
         }
         catch (EntityProxyOnlyException e) {
 
-            exceptionMessage = "The system could only find an entity proxy using the GUID specified - please check the GUID and try again";
+            exceptionMessage = THE_SYSTEM_COULD_ONLY_FIND_AN_ENTITY_PROXY_USING_THE_GUID_SPECIFIED;
         }
         catch (TypeErrorException e) {
 
-            exceptionMessage = "There was a problem with Type information - please check and retry";
+            exceptionMessage = THERE_WAS_A_PROBLEM_WITH_TYPE_INFORMATION_PLEASE_CHECK_AND_RETRY;
         }
         catch (PropertyErrorException e) {
 
-            exceptionMessage = "There was a problem with Property information - please check and retry";
+            exceptionMessage = THERE_WAS_A_PROBLEM_WITH_PROPERTY_INFORMATION_PLEASE_CHECK_AND_RETRY;
         }
         catch (FunctionNotSupportedException e) {
 
-            exceptionMessage = "The UI tried to use an unsupported function";
+            exceptionMessage = THE_UI_TRIED_TO_USE_AN_UNSUPPORTED_FUNCTION;
         }
         // For any of the above exceptions, incorporate the exception message into a response object
         rexPreTraversalResponse = new RexPreTraversalResponse(400, exceptionMessage, null);
 
         return rexPreTraversalResponse;
 
+    }
+
+    private Map<String, RexTypeStats> processRelationships(InstanceGraph instGraph) {
+        List<Relationship> relationships = instGraph.getRelationships();
+        Map<String, RexTypeStats> relationshipCountsByType = new HashMap<>();
+        if (relationships != null) {
+            for (Relationship rel : relationships) {
+                InstanceType instanceType = rel.getType();
+                String typeGUID = instanceType.getTypeDefGUID();
+                String typeName = instanceType.getTypeDefName();
+                updateCountsByType(relationshipCountsByType, typeGUID, typeName);
+            }
+        }
+        return relationshipCountsByType;
+    }
+
+    private void processEntities(String entityGUID, InstanceGraph instGraph, Map<String, RexTypeStats> entityCountsByType, Map<String, RexTypeStats> classificationCountsByType) {
+        List<EntityDetail> entities = instGraph.getEntities();
+        if (entities != null) {
+            for (EntityDetail ent : entities) {
+                // Process entity type information
+                /* Skip the entity that the traversal started from.
+                 * Counting the starting entity will distort the counts
+                 */
+                if (!ent.getGUID().equals(entityGUID)) {
+
+                    InstanceType instanceType = ent.getType();
+                    String typeGUID = instanceType.getTypeDefGUID();
+                    String typeName = instanceType.getTypeDefName();
+                    updateCountsByType(entityCountsByType, typeGUID, typeName);
+                    // Process entity classification information
+                    List<Classification> classifications = ent.getClassifications();
+                    if (classifications != null) {
+                        for (Classification classification : classifications) {
+                            String classificationName = classification.getName();
+                            updateCountsByType(classificationCountsByType, null, classificationName);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void updateCountsByType(Map<String, RexTypeStats> entityCountsByType, String typeGUID, String typeName) {
+        if (entityCountsByType.get(typeName) == null) {
+            // First sight of an instance of this type
+            RexTypeStats stats = new RexTypeStats(typeGUID, 1);
+            entityCountsByType.put(typeName, stats);
+        } else {
+            // Add to the count of instances of this type
+            Integer existingCount = entityCountsByType.get(typeName).getCount();
+            entityCountsByType.get(typeName).setCount(existingCount + 1);
+        }
     }
 
     @PostMapping(path = "/api/instances/rex-traversal")
@@ -505,7 +496,7 @@ public class RepositoryExplorerController extends SecureController
             classificationNames   = body.getClassificationNames();
         }
         catch (Exception e) {
-            exceptionMessage = "The request body used in the request to /api/instances/rex-traversal contained an invalid parameter or was missing a parameter. Please check the client code.";
+            exceptionMessage = INVALID_PARAMETER_IN_REX_REQUEST;
             // For any of the above exceptions, incorporate the exception message into a response object
             rexTraversalResponse = new RexTraversalResponse(400, exceptionMessage, null);
             return rexTraversalResponse;
@@ -514,8 +505,6 @@ public class RepositoryExplorerController extends SecureController
         // If a filter typeGUID was not selected in the UI then it will not appear in the body.
 
         String userId = getUser(request);
-
-        TypeDefGallery typeDefGallery = null;
 
         try {
 
@@ -613,11 +602,12 @@ public class RepositoryExplorerController extends SecureController
                 rt.setGen(gen);
                 // Instead of using type guids in the traversal (which is to be sent to the browser) use type names instead.
                 List<String> entityTypeNames = new ArrayList<>();
-                if (entityTypeGUIDs != null && !entityTypeGUIDs.isEmpty())
-                for (String entityTypeGUID : entityTypeGUIDs) {
-                    // Convert from typeGIUD to typeName
-                    String entityTypeName = typeExplorer.getEntityTypeName(entityTypeGUID);
-                    entityTypeNames.add(entityTypeName);
+                if (entityTypeGUIDs != null && !entityTypeGUIDs.isEmpty()) {
+                    for (String entityTypeGUID : entityTypeGUIDs) {
+                        // Convert from typeGIUD to typeName
+                        String entityTypeName = typeExplorer.getEntityTypeName(entityTypeGUID);
+                        entityTypeNames.add(entityTypeName);
+                    }
                 }
                 rt.setEntityTypeNames(entityTypeNames);
                 rt.setRelationshipTypeGUIDs(relationshipTypeGUIDs);
@@ -638,35 +628,35 @@ public class RepositoryExplorerController extends SecureController
         }
         catch (UserNotAuthorizedException e) {
 
-            exceptionMessage = "Sorry - this username was not authorized to perform the request";
+            exceptionMessage = USERNAME_NOT_AUTHORIZED_TO_PERFORM_THE_REQUEST;
         }
         catch (RepositoryErrorException e) {
 
-            exceptionMessage = "The repository could not be reached, please check the server name and URL root and verify that the server is running ";
+            exceptionMessage = REPOSITORY_COULD_NOT_BE_REACHED;
         }
         catch (InvalidParameterException e) {
 
-            exceptionMessage = "The request to load type information reported an invalid parameter, please check the server name and URL root parameters";
+            exceptionMessage = REQUEST_HAS_AN_INVALID_PARAMETER;
         }
         catch (EntityNotKnownException e) {
 
-            exceptionMessage = "The system could not find an entity with the GUID specified - please check the GUID and try again";
+            exceptionMessage = COULD_NOT_FIND_AN_ENTITY_WITH_THE_GUID_SPECIFIED;
         }
         catch (EntityProxyOnlyException e) {
 
-            exceptionMessage = "The system could only find an entity proxy using the GUID specified - please check the GUID and try again";
+            exceptionMessage = THE_SYSTEM_COULD_ONLY_FIND_AN_ENTITY_PROXY_USING_THE_GUID_SPECIFIED;
         }
         catch (TypeErrorException e) {
 
-            exceptionMessage = "There was a problem with Type information - please check and retry";
+            exceptionMessage = THERE_WAS_A_PROBLEM_WITH_TYPE_INFORMATION_PLEASE_CHECK_AND_RETRY;
         }
         catch (PropertyErrorException e) {
 
-            exceptionMessage = "There was a problem with Property information - please check and retry";
+            exceptionMessage = THERE_WAS_A_PROBLEM_WITH_PROPERTY_INFORMATION_PLEASE_CHECK_AND_RETRY;
         }
         catch (FunctionNotSupportedException e) {
 
-            exceptionMessage = "The UI tried to use an unsupported function";
+            exceptionMessage = THE_UI_TRIED_TO_USE_AN_UNSUPPORTED_FUNCTION;
         }
         // For any of the above exceptions, incorporate the exception message into a response object
         rexTraversalResponse = new RexTraversalResponse(400, exceptionMessage, null);
@@ -722,10 +712,10 @@ public class RepositoryExplorerController extends SecureController
             case "InformalTag":
                 if (entityDetail.getProperties() != null &&
                         entityDetail.getProperties().getInstanceProperties() != null &&
-                        entityDetail.getProperties().getInstanceProperties().get("tagName") != null &&
-                        entityDetail.getProperties().getInstanceProperties().get("tagName").valueAsString() != null) {
+                        entityDetail.getProperties().getInstanceProperties().get(TAG_NAME) != null &&
+                        entityDetail.getProperties().getInstanceProperties().get(TAG_NAME).valueAsString() != null) {
 
-                    label = entityDetail.getProperties().getInstanceProperties().get("tagName").valueAsString();
+                    label = entityDetail.getProperties().getInstanceProperties().get(TAG_NAME).valueAsString();
                 }
                 break;
 
@@ -739,27 +729,25 @@ public class RepositoryExplorerController extends SecureController
             case "DataField":
                 if (entityDetail.getProperties() != null &&
                         entityDetail.getProperties().getInstanceProperties() != null &&
-                        entityDetail.getProperties().getInstanceProperties().get("dataFieldName") != null &&
-                        entityDetail.getProperties().getInstanceProperties().get("dataFieldName").valueAsString() != null) {
+                        entityDetail.getProperties().getInstanceProperties().get(DATA_FIELD_NAME) != null &&
+                        entityDetail.getProperties().getInstanceProperties().get(DATA_FIELD_NAME).valueAsString() != null) {
 
-                    label = entityDetail.getProperties().getInstanceProperties().get("dataFieldName").valueAsString();
+                    label = entityDetail.getProperties().getInstanceProperties().get(DATA_FIELD_NAME).valueAsString();
                 }
                 break;
 
             case "Annotation":
             case "AnnotationReview":
-                if (instanceTypeName != null) {
-                    label = instanceTypeName;  // use the local type name for anything under these types
-                }
+                label = instanceTypeName;  // use the local type name for anything under these types
                 break;
 
             case "LastAttachment":
                 if (entityDetail.getProperties() != null &&
                         entityDetail.getProperties().getInstanceProperties() != null &&
-                        entityDetail.getProperties().getInstanceProperties().get("attachmentType") != null &&
-                        entityDetail.getProperties().getInstanceProperties().get("attachmentType").valueAsString() != null) {
+                        entityDetail.getProperties().getInstanceProperties().get(ATTACHMENT_TYPE) != null &&
+                        entityDetail.getProperties().getInstanceProperties().get(ATTACHMENT_TYPE).valueAsString() != null) {
 
-                    label = entityDetail.getProperties().getInstanceProperties().get("attachmentType").valueAsString();
+                    label = entityDetail.getProperties().getInstanceProperties().get(ATTACHMENT_TYPE).valueAsString();
                 }
                 break;
 
@@ -771,10 +759,10 @@ public class RepositoryExplorerController extends SecureController
                 // If there is not qualifiedName drop through and use GUID (default)
                 if (entityDetail.getProperties() != null &&
                         entityDetail.getProperties().getInstanceProperties() != null &&
-                        entityDetail.getProperties().getInstanceProperties().get("displayName") != null &&
-                        entityDetail.getProperties().getInstanceProperties().get("displayName").valueAsString() != null) {
+                        entityDetail.getProperties().getInstanceProperties().get(DISPLAY_NAME) != null &&
+                        entityDetail.getProperties().getInstanceProperties().get(DISPLAY_NAME).valueAsString() != null) {
 
-                    label = entityDetail.getProperties().getInstanceProperties().get("displayName").valueAsString();
+                    label = entityDetail.getProperties().getInstanceProperties().get(DISPLAY_NAME).valueAsString();
                 }
                 else if (entityDetail.getProperties() != null &&
                         entityDetail.getProperties().getInstanceProperties() != null &&
@@ -785,9 +773,9 @@ public class RepositoryExplorerController extends SecureController
                 }
                 else if (entityDetail.getProperties() != null &&
                         entityDetail.getProperties().getInstanceProperties() != null &&
-                        entityDetail.getProperties().getInstanceProperties().get("qualifiedName") != null) {
+                        entityDetail.getProperties().getInstanceProperties().get(QUALIFIED_NAME) != null) {
 
-                    String fullQN = entityDetail.getProperties().getInstanceProperties().get("qualifiedName").valueAsString();
+                    String fullQN = entityDetail.getProperties().getInstanceProperties().get(QUALIFIED_NAME).valueAsString();
 
                     int lengthQN = fullQN.length();
                     if (lengthQN > TRUNCATED_STRING_LENGTH) {
@@ -851,10 +839,10 @@ public class RepositoryExplorerController extends SecureController
             case "InformalTag":
                 if (entityProxy.getUniqueProperties() != null &&
                         entityProxy.getUniqueProperties().getInstanceProperties() != null &&
-                        entityProxy.getUniqueProperties().getInstanceProperties().get("tagName") != null &&
-                        entityProxy.getUniqueProperties().getInstanceProperties().get("tagName").valueAsString() != null) {
+                        entityProxy.getUniqueProperties().getInstanceProperties().get(TAG_NAME) != null &&
+                        entityProxy.getUniqueProperties().getInstanceProperties().get(TAG_NAME).valueAsString() != null) {
 
-                    label = entityProxy.getUniqueProperties().getInstanceProperties().get("tagName").valueAsString();
+                    label = entityProxy.getUniqueProperties().getInstanceProperties().get(TAG_NAME).valueAsString();
 
                 }
                 break;
@@ -870,64 +858,64 @@ public class RepositoryExplorerController extends SecureController
             case "DataField":
                 if (entityProxy.getUniqueProperties() != null &&
                         entityProxy.getUniqueProperties().getInstanceProperties() != null &&
-                        entityProxy.getUniqueProperties().getInstanceProperties().get("dataFieldName") != null &&
-                        entityProxy.getUniqueProperties().getInstanceProperties().get("dataFieldName").valueAsString() != null) {
+                        entityProxy.getUniqueProperties().getInstanceProperties().get(DATA_FIELD_NAME) != null &&
+                        entityProxy.getUniqueProperties().getInstanceProperties().get(DATA_FIELD_NAME).valueAsString() != null) {
 
-                    label = entityProxy.getUniqueProperties().getInstanceProperties().get("dataFieldName").valueAsString();
+                    label = entityProxy.getUniqueProperties().getInstanceProperties().get(DATA_FIELD_NAME).valueAsString();
 
                 }
                 break;
 
             case "Annotation":
             case "AnnotationReview":
-                if (instanceTypeName != null) {
-                    label = instanceTypeName;  // use the local type name for anything under these types
-
-                }
+                label = instanceTypeName;  // use the local type name for anything under these types
                 break;
 
             default:
-                // Anything that is left should be a Referenceable.
-                // If it has a displayName use that.
-                // Otherwise if it has a qualifiedName use up to the last TRUNCATED_STRING_LENGTH chars of that.
-                // If there is not qualifiedName drop through and use GUID (default)
-                if (entityProxy.getUniqueProperties() != null &&
-                        entityProxy.getUniqueProperties().getInstanceProperties() != null &&
-                        entityProxy.getUniqueProperties().getInstanceProperties().get("displayName") != null &&
-                        entityProxy.getUniqueProperties().getInstanceProperties().get("displayName").valueAsString() != null) {
-
-                    label = entityProxy.getUniqueProperties().getInstanceProperties().get("displayName").valueAsString();
-
-                }
-                else if (entityProxy.getUniqueProperties() != null &&
-                        entityProxy.getUniqueProperties().getInstanceProperties() != null &&
-                        entityProxy.getUniqueProperties().getInstanceProperties().get("name") != null &&
-                        entityProxy.getUniqueProperties().getInstanceProperties().get("name").valueAsString() != null) {
-
-                    label = entityProxy.getUniqueProperties().getInstanceProperties().get("name").valueAsString();
-
-                }
-                else if (entityProxy.getUniqueProperties() != null &&
-                        entityProxy.getUniqueProperties().getInstanceProperties() != null &&
-                        entityProxy.getUniqueProperties().getInstanceProperties().get("qualifiedName") != null) {
-
-                    String fullQN = entityProxy.getUniqueProperties().getInstanceProperties().get("qualifiedName").valueAsString();
-
-                    int lengthQN = fullQN.length();
-                    if (lengthQN > TRUNCATED_STRING_LENGTH) {
-                        String tailQN = "..." + fullQN.substring(lengthQN-TRUNCATED_STRING_LENGTH, lengthQN);
-                        label = tailQN;
-                    } else {
-                        label = fullQN;
-                    }
-                }
-
+                label = getDefaultLabelFromEntityProxy(entityProxy, label);
         }
 
         return label;
 
     }
 
+    private String getDefaultLabelFromEntityProxy(EntityProxy entityProxy, String label) {
+        // Anything that is left should be a Referenceable.
+        // If it has a displayName use that.
+        // Otherwise if it has a qualifiedName use up to the last TRUNCATED_STRING_LENGTH chars of that.
+        // If there is not qualifiedName drop through and use GUID (default)
+        if (entityProxy.getUniqueProperties() != null &&
+                entityProxy.getUniqueProperties().getInstanceProperties() != null &&
+                entityProxy.getUniqueProperties().getInstanceProperties().get(DISPLAY_NAME) != null &&
+                entityProxy.getUniqueProperties().getInstanceProperties().get(DISPLAY_NAME).valueAsString() != null) {
+
+            label = entityProxy.getUniqueProperties().getInstanceProperties().get(DISPLAY_NAME).valueAsString();
+
+        }
+        else if (entityProxy.getUniqueProperties() != null &&
+                entityProxy.getUniqueProperties().getInstanceProperties() != null &&
+                entityProxy.getUniqueProperties().getInstanceProperties().get("name") != null &&
+                entityProxy.getUniqueProperties().getInstanceProperties().get("name").valueAsString() != null) {
+
+            label = entityProxy.getUniqueProperties().getInstanceProperties().get("name").valueAsString();
+
+        }
+        else if (entityProxy.getUniqueProperties() != null &&
+                entityProxy.getUniqueProperties().getInstanceProperties() != null &&
+                entityProxy.getUniqueProperties().getInstanceProperties().get(QUALIFIED_NAME) != null) {
+
+            String fullQN = entityProxy.getUniqueProperties().getInstanceProperties().get(QUALIFIED_NAME).valueAsString();
+
+            int lengthQN = fullQN.length();
+            if (lengthQN > TRUNCATED_STRING_LENGTH) {
+                String tailQN = "..." + fullQN.substring(lengthQN-TRUNCATED_STRING_LENGTH, lengthQN);
+                label = tailQN;
+            } else {
+                label = fullQN;
+            }
+        }
+        return label;
+    }
 
 
     private String chooseLabelForRelationship(Relationship relationship)
@@ -995,7 +983,7 @@ public class RepositoryExplorerController extends SecureController
             // We have a problem - the entityGUID has not been specified.
             // We cannot do a query...
 
-            final String parameterName = "entityGUID";
+            final String parameterName = ENTITY_GUID;
 
             throw new InvalidParameterException(RexErrorCode.NO_GUID.getMessageDefinition(entityGUID, methodName, serverName),
                                                 this.getClass().getName(),
@@ -1017,88 +1005,66 @@ public class RepositoryExplorerController extends SecureController
         }
 
 
-        try {
+        /*
+         *  Switch between local and enterprise services clients depending
+         *  on enterprise option...
+         */
+        MetadataCollectionServicesClient repositoryServicesClient;
+        if (!enterpriseOption) {
+            repositoryServicesClient = this.getLocalRepositoryServicesClient(serverName, serverURLRoot);
+        }
+        else {
+            repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(serverName, serverURLRoot);
+        }
+
+        if (depth >0) {
+
+            return repositoryServicesClient.getEntityNeighborhood(
+                    userId,
+                    entityGUID,
+                    entityTypeGUIDs,
+                    relationshipTypeGUIDs,
+                    null,
+                    classificationNames,
+                    null,
+                    depth);
+        }
+
+
+        else {
 
             /*
-             *  Switch between local and enterprise services clients depending
-             *  on enterprise option...
+             * Since depth is 0 - use getEntityDetail instead of neighbourhood
              */
-            MetadataCollectionServicesClient repositoryServicesClient;
-            if (!enterpriseOption) {
-                repositoryServicesClient = this.getLocalRepositoryServicesClient(serverName, serverURLRoot);
+
+            EntityDetail entityDetail = metadataCollection.getEntityDetail(
+                    userId,
+                    entityGUID);
+
+            if (entityDetail != null) {
+
+                // Construct an InstanceGraph containing just the entityDetail
+                InstanceGraph instGraph = new InstanceGraph();
+
+                List<EntityDetail> entityDetailList = new ArrayList<>();
+                entityDetailList.add(entityDetail);
+                instGraph.setEntities(entityDetailList);
+
+                return instGraph;
+
             }
-            else {
-                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(serverName, serverURLRoot);
-            }
-
-            if (depth >0) {
-
-                InstanceGraph instGraph = repositoryServicesClient.getEntityNeighborhood(
-                        userId,
-                        entityGUID,
-                        entityTypeGUIDs,
-                        relationshipTypeGUIDs,
-                        null,
-                        classificationNames,
-                        null,
-                        depth);
-
-                if (instGraph != null) {
-
-                    return instGraph;
-                }
-                else {
-
-                    return null;
-                }
-            }
-
 
             else {
+                // Entity could not be found - should have already had an exception but just to be sure...
 
-                /*
-                 * Since depth is 0 - use getEntityDetail instead of neighbourhood
-                 */
+                final String parameterName = ENTITY_GUID;
 
-                EntityDetail entityDetail = metadataCollection.getEntityDetail(
-                        userId,
-                        entityGUID);
+                throw new InvalidParameterException(RexErrorCode.ENTITY_NOT_KNOWN.getMessageDefinition(entityGUID, methodName, serverName),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    parameterName);
 
-                if (entityDetail != null) {
-
-                    // Construct an InstanceGraph containing just the entityDetail
-                    InstanceGraph instGraph = new InstanceGraph();
-
-                    List<EntityDetail> entityDetailList = new ArrayList<>();
-                    entityDetailList.add(entityDetail);
-                    instGraph.setEntities(entityDetailList);
-
-                    return instGraph;
-
-                }
-
-                else {
-                    // Entity could not be found - should have already had an exception but just to be sure...
-
-                    final String parameterName = "entityGUID";
-
-                    throw new InvalidParameterException(RexErrorCode.ENTITY_NOT_KNOWN.getMessageDefinition(entityGUID, methodName, serverName),
-                                                        this.getClass().getName(),
-                                                        methodName,
-                                                        parameterName);
-
-                }
             }
-        }
-        catch ( UserNotAuthorizedException |
-                EntityProxyOnlyException |
-                RepositoryErrorException   |
-                EntityNotKnownException |
-                TypeErrorException |
-                PropertyErrorException |
-                FunctionNotSupportedException |
-                InvalidParameterException e ) {
-            throw e;
         }
 
     }
@@ -1138,7 +1104,7 @@ public class RepositoryExplorerController extends SecureController
             entityGUID          = body.getEntityGUID();
         }
         catch (Exception e) {
-            exceptionMessage = "The request body used in the request to /api/instances/rex-traversal contained an invalid parameter or was missing a parameter. Please check the client code.";
+            exceptionMessage = INVALID_PARAMETER_IN_REX_REQUEST;
             // For any of the above exceptions, incorporate the exception message into a response object
             response = new RexEntityDetailResponse(400, exceptionMessage, null);
             return response;
@@ -1151,43 +1117,34 @@ public class RepositoryExplorerController extends SecureController
 
             EntityDetail entityDetail = this.getEntityDetail(userId, serverName, serverURLRoot, enterpriseOption, entityGUID);
 
-            if (entityDetail != null) {
+            TypeExplorer typeExplorer = getTypeExplorer(userId, serverName, serverURLRoot, enterpriseOption);
+            String label = this.chooseLabelForEntity(entityDetail, typeExplorer);
 
-                TypeExplorer typeExplorer = getTypeExplorer(userId, serverName, serverURLRoot, enterpriseOption);
-                String label = this.chooseLabelForEntity(entityDetail, typeExplorer);
+            RexExpandedEntityDetail rexExpEntityDetail = new RexExpandedEntityDetail(entityDetail, label, serverName);
 
-                RexExpandedEntityDetail rexExpEntityDetail = new RexExpandedEntityDetail(entityDetail, label, serverName);
-
-                response = new RexEntityDetailResponse(200, "", rexExpEntityDetail);
-
-            } else {
-
-                String excMsg = "Could not retrieve entity with guid"+entityGUID;
-                response = new RexEntityDetailResponse(400, excMsg, null);
-
-            }
+            response = new RexEntityDetailResponse(200, "", rexExpEntityDetail);
 
             return response;
         }
         catch (UserNotAuthorizedException e) {
 
-            exceptionMessage = "Sorry - this username was not authorized to perform the request";
+            exceptionMessage = USERNAME_NOT_AUTHORIZED_TO_PERFORM_THE_REQUEST;
         }
         catch (RepositoryErrorException e) {
 
-            exceptionMessage = "The repository could not be reached, please check the server name and URL root and verify that the server is running ";
+            exceptionMessage = REPOSITORY_COULD_NOT_BE_REACHED;
         }
         catch (InvalidParameterException e) {
 
-            exceptionMessage = "The request to load type information reported an invalid parameter, please check the server name and URL root parameters";
+            exceptionMessage = REQUEST_HAS_AN_INVALID_PARAMETER;
         }
         catch (EntityNotKnownException e) {
 
-            exceptionMessage = "The system could not find an entity with the GUID specified - please check the GUID and try again";
+            exceptionMessage = COULD_NOT_FIND_AN_ENTITY_WITH_THE_GUID_SPECIFIED;
         }
         catch (EntityProxyOnlyException e) {
 
-            exceptionMessage = "The system could only find an entity proxy using the GUID specified - please check the GUID and try again";
+            exceptionMessage = THE_SYSTEM_COULD_ONLY_FIND_AN_ENTITY_PROXY_USING_THE_GUID_SPECIFIED;
         }
 
         // For any of the above exceptions, incorporate the exception message into a response object
@@ -1220,7 +1177,7 @@ public class RepositoryExplorerController extends SecureController
             // We have a problem - the entityGUID has not been specified .
             // In either case we cannot do a query...
 
-            final String parameterName = "entityGUID";
+            final String parameterName = ENTITY_GUID;
 
             throw new InvalidParameterException(RexErrorCode.NO_GUID.getMessageDefinition(entityGUID, methodName, serverName),
                                                 this.getClass().getName(),
@@ -1229,10 +1186,10 @@ public class RepositoryExplorerController extends SecureController
 
         }
 
-        if (entityGUID == "trouble-at-mill") {
+        if ("trouble-at-mill".equals(entityGUID)) {
             // If a stupid entityGUID is specified, there is no point in continuing...
 
-            final String parameterName = "entityGUID";
+            final String parameterName = ENTITY_GUID;
 
             throw new InvalidParameterException(RexErrorCode.TROUBLE_AT_MILL.getMessageDefinition(entityGUID, methodName, serverName),
                                                 this.getClass().getName(),
@@ -1241,47 +1198,37 @@ public class RepositoryExplorerController extends SecureController
 
         }
 
-        try {
-
-            /*
-             *  Switch between local and enterprise services clients depending
-             *  on enterprise option...
-             */
-            MetadataCollectionServicesClient repositoryServicesClient;
-            if (!enterpriseOption) {
-                repositoryServicesClient = this.getLocalRepositoryServicesClient(serverName, serverURLRoot);
-            }
-            else {
-                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(serverName, serverURLRoot);
-            }
-
-            EntityDetail entityDetail = repositoryServicesClient.getEntityDetail(
-                    userId,
-                    entityGUID);
-
-            if (entityDetail != null) {
-
-                return entityDetail;
-
-            } else {
-
-                // Entity could not be found - should have already had an exception but just to be sure...
-
-                final String parameterName = "entityGUID";
-
-                throw new InvalidParameterException(RexErrorCode.ENTITY_NOT_KNOWN.getMessageDefinition(entityGUID, methodName, serverName),
-                                                    this.getClass().getName(),
-                                                    methodName,
-                                                    parameterName);
-
-            }
+        /*
+         *  Switch between local and enterprise services clients depending
+         *  on enterprise option...
+         */
+        MetadataCollectionServicesClient repositoryServicesClient;
+        if (!enterpriseOption) {
+            repositoryServicesClient = this.getLocalRepositoryServicesClient(serverName, serverURLRoot);
         }
-        catch ( UserNotAuthorizedException |
-                EntityProxyOnlyException |
-                RepositoryErrorException   |
-                EntityNotKnownException |
-                InvalidParameterException e ) {
-            throw e;
+        else {
+            repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(serverName, serverURLRoot);
+        }
+
+        EntityDetail entityDetail = repositoryServicesClient.getEntityDetail(
+                userId,
+                entityGUID);
+
+        if (entityDetail != null) {
+
+            return entityDetail;
+
+        } else {
+
+            // Entity could not be found - should have already had an exception but just to be sure...
+
+            final String parameterName = ENTITY_GUID;
+
+            throw new InvalidParameterException(RexErrorCode.ENTITY_NOT_KNOWN.getMessageDefinition(entityGUID, methodName, serverName),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                parameterName);
+
         }
 
     }
@@ -1319,7 +1266,7 @@ public class RepositoryExplorerController extends SecureController
             relationshipGUID    = body.getRelationshipGUID();
         }
         catch (Exception e) {
-            exceptionMessage = "The request body used in the request to /api/instances/rex-traversal contained an invalid parameter or was missing a parameter. Please check the client code.";
+            exceptionMessage = INVALID_PARAMETER_IN_REX_REQUEST;
             // For any of the above exceptions, incorporate the exception message into a response object
             response = new RexRelationshipResponse(400, exceptionMessage, null);
             return response;
@@ -1332,46 +1279,36 @@ public class RepositoryExplorerController extends SecureController
 
             Relationship relationship = this.getRelationship(userId, serverName, serverURLRoot, enterpriseOption, relationshipGUID);
 
-            if (relationship != null) {
+            // Create digests for both ends
 
-                // Create digests for both ends
+            TypeExplorer typeExplorer = getTypeExplorer(userId, serverName, serverURLRoot, enterpriseOption);
+            EntityProxy entity1 = relationship.getEntityOneProxy();
+            EntityProxy entity2 = relationship.getEntityTwoProxy();
+            String label1 = this.chooseLabelForEntityProxy(entity1, typeExplorer);
+            String label2 = this.chooseLabelForEntityProxy(entity2, typeExplorer);
 
-                TypeExplorer typeExplorer = getTypeExplorer(userId, serverName, serverURLRoot, enterpriseOption);
-                EntityProxy entity1 = relationship.getEntityOneProxy();
-                EntityProxy entity2 = relationship.getEntityTwoProxy();
-                String label1 = this.chooseLabelForEntityProxy(entity1, typeExplorer);
-                String label2 = this.chooseLabelForEntityProxy(entity2, typeExplorer);
+            RexEntityDigest digest1 = new RexEntityDigest(entity1.getGUID(), label1, 0, entity1.getMetadataCollectionName());
+            RexEntityDigest digest2 = new RexEntityDigest(entity2.getGUID(), label2, 0, entity2.getMetadataCollectionName());
 
-                RexEntityDigest digest1 = new RexEntityDigest(entity1.getGUID(),label1,0, entity1.getMetadataCollectionName());
-                RexEntityDigest digest2 = new RexEntityDigest(entity2.getGUID(),label2,0, entity2.getMetadataCollectionName());
+            String label = this.chooseLabelForRelationship(relationship);
 
-                String label = this.chooseLabelForRelationship(relationship);
+            RexExpandedRelationship rexExpRelationship = new RexExpandedRelationship(relationship, label, digest1, digest2, serverName);
 
-                RexExpandedRelationship rexExpRelationship = new RexExpandedRelationship(relationship, label, digest1, digest2, serverName);
-
-                response = new RexRelationshipResponse(200, "", rexExpRelationship);
-
-            }
-            else {
-
-                String excMsg = "Could not retrieve relationship with guid"+relationshipGUID;
-                response = new RexRelationshipResponse(400, excMsg, null);
-
-            }
+            response = new RexRelationshipResponse(200, "", rexExpRelationship);
 
             return response;
         }
         catch (UserNotAuthorizedException e) {
 
-            exceptionMessage = "Sorry - this username was not authorized to perform the request";
+            exceptionMessage = USERNAME_NOT_AUTHORIZED_TO_PERFORM_THE_REQUEST;
         }
         catch (RepositoryErrorException e) {
 
-            exceptionMessage = "The repository could not be reached, please check the server name and URL root and verify that the server is running ";
+            exceptionMessage = REPOSITORY_COULD_NOT_BE_REACHED;
         }
         catch (InvalidParameterException e) {
 
-            exceptionMessage = "The request to load type information reported an invalid parameter, please check the server name and URL root parameters";
+            exceptionMessage = REQUEST_HAS_AN_INVALID_PARAMETER;
         }
         catch (RelationshipNotKnownException e) {
 
@@ -1416,45 +1353,36 @@ public class RepositoryExplorerController extends SecureController
 
         }
 
-        try {
-
-            /*
-             *  Switch between local and enterprise services clients depending
-             *  on enterprise option...
-             */
-            MetadataCollectionServicesClient repositoryServicesClient;
-            if (!enterpriseOption) {
-                repositoryServicesClient = this.getLocalRepositoryServicesClient(serverName, serverURLRoot);
-            }
-            else {
-                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(serverName, serverURLRoot);
-            }
-
-            Relationship relationship = repositoryServicesClient.getRelationship(
-                    userId,
-                    relationshipGUID);
-
-            if (relationship != null) {
-
-                return relationship;
-
-            } else {
-
-                // Relationship could not be found - should have already had an exception but just to be sure...
-
-                final String parameterName = "relationshipGUID";
-
-                throw new InvalidParameterException(RexErrorCode.RELATIONSHIP_NOT_KNOWN.getMessageDefinition(relationshipGUID, methodName, serverName),
-                                                    this.getClass().getName(),
-                                                    methodName,
-                                                    parameterName);
-            }
+        /*
+         *  Switch between local and enterprise services clients depending
+         *  on enterprise option...
+         */
+        MetadataCollectionServicesClient repositoryServicesClient;
+        if (!enterpriseOption) {
+            repositoryServicesClient = this.getLocalRepositoryServicesClient(serverName, serverURLRoot);
         }
-        catch ( UserNotAuthorizedException |
-                RepositoryErrorException   |
-                RelationshipNotKnownException |
-                InvalidParameterException e ) {
-            throw e;
+        else {
+            repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(serverName, serverURLRoot);
+        }
+
+        Relationship relationship = repositoryServicesClient.getRelationship(
+                userId,
+                relationshipGUID);
+
+        if (relationship != null) {
+
+            return relationship;
+
+        } else {
+
+            // Relationship could not be found - should have already had an exception but just to be sure...
+
+            final String parameterName = "relationshipGUID";
+
+            throw new InvalidParameterException(RexErrorCode.RELATIONSHIP_NOT_KNOWN.getMessageDefinition(relationshipGUID, methodName, serverName),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                parameterName);
         }
 
     }
@@ -1495,7 +1423,7 @@ public class RepositoryExplorerController extends SecureController
             searchText          = body.getSearchText();
         }
         catch (Exception e) {
-            exceptionMessage = "The request body used in the request to /api/instances/rex-traversal contained an invalid parameter or was missing a parameter. Please check the client code.";
+            exceptionMessage = INVALID_PARAMETER_IN_REX_REQUEST;
             // For any of the above exceptions, incorporate the exception message into a response object
             response = new RexSearchResponse(400, exceptionMessage, null, null, searchCategory, null, null);
             return response;
@@ -1546,23 +1474,23 @@ public class RepositoryExplorerController extends SecureController
         }
         catch (UserNotAuthorizedException e) {
 
-            exceptionMessage = "Sorry - this username was not authorized to perform the request";
+            exceptionMessage = USERNAME_NOT_AUTHORIZED_TO_PERFORM_THE_REQUEST;
         }
         catch (RepositoryErrorException e) {
 
-            exceptionMessage = "The repository could not be reached, please check the server name and URL root and verify that the server is running ";
+            exceptionMessage = REPOSITORY_COULD_NOT_BE_REACHED;
         }
         catch (InvalidParameterException e) {
 
-            exceptionMessage = "The request to load type information reported an invalid parameter, please check the server name and URL root parameters";
+            exceptionMessage = REQUEST_HAS_AN_INVALID_PARAMETER;
         }
         catch (TypeErrorException e) {
 
-            exceptionMessage = "There was a problem with Type information - please check and retry";
+            exceptionMessage = THERE_WAS_A_PROBLEM_WITH_TYPE_INFORMATION_PLEASE_CHECK_AND_RETRY;
         }
         catch (PropertyErrorException e) {
 
-            exceptionMessage = "There was a problem with Property information - please check and retry";
+            exceptionMessage = THERE_WAS_A_PROBLEM_WITH_PROPERTY_INFORMATION_PLEASE_CHECK_AND_RETRY;
         }
         catch (PagingErrorException e) {
 
@@ -1570,7 +1498,7 @@ public class RepositoryExplorerController extends SecureController
         }
         catch (FunctionNotSupportedException e) {
 
-            exceptionMessage = "The UI tried to use an unsupported function";
+            exceptionMessage = THE_UI_TRIED_TO_USE_AN_UNSUPPORTED_FUNCTION;
         }
         // For any of the above exceptions, incorporate the exception message into a response object
         response = new RexSearchResponse(400, exceptionMessage, serverName, searchText, searchCategory, null, null);
@@ -1614,52 +1542,30 @@ public class RepositoryExplorerController extends SecureController
                                                 parameterName);
         }
 
-        try {
-
-            /*
-             *  Switch between local and enterprise services clients depending
-             *  on enterprise option...
-             */
-            MetadataCollectionServicesClient repositoryServicesClient;
-            if (!enterpriseOption) {
-                repositoryServicesClient = this.getLocalRepositoryServicesClient(serverName, serverURLRoot);
-            }
-            else {
-                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(serverName, serverURLRoot);
-            }
-
-
-            List<EntityDetail> entityList = repositoryServicesClient.findEntitiesByPropertyValue(
-                    userId,
-                    entityTypeGUID,
-                    searchText,
-                    0,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    0);
-
-
-            if (entityList != null) {
-
-                return entityList;
-
-            } else {
-
-                // No entities could be found - this is OK...
-
-                return null;
-
-            }
+        /*
+         *  Switch between local and enterprise services clients depending
+         *  on enterprise option...
+         */
+        MetadataCollectionServicesClient repositoryServicesClient;
+        if (!enterpriseOption) {
+            repositoryServicesClient = this.getLocalRepositoryServicesClient(serverName, serverURLRoot);
         }
-        catch ( UserNotAuthorizedException |
-                RepositoryErrorException   |
-                PagingErrorException |
-                InvalidParameterException e ) {
-            throw e;
+        else {
+            repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(serverName, serverURLRoot);
         }
+
+
+        return repositoryServicesClient.findEntitiesByPropertyValue(
+                userId,
+                entityTypeGUID,
+                searchText,
+                0,
+                null,
+                null,
+                null,
+                null,
+                null,
+                0);
 
     }
 
@@ -1699,7 +1605,7 @@ public class RepositoryExplorerController extends SecureController
             searchText             = body.getSearchText();
         }
         catch (Exception e) {
-            exceptionMessage = "The request body used in the request to /api/instances/rex-traversal contained an invalid parameter or was missing a parameter. Please check the client code.";
+            exceptionMessage = INVALID_PARAMETER_IN_REX_REQUEST;
             // For any of the above exceptions, incorporate the exception message into a response object
             response = new RexSearchResponse(400, exceptionMessage, null, null, searchCategory, null, null);
             return response;
@@ -1724,8 +1630,7 @@ public class RepositoryExplorerController extends SecureController
 
                 Map<String, RexRelationshipDigest> digestMap = new HashMap<>();
 
-                for (int e=0; e < relationships.size(); e++) {
-                    Relationship relationship = relationships.get(e);
+                for (Relationship relationship : relationships) {
                     String label = this.chooseLabelForRelationship(relationship);
 
                     RexRelationshipDigest relationshipDigest = new RexRelationshipDigest(
@@ -1755,23 +1660,23 @@ public class RepositoryExplorerController extends SecureController
         }
         catch (UserNotAuthorizedException e) {
 
-            exceptionMessage = "Sorry - this username was not authorized to perform the request";
+            exceptionMessage = USERNAME_NOT_AUTHORIZED_TO_PERFORM_THE_REQUEST;
         }
         catch (RepositoryErrorException e) {
 
-            exceptionMessage = "The repository could not be reached, please check the server name and URL root and verify that the server is running ";
+            exceptionMessage = REPOSITORY_COULD_NOT_BE_REACHED;
         }
         catch (InvalidParameterException e) {
 
-            exceptionMessage = "The request to load type information reported an invalid parameter, please check the server name and URL root parameters";
+            exceptionMessage = REQUEST_HAS_AN_INVALID_PARAMETER;
         }
         catch (TypeErrorException e) {
 
-            exceptionMessage = "There was a problem with Type information - please check and retry";
+            exceptionMessage = THERE_WAS_A_PROBLEM_WITH_TYPE_INFORMATION_PLEASE_CHECK_AND_RETRY;
         }
         catch (PropertyErrorException e) {
 
-            exceptionMessage = "There was a problem with Property information - please check and retry";
+            exceptionMessage = THERE_WAS_A_PROBLEM_WITH_PROPERTY_INFORMATION_PLEASE_CHECK_AND_RETRY;
         }
         catch (PagingErrorException e) {
 
@@ -1779,7 +1684,7 @@ public class RepositoryExplorerController extends SecureController
         }
         catch (FunctionNotSupportedException e) {
 
-            exceptionMessage = "The UI tried to use an unsupported function";
+            exceptionMessage = THE_UI_TRIED_TO_USE_AN_UNSUPPORTED_FUNCTION;
         }
         // For any of the above exceptions, incorporate the exception message into a response object
         response = new RexSearchResponse(400, exceptionMessage, serverName, searchText, searchCategory, null, null);
@@ -1822,49 +1727,40 @@ public class RepositoryExplorerController extends SecureController
                                                 parameterName);
         }
 
-        try {
-
-            /*
-             *  Switch between local and enterprise services clients depending
-             *  on enterprise option...
-             */
-            MetadataCollectionServicesClient repositoryServicesClient;
-            if (!enterpriseOption) {
-                repositoryServicesClient = this.getLocalRepositoryServicesClient(serverName, serverURLRoot);
-            }
-            else {
-                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(serverName, serverURLRoot);
-            }
-
-            List<Relationship> relationshipList = repositoryServicesClient.findRelationshipsByPropertyValue(
-                    userId,
-                    relationshipTypeGUID,
-                    searchText,
-                    0,
-                    null,
-                    null,
-                    null,
-                    null,
-                    0);
-
-
-            if (relationshipList != null) {
-
-                return relationshipList;
-
-            } else {
-
-                // No relationships could be found - this is OK...
-
-                return null;
-
-            }
+        /*
+         *  Switch between local and enterprise services clients depending
+         *  on enterprise option...
+         */
+        MetadataCollectionServicesClient repositoryServicesClient;
+        if (!enterpriseOption) {
+            repositoryServicesClient = this.getLocalRepositoryServicesClient(serverName, serverURLRoot);
         }
-        catch ( UserNotAuthorizedException |
-                RepositoryErrorException   |
-                PagingErrorException |
-                InvalidParameterException e ) {
-            throw e;
+        else {
+            repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(serverName, serverURLRoot);
+        }
+
+        List<Relationship> relationshipList = repositoryServicesClient.findRelationshipsByPropertyValue(
+                userId,
+                relationshipTypeGUID,
+                searchText,
+                0,
+                null,
+                null,
+                null,
+                null,
+                0);
+
+
+        if (relationshipList != null) {
+
+            return relationshipList;
+
+        } else {
+
+            // No relationships could be found - this is OK...
+
+            return null;
+
         }
 
     }
