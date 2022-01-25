@@ -188,7 +188,7 @@ class HandlerHelperTest {
     }
 
     @Test
-    void findEntitiesByType() throws PropertyServerException, UserNotAuthorizedException {
+    void findEntitiesByType() throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException {
         SearchProperties searchProperties = mock(SearchProperties.class);
         List<String> guids = Arrays.asList(ENTITY_ONE_GUID, ENTITY_TWO_GUID);
         FindEntitiesParameters findEntitiesParameters = mock(FindEntitiesParameters.class);
@@ -208,7 +208,7 @@ class HandlerHelperTest {
     }
 
     @Test
-    void findEntitiesByType_noEntity() throws PropertyServerException, UserNotAuthorizedException {
+    void findEntitiesByType_noEntity() throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException {
         SearchProperties searchProperties = mock(SearchProperties.class);
         List<String> guids = Arrays.asList(ENTITY_ONE_GUID, ENTITY_TWO_GUID);
         FindEntitiesParameters findEntitiesParameters = mock(FindEntitiesParameters.class);
