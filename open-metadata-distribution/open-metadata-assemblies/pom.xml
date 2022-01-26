@@ -180,6 +180,10 @@
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>governance-subject-area-sample</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>governance-zone-create-sample</artifactId>
         </dependency>
         <dependency>
