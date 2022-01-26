@@ -6,7 +6,6 @@
 
 dependencies {
     implementation 'org.slf4j:slf4j-api'
-    implementation project(':open-metadata-implementation:common-services:repository-handler')
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
     implementation 'com.fasterxml.jackson.core:jackson-databind'
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
