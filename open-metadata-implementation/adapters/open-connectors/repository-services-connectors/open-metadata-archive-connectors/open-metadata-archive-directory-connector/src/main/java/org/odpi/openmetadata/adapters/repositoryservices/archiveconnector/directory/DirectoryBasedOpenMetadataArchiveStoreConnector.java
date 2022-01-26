@@ -15,8 +15,10 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.p
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveTypeStore;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationEntityExtension;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.ClassificationDef;
@@ -45,9 +47,9 @@ public class DirectoryBasedOpenMetadataArchiveStoreConnector extends OpenMetadat
     /*
      * Variables used in writing to the directories of the archive.
      */
-    private String                                 archiveStoreName = null;
-    private boolean                                journalling      = true;
-    private DirectoryBasedOpenMetadataArchiveStore archiveStore     = null;
+    private String                                 archiveStoreName   = null;
+    private boolean                                keepVersionHistory = false;
+    private DirectoryBasedOpenMetadataArchiveStore archiveStore       = null;
 
     /*
      * Archive builder manages cache of types used for validation and retrieval of types.
@@ -91,6 +93,14 @@ public class DirectoryBasedOpenMetadataArchiveStoreConnector extends OpenMetadat
         {
             archiveStoreName = defaultDirectoryName;
         }
+
+        if (connectionProperties.getConfigurationProperties() != null)
+        {
+            if (connectionProperties.getConfigurationProperties().get(DirectoryBasedOpenMetadataArchiveStoreProvider.KEEP_VERSION_HISTORY_PROPERTY) != null)
+            {
+                keepVersionHistory = true;
+            }
+        }
     }
 
 
@@ -106,7 +116,7 @@ public class DirectoryBasedOpenMetadataArchiveStoreConnector extends OpenMetadat
 
         final String methodName = "start";
 
-        this.archiveStore = new DirectoryBasedOpenMetadataArchiveStore(archiveStoreName, auditLog, journalling);
+        this.archiveStore = new DirectoryBasedOpenMetadataArchiveStore(archiveStoreName, auditLog, keepVersionHistory);
 
         OpenMetadataArchiveProperties archiveProperties = this.getArchiveProperties();
 
@@ -531,6 +541,21 @@ public class DirectoryBasedOpenMetadataArchiveStoreConnector extends OpenMetadat
 
 
     /**
+     * Retrieve the relationshipDef or null if it is not defined.
+     *
+     * @param classificationDefName name of the classification
+     * @return the retrieved classification def
+     */
+    @Override
+    public ClassificationDef  getClassificationDef(String classificationDefName)
+    {
+        log.debug("Retrieving getClassificationDef: " + classificationDefName);
+
+        return archiveBuilder.getClassificationDef(classificationDefName);
+    }
+
+
+    /**
      * Add a new EntityDef to the archive.
      *
      * @param entityDef type to add
@@ -574,23 +599,6 @@ public class DirectoryBasedOpenMetadataArchiveStoreConnector extends OpenMetadat
 
         return archiveBuilder.getRelationshipDef(relationshipDefName);
     }
-
-
-
-    /**
-     * Retrieve the relationshipDef or null if it is not defined.
-     *
-     * @param classificationDefName name of the classification
-     * @return the retrieved classification def
-     */
-    @Override
-    public ClassificationDef  getClassificationDef(String classificationDefName)
-    {
-        log.debug("Retrieving getClassificationDef: " + classificationDefName);
-
-        return archiveBuilder.getClassificationDef(classificationDefName);
-    }
-
 
 
     /**
@@ -746,6 +754,43 @@ public class DirectoryBasedOpenMetadataArchiveStoreConnector extends OpenMetadat
         final String methodName = "addClassification";
 
         archiveStore.writeElement(archiveStore.getFileName(classification), classification, 0, methodName);
+    }
+
+
+
+
+    /**
+     * Retrieve a classification extension from the archive.
+     *
+     * @param entityGUID unique identifier of entity
+     * @param classificationName name of the classification
+     * @return requested classification extension
+     */
+    @Override
+    public ClassificationEntityExtension getClassification(String entityGUID,
+                                                           String classificationName)
+    {
+        final String methodName = "getClassification";
+
+        Classification                dummyClassification = new Classification();
+        EntityProxy                   dummyEntity         = new EntityProxy();
+        ClassificationEntityExtension dummyExtension      = new ClassificationEntityExtension();
+
+        dummyClassification.setName(classificationName);
+        dummyEntity.setGUID(entityGUID);
+        dummyExtension.setClassification(dummyClassification);
+        dummyExtension.setEntityToClassify(dummyEntity);
+
+        ClassificationEntityExtension extension = (ClassificationEntityExtension)archiveStore.readElement(archiveStore.getFileName(dummyExtension), 0, methodName);
+
+        if (extension == null)
+        {
+            throw new OMRSLogicErrorException(DirectoryBasedOpenMetadataArchiveStoreConnectorErrorCode.UNKNOWN_GUID.getMessageDefinition(methodName, entityGUID + ":" + classificationName),
+                                              this.getClass().getName(),
+                                              methodName);
+        }
+
+        return extension;
     }
 
 
