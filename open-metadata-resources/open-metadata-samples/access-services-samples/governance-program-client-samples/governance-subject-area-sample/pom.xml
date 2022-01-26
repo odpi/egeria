@@ -19,18 +19,13 @@
         <url>http://github.com/odpi/egeria/tree/master</url>
     </scm>
 
-    <artifactId>governance-zone-create-sample</artifactId>
-    <name>Governance zone create sample</name>
+    <artifactId>governance-subject-area-sample</artifactId>
+    <name>Governance Subject Area Definition sample</name>
     <description>
-        Samples that shows how to create a Governance Zone using the Governance Program OMAS
+        Sample that shows how to set up the definitions of the subject areas via the Governance Program OMAS.
     </description>
 
     <dependencies>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>open-connector-framework</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
@@ -40,6 +35,11 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>governance-program-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-connector-framework</artifactId>
         </dependency>
 
         <!-- Logback used as provider for slf4j logging -->
@@ -74,7 +74,7 @@
                             </descriptorRefs>
                             <archive>
                                 <manifest>
-                                    <mainClass>org.odpi.openmetadata.accessservices.governanceprogram.samples.zonecreate.CreateGovernanceZoneSample</mainClass>
+                                    <mainClass>org.odpi.openmetadata.accessservices.governanceprogram.samples.subjectareas.CreateSubjectAreasSample</mainClass>
                                 </manifest>
                             </archive>
                         </configuration>
