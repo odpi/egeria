@@ -3,33 +3,17 @@
 
 package org.odpi.openmetadata.adapters.connectors.discoveryservices;
 
-import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.*;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryService;
-
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * AuditableDiscoveryService is a base class for discovery services that wish to use the audit log.
  */
-public abstract class AuditableDiscoveryService extends DiscoveryService implements AuditLoggingComponent
+public abstract class AuditableDiscoveryService extends DiscoveryService
 {
-    /**
-     * Receive an audit log object that can be used to record audit log messages.  The caller has initialized it
-     * with the correct component description and log destinations.
-     *
-     * @param auditLog audit log object
-     */
-    public void setAuditLog(AuditLog auditLog)
-    {
-        this.auditLog = auditLog;
-    }
-
-
     /**
      * Log that no asset has been returned to the discovery service.  It is unable to proceed without this basic information.
      *
