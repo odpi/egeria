@@ -5,6 +5,7 @@ package org.odpi.openmetadata.repositoryservices.connectors.omrstopic;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.VirtualConnectorExtension;
@@ -105,6 +106,23 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
     public void setAuditLog(AuditLog   auditLog)
     {
         this.auditLog = auditLog;
+    }
+
+
+    /**
+     * Return the component description that is used by this connector in the audit log.
+     *
+     * @return id, name, description, wiki page URL.
+     */
+    @Override
+    public ComponentDescription getConnectorComponentDescription()
+    {
+        if ((this.auditLog != null) && (this.auditLog.getReport() != null))
+        {
+            return auditLog.getReport().getReportingComponent();
+        }
+
+        return null;
     }
 
 
@@ -397,12 +415,21 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
             {
                 ObjectMapper objectMapper = new ObjectMapper();
 
+                String eventString = objectMapper.writeValueAsString(event);
+
                 for (OpenMetadataTopicConnector eventBusConnector : eventBusConnectors)
                 {
                     if (eventBusConnector != null)
                     {
-                        eventBusConnector.sendEvent(objectMapper.writeValueAsString(event));
+                        eventBusConnector.sendEvent(eventString);
                     }
+                }
+
+                if (auditLog != null)
+                {
+                    auditLog.logMessage(methodName,
+                                        OMRSAuditCode.OUTBOUND_TOPIC_EVENT.getMessageDefinition(event.getEventCategory().getName()),
+                                        eventString);
                 }
             }
             catch (ConnectorCheckedException exc)
@@ -411,7 +438,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
 
                 throw exc;
             }
-            catch (Throwable exc)
+            catch (Exception exc)
             {
                 log.debug("Unexpected error sending event: " + exc.getMessage());
 
