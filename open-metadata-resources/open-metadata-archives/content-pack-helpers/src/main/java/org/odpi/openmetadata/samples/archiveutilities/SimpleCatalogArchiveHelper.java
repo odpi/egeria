@@ -1,14 +1,10 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.archiveutilities.catalogbuilder;
+package org.odpi.openmetadata.samples.archiveutilities;
 
-import org.odpi.openmetadata.archiveutilities.catalogbuilder.properties.ConceptModelDecoration;
-import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchive;
-import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveGUIDMap;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 
 import java.util.ArrayList;
@@ -18,10 +14,24 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * CatalogTypesArchiveBuilder creates common objects for building archives.
+ * SimpleCatalogArchiveHelper creates elements used when creating a simple catalog.  This includes assets, their schemas and connections.
  */
-public class CatalogTypesArchiveBuilder
+public class SimpleCatalogArchiveHelper
 {
+    protected static final String guidMapFileNamePostFix    = "GUIDMap.json";
+
+    private static final String CONNECTION_TYPE_NAME                     = "Connection";
+    private static final String CONNECTOR_TYPE_TYPE_NAME                 = "ConnectorType";
+    private static final String ENDPOINT_TYPE_NAME                       = "Endpoint";
+    private static final String CONNECTION_CONNECTOR_TYPE_TYPE_NAME      = "ConnectionConnectorType";
+    private static final String CONNECTION_ENDPOINT_TYPE_NAME            = "ConnectionEndpoint";
+    private static final String CONNECTOR_CATEGORY_TYPE_NAME             = "ConnectorCategory";
+    private static final String CONNECTOR_TYPE_DIRECTORY_TYPE_NAME       = "ConnectorTypeDirectory";
+    private static final String CONNECTOR_IMPL_CHOICE_TYPE_NAME          = "ConnectorImplementationChoice";
+
+    private static final String COLLECTION_TYPE_NAME                     = "Collection";
+    private static final String COLLECTION_MEMBER_TYPE_NAME              = "CollectionMembership";
+
     private static final String GLOSSARY_TYPE_NAME                       = "Glossary";
     private static final String EXTERNAL_GLOSSARY_LINK_TYPE_NAME         = "ExternalGlossaryLink";
     private static final String EXTERNALLY_SOURCED_GLOSSARY_TYPE_NAME    = "ExternallySourcedGlossary";
@@ -35,32 +45,24 @@ public class CatalogTypesArchiveBuilder
     private static final String TERM_CATEGORIZATION_TYPE_NAME            = "TermCategorization";
     private static final String SEMANTIC_ASSIGNMENT_TYPE_NAME            = "TermAnchor";
     private static final String MORE_INFORMATION_TYPE_NAME               = "MoreInformation";
-    private static final String DESIGN_MODEL_TYPE_NAME                   = "DesignModel";
-    private static final String DESIGN_MODEL_GROUP_TYPE_NAME             = "DesignModelGroup";
-    private static final String DESIGN_MODEL_ELEMENT_OWNERSHIP_TYPE_NAME = "DesignModelElementOwnership";
-    private static final String DESIGN_MODEL_GROUP_OWNERSHIP_TYPE_NAME   = "DesignModelGroupOwnership";
-    private static final String DESIGN_MODEL_GROUP_HIERARCHY_TYPE_NAME   = "DesignModelGroupHierarchy";
-    private static final String DESIGN_MODEL_GROUP_MEMBERSHIP_TYPE_NAME  = "DesignModelGroupMembership";
-    private static final String CONCEPT_BEAD_TYPE_NAME                   = "ConceptBead";
-    private static final String CONCEPT_BEAD_LINK_TYPE_NAME              = "ConceptBeadLink";
-    private static final String CONCEPT_BEAD_ATTRIBUTE_TYPE_NAME         = "ConceptBeadAttribute";
-    private static final String CONCEPT_BEAD_ATTRIBUTE_LINK_TYPE_NAME    = "ConceptBeadAttributeLink";
-    private static final String CONCEPT_BEAD_RELATIONSHIP_TYPE_NAME      = "ConceptBeadRelationshipEnd";
     private static final String SPINE_OBJECT_NAME                        = "SpineObject";
     private static final String SPINE_ATTRIBUTE_NAME                     = "SpineAttribute";
     private static final String IS_A_TYPE_OF_RELATIONSHIP_NAME           = "IsATypeOfRelationship";
     private static final String HAS_A_RELATIONSHIP_NAME                  = "TermHASARelationship";
     private static final String RELATED_TERM_RELATIONSHIP_NAME           = "RelatedTerm";
 
+    private static final String SOFTWARE_CAPABILIITY_TYPE_NAME           = "SoftwareCapability";
+
     private static final String ASSET_TYPE_NAME                          = "Asset";
+    private static final String CONNECTION_TO_ASSET_TYPE_NAME            = "ConnectionToAsset";
     private static final String DATA_CONTENT_FOR_DATA_SET_TYPE_NAME      = "DataContentForDataSet";
+    private static final String ASSET_SCHEMA_TYPE_TYPE_NAME              = "AssetSchemaType";
 
     private static final String SCHEMA_TYPE_TYPE_NAME                    = "SchemaType";
     private static final String PRIMITIVE_SCHEMA_TYPE_TYPE_NAME          = "PrimitiveSchemaType";
     private static final String SCHEMA_TYPE_OPTION_TYPE_NAME             = "SchemaTypeOption";
     private static final String SCHEMA_ATTRIBUTE_TYPE_NAME               = "SchemaAttribute";
 
-    private static final String ASSET_SCHEMA_TYPE_TYPE_NAME              = "AssetSchemaType";
     private static final String ATTRIBUTE_FOR_SCHEMA_TYPE_NAME           = "AttributeForSchema";
     private static final String NESTED_SCHEMA_ATTRIBUTE_TYPE_NAME        = "NestedSchemaAttribute";
     private static final String TYPE_EMBEDDED_ATTRIBUTE_TYPE_NAME        = "TypeEmbeddedAttribute";
@@ -77,22 +79,18 @@ public class CatalogTypesArchiveBuilder
     private static final String API_PARAMETER_TYPE_NAME                  = "APIParameter";
     private static final String API_PARAMETER_LIST_TYPE_NAME             = "APIParameterList";
 
-    private static final String CONNECTION_TYPE_NAME                     = "Connection";
-    private static final String CONNECTOR_TYPE_TYPE_NAME                 = "ConnectorType";
-    private static final String ENDPOINT_TYPE_NAME                       = "Endpoint";
-    private static final String CONNECTOR_CATEGORY_TYPE_NAME             = "ConnectorCategory";
-    private static final String CONNECTOR_TYPE_DIRECTORY_TYPE_NAME       = "ConnectorTypeDirectory";
-    private static final String COLLECTION_TYPE_NAME                     = "Collection";
-    private static final String COLLECTION_MEMBER_TYPE_NAME              = "CollectionMembership";
-    private static final String CONNECTION_CONNECTOR_TYPE_TYPE_NAME      = "ConnectionConnectorType";
-    private static final String CONNECTION_ENDPOINT_TYPE_NAME            = "ConnectionEndpoint";
-    private static final String CONNECTOR_IMPL_CHOICE_TYPE_NAME          = "ConnectorImplementationChoice";
-
-    private static final String NAME_PROPERTY                                = "name";
     private static final String QUALIFIED_NAME_PROPERTY                      = "qualifiedName";
     private static final String ADDITIONAL_PROPERTIES_PROPERTY               = "additionalProperties";
+
+    private static final String NAME_PROPERTY                                = "name";
     private static final String DISPLAY_NAME_PROPERTY                        = "displayName";
     private static final String DESCRIPTION_PROPERTY                         = "description";
+
+    private static final String ASSET_SUMMARY_PROPERTY                       = "assetSummary";
+
+    private static final String CAPABILITY_TYPE_PROPERTY                     = "capabilityType";
+    private static final String CAPABILITY_VERSION_PROPERTY                  = "capabilityVersion";
+    private static final String PATCH_LEVEL_PROPERTY                         = "patchLevel";
     private static final String SUPPORTED_ASSET_TYPE_PROPERTY                = "supportedAssetTypeName";
     private static final String EXPECTED_DATA_FORMAT_PROPERTY                = "expectedDataFormat";
     private static final String CONNECTOR_PROVIDER_PROPERTY                  = "connectorProviderClassName";
@@ -167,62 +165,33 @@ public class CatalogTypesArchiveBuilder
     private static final String UNIQUE_VALUES_PROPERTY                       = "uniqueValues";
     private static final String NAVIGABLE_PROPERTY                           = "navigable";
 
-    private static final String guidMapFileName                              = "archiveGUIDMap.json";
+    protected OpenMetadataArchiveBuilder archiveBuilder;
+    protected OMRSArchiveHelper          archiveHelper;
+    protected OMRSArchiveGUIDMap         idToGUIDMap;
 
-    private OMRSArchiveBuilder archiveBuilder;
-    private OMRSArchiveHelper  archiveHelper;
-
-    protected OMRSArchiveGUIDMap idToGUIDMap;
-
-    private String             archiveRootName;
-    private String             originatorName;
-    private String             versionName;
-
+    protected String             archiveRootName;
+    protected String             originatorName;
+    protected String             versionName;
 
     /**
      * Typical constructor passes parameters used to build the open metadata archive's property header.
      *
      * @param archiveGUID unique identifier for this open metadata archive.
-     * @param archiveName name of the open metadata archive.
-     * @param archiveDescription description of the open metadata archive.
-     * @param archiveType enum describing the type of archive this is.
      * @param archiveRootName non-spaced root name of the open metadata archive elements.
      * @param originatorName name of the originator (person or organization) of the archive.
-     * @param originatorLicense license for the content.
      * @param creationDate data that this archive was created.
      * @param versionNumber version number of the archive.
      * @param versionName version name for the archive.
-     * @param dependentArchives previously created archives that are needed for reference.
      */
-    public CatalogTypesArchiveBuilder(String                     archiveGUID,
-                                      String                     archiveName,
-                                      String                     archiveDescription,
-                                      OpenMetadataArchiveType    archiveType,
-                                      String                     archiveRootName,
-                                      String                     originatorName,
-                                      String                     originatorLicense,
-                                      Date                       creationDate,
-                                      long                       versionNumber,
-                                      String                     versionName,
-                                      List<OpenMetadataArchive>  dependentArchives)
+    protected SimpleCatalogArchiveHelper(OpenMetadataArchiveBuilder archiveBuilder,
+                                         String                     archiveGUID,
+                                         String                     archiveRootName,
+                                         String                     originatorName,
+                                         Date                       creationDate,
+                                         long                       versionNumber,
+                                         String                     versionName)
     {
-        List<OpenMetadataArchive>  dependentOpenMetadataArchives = new ArrayList<>();
-
-        dependentOpenMetadataArchives.add(new OpenMetadataTypesArchive().getOpenMetadataArchive());
-
-        if (dependentArchives != null)
-        {
-            dependentOpenMetadataArchives.addAll(dependentArchives);
-        }
-
-        this.archiveBuilder = new OMRSArchiveBuilder(archiveGUID,
-                                                     archiveName,
-                                                     archiveDescription,
-                                                     archiveType,
-                                                     originatorName,
-                                                     originatorLicense,
-                                                     creationDate,
-                                                     dependentOpenMetadataArchives);
+        this.archiveBuilder = archiveBuilder;
 
         this.archiveHelper = new OMRSArchiveHelper(archiveBuilder,
                                                    archiveGUID,
@@ -231,7 +200,7 @@ public class CatalogTypesArchiveBuilder
                                                    versionNumber,
                                                    versionName);
 
-        this.idToGUIDMap = new OMRSArchiveGUIDMap(guidMapFileName);
+        this.idToGUIDMap = new OMRSArchiveGUIDMap(archiveRootName + guidMapFileNamePostFix);
 
         this.archiveRootName = archiveRootName;
         this.originatorName = originatorName;
@@ -240,28 +209,13 @@ public class CatalogTypesArchiveBuilder
 
 
     /**
-     * Returns the open metadata type archive containing all of the content loaded by the subclass.
-     *
-     * @return populated open metadata archive object
+     * Save the GUIDs so that the GUIDs of the elements inside the archive are consistent each time the archive runs.
      */
-    protected OpenMetadataArchive getOpenMetadataArchive()
+    public void saveGUIDs()
     {
         System.out.println("GUIDs map size: " + idToGUIDMap.getSize());
 
         idToGUIDMap.saveGUIDs();
-
-        return archiveBuilder.getOpenMetadataArchive();
-    }
-
-
-    /**
-     * Throws an exception if there is a problem building the archive.
-     *
-     * @param methodName calling method
-     */
-    protected void logBadArchiveContent(String   methodName)
-    {
-        archiveBuilder.logBadArchiveContent(methodName);
     }
 
 
@@ -272,15 +226,17 @@ public class CatalogTypesArchiveBuilder
      * @param qualifiedName unique name for the asset
      * @param displayName display name for the asset
      * @param description description about the asset
-     * @param additionalProperties any other properties.
+     * @param additionalProperties any other properties
+     * @param extendedProperties additional properties defined in the sub type
      *
      * @return id for the asset
      */
-    protected String addAsset(String              typeName,
-                              String              qualifiedName,
-                              String              displayName,
-                              String              description,
-                              Map<String, String> additionalProperties)
+    public String addAsset(String              typeName,
+                           String              qualifiedName,
+                           String              displayName,
+                           String              description,
+                           Map<String, String> additionalProperties,
+                           Map<String, Object> extendedProperties)
     {
         final String methodName = "addAsset";
 
@@ -291,10 +247,11 @@ public class CatalogTypesArchiveBuilder
             assetTypeName = typeName;
         }
 
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, NAME_PROPERTY, qualifiedName, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DISPLAY_NAME_PROPERTY, displayName, methodName);
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, NAME_PROPERTY, displayName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, ADDITIONAL_PROPERTIES_PROPERTY, additionalProperties, methodName);
+        properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
 
         EntityDetail assetEntity = archiveHelper.getEntityDetail(assetTypeName,
                                                                  idToGUIDMap.getGUID(qualifiedName),
@@ -309,13 +266,96 @@ public class CatalogTypesArchiveBuilder
 
 
     /**
-     * Create the relationship between a SchemaTypeChoice element and a child element using the SchemaTypeOption relationship.
+     * Create a software capability entity.
+     *
+     * @param typeName name of software capability subtype to use - default is SoftwareCapability
+     * @param qualifiedName unique name for the capability
+     * @param displayName display name for the capability
+     * @param description description about the capability
+     * @param additionalProperties any other properties.
+     *
+     * @return id for the capability
+     */
+    public String addSoftwareCapability(String              typeName,
+                                        String              qualifiedName,
+                                        String              displayName,
+                                        String              description,
+                                        String              capabilityType,
+                                        String              capabilityVersion,
+                                        String              patchLevel,
+                                        String              source,
+                                        Map<String, String> additionalProperties,
+                                        Map<String, Object> extendedProperties)
+    {
+        final String methodName = "addSoftwareCapability";
+
+        String assetTypeName = SOFTWARE_CAPABILIITY_TYPE_NAME;
+
+        if (typeName != null)
+        {
+            assetTypeName = typeName;
+        }
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, NAME_PROPERTY, displayName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, CAPABILITY_TYPE_PROPERTY, capabilityType, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, CAPABILITY_VERSION_PROPERTY, capabilityVersion, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, PATCH_LEVEL_PROPERTY, patchLevel, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, SOURCE_PROPERTY, source, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, ADDITIONAL_PROPERTIES_PROPERTY, additionalProperties, methodName);
+        properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
+
+        EntityDetail assetEntity = archiveHelper.getEntityDetail(assetTypeName,
+                                                                 idToGUIDMap.getGUID(qualifiedName),
+                                                                 properties,
+                                                                 InstanceStatus.ACTIVE,
+                                                                 null);
+
+        archiveBuilder.addEntity(assetEntity);
+
+        return assetEntity.getGUID();
+    }
+
+
+    /**
+     * Create the relationship between an asset and its connection.
+     *
+     * @param assetGUID unique identifier of the asset
+     * @param assetSummary summary of the asset from the connection perspective
+     * @param connectionGUID unique identifier of the connection to its content
+     */
+    public void addConnectionForAsset(String assetGUID,
+                                      String assetSummary,
+                                      String connectionGUID)
+    {
+        final String methodName = "addConnectionForAsset";
+
+        EntityDetail assetEntity = archiveBuilder.getEntity(assetGUID);
+        EntityDetail connectionEntity = archiveBuilder.getEntity(connectionGUID);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(connectionEntity);
+        EntityProxy end2 = archiveHelper.getEntityProxy(assetEntity);
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, ASSET_SUMMARY_PROPERTY, assetSummary, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(CONNECTION_TO_ASSET_TYPE_NAME,
+                                                                     idToGUIDMap.getGUID(assetGUID + "_to_" + connectionGUID + "_data_consumer_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Create the relationship between a data set and an asset that is providing all or part of its content.
      *
      * @param dataContentGUID unique identifier of the data store
      * @param dataSetGUID unique identifier of the consuming data set
      */
-    protected void addDataContentForDataSet(String dataContentGUID,
-                                            String dataSetGUID)
+    public void addDataContentForDataSet(String dataContentGUID,
+                                         String dataSetGUID)
     {
         EntityDetail dataContentEntity = archiveBuilder.getEntity(dataContentGUID);
         EntityDetail dataSetEntity = archiveBuilder.getEntity(dataSetGUID);
@@ -344,12 +384,12 @@ public class CatalogTypesArchiveBuilder
      *
      * @return id for the schemaType
      */
-    protected String addTopLevelSchemaType(String              assetGUID,
-                                           String              typeName,
-                                           String              qualifiedName,
-                                           String              displayName,
-                                           String              description,
-                                           Map<String, String> additionalProperties)
+    public String addTopLevelSchemaType(String              assetGUID,
+                                        String              typeName,
+                                        String              qualifiedName,
+                                        String              displayName,
+                                        String              description,
+                                        Map<String, String> additionalProperties)
     {
         final String methodName = "addTopLevelSchemaType";
 
@@ -405,13 +445,13 @@ public class CatalogTypesArchiveBuilder
      *
      * @return id for the schemaType
      */
-    protected String addAPIOperation(String              apiSchemaTypeGUID,
-                                     String              qualifiedName,
-                                     String              displayName,
-                                     String              description,
-                                     String              path,
-                                     String              command,
-                                     Map<String, String> additionalProperties)
+    public String addAPIOperation(String              apiSchemaTypeGUID,
+                                  String              qualifiedName,
+                                  String              displayName,
+                                  String              description,
+                                  String              path,
+                                  String              command,
+                                  Map<String, String> additionalProperties)
     {
         final String methodName = "addAPIOperation";
 
@@ -464,13 +504,13 @@ public class CatalogTypesArchiveBuilder
      *
      * @return id for the schemaType
      */
-    protected String addAPIParameterList(String              apiOperationGUID,
-                                         String              relationshipTypeName,
-                                         String              qualifiedName,
-                                         String              displayName,
-                                         String              description,
-                                         boolean             required,
-                                         Map<String, String> additionalProperties)
+    public String addAPIParameterList(String              apiOperationGUID,
+                                      String              relationshipTypeName,
+                                      String              qualifiedName,
+                                      String              displayName,
+                                      String              description,
+                                      boolean             required,
+                                      Map<String, String> additionalProperties)
     {
         final String methodName = "addAPIParameterList";
 
@@ -488,10 +528,10 @@ public class CatalogTypesArchiveBuilder
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, ADDITIONAL_PROPERTIES_PROPERTY, additionalProperties, methodName);
 
         EntityDetail parameterListEntity = archiveHelper.getEntityDetail(API_PARAMETER_LIST_TYPE_NAME,
-                                                                      idToGUIDMap.getGUID(qualifiedName),
-                                                                      properties,
-                                                                      InstanceStatus.ACTIVE,
-                                                                      null);
+                                                                         idToGUIDMap.getGUID(qualifiedName),
+                                                                         properties,
+                                                                         InstanceStatus.ACTIVE,
+                                                                         null);
 
         archiveBuilder.addEntity(parameterListEntity);
 
@@ -520,8 +560,8 @@ public class CatalogTypesArchiveBuilder
      * @param schemaTypeChoiceGUID unique identifier of the parent element
      * @param schemaTypeOptionGUID unique identifier of the child element
      */
-    protected void addSchemaTypeOption(String schemaTypeChoiceGUID,
-                                       String schemaTypeOptionGUID)
+    public void addSchemaTypeOption(String schemaTypeChoiceGUID,
+                                    String schemaTypeOptionGUID)
     {
         EntityDetail schemaTypeChoiceEntity = archiveBuilder.getEntity(schemaTypeChoiceGUID);
         EntityDetail schemaTypeOptionEntity = archiveBuilder.getEntity(schemaTypeOptionGUID);
@@ -544,8 +584,8 @@ public class CatalogTypesArchiveBuilder
      * @param schemaTypeGUID unique identifier of the parent element
      * @param schemaAttributeGUID unique identifier of the child element
      */
-    protected void addAttributeForSchemaType(String schemaTypeGUID,
-                                             String schemaAttributeGUID)
+    public void addAttributeForSchemaType(String schemaTypeGUID,
+                                          String schemaAttributeGUID)
     {
         EntityDetail schemaTypeChoiceEntity = archiveBuilder.getEntity(schemaTypeGUID);
         EntityDetail schemaTypeOptionEntity = archiveBuilder.getEntity(schemaAttributeGUID);
@@ -568,8 +608,8 @@ public class CatalogTypesArchiveBuilder
      * @param parentSchemaAttributeGUID unique identifier of the parent element
      * @param childSchemaAttributeGUID unique identifier of the child element
      */
-    protected void addNestedSchemaAttribute(String parentSchemaAttributeGUID,
-                                            String childSchemaAttributeGUID)
+    public void addNestedSchemaAttribute(String parentSchemaAttributeGUID,
+                                         String childSchemaAttributeGUID)
     {
         EntityDetail parentSchemaAttributeEntity = archiveBuilder.getEntity(parentSchemaAttributeGUID);
         EntityDetail childSchemaAtrributeEntity = archiveBuilder.getEntity(childSchemaAttributeGUID);
@@ -601,15 +641,15 @@ public class CatalogTypesArchiveBuilder
      *
      * @return id for the schema attribute
      */
-    protected String addSchemaAttribute(String              typeName,
-                                        String              schemaTypeName,
-                                        String              qualifiedName,
-                                        String              displayName,
-                                        String              description,
-                                        String              dataType,
-                                        int                 length,
-                                        int                 position,
-                                        Map<String, String> additionalProperties)
+    public String addSchemaAttribute(String              typeName,
+                                     String              schemaTypeName,
+                                     String              qualifiedName,
+                                     String              displayName,
+                                     String              description,
+                                     String              dataType,
+                                     int                 length,
+                                     int                 position,
+                                     Map<String, String> additionalProperties)
     {
         final String methodName = "addSchemaAttribute";
 
@@ -671,17 +711,17 @@ public class CatalogTypesArchiveBuilder
      *
      * @return id for the connection
      */
-    protected String addConnection(String              qualifiedName,
-                                   String              displayName,
-                                   String              description,
-                                   String              userId,
-                                   String              clearPassword,
-                                   String              encryptedPassword,
-                                   Map<String, String> securedProperties,
-                                   Map<String, Object> configurationProperties,
-                                   Map<String, String> additionalProperties,
-                                   String              connectorTypeGUID,
-                                   String              endpointGUID)
+    public String addConnection(String              qualifiedName,
+                                String              displayName,
+                                String              description,
+                                String              userId,
+                                String              clearPassword,
+                                String              encryptedPassword,
+                                Map<String, String> securedProperties,
+                                Map<String, Object> configurationProperties,
+                                Map<String, String> additionalProperties,
+                                String              connectorTypeGUID,
+                                String              endpointGUID)
     {
         final String methodName = "addConnection";
 
@@ -762,48 +802,53 @@ public class CatalogTypesArchiveBuilder
      *
      * @return id for the connector type
      */
-    protected String addConnectorType(String              connectorCategoryGUID,
-                                      String              connectorTypeGUID,
-                                      String              qualifiedName,
-                                      String              displayName,
-                                      String              description,
-                                      String              supportedAssetTypeName,
-                                      String              expectedDataFormat,
-                                      String              connectorProviderClassName,
-                                      String              connectorFrameworkName,
-                                      String              connectorInterfaceLanguage,
-                                      List<String>        connectorInterfaces,
-                                      String              targetTechnologySource,
-                                      String              targetTechnologyName,
-                                      List<String>        targetTechnologyInterfaces,
-                                      List<String>        targetTechnologyVersions,
-                                      List<String>        recognizedSecuredProperties,
-                                      List<String>        recognizedConfigurationProperties,
-                                      List<String>        recognizedAdditionalProperties,
-                                      Map<String, String> additionalProperties)
+    public String addConnectorType(String              connectorCategoryGUID,
+                                   String              connectorTypeGUID,
+                                   String              qualifiedName,
+                                   String              displayName,
+                                   String              description,
+                                   String              supportedAssetTypeName,
+                                   String              expectedDataFormat,
+                                   String              connectorProviderClassName,
+                                   String              connectorFrameworkName,
+                                   String              connectorInterfaceLanguage,
+                                   List<String>        connectorInterfaces,
+                                   String              targetTechnologySource,
+                                   String              targetTechnologyName,
+                                   List<String>        targetTechnologyInterfaces,
+                                   List<String>        targetTechnologyVersions,
+                                   List<String>        recognizedSecuredProperties,
+                                   List<String>        recognizedConfigurationProperties,
+                                   List<String>        recognizedAdditionalProperties,
+                                   Map<String, String> additionalProperties)
     {
-        String newGUID = idToGUIDMap.getGUID(qualifiedName);
+        idToGUIDMap.setGUID(qualifiedName, connectorTypeGUID);
 
-        idToGUIDMap.setGUID(qualifiedName, newGUID);
-
-        return this.addConnectorType(connectorCategoryGUID,
-                                     qualifiedName,
-                                     displayName,
-                                     description,
-                                     supportedAssetTypeName,
-                                     expectedDataFormat,
-                                     connectorProviderClassName,
-                                     connectorFrameworkName,
-                                     connectorInterfaceLanguage,
-                                     connectorInterfaces,
-                                     targetTechnologySource,
-                                     targetTechnologyName,
-                                     targetTechnologyInterfaces,
-                                     targetTechnologyVersions,
-                                     recognizedSecuredProperties,
-                                     recognizedConfigurationProperties,
-                                     recognizedAdditionalProperties,
-                                     additionalProperties);
+        try
+        {
+            return this.addConnectorType(connectorCategoryGUID,
+                                         qualifiedName,
+                                         displayName,
+                                         description,
+                                         supportedAssetTypeName,
+                                         expectedDataFormat,
+                                         connectorProviderClassName,
+                                         connectorFrameworkName,
+                                         connectorInterfaceLanguage,
+                                         connectorInterfaces,
+                                         targetTechnologySource,
+                                         targetTechnologyName,
+                                         targetTechnologyInterfaces,
+                                         targetTechnologyVersions,
+                                         recognizedSecuredProperties,
+                                         recognizedConfigurationProperties,
+                                         recognizedAdditionalProperties,
+                                         additionalProperties);
+        }
+        catch (Exception alreadyDefined)
+        {
+            return connectorTypeGUID;
+        }
     }
 
 
@@ -1028,12 +1073,12 @@ public class CatalogTypesArchiveBuilder
      *
      * @return id for the endpoint
      */
-    protected String addEndpoint(String              qualifiedName,
-                                 String              displayName,
-                                 String              description,
-                                 String              networkAddress,
-                                 String              protocol,
-                                 Map<String, String> additionalProperties)
+    public String addEndpoint(String              qualifiedName,
+                              String              displayName,
+                              String              description,
+                              String              networkAddress,
+                              String              protocol,
+                              Map<String, String> additionalProperties)
     {
         final String methodName = "addEndpoint";
 
@@ -1056,6 +1101,8 @@ public class CatalogTypesArchiveBuilder
     }
 
 
+
+
     /**
      * Create a glossary entity.  If the external link is specified, the glossary entity is linked to an
      * ExternalGlossaryLink entity.  If the scope is specified, the glossary entity is classified as
@@ -1071,13 +1118,13 @@ public class CatalogTypesArchiveBuilder
      *
      * @return id for the glossary
      */
-    protected String addGlossary(String   qualifiedName,
-                                 String   displayName,
-                                 String   description,
-                                 String   language,
-                                 String   usage,
-                                 String   externalLink,
-                                 String   scope)
+    public String addGlossary(String   qualifiedName,
+                              String   displayName,
+                              String   description,
+                              String   language,
+                              String   usage,
+                              String   externalLink,
+                              String   scope)
     {
         final String methodName = "addGlossary";
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName,null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
@@ -1152,11 +1199,11 @@ public class CatalogTypesArchiveBuilder
      *
      * @return identifier of the category
      */
-    protected String addCategory(String   glossaryId,
-                                 String   qualifiedName,
-                                 String   displayName,
-                                 String   description,
-                                 String   subjectArea)
+    public String addCategory(String   glossaryId,
+                              String   qualifiedName,
+                              String   displayName,
+                              String   description,
+                              String   subjectArea)
     {
         final String methodName = "addCategory";
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName,null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
@@ -1212,11 +1259,11 @@ public class CatalogTypesArchiveBuilder
      *
      * @return unique identifier of the term
      */
-    protected String addTerm(String       glossaryId,
-                             List<String> categoryIds,
-                             String       qualifiedName,
-                             String       displayName,
-                             String       description)
+    public String addTerm(String       glossaryId,
+                          List<String> categoryIds,
+                          String       qualifiedName,
+                          String       displayName,
+                          String       description)
     {
         return addTerm(glossaryId, categoryIds, qualifiedName, displayName, description,null,false,false,false);
     }
@@ -1235,15 +1282,15 @@ public class CatalogTypesArchiveBuilder
      * @param categoriesAsNames when true the categories are specified as qualified names, otherwise they are guids.
      * @return unique identifier of the term
      */
-    protected String addTerm(String       glossaryId,
-                             List<String> categoryIds,
-                             String       qualifiedName,
-                             String       displayName,
-                             String       description,
-                             String       examples,
-                             boolean      isSpineObject,
-                             boolean      isSpineAttribute,
-                             boolean      categoriesAsNames)
+    public String addTerm(String       glossaryId,
+                          List<String> categoryIds,
+                          String       qualifiedName,
+                          String       displayName,
+                          String       description,
+                          String       examples,
+                          boolean      isSpineObject,
+                          boolean      isSpineAttribute,
+                          boolean      categoriesAsNames)
     {
         final String methodName = "addTerm";
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
@@ -1327,8 +1374,8 @@ public class CatalogTypesArchiveBuilder
      * @param parentCategoryId unique identifier for the parent category
      * @param childCategoryId unique identifier for the child category
      */
-    protected void addCategoryToCategory(String  parentCategoryId,
-                                         String  childCategoryId)
+    public void addCategoryToCategory(String  parentCategoryId,
+                                      String  childCategoryId)
     {
         EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(parentCategoryId));
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(childCategoryId));
@@ -1348,8 +1395,8 @@ public class CatalogTypesArchiveBuilder
      * @param describedElementId unique identifier for the element that is referencing the other.
      * @param describerElementId unique identifier for the element being pointed to.
      */
-    protected void addMoreInformationLink(String  describedElementId,
-                                          String  describerElementId)
+    public void addMoreInformationLink(String  describedElementId,
+                                       String  describerElementId)
     {
         EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(describedElementId));
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(describerElementId));
@@ -1369,8 +1416,8 @@ public class CatalogTypesArchiveBuilder
      * @param termId identifier of term
      * @param referenceableId identifier of referenceable
      */
-    protected void linkTermToReferenceable(String  termId,
-                                           String  referenceableId)
+    public void linkTermToReferenceable(String  termId,
+                                        String  referenceableId)
     {
         EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(referenceableId));
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(termId));
@@ -1385,361 +1432,12 @@ public class CatalogTypesArchiveBuilder
 
 
     /**
-     * Create an element that represents a design model.
-     *
-     * @param qualifiedName unique name for the model
-     * @param displayName display name
-     * @param technicalName non-spaced name
-     * @param description description
-     * @param versionNumber version description
-     * @param author author
-     * @return guid of model
-     */
-    protected String addDesignModel(String   qualifiedName,
-                                    String   displayName,
-                                    String   technicalName,
-                                    String   description,
-                                    String   versionNumber,
-                                    String   author)
-    {
-        final String methodName = "addDesignModel";
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName,null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DISPLAY_NAME_PROPERTY, displayName, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, TECHNICAL_NAME_PROPERTY, technicalName, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, VERSION_NUMBER_PROPERTY, versionNumber, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, AUTHOR_PROPERTY, author, methodName);
-
-        EntityDetail  modelEntity = archiveHelper.getEntityDetail(DESIGN_MODEL_TYPE_NAME,
-                                                                  idToGUIDMap.getGUID(qualifiedName),
-                                                                  properties,
-                                                                  InstanceStatus.ACTIVE,
-                                                                  null);
-
-        archiveBuilder.addEntity(modelEntity);
-
-        return modelEntity.getGUID();
-    }
-
-
-    /**
-     * Create an element for a model group and link it to a model and any parent model group.
-     *
-     * @param modelId unique identifier of model (or null)
-     * @param parentGroupId unique identifier of parent (or null)
-     * @param qualifiedName unique name for the model
-     * @param displayName display name
-     * @param technicalName non-spaced name
-     * @param description description
-     * @param versionNumber version description
-     * @param author author
-     * @return guid of model group
-     */
-    protected String addDesignModelGroup(String   modelId,
-                                         String   parentGroupId,
-                                         String   qualifiedName,
-                                         String   displayName,
-                                         String   technicalName,
-                                         String   description,
-                                         String   versionNumber,
-                                         String   author)
-    {
-        final String methodName = "addDesignModelGroup";
-
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DISPLAY_NAME_PROPERTY, displayName, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, TECHNICAL_NAME_PROPERTY, technicalName, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, VERSION_NUMBER_PROPERTY, versionNumber, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, AUTHOR_PROPERTY, author, methodName);
-
-        EntityDetail  modelGroupEntity = archiveHelper.getEntityDetail(DESIGN_MODEL_GROUP_TYPE_NAME,
-                                                                       idToGUIDMap.getGUID(qualifiedName),
-                                                                       properties,
-                                                                       InstanceStatus.ACTIVE,
-                                                                       null);
-
-        archiveBuilder.addEntity(modelGroupEntity);
-
-        if (modelId != null)
-        {
-            EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(modelId));
-            EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(modelGroupEntity.getGUID()));
-
-            archiveBuilder.addRelationship(archiveHelper.getRelationship(DESIGN_MODEL_ELEMENT_OWNERSHIP_TYPE_NAME,
-                                                                         idToGUIDMap.getGUID(modelId + "_to_" + modelGroupEntity.getGUID()),
-                                                                         null,
-                                                                         InstanceStatus.ACTIVE,
-                                                                         end1,
-                                                                         end2));
-
-            archiveBuilder.addRelationship(archiveHelper.getRelationship(DESIGN_MODEL_GROUP_OWNERSHIP_TYPE_NAME,
-                                                                         idToGUIDMap.getGUID(modelId + "_to_" + modelGroupEntity.getGUID()),
-                                                                         null,
-                                                                         InstanceStatus.ACTIVE,
-                                                                         end1,
-                                                                         end2));
-        }
-
-        if (parentGroupId != null)
-        {
-            EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(parentGroupId));
-            EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(modelGroupEntity.getGUID()));
-
-            archiveBuilder.addRelationship(archiveHelper.getRelationship(DESIGN_MODEL_GROUP_HIERARCHY_TYPE_NAME,
-                                                                         idToGUIDMap.getGUID(parentGroupId + "_to_" + modelGroupEntity.getGUID()),
-                                                                         null,
-                                                                         InstanceStatus.ACTIVE,
-                                                                         end1,
-                                                                         end2));
-        }
-
-        return modelGroupEntity.getGUID();
-    }
-
-
-    /**
-     * Create an element of a concept model.
-     *
-     * @param typeName unique name of the element's type
-     * @param modelId unique identifier of model (or null)
-     * @param groupIds list of model groups to add this element to
-     * @param qualifiedName unique name for the model
-     * @param displayName display name
-     * @param technicalName non-spaced name
-     * @param description description
-     * @param versionNumber version description
-     * @param author author
-     * @return guid of element
-     */
-    protected String addConceptModelElement(String         typeName,
-                                            String         modelId,
-                                            List<String>   groupIds,
-                                            String         qualifiedName,
-                                            String         displayName,
-                                            String         technicalName,
-                                            String         description,
-                                            String         versionNumber,
-                                            String         author)
-    {
-        final String methodName = "addConceptModelElement";
-
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DISPLAY_NAME_PROPERTY, displayName, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, TECHNICAL_NAME_PROPERTY, technicalName, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, VERSION_NUMBER_PROPERTY, versionNumber, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, AUTHOR_PROPERTY, author, methodName);
-
-        EntityDetail  modelElementEntity = archiveHelper.getEntityDetail(typeName,
-                                                                         idToGUIDMap.getGUID(qualifiedName),
-                                                                         properties,
-                                                                         InstanceStatus.ACTIVE,
-                                                                         null);
-
-        archiveBuilder.addEntity(modelElementEntity);
-
-        if (modelId != null)
-        {
-            EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(modelId));
-            EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(modelElementEntity.getGUID()));
-
-            archiveBuilder.addRelationship(archiveHelper.getRelationship(DESIGN_MODEL_ELEMENT_OWNERSHIP_TYPE_NAME,
-                                                                         idToGUIDMap.getGUID(modelId + "_to_" + modelElementEntity.getGUID()),
-                                                                         null,
-                                                                         InstanceStatus.ACTIVE,
-                                                                         end1,
-                                                                         end2));
-        }
-
-        if (groupIds != null)
-        {
-            for (String  groupId : groupIds)
-            {
-                EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(groupId));
-                EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(modelElementEntity.getGUID()));
-
-                archiveBuilder.addRelationship(archiveHelper.getRelationship(DESIGN_MODEL_GROUP_MEMBERSHIP_TYPE_NAME,
-                                                                             idToGUIDMap.getGUID(groupId + "_to_" + modelElementEntity.getGUID()),
-                                                                             null,
-                                                                             InstanceStatus.ACTIVE,
-                                                                             end1,
-                                                                             end2));
-            }
-        }
-
-        return modelElementEntity.getGUID();
-    }
-
-
-    /**
-     * Create an element that describes a concept bead.
-     *
-     * @param modelId unique identifier of model (or null)
-     * @param groupIds list of model groups to add this element to
-     * @param qualifiedName unique name for the model
-     * @param displayName display name
-     * @param technicalName non-spaced name
-     * @param description description
-     * @param versionNumber version description
-     * @param author author
-     * @return guid of element
-     */
-    protected String addConceptBead(String         modelId,
-                                    List<String>   groupIds,
-                                    String         qualifiedName,
-                                    String         displayName,
-                                    String         technicalName,
-                                    String         description,
-                                    String         versionNumber,
-                                    String         author)
-    {
-        return this.addConceptModelElement(CONCEPT_BEAD_TYPE_NAME,
-                                           modelId,
-                                           groupIds,
-                                           qualifiedName,
-                                           displayName,
-                                           technicalName,
-                                           description,
-                                           versionNumber,
-                                           author);
-    }
-
-
-    /**
-     * Create a concept bead link.
-     *
-     * @param modelId unique identifier of model (or null)
-     * @param groupIds list of model groups to add this element to
-     * @param qualifiedName unique name for the model
-     * @param displayName display name
-     * @param technicalName non-spaced name
-     * @param description description
-     * @param versionNumber version description
-     * @param author author
-     * @return guid of element
-     */
-    protected String addConceptBeadLink(String         modelId,
-                                        List<String>   groupIds,
-                                        String         qualifiedName,
-                                        String         displayName,
-                                        String         technicalName,
-                                        String         description,
-                                        String         versionNumber,
-                                        String         author)
-    {
-        return this.addConceptModelElement(CONCEPT_BEAD_LINK_TYPE_NAME,
-                                           modelId,
-                                           groupIds,
-                                           qualifiedName,
-                                           displayName,
-                                           technicalName,
-                                           description,
-                                           versionNumber,
-                                           author);
-    }
-
-
-    /**
-     * Create a concept attribute.
-     *
-     * @param modelId unique identifier for the model element
-     * @param groupIds list of model groups to add this element to
-     * @param qualifiedName unique name for the model
-     * @param displayName display name
-     * @param technicalName non-spaced name
-     * @param description description
-     * @param versionNumber version description
-     * @param author author
-     * @return guid of element
-     */
-    protected String addConceptBeadAttribute(String         modelId,
-                                             List<String>   groupIds,
-                                             String         qualifiedName,
-                                             String         displayName,
-                                             String         technicalName,
-                                             String         description,
-                                             String         versionNumber,
-                                             String         author)
-    {
-        return this.addConceptModelElement(CONCEPT_BEAD_ATTRIBUTE_TYPE_NAME,
-                                           modelId,
-                                           groupIds,
-                                           qualifiedName,
-                                           displayName,
-                                           technicalName,
-                                           description,
-                                           versionNumber,
-                                           author);
-    }
-
-
-    protected void addAttributeToBead(String     beadId,
-                                      String     attributeId,
-                                      int        position,
-                                      int        minCardinality,
-                                      int        maxCardinality,
-                                      boolean    uniqueValues,
-                                      boolean    orderedValues)
-    {
-        final String methodName = "addAttributeToBead";
-
-        InstanceProperties properties = archiveHelper.addIntPropertyToInstance(archiveRootName, null, POSITION_PROPERTY, position, methodName);
-        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, MIN_CARDINALITY_PROPERTY, minCardinality, methodName);
-        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, MAX_CARDINALITY_PROPERTY, maxCardinality, methodName);
-        properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, UNIQUE_VALUES_PROPERTY, uniqueValues, methodName);
-        properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, ORDERED_VALUES_PROPERTY, orderedValues, methodName);
-
-        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(beadId));
-        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(attributeId));
-
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(CONCEPT_BEAD_ATTRIBUTE_LINK_TYPE_NAME,
-                                                                     idToGUIDMap.getGUID(beadId + "_to_" + attributeId),
-                                                                     properties,
-                                                                     InstanceStatus.ACTIVE,
-                                                                     end1,
-                                                                     end2));
-    }
-
-
-    protected void addLinkToBead(String                 beadId,
-                                 String                 linkId,
-                                 String                 attributeName,
-                                 ConceptModelDecoration decoration,
-                                 int                    position,
-                                 int                    minCardinality,
-                                 int                    maxCardinality,
-                                 boolean                uniqueValues,
-                                 boolean                orderedValues)
-    {
-        final String methodName = "addLinkToBead";
-
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, ATTRIBUTE_NAME_PROPERTY, attributeName, methodName);
-        // properties = archiveHelper.addEnumPropertyToInstance(properties, DECORATION_PROPERTY, position);
-        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, POSITION_PROPERTY, position, methodName);
-        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, MIN_CARDINALITY_PROPERTY, minCardinality, methodName);
-        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, MAX_CARDINALITY_PROPERTY, maxCardinality, methodName);
-        properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, UNIQUE_VALUES_PROPERTY, uniqueValues, methodName);
-        properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, ORDERED_VALUES_PROPERTY, orderedValues, methodName);
-
-        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(beadId));
-        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(linkId));
-
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(CONCEPT_BEAD_RELATIONSHIP_TYPE_NAME,
-                                                                     idToGUIDMap.getGUID(beadId + "_to_" + linkId),
-                                                                     properties,
-                                                                     InstanceStatus.ACTIVE,
-                                                                     end1,
-                                                                     end2));
-    }
-
-    /**
      * Add an is-a-type-of relationship
      *
      * @param specialTermQName qualified name of the specialized term
      * @param generalizedTermQName qualified name of the generalized term
      */
-    protected void addIsATypeOfRelationship(String specialTermQName , String generalizedTermQName)
+    public void addIsATypeOfRelationship(String specialTermQName , String generalizedTermQName)
     {
 
         String specializedTermId = idToGUIDMap.getGUID(specialTermQName);
@@ -1755,7 +1453,7 @@ public class CatalogTypesArchiveBuilder
                                                                      end2));
     }
 
-    protected void addHasARelationship(String conceptQName, String propertyQName)
+    public void addHasARelationship(String conceptQName, String propertyQName)
     {
         String conceptId = idToGUIDMap.getGUID(conceptQName);
         String propertyId = idToGUIDMap.getGUID(propertyQName);
@@ -1771,7 +1469,7 @@ public class CatalogTypesArchiveBuilder
     }
 
 
-    protected void addRelatedTermRelationship(String conceptQName, String propertyQName)
+    public void addRelatedTermRelationship(String conceptQName, String propertyQName)
     {
         String conceptId = idToGUIDMap.getGUID(conceptQName);
         String propertyId = idToGUIDMap.getGUID(propertyQName);
@@ -1794,7 +1492,7 @@ public class CatalogTypesArchiveBuilder
      * @param childCategoryName name of the child category
      * @param parentNames set of the names of the parent categories qualified names
      */
-    protected void addCategoryHierarchy(String childCategoryName, Set<String> parentNames)
+    public void addCategoryHierarchy(String childCategoryName, Set<String> parentNames)
     {
         String childId= idToGUIDMap.getGUID(childCategoryName);
 
