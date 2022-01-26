@@ -148,7 +148,7 @@ public class GlossaryAuthorViewGlossaryClient implements GlossaryAuthorViewGloss
         ResolvableType resolvableType = ResolvableType.forClassWithGenerics(SubjectAreaOMASAPIResponse.class, Category.class);
         String urnTemplate = BASE_URL +  "/" + guid + "/categories";
 
-        Map<String, String> params = new HashMap();
+        Map<String, String> params = new HashMap<>();
         params.put("exactValue", "false");
         params.put("ignoreCase", "true");
         params.put("onlyTop", String.valueOf(onlyTop));

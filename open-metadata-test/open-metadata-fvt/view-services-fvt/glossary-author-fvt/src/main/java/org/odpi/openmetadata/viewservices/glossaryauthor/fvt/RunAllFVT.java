@@ -91,7 +91,7 @@ public class RunAllFVT
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
             System.out.print("Enter a OMAG Server Name. Press enter to get the default (" + FVTConstants.SERVER_NAME1 + ")) :");
             name = br.readLine();
-            if (name.equals(""))
+            if (name.length() == 0) //(""))
             {
                 name = FVTConstants.SERVER_NAME1;
             }
@@ -121,7 +121,7 @@ public class RunAllFVT
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
             System.out.print("Enter a userId. Press enter to get the default (" + FVTConstants.USERID + ")) :");
             userId = br.readLine();
-            if (userId.equals(""))
+            if (userId.length() == 0) //equals(""))
             {
                 userId = FVTConstants.USERID;
             }
@@ -152,7 +152,7 @@ public class RunAllFVT
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
             System.out.print("Enter a URL. Press enter to get the default (" + FVTConstants.DEFAULT_URL + ".)) :");
             url = br.readLine();
-            if (url.equals(""))
+            if (url.length() == 0)//equals(""))
             {
                 url = FVTConstants.DEFAULT_URL;
             }

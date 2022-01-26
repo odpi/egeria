@@ -70,7 +70,6 @@ public class ConfigFVT
 
     public void run() throws GlossaryAuthorFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
-        String guid = "current";
         GlossaryAuthorViewRestClient glossaryAuthorViewRestClient = new GlossaryAuthorViewRestClient(serverName, url);
         GlossaryAuthorViewConfigClient glossaryAuthorViewConfigClient = new GlossaryAuthorViewConfigClient(glossaryAuthorViewRestClient);
         Config config = glossaryAuthorViewConfigClient.getConfig(userId);

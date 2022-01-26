@@ -101,52 +101,6 @@ public interface GlossaryAuthorViewGraph {
      */
     Graph restore(String userId, String guid) throws PropertyServerException, UserNotAuthorizedException,InvalidParameterException  ;
 
-    /**
-     * Get a Graph's relationships
-     * <p>
-     * The result is a list of Relationships
-     *
-     * @param userId       userId under which the request is performed
-     * @param guid         guid of Graph object to be retrieved
-     *
-     * @return The list of Graph relationships
-     *
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     */
-//    List<Relationship> getAllRelationships(String userId, String guid) throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException ;
-
-    /**
-     * Extract graphs within a Category
-     *
-     * @param userId calling user
-     * @param categoryGuid Category GUID
-     * @param findRequest information object for find calls. This include pageSize to limit the number of elements returned.
-     *
-     * @return list of  graphs
-     *
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     */
-    List<Graph> getGraphs(String userId, String categoryGuid, FindRequest findRequest) throws PropertyServerException,UserNotAuthorizedException, InvalidParameterException ;
-
-    /**
-     * Extract children within a Category
-     *
-     * @param userId calling user
-     * @param parentGuid Category GUID
-     * @param findRequest information object for find calls. This include pageSize to limit the number of elements returned.
-     *
-     * @return list of  Categories
-     *
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     */
-
-    List<Category> getCategoryChildren(String userId, String parentGuid, FindRequest findRequest) throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException ;
 
     /**
      * Extract children within a Category
@@ -249,19 +203,6 @@ public interface GlossaryAuthorViewGraph {
      */
     ViewServiceConfig getGlossaryAuthViewServiceConfig(String userId) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException;
 
-    /**
-     * Get relationships for a  config for a particular view Service
-     *
-     * @param userId calling user
-     *
-     * @return Config for view server
-     *
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     */
-
-//    List<Relationship> getRelationships(String userId, String guid, FindRequest findRequest) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException;
     /**
      * Get graph for a particular node guid
      *

@@ -249,7 +249,7 @@ public class CategoryFVT {
         // make sure there is a category with the name
         createCategory(DEFAULT_TEST_CATEGORY_NAME, glossaryGuid);
         Category categoryForUniqueQFN2= createCategory(DEFAULT_TEST_CATEGORY_NAME, glossaryGuid);
-        if (categoryForUniqueQFN2 == null || categoryForUniqueQFN2.equals("")) {
+        if (categoryForUniqueQFN2 == null || categoryForUniqueQFN2.getQualifiedName().equals("")) {
             throw new GlossaryAuthorFVTCheckedException("ERROR: Expected qualified name to be set");
         }
         deleteCategory(categoryForFind1.getSystemAttributes().getGUID());
@@ -270,7 +270,7 @@ public class CategoryFVT {
         Category parentCategory = createCategoryWithGlossaryGuid("ttt", glossary.getSystemAttributes().getGUID());
         String parentGuid = parentCategory.getSystemAttributes().getGUID();
 
-        Set<String> childGuids = new HashSet();
+        Set<String> childGuids = new HashSet<>();
         // create 6 children
         for (int i=0;i<3;i++) {
             Category cat1 = createCategoryWithParentGlossaryGuid("mm" + i, parentGuid, glossaryGuid);
@@ -523,8 +523,8 @@ public class CategoryFVT {
     public List<Category> findCategories(String criteria, boolean exactValue, boolean ignoreCase) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         FindRequest findRequest = new FindRequest();
         findRequest.setSearchCriteria(criteria);
-        if (glossaryAuthorViewCategoryClient == null)
-            System.out.println("NULL !!!");
+/*        if (glossaryAuthorViewCategoryClient == null)
+            System.out.println("NULL !!!");*/
         List<Category> categoryList = glossaryAuthorViewCategoryClient.find(this.userId, findRequest, exactValue, ignoreCase);
         return categoryList;
     }

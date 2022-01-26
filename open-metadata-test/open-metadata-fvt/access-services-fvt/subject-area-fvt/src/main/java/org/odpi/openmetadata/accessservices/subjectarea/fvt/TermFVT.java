@@ -316,7 +316,7 @@ public class TermFVT {
          createTerm(DEFAULT_TEST_TERM_NAME, glossaryGuid);
 
         Term termForUniqueQFN2= createTerm(DEFAULT_TEST_TERM_NAME, glossaryGuid);
-        if (termForUniqueQFN2 == null || termForUniqueQFN2.equals("")) {
+        if (termForUniqueQFN2 == null || termForUniqueQFN2.getQualifiedName().equals("")) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected qualified name to be set");
         }
 

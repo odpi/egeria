@@ -112,36 +112,6 @@ public interface GlossaryAuthorViewProject {
      */
     List<Relationship> getAllRelationships(String userId, String guid) throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException ;
 
-    /**
-     * Extract projects within a Category
-     *
-     * @param userId calling user
-     * @param categoryGuid Category GUID
-     * @param findRequest information object for find calls. This include pageSize to limit the number of elements returned.
-     *
-     * @return list of  projects
-     *
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     */
-    List<Project> getProjects(String userId, String categoryGuid, FindRequest findRequest) throws PropertyServerException,UserNotAuthorizedException, InvalidParameterException ;
-
-    /**
-     * Extract children within a Category
-     *
-     * @param userId calling user
-     * @param parentGuid Category GUID
-     * @param findRequest information object for find calls. This include pageSize to limit the number of elements returned.
-     *
-     * @return list of  Categories
-     *
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     */
-
-    List<Category> getCategoryChildren(String userId, String parentGuid, FindRequest findRequest) throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException ;
 
     /**
      * Extract children within a Category

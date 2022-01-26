@@ -89,7 +89,6 @@ public class GraphFVT
 
     private String retrieveOmagServerName(String viewServiceName) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException {
         List<ViewServiceConfig> viewServiceConfigs = glossaryAuthorViewGraphClient.getViewServiceConfigs(userId);
-        Map<String,Object> viewServiceOptions;
 
         for (ViewServiceConfig vsc: viewServiceConfigs){
             if (vsc.getViewServiceName().equals(viewServiceName)) {

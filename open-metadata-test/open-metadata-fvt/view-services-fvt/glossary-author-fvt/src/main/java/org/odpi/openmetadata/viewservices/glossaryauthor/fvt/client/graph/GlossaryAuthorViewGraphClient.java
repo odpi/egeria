@@ -114,18 +114,6 @@ public class GlossaryAuthorViewGraphClient implements GlossaryAuthorViewGraph, R
     }
 
     @Override
-    public List<Category> getCategoryChildren(String userId, String parentGuid, FindRequest findRequest) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        ResolvableType resolvableType = ResolvableType.forClassWithGenerics(SubjectAreaOMASAPIResponse.class, Category.class);
-        ParameterizedTypeReference<GenericResponse<Category>> type = ParameterizedTypeReference.forType(resolvableType.getType());
-
-        GenericResponse<Category> completeResponse =
-                client.findRESTCall(userId,getMethodInfo("getCategoryChildren"),BASE_URL,
-                        type, findRequest, false, true, null);
-
-        return completeResponse.results();
-    }
-
-    @Override
     public List<Category> getCategoryChildren(String userId, String parentGuid, FindRequest findRequest, boolean exactValue, boolean ignoreCase) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         ResolvableType resolvableType = ResolvableType.forClassWithGenerics(SubjectAreaOMASAPIResponse.class, Category.class);
         ParameterizedTypeReference<GenericResponse<Category>> type = ParameterizedTypeReference.forType(resolvableType.getType());
@@ -134,7 +122,7 @@ public class GlossaryAuthorViewGraphClient implements GlossaryAuthorViewGraph, R
 
         GenericResponse<Category> completeResponse =
                 client.findRESTCallById(userId,getMethodInfo("getCategoryChildren"),urlTemplate,
-                        type, findRequest, false, true, null,parentGuid);
+                        type, findRequest, exactValue, ignoreCase, null,parentGuid);
 
         return completeResponse.results();
     }
@@ -199,22 +187,6 @@ public class GlossaryAuthorViewGraphClient implements GlossaryAuthorViewGraph, R
 
         return completeResponse.getConfig();
     }
-
-/*    @Override
-    public List<Relationship> getRelationships(String userId, String guid, FindRequest findRequest) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        ResolvableType resolvableType = ResolvableType.forClassWithGenerics(SubjectAreaOMASAPIResponse.class, Relationship.class);
-        ParameterizedTypeReference<GenericResponse<Relationship>> type = ParameterizedTypeReference.forType(resolvableType.getType());
-
-        String urlTemplate = BASE_URL + "/%s/relationships";
-
-        GenericResponse<Relationship> completeResponse =
-                *//*client.getByIdRESTCall(userId,guid, getMethodInfo("find"),
-                        type, urlTemplate);*//*
-                client.findRESTCallById(userId, getMethodInfo("findRelationships"), urlTemplate, type, findRequest, false, true, 0, guid);
-
-        return completeResponse.results();
-    }*/
-
     @Override
     public GraphStatistics getGraphStatistics(String userId,
                               String guid,
@@ -292,17 +264,6 @@ public class GlossaryAuthorViewGraphClient implements GlossaryAuthorViewGraph, R
                 client.getViewConfigRESTCall(userId,getMethodInfo("getViewServiceConfig"),ViewServicesResponse.class,GLOSSARY_AUTHOR_VIEWCONFIG_BASE_URL);
 
         return completeResponse.getServices();
-    }
-
-/*    @Override
-    public List<Relationship> getAllRelationships(String userId, String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-//        relationships
-        return getRelationships( userId, guid, new FindRequest());
-    }*/
-
-    @Override
-    public List<Graph> getGraphs(String userId, String categoryGuid, FindRequest findRequest) {
-        return null;
     }
 
     @Override

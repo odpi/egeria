@@ -69,7 +69,6 @@ public class SubjectAreaDefinitionCategoryFVT
 
 
         glossaryFVT = new GlossaryFVT(url,serverName,userId);
-        GraphFVT graphFVT = new GraphFVT(url, serverName, userId);
         //graphFVT.glossaryAuthorViewGraphClient = new GlossaryAuthorViewGraphClient();
         glossaryAuthorViewRestClient = new GlossaryAuthorViewRestClient(serverName, url);
         glossaryAuthorViewGraphClient = new GlossaryAuthorViewGraphClient(glossaryAuthorViewRestClient);
@@ -95,7 +94,7 @@ public class SubjectAreaDefinitionCategoryFVT
     private String retrieveOmagServerName(String viewServiceName) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException {
 
         List<ViewServiceConfig> viewServiceConfigs = glossaryAuthorViewGraphClient.getViewServiceConfigs(userId);
-        Map<String,Object> viewServiceOptions;
+//        Map<String,Object> viewServiceOptions;
 //        System.out.println("  viewServiceConfigs  " + viewServiceConfigs.toString());
 
         for (ViewServiceConfig vsc: viewServiceConfigs){

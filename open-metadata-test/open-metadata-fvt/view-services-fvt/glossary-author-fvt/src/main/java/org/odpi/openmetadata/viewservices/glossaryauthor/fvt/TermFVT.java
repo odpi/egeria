@@ -115,7 +115,7 @@ public class TermFVT {
 
     private String retrieveOmagServerName(String viewServiceName) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException {
         List<ViewServiceConfig> viewServiceConfigs = glossaryAuthorViewTermClient.getViewServiceConfigs(userId);
-        Map<String,Object> viewServiceOptions;
+//        Map<String,Object> viewServiceOptions;
 //        System.out.println("  viewServiceConfigs  " + viewServiceConfigs.toString());
 
         for (ViewServiceConfig vsc: viewServiceConfigs){
@@ -366,7 +366,7 @@ public class TermFVT {
          createTerm(DEFAULT_TEST_TERM_NAME, glossaryGuid);
 
         Term termForUniqueQFN2= createTerm(DEFAULT_TEST_TERM_NAME, glossaryGuid);
-        if (termForUniqueQFN2 == null || termForUniqueQFN2.equals("")) {
+        if (termForUniqueQFN2 == null || termForUniqueQFN2.getQualifiedName().equals("")) {
             throw new GlossaryAuthorFVTCheckedException("ERROR: Expected qualified name to be set");
         }
 
@@ -672,7 +672,7 @@ public class TermFVT {
         CategorySummary catSummary = new CategorySummary();
         catSummary.setGuid(parentGuid);
         categories.add(catSummary);
-        Set<String> termGuids = new HashSet();
+        Set<String> termGuids = new HashSet<>();
 
         for (int i=0;i<10;i++) {
 

@@ -186,13 +186,11 @@ public class ProjectFVT
         if (results.size() !=1 ) {
             throw new GlossaryAuthorFVTCheckedException("ERROR: Expected 1 back on the find got " +results.size());
         }
-        Project projectForGraph = createProject(DEFAULT_TEST_PROJECT_NAME4);
-        FindRequest findRequest = new FindRequest();
 
         // make sure there is a project with the name
         createProject( DEFAULT_TEST_PROJECT_NAME);
         Project projectForUniqueQFN2= createProject(DEFAULT_TEST_PROJECT_NAME);
-        if (projectForUniqueQFN2 == null || projectForUniqueQFN2.equals("")) {
+        if (projectForUniqueQFN2 == null || projectForUniqueQFN2.getQualifiedName().equals("")) {
             throw new GlossaryAuthorFVTCheckedException("ERROR: Expected qualified name to be set");
         }
 

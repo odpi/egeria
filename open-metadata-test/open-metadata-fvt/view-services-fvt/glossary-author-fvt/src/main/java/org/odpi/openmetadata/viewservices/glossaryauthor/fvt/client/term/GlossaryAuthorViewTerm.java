@@ -66,7 +66,21 @@ public interface GlossaryAuthorViewTerm {
      * @throws InvalidParameterException one of the parameters is null or invalid
      */
     Term update(String userId, String guid, Term term, boolean isReplace) throws PropertyServerException, InvalidParameterException, UserNotAuthorizedException;
-
+    /**
+     * Update a Term.
+     * <p>
+     * The result is the updated Glossary object
+     *
+     * @param userId       userId under which the request is performed
+     * @param guid         guid of Glossary object to be updated
+     * @param term     Glossary object with updated values
+     *
+     * @return The updated Term
+     *
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     */
     Term update(String userId, String guid, Term term) throws PropertyServerException, InvalidParameterException, UserNotAuthorizedException;
 
     /**
@@ -113,37 +127,6 @@ public interface GlossaryAuthorViewTerm {
      * @throws InvalidParameterException one of the parameters is null or invalid
      */
     List<Relationship> getAllRelationships(String userId, String guid) throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException ;
-
-    /**
-     * Extract terms within a Category
-     *
-     * @param userId calling user
-     * @param categoryGuid Category GUID
-     * @param findRequest information object for find calls. This include pageSize to limit the number of elements returned.
-     *
-     * @return list of  terms
-     *
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     */
-//    List<Term> getTerms(String userId, String categoryGuid, FindRequest findRequest) throws PropertyServerException,UserNotAuthorizedException, InvalidParameterException ;
-
-    /**
-     * Extract children within a Category
-     *
-     * @param userId calling user
-     * @param parentGuid Category GUID
-     * @param findRequest information object for find calls. This include pageSize to limit the number of elements returned.
-     *
-     * @return list of  Categories
-     *
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     */
-
-    List<Category> getCategoryChildren(String userId, String parentGuid, FindRequest findRequest) throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException ;
 
     /**
      * Extract children within a Category
@@ -258,7 +241,5 @@ public interface GlossaryAuthorViewTerm {
      * @throws InvalidParameterException one of the parameters is null or invalid
      */
     List<Relationship> getRelationships(String userId, String termGuid, FindRequest findRequest) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException;
-
-    //List<Term> createMultipleTerms(String userId, String guid, Term[] toArray) throws PropertyServerException;
 }
 

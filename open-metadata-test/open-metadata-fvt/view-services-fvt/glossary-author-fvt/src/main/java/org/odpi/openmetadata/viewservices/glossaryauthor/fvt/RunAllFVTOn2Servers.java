@@ -61,7 +61,7 @@ public class RunAllFVTOn2Servers
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
             System.out.print("Enter a URL. Press enter to get the default (" + FVTConstants.DEFAULT_URL + ".)):");
             url = br.readLine();
-            if (url.equals(""))
+            if (url.length() == 0)//.equals(""))
             {
                 url = FVTConstants.DEFAULT_URL;
             }

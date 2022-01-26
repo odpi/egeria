@@ -241,8 +241,10 @@ public class RelationshipsFVT {
 
 
         Project project= projectFVT.createProject(DEFAULT_TEST_PROJECT_NAME );
+/*
         if (project == null) System.out.println("Project is NULL !!!");
         if (term1 == null) System.out.println("term1 is NULL !!!");
+*/
 
         projectScopeFVT(project, term1);
         projectFVT.deleteProject(project.getSystemAttributes().getGUID());
@@ -1061,7 +1063,7 @@ public class RelationshipsFVT {
         ResolvableType resolvableType = ResolvableType.forClassWithGenerics(SubjectAreaOMASAPIResponse.class, HasA.class);
         ParameterizedTypeReference<GenericResponse<HasA>> type = ParameterizedTypeReference.forType(resolvableType.getType());
 
-        HasA createdTermHasARelationship = glossaryAuthorViewRelationshipsClient.createRel(this.userId, hasA,type, HAS_A);
+        HasA createdTermHasARelationship = glossaryAuthorViewRelationshipsClient.createRel(this.userId, hasA,type, relType);
         FVTUtils.validateRelationship(createdTermHasARelationship);
         FVTUtils.checkEnds(hasA, createdTermHasARelationship, "Has-a", "create");
 

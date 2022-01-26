@@ -100,19 +100,6 @@ public class GlossaryAuthorViewCategoryClient implements GlossaryAuthorViewCateg
     }
 
 
-
-    @Override
-    public List<Category> getCategoryChildren(String userId, String parentGuid, FindRequest findRequest) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        ResolvableType resolvableType = ResolvableType.forClassWithGenerics(SubjectAreaOMASAPIResponse.class, Category.class);
-        ParameterizedTypeReference<GenericResponse<Category>> type = ParameterizedTypeReference.forType(resolvableType.getType());
-
-        GenericResponse<Category> completeResponse =
-                client.findRESTCall(userId,getMethodInfo("getCategoryChildren"),BASE_URL,
-                        type, findRequest, false, true, null);
-
-        return completeResponse.results();
-    }
-
     @Override
     public List<Category> getCategoryChildren(String userId, String parentGuid, FindRequest findRequest, boolean exactValue, boolean ignoreCase) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         ResolvableType resolvableType = ResolvableType.forClassWithGenerics(SubjectAreaOMASAPIResponse.class, Category.class);
@@ -122,7 +109,7 @@ public class GlossaryAuthorViewCategoryClient implements GlossaryAuthorViewCateg
 
         GenericResponse<Category> completeResponse =
                 client.findRESTCallById(userId,getMethodInfo("getCategoryChildren"),urlTemplate,
-                        type, findRequest, false, true, null,parentGuid);
+                        type, findRequest, exactValue, ignoreCase, null,parentGuid);
 
         return completeResponse.results();
     }
@@ -172,7 +159,7 @@ public class GlossaryAuthorViewCategoryClient implements GlossaryAuthorViewCateg
                 "getCategoryRelationships",
                 type,
                 urlTemplate,
-                new FindRequest(),
+                findRequest,
                 0,
                 (QueryParams) null);
 

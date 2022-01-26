@@ -10,7 +10,6 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-//import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category;
 
 import java.util.*;
 
@@ -147,21 +146,6 @@ public interface GlossaryAuthorViewCategory {
      */
     List<Term> getTerms(String userId, String categoryGuid, FindRequest findRequest) throws PropertyServerException,UserNotAuthorizedException, InvalidParameterException ;
 
-    /**
-     * Extract children within a Category
-     *
-     * @param userId calling user
-     * @param parentGuid Category GUID
-     * @param findRequest information object for find calls. This include pageSize to limit the number of elements returned.
-     *
-     * @return list of  Categories
-     *
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     */
-
-    List<Category> getCategoryChildren(String userId, String parentGuid, FindRequest findRequest) throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException ;
 
     /**
      * Extract children within a Category
