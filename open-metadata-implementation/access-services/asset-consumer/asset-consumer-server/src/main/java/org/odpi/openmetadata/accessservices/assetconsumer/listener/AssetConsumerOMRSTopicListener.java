@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.listener;
 
+import org.odpi.openmetadata.accessservices.assetconsumer.events.AssetConsumerEventType;
 import org.odpi.openmetadata.accessservices.assetconsumer.events.NewAssetEvent;
 import org.odpi.openmetadata.accessservices.assetconsumer.events.UpdatedAssetEvent;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters.AssetConverter;
@@ -127,6 +128,7 @@ public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
             {
                 NewAssetEvent event = new NewAssetEvent();
 
+                event.setEventType(AssetConsumerEventType.NEW_ASSET_EVENT);
                 event.setAsset(assetConverter.getAssetBean());
                 event.setCreationTime(entity.getCreateTime());
 
@@ -166,6 +168,7 @@ public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
                                                                                  serverName);
                 UpdatedAssetEvent event                     = new UpdatedAssetEvent();
 
+                event.setEventType(AssetConsumerEventType.UPDATED_ASSET_EVENT);
                 event.setAsset(assetBean);
                 event.setOriginalAsset(assetConverterForOriginal.getAssetBean());
                 event.setUpdateTime(entity.getUpdateTime());
