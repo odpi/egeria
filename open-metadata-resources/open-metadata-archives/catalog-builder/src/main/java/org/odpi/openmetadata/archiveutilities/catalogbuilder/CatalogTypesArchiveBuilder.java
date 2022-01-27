@@ -1044,15 +1044,15 @@ public class CatalogTypesArchiveBuilder
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, PROTOCOL_PROPERTY, protocol, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, ADDITIONAL_PROPERTIES_PROPERTY, additionalProperties, methodName);
 
-        EntityDetail connectorTypeEntity = archiveHelper.getEntityDetail(ENDPOINT_TYPE_NAME,
-                                                                         idToGUIDMap.getGUID(qualifiedName),
-                                                                         properties,
-                                                                         InstanceStatus.ACTIVE,
-                                                                         null);
+        EntityDetail endpointEntity = archiveHelper.getEntityDetail(ENDPOINT_TYPE_NAME,
+                                                                    idToGUIDMap.getGUID(qualifiedName),
+                                                                    properties,
+                                                                    InstanceStatus.ACTIVE,
+                                                                    null);
 
-        archiveBuilder.addEntity(connectorTypeEntity);
+        archiveBuilder.addEntity(endpointEntity);
 
-        return connectorTypeEntity.getGUID();
+        return endpointEntity.getGUID();
     }
 
 

@@ -402,6 +402,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param classificationProperties properties to save in the classification
      * @param isMergeUpdate should the properties be merged with the existing properties or completely over-write them
      * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param forLineage the query is for lineage so ignore Memento classifications
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @throws InvalidParameterException the classification name is null
@@ -946,6 +947,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param relationshipGUIDTypeName type of relationship
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param effectiveTime what is the effective time for related queries needed to do the update
      * @param methodName calling method
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
@@ -7771,6 +7773,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param entityGUID unique identifier of object to update
      * @param entityTypeName unique name of the entity's type
      * @param methodName calling method
+     * @return test results
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem removing the properties from the repository.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -8432,6 +8435,8 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param requiredClassificationName  String the name of the classification that must be on the attached entity.
      * @param omittedClassificationName   String the name of a classification that must not be on the attached entity.
      * @param selectionEnd 0 means either end, 1 means only take from end 1, 2 means only take from end 2
+     * @param forDuplicateProcessing this request os for duplicate processing so do not deduplicate
+     * @param forLineage this request is for lineage so ignore Memento classifications
      * @param startingFrom start position for results
      * @param pageSize     maximum number of results
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -10261,6 +10266,8 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param serviceSupportedZones list of supported zones for this service.
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique value of the type that the results should match with
+     * @param forDuplicateProcessing this request os for duplicate processing so do not deduplicate
+     * @param forLineage this request is for lineage so ignore Memento classifications
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
@@ -11922,6 +11929,8 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique name of the type that the results should match with
      * @param serviceSupportedZones list of supported zones for this service
+     * @param forDuplicateProcessing this request os for duplicate processing so do not deduplicate
+     * @param forLineage this request is for lineage so ignore Memento classifications
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return

@@ -134,7 +134,7 @@ public class AssetManagerEventClient implements AssetManagerEventInterface
                                                                                     callerId);
 
             Connection      topicConnection = restResult.getConnection();
-            ConnectorBroker connectorBroker = new ConnectorBroker();
+            ConnectorBroker connectorBroker = new ConnectorBroker(auditLog);
             Connector       connector       = connectorBroker.getConnector(topicConnection);
 
             if (connector == null)
@@ -150,7 +150,6 @@ public class AssetManagerEventClient implements AssetManagerEventInterface
             if (connector instanceof AssetManagerOutTopicClientConnector)
             {
                 configurationEventTopicConnector = (AssetManagerOutTopicClientConnector)connector;
-                configurationEventTopicConnector.setAuditLog(auditLog);
                 configurationEventTopicConnector.start();
             }
             else

@@ -164,10 +164,10 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                   String                methodName)
     {
         auditLog.logMessage(methodName,
-                           OMRSAuditCode.PROCESS_INCOMING_EVENT.getMessageDefinition(instanceEventType.getName(), 
-                                                                                     instanceGUID, 
-                                                                                     instanceEventOriginator.toString()),
-                           instanceEvent.toString());
+                            OMRSAuditCode.PROCESS_INCOMING_EVENT.getMessageDefinition(instanceEventType.getName(),
+                                                                                      instanceGUID,
+                                                                                      instanceEventOriginator.toString()),
+                            instanceEvent.toString());
     }
 
 

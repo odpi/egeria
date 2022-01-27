@@ -4,6 +4,7 @@ package org.odpi.openmetadata.governanceservers.enginehostservices.admin;
 
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.RegisteredGovernanceServiceElement;
 import org.odpi.openmetadata.accessservices.governanceengine.properties.RegisteredGovernanceService;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
@@ -24,24 +25,28 @@ public class GovernanceServiceCache
     private RegisteredGovernanceServiceElement element;
     private RegisteredGovernanceService        properties;
     private Map<String, Map<String, String>>   requestTypeMapping;
-
+    private AuditLog                           auditLog;
 
     /**
      * Sets up the cache
      *
-     * @param governanceServerName name of this server.
-     * @param governanceEngineName name of this engine.
+     * @param governanceServerName name of this server
+     * @param governanceEngineName name of this engine
      * @param element registered properties of the governance services
+     * @param auditLog logging destination for governance services
      * @throws InvalidParameterException there is a problem with the connection used to create the
      * governance service instance or the governance service properties are null
      * @throws PropertyServerException problem with the governance service connector or related config
      */
     GovernanceServiceCache(String                              governanceServerName,
                            String                              governanceEngineName,
-                           RegisteredGovernanceServiceElement  element) throws InvalidParameterException,
-                                                                               PropertyServerException
+                           RegisteredGovernanceServiceElement  element,
+                           AuditLog                            auditLog) throws InvalidParameterException,
+                                                                                PropertyServerException
     {
         final String methodName = "GovernanceServiceCache constructor";
+
+        this.auditLog = auditLog;
 
         if ((element != null) && (element.getElementHeader() != null) && (element.getProperties() != null))
         {
@@ -110,7 +115,7 @@ public class GovernanceServiceCache
 
         try
         {
-            ConnectorBroker connectorBroker = new ConnectorBroker();
+            ConnectorBroker connectorBroker = new ConnectorBroker(auditLog);
 
             nextGovernanceService = connectorBroker.getConnector(properties.getConnection());
         }

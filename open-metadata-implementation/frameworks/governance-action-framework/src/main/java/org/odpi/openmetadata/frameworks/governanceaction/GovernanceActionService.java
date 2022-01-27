@@ -4,10 +4,15 @@ package org.odpi.openmetadata.frameworks.governanceaction;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
+import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
+import org.odpi.openmetadata.frameworks.connectors.VirtualConnectorExtension;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GAFErrorCode;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GovernanceServiceException;
+
+import java.util.List;
 
 /**
  * GovernanceActionService describes the base class for a specific type of connector that is responsible for preforming
@@ -25,10 +30,11 @@ import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GovernanceServiceE
  * When you build a governance action service, you extend the governance action service class that matches the purpose of your governance action
  * to ensure your code receives a context with the appropriate interface.
  */
-public abstract class GovernanceActionService extends ConnectorBase implements AuditLoggingComponent
+public abstract class GovernanceActionService extends ConnectorBase implements AuditLoggingComponent, VirtualConnectorExtension
 {
-    protected String   governanceServiceName = "<Unknown>";
-    protected AuditLog auditLog = null;
+    protected String          governanceServiceName = "<Unknown>";
+    protected AuditLog        auditLog = null;
+    protected List<Connector> embeddedConnectors = null;
 
     /**
      * Receive an audit log object that can be used to record audit log messages.  The caller has initialized it
@@ -36,9 +42,41 @@ public abstract class GovernanceActionService extends ConnectorBase implements A
      *
      * @param auditLog audit log object
      */
+    @Override
     public void setAuditLog(AuditLog auditLog)
     {
         this.auditLog = auditLog;
+    }
+
+
+    /**
+     * Return the component description that is used by this connector in the audit log.
+     *
+     * @return id, name, description, wiki page URL.
+     */
+    @Override
+    public ComponentDescription getConnectorComponentDescription()
+    {
+        if ((this.auditLog != null) && (this.auditLog.getReport() != null))
+        {
+            return auditLog.getReport().getReportingComponent();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Set up the list of connectors that this virtual connector will use to support its interface.
+     * The connectors are initialized waiting to start.  When start() is called on the
+     * virtual connector, it needs to pass start() to each of the embedded connectors. Similarly for
+     * disconnect().
+     *
+     * @param embeddedConnectors  list of connectors
+     */
+    public void initializeEmbeddedConnectors(List<Connector> embeddedConnectors)
+    {
+        this.embeddedConnectors = embeddedConnectors;
     }
 
 
