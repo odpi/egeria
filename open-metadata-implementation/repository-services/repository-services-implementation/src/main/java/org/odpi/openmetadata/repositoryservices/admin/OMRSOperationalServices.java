@@ -765,7 +765,8 @@ public class OMRSOperationalServices
                                                    localRepositoryEventManager,
                                                    localRepositoryContentManager,
                                                    new OMRSRepositoryEventExchangeRule(localRepositoryConfig.getEventsToSaveRule(),
-                                                                                       localRepositoryConfig.getSelectedTypesToSave()));
+                                                                                       localRepositoryConfig.getSelectedTypesToSave()),
+                                                   auditLog);
 
 
             /*
@@ -1070,12 +1071,10 @@ public class OMRSOperationalServices
     {
         try
         {
-            ConnectorBroker    connectorBroker = new ConnectorBroker();
+            ConnectorBroker    connectorBroker = new ConnectorBroker(auditLog);
             Connector          connector       = connectorBroker.getConnector(topicConnection);
 
             OMRSTopicConnector topicConnector  = (OMRSTopicConnector)connector;
-
-            topicConnector.setAuditLog(auditLog.createNewAuditLog(OMRSAuditingComponent.OMRS_TOPIC_CONNECTOR));
 
             return topicConnector;
         }
@@ -1109,12 +1108,10 @@ public class OMRSOperationalServices
     {
         try
         {
-            ConnectorBroker          connectorBroker = new ConnectorBroker();
+            ConnectorBroker          connectorBroker = new ConnectorBroker(auditLog);
             Connector                connector       = connectorBroker.getConnector(openMetadataArchiveStoreConnection);
 
             OpenMetadataArchiveStoreConnector archiveStoreConnector = (OpenMetadataArchiveStoreConnector)connector;
-
-            archiveStoreConnector.setAuditLog(auditLog.createNewAuditLog(OMRSAuditingComponent.ARCHIVE_STORE_CONNECTOR));
 
             return archiveStoreConnector;
         }
@@ -1165,12 +1162,10 @@ public class OMRSOperationalServices
          */
         try
         {
-            ConnectorBroker           connectorBroker = new ConnectorBroker();
+            ConnectorBroker           connectorBroker = new ConnectorBroker(auditLog);
             Connector                 connector       = connectorBroker.getConnector(localRepositoryEventMapperConnection);
 
             OMRSRepositoryEventMapperConnector eventMapperConnector = (OMRSRepositoryEventMapperConnector)connector;
-
-            eventMapperConnector.setAuditLog(auditLog.createNewAuditLog(OMRSAuditingComponent.LOCAL_REPOSITORY_EVENT_MAPPER));
 
             return eventMapperConnector;
         }

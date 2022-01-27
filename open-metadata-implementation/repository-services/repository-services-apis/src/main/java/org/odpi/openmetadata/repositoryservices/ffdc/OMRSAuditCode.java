@@ -982,7 +982,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
 
     OUTBOUND_TOPIC_EVENT("OMRS-AUDIT-8009",
                     OMRSAuditLogRecordSeverity.EVENT,
-                    "The Open Metadata Repository Services (OMRS) has sent event of type {0} to the cohort(s)",
+                    "The Open Metadata Repository Services (OMRS) has sent event of type {0} to the cohort topic {1}",
                     "This message is to create a record of the events that are being published.",
                     "Validate that the server is sending the events that are expected"),
 

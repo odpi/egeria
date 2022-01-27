@@ -428,7 +428,8 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
                 if (auditLog != null)
                 {
                     auditLog.logMessage(methodName,
-                                        OMRSAuditCode.OUTBOUND_TOPIC_EVENT.getMessageDefinition(event.getEventCategory().getName()),
+                                        OMRSAuditCode.OUTBOUND_TOPIC_EVENT.getMessageDefinition(event.getEventCategory().getName(),
+                                                                                                topicName),
                                         eventString);
                 }
             }

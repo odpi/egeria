@@ -129,8 +129,8 @@ public enum OMRSAuditingComponent implements ComponentDescription
 
     REMOTE_REPOSITORY_CONNECTOR(23,
              "Cohort Member Client Open Metadata Repository Connector",
-             "Provides access to open metadata located in a remote repository.",
-             "https://odpi.github.io/egeria-docs/concepts/repository-connector/"),
+             "Provides access to open metadata located in a remote repository for remote members of a cohort.",
+             "https://odpi.github.io/egeria-docs/concepts/cohort-member-client-connector/"),
 
     OMAS_OUT_TOPIC(24,
              "Open Metadata Access Service (OMAS) Out Topic",
@@ -172,6 +172,16 @@ public enum OMRSAuditingComponent implements ComponentDescription
              "Integration Connector",
              "Connector that manages metadata exchange with a third party technology.",
              "https://odpi.github.io/egeria-docs/concepts/integration-connector/"),
+
+    PLATFORM_SECURITY_CONNECTOR(32,
+             "Platform Metadata Security Connector",
+             "Connector that manages authorization requests to the OMAG Server Platform.",
+             "https://odpi.github.io/egeria-docs/concepts/platform-metadata-security-connector/"),
+
+    SERVER_SECURITY_CONNECTOR(33,
+             "Server Metadata Security Connector",
+             "Connector that manages authorization requests to the OMAG Server.",
+             "https://odpi.github.io/egeria-docs/concepts/server-metadata-security-connector/"),
     ;
 
 
