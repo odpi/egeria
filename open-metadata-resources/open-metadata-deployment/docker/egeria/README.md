@@ -27,7 +27,7 @@ Specifically it contains the full [egeria assembly](https://github.com/odpi/eger
 ## Using this image as part of our Lab Tutorials
 
 This docker image is primarily intended to be used as part of a series of tutorials we offer to demonstrate and explain
-egeria. The environments documented there will allow you to get an example environment up and running in very little time on either docker-compose, or within a kubernetes cluster.
+egeria. The environments documented there will allow you to get an example environment up and running in very little time within a kubernetes cluster.
  
 * [Open Metadata Tutorials](https://egeria.odpi.org/open-metadata-resources/open-metadata-tutorials/)
 
@@ -101,7 +101,7 @@ By default any data you create whilst the docker image is running will get writt
 
 As of version 2.6 (or master as of 18 Dec 2020), Egeria saves all data when running to the 'data' directory. In the docker image this is at '/deployments/data'
 
-Similarly when using this image within docker-compose or kubernetes you should ensure persistent storage is mounted over this directory. Our docker-compose and k8s examples will do this as of 2.6
+Similarly when using this image within kubernetes you should ensure persistent storage is mounted over this directory. Our k8s examples will do this as of 2.6
 
 An example using docker:
 
@@ -139,7 +139,7 @@ With that in place we can now run our docker image, this time making use of the 
 $ docker run -p 9443:9443 -v source=egeria-data,target=/deployments/data odpi/egeria:latest 
 /usr/local/s2i/run: line 15: /opt/jboss/container/maven/default//scl-enable-maven: No such file or directory
 Starting the Java application using /opt/jboss/container/java/run/run-java.sh ...
-INFO exec  java -XX:+UseParallelOldGC -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=20 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -XX:MaxMetaspaceSize=100m -XX:+ExitOnOutOfMemoryError -XX:MaxMetaspaceSize=1g -cp "." -jar /deployments/server/server-chassis-spring-3.5-SNAPSHOT.jar
+INFO exec  java -XX:+UseParallelOldGC -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=20 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -XX:MaxMetaspaceSize=100m -XX:+ExitOnOutOfMemoryError -XX:MaxMetaspaceSize=1g -cp "." -jar /deployments/server/server-chassis-spring-3.5.jar
  ODPi Egeria
     ____   __  ___ ___    ______   _____                                 ____   _         _     ___
    / __ \ /  |/  //   |  / ____/  / ___/ ___   ____ _   __ ___   ____   / _  \ / / __    / /  / _ /__   ____ _  _
@@ -198,7 +198,7 @@ you may need to create another job to retrieve the required libraries or content
 #### Adding to the image through a docker build
 
 Use the egeria image as a base, for example begin your custom Dockerfile with
-`FROM odpi/egeria:3.5-SNAPSHOT`
+`FROM odpi/egeria:3.5`
 
 Then add in the files you need, as well as customize the LOADER_PATH variable ie
 `COPY myextralib.jar /deployments/server/lib`

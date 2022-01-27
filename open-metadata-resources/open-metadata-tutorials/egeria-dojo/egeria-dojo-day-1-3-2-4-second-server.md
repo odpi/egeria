@@ -13,24 +13,13 @@ But first you need to create a second server.
 
 The docker image that you have been using is isolated in a container.  This is good as far as it goes
 but is no help when you want to connect it to other servers.
-For this next exercise, we are going to use `docker-compose` to run a set of docker containers with different
-technologies.
+For this next exercise, we are going to use Kubernetes.
 
-Watch video showing docker compose and the open metadata labs: [https://youtu.be/nuRKPfRDKEc](https://youtu.be/nuRKPfRDKEc)
-
-Before you move forward, shut down your egeria docker container using the docker desktop to save cycles on your machine.
-You can delete it if you do not want it any more.
+EDITOR NOTE: Compose is now removed. This guide needs rewriting to use the egeria-base helm chart or similar
 
 ## Set up environment
 
-Now [download the latest version of Egeria from GitHub](../building-egeria-tutorial/task-downloading-egeria-source.md)
-in a new directory on your machine.  This is a direct copy of the latest content from GitHub.
-
-1. From within the `egeria/open-metadata-resources/open-metadata-deployment/compose/tutorials` directory, run the command:
-
-    ```bash
-    $ docker-compose -f ./egeria-tutorial.yaml up
-    ```
+EDITOR_NOTE: Point user at helm chart
 
 1. You may need to wait while some containers are downloaded . They will then be started, which will likely take less than a minute. Once you see the following lines:
 
@@ -56,7 +45,7 @@ Then
 * [Set up the event bus defaults](../../../open-metadata-implementation/admin-services/docs/user/configuring-event-bus.md)
 * Connect then together by [adding cohort configuration](../../../open-metadata-implementation/admin-services/docs/user/configuring-registration-to-a-cohort.md) to each server.
 
-Start both servers and view their logs via the Docker Desktop - you should see that they are communicating.
+Start both servers and view their logs - you should see that they are communicating.
 
 Now use the commands in the `Egeria-repository-services-metadata-highway` to query information about
 the cohort from each server's perspective.
