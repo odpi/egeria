@@ -133,12 +133,11 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
         {
             try
             {
-                ConnectorBroker connectorBroker = new ConnectorBroker();
+                ConnectorBroker connectorBroker = new ConnectorBroker(auditLog);
                 Connector       connector       = connectorBroker.getConnector(connection);
 
                 serverSecurityConnector = (OpenMetadataServerSecurityConnector)connector;
 
-                serverSecurityConnector.setAuditLog(auditLog);
                 serverSecurityConnector.setServerName(serverName);
                 serverSecurityConnector.setLocalServerUserId(localServerUserId);
                 serverSecurityConnector.start();

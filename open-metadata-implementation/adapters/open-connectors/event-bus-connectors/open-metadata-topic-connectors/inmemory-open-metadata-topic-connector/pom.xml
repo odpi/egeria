@@ -30,4 +30,13 @@
 
     <artifactId>inmemory-open-metadata-topic-connector</artifactId>
 
+    <dependencies>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>audit-log-framework</artifactId>
+        </dependency>
+
+    </dependencies>
+
 </project>

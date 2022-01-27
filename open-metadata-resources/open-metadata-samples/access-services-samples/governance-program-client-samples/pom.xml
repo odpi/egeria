@@ -32,6 +32,7 @@
     <modules>
         <module>governance-zone-create-sample</module>
         <module>governance-leadership-sample</module>
+        <module>governance-subject-area-sample</module>
     </modules>
 
 </project>

@@ -62,6 +62,11 @@
             <artifactId>testng</artifactId>
             <scope>test</scope>
         </dependency>
+        
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>repository-services-archive-utilities</artifactId>
+        </dependency>
 
     </dependencies>
 

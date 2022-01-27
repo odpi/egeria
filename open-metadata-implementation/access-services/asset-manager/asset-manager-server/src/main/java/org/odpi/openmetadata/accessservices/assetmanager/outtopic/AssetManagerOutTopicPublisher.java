@@ -127,8 +127,6 @@ public class AssetManagerOutTopicPublisher
                 }
 
                 outTopicServerConnector.sendEvent(event);
-
-                outTopicAuditLog.logMessage(methodName, AssetManagerAuditCode.OUT_TOPIC_EVENT.getMessageDefinition(event.toString()));
             }
             catch (Exception error)
             {

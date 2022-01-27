@@ -89,7 +89,7 @@ public enum AssetManagerAuditCode implements AuditLogMessageSet
 
     OUT_TOPIC_EVENT("OMAS-ASSET-MANAGER-0013",
                     OMRSAuditLogRecordSeverity.EVENT,
-                    "The Asset Manager Open Metadata Access Service (OMAS) has sent event: {0}",
+                    "The Asset Manager Open Metadata Access Service (OMAS) has sent event of type: {0}",
                     "The access service sends out notifications about changes to assets located on " +
                             "asset managers.  This message is to create a record of the events that are being published.",
                     "This event indicates that one of the assets within a asset manager has changed."),

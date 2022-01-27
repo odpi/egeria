@@ -330,12 +330,13 @@ public class APIParameterListHandler<B> extends ReferenceableHandler<B>
      * @param qualifiedName unique name for the API parameter list - used in other configuration
      * @param displayName short display name for the API parameter list
      * @param description description of the governance API parameter list
-     * @param versionNumber version of the schema type.
+     * @param versionNumber version of the schema type
      * @param isDeprecated is the schema type deprecated
      * @param author name of the author
-     * @param usage guidance on how the schema should be used.
-     * @param encodingStandard format of the schema.
-     * @param namespace namespace where the schema is defined.
+     * @param usage guidance on how the schema should be used
+     * @param encodingStandard format of the schema
+     * @param namespace namespace where the schema is defined
+     * @param required is this parameter required when the API is invoked
      * @param additionalProperties additional properties for an API parameter list
      * @param suppliedTypeName type of term
      * @param extendedProperties  properties for a governance API parameter list subtype

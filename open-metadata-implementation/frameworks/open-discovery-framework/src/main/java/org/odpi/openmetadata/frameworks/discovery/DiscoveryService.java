@@ -4,8 +4,10 @@ package org.odpi.openmetadata.frameworks.discovery;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
+import org.odpi.openmetadata.frameworks.connectors.VirtualConnectorExtension;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.discovery.ffdc.DiscoveryServiceException;
 import org.odpi.openmetadata.frameworks.discovery.ffdc.ODFErrorCode;
@@ -22,11 +24,14 @@ import java.util.List;
  * Some discovery services manage the invocation of other discovery services.  These discovery services are called
  * discovery pipelines.
  */
-public abstract class DiscoveryService extends ConnectorBase implements AuditLoggingComponent
+public abstract class DiscoveryService extends ConnectorBase implements AuditLoggingComponent,
+                                                                        VirtualConnectorExtension
 {
     protected String           discoveryServiceName = "<Unknown>";
     protected DiscoveryContext discoveryContext = null;
     protected AuditLog         auditLog = null;
+    protected List<Connector>  embeddedConnectors = null;
+
 
     /**
      * Receive an audit log object that can be used to record audit log messages.  The caller has initialized it
@@ -34,9 +39,43 @@ public abstract class DiscoveryService extends ConnectorBase implements AuditLog
      *
      * @param auditLog audit log object
      */
+    @Override
     public void setAuditLog(AuditLog auditLog)
     {
         this.auditLog = auditLog;
+    }
+
+
+    /**
+     * Return the component description that is used by this connector in the audit log.
+     *
+     * @return id, name, description, wiki page URL.
+     */
+    @Override
+    public ComponentDescription getConnectorComponentDescription()
+    {
+        if ((this.auditLog != null) && (this.auditLog.getReport() != null))
+        {
+            return auditLog.getReport().getReportingComponent();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Set up the list of discovery services connectors that will be invoked as part of this discovery pipeline.
+     *
+     * The connectors are initialized waiting to start.  After start() is called on the
+     * discovery pipeline, it will choreograph the invocation of its embedded discovery services by calling
+     * start() to each of them when they are to run. Similarly for disconnect().
+     *
+     * @param embeddedConnectors  list of embedded connectors that are hopefully discovery services
+     */
+    @Override
+    public void initializeEmbeddedConnectors(List<Connector> embeddedConnectors)
+    {
+        this.embeddedConnectors = embeddedConnectors;
     }
 
 
@@ -81,13 +120,11 @@ public abstract class DiscoveryService extends ConnectorBase implements AuditLog
      * Retrieve and validate the list of embedded connectors and cast them to discovery service connector.
      * This is used by DiscoveryPipelines and DiscoveryScanningServices.
      *
-     * @param embeddedConnectors list of supplied connector instances supplied by the Connector Broker.
-     *
      * @return list of discovery service connectors
      *
      * @throws DiscoveryServiceException one of the embedded connectors is not a discovery service
      */
-    protected List<DiscoveryService> getEmbeddedDiscoveryServices(List<Connector>  embeddedConnectors) throws DiscoveryServiceException
+    protected List<DiscoveryService> getEmbeddedDiscoveryServices() throws DiscoveryServiceException
     {
         final String           methodName        = "getEmbeddedDiscoveryServices";
         List<DiscoveryService> discoveryServices = null;
@@ -177,8 +214,6 @@ public abstract class DiscoveryService extends ConnectorBase implements AuditLog
     @Override
     public  void disconnect() throws ConnectorCheckedException
     {
-        final String methodName = "disconnect";
-
         super.disconnect();
     }
 }

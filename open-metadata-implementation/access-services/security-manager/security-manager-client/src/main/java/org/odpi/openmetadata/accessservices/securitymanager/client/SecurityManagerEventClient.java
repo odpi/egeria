@@ -174,7 +174,7 @@ public class SecurityManagerEventClient implements SecurityManagerEventInterface
                                                                                     callerId);
 
             Connection      topicConnection = restResult.getConnection();
-            ConnectorBroker connectorBroker = new ConnectorBroker();
+            ConnectorBroker connectorBroker = new ConnectorBroker(auditLog);
             Connector       connector       = connectorBroker.getConnector(topicConnection);
 
             if (connector == null)
@@ -190,7 +190,6 @@ public class SecurityManagerEventClient implements SecurityManagerEventInterface
             if (connector instanceof SecurityManagerOutTopicClientConnector)
             {
                 configurationEventTopicConnector = (SecurityManagerOutTopicClientConnector)connector;
-                configurationEventTopicConnector.setAuditLog(auditLog);
                 configurationEventTopicConnector.start();
             }
             else
