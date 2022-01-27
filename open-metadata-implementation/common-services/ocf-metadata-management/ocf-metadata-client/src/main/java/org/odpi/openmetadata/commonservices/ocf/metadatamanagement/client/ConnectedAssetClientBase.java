@@ -200,7 +200,7 @@ public class ConnectedAssetClientBase
                                                   String          methodName) throws ConnectionCheckedException,
                                                                                      ConnectorCheckedException
     {
-        ConnectorBroker connectorBroker = new ConnectorBroker();
+        ConnectorBroker connectorBroker = new ConnectorBroker(auditLog);
 
         /*
          * Pass the connection to the ConnectorBroker to create the connector instance.
@@ -257,7 +257,7 @@ public class ConnectedAssetClientBase
         /*
          * At this stage, the asset properties are not retrieved from the server.  This does not happen until the caller
          * issues a connector.getConnectedAssetProperties.  This causes the connectedAssetProperties.refresh() call
-         * to be made, which contacts the OMAS server and retrieves the asset properties.
+         * to be made, which contacts the OMAG server and retrieves the asset properties.
          *
          * Delaying the population of the connected asset properties ensures the latest values are returned to the
          * caller (consider a long running connection).  Alternatively, these properties may not ever be used by the
