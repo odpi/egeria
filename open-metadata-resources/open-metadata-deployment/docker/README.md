@@ -9,7 +9,7 @@ repositories.
 
 ## Building
 
-Docker images are not built by default. They can be built manually or via specific jenkins jobs.
+Docker images are not built by default. They can be built manually.
 
 To build, run the following *from within this same directory* (running it at the root level of the
 project will needlessly build the entire Egeria project first):
