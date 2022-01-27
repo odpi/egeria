@@ -39,7 +39,8 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.DATA_STORE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.FILE_FOLDER;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_TABLE;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_COLUMN;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.SCHEMA_ATTRIBUTE;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TOPIC;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.UPDATE_TIME;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ZONE_MEMBERSHIP;
 
@@ -471,7 +472,6 @@ public class HandlerHelper {
      */
     public boolean isDataStore(String serviceName, EntityDetail entityDetail) {
         return repositoryHelper.isTypeOf(serviceName, entityDetail.getType().getTypeDefName(), DATA_STORE);
-
     }
 
 
@@ -488,14 +488,26 @@ public class HandlerHelper {
     }
 
     /**
-     * Verifies if the entity is of type TabularColumn or subtype
+     * Verifies if the entity is of type SchemaAttribute or subtype
      *
      * @param serviceName  the service name
      * @param typeName type of the entity
      *
      * @return true if the entity is of type TabularColumn or subtype, false otherwise
      */
-    public boolean isTabularColumn(String serviceName, String typeName) {
-        return repositoryHelper.isTypeOf(serviceName, typeName, TABULAR_COLUMN);
+    public boolean isSchemaAttribute(String serviceName, String typeName) {
+        return repositoryHelper.isTypeOf(serviceName, typeName, SCHEMA_ATTRIBUTE);
+    }
+
+    /**
+     * Verifies if the entity is of type Topic or subtype
+     *
+     * @param serviceName  the service name
+     * @param entityDetail the entity detail
+     *
+     * @return true if the entity is of type RelationalTable or subtype, false otherwise
+     */
+    public boolean isTopic(String serviceName, EntityDetail entityDetail) {
+        return repositoryHelper.isTypeOf(serviceName, entityDetail.getType().getTypeDefName(), TOPIC);
     }
 }
