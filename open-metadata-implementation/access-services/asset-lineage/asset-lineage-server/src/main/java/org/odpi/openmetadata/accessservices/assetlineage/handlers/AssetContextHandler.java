@@ -165,6 +165,9 @@ public class AssetContextHandler {
      */
     public Map<String, RelationshipsContext> buildColumnContext(String userId, LineageEntity lineageEntity)
             throws OCFCheckedExceptionBase {
+        if (!handlerHelper.isSchemaAttribute(userId, lineageEntity.getTypeDefName())) {
+            return new HashMap<>();
+        }
         EntityDetail entityDetail = handlerHelper.getEntityDetails(userId, lineageEntity.getGuid(), SCHEMA_ATTRIBUTE);
 
         return buildSchemaElementContext(userId, entityDetail);
