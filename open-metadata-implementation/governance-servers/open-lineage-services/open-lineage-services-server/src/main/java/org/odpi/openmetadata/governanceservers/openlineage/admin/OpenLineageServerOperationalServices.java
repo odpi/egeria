@@ -257,7 +257,7 @@ public class OpenLineageServerOperationalServices {
         final String methodName = "getGraphConnector";
         Connector connector = null;
         try {
-            connector = new ConnectorBroker().getConnector(connection);
+            connector = new ConnectorBroker(auditLog).getConnector(connection);
         } catch (OCFCheckedExceptionBase e) {
             OCFCheckedExceptionToOMAGConfigurationError(e, auditCode, actionDescription);
         } catch (Exception e) {

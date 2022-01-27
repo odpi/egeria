@@ -299,7 +299,7 @@ public abstract class GovernanceEngineHandler
 
                     for (String governanceRequestType : governanceRequestTypes)
                     {
-                        GovernanceServiceCache governanceServiceCache = new GovernanceServiceCache(serverName, governanceEngineName, governanceServiceElement);
+                        GovernanceServiceCache governanceServiceCache = new GovernanceServiceCache(serverName, governanceEngineName, governanceServiceElement, auditLog);
                         governanceServiceLookupTable.put(governanceRequestType, governanceServiceCache);
 
                         auditLog.logMessage(methodName,
