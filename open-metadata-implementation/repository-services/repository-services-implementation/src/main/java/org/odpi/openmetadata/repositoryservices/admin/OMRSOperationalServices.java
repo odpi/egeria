@@ -614,16 +614,29 @@ public class OMRSOperationalServices
      */
     private OMRSTopicConnector  initializeEnterpriseOMRSTopicConnector(EnterpriseAccessConfig  enterpriseAccessConfig)
     {
+        final String methodName = "initializeEnterpriseOMRSTopicConnector";
+
         OMRSTopicConnector    enterpriseOMRSTopicConnector = null;
 
         if (enterpriseAccessConfig != null)
         {
-            Connection        enterpriseOMRSTopicConnection = enterpriseAccessConfig.getEnterpriseOMRSTopicConnection();
-
-            if (enterpriseOMRSTopicConnection != null)
+            try
             {
-                enterpriseOMRSTopicConnector = getTopicConnector("Enterprise Access",
-                                                                 enterpriseOMRSTopicConnection);
+                Connection enterpriseOMRSTopicConnection = enterpriseAccessConfig.getEnterpriseOMRSTopicConnection();
+
+                if (enterpriseOMRSTopicConnection != null)
+                {
+                    enterpriseOMRSTopicConnector = getTopicConnector("Enterprise Access", enterpriseOMRSTopicConnection);
+                    enterpriseOMRSTopicConnector.start();
+                }
+            }
+            catch (Exception  error)
+            {
+                throw new OMRSLogicErrorException(OMRSErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                          methodName,
+                                                                                                          error.getMessage()),
+                                                  this.getClass().getName(),
+                                                  methodName);
             }
         }
 
@@ -640,16 +653,29 @@ public class OMRSOperationalServices
      */
     private OMRSTopicConnector  initializeRemoteEnterpriseOMRSTopicConnector(EnterpriseAccessConfig  enterpriseAccessConfig)
     {
+        final String methodName = "initializeRemoteEnterpriseOMRSTopicConnector";
+
         OMRSTopicConnector    enterpriseOMRSTopicConnector = null;
 
         if (enterpriseAccessConfig != null)
         {
-            Connection        enterpriseOMRSTopicConnection = enterpriseAccessConfig.getRemoteEnterpriseOMRSTopicConnection();
-
-            if (enterpriseOMRSTopicConnection != null)
+            try
             {
-                enterpriseOMRSTopicConnector = getTopicConnector("Remote Enterprise Access",
-                                                                  enterpriseOMRSTopicConnection);
+                Connection enterpriseOMRSTopicConnection = enterpriseAccessConfig.getRemoteEnterpriseOMRSTopicConnection();
+
+                if (enterpriseOMRSTopicConnection != null)
+                {
+                    enterpriseOMRSTopicConnector = getTopicConnector("Remote Enterprise Access", enterpriseOMRSTopicConnection);
+                    enterpriseOMRSTopicConnector.start();
+                }
+            }
+            catch (Exception error)
+            {
+                throw new OMRSLogicErrorException(OMRSErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                          methodName,
+                                                                                                          error.getMessage()),
+                                                  this.getClass().getName(),
+                                                  methodName);
             }
         }
 
