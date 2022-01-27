@@ -6,7 +6,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.odpi.openmetadata.accessservices.assetlineage.auditlog.AssetLineageAuditCode;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
-import org.odpi.openmetadata.accessservices.assetlineage.server.AssetLineageInstanceHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageTypesValidator;
 import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -214,7 +213,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      */
     private void processClassifiedEntityEvent(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
         if (assetLineageTypesValidator.isValidLineageEntityType(entityDetail, serverName)
-                && assetLineageTypesValidator.anyLineageClassificationsLeft(entityDetail)
+                && assetLineageTypesValidator.hasValidClassificationTypes(entityDetail)
                 && publisher.isEntityEligibleForPublishing(entityDetail)) {
 
             log.debug(PROCESSING_ENTITY_DETAIL_DEBUG_MESSAGE, AssetLineageEventType.CLASSIFICATION_CONTEXT_EVENT.getEventTypeName(),
@@ -235,7 +234,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      */
     private void processReclassifiedEntityEvent(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
         if (assetLineageTypesValidator.isValidLineageEntityType(entityDetail, serverName)
-                && assetLineageTypesValidator.anyLineageClassificationsLeft(entityDetail)
+                && assetLineageTypesValidator.hasValidClassificationTypes(entityDetail)
                 && publisher.isEntityEligibleForPublishing(entityDetail)) {
 
             log.debug(PROCESSING_ENTITY_DETAIL_DEBUG_MESSAGE, AssetLineageEventType.RECLASSIFIED_ENTITY_EVENT.getEventTypeName(),
@@ -256,7 +255,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      */
     private void processDeclassifiedEntityEvent(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
         if (assetLineageTypesValidator.isValidLineageEntityType(entityDetail, serverName)
-                && assetLineageTypesValidator.anyLineageClassificationsLeft(entityDetail)
+                && assetLineageTypesValidator.hasValidClassificationTypes(entityDetail)
                 && publisher.isEntityEligibleForPublishing(entityDetail)) {
 
             log.debug(PROCESSING_ENTITY_DETAIL_DEBUG_MESSAGE, AssetLineageEventType.DECLASSIFIED_ENTITY_EVENT.getEventTypeName(),

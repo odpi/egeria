@@ -14,6 +14,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
 import org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants;
+import org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageTypesValidator;
 import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -53,10 +54,8 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CLASSIFICATION;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CLASSIFICATION_NAME_ASSET_OWNERSHIP;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CLASSIFICATION_NAME_ASSET_ZONE_MEMBERSHIP;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.DATA_STORE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GUID_PARAMETER;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_COLUMN;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_TABLE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.SCHEMA_ATTRIBUTE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.UPDATE_TIME;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ZONE_MEMBERSHIP;
@@ -82,9 +81,10 @@ class HandlerHelperTest {
     @Mock
     private RepositoryHandler repositoryHandler;
     @Mock
-    private Set<String> lineageClassificationTypes;
-    @Mock
     private Converter converter;
+    @Mock
+    private AssetLineageTypesValidator assetLineageTypesValidator;
+
     @InjectMocks
     private HandlerHelper handlerHelper;
 
@@ -284,8 +284,12 @@ class HandlerHelperTest {
 
     @Test
     void buildContextForLineageClassifications() {
-        EntityDetail entityDetail = mockEntityDetailWithClassifications(GUID);
-        when(lineageClassificationTypes.contains(CLASSIFICATION_NAME_ASSET_ZONE_MEMBERSHIP)).thenReturn(true);
+        List<Classification> classifications = new ArrayList<>();
+        Classification classification = mockClassification(CLASSIFICATION_NAME_ASSET_ZONE_MEMBERSHIP);
+        classifications.add(classification);
+        classifications.add(mockClassification(CLASSIFICATION_NAME_ASSET_OWNERSHIP));
+        EntityDetail entityDetail = mockEntityDetailWithClassifications(GUID, classifications);
+        when(assetLineageTypesValidator.filterLineageClassifications(entityDetail.getClassifications())).thenReturn(classifications);
 
         LineageEntity originalEntityVertex = mock(LineageEntity.class);
         when(converter.createLineageEntity(entityDetail)).thenReturn(originalEntityVertex);
@@ -293,7 +297,7 @@ class HandlerHelperTest {
         RelationshipsContext response = handlerHelper.buildContextForLineageClassifications(entityDetail);
         Set<GraphContext> responseRelationships = response.getRelationships();
         Optional<GraphContext> relationship = responseRelationships.stream().findFirst();
-        assertEquals(1, responseRelationships.size());
+        assertEquals(2, responseRelationships.size());
         assertTrue(relationship.isPresent());
 
         LineageEntity expectedClassificationVertex = getExpectedClassificationVertex();
@@ -304,8 +308,11 @@ class HandlerHelperTest {
 
     @Test
     void addContextForRelationships() throws OCFCheckedExceptionBase {
-        EntityDetail entityDetail = mockEntityDetailWithClassifications(ENTITY_ONE_GUID);
-        when(lineageClassificationTypes.contains(CLASSIFICATION_NAME_ASSET_ZONE_MEMBERSHIP)).thenReturn(true);
+        List<Classification> classifications = new ArrayList<>();
+        Classification classification = mockClassification(CLASSIFICATION_NAME_ASSET_ZONE_MEMBERSHIP);
+        classifications.add(classification);
+        EntityDetail entityDetail = mockEntityDetailWithClassifications(ENTITY_ONE_GUID, classifications);
+        when(assetLineageTypesValidator.filterLineageClassifications(entityDetail.getClassifications())).thenReturn(classifications);
 
         LineageEntity originalEntityVertex = mock(LineageEntity.class);
         when(converter.createLineageEntity(entityDetail)).thenReturn(originalEntityVertex);
@@ -398,11 +405,7 @@ class HandlerHelperTest {
         return classification;
     }
 
-    private EntityDetail mockEntityDetailWithClassifications(String guid) {
-        List<Classification> classifications = new ArrayList<>();
-        Classification classification = mockClassification(CLASSIFICATION_NAME_ASSET_ZONE_MEMBERSHIP);
-        classifications.add(classification);
-        classifications.add(mockClassification(CLASSIFICATION_NAME_ASSET_OWNERSHIP));
+    private EntityDetail mockEntityDetailWithClassifications(String guid, List<Classification> classifications) {
         EntityDetail entityDetail = mock(EntityDetail.class);
         when(entityDetail.getClassifications()).thenReturn(classifications);
         when(entityDetail.getGUID()).thenReturn(guid);

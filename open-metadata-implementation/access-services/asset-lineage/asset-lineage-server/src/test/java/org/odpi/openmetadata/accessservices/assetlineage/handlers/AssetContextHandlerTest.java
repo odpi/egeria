@@ -178,17 +178,6 @@ class AssetContextHandlerTest {
     }
 
     @Test
-    void buildColumnContext_notValidType() throws OCFCheckedExceptionBase {
-        LineageEntity lineageEntity = mockLineageEntity(DATA_FILE);
-        EntityDetail entityDetail = mockEntityDetail(DATA_FILE);
-        when(handlerHelper.isSchemaAttribute(USER, DATA_FILE)).thenReturn(false);
-
-        assetContextHandler.buildColumnContext(USER, lineageEntity);
-        verify(handlerHelper, times(0)).getEntityDetails(USER, GUID, DATA_FILE);
-        verify(handlerHelper, times(0)).addContextForRelationships(eq(USER), eq(entityDetail), eq(NESTED_SCHEMA_ATTRIBUTE), any());
-    }
-
-    @Test
     void buildAssetEntityContext() throws OCFCheckedExceptionBase {
         LineageEntity lineageEntity = mockLineageEntity(RELATIONAL_TABLE);
         EntityDetail entityDetail = mockEntityDetail(RELATIONAL_TABLE);

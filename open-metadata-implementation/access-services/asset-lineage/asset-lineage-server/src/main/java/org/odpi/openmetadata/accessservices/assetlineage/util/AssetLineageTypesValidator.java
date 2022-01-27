@@ -51,7 +51,7 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 /**
  * Constants for Open Metadata Types names used to build lineage functionality
  */
-public final class AssetLineageTypesValidator {
+public class AssetLineageTypesValidator {
 
     private final OMRSRepositoryHelper repositoryHelper;
     private final HashSet<String> lineageClassificationTypes = new HashSet<>();
@@ -97,7 +97,7 @@ public final class AssetLineageTypesValidator {
      *
      * @return true if the entity contains lineage classifications
      */
-    public boolean anyLineageClassificationsLeft(EntityDetail entityDetail) {
+    public boolean hasValidClassificationTypes(EntityDetail entityDetail) {
         if (CollectionUtils.isEmpty(entityDetail.getClassifications())) {
             return false;
         }
