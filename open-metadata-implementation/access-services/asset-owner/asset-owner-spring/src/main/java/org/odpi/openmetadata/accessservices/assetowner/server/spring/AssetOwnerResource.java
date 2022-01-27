@@ -942,6 +942,7 @@ public class AssetOwnerResource
     /**
      * Return the basic attributes of an asset.
      *
+     * @param serverName server called
      * @param userId calling user
      * @param assetGUID unique identifier of the asset
      * @return basic asset properties

@@ -4,6 +4,7 @@ package org.odpi.openmetadata.repositoryservices.rest.services;
 
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerServiceInstance;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
@@ -18,6 +19,7 @@ public class OMRSRepositoryServicesInstance extends OMAGServerServiceInstance
     private OMRSAuditLog                 masterAuditLog;
     private OMRSMetadataCollection       localMetadataCollection;
     private OMRSMetadataCollection       enterpriseMetadataCollection;
+    private Connection                   remoteEnterpriseOMRSTopicConnection;
     private OMRSMetadataHighwayManager   metadataHighwayManager;
     private String                       localServerURL;
     private AuditLog                     auditLog;
@@ -29,8 +31,9 @@ public class OMRSRepositoryServicesInstance extends OMAGServerServiceInstance
      *
      * @param localServerName name of this server
      * @param masterAuditLog audit log at the top of the tree
-     * @param localRepositoryConnector link to the repository responsible for servicing the REST calls to the local repository.
-     * @param enterpriseRepositoryConnector link to the repository responsible for servicing the REST calls to the enterprise.
+     * @param localRepositoryConnector link to the repository responsible for servicing the REST calls to the local repository
+     * @param enterpriseRepositoryConnector link to the repository responsible for servicing the REST calls to the enterprise
+     * @param remoteEnterpriseTopicConnection connection object to pass to client to enable it to listen on enterprise topic events - may be null
      * @param metadataHighwayManager manager of the cohort managers
      * @param localServerURL URL of the local server
      * @param serviceName name of this service
@@ -41,6 +44,7 @@ public class OMRSRepositoryServicesInstance extends OMAGServerServiceInstance
                                           OMRSAuditLog                 masterAuditLog,
                                           OMRSRepositoryConnector      localRepositoryConnector,
                                           OMRSRepositoryConnector      enterpriseRepositoryConnector,
+                                          Connection                   remoteEnterpriseTopicConnection,
                                           OMRSMetadataHighwayManager   metadataHighwayManager,
                                           String                       localServerURL,
                                           String                       serviceName,
@@ -53,6 +57,7 @@ public class OMRSRepositoryServicesInstance extends OMAGServerServiceInstance
         this.auditLog = auditLog;
         this.localServerURL = localServerURL;
         this.metadataHighwayManager = metadataHighwayManager;
+        this.remoteEnterpriseOMRSTopicConnection = remoteEnterpriseTopicConnection;
 
         /*
          * The local repository connector is null in governance servers, view servers and metadata access points.
@@ -131,6 +136,20 @@ public class OMRSRepositoryServicesInstance extends OMAGServerServiceInstance
     {
         return enterpriseMetadataCollection;
     }
+
+
+    /**
+     * Return the connection to the remote enterprise topic connection.  This may be null, but if it is enabled in the
+     * servers configuration, this call is ued to return the configured connection object to a remote client so it can listen for
+     * enterprise topic events.
+     *
+     * @return connection or null
+     */
+    public Connection  getRemoteEnterpriseOMRSTopicConnection()
+    {
+        return remoteEnterpriseOMRSTopicConnection;
+    }
+
 
 
     /**

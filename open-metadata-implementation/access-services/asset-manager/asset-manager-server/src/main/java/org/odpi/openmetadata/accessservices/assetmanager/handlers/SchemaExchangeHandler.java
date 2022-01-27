@@ -600,6 +600,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @param schemaTypeGUID unique identifier of the schema type to connect
      * @param parentElementGUID unique identifier of the open metadata element that this schema type is to be connected to
      * @param parentElementTypeName unique type name of the open metadata element that this schema type is to be connected to
+     * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -612,8 +613,8 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                       String parentElementGUID,
                                       String parentElementTypeName,
                                       String methodName) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException
     {
         final String schemaTypeGUIDParameterName    = "schemaTypeGUID";
         final String parentElementGUIDParameterName = "parentElementGUID";
@@ -1252,7 +1253,9 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerIsHome ensure that only the asset manager can update this relationship
      * @param schemaElementGUID unique identifier of the metadata element to update
+     * @param formula formula used to calculate the value
      * @param methodName     calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid

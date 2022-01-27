@@ -38,7 +38,7 @@ public class OMRSRepositoryServicesInstanceHandler extends OMAGServerServiceInst
      * @return specific service instance
      * @throws InvalidParameterException the server name is not known
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
-     * @throws RepositoryErrorException the service name is not know - indicating a logic error
+     * @throws RepositoryErrorException the service name is not known - indicating a logic error
      */
     public OMRSRepositoryServicesInstance getInstance(String   userId,
                                                       String   serverName,

@@ -200,7 +200,7 @@ public class RelatedAssetsResponseTest
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -209,7 +209,7 @@ public class RelatedAssetsResponseTest
         {
             validateResultObject(objectMapper.readValue(jsonString, RelatedAssetsResponse.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -223,7 +223,7 @@ public class RelatedAssetsResponseTest
         {
             jsonString = objectMapper.writeValueAsString(superObject);
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -232,7 +232,7 @@ public class RelatedAssetsResponseTest
         {
             validateResultObject((RelatedAssetsResponse) objectMapper.readValue(jsonString, OCFOMASAPIResponse.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

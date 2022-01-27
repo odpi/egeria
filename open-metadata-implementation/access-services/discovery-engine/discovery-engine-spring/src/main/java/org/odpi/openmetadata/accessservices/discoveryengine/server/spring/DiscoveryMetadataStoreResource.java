@@ -749,6 +749,7 @@ public class DiscoveryMetadataStoreResource
      * @param serverName name of server instance to route request to
      * @param userId identifier of calling user
      * @param dataFieldGUID unique identifier of the data field
+     * @param requestBody null request body
      *
      * @return void or
      *  InvalidParameterException one of the parameters is invalid or

@@ -194,7 +194,7 @@ public class GlossaryTermResponseTest
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -203,7 +203,7 @@ public class GlossaryTermResponseTest
         {
             validateResultObject(objectMapper.readValue(jsonString, GlossaryTermResponse.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

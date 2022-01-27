@@ -185,7 +185,7 @@ public class ConnectedAssetProperties extends org.odpi.openmetadata.frameworks.c
         {
             throw error;
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             restExceptionHandler.handleUnexpectedException(error, methodName, remoteServerName, omasServerURL);
         }

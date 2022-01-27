@@ -174,7 +174,7 @@ public class ConnectedAssetExternalIdentifiers extends AssetExternalIdentifiers
                 return resultList;
             }
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             restExceptionHandler.handleUnexpectedException(error, methodName, serverName, omasServerURL);
         }
