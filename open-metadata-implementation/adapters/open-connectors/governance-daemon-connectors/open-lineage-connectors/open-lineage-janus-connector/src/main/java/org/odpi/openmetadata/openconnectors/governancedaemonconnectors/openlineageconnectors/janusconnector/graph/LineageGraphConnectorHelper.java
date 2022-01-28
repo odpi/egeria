@@ -674,7 +674,16 @@ public class LineageGraphConnectorHelper {
             incompleteVertices.addAll(getLineageVertices(graph));
             incompleteEdges.addAll(getLineageEdges(graph));
         }
-        lineageVertices.addAll(incompleteVertices);
+
+        // The processed vertices don't always have all properties, so here we need to check for the node id to avoid duplicates.
+        // equals from LineageVertex takes into account all properties
+        for(LineageVertex incompleteVertex : incompleteVertices) {
+            Optional<LineageVertex> optionalLineageVertex = lineageVertices.stream()
+                    .filter(lineageVertex -> lineageVertex.getNodeID().equals(incompleteVertex.getNodeID())).findAny();
+            if(optionalLineageVertex.isEmpty()) {
+                lineageVertices.add(incompleteVertex);
+            }
+        }
         lineageEdges.addAll(incompleteEdges);
     }
 
