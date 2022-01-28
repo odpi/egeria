@@ -5,8 +5,6 @@ package org.odpi.openmetadata.adapters.connectors.discoveryservices;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreConnector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore;
-import org.odpi.openmetadata.frameworks.discovery.DiscoveryService;
-import org.odpi.openmetadata.frameworks.discovery.ffdc.DiscoveryServiceException;
 import org.odpi.openmetadata.frameworks.discovery.properties.*;
 
 import java.util.ArrayList;

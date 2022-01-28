@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.repositoryservices.archiveutilities;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveBuilder;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveCache;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveStore;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationEntityExtension;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.utilities.OMRSRepositoryPropertiesUtilities;
 import org.slf4j.Logger;
@@ -20,7 +22,7 @@ import java.util.*;
  * OMRSArchiveBuilder creates an in-memory copy of an open metadata archive that can be saved to disk or processed
  * by a server.
  */
-public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder
+public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder, OpenMetadataArchiveCache
 {
     /*
      * Archive properties supplied on the constructor
@@ -1322,7 +1324,7 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder
 
             if (duplicateElement != null)
             {
-                throw new OMRSLogicErrorException(OMRSErrorCode.DUPLICATE_INSTANCE_IN_ARCHIVE.getMessageDefinition(TypeDefCategory.ENTITY_DEF.getName(),
+                throw new OMRSLogicErrorException(OMRSErrorCode.DUPLICATE_INSTANCE_IN_ARCHIVE.getMessageDefinition(duplicateElement.getClass().getSimpleName(),
                                                                                                                    entity.getGUID(),
                                                                                                                    duplicateElement.toString(),
                                                                                                                    entity.toString()),
@@ -1388,7 +1390,7 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder
 
             if (duplicateElement != null)
             {
-                throw new OMRSLogicErrorException(OMRSErrorCode.DUPLICATE_INSTANCE_IN_ARCHIVE.getMessageDefinition(TypeDefCategory.RELATIONSHIP_DEF.getName(),
+                throw new OMRSLogicErrorException(OMRSErrorCode.DUPLICATE_INSTANCE_IN_ARCHIVE.getMessageDefinition(duplicateElement.getClass().getSimpleName(),
                                                                                                                    relationship.getGUID(),
                                                                                                                    duplicateElement.toString(),
                                                                                                                    relationship.toString()),
@@ -1456,16 +1458,44 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder
 
             if (duplicateElement != null)
             {
-               throw new OMRSLogicErrorException(OMRSErrorCode.DUPLICATE_INSTANCE_IN_ARCHIVE.getMessageDefinition(TypeDefCategory.CLASSIFICATION_DEF.getName(),
-                                                                                                                   classificationId,
-                                                                                                                   duplicateElement.toString(),
-                                                                                                                   classification.toString()),
+               throw new OMRSLogicErrorException(OMRSErrorCode.DUPLICATE_INSTANCE_IN_ARCHIVE.getMessageDefinition(duplicateElement.getClass().getSimpleName(),
+                                                                                                                  classificationId,
+                                                                                                                  duplicateElement.toString(),
+                                                                                                                  classification.toString()),
                                                   this.getClass().getName(),
                                                   methodName);
             }
 
             classificationList.add(classification);
         }
+    }
+
+
+    /**
+     * Retrieve a classification extension from the archive.
+     *
+     * @param entityGUID unique identifier of entity
+     * @param classificationName name of the classification
+     * @return requested classification extension
+     */
+    @Override
+    public ClassificationEntityExtension getClassification(String entityGUID,
+                                                           String classificationName)
+    {
+        final String methodName = "getClassification";
+
+        String identifier = entityGUID + ":" + classificationName;
+
+        ClassificationEntityExtension   classification = classificationMap.get(identifier);
+
+        if (classification == null)
+        {
+            throw new OMRSLogicErrorException(OMRSErrorCode.UNKNOWN_GUID.getMessageDefinition(methodName, identifier),
+                                              this.getClass().getName(),
+                                              methodName);
+        }
+
+        return classification;
     }
 
 

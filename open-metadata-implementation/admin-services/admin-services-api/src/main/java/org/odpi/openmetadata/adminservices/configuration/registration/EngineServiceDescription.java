@@ -9,7 +9,7 @@ import java.io.Serializable;
  */
 public enum EngineServiceDescription implements Serializable
 {
-    ASSET_ANALYSIS_OMES(6000,
+    ASSET_ANALYSIS_OMES(400,
                         "Asset Analysis",
                         "Asset Analysis OMES",
                         "asset-analysis",
@@ -18,7 +18,7 @@ public enum EngineServiceDescription implements Serializable
                         "https://odpi.github.io/egeria-docs/services/omes/asset-analysis/overview/",
                         "Discovery Engine OMAS"),
 
-    GOVERNANCE_ACTION_OMES(6001,
+    GOVERNANCE_ACTION_OMES(401,
                            "Governance Action",
                            "Governance Action OMES",
                            "governance-action",
@@ -27,7 +27,7 @@ public enum EngineServiceDescription implements Serializable
                            "https://odpi.github.io/egeria-docs/services/omes/governance-action/overview/",
                            "Governance Engine OMAS"),
 
-    ARCHIVE_MANAGER_OMES(6002,
+    ARCHIVE_MANAGER_OMES(402,
                            "Archive Manager",
                            "Archive Manager OMES",
                            "archive-manager",

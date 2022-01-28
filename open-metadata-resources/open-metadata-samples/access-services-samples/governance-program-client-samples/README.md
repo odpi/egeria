@@ -9,6 +9,7 @@ There is a sample for each of the Governance Program OMAS's interfaces.
 
 * **[Governance Leadership](governance-leadership-sample)** shows how to set up and manage Governance Officer appointments.
 * **[Governance Zone Set Up](governance-zone-create-sample)** shows how to set up the governance zones for a governance program.
+* **[Subject Area Set Up](governance-subject-area-sample)** shows how to set up the subject area definitions for a governance program.
 
 
 ----

@@ -147,12 +147,10 @@ public class SubjectAreaPublisher
     {
         try
         {
-            ConnectorBroker connectorBroker = new ConnectorBroker();
+            ConnectorBroker connectorBroker = new ConnectorBroker(auditLog);
             Connector connector       = connectorBroker.getConnector(topicConnection);
 
             OpenMetadataTopicConnector topicConnector  = (OpenMetadataTopicConnector)connector;
-
-            topicConnector.setAuditLog(auditLog);
 
             topicConnector.start();
 

@@ -4,6 +4,7 @@ package org.odpi.openmetadata.repositoryservices.archiveutilities;
 
 
 import org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.file.FileBasedOpenMetadataArchiveStoreProvider;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
 import org.slf4j.Logger;
@@ -145,16 +146,18 @@ public class OMRSArchiveWriter
     /**
      * Opens up an open metadata archive store connector.
      *
-     * @param connection connection information for the open metadata archive.
+     * @param connection connection information for the open metadata archive
+     * @param auditLog logging destination
      * @return open metadata archive store connector
      */
-    private OpenMetadataArchiveStore getOpenMetadataArchive(Connection connection)
+    private OpenMetadataArchiveStore getOpenMetadataArchive(Connection connection,
+                                                            AuditLog   auditLog)
     {
         OpenMetadataArchiveStore  openMetadataArchiveStore = null;
 
         try
         {
-            ConnectorBroker connectorBroker = new ConnectorBroker();
+            ConnectorBroker connectorBroker = new ConnectorBroker(auditLog);
             Connector       connector       = connectorBroker.getConnector(connection);
 
             openMetadataArchiveStore = (OpenMetadataArchiveStore)connector;
@@ -183,7 +186,26 @@ public class OMRSArchiveWriter
     {
         Connection               connection               = getOpenMetadataArchiveFileConnection(outputFileName);
 
-        OpenMetadataArchiveStore openMetadataArchiveStore = this.getOpenMetadataArchive(connection);
+        OpenMetadataArchiveStore openMetadataArchiveStore = this.getOpenMetadataArchive(connection, null);
+
+        openMetadataArchiveStore.setArchiveContents(openMetadataArchive);
+    }
+
+
+    /**
+     * Generates and writes out an open metadata archive containing all of the open metadata types.
+     *
+     * @param outputFileName name of file to write archive to
+     * @param openMetadataArchive archive content
+     * @param auditLog logging destination
+     */
+    protected void writeOpenMetadataArchive(String                   outputFileName,
+                                            OpenMetadataArchive      openMetadataArchive,
+                                            AuditLog                 auditLog)
+    {
+        Connection               connection               = getOpenMetadataArchiveFileConnection(outputFileName);
+
+        OpenMetadataArchiveStore openMetadataArchiveStore = this.getOpenMetadataArchive(connection, auditLog);
 
         openMetadataArchiveStore.setArchiveContents(openMetadataArchive);
     }
