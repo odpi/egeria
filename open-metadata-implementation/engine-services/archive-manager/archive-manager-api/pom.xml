@@ -10,7 +10,7 @@
     <parent>
         <artifactId>archive-manager</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.5-SNAPSHOT</version>
+        <version>3.6-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -61,6 +61,11 @@
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <scope>test</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>repository-services-archive-utilities</artifactId>
         </dependency>
 
     </dependencies>

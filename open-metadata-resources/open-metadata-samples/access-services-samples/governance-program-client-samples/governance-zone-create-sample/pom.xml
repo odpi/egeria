@@ -9,7 +9,7 @@
     <parent>
         <artifactId>governance-program-client-samples</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.5-SNAPSHOT</version>
+        <version>3.6-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -40,11 +40,6 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>governance-program-client</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
         </dependency>
 
         <!-- Logback used as provider for slf4j logging -->

@@ -3,13 +3,11 @@
 package org.odpi.openmetadata.repositoryservices.enterprise.connectormanager;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
@@ -659,7 +657,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
             /*
              * Create the connector
              */
-            ConnectorBroker connectorBroker = new ConnectorBroker();
+            ConnectorBroker connectorBroker = new ConnectorBroker(auditLog);
             Connector       connector       = connectorBroker.getConnector(connection);
 
             OMRSRepositoryConnector repositoryConnector = (OMRSRepositoryConnector) connector;
@@ -669,12 +667,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
                 repositoryName = serverName;
             }
 
-            ComponentDescription componentDescription = OMRSAuditingComponent.REMOTE_REPOSITORY_CONNECTOR;
             repositoryConnector.setRepositoryName(repositoryName);
-            repositoryConnector.setAuditLog(auditLog.createNewAuditLog(componentDescription.getComponentId(),
-                                                                       componentDescription.getComponentName() + " for " + serverName,
-                                                                       componentDescription.getComponentType(),
-                                                                       componentDescription.getComponentWikiURL()));
             repositoryConnector.setServerName(serverName);
             repositoryConnector.setServerType(serverType);
             repositoryConnector.setServerUserId(localServerUserId);

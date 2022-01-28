@@ -30,13 +30,5 @@
             <directoryMode>0755</directoryMode>
         </fileSet>
 
-        <!-- Copy the docker compose definitions -->
-        <fileSet>
-            <directory>../../open-metadata-resources/open-metadata-deployment/compose</directory>
-            <outputDirectory>./docker-compose</outputDirectory>
-            <fileMode>0755</fileMode>
-            <directoryMode>0755</directoryMode>
-        </fileSet>
-
     </fileSets>
 </assembly>

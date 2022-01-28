@@ -4,9 +4,14 @@ package org.odpi.openmetadata.governanceservers.integrationdaemonservices.connec
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
+import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
+import org.odpi.openmetadata.frameworks.connectors.VirtualConnectorExtension;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesAuditCode;
+
+import java.util.List;
 
 /**
  * IntegrationConnectorBase is the base class for an integration connector.  It manages the storing of the audit log for the connector
@@ -14,10 +19,13 @@ import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.In
  * that need to make blocking calls to wait for new metadata.
  */
 public abstract class IntegrationConnectorBase extends ConnectorBase implements IntegrationConnector,
-                                                                                AuditLoggingComponent
+                                                                                AuditLoggingComponent,
+                                                                                VirtualConnectorExtension
 {
-    protected AuditLog auditLog = null;
-    protected String   connectorName = null;
+    protected AuditLog        auditLog           = null;
+    protected String          connectorName      = null;
+    protected List<Connector> embeddedConnectors = null;
+
 
     /**
      * Receive an audit log object that can be used to record audit log messages.  The caller has initialized it
@@ -29,6 +37,37 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
     public void setAuditLog(AuditLog auditLog)
     {
         this.auditLog = auditLog;
+    }
+
+
+    /**
+     * Return the component description that is used by this connector in the audit log.
+     *
+     * @return id, name, description, wiki page URL.
+     */
+    @Override
+    public ComponentDescription getConnectorComponentDescription()
+    {
+        if ((this.auditLog != null) && (this.auditLog.getReport() != null))
+        {
+            return auditLog.getReport().getReportingComponent();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Set up the list of connectors that this virtual connector will use to support its interface.
+     * The connectors are initialized waiting to start.  When start() is called on the
+     * virtual connector, it needs to pass start() to each of the embedded connectors. Similarly for
+     * disconnect().
+     *
+     * @param embeddedConnectors  list of connectors
+     */
+    public void initializeEmbeddedConnectors(List<Connector> embeddedConnectors)
+    {
+        this.embeddedConnectors = embeddedConnectors;
     }
 
 

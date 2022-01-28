@@ -286,9 +286,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
                 auditLog.logMessage(actionDescription,
                                     GovernanceActionAuditCode.GOVERNANCE_ACTION_SERVICE_RETURNED.getMessageDefinition(governanceActionServiceType,
                                                                                                                       governanceServiceName,
-                                                                                                                      requestType,
-                                                                                                                      Long.toString(
-                                                                                                                              endTime.getTime() - startTime.getTime())));
+                                                                                                                      requestType));
             }
             else
             {

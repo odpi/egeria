@@ -22,7 +22,7 @@
 
     <groupId>org.odpi.egeria</groupId>
     <artifactId>egeria</artifactId>
-    <version>3.5-SNAPSHOT</version>
+    <version>3.6-SNAPSHOT</version>
 
     <url>https://egeria.odpi.org</url>
 
@@ -889,6 +889,13 @@
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>archive-manager-spring</artifactId>
                 <scope>runtime</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>dynamic-archiver-connectors</artifactId>
+                <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
 
@@ -2760,6 +2767,11 @@
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>governance-zone-create-sample</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>governance-subject-area-sample</artifactId>
                 <version>${open-metadata.version}</version>
             </dependency>
             <dependency>

@@ -8,6 +8,8 @@ You do not necessarily need to use these tools.
 However, if you get stuck, the community members are more likely to be able to help you if they
 are familiar with your working environment.
 
+This documentation has moved to [https://odpi.github.io/egeria-docs](https://odpi.github.io/egeria-docs/)
+
 * [Docker](Docker.md) - Simple single container environment for running Egeria
 * [draw.io](draw.io.md) - Diagramming tool
 * [git and GitHub](Git-GitHub.md) - Content repository with configuration management

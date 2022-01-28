@@ -54,7 +54,7 @@ public class EventTopicAuditLogStoreConnector extends OMRSAuditLogStoreConnector
                     {
                         topicConnector.sendEvent(super.getJSONLogRecord(logRecord, methodName));
                     }
-                    catch (Throwable error)
+                    catch (Exception error)
                     {
                         // Ignore errors - need to come up with an approach to handle audit log errors
                     }

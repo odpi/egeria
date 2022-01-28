@@ -24,6 +24,7 @@ public class ContributionRecordBuilder extends ReferenceableBuilder
      *
      * @param qualifiedName unique name for the role
      * @param karmaPoints number of karma points
+     * @param isPublic  can this information be shared with colleagues
      * @param additionalProperties additional properties for a role
      * @param typeGUID unique identifier of this element's type
      * @param typeName unique name of this element's type

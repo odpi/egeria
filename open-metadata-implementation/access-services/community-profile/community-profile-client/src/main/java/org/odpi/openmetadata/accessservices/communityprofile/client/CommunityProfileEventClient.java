@@ -178,7 +178,7 @@ public class CommunityProfileEventClient implements CommunityProfileEventInterfa
                                                                                     callerId);
 
             Connection      topicConnection = restResult.getConnection();
-            ConnectorBroker connectorBroker = new ConnectorBroker();
+            ConnectorBroker connectorBroker = new ConnectorBroker(auditLog);
             Connector       connector       = connectorBroker.getConnector(topicConnection);
 
             if (connector == null)
@@ -194,7 +194,6 @@ public class CommunityProfileEventClient implements CommunityProfileEventInterfa
             if (connector instanceof CommunityProfileOutTopicClientConnector)
             {
                 configurationEventTopicConnector = (CommunityProfileOutTopicClientConnector)connector;
-                configurationEventTopicConnector.setAuditLog(auditLog);
                 configurationEventTopicConnector.start();
             }
             else

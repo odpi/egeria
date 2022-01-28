@@ -177,7 +177,7 @@ public class EnterpriseRepositoryServicesClient extends MetadataCollectionServic
                 super.detectAndThrowRepositoryErrorException(methodName, restResult);
 
                 Connection      topicConnection = restResult.getConnection();
-                ConnectorBroker connectorBroker = new ConnectorBroker();
+                ConnectorBroker connectorBroker = new ConnectorBroker(auditLog);
                 Connector       connector       = connectorBroker.getConnector(topicConnection);
 
                 if (connector == null)
@@ -192,7 +192,6 @@ public class EnterpriseRepositoryServicesClient extends MetadataCollectionServic
                 if (connector instanceof OMRSTopicConnector)
                 {
                     remoteEnterpriseTopicConnector = (OMRSTopicConnector) connector;
-                    remoteEnterpriseTopicConnector.setAuditLog(auditLog);
                     remoteEnterpriseTopicConnector.start();
                 }
                 else

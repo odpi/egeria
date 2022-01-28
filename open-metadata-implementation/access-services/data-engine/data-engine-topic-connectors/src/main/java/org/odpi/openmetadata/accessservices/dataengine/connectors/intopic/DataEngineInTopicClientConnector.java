@@ -40,7 +40,9 @@ public class DataEngineInTopicClientConnector extends OpenMetadataTopicSenderCon
 
             if (super.auditLog != null)
             {
-                super.auditLog.logMessage(methodName, DataEngineAuditCode.IN_TOPIC_EVENT_SENT.getMessageDefinition(eventString));
+                super.auditLog.logMessage(methodName,
+                                          DataEngineAuditCode.IN_TOPIC_EVENT_SENT.getMessageDefinition(event.getDataEngineEventType().getEventTypeName()),
+                                          eventString);
             }
 
         }
@@ -51,9 +53,9 @@ public class DataEngineInTopicClientConnector extends OpenMetadataTopicSenderCon
         catch (Exception  error)
         {
             throw new ConnectorCheckedException(DataEngineErrorCode.UNABLE_TO_SEND_EVENT.getMessageDefinition(connectionName,
-                                                                                                                   event.toString(),
-                                                                                                                   error.getClass().getName(),
-                                                                                                                   error.getMessage()),
+                                                                                                              event.toString(),
+                                                                                                              error.getClass().getName(),
+                                                                                                              error.getMessage()),
                                                 this.getClass().getName(),
                                                 methodName,
                                                 error);
