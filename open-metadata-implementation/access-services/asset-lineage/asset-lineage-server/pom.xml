@@ -37,11 +37,6 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>repository-handler</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
             <artifactId>repository-services-apis</artifactId>
         </dependency>
 
@@ -109,6 +104,11 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>ocf-metadata-handlers</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>generic-handlers</artifactId>
         </dependency>
 
         <dependency>

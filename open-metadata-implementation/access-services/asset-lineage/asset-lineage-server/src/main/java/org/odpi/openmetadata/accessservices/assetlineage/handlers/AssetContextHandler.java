@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEvent
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -46,7 +46,7 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
  */
 public class AssetContextHandler {
 
-    private final RepositoryHandler repositoryHandler;
+    private final OpenMetadataAPIGenericHandler genericHandler;
     private final HandlerHelper handlerHelper;
     private final List<String> supportedZones;
 
@@ -54,12 +54,12 @@ public class AssetContextHandler {
     /**
      * Construct the handler information needed to interact with the repository services
      *
-     * @param repositoryHandler handler for calling the repository services
+     * @param genericHandler    handler for calling the repository services
      * @param handlerHelper     helper handler
      * @param supportedZones    configurable list of zones that Asset Lineage is allowed to retrieve Assets from
      */
-    public AssetContextHandler(RepositoryHandler repositoryHandler, HandlerHelper handlerHelper, List<String> supportedZones) {
-        this.repositoryHandler = repositoryHandler;
+    public AssetContextHandler(OpenMetadataAPIGenericHandler genericHandler, HandlerHelper handlerHelper, List<String> supportedZones) {
+        this.genericHandler = genericHandler;
         this.handlerHelper = handlerHelper;
         this.supportedZones = supportedZones;
     }
@@ -224,7 +224,7 @@ public class AssetContextHandler {
             return false;
         }
 
-        return repositoryHandler.isEntityATypeOf(userId, anchorGUID.get(), ANCHOR_GUID, PORT_IMPLEMENTATION, methodName);
+        return genericHandler.isEntityATypeOf(userId, anchorGUID.get(), ANCHOR_GUID, PORT_IMPLEMENTATION, methodName);
     }
 
     /**
