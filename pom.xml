@@ -3661,6 +3661,7 @@
                 <configuration>
                     <useDefaultExcludes>true</useDefaultExcludes>
                     <useMavenDefaultExcludes>true</useMavenDefaultExcludes>
+
                     <useIdeaDefaultExcludes>true</useIdeaDefaultExcludes>
                     <useEclipseDefaultExcludes>true</useEclipseDefaultExcludes>
                     <excludeSubProjects>true</excludeSubProjects>
