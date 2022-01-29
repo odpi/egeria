@@ -14381,4 +14381,129 @@ public class OpenMetadataAPIGenericHandler<B>
                                                 externalSourceGUID);
         }
     }
+
+    /**
+     * Test whether an entity is of a particular type or not. Internally it delegates to {@link RepositoryHandler#isEntityATypeOf}
+     *
+     * @param userId calling user
+     * @param guid unique identifier of the entity.
+     * @param guidParameterName name of the parameter containing the guid.
+     * @param entityTypeName name of the type to test for
+     * @param methodName calling method
+     *
+     * @return boolean flag
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the entity.
+     */
+    public boolean isEntityATypeOf(String userId,
+                                   String guid,
+                                   String guidParameterName,
+                                   String entityTypeName,
+                                   String methodName) throws InvalidParameterException,
+                                                             PropertyServerException,
+                                                             UserNotAuthorizedException {
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(guid, "GUID", methodName);
+        invalidParameterHandler.validateObject(entityTypeName, "entityTypeName", methodName);
+
+        EntityDetail entityDetail = this.getEntityFromRepository(userId, guid, guidParameterName, entityTypeName,
+                null, null, false, false,
+                null, methodName);
+
+        return entityDetail != null && entityDetail.getType().getTypeDefName().equals(entityTypeName);
+    }
+
+    /**
+     * Return a list of entities that match the supplied criteria.  The results can be returned over many pages.
+     * Internally it delegates to {@link RepositoryHandler#findEntities}
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
+     * @param entitySubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the entityTypeGUID to
+     *                           include in the search results. Null means all subtypes.
+     * @param searchProperties Optional list of entity property conditions to match.
+     * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values.
+     * @param searchClassifications Optional list of entity classifications to match.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the entity property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param startingFrom the starting element number of the entities to return.
+     *                                This is used when retrieving elements
+     *                                beyond the first page of results. Zero means start from the first element.
+     * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
+     *                 unrestricted return results size.
+     * @param methodName calling method
+     * @return a list of entities matching the supplied criteria; null means no matching entities in the metadata
+     * collection; list (even if empty) means more to receive
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the entity.
+     */
+    public List<EntityDetail> findEntities(String                userId,
+                                           String                entityTypeGUID,
+                                           List<String>          entitySubtypeGUIDs,
+                                           SearchProperties      searchProperties,
+                                           List<InstanceStatus>  limitResultsByStatus,
+                                           SearchClassifications searchClassifications,
+                                           Date                  asOfTime,
+                                           String                sequencingProperty,
+                                           SequencingOrder       sequencingOrder,
+                                           boolean               forLineage,
+                                           boolean               forDuplicateProcessing,
+                                           int                   startingFrom,
+                                           int                   pageSize,
+                                           String                methodName) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException {
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
+
+
+        /*
+         * Now need to ensure that the anchor's classification is pushed down to the dependent elements.  This is done by retrieving the
+         * relationships.
+         */
+        RepositoryFindEntitiesIterator iterator = new RepositoryFindEntitiesIterator(repositoryHandler,
+                                                                                     userId,
+                                                                                     entityTypeGUID,
+                                                                                     entitySubtypeGUIDs,
+                                                                                     searchProperties,
+                                                                                     limitResultsByStatus,
+                                                                                     searchClassifications,
+                                                                                     asOfTime,
+                                                                                     sequencingProperty,
+                                                                                     sequencingOrder,
+                                                                                     forLineage,
+                                                                                     forDuplicateProcessing,
+                                                                                     startingFrom,
+                                                                                     queryPageSize,
+                                                                                     null,
+                                                                                     methodName);
+
+        List<EntityDetail> results = new ArrayList<>();
+
+        while ((iterator.moreToReceive()) && ((queryPageSize == 0) || (results.size() < queryPageSize)))
+        {
+            EntityDetail entity = iterator.getNext();
+
+            if (entity != null)
+            {
+                results.add(entity);
+            }
+        }
+
+        if (! results.isEmpty())
+        {
+            return results;
+        }
+
+        return null;
+    }
+
 }
