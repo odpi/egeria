@@ -129,8 +129,6 @@ public class SecurityManagerOutTopicPublisher
                 }
 
                 outTopicServerConnector.sendEvent(event);
-
-                outTopicAuditLog.logMessage(methodName, SecurityManagerAuditCode.OUT_TOPIC_EVENT.getMessageDefinition(event.toString()));
             }
             catch (Exception error)
             {

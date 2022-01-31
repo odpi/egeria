@@ -286,9 +286,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
                 auditLog.logMessage(actionDescription,
                                     GovernanceActionAuditCode.GOVERNANCE_ACTION_SERVICE_RETURNED.getMessageDefinition(governanceActionServiceType,
                                                                                                                       governanceServiceName,
-                                                                                                                      requestType,
-                                                                                                                      Long.toString(
-                                                                                                                              endTime.getTime() - startTime.getTime())));
+                                                                                                                      requestType));
             }
             else
             {
@@ -298,6 +296,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
                                                                                                                       requestType,
                                                                                                                       completionStatus.getName(),
                                                                                                                       Long.toString(endTime.getTime() - startTime.getTime())));
+                super.disconnect();
             }
         }
         catch (Exception  error)
@@ -319,6 +318,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
                 if (completionStatus == null)
                 {
                     governanceContext.recordCompletionStatus(CompletionStatus.FAILED, null);
+                    super.disconnect();
                 }
             }
             catch (Exception statusError)

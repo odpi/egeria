@@ -78,27 +78,6 @@ public enum CommunityProfileAuditCode implements AuditLogMessageSet
                                       "is the consequence of a previous error. Review the error message and any other reported failures to " +
                                       "determine if this exception needs special attention."),
 
-    OUTBOUND_ENTITY_EVENT("OMAS-COMMUNITY-PROFILE-0010",
-                          OMRSAuditLogRecordSeverity.EVENT,
-                          "The Community Profile Open Metadata Access Service (OMAS) has sent an entity element event of type {0} on its out topic.  {1} event subject is {2}",
-                          "The Community Profile OMAS has detected a situation that results in an outbound entity element event.",
-                          "This message is for capturing a record of all of the events send on the out topic.  If a permanent record is needed " +
-                                  "of these entity element events, then ensure there is an audit log destination that sends log records to permanent storage."),
-
-    OUTBOUND_RELATIONSHIP_EVENT("OMAS-COMMUNITY-PROFILE-0011",
-                          OMRSAuditLogRecordSeverity.EVENT,
-                          "The Community Profile Open Metadata Access Service (OMAS) has sent a relationship event of type {0} on its out topic.  {1} relationship subject is {2} and is connecting {3} {4} to {5} {6}",
-                          "The Community Profile OMAS has detected a situation that results in an outbound event about an entity element.",
-                          "This message is for capturing a record of all of the entity events send on the out topic.  If a permanent record is needed " +
-                                  "of these events, then ensure there is an audit log destination that sends log records to permanent storage."),
-
-    OUTBOUND_CLASSIFICATION_EVENT("OMAS-COMMUNITY-PROFILE-0012",
-                                OMRSAuditLogRecordSeverity.EVENT,
-                                "The Community Profile Open Metadata Access Service (OMAS) has sent an event of type {0} on its out topic.  {1} event subject is {2} and the classification changed was {3}",
-                                "The Community Profile OMAS has detected a situation that results in an outbound event about a change to the classifications of an entity element.",
-                                "This message is for capturing a record of all of the classification events send on the out topic.  If a permanent record is needed " +
-                                        "of these events, then ensure there is an audit log destination that sends log records to permanent storage."),
-
     OUTBOUND_EVENT_EXCEPTION("OMAS-COMMUNITY-PROFILE-0013",
                              OMRSAuditLogRecordSeverity.EXCEPTION,
                              "Unable to send an outbound event of type {0} for instance with unique identifier of {1} and type name {2} due to exception {3}.  The error message from the exception was {4}",
@@ -120,7 +99,7 @@ public enum CommunityProfileAuditCode implements AuditLogMessageSet
 
     OUT_TOPIC_EVENT("OMAS-COMMUNITY-PROFILE-0200",
                     OMRSAuditLogRecordSeverity.EVENT,
-                    "The Community Profile Open Metadata Access Service (OMAS) has sent event: {0}",
+                    "The Community Profile Open Metadata Access Service (OMAS) has sent event of type: {0}",
                             "The access service sends out notifications about changes to relevant elements.  " +
                             "This message is to create a record of the events that are being published.",
                             "This event indicates that one of the elements has changed."),

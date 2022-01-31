@@ -48,13 +48,13 @@ public class AssetManagerEventClient implements AssetManagerEventInterface
      * @param callerId unique identifier of the caller
      * @throws InvalidParameterException there is a problem with the information about the remote OMAS
      */
-    public AssetManagerEventClient(String                 serverName,
-                                   String                 serverPlatformURLRoot,
-                                   String                 serverUserId,
-                                   String                 serverPassword,
-                                   int                    maxPageSize,
-                                   AuditLog               auditLog,
-                                   String                 callerId) throws InvalidParameterException
+    public AssetManagerEventClient(String   serverName,
+                                   String   serverPlatformURLRoot,
+                                   String   serverUserId,
+                                   String   serverPassword,
+                                   int      maxPageSize,
+                                   AuditLog auditLog,
+                                   String   callerId) throws InvalidParameterException
     {
         final String methodName = "Constructor (with REST Client)";
 
@@ -134,7 +134,7 @@ public class AssetManagerEventClient implements AssetManagerEventInterface
                                                                                     callerId);
 
             Connection      topicConnection = restResult.getConnection();
-            ConnectorBroker connectorBroker = new ConnectorBroker();
+            ConnectorBroker connectorBroker = new ConnectorBroker(auditLog);
             Connector       connector       = connectorBroker.getConnector(topicConnection);
 
             if (connector == null)
@@ -150,7 +150,6 @@ public class AssetManagerEventClient implements AssetManagerEventInterface
             if (connector instanceof AssetManagerOutTopicClientConnector)
             {
                 configurationEventTopicConnector = (AssetManagerOutTopicClientConnector)connector;
-                configurationEventTopicConnector.setAuditLog(auditLog);
                 configurationEventTopicConnector.start();
             }
             else

@@ -77,7 +77,7 @@ public class EngineServiceRegistration implements Serializable
              engineServiceDescription.getEngineServiceURLMarker(),
              engineServiceDescription.getEngineServiceDescription(),
              engineServiceDescription.getEngineServiceWiki(),
-             engineServiceDescription.getEngineServicePartnerOMAS(),
+             engineServiceDescription.getEngineServicePartnerService(),
              engineServiceOperationalStatus,
              engineServiceAdminClassName);
     }

@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.listener;
 
+import org.odpi.openmetadata.accessservices.assetconsumer.events.AssetConsumerEventType;
 import org.odpi.openmetadata.accessservices.assetconsumer.events.NewAssetEvent;
 import org.odpi.openmetadata.accessservices.assetconsumer.events.UpdatedAssetEvent;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters.AssetConverter;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
@@ -14,7 +14,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.accessservices.assetconsumer.outtopic.AssetConsumerPublisher;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
 import org.odpi.openmetadata.repositoryservices.events.*;
@@ -44,22 +43,21 @@ public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
      * The constructor is given the connection to the out topic for Asset Consumer OMAS
      * along with classes for testing and manipulating instances.
      *
-     * @param assetConsumerOutTopic  connection to the out topic
+     * @param eventPublisher  publisher for the out topic
      * @param repositoryHelper  provides methods for working with metadata instances
      * @param repositoryValidator  provides validation of metadata instance
      * @param componentName  name of component
      * @param serverName local server name
      * @param supportedZones list of zones covered by this instance of the access service.
      * @param auditLog log for errors and information messages
-     * @throws OMAGConfigurationErrorException problems creating the connector for the outTopic
      */
-    public AssetConsumerOMRSTopicListener(Connection              assetConsumerOutTopic,
+    public AssetConsumerOMRSTopicListener(AssetConsumerPublisher  eventPublisher,
                                           OMRSRepositoryHelper    repositoryHelper,
                                           OMRSRepositoryValidator repositoryValidator,
                                           String                  componentName,
                                           String                  serverName,
                                           List<String>            supportedZones,
-                                          AuditLog                auditLog) throws OMAGConfigurationErrorException
+                                          AuditLog                auditLog)
     {
         super(componentName, auditLog);
 
@@ -69,7 +67,7 @@ public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
         this.serverName = serverName;
         this.supportedZones = supportedZones;
 
-        publisher = new AssetConsumerPublisher(assetConsumerOutTopic, auditLog);
+        publisher = eventPublisher;
     }
 
     /**
@@ -130,6 +128,7 @@ public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
             {
                 NewAssetEvent event = new NewAssetEvent();
 
+                event.setEventType(AssetConsumerEventType.NEW_ASSET_EVENT);
                 event.setAsset(assetConverter.getAssetBean());
                 event.setCreationTime(entity.getCreateTime());
 
@@ -169,6 +168,7 @@ public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
                                                                                  serverName);
                 UpdatedAssetEvent event                     = new UpdatedAssetEvent();
 
+                event.setEventType(AssetConsumerEventType.UPDATED_ASSET_EVENT);
                 event.setAsset(assetBean);
                 event.setOriginalAsset(assetConverterForOriginal.getAssetBean());
                 event.setUpdateTime(entity.getUpdateTime());

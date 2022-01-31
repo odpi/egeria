@@ -76,6 +76,7 @@ public class AssetManagerOutTopicPublisher
      * Send the event to the embedded event bus connector(s).
      *
      * @param entity entity that is the subject of the event
+     * @param previousEntity previous version of the entity
      * @param eventType type of event
      * @param newClassification latest classification information (if the event relates to a classification)
      * @param previousClassification previous classification information (if the event relates to a classification)
@@ -126,8 +127,6 @@ public class AssetManagerOutTopicPublisher
                 }
 
                 outTopicServerConnector.sendEvent(event);
-
-                outTopicAuditLog.logMessage(methodName, AssetManagerAuditCode.OUT_TOPIC_EVENT.getMessageDefinition(event.toString()));
             }
             catch (Exception error)
             {

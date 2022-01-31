@@ -2,19 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.outtopic;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.accessservices.assetconsumer.events.AssetConsumerEvent;
+import org.odpi.openmetadata.accessservices.assetconsumer.connectors.outtopic.AssetConsumerOutTopicServerConnector;
 import org.odpi.openmetadata.accessservices.assetconsumer.events.NewAssetEvent;
 import org.odpi.openmetadata.accessservices.assetconsumer.events.UpdatedAssetEvent;
-import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerErrorCode;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
+import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerAuditCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.Connector;
-import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
-import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+
 
 /**
  * AssetConsumerPublisher is the connector responsible for publishing information about
@@ -22,25 +15,30 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
  */
 public class AssetConsumerPublisher
 {
-    private static final Logger log = LoggerFactory.getLogger(AssetConsumerPublisher.class);
+    private AssetConsumerOutTopicServerConnector  outTopicServerConnector;
+    private AuditLog                              outTopicAuditLog;
+    private String                                outTopicName;
 
-    private OpenMetadataTopicConnector  connector = null;
-
+    private final String actionDescription = "Out topic event publishing";
 
     /**
-     * The constructor is given the connection to the out topic for Asset Consumer OMAS
-     * along with classes for testing and manipulating instances.
+     * Constructor for the publisher.
      *
-     * @param assetConsumerOutTopic connection to the out topic
-     * @param auditLog log file for the connector.
-     * @throws OMAGConfigurationErrorException problems creating the connector for the outTopic
+     * @param outTopicServerConnector connector to the out topic
+     * @param outTopicName name of the out topic
+     * @param outTopicAuditLog logging destination if anything goes wrong.
      */
-    public AssetConsumerPublisher(Connection assetConsumerOutTopic,
-                                  AuditLog   auditLog) throws OMAGConfigurationErrorException
+    public AssetConsumerPublisher(AssetConsumerOutTopicServerConnector outTopicServerConnector,
+                                  String                                  outTopicName,
+                                  AuditLog                                outTopicAuditLog)
     {
-        if (assetConsumerOutTopic != null)
+        this.outTopicServerConnector = outTopicServerConnector;
+        this.outTopicAuditLog        = outTopicAuditLog;
+        this.outTopicName            = outTopicName;
+
+        if (outTopicAuditLog != null)
         {
-            connector = this.getTopicConnector(assetConsumerOutTopic, auditLog);
+            outTopicAuditLog.logMessage(actionDescription, AssetConsumerAuditCode.SERVICE_PUBLISHING.getMessageDefinition(outTopicName));
         }
     }
 
@@ -52,16 +50,18 @@ public class AssetConsumerPublisher
      */
     public void publishNewAssetEvent(NewAssetEvent event)
     {
+        final String methodName = "publishNewAssetEvent";
+
         try
         {
-            if (connector != null)
+            if (outTopicServerConnector != null)
             {
-                connector.sendEvent(this.getJSONPayload(event));
+                outTopicServerConnector.sendEvent(event);
             }
         }
         catch (Exception  error)
         {
-            log.error("Unable to publish new asset event: " + event.toString() + "; error was " + error.toString());
+            logUnexpectedPublishingException(error, methodName);
         }
     }
 
@@ -73,85 +73,67 @@ public class AssetConsumerPublisher
      */
     public void publishUpdatedAssetEvent(UpdatedAssetEvent  event)
     {
+        final String methodName = "publishUpdatedAssetEvent";
+
         try
         {
-            if (connector != null)
+            if (outTopicServerConnector != null)
             {
-                connector.sendEvent(this.getJSONPayload(event));
+                outTopicServerConnector.sendEvent(event);
             }
         }
         catch (Exception  error)
         {
-            log.error("Unable to publish undated asset event: " + event.toString() + "; error was " + error.toString());
+            logUnexpectedPublishingException(error, methodName);
+        }
+    }
+
+
+
+    /**
+     * Log any exceptions that have come from the publishing process.
+     *
+     * @param error this is the exception that was thrown
+     * @param methodName this is the calling method
+     */
+    private void logUnexpectedPublishingException(Exception  error,
+                                                  String     methodName)
+    {
+        if (outTopicAuditLog != null)
+        {
+            outTopicAuditLog.logException(methodName,
+                                          AssetConsumerAuditCode.OUT_TOPIC_FAILURE.getMessageDefinition(outTopicName,
+                                                                                                           error.getClass().getName(),
+                                                                                                           error.getMessage()),
+                                          error);
         }
     }
 
 
     /**
-     * Create the topic connector.
-     *
-     * @param topicConnection connection to create the connector
-     * @param auditLog audit log for the connector
-     * @return open metadata topic connector
-     * @throws OMAGConfigurationErrorException problems creating the connector for the outTopic
+     * Shutdown the publishing process.
      */
-    private OpenMetadataTopicConnector getTopicConnector(Connection  topicConnection,
-                                                         AuditLog    auditLog) throws OMAGConfigurationErrorException
+    public void disconnect()
     {
         try
         {
-            ConnectorBroker connectorBroker = new ConnectorBroker();
-            Connector       connector       = connectorBroker.getConnector(topicConnection);
+            outTopicServerConnector.disconnect();
 
-            OpenMetadataTopicConnector topicConnector  = (OpenMetadataTopicConnector)connector;
-
-            topicConnector.setAuditLog(auditLog);
-
-            topicConnector.start();
-
-            return topicConnector;
+            if (outTopicAuditLog != null)
+            {
+                outTopicAuditLog.logMessage(actionDescription, AssetConsumerAuditCode.PUBLISHING_SHUTDOWN.getMessageDefinition(outTopicName));
+            }
         }
-        catch (Exception   error)
+        catch (Exception error)
         {
-            String methodName = "getTopicConnector";
-
-            log.error("Unable to create topic connector: " + error.toString());
-
-            throw new OMAGConfigurationErrorException(AssetConsumerErrorCode.BAD_OUT_TOPIC_CONNECTION.getMessageDefinition(topicConnection.toString(),
-                                                                                                                           error.getClass().getName(),
-                                                                                                                           error.getMessage()),
-                                                      this.getClass().getName(),
-                                                      methodName,
-                                                      error);
+            if (outTopicAuditLog != null)
+            {
+                outTopicAuditLog.logException(actionDescription,
+                                              AssetConsumerAuditCode.PUBLISHING_SHUTDOWN_ERROR.getMessageDefinition(error.getClass().getName(),
+                                                                                                                       outTopicName,
+                                                                                                                       error.getMessage()),
+                                              error);
+            }
         }
     }
-
-
-    /**
-     * Return the event as a String where the field contents are encoded in JSON.   The event beans
-     * contain annotations that mean the whole event, down to the lowest subclass, is serialized.
-     *
-     * @param event event to serialize
-     * @return JSON payload (as String)
-     */
-    private String getJSONPayload(AssetConsumerEvent event)
-    {
-        ObjectMapper objectMapper = new ObjectMapper();
-        String       jsonString   = null;
-
-        /*
-         * This class
-         */
-        try
-        {
-            jsonString = objectMapper.writeValueAsString(event);
-        }
-        catch (Exception  error)
-        {
-            log.error("Unable to create event payload: " + error.toString());
-        }
-
-        return jsonString;
-    }
-
 }

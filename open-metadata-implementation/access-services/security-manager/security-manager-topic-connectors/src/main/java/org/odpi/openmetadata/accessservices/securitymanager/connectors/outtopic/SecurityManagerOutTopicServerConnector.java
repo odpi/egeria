@@ -37,7 +37,9 @@ public class SecurityManagerOutTopicServerConnector extends OpenMetadataTopicSen
 
             if (super.auditLog != null)
             {
-                super.auditLog.logMessage(methodName, SecurityManagerAuditCode.OUT_TOPIC_EVENT.getMessageDefinition(eventString));
+                super.auditLog.logMessage(methodName,
+                                          SecurityManagerAuditCode.OUT_TOPIC_EVENT.getMessageDefinition(event.getEventType().getEventTypeName()),
+                                          eventString);
             }
         }
         catch (InvalidParameterException | ConnectorCheckedException error)

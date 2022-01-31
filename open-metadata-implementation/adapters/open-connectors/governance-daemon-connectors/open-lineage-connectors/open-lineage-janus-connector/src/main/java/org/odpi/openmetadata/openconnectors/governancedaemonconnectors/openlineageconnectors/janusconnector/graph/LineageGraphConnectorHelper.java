@@ -735,7 +735,7 @@ public class LineageGraphConnectorHelper {
             return;
         }
         GraphTraversalSource g = graphFactory.getGraphTraversalSource();
-        lineageVertices.forEach(lineageVertex -> {
+        lineageVertices.stream().filter(this::needsAdditionalNodeContext).forEach(lineageVertex -> {
             Vertex graphVertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, lineageVertex.getGuid()).next();
             commitTransaction(g);
             Object vertexId = graphVertex.id();
@@ -781,6 +781,13 @@ public class LineageGraphConnectorHelper {
         });
     }
 
+    private boolean needsAdditionalNodeContext(LineageVertex lineageVertex) {
+        List<String> types = new ArrayList<>();
+        types.addAll(DATA_FILE_AND_SUBTYPES);
+        types.addAll(Arrays.asList(RELATIONAL_TABLE, GLOSSARY_TERM, GLOSSARY_CATEGORY, PROCESS,
+                TABULAR_COLUMN, TABULAR_FILE_COLUMN, RELATIONAL_COLUMN, NODE_LABEL_SUB_PROCESS, TOPIC, EVENT_SCHEMA_ATTRIBUTE));
+        return types.contains(lineageVertex.getNodeType());
+    }
     private Map<String, String> getRelationalColumnProperties(GraphTraversalSource g, Object vertexId) {
         Map<String, String> properties = new HashMap<>();
         GraphTraversal<Vertex, Vertex> tableAsset = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(1).or(hasLabel(RELATIONAL_TABLE));

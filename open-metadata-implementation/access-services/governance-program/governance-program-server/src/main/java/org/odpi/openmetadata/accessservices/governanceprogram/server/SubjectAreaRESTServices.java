@@ -184,6 +184,7 @@ public class SubjectAreaRESTServices
      * @param serverName name of the server instance to connect to
      * @param userId calling user
      * @param subjectAreaGUID unique identifier of subjectArea
+     * @param requestBody null request body
      *
      * @return void or
      *  InvalidParameterException guid or userId is null; guid is not known

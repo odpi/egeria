@@ -5,6 +5,7 @@ package org.odpi.openmetadata.repositoryservices.connectors.omrstopic;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.VirtualConnectorExtension;
@@ -109,6 +110,23 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
 
 
     /**
+     * Return the component description that is used by this connector in the audit log.
+     *
+     * @return id, name, description, wiki page URL.
+     */
+    @Override
+    public ComponentDescription getConnectorComponentDescription()
+    {
+        if ((this.auditLog != null) && (this.auditLog.getReport() != null))
+        {
+            return auditLog.getReport().getReportingComponent();
+        }
+
+        return null;
+    }
+
+
+    /**
      * Setup the version of the protocol to use for events.
      *
      * @param eventProtocolVersion version enum
@@ -158,6 +176,34 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
     @Override
     public void registerListener(OMRSTopicListener topicListener,
                                  String            serviceName)
+    {
+        if (topicListener != null)
+        {
+            internalTopicListeners.add(new OMRSTopicListenerWrapper(topicListener,
+                                                                    serviceName,
+                                                                    auditLog.createNewAuditLog(OMRSAuditingComponent.ENTERPRISE_TOPIC_LISTENER)));
+        }
+        else
+        {
+            final String            methodName = "registerListener";
+
+            throw new OMRSLogicErrorException(OMRSErrorCode.NULL_OPEN_METADATA_TOPIC_LISTENER.getMessageDefinition(connectionName),
+                                              this.getClass().getName(),
+                                              methodName);
+        }
+    }
+
+
+    /**
+     * Register a listener object.  This object will be supplied with all of the events
+     * received on the topic.
+     *
+     * @param topicListener object implementing the OMRSTopicRepositoryEventListener interface
+     * @param serviceName name of the service that the listener is from
+     */
+    @Override
+    public void registerListener(OMRSTopicRepositoryEventListener topicListener,
+                                 String                           serviceName)
     {
         if (topicListener != null)
         {
@@ -299,7 +345,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
 
         if (eventProtocolVersion == OMRSEventProtocolVersion.V1)
         {
-            this.sendEvent(registryEvent.getOMRSEventV1());
+            this.sendEvent(registryEvent.getOMRSEventV1(), true);
         }
         else
         {
@@ -321,7 +367,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
 
         if (eventProtocolVersion == OMRSEventProtocolVersion.V1)
         {
-            this.sendEvent(typeDefEvent.getOMRSEventV1());
+            this.sendEvent(typeDefEvent.getOMRSEventV1(), false);
         }
         else
         {
@@ -344,7 +390,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
 
         if (eventProtocolVersion == OMRSEventProtocolVersion.V1)
         {
-            this.sendEvent(instanceEvent.getOMRSEventV1());
+            this.sendEvent(instanceEvent.getOMRSEventV1(), true);
         }
         else
         {
@@ -356,10 +402,12 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
     /**
      * Sends the supplied event outbound to the OMRSTopicListeners using the event bus connectors.
      *
-     * @param event OMRSEvent object containing the event properties.
+     * @param event OMRSEvent object containing the event properties
+     * @param logEvent should an audit log message be created?
      * @throws ConnectorCheckedException the connector is not able to communicate with the event bus
      */
-    private void sendEvent(OMRSEventV1 event) throws ConnectorCheckedException
+    private void sendEvent(OMRSEventV1 event,
+                           boolean     logEvent) throws ConnectorCheckedException
     {
         final String methodName = "send";
 
@@ -369,11 +417,21 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
             {
                 ObjectMapper objectMapper = new ObjectMapper();
 
+                String eventString = objectMapper.writeValueAsString(event);
+
+                if ((auditLog != null) && (logEvent))
+                {
+                    auditLog.logMessage(methodName,
+                                        OMRSAuditCode.OUTBOUND_TOPIC_EVENT.getMessageDefinition(event.getEventCategory().getName(),
+                                                                                                topicName),
+                                        eventString);
+                }
+
                 for (OpenMetadataTopicConnector eventBusConnector : eventBusConnectors)
                 {
                     if (eventBusConnector != null)
                     {
-                        eventBusConnector.sendEvent(objectMapper.writeValueAsString(event));
+                        eventBusConnector.sendEvent(eventString);
                     }
                 }
             }
@@ -383,7 +441,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
 
                 throw exc;
             }
-            catch (Throwable exc)
+            catch (Exception exc)
             {
                 log.debug("Unexpected error sending event: " + exc.getMessage());
 

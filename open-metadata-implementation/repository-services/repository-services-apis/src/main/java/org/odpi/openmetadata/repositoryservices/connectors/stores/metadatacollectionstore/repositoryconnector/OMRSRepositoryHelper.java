@@ -182,7 +182,7 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * @return TypeDef object
      * @throws TypeErrorException  unknown or invalid type
      */
-    public TypeDef getTypeDef(String sourceName,
+    TypeDef getTypeDef(String sourceName,
                        String guidParameterName,
                        String nameParameterName,
                        String typeDefGUID,
@@ -731,6 +731,21 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
 
 
     /**
+     * Add a classification to an existing entity.
+     *
+     * @param sourceName         source of the request (used for logging)
+     * @param entity             entity to update
+     * @param newClassification  classification to update
+     * @param methodName         calling method
+     * @return updated entity
+     */
+    EntityProxy addClassificationToEntity(String         sourceName,
+                                          EntityProxy    entity,
+                                          Classification newClassification,
+                                          String         methodName);
+
+
+    /**
      * Return the named classification from an existing entity and throws an exception if it is not.
      *
      * @param sourceName          source of the request (used for logging)
@@ -779,6 +794,23 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
 
 
     /**
+     * Replace an existing classification with a new one
+     *
+     * @param sourceName         source of the request (used for logging)
+     * @param userName           name of the editor
+     * @param entity             entity to update
+     * @param newClassification  classification to update
+     * @param methodName         calling method
+     * @return updated entity
+     */
+    EntityProxy updateClassificationInEntity(String         sourceName,
+                                             String         userName,
+                                             EntityProxy    entity,
+                                             Classification newClassification,
+                                             String         methodName);
+
+
+    /**
      * Return a oldClassification with the header and type information filled out.  The caller only needs to add properties
      * to complete the set up of the oldClassification.
      *
@@ -793,6 +825,23 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
                                                 EntityDetail entity,
                                                 String       oldClassificationName,
                                                 String       methodName) throws ClassificationErrorException;
+
+
+    /**
+     * Return a oldClassification with the header and type information filled out.  The caller only needs to add properties
+     * to complete the set up of the oldClassification.
+     *
+     * @param sourceName             source of the request (used for logging)
+     * @param entityProxy                 entity to update
+     * @param oldClassificationName  classification to remove
+     * @param methodName             calling method
+     * @return updated entity
+     * @throws ClassificationErrorException  the entity was not classified with this classification
+     */
+    EntityProxy deleteClassificationFromEntity(String       sourceName,
+                                               EntityProxy  entityProxy,
+                                               String       oldClassificationName,
+                                               String       methodName) throws ClassificationErrorException;
 
 
     /**

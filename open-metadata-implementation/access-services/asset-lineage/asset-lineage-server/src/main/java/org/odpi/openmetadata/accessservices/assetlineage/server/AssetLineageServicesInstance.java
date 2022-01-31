@@ -3,17 +3,20 @@
 package org.odpi.openmetadata.accessservices.assetlineage.server;
 
 
+import org.odpi.openmetadata.accessservices.assetlineage.converters.GenericStubConverter;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.AssetContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ClassificationHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.HandlerHelper;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessContextHandler;
+import org.odpi.openmetadata.accessservices.assetlineage.model.GenericStub;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.connector.AssetLineageOutTopicClientProvider;
 import org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageTypesValidator;
 import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -64,9 +67,14 @@ public class AssetLineageServicesInstance extends OMASServiceInstance {
                     this.getClass().getName(), methodName);
         }
 
+        OpenMetadataAPIGenericHandler<GenericStub> genericHandler =
+                new OpenMetadataAPIGenericHandler<>(new GenericStubConverter<>(repositoryHelper, serviceName, serverName),
+                        GenericStub.class, serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
+                        localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
+
         Converter converter = new Converter(repositoryHelper);
-        handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, repositoryHandler, converter, assetLineageTypesValidator);
-        assetContextHandler = new AssetContextHandler(repositoryHandler, handlerHelper, supportedZones);
+        handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, genericHandler, converter, assetLineageTypesValidator);
+        assetContextHandler = new AssetContextHandler(genericHandler, handlerHelper, supportedZones);
         processContextHandler = new ProcessContextHandler(assetContextHandler, handlerHelper, supportedZones);
         glossaryContextHandler = new GlossaryContextHandler(invalidParameterHandler, assetContextHandler, handlerHelper);
         classificationHandler = new ClassificationHandler(invalidParameterHandler, handlerHelper);

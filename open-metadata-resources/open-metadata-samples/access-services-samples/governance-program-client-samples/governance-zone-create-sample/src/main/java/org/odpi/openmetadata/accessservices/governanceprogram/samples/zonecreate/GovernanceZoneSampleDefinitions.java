@@ -2,8 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceprogram.samples.zonecreate;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * The GovernanceZoneSampleDefinitions is used to feed the definition of the governance zones for
@@ -89,16 +87,14 @@ public enum GovernanceZoneSampleDefinitions
     private String   description;
     private String   criteria;
 
-    private static final Logger log = LoggerFactory.getLogger(GovernanceZoneSampleDefinitions.class);
-
 
     /**
      * GovernanceZoneSampleDefinitions constructor creates an instance of the enum
      *
-     * @param zoneName   unique Id for the message
-     * @param displayName   text for the message
-     * @param description   description of the action taken by the system when the error condition happened
-     * @param criteria   instructions for resolving the error
+     * @param zoneName   unique Id for the zone
+     * @param displayName   text for the zone
+     * @param description   description of the assets in the zone
+     * @param criteria   criteria for inclusion
      */
     GovernanceZoneSampleDefinitions(String zoneName, String displayName, String description, String criteria)
     {
