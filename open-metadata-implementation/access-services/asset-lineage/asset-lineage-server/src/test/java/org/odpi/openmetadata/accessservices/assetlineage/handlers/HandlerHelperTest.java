@@ -295,7 +295,6 @@ class HandlerHelperTest {
         List<Classification> classifications = new ArrayList<>();
         Classification classification = mockClassification(CLASSIFICATION_NAME_ASSET_ZONE_MEMBERSHIP);
         classifications.add(classification);
-        classifications.add(mockClassification(CLASSIFICATION_NAME_ASSET_OWNERSHIP));
         EntityDetail entityDetail = mockEntityDetailWithClassifications(GUID, classifications);
         when(assetLineageTypesValidator.filterLineageClassifications(entityDetail.getClassifications())).thenReturn(classifications);
 
@@ -305,13 +304,12 @@ class HandlerHelperTest {
         RelationshipsContext response = handlerHelper.buildContextForLineageClassifications(entityDetail);
         Set<GraphContext> responseRelationships = response.getRelationships();
         Optional<GraphContext> relationship = responseRelationships.stream().findFirst();
-        assertEquals(2, responseRelationships.size());
+        assertEquals(1, responseRelationships.size());
         assertTrue(relationship.isPresent());
 
         LineageEntity expectedClassificationVertex = getExpectedClassificationVertex();
         assertEquals(new GraphContext(CLASSIFICATION, CLASSIFICATION_NAME_ASSET_ZONE_MEMBERSHIP + GUID, originalEntityVertex,
-                        expectedClassificationVertex),
-                relationship.get());
+                        expectedClassificationVertex), relationship.get());
     }
 
     @Test
