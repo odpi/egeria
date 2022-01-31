@@ -57,6 +57,12 @@ public class AssetLineageTypesValidator {
     private final HashSet<String> lineageClassificationTypes = new HashSet<>();
     private final HashSet<String> lineageRelationshipTypes = new HashSet<>();
 
+    /**
+     * Set up the validator for this server
+     *
+     * @param repositoryHelper     helper used by the converters
+     * @param accessServiceOptions access service options
+     */
     public AssetLineageTypesValidator(OMRSRepositoryHelper repositoryHelper, Map<String, Object> accessServiceOptions) {
         this.repositoryHelper = repositoryHelper;
 

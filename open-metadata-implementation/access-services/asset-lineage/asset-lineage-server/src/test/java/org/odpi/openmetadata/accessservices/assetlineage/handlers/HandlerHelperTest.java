@@ -58,8 +58,10 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CLASSIFICATION;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CLASSIFICATION_NAME_ASSET_OWNERSHIP;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CLASSIFICATION_NAME_ASSET_ZONE_MEMBERSHIP;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.DATA_STORE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GUID_PARAMETER;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_COLUMN;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_TABLE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.SCHEMA_ATTRIBUTE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.UPDATE_TIME;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ZONE_MEMBERSHIP;
@@ -205,7 +207,7 @@ class HandlerHelperTest {
         EntityDetail entityDetail = mock(EntityDetail.class);
         entities.add(entityDetail);
         when(genericHandler.findEntities(USER, ENTITY_TYPE_GUID, guids, searchProperties, Collections.emptyList(),
-                null,null, null, null, true, false, 0, 0,
+                null, null, null, null, true, false, 0, 0,
                 "findEntitiesByType")).thenReturn(entities);
 
         Optional<List<EntityDetail>> response = handlerHelper.findEntitiesByType(USER, ENTITY_TYPE_NAME, searchProperties, findEntitiesParameters);
@@ -222,8 +224,8 @@ class HandlerHelperTest {
 
         mockTypeDef(ENTITY_TYPE_NAME, ENTITY_TYPE_GUID);
         when(genericHandler.findEntities(USER, ENTITY_TYPE_GUID, guids, searchProperties, Collections.emptyList(),
-                null,null, null, null, true,
-                false, 0, 0,"findEntitiesByType")).thenReturn(null);
+                null, null, null, null, true,
+                false, 0, 0, "findEntitiesByType")).thenReturn(null);
 
         Optional<List<EntityDetail>> response = handlerHelper.findEntitiesByType(USER, ENTITY_TYPE_NAME, searchProperties, findEntitiesParameters);
         assertTrue(response.isEmpty());
@@ -359,7 +361,7 @@ class HandlerHelperTest {
         handlerHelper.validateAsset(entityDetail, methodName, supportedZones);
         verify(invalidParameterHandler, times(1)).validateGUID(GUID, GUID_PARAMETER, methodName);
         verify(invalidParameterHandler, times(1)).validateAssetInSupportedZone(GUID, GUID_PARAMETER,
-               Collections.emptyList(), supportedZones, ASSET_LINEAGE_OMAS, methodName);
+                Collections.emptyList(), supportedZones, ASSET_LINEAGE_OMAS, methodName);
     }
 
     @Test
@@ -369,6 +371,22 @@ class HandlerHelperTest {
         when(converter.createLineageEntity(entityDetail)).thenReturn(lineageEntity);
 
         assertEquals(lineageEntity, handlerHelper.getLineageEntity(entityDetail));
+    }
+
+    @Test
+    void isDataStore() {
+        EntityDetail entityDetail = mockEntityDetailWithType(DATA_STORE);
+        when(repositoryHelper.isTypeOf(SERVICE_NAME, DATA_STORE, DATA_STORE)).thenReturn(true);
+
+        assertTrue(handlerHelper.isDataStore(SERVICE_NAME, entityDetail));
+    }
+
+    @Test
+    void isTable() {
+        EntityDetail entityDetail = mockEntityDetailWithType(RELATIONAL_TABLE);
+        when(repositoryHelper.isTypeOf(SERVICE_NAME, RELATIONAL_TABLE, RELATIONAL_TABLE)).thenReturn(true);
+
+        assertTrue(handlerHelper.isTable(SERVICE_NAME, entityDetail));
     }
 
     @Test

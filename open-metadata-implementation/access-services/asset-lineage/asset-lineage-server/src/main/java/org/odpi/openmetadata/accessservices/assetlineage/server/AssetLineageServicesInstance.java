@@ -54,10 +54,9 @@ public class AssetLineageServicesInstance extends OMASServiceInstance {
     public AssetLineageServicesInstance(OMRSRepositoryConnector repositoryConnector, List<String> supportedZones, String localServerUserId,
                                         AuditLog auditLog, Connection outTopicEventBusConnection,
                                         AssetLineageTypesValidator assetLineageTypesValidator) throws NewInstanceException {
-        super(description.getAccessServiceFullName(), repositoryConnector, null, null, null, auditLog, localServerUserId,
-                repositoryConnector.getMaxPageSize(), null, null,
-                AssetLineageOutTopicClientProvider.class.getName(),
-                outTopicEventBusConnection);
+        super(description.getAccessServiceFullName(), repositoryConnector, null, null, null, auditLog,
+                localServerUserId, repositoryConnector.getMaxPageSize(), null, null,
+                AssetLineageOutTopicClientProvider.class.getName(), outTopicEventBusConnection);
 
         super.supportedZones = supportedZones;
 

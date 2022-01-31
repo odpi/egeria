@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.model.FindEntitiesParameters;
+import org.odpi.openmetadata.accessservices.assetlineage.model.GenericStub;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
@@ -53,7 +54,7 @@ public class HandlerHelper {
 
     private static final String GUID_PARAMETER = "guid";
 
-    private final OpenMetadataAPIGenericHandler genericHandler;
+    private final OpenMetadataAPIGenericHandler<GenericStub> genericHandler;
     private final OMRSRepositoryHelper repositoryHelper;
     private final InvalidParameterHandler invalidParameterHandler;
 
@@ -62,12 +63,16 @@ public class HandlerHelper {
 
     /**
      * Construct the handler information needed to interact with the repository services
-     *  @param invalidParameterHandler handler for invalid parameters
-     * @param repositoryHelper        helper used by the converters
-     * @param genericHandler          handler for calling the repository services
+     *
+     * @param invalidParameterHandler    handler for invalid parameters
+     * @param repositoryHelper           helper used by the converters
+     * @param genericHandler             handler for calling the repository services
+     * @param converter                  converter used for creating entities in Open Lineage format
+     * @param assetLineageTypesValidator service for validating types
      */
     public HandlerHelper(InvalidParameterHandler invalidParameterHandler, OMRSRepositoryHelper repositoryHelper,
-                         OpenMetadataAPIGenericHandler genericHandler, Converter converter, AssetLineageTypesValidator assetLineageTypesValidator) {
+                         OpenMetadataAPIGenericHandler<GenericStub> genericHandler, Converter converter,
+                         AssetLineageTypesValidator assetLineageTypesValidator) {
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
         this.genericHandler = genericHandler;
@@ -101,7 +106,7 @@ public class HandlerHelper {
 
         List<Relationship> relationships = genericHandler.getAttachmentLinks(userId, entityGUID, GUID_PARAMETER,
                 entityTypeName, relationshipTypeGUID, relationshipTypeName, null,
-                0 , 50, null, methodName);
+                0, 50, null, methodName);
 
         if (CollectionUtils.isEmpty(relationships)) {
             return Collections.emptyList();
@@ -179,7 +184,7 @@ public class HandlerHelper {
             return genericHandler.getEntityFromRepository(userId, relationship.getEntityTwoProxy().getGUID(), GUID_PARAMETER,
                     relationship.getEntityTwoProxy().getType().getTypeDefName(),
                     null, null,
-                    false, false, null ,methodName);
+                    false, false, null, methodName);
         } else if (relationship.getEntityTwoProxy().getGUID().equals(entityDetailGUID)) {
             return genericHandler.getEntityFromRepository(userId, relationship.getEntityOneProxy().getGUID(), GUID_PARAMETER,
                     relationship.getEntityOneProxy().getType().getTypeDefName(),
@@ -264,8 +269,6 @@ public class HandlerHelper {
 
         return Collections.emptyList();
     }
-
-
 
 
     private LineageEntity getClassificationVertex(Classification classification, String entityGUID) {
@@ -461,8 +464,8 @@ public class HandlerHelper {
     /**
      * Verifies if the entity is of type SchemaAttribute or subtype
      *
-     * @param serviceName  the service name
-     * @param typeName type of the entity
+     * @param serviceName the service name
+     * @param typeName    type of the entity
      *
      * @return true if the entity is of type TabularColumn or subtype, false otherwise
      */
