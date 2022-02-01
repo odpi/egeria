@@ -75,12 +75,12 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
-            <version>5.3.14</version>
+<!--            <version>5.3.14</version>-->
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.32</version>
+<!--            <version>1.7.32</version>-->
         </dependency>
         <!--  -->
 
