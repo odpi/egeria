@@ -163,7 +163,7 @@
         <spring-boot.version>2.6.2</spring-boot.version>
         <netty.version>4.1.72.Final</netty.version>
         <tomcat.version>9.0.56</tomcat.version>
-        <janus.version>0.6.0</janus.version>
+        <janus.version>0.6.1</janus.version>
         <spring.ldap.core>2.3.5.RELEASE</spring.ldap.core>
         <gremlin.version>3.5.1</gremlin.version>
         <spring-data.version>2.6.0</spring-data.version>
