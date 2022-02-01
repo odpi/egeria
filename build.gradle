@@ -127,7 +127,7 @@ allprojects {
         sanitizerVersion = '1.2.3'
         servletVersion = '4.0.1'
         sleepycatVersion = '18.3.12'
-        slf4jVersion = '1.7.32'
+        slf4jVersion = '1.7.35'
         snakeyamlVersion = '1.30'
         snappyVersion = '1.1.8.4'
         spotbugsVersion = '4.5.2'
