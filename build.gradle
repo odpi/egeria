@@ -133,7 +133,7 @@ allprojects {
         spotbugsVersion = '4.5.2'
         springbootVersion = '2.6.2'
         springdataVersion = '2.6.0'
-        springdocVersion = '1.6.3'
+        springdocVersion = '1.6.5'
         springldapVersion = '2.3.5.RELEASE'
         springsecurityVersion = '5.6.1'
         springwebVersion = '5.3.14'
