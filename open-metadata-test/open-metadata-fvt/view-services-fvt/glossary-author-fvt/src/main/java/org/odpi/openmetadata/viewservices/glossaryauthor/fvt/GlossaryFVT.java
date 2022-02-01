@@ -1,15 +1,18 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.subjectarea.fvt;
+package org.odpi.openmetadata.viewservices.glossaryauthor.fvt;
 
-import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaNodeClient;
-import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRestClient;
-import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.glossaries.SubjectAreaGlossaryClient;
+import org.odpi.openmetadata.viewservices.glossaryauthor.fvt.client.GlossaryAuthorViewRestClient;
+import org.odpi.openmetadata.viewservices.glossaryauthor.fvt.client.glossarys.GlossaryAuthorViewGlossaryClient;
+import org.odpi.openmetadata.viewservices.glossaryauthor.fvt.client.term.GlossaryAuthorViewTermClient;
+//import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.glossaries.GlossaryAuthorViewGlossaryClient;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
+//import org.odpi.openmetadata.accessservices.glossaryview.rest.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Taxonomy;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Relationship;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -19,18 +22,20 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * FVT resource to call subject area glossary client API.
+ * FVT resource to call Glossary author glossary API.
  *
  */
 public class GlossaryFVT {
     private static final String DEFAULT_TEST_GLOSSARY_NAME = "Testglossary1";
     private static final String DEFAULT_TEST_GLOSSARY_NAME2 = "Testglossary2";
     private static final String DEFAULT_TEST_GLOSSARY_NAME3 = "Testglossary3";
-    private SubjectAreaNodeClient<Glossary> subjectAreaGlossary = null;
-    private SubjectAreaGlossaryClient  subjectAreaGlossaryClient = null;
+    private static final String DEFAULT_TEST_TERM_LIST = "Test term Number ";
+    private GlossaryAuthorViewGlossaryClient glossaryAuthorViewGlossaryClient = null;
+    private GlossaryAuthorViewTermClient glossaryAuthorViewTermClient = null;
     private String serverName = null;
     private String userId = null;
     private int existingGlossaryCount = 0;
+
     /*
      * Keep track of all the created guids in this set, by adding create and restore guids and removing when deleting.
      * At the end of the test it will delete any remaining guids.
@@ -40,9 +45,9 @@ public class GlossaryFVT {
     private Set<String> createdGlossariesSet;
 
     public GlossaryFVT(String url, String serverName, String userId) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        SubjectAreaRestClient client = new SubjectAreaRestClient(serverName, url);
-        subjectAreaGlossary = new SubjectAreaGlossaryClient<>(client);
-        subjectAreaGlossaryClient = (SubjectAreaGlossaryClient)subjectAreaGlossary;
+        GlossaryAuthorViewRestClient client = new GlossaryAuthorViewRestClient(serverName, url);
+        this.glossaryAuthorViewGlossaryClient = new GlossaryAuthorViewGlossaryClient(client);
+        this.glossaryAuthorViewTermClient = new GlossaryAuthorViewTermClient(client);
         this.serverName = serverName;
         this.userId = userId;
         createdGlossariesSet = new HashSet<>();
@@ -50,7 +55,7 @@ public class GlossaryFVT {
         System.out.println("existingGlossaryCount " + existingGlossaryCount);
     }
 
-    public static void runWith2Servers(String url) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, SubjectAreaFVTCheckedException {
+    public static void runWith2Servers(String url) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, GlossaryAuthorFVTCheckedException {
         runIt(url, FVTConstants.SERVER_NAME1, FVTConstants.USERID);
         runIt(url, FVTConstants.SERVER_NAME2, FVTConstants.USERID);
     }
@@ -63,15 +68,15 @@ public class GlossaryFVT {
             System.out.println("Error getting user input");
         } catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
             System.out.println("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
-        } catch (SubjectAreaFVTCheckedException e) {
+        } catch (GlossaryAuthorFVTCheckedException e) {
             System.out.println("ERROR: " + e.getMessage() );
         }
     }
 
-    public static void runIt(String url, String serverName, String userId) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, SubjectAreaFVTCheckedException  {
+    public static void runIt(String url, String serverName, String userId) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, GlossaryAuthorFVTCheckedException {
         try
         {
-            System.out.println("GlossaryFVT runIt started");
+            System.out.println("GlossaryFVT runIt started " + serverName + " and " + userId);
             GlossaryFVT fvt = new GlossaryFVT(url, serverName, userId);
             fvt.run();
             fvt.deleteRemainingGlossaries();
@@ -83,12 +88,12 @@ public class GlossaryFVT {
         }
     }
 
-    public static int getGlossaryCount(String url, String serverName, String userId) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, SubjectAreaFVTCheckedException  {
+    public static int getGlossaryCount(String url, String serverName, String userId) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, GlossaryAuthorFVTCheckedException {
         GlossaryFVT fvt = new GlossaryFVT(url, serverName, userId);
         return fvt.findGlossaries("").size();
     }
 
-    public void run() throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    public void run() throws GlossaryAuthorFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         List<Glossary> initialGlossaryState = findGlossaries(null);
         int initialGlossaryCount = 0;
         if (initialGlossaryState != null && initialGlossaryState.size() > 0) {
@@ -103,7 +108,7 @@ public class GlossaryFVT {
 
         List<Glossary> results = findGlossaries(null);
         if (results.size() != initialGlossaryCount + 2) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected " + initialGlossaryCount + 2 + " back on the find got " + results.size());
+            throw new GlossaryAuthorFVTCheckedException("ERROR: Expected " + initialGlossaryCount + 2 + " back on the find got " + results.size());
         }
         Glossary glossaryForUpdate = new Glossary();
         glossaryForUpdate.setName(serverName + " " + DEFAULT_TEST_GLOSSARY_NAME3);
@@ -143,33 +148,77 @@ public class GlossaryFVT {
 
         results = findGlossaries("zzz");
         if (results.size() != 1) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 back on the find got " + results.size());
+            throw new GlossaryAuthorFVTCheckedException("ERROR: Expected 1 back on the find got " + results.size());
         }
         results = findGlossaries("yyy");
         if (results.size() != 2) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected 2 back on the find got " + results.size());
+            throw new GlossaryAuthorFVTCheckedException("ERROR: Expected 2 back on the find got " + results.size());
         }
         //soft delete a glossary and check it is not found
         deleteGlossary(glossaryForFind2.getSystemAttributes().getGUID());
         results = findGlossaries("yyy");
         if (results.size() != 1) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 back on the find got " + results.size());
+            throw new GlossaryAuthorFVTCheckedException("ERROR: Expected 1 back on the find got " + results.size());
         }
 
         // search for a glossary with a name with spaces in
         results = findGlossaries("This is a Glossary with spaces in name");
         if (results.size() != 1) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 back on the find got " + results.size());
+            throw new GlossaryAuthorFVTCheckedException("ERROR: Expected 1 back on the find got " + results.size());
         }
         // make sure there is a glossary with the name
         createGlossary(DEFAULT_TEST_GLOSSARY_NAME);
         Glossary glossaryForUniqueQFN2= createGlossary(DEFAULT_TEST_GLOSSARY_NAME);
         if (glossaryForUniqueQFN2 == null || glossaryForUniqueQFN2.getQualifiedName().length() == 0) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected qualified name to be set");
+            throw new GlossaryAuthorFVTCheckedException("ERROR: Expected qualified name to be set");
+        }
+        //test Multiple terms
+        String glossaryForUniqueQFN2Guid = glossaryForUniqueQFN2.getSystemAttributes().getGUID();
+        List<Term> multipleTermList = new ArrayList<Term>();
+
+        for (int i = 1;i <5; i++) {
+            multipleTermList.add(getTermForInput(DEFAULT_TEST_TERM_LIST + String.valueOf(i), glossaryForUniqueQFN2Guid));
+            //   DEFAULT_TEST_TERM_LIST
+        }
+        Term[] termArray = new Term[multipleTermList.size()];
+        termArray = multipleTermList.toArray(termArray);
+
+/*        List<Term> createdTermList = new ArrayList<Term>();
+        createdTermList =*/
+        createMultipleTerms(userId, glossaryForUniqueQFN2Guid, termArray); // multipleTermList.toArray());
+
+        //System.out.println("*****^&*&*& " + createdTermList.toString() + " *****^&*&*& ");
+
+        FindRequest findRequest = new FindRequest();
+        findRequest.setSearchCriteria("");
+        List<Term> termList = getTerms(glossaryForUniqueQFN2Guid, findRequest);
+        if (termList.size() != 4) {
+            throw new GlossaryAuthorFVTCheckedException("ERROR: Expected 4 back on getGlossaryTerms for multipleCreate got " + results.size());
+        }
+        deleteTermsOnGlossary(userId,glossaryForUniqueQFN2Guid);
+    }
+
+    private void deleteTermsOnGlossary(String userId, String glossaryForUniqueQFN2Guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        FindRequest findRequest = new FindRequest();
+        findRequest.setSearchCriteria("");
+        List<Term> termList = getTerms(glossaryForUniqueQFN2Guid, findRequest);
+        for (Term term: termList) {
+            glossaryAuthorViewTermClient.delete(userId, term.getSystemAttributes().getGUID());
         }
     }
 
-    void deleteRemainingGlossaries() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
+
+    public Term getTermForInput(String termName, String glossaryGuid) {
+        Term term = new Term();
+        term.setName(termName);
+        GlossarySummary glossarySummary = new GlossarySummary();
+        glossarySummary.setGuid(glossaryGuid);
+        term.setGlossary(glossarySummary);
+        return term;
+    }
+
+
+    void deleteRemainingGlossaries() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, GlossaryAuthorFVTCheckedException {
         Iterator<String> iter =  createdGlossariesSet.iterator();
         while (iter.hasNext()) {
             String guid = iter.next();
@@ -178,7 +227,7 @@ public class GlossaryFVT {
         }
         List<Glossary> glossaries = findGlossaries("");
         if (glossaries.size() != existingGlossaryCount) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected " +existingGlossaryCount + " glossaries, got " + glossaries.size());
+            throw new GlossaryAuthorFVTCheckedException("ERROR: Expected " +existingGlossaryCount + " glossaries, got " + glossaries.size());
         }
     }
 
@@ -188,7 +237,7 @@ public class GlossaryFVT {
     }
 
     public Glossary issueCreateGlossary(Glossary glossary) throws  InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        Glossary newGlossary = subjectAreaGlossary.create(this.userId, glossary);
+        Glossary newGlossary = glossaryAuthorViewGlossaryClient.create(this.userId, glossary);
 
         if (newGlossary != null) {
             String guid = newGlossary.getSystemAttributes().getGUID();
@@ -210,10 +259,10 @@ public class GlossaryFVT {
         return taxonomy;
     }
 
-    public Glossary createPastToGlossary(long now, String name) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    public Glossary createPastToGlossary(String name) throws GlossaryAuthorFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         Glossary glossary = new Glossary();
         glossary.setName(name);
-
+        long now = new Date().getTime();
         // expire the glossary 10 milliseconds ago
         glossary.setEffectiveToTime(new Date(now - 10).getTime());
         Glossary newGlossary = issueCreateGlossary(glossary);
@@ -223,9 +272,10 @@ public class GlossaryFVT {
         return newGlossary;
     }
 
-    public Glossary createPastFromGlossary(long now, String name) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    public Glossary createPastFromGlossary(String name) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         Glossary glossary = new Glossary();
         glossary.setName(name);
+        long now = new Date().getTime();
         // expire the glossary 10 milliseconds ago
         glossary.setEffectiveFromTime(new Date(now - 10).getTime());
         return issueCreateGlossary(glossary);
@@ -241,10 +291,10 @@ public class GlossaryFVT {
         return issueCreateGlossary(glossary);
     }
 
-    public Glossary createFutureGlossary(long now, String name) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
+    public Glossary createFutureGlossary(String name) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, GlossaryAuthorFVTCheckedException {
         Glossary glossary = new Glossary();
         glossary.setName(name);
-
+        long now = new Date().getTime();
         // make the glossary effective in a days time for day
         glossary.setEffectiveFromTime(new Date(now + 1000 * 60 * 60 * 24).getTime());
         glossary.setEffectiveToTime(new Date(now + 2000 * 60 * 60 * 24).getTime());
@@ -257,32 +307,33 @@ public class GlossaryFVT {
     public List<Glossary> findGlossaries(String criteria) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         FindRequest findRequest = new FindRequest();
         findRequest.setSearchCriteria(criteria);
-        List<Glossary> glossaries = subjectAreaGlossary.find(this.userId, findRequest);
+        List<Glossary> glossaries = glossaryAuthorViewGlossaryClient.find(this.userId, findRequest);
         return glossaries;
     }
 
-    public Glossary getGlossaryByGUID(String guid) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        Glossary glossary = subjectAreaGlossary.getByGUID(this.userId, guid);
+    public Glossary getGlossaryByGUID(String guid) throws GlossaryAuthorFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        Glossary glossary = glossaryAuthorViewGlossaryClient.getByGUID(this.userId, guid);
         FVTUtils.validateNode(glossary);
         System.out.println("Got Glossary " + glossary.getName() + " with userId " + glossary.getSystemAttributes().getGUID() + " and status " + glossary.getSystemAttributes().getStatus());
         return glossary;
     }
 
-    public Glossary updateGlossary(String guid, Glossary glossary) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        Glossary updatedGlossary = subjectAreaGlossary.update(this.userId, guid, glossary);
+    public Glossary updateGlossary(String guid, Glossary glossary) throws GlossaryAuthorFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        boolean isReplace = true;
+        Glossary updatedGlossary = glossaryAuthorViewGlossaryClient.update(this.userId, guid, glossary, isReplace);
         FVTUtils.validateNode(updatedGlossary);
         System.out.println("Updated Glossary name to " + updatedGlossary.getName());
         return updatedGlossary;
     }
 
     public void deleteGlossary(String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-            subjectAreaGlossary.delete(this.userId, guid);
+            glossaryAuthorViewGlossaryClient.delete(this.userId, guid);
             createdGlossariesSet.remove(guid);
             System.out.println("Delete succeeded");
     }
 
-    public Glossary restoreGlossary(String guid) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        Glossary restoredGlossary = subjectAreaGlossary.restore(this.userId, guid);
+    public Glossary restoreGlossary(String guid) throws GlossaryAuthorFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        Glossary restoredGlossary = glossaryAuthorViewGlossaryClient.restore(this.userId, guid);
         FVTUtils.validateNode(restoredGlossary);
         createdGlossariesSet.add(restoredGlossary.getSystemAttributes().getGUID());
         System.out.println("Restored Glossary name is " + restoredGlossary.getName());
@@ -290,15 +341,20 @@ public class GlossaryFVT {
     }
 
     public List<Relationship> getGlossaryRelationships(Glossary glossary) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        return subjectAreaGlossary.getAllRelationships(this.userId, glossary.getSystemAttributes().getGUID());
+        return glossaryAuthorViewGlossaryClient.getAllRelationships(this.userId, glossary.getSystemAttributes().getGUID());
     }
 
     public List<Category> getCategories(String glossaryGuid, FindRequest findRequest, boolean onlyTop) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
-        return subjectAreaGlossaryClient.getCategories(userId, glossaryGuid, findRequest, onlyTop);
+        return glossaryAuthorViewGlossaryClient.getCategories(userId, glossaryGuid, findRequest, onlyTop);
     }
 
     public List<Term> getTerms(String glossaryGuid, FindRequest findRequest) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        return subjectAreaGlossaryClient.getTerms(userId, glossaryGuid, findRequest);
+        return glossaryAuthorViewGlossaryClient.getTerms(userId, glossaryGuid, findRequest);
     }
+
+    public List<Term> createMultipleTerms(String userId, String guid, Term[] termArray) throws PropertyServerException, InvalidParameterException, UserNotAuthorizedException {
+         return glossaryAuthorViewGlossaryClient.createTerms(userId,guid,termArray);
+    }
+
 }
