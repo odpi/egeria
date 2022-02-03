@@ -235,7 +235,7 @@ public class CategoryFVT {
         // make sure there is a category with the name
         createCategory(DEFAULT_TEST_CATEGORY_NAME, glossaryGuid);
         Category categoryForUniqueQFN2= createCategory(DEFAULT_TEST_CATEGORY_NAME, glossaryGuid);
-        if (categoryForUniqueQFN2 == null || categoryForUniqueQFN2.equals("")) {
+        if (categoryForUniqueQFN2 == null || categoryForUniqueQFN2.getQualifiedName().length() == 0) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected qualified name to be set");
         }
         deleteCategory(categoryForFind1.getSystemAttributes().getGUID());

@@ -25,6 +25,11 @@ public class NodeRelationshipStats {
        this.count = count;
     }
 
+    //default constructor created for Json Jackson serialization
+    public NodeRelationshipStats() {
+        super();
+    }
+
     /*
      * Getters for Jackson
      */
@@ -59,7 +64,7 @@ public class NodeRelationshipStats {
     @Override
     public String toString()
     {
-        return "CountForNodeOrRelationshipType{" +
+        return "NodeRelationshipStats{" +
                 ", nodeOrRelationshipTypeName=" + nodeOrRelationshipTypeName +
                 ", count=" + count +
                 '}';

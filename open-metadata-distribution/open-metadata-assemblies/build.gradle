@@ -102,6 +102,10 @@ dependencies {
     implementation project(':open-metadata-resources:open-metadata-samples:governance-services-sample')
 
 }
+// Path to the SSL key for OMAG server to function as a client to itself
+String keyDirPath = project(':open-metadata-implementation:server-chassis:server-chassis-spring').projectDir.getAbsolutePath() +  '/src/main/resources'
+File keyDir = file(keyDirPath)
+//println keyDirPath
 
 distributions {
     egeriaomag {
@@ -180,6 +184,10 @@ distributions {
                     include 'content-packs'
                     include 'sample-data'
                 }
+//               copy key to root of targz file
+                from (keyDir) {
+                    include 'keystore.p12'
+                }
                 fileMode = 0755
             }
         }
@@ -198,11 +206,6 @@ distributions {
                 exclude '**/target/**'
                 exclude '**/build/**'
                 exclude 'build.gradle'
-                fileMode = 0755
-            }
-            into('docker-compose') {
-                from("${project(':open-metadata-resources:open-metadata-deployment:compose').projectDir}")
-
                 fileMode = 0755
             }
         }

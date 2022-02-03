@@ -164,7 +164,7 @@ public class GlossaryFVT {
         // make sure there is a glossary with the name
         createGlossary(DEFAULT_TEST_GLOSSARY_NAME);
         Glossary glossaryForUniqueQFN2= createGlossary(DEFAULT_TEST_GLOSSARY_NAME);
-        if (glossaryForUniqueQFN2 == null || glossaryForUniqueQFN2.equals("")) {
+        if (glossaryForUniqueQFN2 == null || glossaryForUniqueQFN2.getQualifiedName().length() == 0) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected qualified name to be set");
         }
     }
