@@ -123,6 +123,9 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
      * @param displayName the stored display name property for the data container
      * @param description the stored description property associated with the data container
      * @param isDeprecated is this table deprecated?
+     * @param elementPosition which order is the element when listing from parent's perspective
+     * @param maxCardinality maximum number of instances of this element
+     * @param minCardinality minimum number of instances of this element
      * @param additionalProperties any arbitrary properties not part of the type system
      * @param typeName name of the type that is a subtype of DisplayDataContainer - or null to create standard type
      * @param extendedProperties properties from any subtype

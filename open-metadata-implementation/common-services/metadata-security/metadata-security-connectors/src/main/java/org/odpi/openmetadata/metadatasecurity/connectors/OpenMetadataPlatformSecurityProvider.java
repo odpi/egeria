@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.metadatasecurity.connectors;
 
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 
 
 /**
@@ -17,10 +18,6 @@ public abstract class OpenMetadataPlatformSecurityProvider extends ConnectorProv
      */
     public OpenMetadataPlatformSecurityProvider()
     {
-        super();
-
-        Class<?>     connectorClass = OpenMetadataPlatformSecurityConnector.class;
-
-        super.setConnectorClassName(connectorClass.getName());
+        super.setConnectorComponentDescription(OMRSAuditingComponent.PLATFORM_SECURITY_CONNECTOR);
     }
 }

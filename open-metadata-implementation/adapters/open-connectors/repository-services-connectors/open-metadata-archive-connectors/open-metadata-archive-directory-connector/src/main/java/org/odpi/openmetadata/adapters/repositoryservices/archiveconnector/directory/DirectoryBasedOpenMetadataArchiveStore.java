@@ -53,9 +53,9 @@ public class DirectoryBasedOpenMetadataArchiveStore
     private static final String relationshipsDirectoryName = instanceStoreDirectoryName + "/relationships";
     private static final String classificationsDirectoryName = instanceStoreDirectoryName + "/classifications";
 
-    private String       archiveStoreName;
-    private AuditLog     auditLog;
-    private boolean      journalling;
+    private String   archiveStoreName;
+    private AuditLog auditLog;
+    private boolean  keepVersionHistory;
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -63,15 +63,17 @@ public class DirectoryBasedOpenMetadataArchiveStore
     /**
      * Create a store for managing the contents of the files in the directory based open metadata archive.
      *
+     * @param archiveStoreName  name of the archive store directory
      * @param auditLog logging destination
+     * @param keepVersionHistory should all versions of each element be kept?
      */
     DirectoryBasedOpenMetadataArchiveStore(String   archiveStoreName,
                                            AuditLog auditLog,
-                                           boolean  journalling)
+                                           boolean  keepVersionHistory)
     {
         this.archiveStoreName = archiveStoreName;
         this.auditLog = auditLog;
-        this.journalling = journalling;
+        this.keepVersionHistory = keepVersionHistory;
     }
 
 
@@ -224,7 +226,7 @@ public class DirectoryBasedOpenMetadataArchiveStore
         File elementFile;
         File latestElementFile = null;
 
-        if (journalling)
+        if (keepVersionHistory)
         {
             elementFile = new File(fileName + "/" + version + ".json");
             latestElementFile = new File(fileName + "/" + 0 + ".json");
@@ -271,7 +273,7 @@ public class DirectoryBasedOpenMetadataArchiveStore
     {
         File elementFile;
 
-        if (journalling)
+        if (keepVersionHistory)
         {
             elementFile = new File(fileName + "/" + version + ".json");
         }

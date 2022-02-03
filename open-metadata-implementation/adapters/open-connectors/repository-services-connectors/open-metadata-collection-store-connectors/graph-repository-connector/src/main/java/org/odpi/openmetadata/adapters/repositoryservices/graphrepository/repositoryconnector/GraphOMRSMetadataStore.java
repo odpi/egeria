@@ -1321,7 +1321,7 @@ class GraphOMRSMetadataStore {
 
     {
 
-        String methodName = "updateEntityInStore(proxy)";
+        String methodName = "updateEntityInStore (EntityProxy)";
 
         // Look in the graph
         String guid = entity.getGUID();
@@ -1329,8 +1329,8 @@ class GraphOMRSMetadataStore {
 
         GraphTraversal<Vertex, Vertex> gt = g.V().hasLabel("Entity").has(PROPERTY_KEY_ENTITY_GUID, guid);
 
-        // Only looking for non-proxy entities:
-        gt = gt.has(PROPERTY_KEY_ENTITY_IS_PROXY, false);
+        // Only looking for proxy entities:
+        gt = gt.has(PROPERTY_KEY_ENTITY_IS_PROXY, true);
 
         if (gt.hasNext())
         {
@@ -1341,9 +1341,9 @@ class GraphOMRSMetadataStore {
             try
             {
 
-                // Check if we have stumbled on a proxy somehow, and if so avoid processing it.
+                // Check if we have stumbled on a non-proxy somehow, and if so avoid processing it.
                 Boolean isProxy = entityMapper.isProxy(vertex);
-                if (!isProxy)
+                if (isProxy)
                 {
 
                     entityMapper.mapEntityProxyToVertex(entity, vertex);
@@ -1371,7 +1371,6 @@ class GraphOMRSMetadataStore {
         g.tx().commit();
 
     }
-
 
 
     // updateEntityClassifications

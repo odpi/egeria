@@ -108,7 +108,7 @@ public class GovernanceEngineEventClient
                                                                                     callerId);
 
             Connection      topicConnection = restResult.getConnection();
-            ConnectorBroker connectorBroker = new ConnectorBroker();
+            ConnectorBroker connectorBroker = new ConnectorBroker(auditLog);
             Connector       connector       = connectorBroker.getConnector(topicConnection);
 
             if (connector == null)
@@ -124,7 +124,6 @@ public class GovernanceEngineEventClient
             if (connector instanceof GovernanceEngineOutTopicClientConnector)
             {
                 configurationEventTopicConnector = (GovernanceEngineOutTopicClientConnector)connector;
-                configurationEventTopicConnector.setAuditLog(auditLog);
                 configurationEventTopicConnector.start();
             }
             else

@@ -66,6 +66,7 @@
                 <include>org.odpi.egeria:data-folder-connector:*</include>
                 <include>org.odpi.egeria:discovery-service-connectors:*</include>
                 <include>org.odpi.egeria:governance-action-connectors:*</include>
+                <include>org.odpi.egeria:dynamic-archiver-connectors:*</include>
                 <include>org.odpi.egeria:files-integration-connectors:*</include>
                 <include>org.odpi.egeria:kafka-integration-connector:*</include>
                 <include>org.odpi.egeria:openapi-integration-connector:*</include>
@@ -137,6 +138,7 @@
                 <include>org.odpi.egeria:asset-reader-avro-sample:*</include>
                 <include>org.odpi.egeria:asset-reader-csv-sample:*</include>
                 <include>org.odpi.egeria:governance-leadership-sample:*</include>
+                <include>org.odpi.egeria:governance-subject-area-sample:*</include>
                 <include>org.odpi.egeria:governance-zone-create-sample:*</include>
                 <include>org.odpi.egeria:subject-area-definition-sample:*</include>
             </includes>
@@ -237,4 +239,10 @@
             </sources>
         </moduleSet>
     </moduleSets>
+    <files>
+        <file>
+            <source>../../open-metadata-implementation/server-chassis/server-chassis-spring/src/main/resources/keystore.p12</source>
+            <destName>keystore.p12</destName>
+        </file>
+    </files>
 </assembly>

@@ -39,6 +39,9 @@ public final class AssetLineageConstants {
     public static final String CONNECTION = "Connection";
     public static final String ENDPOINT = "Endpoint";
     public static final String SCHEMA_ATTRIBUTE = "SchemaAttribute";
+    public static final String TOPIC = "Topic";
+    public static final String EVENT_SCHEMA_ATTRIBUTE = "EventSchemaAttribute";
+
     //Relationships Type
     public static final String ATTRIBUTE_FOR_SCHEMA = "AttributeForSchema";
     public static final String COMPLEX_SCHEMA_TYPE = "ComplexSchemaType";
@@ -58,6 +61,7 @@ public final class AssetLineageConstants {
     public static final String NESTED_FILE = "NestedFile";
     public static final String FOLDER_HIERARCHY = "FolderHierarchy";
     public static final String PROCESS_HIERARCHY = "ProcessHierarchy";
+    public static final String SCHEMA_TYPE_OPTION = "SchemaTypeOption";
     public static final String CLASSIFICATION = "Classification";
     public static final String CLASSIFICATION_NAME_CONFIDENTIALITY = "Confidentiality";
     public static final String CLASSIFICATION_NAME_ASSET_ZONE_MEMBERSHIP = "AssetZoneMembership";
@@ -117,6 +121,7 @@ public final class AssetLineageConstants {
         validLineageEntityEvents.add(RELATIONAL_TABLE);
         validLineageEntityEvents.add(DATA_FILE);
         validLineageEntityEvents.add(PROCESS);
+        validLineageEntityEvents.add(TOPIC);
         immutableValidLineageEntityEvents = Collections.unmodifiableSet(validLineageEntityEvents);
 
         final Set<String> validLineageDeleteEntityEvents = new HashSet<>(validLineageEntityEvents);

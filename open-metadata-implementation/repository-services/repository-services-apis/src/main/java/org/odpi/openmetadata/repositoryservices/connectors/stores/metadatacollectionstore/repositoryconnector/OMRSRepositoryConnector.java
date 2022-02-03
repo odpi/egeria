@@ -4,6 +4,7 @@ package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacolle
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
@@ -57,6 +58,23 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
         {
             metadataCollection.setAuditLog(auditLog);
         }
+    }
+
+
+    /**
+     * Return the component description that is used by this connector in the audit log.
+     *
+     * @return id, name, description, wiki page URL.
+     */
+    @Override
+    public ComponentDescription getConnectorComponentDescription()
+    {
+        if ((this.auditLog != null) && (this.auditLog.getReport() != null))
+        {
+            return auditLog.getReport().getReportingComponent();
+        }
+
+        return null;
     }
 
 

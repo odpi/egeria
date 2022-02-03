@@ -7,6 +7,7 @@ import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientFactory;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
@@ -151,9 +152,27 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      *
      * @param auditLog audit log object
      */
+    @Override
     public void setAuditLog(AuditLog auditLog)
     {
         this.auditLog = auditLog;
+    }
+
+
+    /**
+     * Return the component description that is used by this connector in the audit log.
+     *
+     * @return id, name, description, wiki page URL.
+     */
+    @Override
+    public ComponentDescription getConnectorComponentDescription()
+    {
+        if ((this.auditLog != null) && (this.auditLog.getReport() != null))
+        {
+            return auditLog.getReport().getReportingComponent();
+        }
+
+        return null;
     }
 
 

@@ -17,24 +17,24 @@ public enum OMRSAuditingComponent implements ComponentDescription
     AUDIT_LOG (1,
              "Audit Log",
              "Reads and writes records to the Open Metadata Repository Services (OMRS) audit log.",
-             "https://odpi.github.io/egeria-docs/concepts/audit-log/"),
+             "https://odpi.github.io/egeria-docs/services/omrs/component-descriptions/audit-log/"),
 
     OPERATIONAL_SERVICES (3,
              "Operational Services",
              "Supports the administration services for the Open Metadata Repository Services (OMRS).",
-             "https://github.com/odpi/egeria/tree/master/open-metadata-implementation/repository-services/docs/component-descriptions/operational-services.md"),
+             "https://odpi.github.io/egeria-docs/services/omrs/component-descriptions/operational-services/"),
 
     ARCHIVE_MANAGER (4,
              "Archive Manager",
              "Manages the loading of Open Metadata Archives into an open metadata repository.",
-             "https://github.com/odpi/egeria/tree/master/open-metadata-implementation/repository-services/docs/component-descriptions/archive-manager.md"),
+             "https://odpi.github.io/egeria-docs/services/omrs/component-descriptions/archive-manager/"),
 
     ENTERPRISE_CONNECTOR_MANAGER (5,
              "Enterprise Connector Manager",
              "Manages the list of open metadata repositories that the Enterprise OMRS Repository Connector " +
                                           "should call to retrieve an enterprise view of the metadata collections " +
                                           "supported by these repositories",
-             "https://github.com/odpi/egeria/tree/master/open-metadata-implementation/repository-services/docs/component-descriptions/enterprise-connector-manager.md"),
+             "https://odpi.github.io/egeria-docs/services/omrs/component-descriptions/enterprise-repository-connector/"),
 
     ENTERPRISE_REPOSITORY_CONNECTOR (6,
              "Enterprise Repository Connector",
@@ -46,50 +46,49 @@ public enum OMRSAuditingComponent implements ComponentDescription
              "Local Repository Connector",
              "Supports access to metadata stored in the local server's repository and ensures " +
                                         "repository events are generated when metadata changes in the local repository",
-             "https://github.com/odpi/egeria/tree/master/open-metadata-implementation/repository-services/docs/component-descriptions/local-repository-connector.md"),
+             "https://odpi.github.io/egeria-docs/services/omrs/component-descriptions/local-repository-connector/"),
 
     REPOSITORY_CONTENT_MANAGER(8,
              "Repository Content Manager",
              "Supports an in-memory cache for open metadata type definitions (TypeDefs) used for " +
              "verifying TypeDefs in use in other open metadata repositories and for " +
                              "constructing new metadata instances.",
-             "https://github.com/odpi/egeria/tree/master/open-metadata-implementation/repository-services/docs/component-descriptions/typedef-manager.md"),
+             "https://odpi.github.io/egeria-docs/services/omrs/repository-content-manager/"),
 
     INSTANCE_EVENT_PROCESSOR (9,
              "Local Inbound Instance Event Processor",
              "Supports the loading of reference metadata into the local repository that has come from other members of the local server's cohorts and open metadata archives.",
-             "https://github.com/odpi/egeria/tree/master/open-metadata-implementation/repository-services/docs/component-descriptions/local-repository-instance-event-processor.md"),
+             "https://odpi.github.io/egeria-docs/services/omrs/component-descriptions/local-repository-instance-event-processor/"),
 
     REPOSITORY_EVENT_MANAGER (10,
              "Repository Event Manager",
              "Distribute repository events (TypeDefs, Entity and Instance events) between internal OMRS components within a server.",
-             "https://github.com/odpi/egeria/tree/master/open-metadata-implementation/repository-services/docs/component-descriptions/event-manager.md"),
+             "https://odpi.github.io/egeria-docs/services/omrs/component-descriptions/event-manager/"),
 
     REST_SERVICES (11,
              "Repository REST Services",
              "Provides the server-side support the the OMRS Repository Services REST API.",
-             "https://github.com/odpi/egeria/tree/master/open-metadata-implementation/repository-services/docs/component-descriptions/omrs-rest-services.md"),
+             "https://odpi.github.io/egeria-docs/services/omrs/component-descriptions/omrs-rest-services/"),
 
     REST_REPOSITORY_CONNECTOR (12,
              "REST Repository Connector",
-             "Supports an OMRS Repository Connector for calling the OMRS Repository REST API in a remote " +
-                                       "open metadata repository.",
+             "Supports an OMRS Repository Connector for calling the OMRS Repository REST API in a remote open metadata repository.",
              "https://odpi.github.io/egeria-docs/concepts/repository-connector"),
 
     METADATA_HIGHWAY_MANAGER (13,
              "Metadata Highway Manager",
              "Manages the initialization and shutdown of the components that connector to each of the cohorts that the local server is a member of.",
-             "https://github.com/odpi/egeria/tree/master/open-metadata-implementation/repository-services/docs/component-descriptions/metadata-highway-manager.md"),
+             "https://odpi.github.io/egeria-docs/services/omrs/component-descriptions/metadata-highway-manager/"),
 
     COHORT_MANAGER  (14,
              "Cohort Manager",
              "Manages the initialization and shutdown of the server's connectivity to a cohort.",
-             "https://github.com/odpi/egeria/tree/master/open-metadata-implementation/repository-services/docs/component-descriptions/cohort-manager.md"),
+             "https://odpi.github.io/egeria-docs/services/omrs/component-descriptions/cohort-manager/"),
 
     COHORT_REGISTRY(15,
              "Cohort Registry",
              "Manages the registration requests send and received from this local repository.",
-             "https://github.com/odpi/egeria/tree/master/open-metadata-implementation/repository-services/docs/component-descriptions/cohort-registry.md"),
+             "https://odpi.github.io/egeria-docs/services/omrs/component-descriptions/cohort-registry/"),
 
     REGISTRY_STORE  (16,
              "Registry Store",
@@ -99,19 +98,19 @@ public enum OMRSAuditingComponent implements ComponentDescription
     EVENT_PUBLISHER (17,
              "Event Publisher",
              "Manages the publishing of events that this repository sends to the OMRS topic.",
-             "https://github.com/odpi/egeria/tree/master/open-metadata-implementation/repository-services/docs/component-descriptions/event-publisher.md"),
+             "https://odpi.github.io/egeria-docs/services/omrs/component-descriptions/event-publisher/"),
 
     EVENT_LISTENER  (18,
              "Event Listener",
              "Manages the receipt of incoming OMRS events.",
-             "https://github.com/odpi/egeria/tree/master/open-metadata-implementation/repository-services/docs/component-descriptions/event-listener.md"),
+             "https://odpi.github.io/egeria-docs/services/omrs/component-descriptions/event-listener/"),
 
     OMRS_TOPIC_CONNECTOR(19,
              "OMRS Topic Connector",
              "Provides access to the OMRS Topic that is used to exchange events between members of a cohort, " +
                                  "or to notify Open Metadata Access Services (OMASs) of changes to " +
                                  "metadata in the enterprise.",
-             "https://github.com/odpi/egeria/tree/master/open-metadata-implementation/repository-services/docs/component-descriptions/connectors/omrs-topic-connector.md"),
+             "https://odpi.github.io/egeria-docs/services/omrs/component-descriptions/connectors/omrs-topic-connector/"),
 
     OPEN_METADATA_TOPIC_CONNECTOR(20,
              "Open Metadata Topic Connector",
@@ -121,7 +120,7 @@ public enum OMRSAuditingComponent implements ComponentDescription
     LOCAL_REPOSITORY_EVENT_MAPPER(21,
              "Local Repository Event Mapper Connector",
              "Provides access to an event bus to process events from a specific local repository.",
-             "https://github.com/odpi/egeria/tree/master/open-metadata-implementation/repository-services/docs/component-descriptions/connectors/event-mapper-connector.md"),
+             "https://odpi.github.io/egeria-docs/concepts/event-mapper-connector/"),
 
     ARCHIVE_STORE_CONNECTOR(22,
              "Open Metadata Archive Store Connector",
@@ -130,8 +129,8 @@ public enum OMRSAuditingComponent implements ComponentDescription
 
     REMOTE_REPOSITORY_CONNECTOR(23,
              "Cohort Member Client Open Metadata Repository Connector",
-             "Provides access to open metadata located in a remote repository.",
-             "https://odpi.github.io/egeria-docs/concepts/repository-connector/"),
+             "Provides access to open metadata located in a remote repository for remote members of a cohort.",
+             "https://odpi.github.io/egeria-docs/concepts/cohort-member-client-connector/"),
 
     OMAS_OUT_TOPIC(24,
              "Open Metadata Access Service (OMAS) Out Topic",
@@ -147,32 +146,42 @@ public enum OMRSAuditingComponent implements ComponentDescription
              "Enterprise Topic Listener",
              "Receives events from the open metadata repository cohorts that this server is registered with and distributes " +
                                       "them to the Open Metadata Access Services (OMASs).",
-             "https://odpi.github.io/egeria-docs/conceptshttps://odpi.github.io/egeria-docs/concepts/cohort-events/"),
+             "https://odpi.github.io/egeria-docs/concepts/cohort-events/"),
 
     REPOSITORY_CONNECTOR(27,
              "OMRS Repository Connector",
              "Maps open metadata calls to a metadata repository.",
              "https://odpi.github.io/egeria-docs/concepts/repository-connector/"),
 
-    GRAPH_REPOSITORY_CONNECTOR(28,
-             "JanusGraph OMRS Repository Connector",
-             "Native open metadata repository connector that maps open metadata calls to a JanusGraph based metadata repository.",
-             "https://odpi.github.io/egeria-docs/connectors/repository/janus-graph/"),
+    OPEN_DISCOVERY_SERVICE_CONNECTOR(28,
+             "Open Discovery Service Connector",
+             "A connector that analyzing the contents of a digital resource.",
+             "https://odpi.github.io/egeria-docs/guides/developer/open-discovery-services/overview/"),
 
-    INMEM_REPOSITORY_CONNECTOR(29,
-             "In Memory OMRS Repository Connector",
-             "Native open metadata repository connector that maps open metadata calls to a set of in memory hash maps - demo use only.",
-             "https://odpi.github.io/egeria-docs/connectors/repository/in-memory/"),
+    GOVERNANCE_ACTION_SERVICE_CONNECTOR(29,
+             "Governance Action Service Connector",
+             "A connector that coordinates governance of digital resources and metadata.",
+             "https://odpi.github.io/egeria-docs/guides/developer/governance-action-services/overview/"),
 
-    READ_ONLY_REPOSITORY_CONNECTOR(30,
-             "Read Only OMRS Repository Connector",
-             "Native open metadata repository connector that maps open metadata calls to an in memory cache.",
-             "https://odpi.github.io/egeria-docs/connectors/repository/read-only/"),
+    ARCHIVE_SERVICE_CONNECTOR(30,
+             "Archive Service Connector",
+             "A connector that dynamically manages open metadata archives.",
+             "https://odpi.github.io/egeria-docs/guides/developer/archive-services/overview/"),
 
     INTEGRATION_CONNECTOR(31,
              "Integration Connector",
              "Connector that manages metadata exchange with a third party technology.",
              "https://odpi.github.io/egeria-docs/concepts/integration-connector/"),
+
+    PLATFORM_SECURITY_CONNECTOR(32,
+             "Platform Metadata Security Connector",
+             "Connector that manages authorization requests to the OMAG Server Platform.",
+             "https://odpi.github.io/egeria-docs/concepts/platform-metadata-security-connector/"),
+
+    SERVER_SECURITY_CONNECTOR(33,
+             "Server Metadata Security Connector",
+             "Connector that manages authorization requests to the OMAG Server.",
+             "https://odpi.github.io/egeria-docs/concepts/server-metadata-security-connector/"),
     ;
 
 
