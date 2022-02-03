@@ -70,7 +70,7 @@ public class OCFMetadataOperationalServices
         {
             throw error;
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             auditLog.logException(actionDescription,
                                   OCFMetadataAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage()),

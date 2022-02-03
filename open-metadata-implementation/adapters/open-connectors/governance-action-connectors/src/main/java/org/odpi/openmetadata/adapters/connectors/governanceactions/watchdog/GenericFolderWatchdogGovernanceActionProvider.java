@@ -30,8 +30,8 @@ public class GenericFolderWatchdogGovernanceActionProvider extends GenericWatchd
     /*
      * Does the asset need to be directly within the folder or can it be in a nested folder?
      */
-    static final String DIRECT_REQUEST_TYPE   = "member-of-folder";
-    static final String NESTED_REQUEST_TYPE   = "nested-in-folder";
+    static final String DIRECT_REQUEST_TYPE   = "watch-member-of-folder";
+    static final String NESTED_REQUEST_TYPE   = "watch-nested-in-folder";
 
     private static final String connectorClassName = GenericFolderWatchdogGovernanceActionConnector.class.getName();
 

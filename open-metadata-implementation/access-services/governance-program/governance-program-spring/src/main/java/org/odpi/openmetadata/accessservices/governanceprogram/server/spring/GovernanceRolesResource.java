@@ -297,6 +297,8 @@ public class GovernanceRolesResource
      * @param serverName name of server instance to call
      * @param userId the name of the calling user.
      * @param domainIdentifier domain of interest - 0 is all domains
+     * @param startFrom where to start from in the list of definitions
+     * @param pageSize max number of results to return in one call
      * @return list of governance role objects or
      *
      * InvalidParameterException the guid is either null or invalid or
@@ -346,6 +348,9 @@ public class GovernanceRolesResource
      *
      * @param serverName name of server instance to call
      * @param userId the name of the calling user
+     * @param domainIdentifier domain of interest - 0 is all domains
+     * @param startFrom where to start from in the list of definitions
+     * @param pageSize max number of results to return in one call
      *
      * @return list of governance role objects or
      * PropertyServerException the server is not available or

@@ -84,6 +84,7 @@ public class OrganizationResource
      *
      * @param serverName called server
      * @param userId calling user
+     * @param actorProfileGUID unique identifier of profile to update
      * @param isMergeUpdate are unspecified properties unchanged (true) or replaced with null?
      * @param requestBody properties to change
      *

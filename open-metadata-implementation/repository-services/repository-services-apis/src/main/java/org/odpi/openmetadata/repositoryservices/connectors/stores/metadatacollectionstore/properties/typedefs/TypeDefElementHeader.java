@@ -5,6 +5,10 @@ package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacolle
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.RepositoryElementHeader;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceElementHeader;
 
 import java.io.Serializable;
 
@@ -17,11 +21,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class TypeDefElementHeader implements Serializable
+public class TypeDefElementHeader extends RepositoryElementHeader
 {
-    public static final long  CURRENT_TYPE_DEF_HEADER_VERSION = 1;
-
     private static final long serialVersionUID = 1L;
+
+    public static final long  CURRENT_TYPE_DEF_HEADER_VERSION = 1;
 
     /*
      * Version number for this header.  This is used to ensure that all of the critical header information
@@ -35,6 +39,8 @@ public class TypeDefElementHeader implements Serializable
      */
     public TypeDefElementHeader()
     {
+        super();
+
         /*
          * Nothing to do
          */
@@ -48,39 +54,10 @@ public class TypeDefElementHeader implements Serializable
      */
     public TypeDefElementHeader(TypeDefElementHeader  template)
     {
-        if (template != null)
-        {
-            this.headerVersion = template.getHeaderVersion();
-        }
+        super (template);
+
+        /*
+         * Nothing to do
+         */
     }
-
-
-    /**
-     * Return the version of this header.  This is used by the OMRS to determine if it is back level and
-     * should not process events from a source that is more advanced because it does not have the ability
-     * to receive all of the header properties.
-     *
-     * @return long version number - the value is incremented each time a new non-informational field is added
-     * to the type definition.
-     */
-    public long getHeaderVersion()
-    {
-        return headerVersion;
-    }
-
-
-    /**
-     * Return the version of this header.  This is used by the OMRS to determine if it is back level and
-     * should not process events from a source that is more advanced because it does not have the ability
-     * to receive all of the header properties.
-     *
-     * @param headerVersion long version number - the value is incremented each time a new non-informational field is added
-     * to the type definition.
-     */
-    public void setHeaderVersion(long headerVersion)
-    {
-        this.headerVersion = headerVersion;
-    }
-
-
 }

@@ -161,7 +161,7 @@ public class AssetCatalogEventClient {
                                                                                 callerId);
 
         Connection topicConnection = restResult.getConnection();
-        ConnectorBroker connectorBroker = new ConnectorBroker();
+        ConnectorBroker connectorBroker = new ConnectorBroker(auditLog);
         Connector connector = connectorBroker.getConnector(topicConnection);
 
         if (connector == null) {

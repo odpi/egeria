@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryeventmapper;
 
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 
 /**
  * OMRSRepositoryEventMapperProviderBase provides a base class for the connector provider supporting
@@ -19,8 +20,6 @@ public abstract class OMRSRepositoryEventMapperProviderBase extends ConnectorPro
      */
     public OMRSRepositoryEventMapperProviderBase()
     {
-        /*
-         * Nothing to do
-         */
+        super.setConnectorComponentDescription(OMRSAuditingComponent.LOCAL_REPOSITORY_EVENT_MAPPER);
     }
 }

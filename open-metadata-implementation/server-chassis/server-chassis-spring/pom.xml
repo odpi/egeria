@@ -10,7 +10,7 @@
     <parent>
         <artifactId>server-chassis</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.5-SNAPSHOT</version>
+        <version>3.6-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -152,6 +152,12 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>discovery-engine-spring</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>archive-manager-spring</artifactId>
             <scope>runtime</scope>
         </dependency>
 
@@ -579,6 +585,12 @@
                 <dependency>
                     <groupId>org.odpi.egeria</groupId>
                     <artifactId>asset-owner-spring</artifactId>
+                    <scope>runtime</scope>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.odpi.egeria</groupId>
+                    <artifactId>archive-manager-spring</artifactId>
                     <scope>runtime</scope>
                 </dependency>
 

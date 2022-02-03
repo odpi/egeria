@@ -9,35 +9,35 @@ import java.io.Serializable;
  */
 public enum ViewServiceDescription implements Serializable
 {
-    GLOSSARY_AUTHOR(5000,
+    GLOSSARY_AUTHOR(800,
                     "Glossary Author",
                     "Glossary Author OMVS",
                     "glossary-author",
                     "View Service for glossary authoring.",
                     "https://odpi.github.io/egeria-docs/services/omvs/glossary-author/overview"),
 
-    REPOSITORY_EXPLORER(5001,
+    REPOSITORY_EXPLORER(801,
                   "Repository Explorer",
                   "Repository Explorer OMVS",
                   "rex",
                   "Explore open metadata instances.",
                   "https://odpi.github.io/egeria-docs/services/omvs/rex/overview"),
 
-    TYPE_EXPLORER(5002,
+    TYPE_EXPLORER(802,
                   "Type Explorer",
                   "Type Explorer OMVS",
                   "tex",
                   "Explore the open metadata types in a repository or cohort.",
                   "https://odpi.github.io/egeria-docs/services/omvs/tex/overview"),
 
-    DINO(5003,
+    DINO(803,
                   "Dynamic Infrastructure and Operations",
                   "Dynamic Infrastructure and Operations OMVS",
                   "dino",
                   "Explore and operate an open metadata ecosystem.",
                   "https://odpi.github.io/egeria-docs/services/omvs/dino/overview"),
 
-    SERVER_AUTHOR(5004,
+    SERVER_AUTHOR(804,
                  "Server Author",
                  "Server Author OMVS",
                  "server-author",

@@ -65,9 +65,9 @@ public class FileBasedAuditLogStoreConnector extends OMRSAuditLogStoreConnectorB
 
         try
         {
-            File         configStoreDirectory = new File(logStoreTemplateName);
+            File         auditLogStoreDirectory = new File(logStoreTemplateName);
 
-            FileUtils.forceMkdir(configStoreDirectory);
+            FileUtils.forceMkdir(auditLogStoreDirectory);
         }
         catch (IOException ioException)
         {

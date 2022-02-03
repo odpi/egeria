@@ -182,7 +182,7 @@ public class ITProfileManagerClient implements ITProfileManagerInterface
      * @param externalSourceGUID   guid of the software server capability entity that represented the external source - null for local
      * @param externalSourceName   name of the software server capability entity that represented the external source
      * @param itInfrastructureGUID unique identifier of the piece of IT infrastructure that is described by the new IT profile.
-     * @param itUserId
+     * @param itUserId            user Id used by the IT Infrastructure
      * @param properties          properties for a IT profile
      *
      * @return unique identifier of IT profile

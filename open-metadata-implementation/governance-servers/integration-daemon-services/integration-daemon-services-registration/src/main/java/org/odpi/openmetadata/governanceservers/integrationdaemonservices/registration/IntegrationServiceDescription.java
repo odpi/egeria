@@ -11,7 +11,7 @@ import java.io.Serializable;
  */
 public enum IntegrationServiceDescription implements Serializable
 {
-    CATALOG_INTEGRATOR_OMIS(4000,
+    CATALOG_INTEGRATOR_OMIS(600,
                             "Catalog Integrator",
                             "Catalog Integrator OMIS",
                             "catalog-integrator",
@@ -20,7 +20,7 @@ public enum IntegrationServiceDescription implements Serializable
                             "Asset Manager OMAS",
                             PermittedSynchronization.BOTH_DIRECTIONS),
 
-    API_INTEGRATOR_OMIS(4001,
+    API_INTEGRATOR_OMIS(601,
                         "API Integrator",
                         "API Integrator OMIS",
                         "api-integrator",
@@ -29,7 +29,7 @@ public enum IntegrationServiceDescription implements Serializable
                             "Data Manager OMAS",
                             PermittedSynchronization.FROM_THIRD_PARTY),
 
-    TOPIC_INTEGRATOR_OMIS(4002,
+    TOPIC_INTEGRATOR_OMIS(602,
                             "Topic Integrator",
                             "Topic Integrator OMIS",
                             "topic-integrator",
@@ -38,7 +38,7 @@ public enum IntegrationServiceDescription implements Serializable
                             "Data Manager OMAS",
                             PermittedSynchronization.FROM_THIRD_PARTY),
 
-    DISPLAY_INTEGRATOR_OMIS(4003,
+    DISPLAY_INTEGRATOR_OMIS(603,
                           "Display Integrator",
                           "Display Integrator OMIS",
                           "display-integrator",
@@ -47,7 +47,7 @@ public enum IntegrationServiceDescription implements Serializable
                           "Data Manager OMAS",
                           PermittedSynchronization.FROM_THIRD_PARTY),
 
-    DATABASE_INTEGRATOR_OMIS     (4004,
+    DATABASE_INTEGRATOR_OMIS     (604,
                                   "Database Integrator",
                                   "Database Integrator OMIS",
                                   "database-integrator",
@@ -56,7 +56,7 @@ public enum IntegrationServiceDescription implements Serializable
                                   "Data Manager OMAS",
                                   PermittedSynchronization.FROM_THIRD_PARTY),
 
-    FILES_INTEGRATOR_OMIS(4005,
+    FILES_INTEGRATOR_OMIS(605,
                           "Files Integrator",
                           "Files Integrator OMIS",
                           "files-integrator",
@@ -65,7 +65,7 @@ public enum IntegrationServiceDescription implements Serializable
                           "Data Manager OMAS",
                           PermittedSynchronization.FROM_THIRD_PARTY),
 
-    LINEAGE_INTEGRATOR_OMIS(4006,
+    LINEAGE_INTEGRATOR_OMIS(606,
                           "Lineage Integrator",
                           "Lineage Integrator OMIS",
                           "lineage-integrator",
@@ -74,7 +74,7 @@ public enum IntegrationServiceDescription implements Serializable
                           "Asset Manager OMAS",
                           PermittedSynchronization.FROM_THIRD_PARTY),
 
-    ORGANIZATION_INTEGRATOR_OMIS     (4007,
+    ORGANIZATION_INTEGRATOR_OMIS     (607,
                                       "Organization Integrator",
                                       "Organization Integrator OMIS",
                                       "organization-integrator",
@@ -83,7 +83,7 @@ public enum IntegrationServiceDescription implements Serializable
                                       "Community Profile OMAS",
                                       PermittedSynchronization.FROM_THIRD_PARTY),
 
-    SECURITY_INTEGRATOR_OMIS(4008,
+    SECURITY_INTEGRATOR_OMIS(608,
                                       "Security Integrator",
                                       "Security Integrator OMIS",
                                       "security-integrator",
@@ -92,7 +92,7 @@ public enum IntegrationServiceDescription implements Serializable
                                       "Security Manager OMAS",
                                       PermittedSynchronization.TO_THIRD_PARTY),
 
-    ANALYTICS_INTEGRATOR_OMIS(4009,
+    ANALYTICS_INTEGRATOR_OMIS(609,
                             "Analytics Integrator",
                             "Analytics Integrator OMIS",
                             "analytics-integrator",
@@ -101,7 +101,7 @@ public enum IntegrationServiceDescription implements Serializable
                             "Analytics Modeling OMAS",
                             PermittedSynchronization.BOTH_DIRECTIONS),
 
-    SEARCH_INTEGRATOR_OMIS(4010,
+    SEARCH_INTEGRATOR_OMIS(610,
             "Search Integrator",
             "Search Integrator OMIS",
             "search-integrator",
@@ -110,7 +110,7 @@ public enum IntegrationServiceDescription implements Serializable
             "Asset Catalog OMAS",
             PermittedSynchronization.BOTH_DIRECTIONS),
 
-    INFRASTRUCTURE_INTEGRATOR_OMIS(4011,
+    INFRASTRUCTURE_INTEGRATOR_OMIS(611,
                            "Infrastructure Integrator",
                            "Infrastructure Integrator OMIS",
                            "infrastructure-integrator",

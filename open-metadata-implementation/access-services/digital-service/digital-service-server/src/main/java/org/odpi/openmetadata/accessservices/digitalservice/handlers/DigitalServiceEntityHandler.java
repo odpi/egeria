@@ -42,8 +42,8 @@ public class DigitalServiceEntityHandler
 
     /**
      * Create digital service referencable string.
-     * @param userId
-     * @param serverName              the server name*
+     * @param userId calling user
+     * @param serverName              the server name
      * @param digitalService the digital service
      * @return the string
      * @throws PropertyServerException    the property server exception
