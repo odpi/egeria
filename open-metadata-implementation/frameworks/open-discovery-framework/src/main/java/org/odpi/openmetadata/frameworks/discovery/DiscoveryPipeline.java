@@ -16,24 +16,7 @@ import java.util.List;
  */
 public abstract class DiscoveryPipeline extends DiscoveryService implements VirtualConnectorExtension
 {
-    protected List<Connector>        embeddedConnectors = null;
     protected List<DiscoveryService> embeddedDiscoveryServices = null;
-
-
-    /**
-     * Set up the list of discovery services connectors that will be invoked as part of this discovery pipeline.
-     *
-     * The connectors are initialized waiting to start.  After start() is called on the
-     * discovery pipeline, it will choreograph the invocation of its embedded discovery services by calling
-     * start() to each of them when they are to run. Similarly for disconnect().
-     *
-     * @param embeddedConnectors  list of embedded connectors that are hopefully discovery services
-     */
-    @Override
-    public void initializeEmbeddedConnectors(List<Connector> embeddedConnectors)
-    {
-        this.embeddedConnectors = embeddedConnectors;
-    }
 
 
     /**
@@ -51,7 +34,7 @@ public abstract class DiscoveryPipeline extends DiscoveryService implements Virt
          */
         super.start();
 
-        embeddedDiscoveryServices = getEmbeddedDiscoveryServices(embeddedConnectors);
+        embeddedDiscoveryServices = getEmbeddedDiscoveryServices();
 
         if (embeddedDiscoveryServices == null)
         {

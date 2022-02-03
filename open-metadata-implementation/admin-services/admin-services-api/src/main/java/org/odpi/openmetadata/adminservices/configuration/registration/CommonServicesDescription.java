@@ -11,25 +11,25 @@ import java.util.List;
  */
 public enum CommonServicesDescription implements Serializable
 {
-    REPOSITORY_SERVICES              (3000,
+    REPOSITORY_SERVICES              (180,
                                       "Open Metadata Repository Services (OMRS)",
                                       "repository-services",
                                       "Manages the synchronization, retrieval and maintenance of metadata stored in open metadata repositories",
                                       "https://odpi.github.io/egeria-docs/services/omrs"),
 
-    ADMIN_OPERATIONAL_SERVICES       (3001,
+    ADMIN_OPERATIONAL_SERVICES       (181,
                                       "OMAG Server Operational Services",
                                       "admin-services",
                                       "Management of services active in an Open Metadata and governance server (OMAG Server)",
                                       "https://odpi.github.io/egeria-docs/services/admin-services"),
 
-    OCF_METADATA_MANAGEMENT          (3002,
+    OCF_METADATA_MANAGEMENT          (182,
                                       "Connected Asset Services",
                                       "connected-asset",
                                       "Common metadata services for the Open Connector Framework (OCF)",
                                       "https://odpi.github.io/egeria-docs/services/ocf-metadata-management"),
 
-    OPEN_METADATA_SECURITY           (3003,
+    OPEN_METADATA_SECURITY           (183,
                                       "Open Metadata Security Services",
                                       null,
                                       "Authorization services for Open Metadata and Governance",

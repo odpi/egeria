@@ -177,7 +177,7 @@ public class ProjectFVT
         // make sure there is a project with the name
         createProject( DEFAULT_TEST_PROJECT_NAME);
         Project projectForUniqueQFN2= createProject(DEFAULT_TEST_PROJECT_NAME);
-        if (projectForUniqueQFN2 == null || projectForUniqueQFN2.equals("")) {
+        if (projectForUniqueQFN2 == null || projectForUniqueQFN2.getQualifiedName().length() == 0) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected qualified name to be set");
         }
     }

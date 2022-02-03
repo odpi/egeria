@@ -402,6 +402,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param classificationProperties properties to save in the classification
      * @param isMergeUpdate should the properties be merged with the existing properties or completely over-write them
      * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param forLineage the query is for lineage so ignore Memento classifications
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @throws InvalidParameterException the classification name is null
@@ -517,6 +518,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              attachmentTypeName,
                                              null,
                                              userId,
+                                             effectiveTime,
                                              actionDescription,
                                              methodName);
             }
@@ -707,6 +709,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              attachmentTypeName,
                                              null,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -882,6 +885,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              attachmentTypeName,
                                              null,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -943,6 +947,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param relationshipGUIDTypeName type of relationship
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param effectiveTime what is the effective time for related queries needed to do the update
      * @param methodName calling method
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
@@ -1444,6 +1449,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                  attachmentTypeName,
                                                  null,
                                                  userId,
+                                                 new Date(),
                                                  actionDescription,
                                                  methodName);
                 }
@@ -4241,6 +4247,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param attachmentTypeName if a new relationship has been established, what is the type name of the entity it is connecting to
      * @param relationshipTypeName if a new relationship has been established, what is the type name of the relationship
      * @param userId who is the calling user?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param actionDescription what is the description of the activity
      * @param methodName calling method
      * @throws UserNotAuthorizedException local server user id not authorized to update latest change
@@ -4254,6 +4261,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                          String       attachmentTypeName,
                                          String       relationshipTypeName,
                                          String       userId,
+                                         Date         effectiveTime,
                                          String       actionDescription,
                                          String       methodName) throws UserNotAuthorizedException,
                                                                          PropertyServerException
@@ -4294,7 +4302,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                    newProperties,
                                                    false,
                                                    false,
-                                                   new Date(),
+                                                   effectiveTime,
                                                    methodName);
             }
         }
@@ -6687,6 +6695,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              entityTypeName,
                                              null,
                                              userId,
+                                             effectiveTime,
                                              actionDescription,
                                              methodName);
             }
@@ -6700,6 +6709,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              null,
                                              null,
                                              userId,
+                                             effectiveTime,
                                              actionDescription,
                                              methodName);
             }
@@ -6930,6 +6940,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              entityTypeName,
                                              null,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -6943,6 +6954,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              null,
                                              null,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -7179,6 +7191,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              entityTypeName,
                                              null,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -7747,6 +7760,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                          entityTypeName,
                                          null,
                                          userId,
+                                         effectiveTime,
                                          actionDescription,
                                          methodName);
         }
@@ -7759,6 +7773,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param entityGUID unique identifier of object to update
      * @param entityTypeName unique name of the entity's type
      * @param methodName calling method
+     * @return test results
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem removing the properties from the repository.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -8420,6 +8435,8 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param requiredClassificationName  String the name of the classification that must be on the attached entity.
      * @param omittedClassificationName   String the name of a classification that must not be on the attached entity.
      * @param selectionEnd 0 means either end, 1 means only take from end 1, 2 means only take from end 2
+     * @param forDuplicateProcessing this request os for duplicate processing so do not deduplicate
+     * @param forLineage this request is for lineage so ignore Memento classifications
      * @param startingFrom start position for results
      * @param pageSize     maximum number of results
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -10249,6 +10266,8 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param serviceSupportedZones list of supported zones for this service.
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique value of the type that the results should match with
+     * @param forDuplicateProcessing this request os for duplicate processing so do not deduplicate
+     * @param forLineage this request is for lineage so ignore Memento classifications
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
@@ -11910,6 +11929,8 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique name of the type that the results should match with
      * @param serviceSupportedZones list of supported zones for this service
+     * @param forDuplicateProcessing this request os for duplicate processing so do not deduplicate
+     * @param forLineage this request is for lineage so ignore Memento classifications
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
@@ -12704,6 +12725,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                          attachingElementTypeName,
                                          attachmentTypeName,
                                          userId,
+                                         effectiveTime,
                                          actionDescription,
                                          methodName);
         }
@@ -12719,6 +12741,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              attachingElementTypeName,
                                              attachmentTypeName,
                                              userId,
+                                             effectiveTime,
                                              actionDescription,
                                              methodName);
             }
@@ -12739,6 +12762,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              startingElementTypeName,
                                              attachmentTypeName,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -12761,6 +12785,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              startingElementTypeName,
                                              attachmentTypeName,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -12986,6 +13011,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              attachingElementTypeName,
                                              attachmentTypeName,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -13001,6 +13027,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                  attachingElementTypeName,
                                                  attachmentTypeName,
                                                  userId,
+                                                 new Date(),
                                                  actionDescription,
                                                  methodName);
                 }
@@ -13034,6 +13061,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                  startingElementTypeName,
                                                  attachmentTypeName,
                                                  userId,
+                                                 new Date(),
                                                  actionDescription,
                                                  methodName);
                 }
@@ -13050,6 +13078,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                  startingElementTypeName,
                                                  attachmentTypeName,
                                                  userId,
+                                                 new Date(),
                                                  actionDescription,
                                                  methodName);
                 }
@@ -13325,6 +13354,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                          newAttachingElementTypeName,
                                          attachmentTypeName,
                                          userId,
+                                         new Date(),
                                          actionDescription,
                                          methodName);
 
@@ -13353,6 +13383,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              newAttachingElementTypeName,
                                              attachmentTypeName,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -13386,6 +13417,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              startingElementTypeName,
                                              attachmentTypeName,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -13415,6 +13447,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              startingElementTypeName,
                                              attachmentTypeName,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -13806,6 +13839,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                          attachedElementTypeName,
                                          attachmentTypeName,
                                          userId,
+                                         new Date(),
                                          actionDescription,
                                          methodName);
 
@@ -13833,6 +13867,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              attachedElementTypeName,
                                              attachmentTypeName,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -13853,6 +13888,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              startingElementTypeName,
                                              attachmentTypeName,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -13881,6 +13917,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                              startingElementTypeName,
                                              attachmentTypeName,
                                              userId,
+                                             new Date(),
                                              actionDescription,
                                              methodName);
             }
@@ -14344,4 +14381,129 @@ public class OpenMetadataAPIGenericHandler<B>
                                                 externalSourceGUID);
         }
     }
+
+    /**
+     * Test whether an entity is of a particular type or not. Internally it delegates to {@link RepositoryHandler#isEntityATypeOf}
+     *
+     * @param userId calling user
+     * @param guid unique identifier of the entity.
+     * @param guidParameterName name of the parameter containing the guid.
+     * @param entityTypeName name of the type to test for
+     * @param methodName calling method
+     *
+     * @return boolean flag
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the entity.
+     */
+    public boolean isEntityATypeOf(String userId,
+                                   String guid,
+                                   String guidParameterName,
+                                   String entityTypeName,
+                                   String methodName) throws InvalidParameterException,
+                                                             PropertyServerException,
+                                                             UserNotAuthorizedException {
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(guid, "GUID", methodName);
+        invalidParameterHandler.validateObject(entityTypeName, "entityTypeName", methodName);
+
+        EntityDetail entityDetail = this.getEntityFromRepository(userId, guid, guidParameterName, entityTypeName,
+                null, null, false, false,
+                null, methodName);
+
+        return entityDetail != null && entityDetail.getType().getTypeDefName().equals(entityTypeName);
+    }
+
+    /**
+     * Return a list of entities that match the supplied criteria.  The results can be returned over many pages.
+     * Internally it delegates to {@link RepositoryHandler#findEntities}
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
+     * @param entitySubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the entityTypeGUID to
+     *                           include in the search results. Null means all subtypes.
+     * @param searchProperties Optional list of entity property conditions to match.
+     * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values.
+     * @param searchClassifications Optional list of entity classifications to match.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the entity property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param startingFrom the starting element number of the entities to return.
+     *                                This is used when retrieving elements
+     *                                beyond the first page of results. Zero means start from the first element.
+     * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
+     *                 unrestricted return results size.
+     * @param methodName calling method
+     * @return a list of entities matching the supplied criteria; null means no matching entities in the metadata
+     * collection; list (even if empty) means more to receive
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the entity.
+     */
+    public List<EntityDetail> findEntities(String                userId,
+                                           String                entityTypeGUID,
+                                           List<String>          entitySubtypeGUIDs,
+                                           SearchProperties      searchProperties,
+                                           List<InstanceStatus>  limitResultsByStatus,
+                                           SearchClassifications searchClassifications,
+                                           Date                  asOfTime,
+                                           String                sequencingProperty,
+                                           SequencingOrder       sequencingOrder,
+                                           boolean               forLineage,
+                                           boolean               forDuplicateProcessing,
+                                           int                   startingFrom,
+                                           int                   pageSize,
+                                           String                methodName) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException {
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
+
+
+        /*
+         * Now need to ensure that the anchor's classification is pushed down to the dependent elements.  This is done by retrieving the
+         * relationships.
+         */
+        RepositoryFindEntitiesIterator iterator = new RepositoryFindEntitiesIterator(repositoryHandler,
+                                                                                     userId,
+                                                                                     entityTypeGUID,
+                                                                                     entitySubtypeGUIDs,
+                                                                                     searchProperties,
+                                                                                     limitResultsByStatus,
+                                                                                     searchClassifications,
+                                                                                     asOfTime,
+                                                                                     sequencingProperty,
+                                                                                     sequencingOrder,
+                                                                                     forLineage,
+                                                                                     forDuplicateProcessing,
+                                                                                     startingFrom,
+                                                                                     queryPageSize,
+                                                                                     null,
+                                                                                     methodName);
+
+        List<EntityDetail> results = new ArrayList<>();
+
+        while ((iterator.moreToReceive()) && ((queryPageSize == 0) || (results.size() < queryPageSize)))
+        {
+            EntityDetail entity = iterator.getNext();
+
+            if (entity != null)
+            {
+                results.add(entity);
+            }
+        }
+
+        if (! results.isEmpty())
+        {
+            return results;
+        }
+
+        return null;
+    }
+
 }

@@ -70,7 +70,7 @@ public enum DataEngineAuditCode {
             "Verify the topic configuration or the event schema."),
     IN_TOPIC_EVENT_SENT("OMAS-DATA-ENGINE-0008",
             OMRSAuditLogRecordSeverity.EVENT,
-            "The Data Engine Open Metadata Access Service (OMAS) client has sent event: {0}",
+            "The Data Engine Open Metadata Access Service (OMAS) client has sent event of type: {0}",
             "The access service client sends out event notification produced by external source like data engine system.",
             "This event contains external metadata changes that need to be processed by the access service.");
 

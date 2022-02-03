@@ -10,7 +10,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsCont
 import org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants;
 import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -39,7 +39,8 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.DATA_STORE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.FILE_FOLDER;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_TABLE;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_COLUMN;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.SCHEMA_ATTRIBUTE;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TOPIC;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.UPDATE_TIME;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ZONE_MEMBERSHIP;
 
@@ -52,7 +53,7 @@ public class HandlerHelper {
     private static final String GUID_PARAMETER = "guid";
 
     private final Set<String> lineageClassificationTypes;
-    private final RepositoryHandler repositoryHandler;
+    private final OpenMetadataAPIGenericHandler genericHandler;
     private final OMRSRepositoryHelper repositoryHelper;
     private final InvalidParameterHandler invalidParameterHandler;
 
@@ -63,13 +64,13 @@ public class HandlerHelper {
      *
      * @param invalidParameterHandler handler for invalid parameters
      * @param repositoryHelper        helper used by the converters
-     * @param repositoryHandler       handler for calling the repository services
+     * @param genericHandler          handler for calling the repository services
      */
-    public HandlerHelper(InvalidParameterHandler invalidParameterHandler, OMRSRepositoryHelper repositoryHelper, RepositoryHandler repositoryHandler,
-                         Converter converter, Set<String> lineageClassificationTypes) {
+    public HandlerHelper(InvalidParameterHandler invalidParameterHandler, OMRSRepositoryHelper repositoryHelper,
+                         OpenMetadataAPIGenericHandler genericHandler, Converter converter, Set<String> lineageClassificationTypes) {
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
-        this.repositoryHandler = repositoryHandler;
+        this.genericHandler = genericHandler;
         this.lineageClassificationTypes = lineageClassificationTypes;
         this.converter = converter;
     }
@@ -98,8 +99,9 @@ public class HandlerHelper {
 
         String relationshipTypeGUID = getTypeGUID(userId, relationshipTypeName);
 
-        List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId, entityGUID, entityTypeName, relationshipTypeGUID,
-                relationshipTypeName, methodName);
+        List<Relationship> relationships = genericHandler.getAttachmentLinks(userId, entityGUID, GUID_PARAMETER,
+                entityTypeName, relationshipTypeGUID, relationshipTypeName, null,
+                0 , 50, null, methodName);
 
         if (CollectionUtils.isEmpty(relationships)) {
             return Collections.emptyList();
@@ -132,9 +134,11 @@ public class HandlerHelper {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(entityGUID, GUID_PARAMETER, methodName);
 
-        String typeGuid = getTypeGUID(userId, relationshipTypeName);
+        String relationshipTypeGuid = getTypeGUID(userId, relationshipTypeName);
         return Optional.ofNullable(
-                repositoryHandler.getUniqueRelationshipByType(userId, entityGUID, entityTypeName, typeGuid, relationshipTypeName, methodName)
+                genericHandler.getUniqueAttachmentLink(userId, entityGUID, GUID_PARAMETER, entityTypeName,
+                        relationshipTypeGuid, relationshipTypeName, null, null,
+                        null, methodName)
         );
     }
 
@@ -172,11 +176,15 @@ public class HandlerHelper {
         String methodName = "getEntityAtTheEnd";
 
         if (relationship.getEntityOneProxy().getGUID().equals(entityDetailGUID)) {
-            return repositoryHandler.getEntityByGUID(userId, relationship.getEntityTwoProxy().getGUID(), GUID_PARAMETER,
-                    relationship.getEntityTwoProxy().getType().getTypeDefName(), methodName);
+            return genericHandler.getEntityFromRepository(userId, relationship.getEntityTwoProxy().getGUID(), GUID_PARAMETER,
+                    relationship.getEntityTwoProxy().getType().getTypeDefName(),
+                    null, null,
+                    false, false, null ,methodName);
         } else if (relationship.getEntityTwoProxy().getGUID().equals(entityDetailGUID)) {
-            return repositoryHandler.getEntityByGUID(userId, relationship.getEntityOneProxy().getGUID(), GUID_PARAMETER,
-                    relationship.getEntityOneProxy().getType().getTypeDefName(), methodName);
+            return genericHandler.getEntityFromRepository(userId, relationship.getEntityOneProxy().getGUID(), GUID_PARAMETER,
+                    relationship.getEntityOneProxy().getType().getTypeDefName(),
+                    null, null,
+                    false, false, null, methodName);
         }
         return null;
     }
@@ -199,7 +207,9 @@ public class HandlerHelper {
                                                                                                                UserNotAuthorizedException {
         String methodName = "getEntityDetails";
 
-        return repositoryHandler.getEntityByGUID(userId, entityDetailGUID, GUID_PARAMETER, entityTypeName, methodName);
+        return genericHandler.getEntityFromRepository(userId, entityDetailGUID, GUID_PARAMETER, entityTypeName,
+                null, null,
+                false, false, null, methodName);
     }
 
 
@@ -218,12 +228,13 @@ public class HandlerHelper {
      */
     public Optional<List<EntityDetail>> findEntitiesByType(String userId, String entityTypeName, SearchProperties searchProperties,
                                                            FindEntitiesParameters findEntitiesParameters)
-            throws UserNotAuthorizedException, PropertyServerException {
+            throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         final String methodName = "findEntitiesByType";
         String typeDefGUID = getTypeGUID(userId, entityTypeName);
-        return Optional.ofNullable(repositoryHandler.findEntities(userId, typeDefGUID, findEntitiesParameters.getEntitySubtypeGUIDs(),
+        return Optional.ofNullable(genericHandler.findEntities(userId, typeDefGUID, findEntitiesParameters.getEntitySubtypeGUIDs(),
                 searchProperties, findEntitiesParameters.getLimitResultsByStatus(), findEntitiesParameters.getSearchClassifications(), null,
-                findEntitiesParameters.getSequencingProperty(), findEntitiesParameters.getSequencingOrder(), 0, 0, methodName));
+                findEntitiesParameters.getSequencingProperty(), findEntitiesParameters.getSequencingOrder(),
+                true, false, 0, 0, methodName));
     }
 
     /**
@@ -461,7 +472,6 @@ public class HandlerHelper {
      */
     public boolean isDataStore(String serviceName, EntityDetail entityDetail) {
         return repositoryHelper.isTypeOf(serviceName, entityDetail.getType().getTypeDefName(), DATA_STORE);
-
     }
 
 
@@ -478,14 +488,26 @@ public class HandlerHelper {
     }
 
     /**
-     * Verifies if the entity is of type TabularColumn or subtype
+     * Verifies if the entity is of type SchemaAttribute or subtype
      *
      * @param serviceName  the service name
      * @param typeName type of the entity
      *
      * @return true if the entity is of type TabularColumn or subtype, false otherwise
      */
-    public boolean isTabularColumn(String serviceName, String typeName) {
-        return repositoryHelper.isTypeOf(serviceName, typeName, TABULAR_COLUMN);
+    public boolean isSchemaAttribute(String serviceName, String typeName) {
+        return repositoryHelper.isTypeOf(serviceName, typeName, SCHEMA_ATTRIBUTE);
+    }
+
+    /**
+     * Verifies if the entity is of type Topic or subtype
+     *
+     * @param serviceName  the service name
+     * @param entityDetail the entity detail
+     *
+     * @return true if the entity is of type RelationalTable or subtype, false otherwise
+     */
+    public boolean isTopic(String serviceName, EntityDetail entityDetail) {
+        return repositoryHelper.isTypeOf(serviceName, entityDetail.getType().getTypeDefName(), TOPIC);
     }
 }

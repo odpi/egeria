@@ -4234,6 +4234,44 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
         return classifyEntityParameterValidation(userId, entityGUID, classificationName, classificationProperties, methodName);
     }
 
+    /**
+     * Validate the parameters passed to classifyEntity.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityProxy identifier (proxy) for the entity.
+     * @param classificationName String name for the classification.
+     * @param classificationProperties list of properties to set in the classification.
+     * @param methodName calling method
+     *
+     * @return typeDef for the classification
+     *
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    protected TypeDef  classifyEntityParameterValidation(String               userId,
+                                                         EntityProxy          entityProxy,
+                                                         String               classificationName,
+                                                         InstanceProperties   classificationProperties,
+                                                         String               methodName) throws InvalidParameterException,
+                                                                                                 RepositoryErrorException,
+                                                                                                 PropertyErrorException,
+                                                                                                 UserNotAuthorizedException
+    {
+        if (entityProxy == null)
+        {
+            throw new InvalidParameterException(OMRSErrorCode.NULL_ENTITY_PROXY.getMessageDefinition(repositoryName, "entityProxy", methodName),
+                    this.getClass().getName(),
+                    methodName,
+                    "entityProxy");
+        }
+
+        return classifyEntityParameterValidation(userId, entityProxy.getGUID(), classificationName, classificationProperties, methodName);
+    }
+
 
     /**
      * Validate the parameters passed to declassifyEntity.

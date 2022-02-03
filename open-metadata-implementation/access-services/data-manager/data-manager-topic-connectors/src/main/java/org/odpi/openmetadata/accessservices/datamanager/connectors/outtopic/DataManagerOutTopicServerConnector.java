@@ -37,7 +37,9 @@ public class DataManagerOutTopicServerConnector extends OpenMetadataTopicSenderC
 
             if (super.auditLog != null)
             {
-                super.auditLog.logMessage(methodName, DataManagerAuditCode.OUT_TOPIC_EVENT.getMessageDefinition(eventString));
+                super.auditLog.logMessage(methodName,
+                                          DataManagerAuditCode.OUT_TOPIC_EVENT.getMessageDefinition(event.getEventType().getEventTypeName()),
+                                          eventString);
             }
         }
         catch (InvalidParameterException | ConnectorCheckedException error)

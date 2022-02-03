@@ -9,7 +9,7 @@
     <parent>
         <artifactId>open-metadata-resources</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.5-SNAPSHOT</version>
+        <version>3.6-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -22,7 +22,7 @@
 
     <name>Open Metadata Deployment</name>
     <description>
-        Samples, Helm charts to deploy Egeria and associated components such as docker image build scripts
+        Samples and docker images to support deployment
     </description>
 
     <artifactId>open-metadata-deployment</artifactId>

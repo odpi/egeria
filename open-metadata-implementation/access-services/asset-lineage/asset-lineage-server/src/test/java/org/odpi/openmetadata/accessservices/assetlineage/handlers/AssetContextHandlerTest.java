@@ -10,6 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
@@ -37,15 +38,19 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CONNECTION_TO_ASSET;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.DATA_CONTENT_FOR_DATA_SET;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.DATA_FILE;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.EVENT_SCHEMA_ATTRIBUTE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.FILE_FOLDER;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.NESTED_FILE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.NESTED_SCHEMA_ATTRIBUTE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_IMPLEMENTATION;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_COLUMN;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.RELATIONAL_TABLE;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.SCHEMA_ATTRIBUTE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_COLUMN;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_FILE_COLUMN;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_SCHEMA_TYPE;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TOPIC;
+import static org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.SchemaElementMapper.EVENT_TYPE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.SchemaElementMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME;
 
 @ExtendWith(MockitoExtension.class)
@@ -60,7 +65,7 @@ class AssetContextHandlerTest {
     @Mock
     private List<String> supportedZones;
     @Mock
-    private RepositoryHandler repositoryHandler;
+    private OpenMetadataAPIGenericHandler genericHandler;
     @InjectMocks
     private AssetContextHandler assetContextHandler;
 
@@ -93,7 +98,7 @@ class AssetContextHandlerTest {
         when(handlerHelper.addContextForRelationships(eq(USER), eq(entityDetail), eq(ATTRIBUTE_FOR_SCHEMA), any())).thenReturn(schemaType);
 
         mockAnchorGuid(schemaType);
-        when(repositoryHandler.isEntityATypeOf(USER, ANCHOR_GUID_VALUE, ANCHOR_GUID, PORT_IMPLEMENTATION, "isInternalTabularColumn"))
+        when(genericHandler.isEntityATypeOf(USER, ANCHOR_GUID_VALUE, ANCHOR_GUID, PORT_IMPLEMENTATION, "isInternalTabularColumn"))
                 .thenReturn(true);
 
         assetContextHandler.buildSchemaElementContext(USER, entityDetail);
@@ -109,7 +114,7 @@ class AssetContextHandlerTest {
         when(handlerHelper.addContextForRelationships(eq(USER), eq(entityDetail), eq(ATTRIBUTE_FOR_SCHEMA), any())).thenReturn(schemaType);
 
         mockAnchorGuid(schemaType);
-        when(repositoryHandler.isEntityATypeOf(USER, ANCHOR_GUID_VALUE, ANCHOR_GUID, PORT_IMPLEMENTATION, "isInternalTabularColumn"))
+        when(genericHandler.isEntityATypeOf(USER, ANCHOR_GUID_VALUE, ANCHOR_GUID, PORT_IMPLEMENTATION, "isInternalTabularColumn"))
                 .thenReturn(false);
 
         assetContextHandler.buildSchemaElementContext(USER, entityDetail);
@@ -166,8 +171,8 @@ class AssetContextHandlerTest {
     void buildColumnContext() throws OCFCheckedExceptionBase {
         LineageEntity lineageEntity = mockLineageEntity(RELATIONAL_COLUMN);
         EntityDetail entityDetail = mockEntityDetail(RELATIONAL_COLUMN);
-        when(handlerHelper.isTabularColumn(USER, RELATIONAL_COLUMN)).thenReturn(true);
-        when(handlerHelper.getEntityDetails(USER, GUID, TABULAR_COLUMN)).thenReturn(entityDetail);
+        when(handlerHelper.isSchemaAttribute(USER, RELATIONAL_COLUMN)).thenReturn(true);
+        when(handlerHelper.getEntityDetails(USER, GUID, SCHEMA_ATTRIBUTE)).thenReturn(entityDetail);
 
         assetContextHandler.buildColumnContext(USER, lineageEntity);
         verify(handlerHelper, times(1)).addContextForRelationships(eq(USER), eq(entityDetail), eq(NESTED_SCHEMA_ATTRIBUTE), any());
@@ -177,7 +182,7 @@ class AssetContextHandlerTest {
     void buildColumnContext_notValidType() throws OCFCheckedExceptionBase {
         LineageEntity lineageEntity = mockLineageEntity(DATA_FILE);
         EntityDetail entityDetail = mockEntityDetail(DATA_FILE);
-        when(handlerHelper.isTabularColumn(USER, DATA_FILE)).thenReturn(false);
+        when(handlerHelper.isSchemaAttribute(USER, DATA_FILE)).thenReturn(false);
 
         assetContextHandler.buildColumnContext(USER, lineageEntity);
         verify(handlerHelper, times(0)).getEntityDetails(USER, GUID, DATA_FILE);
@@ -207,6 +212,34 @@ class AssetContextHandlerTest {
         verify(handlerHelper, times(0)).getLineageEntity(entityDetail);
     }
 
+    @Test
+    void buildAssetContext_topic() throws OCFCheckedExceptionBase {
+        LineageEntity lineageEntity = mockLineageEntity(TOPIC);
+        EntityDetail entityDetail = mockEntityDetail(TOPIC);
+        when(handlerHelper.getEntityDetails(USER, GUID, TOPIC)).thenReturn(entityDetail);
+
+        when(handlerHelper.isTopic(USER, entityDetail)).thenReturn(true);
+
+        EntityDetail eventTypeList = mockEntityDetail("EventTypeList");
+        when(handlerHelper.addContextForRelationships(eq(USER), eq(entityDetail), eq(ASSET_SCHEMA_TYPE), any())).thenReturn(eventTypeList);
+
+        assetContextHandler.buildAssetContext(USER, lineageEntity);
+        verify(handlerHelper, times(1)).validateAsset(entityDetail, "buildAssetContext", supportedZones);
+    }
+
+    @Test
+    void buildEventSchemaAttributeContext() throws OCFCheckedExceptionBase {
+        LineageEntity lineageEntity = mockLineageEntity(EVENT_SCHEMA_ATTRIBUTE);
+        EntityDetail entityDetail = mockEntityDetail(EVENT_SCHEMA_ATTRIBUTE);
+        when(handlerHelper.isSchemaAttribute(USER, EVENT_SCHEMA_ATTRIBUTE)).thenReturn(true);
+        when(handlerHelper.getEntityDetails(USER, GUID, SCHEMA_ATTRIBUTE)).thenReturn(entityDetail);
+
+        EntityDetail eventType = mockEntityDetail(EVENT_TYPE_TYPE_NAME);
+        when(handlerHelper.addContextForRelationships(eq(USER), eq(entityDetail), eq(ATTRIBUTE_FOR_SCHEMA), any())).thenReturn(eventType);
+
+        assetContextHandler.buildColumnContext(USER, lineageEntity);
+        verify(handlerHelper, times(1)).addContextForRelationships(eq(USER), eq(entityDetail), eq(ATTRIBUTE_FOR_SCHEMA), any());
+    }
 
     private EntityDetail mockEntityDetail(String typeDefName) {
         EntityDetail entityDetail = mock(EntityDetail.class);
