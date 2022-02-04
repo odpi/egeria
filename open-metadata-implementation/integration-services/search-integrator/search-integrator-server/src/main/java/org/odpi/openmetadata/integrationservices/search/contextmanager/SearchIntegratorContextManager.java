@@ -4,9 +4,9 @@
 package org.odpi.openmetadata.integrationservices.search.contextmanager;
 
 import org.odpi.openmetadata.accessservices.assetcatalog.AssetCatalog;
+import org.odpi.openmetadata.accessservices.assetmanager.client.ExternalAssetManagerClient;
 import org.odpi.openmetadata.integrationservices.search.client.AssetCatalogOutTopicEventListener;
 import org.odpi.openmetadata.accessservices.assetcatalog.eventclient.AssetCatalogEventClient;
-import org.odpi.openmetadata.accessservices.assetmanager.client.AssetManagerClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties;
 import org.odpi.openmetadata.adminservices.configuration.properties.PermittedSynchronization;
@@ -34,8 +34,8 @@ import java.util.Map;
  */
 public class SearchIntegratorContextManager extends IntegrationContextManager
 {
-    private AssetManagerClient assetManagerClient = null;
-    private AssetCatalogEventClient assetCatalogEventClient;
+    private ExternalAssetManagerClient        assetManagerClient = null;
+    private AssetCatalogEventClient           assetCatalogEventClient;
     private AssetCatalogOutTopicEventListener eventListener;
 
     /**
@@ -118,11 +118,11 @@ public class SearchIntegratorContextManager extends IntegrationContextManager
                     auditLog);
         }
 
-        assetManagerClient = new AssetManagerClient(partnerOMASServerName,
-                partnerOMASPlatformRootURL,
-                assetManagerRestClient,
-                maxPageSize,
-                auditLog);
+        assetManagerClient = new ExternalAssetManagerClient(partnerOMASServerName,
+                                                            partnerOMASPlatformRootURL,
+                                                            assetManagerRestClient,
+                                                            maxPageSize,
+                                                            auditLog);
     }
 
 

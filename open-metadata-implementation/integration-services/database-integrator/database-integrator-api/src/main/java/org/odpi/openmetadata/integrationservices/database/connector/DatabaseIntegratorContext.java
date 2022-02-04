@@ -1385,6 +1385,7 @@ public class DatabaseIntegratorContext
      * Retrieve the list of metadata elements with a matching qualified or display name.
      * There are no wildcards supported on this request.
      *
+     * @param name name used to retrieve the connection
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *

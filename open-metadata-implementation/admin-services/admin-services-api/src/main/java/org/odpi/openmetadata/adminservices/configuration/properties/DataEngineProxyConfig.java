@@ -158,7 +158,7 @@ public class DataEngineProxyConfig extends AdminServicesConfigHeader
 
     /**
      * Sets configuration parameter controlling events client usage in the Data Engine Proxy server
-     * @param eventsClientEnabled
+     * @param eventsClientEnabled can events be used?
      */
     public void setEventsClientEnabled(boolean eventsClientEnabled) {
         this.eventsClientEnabled = eventsClientEnabled;
