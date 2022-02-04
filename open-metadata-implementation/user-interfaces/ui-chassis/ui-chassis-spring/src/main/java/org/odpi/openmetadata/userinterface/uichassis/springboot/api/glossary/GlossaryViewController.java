@@ -11,8 +11,15 @@ import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryTerm;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.api.SecureController;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.CategoryNotFoundException;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.GlossaryNotFoundException;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.TermNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -96,7 +103,11 @@ public class GlossaryViewController extends SecureController {
                                 HttpServletRequest request)
             throws GlossaryViewOmasException, InvalidParameterException, PropertyServerException {
         String userId = getUser(request);
-        return glossaryViewClient.getGlossary(userId, glossaryGUID);
+        Glossary glossary = glossaryViewClient.getGlossary(userId, glossaryGUID);
+        if (glossary == null) {
+            throw new GlossaryNotFoundException("Could not find glossary with guid " + glossaryGUID);
+        }
+        return glossary;
     }
 
     /**
@@ -172,7 +183,11 @@ public class GlossaryViewController extends SecureController {
                                     HttpServletRequest request)
             throws GlossaryViewOmasException, InvalidParameterException, PropertyServerException {
         String userId = getUser(request);
-        return glossaryViewClient.getTerm(userId, termGUID);
+        GlossaryTerm term = glossaryViewClient.getTerm(userId, termGUID);
+        if (term == null) {
+            throw new TermNotFoundException("Could not find antonym for term with guid " + termGUID);
+        }
+        return term;
     }
 
     /**
@@ -447,7 +462,12 @@ public class GlossaryViewController extends SecureController {
                                 HttpServletRequest request)
             throws GlossaryViewOmasException, InvalidParameterException, PropertyServerException {
         String userId = getUser(request);
-        return glossaryViewClient.getTermHomeGlossary(userId, termGUID);
+        Glossary termHomeGlossary = glossaryViewClient.getTermHomeGlossary(userId, termGUID);
+        if (termHomeGlossary == null) {
+            throw new GlossaryNotFoundException("The home glossary was not found for term with guid " + termGUID);
+        }
+        return termHomeGlossary;
+
     }
 
     /**
@@ -483,7 +503,11 @@ public class GlossaryViewController extends SecureController {
                                         HttpServletRequest request)
             throws GlossaryViewOmasException, InvalidParameterException, PropertyServerException {
         String userId = getUser(request);
-        return glossaryViewClient.getCategory(userId, categoryGUID);
+        GlossaryCategory category = glossaryViewClient.getCategory(userId, categoryGUID);
+        if (category == null) {
+            throw new CategoryNotFoundException("Could not find the category, please check that the guid is correct " + categoryGUID);
+        }
+        return category;
     }
 
     /**
@@ -499,7 +523,11 @@ public class GlossaryViewController extends SecureController {
                                             HttpServletRequest request)
             throws GlossaryViewOmasException, InvalidParameterException, PropertyServerException {
         String userId = getUser(request);
-        return glossaryViewClient.getCategoryHomeGlossary(userId, categoryGUID);
+        Glossary categoryHomeGlossary = glossaryViewClient.getCategoryHomeGlossary(userId, categoryGUID);
+        if (categoryHomeGlossary == null) {
+            throw new GlossaryNotFoundException("Could not find the home glossary, please check that the guid is correct " + categoryGUID);
+        }
+        return categoryHomeGlossary;
     }
 
     /**
