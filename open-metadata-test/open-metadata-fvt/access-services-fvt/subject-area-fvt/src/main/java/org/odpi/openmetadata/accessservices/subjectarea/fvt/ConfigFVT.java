@@ -12,7 +12,10 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
+
 import java.io.IOException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * FVT resource to call subject area client APIs to test the config API
@@ -22,6 +25,7 @@ public class ConfigFVT
     private String serverName = null;
     private String userId = null;
     private String url = null;
+    private static Logger log = LoggerFactory.getLogger(ConfigFVT.class);
 
     public static void main(String args[])
     {
@@ -35,12 +39,12 @@ public class ConfigFVT
         } catch (SubjectAreaFVTCheckedException e) {
             System.out.println("ERROR: " + e.getMessage() );
         } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
-            System.out.println("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
+            log.debug("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
         }
 
     }
     public ConfigFVT(String url, String serverName, String userId) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        System.out.println("Config FVT");
+        log.debug("Config FVT");
         this.url =url;
         this.userId = userId;
         this.serverName = serverName;

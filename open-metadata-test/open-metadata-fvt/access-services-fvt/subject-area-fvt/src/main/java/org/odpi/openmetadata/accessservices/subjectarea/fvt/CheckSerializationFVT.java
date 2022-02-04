@@ -17,14 +17,18 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
+
 import java.io.IOException;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CheckSerializationFVT {
     private final String userId;
     private final SubjectAreaRelationshipClients subjectAreaRelationship;
     private final SubjectAreaNodeClient<Term> subjectAreaTerm;
     private final SubjectAreaNodeClient<Glossary> subjectAreaGlossary;
+    private static Logger log = LoggerFactory.getLogger(CheckSerializationFVT.class);
 
     public CheckSerializationFVT(String url, String serverName, String userId) throws InvalidParameterException {
         this.userId = userId;
@@ -96,49 +100,49 @@ public class CheckSerializationFVT {
     public void checkChildrenSerialization(String oneTermGuid, String twoTermGuid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
         List<Relationship> termAnchors = subjectAreaTerm.getAllRelationships(userId, oneTermGuid);
         checkCastChild(termAnchors.get(0), TermAnchor.class);
-        System.out.println("TermAnchor is ok.");
+        log.debug("TermAnchor is ok.");
 
         createHasA(oneTermGuid, twoTermGuid);
         List<Relationship> hasAList = subjectAreaTerm.getAllRelationships(userId, oneTermGuid);
         hasAList.removeIf(line -> line instanceof TermAnchor);
         HasA hasA = checkCastChild(hasAList.get(0), HasA.class);
         subjectAreaRelationship.hasA().delete(userId, hasA.getGuid());
-        System.out.println("HasA is ok.");
+        log.debug("HasA is ok.");
 
         createIsA(oneTermGuid, twoTermGuid);
         List<Relationship> isAList = subjectAreaTerm.getAllRelationships(userId, oneTermGuid);
         isAList.removeIf(line -> line instanceof TermAnchor);
         IsA isA = checkCastChild(isAList.get(0), IsA.class);
         subjectAreaRelationship.isA().delete(userId, isA.getGuid());
-        System.out.println("IsA is ok.");
+        log.debug("IsA is ok.");
 
         createRelatedTerm(oneTermGuid,twoTermGuid);
         List<Relationship> relatedTerms = subjectAreaTerm.getAllRelationships(userId, oneTermGuid);
         relatedTerms.removeIf(line -> line instanceof TermAnchor);
         RelatedTerm relatedTerm = checkCastChild(relatedTerms.get(0), RelatedTerm.class);
         subjectAreaRelationship.relatedTerm().delete(userId, relatedTerm.getGuid());
-        System.out.println("RelatedTerm is ok.");
+        log.debug("RelatedTerm is ok.");
 
         createTranslation(oneTermGuid, twoTermGuid);
         List<Relationship> translations = subjectAreaTerm.getAllRelationships(userId, oneTermGuid);
         translations.removeIf(line -> line instanceof TermAnchor);
         Translation translation = checkCastChild(translations.get(0), Translation.class);
         subjectAreaRelationship.translation().delete(userId, translation.getGuid());
-        System.out.println("Translation is ok.");
+        log.debug("Translation is ok.");
 
         createPreferredTerm(oneTermGuid, twoTermGuid);
         List<Relationship> preferredTerms = subjectAreaTerm.getAllRelationships(userId, oneTermGuid);
         preferredTerms.removeIf(line -> line instanceof TermAnchor);
         PreferredTerm preferredTerm = checkCastChild(preferredTerms.get(0), PreferredTerm.class);
         subjectAreaRelationship.preferredTerm().delete(userId, preferredTerm.getGuid());
-        System.out.println("PreferredTerm is ok.");
+        log.debug("PreferredTerm is ok.");
 
         createSynonym(oneTermGuid, twoTermGuid);
         List<Relationship> synonyms = subjectAreaTerm.getAllRelationships(userId, oneTermGuid);
         synonyms.removeIf(line -> line instanceof TermAnchor);
         Synonym synonym = checkCastChild(synonyms.get(0), Synonym.class);
         subjectAreaRelationship.synonym().delete(userId, synonym.getGuid());
-        System.out.println("Synonym is ok.");
+        log.debug("Synonym is ok.");
     }
 
     private  <L extends Relationship, ForCast extends Relationship>ForCast checkCastChild(L line, Class<ForCast> lClass) throws SubjectAreaFVTCheckedException {

@@ -18,6 +18,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * FVT resource to call subject area project client API
@@ -41,6 +43,8 @@ public class ProjectFVT
     private String serverName = null;
     private String userId = null;
     private int existingProjectCount = 0;
+    private static Logger log = LoggerFactory.getLogger(ProjectFVT.class);
+
     /*
      * Keep track of all the created guids in this set, by adding create and restore guids and removing when deleting.
      * At the end of the test it will delete any remaining guids.
@@ -55,7 +59,7 @@ public class ProjectFVT
         this.serverName=serverName;
         this.userId=userId;
         existingProjectCount = findProjects("").size();
-        System.out.println("existingProjectCount " + existingProjectCount);
+        log.debug("existingProjectCount " + existingProjectCount);
     }
     public static void runWith2Servers(String url) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         runIt(url, FVTConstants.SERVER_NAME1, FVTConstants.USERID);
@@ -97,7 +101,7 @@ public class ProjectFVT
     }
 
     public void run() throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        System.out.println("Create a project");
+        log.debug("Create a project");
         Project project = createProject(serverName+" "+DEFAULT_TEST_PROJECT_NAME);
         FVTUtils.validateNode(project);
         Project project2 = createProject(serverName+" "+DEFAULT_TEST_PROJECT_NAME2);
@@ -112,30 +116,30 @@ public class ProjectFVT
 
         Project projectForUpdate = new Project();
         projectForUpdate.setName(serverName+" "+DEFAULT_TEST_PROJECT_NAME3);
-        System.out.println("Get the project");
+        log.debug("Get the project");
         String guid = project.getSystemAttributes().getGUID();
         Project gotProject = getProjectByGUID(guid);
         FVTUtils.validateNode(gotProject);
-        System.out.println("Update the project");
+        log.debug("Update the project");
         Project updatedProject = updateProject(guid, projectForUpdate);
         FVTUtils.validateNode(updatedProject);
-        System.out.println("Get the project again");
+        log.debug("Get the project again");
         gotProject = getProjectByGUID(guid);
         FVTUtils.validateNode(gotProject);
-        System.out.println("Delete the project");
+        log.debug("Delete the project");
         deleteProject(guid);
         //FVTUtils.validateNode(gotProject);
-        System.out.println("restore the project");
+        log.debug("restore the project");
         gotProject = restoreProject(guid);
         FVTUtils.validateNode(gotProject);
-        System.out.println("Delete the project again");
+        log.debug("Delete the project again");
         deleteProject(guid);
         //FVTUtils.validateNode(gotProject);
-        System.out.println("Create project with the same name as a deleted one");
+        log.debug("Create project with the same name as a deleted one");
         project = createProject(serverName + " " + DEFAULT_TEST_PROJECT_NAME);
         FVTUtils.validateNode(project);
 
-        System.out.println("create projects to find");
+        log.debug("create projects to find");
         Project projectForFind1 = getProjectForInput(DEFAULT_TEST_PROJECT_NAME7);
         projectForFind1.setQualifiedName(DEFAULT_TEST_PROJECT_NAME6);
         projectForFind1 = issueCreateProject(projectForFind1);
@@ -192,7 +196,7 @@ public class ProjectFVT
         if (newProject != null)
         {
             createdProjectsSet.add(newProject.getSystemAttributes().getGUID());
-            System.out.println("Created Project " + newProject.getName() + " with userId " + newProject.getSystemAttributes().getGUID());
+            log.debug("Created Project " + newProject.getName() + " with userId " + newProject.getSystemAttributes().getGUID());
         }
         return newProject;
     }
@@ -218,7 +222,7 @@ public class ProjectFVT
     public  Project getProjectByGUID(String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
         Project project = subjectAreaProject.getByGUID(this.userId, guid);
         FVTUtils.validateNode(project);
-        System.out.println("Got Project " + project.getName() + " with userId " + project.getSystemAttributes().getGUID() + " and status " + project.getSystemAttributes().getStatus());
+        log.debug("Got Project " + project.getName() + " with userId " + project.getSystemAttributes().getGUID() + " and status " + project.getSystemAttributes().getStatus());
 
         return project;
     }
@@ -230,20 +234,20 @@ public class ProjectFVT
     public  Project updateProject(String guid, Project project) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
         Project updatedProject = subjectAreaProject.update(this.userId, guid, project);
         FVTUtils.validateNode(updatedProject);
-        System.out.println("Updated Project name to " + updatedProject.getName());
+        log.debug("Updated Project name to " + updatedProject.getName());
         return updatedProject;
     }
 
     public void deleteProject(String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
             subjectAreaProject.delete(this.userId, guid);
             createdProjectsSet.remove(guid);
-            System.out.println("Deleted Project succeeded");
+            log.debug("Deleted Project succeeded");
     }
     public Project restoreProject(String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
         Project restoredProject = subjectAreaProject.restore(this.userId, guid);
         FVTUtils.validateNode(restoredProject);
         createdProjectsSet.add(restoredProject.getSystemAttributes().getGUID());
-        System.out.println("Restored Project name is " + restoredProject.getName());
+        log.debug("Restored Project name is " + restoredProject.getName());
         return restoredProject;
     }
 

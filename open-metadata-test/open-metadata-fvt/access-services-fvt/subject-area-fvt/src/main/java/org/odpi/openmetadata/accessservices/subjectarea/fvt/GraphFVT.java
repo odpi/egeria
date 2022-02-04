@@ -18,6 +18,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.*;
@@ -38,6 +40,7 @@ public class GraphFVT
     private RelationshipsFVT relationshipFVT = null;
     private CategoryFVT categoryFVT = null;
     private SubjectAreaDefinitionCategoryFVT subjectAreaFVT = null;
+    private static Logger log = LoggerFactory.getLogger(GraphFVT.class);
 
     private String serverName = null;
     private String userId = null;
@@ -62,7 +65,7 @@ public class GraphFVT
     public GraphFVT(String url, String serverName,String userId) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         SubjectAreaRestClient client = new SubjectAreaRestClient(serverName, url);
         subjectAreaGraph = new SubjectAreaGraphClient(client);
-        System.out.println("Create a glossary");
+        log.debug("Create a glossary");
         glossaryFVT = new GlossaryFVT(url,serverName,userId);
         termFVT = new TermFVT(url,serverName,userId);
         categoryFVT = new CategoryFVT(url,serverName,userId);
@@ -266,7 +269,7 @@ public class GraphFVT
     }
 
     private void checkGraphContent(Graph graph,int expectedNodesSize,int expectedRelationshipsSize) throws SubjectAreaFVTCheckedException {
-        System.out.println("CheckGraphContent expected " +expectedNodesSize + " Nodes and "+expectedRelationshipsSize + " Relationships" );
+        log.debug("CheckGraphContent expected " +expectedNodesSize + " Nodes and "+expectedRelationshipsSize + " Relationships" );
         if (graph.getNodes().size() !=expectedNodesSize ) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected " + expectedNodesSize +  " nodes, got " +graph.getNodes().size());
         }
