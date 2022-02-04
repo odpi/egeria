@@ -43,8 +43,8 @@ import java.util.Map;
  */
 public class AuditLogServicesClient implements AuditLoggingComponent
 {
-    static final private String rootServiceNameInURL  = "/open-metadata/repository-services";
-    static final private String userIdInURL           = "/users/{0}";
+    static final private String rootServiceNameInURL  = "/servers/{0}/open-metadata/repository-services";
+    static final private String userIdInURL           = "/users/{1}";
 
     private String              localServerUserId   = null;
     private String              localServerPassword = null;
@@ -195,6 +195,7 @@ public class AuditLogServicesClient implements AuditLoggingComponent
             restResult = restClient.callGetRESTCall(methodName,
                                                     AuditLogReportResponse.class,
                                                     restURLRoot + rootServiceNameInURL + userIdInURL + operationSpecificURL,
+                                                    serverName,
                                                     userId);
         }
         catch (Exception error)
