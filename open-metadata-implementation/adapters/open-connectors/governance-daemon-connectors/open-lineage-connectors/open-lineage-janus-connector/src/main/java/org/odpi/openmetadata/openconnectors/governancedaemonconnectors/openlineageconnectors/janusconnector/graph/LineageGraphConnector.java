@@ -17,6 +17,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.graph.LineageGraphConnectorBase;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
@@ -48,6 +49,8 @@ import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.inE;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.inV;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.outV;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.unfold;
+import static org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode.ERROR_ENTITY_NOT_FOUND;
+import static org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode.ERROR_LINEAGE_NOT_FOUND;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph.LineageGraphTransactionManager.commit;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.GRAPH_DISCONNECT_ERROR;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.PROCESS_MAPPING_ERROR;
@@ -821,7 +824,15 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         GraphTraversal<Vertex, Vertex> vertexGraphTraversal = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid);
         commitTransaction(g);
         if (!vertexGraphTraversal.hasNext()) {
-            return new LineageResponse();
+            LineageResponse lineageResponse = new LineageResponse();
+            lineageResponse.setRelatedHTTPCode(ERROR_ENTITY_NOT_FOUND.getHTTPErrorCode());
+            lineageResponse.setExceptionErrorMessage(ERROR_ENTITY_NOT_FOUND.getFormattedErrorMessage(guid));
+            lineageResponse.setActionDescription(ERROR_ENTITY_NOT_FOUND.getUserAction());
+            lineageResponse.setExceptionUserAction(ERROR_ENTITY_NOT_FOUND.getUserAction());
+            lineageResponse.setExceptionErrorMessageId(ERROR_ENTITY_NOT_FOUND.getErrorMessageId());
+            lineageResponse.setExceptionErrorMessageId(ERROR_ENTITY_NOT_FOUND.getErrorMessageId());
+            lineageResponse.setExceptionClassName(InvalidParameterException.class.getName());
+            return lineageResponse;
         }
         Optional<LineageVerticesAndEdges> lineageVerticesAndEdges = Optional.empty();
 
@@ -839,7 +850,18 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                 lineageVerticesAndEdges = helper.verticalLineage(guid);
                 break;
         }
-        if (lineageVerticesAndEdges.isPresent() && !displayNameMustContain.isEmpty()) {
+        if (lineageVerticesAndEdges.isEmpty()) {
+            LineageResponse lineageResponse = new LineageResponse();
+            lineageResponse.setRelatedHTTPCode(ERROR_LINEAGE_NOT_FOUND.getHTTPErrorCode());
+            lineageResponse.setExceptionErrorMessage(ERROR_LINEAGE_NOT_FOUND.getFormattedErrorMessage(guid));
+            lineageResponse.setActionDescription(ERROR_LINEAGE_NOT_FOUND.getUserAction());
+            lineageResponse.setExceptionUserAction(ERROR_LINEAGE_NOT_FOUND.getUserAction());
+            lineageResponse.setExceptionErrorMessageId(ERROR_LINEAGE_NOT_FOUND.getErrorMessageId());
+            lineageResponse.setExceptionErrorMessageId(ERROR_LINEAGE_NOT_FOUND.getErrorMessageId());
+            lineageResponse.setExceptionClassName(InvalidParameterException.class.getName());
+            return lineageResponse;
+        }
+        if (!displayNameMustContain.isEmpty()) {
             helper.filterDisplayName(lineageVerticesAndEdges.get(), displayNameMustContain);
         }
         return new LineageResponse(lineageVerticesAndEdges.orElse(null));
@@ -851,7 +873,17 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
     @Override
     public LineageVertexResponse getEntityDetails(String guid) {
         LineageVertex lineageVertex = helper.getLineageVertexByGuid(guid);
-
+        if (lineageVertex.getGuid() == null) {
+            LineageVertexResponse lineageResponse = new LineageVertexResponse();
+            lineageResponse.setRelatedHTTPCode(ERROR_ENTITY_NOT_FOUND.getHTTPErrorCode());
+            lineageResponse.setExceptionErrorMessage(ERROR_ENTITY_NOT_FOUND.getFormattedErrorMessage(guid));
+            lineageResponse.setActionDescription(ERROR_ENTITY_NOT_FOUND.getUserAction());
+            lineageResponse.setExceptionUserAction(ERROR_ENTITY_NOT_FOUND.getUserAction());
+            lineageResponse.setExceptionErrorMessageId(ERROR_ENTITY_NOT_FOUND.getErrorMessageId());
+            lineageResponse.setExceptionErrorMessageId(ERROR_ENTITY_NOT_FOUND.getErrorMessageId());
+            lineageResponse.setExceptionClassName(InvalidParameterException.class.getName());
+            return lineageResponse;
+        }
         return new LineageVertexResponse(lineageVertex);
     }
 

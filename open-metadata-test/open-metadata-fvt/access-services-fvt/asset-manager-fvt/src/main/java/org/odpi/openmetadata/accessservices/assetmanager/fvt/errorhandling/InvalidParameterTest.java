@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.assetmanager.fvt.errorhandling;
 
 import org.odpi.openmetadata.accessservices.assetmanager.client.AssetManagerEventClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.GlossaryExchangeClient;
-import org.odpi.openmetadata.accessservices.assetmanager.client.AssetManagerClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.ExternalAssetManagerClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryProperties;
@@ -112,8 +112,8 @@ public class InvalidParameterTest
 
         try
         {
-            AssetManagerRESTClient restClient = new AssetManagerRESTClient(serverName, serverPlatformRootURL);
-            AssetManagerClient  client     = new AssetManagerClient(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
+            AssetManagerRESTClient     restClient = new AssetManagerRESTClient(serverName, serverPlatformRootURL);
+            ExternalAssetManagerClient client     = new ExternalAssetManagerClient(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
 
             testCreateExternalAssetManager(userId, client);
             testGetExternalAssetManagerGUID(userId, client);
@@ -138,7 +138,7 @@ public class InvalidParameterTest
      * @throws FVTUnexpectedCondition the test case failed
      */
     private void testCreateExternalAssetManager(String               userId,
-                                                AssetManagerClient client) throws FVTUnexpectedCondition
+                                                ExternalAssetManagerClient client) throws FVTUnexpectedCondition
     {
         final String activityName = "testCreateExternalAssetManager";
 
@@ -161,7 +161,7 @@ public class InvalidParameterTest
      * @param client client to call
      * @throws FVTUnexpectedCondition the test case failed
      */
-    private void testCreateExternalAssetManagerNoUserId(AssetManagerClient client) throws FVTUnexpectedCondition
+    private void testCreateExternalAssetManagerNoUserId(ExternalAssetManagerClient client) throws FVTUnexpectedCondition
     {
         final String activityName = "testCreateExternalAssetManagerNoUserId";
 
@@ -190,7 +190,7 @@ public class InvalidParameterTest
      * @param userId calling user
      * @throws FVTUnexpectedCondition the test case failed
      */
-    private void testCreateExternalAssetManagerNoProperties(AssetManagerClient client,
+    private void testCreateExternalAssetManagerNoProperties(ExternalAssetManagerClient client,
                                                             String               userId) throws FVTUnexpectedCondition
     {
         final String activityName = "testCreateExternalAssetManagerNoProperties";
@@ -218,7 +218,7 @@ public class InvalidParameterTest
      * @param userId calling user
      * @throws FVTUnexpectedCondition the test case failed
      */
-    private void testCreateExternalAssetManagerNoQualifiedName(AssetManagerClient client,
+    private void testCreateExternalAssetManagerNoQualifiedName(ExternalAssetManagerClient client,
                                                                String               userId) throws FVTUnexpectedCondition
     {
         final String activityName = "testCreateExternalAssetManagerNoQualifiedName";
@@ -249,7 +249,7 @@ public class InvalidParameterTest
      * @throws FVTUnexpectedCondition the test case failed
      */
     private void testGetExternalAssetManagerGUID(String               userId,
-                                       AssetManagerClient client) throws FVTUnexpectedCondition
+                                       ExternalAssetManagerClient client) throws FVTUnexpectedCondition
     {
         final String activityName = "testCreateExternalAssetManager";
 
@@ -271,7 +271,7 @@ public class InvalidParameterTest
      * @param client client to call
      * @throws FVTUnexpectedCondition the test case failed
      */
-    private void testGetExternalAssetManagerGUIDNoUserId(AssetManagerClient client) throws FVTUnexpectedCondition
+    private void testGetExternalAssetManagerGUIDNoUserId(ExternalAssetManagerClient client) throws FVTUnexpectedCondition
     {
         final String activityName = "testGetExternalAssetManagerGUIDNoUserId";
 
@@ -298,7 +298,7 @@ public class InvalidParameterTest
      * @param userId calling user
      * @throws FVTUnexpectedCondition the test case failed
      */
-    private void testGetExternalAssetManagerGUIDNoProperties(AssetManagerClient client,
+    private void testGetExternalAssetManagerGUIDNoProperties(ExternalAssetManagerClient client,
                                                              String               userId) throws FVTUnexpectedCondition
     {
         final String activityName = "testGetExternalAssetManagerGUIDNoProperties";
@@ -327,7 +327,7 @@ public class InvalidParameterTest
      * @throws FVTUnexpectedCondition the test case failed
      */
     private void testGetAssetManagerGUID(String             userId,
-                                         AssetManagerClient client) throws FVTUnexpectedCondition
+                                         ExternalAssetManagerClient client) throws FVTUnexpectedCondition
     {
         final String activityName = "testAssetManager";
 
@@ -351,7 +351,7 @@ public class InvalidParameterTest
      * @param client client to call
      * @throws FVTUnexpectedCondition the test case failed
      */
-    private void testGetAssetManagerGUIDNoUserId(AssetManagerClient client) throws FVTUnexpectedCondition
+    private void testGetAssetManagerGUIDNoUserId(ExternalAssetManagerClient client) throws FVTUnexpectedCondition
     {
         final String activityName = "testGetAssetManagerGUIDNoUserId";
 
@@ -378,8 +378,8 @@ public class InvalidParameterTest
      * @param userId calling user
      * @throws FVTUnexpectedCondition the test case failed
      */
-    private void testGetAssetManagerGUIDNoQualifiedName(AssetManagerClient client,
-                                                          String               userId) throws FVTUnexpectedCondition
+    private void testGetAssetManagerGUIDNoQualifiedName(ExternalAssetManagerClient client,
+                                                        String               userId) throws FVTUnexpectedCondition
     {
         final String activityName = "testGetAssetManagerGUIDNoQualifiedName";
 

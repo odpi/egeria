@@ -14,7 +14,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
  * ConformanceTestServerConfigurationClient provides the configuration services needed by
  * The Conformance Test Server.  This configuration focuses on setting up test workbenches.
  */
-abstract class ConformanceTestServerConfigurationClient extends CohortMemberConfigurationClient
+public class ConformanceTestServerConfigurationClient extends CohortMemberConfigurationClient
 {
     /**
      * Create a new client with no authentication embedded in the HTTP request.

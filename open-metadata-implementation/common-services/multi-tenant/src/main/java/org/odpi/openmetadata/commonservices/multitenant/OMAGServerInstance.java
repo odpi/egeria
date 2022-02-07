@@ -81,7 +81,7 @@ class OMAGServerInstance
 
 
     /**
-     * Return the list of services registered for this server.
+     * Return the list of services configure for this server.
      *
      * @return list of service names
      */

@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.userinterface.uichassis.springboot.api;
 
+import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.UserNotAuthorizedException;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.AuthService;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.TokenUser;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.service.ComponentService;

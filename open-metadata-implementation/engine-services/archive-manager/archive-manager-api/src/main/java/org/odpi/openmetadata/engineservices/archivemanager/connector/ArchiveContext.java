@@ -142,9 +142,12 @@ public abstract class ArchiveContext
      * Register a listener to receive events about changes to metadata elements in the open metadata repositories.
      *
      * @param listener listener object to receive events
-
      *
      * @throws InvalidParameterException one or more of the type names are unrecognized
+     * @throws UserNotAuthorizedException user is not authorized to register a listener
+     * @throws RepositoryErrorException the metadata server is not available or in error
+     * @throws ConnectionCheckedException the connection to the event topic is in error
+     * @throws ConnectorCheckedException the connector to the event topic is in error
      */
     public abstract void registerListener(OMRSTopicRepositoryEventListener listener) throws InvalidParameterException,
                                                                                             UserNotAuthorizedException,
