@@ -23,9 +23,9 @@ import java.util.Map;
 
 
 /**
- * AssetManagerClient is the client for setting up the SoftwareServerCapabilities that represent asset managers.
+ * ExternalAssetManagerClient is the client for setting up the SoftwareServerCapabilities that represent asset managers.
  */
-public class AssetManagerClient implements AssetManagerInterface
+public class ExternalAssetManagerClient implements AssetManagerInterface
 {
     private final String assetManagerGUIDParameterName = "assetManagerGUID";
     private final String assetManagerNameParameterName = "assetManagerName";
@@ -50,9 +50,9 @@ public class AssetManagerClient implements AssetManagerInterface
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public AssetManagerClient(String   serverName,
-                              String   serverPlatformURLRoot,
-                              AuditLog auditLog) throws InvalidParameterException
+    public ExternalAssetManagerClient(String   serverName,
+                                      String   serverPlatformURLRoot,
+                                      AuditLog auditLog) throws InvalidParameterException
     {
         final String methodName = "Client Constructor";
 
@@ -75,8 +75,8 @@ public class AssetManagerClient implements AssetManagerInterface
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public AssetManagerClient(String serverName,
-                              String serverPlatformURLRoot) throws InvalidParameterException
+    public ExternalAssetManagerClient(String serverName,
+                                      String serverPlatformURLRoot) throws InvalidParameterException
     {
         final String methodName = "Client Constructor";
 
@@ -100,10 +100,10 @@ public class AssetManagerClient implements AssetManagerInterface
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public AssetManagerClient(String serverName,
-                              String serverPlatformURLRoot,
-                              String userId,
-                              String password) throws InvalidParameterException
+    public ExternalAssetManagerClient(String serverName,
+                                      String serverPlatformURLRoot,
+                                      String userId,
+                                      String password) throws InvalidParameterException
     {
         final String methodName = "Client Constructor";
 
@@ -128,11 +128,11 @@ public class AssetManagerClient implements AssetManagerInterface
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public AssetManagerClient(String   serverName,
-                              String   serverPlatformURLRoot,
-                              String   userId,
-                              String   password,
-                              AuditLog auditLog) throws InvalidParameterException
+    public ExternalAssetManagerClient(String   serverName,
+                                      String   serverPlatformURLRoot,
+                                      String   userId,
+                                      String   password,
+                                      AuditLog auditLog) throws InvalidParameterException
     {
         final String methodName = "Client Constructor";
 
@@ -158,11 +158,11 @@ public class AssetManagerClient implements AssetManagerInterface
      * @param auditLog logging destination
      * @throws InvalidParameterException there is a problem with the information about the remote OMAS
      */
-    public AssetManagerClient(String                 serverName,
-                              String                 serverPlatformURLRoot,
-                              AssetManagerRESTClient restClient,
-                              int                    maxPageSize,
-                              AuditLog               auditLog) throws InvalidParameterException
+    public ExternalAssetManagerClient(String                 serverName,
+                                      String                 serverPlatformURLRoot,
+                                      AssetManagerRESTClient restClient,
+                                      int                    maxPageSize,
+                                      AuditLog               auditLog) throws InvalidParameterException
     {
         final String methodName = "Client Constructor";
 

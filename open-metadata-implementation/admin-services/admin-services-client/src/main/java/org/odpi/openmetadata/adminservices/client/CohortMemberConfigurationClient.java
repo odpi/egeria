@@ -12,7 +12,6 @@ import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedExcep
 import org.odpi.openmetadata.adminservices.properties.DedicatedTopicList;
 import org.odpi.openmetadata.adminservices.rest.DedicatedTopicListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.StringResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
@@ -23,9 +22,8 @@ import java.util.Map;
 
 /**
  * CohortMemberConfigurationClient provides the interfaces to add an OMAG Server to an Open Metadata Repository Cohort.
- * It is abstract because it is extended by the concrete types of server.
  */
-abstract class CohortMemberConfigurationClient extends OMAGServerConfigurationClient
+public class CohortMemberConfigurationClient extends OMAGServerConfigurationClient
 {
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -36,9 +34,9 @@ abstract class CohortMemberConfigurationClient extends OMAGServerConfigurationCl
      * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
-    CohortMemberConfigurationClient(String adminUserId,
-                                    String serverName,
-                                    String serverPlatformRootURL) throws OMAGInvalidParameterException
+    public CohortMemberConfigurationClient(String adminUserId,
+                                           String serverName,
+                                           String serverPlatformRootURL) throws OMAGInvalidParameterException
     {
         super(adminUserId, serverName, serverPlatformRootURL);
     }
@@ -56,11 +54,11 @@ abstract class CohortMemberConfigurationClient extends OMAGServerConfigurationCl
      * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
-    CohortMemberConfigurationClient(String adminUserId,
-                                    String serverName,
-                                    String serverPlatformRootURL,
-                                    String connectionUserId,
-                                    String connectionPassword) throws OMAGInvalidParameterException
+    public CohortMemberConfigurationClient(String adminUserId,
+                                           String serverName,
+                                           String serverPlatformRootURL,
+                                           String connectionUserId,
+                                           String connectionPassword) throws OMAGInvalidParameterException
     {
         super(adminUserId, serverName, serverPlatformRootURL, connectionUserId, connectionPassword);
     }

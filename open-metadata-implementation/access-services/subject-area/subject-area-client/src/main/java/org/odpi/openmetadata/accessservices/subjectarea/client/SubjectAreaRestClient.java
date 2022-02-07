@@ -167,7 +167,8 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
      * @param type class of the response for generic object. Descried using {@link ParameterizedTypeReference}
      *             An example can be seen here {@link ResponseParameterization#getParameterizedType()}
      * @param urnTemplate  template of the URN for the REST API call with place-holders for the parameters.
-
+     * @param findRequest search specification
+     *
      * @return GenericResponse with T result
      * @throws PropertyServerException something went wrong with the REST call stack.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -195,6 +196,8 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
      *             An example can be seen here {@link ResponseParameterization#getParameterizedType()}
      * @param urnTemplate  template of the URN for the REST API call with place-holders for the parameters.
      * @param maximumPageSizeOnRestCall maximum page size that can be used on rest calls, null and 0 mean no limit set.
+     * @param findRequest search specification
+     * @param queryParams {@link QueryParams}
      * @return GenericResponse with T result
      * @throws PropertyServerException something went wrong with the REST call stack.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -263,6 +266,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
      * @param type class of the response for generic object. Descried using {@link ParameterizedTypeReference}
      *             An example can be seen here {@link ResponseParameterization#getParameterizedType()}
      * @param findRequest {@link FindRequest}
+     * @param queryParams {@link QueryParams}
      *
      * @return GenericResponse with T results
      * @throws PropertyServerException something went wrong with the REST call stack.
@@ -291,6 +295,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
      *             An example can be seen here {@link ResponseParameterization#getParameterizedType()}
      * @param findRequest {@link FindRequest}
      * @param maximumPageSizeOnRestCall maximum page size that can be used on rest calls, null and 0 mean no limit set.
+     * @param queryParams {@link QueryParams}
      *
      * @return GenericResponse with T results
      * @throws PropertyServerException something went wrong with the REST call stack.
@@ -386,6 +391,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
      * @param type class of the response for generic object. Descried using {@link ParameterizedTypeReference}
      *             An example can be seen here {@link ResponseParameterization#getParameterizedType()}
      * @param findRequest {@link FindRequest}
+     * @param maximumPageSizeOnRestCall maximum number of results
      *
      * @return GenericResponse with T results
      * @throws PropertyServerException something went wrong with the REST call stack.
@@ -542,6 +548,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
      *
      * @param methodName  name of the method being called.
      * @param findRequest {@link FindRequest}
+     * @param queryParams {@link QueryParams}
      *
      * @return query
      * @throws InvalidParameterException one of the parameters is null or invalid

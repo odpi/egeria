@@ -100,7 +100,7 @@ public enum AccessServiceDescription implements Serializable
                                       "Design of the digital services for an organization",
                                       "https://odpi.github.io/egeria-docs/services/omas/digital-architecture/overview/"),
     DIGITAL_SERVICE_OMAS            ( 216,
-                                      "DigitalService",
+                                      "Digital Service",
                                       "Digital Service OMAS",
                                       "digital-service",
                                       "Manage a digital service's lifecycle",

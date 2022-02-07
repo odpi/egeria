@@ -107,6 +107,8 @@ public interface SubjectAreaClient<T> {
      *
      * @param userId      unique identifier for requesting user, under which the request is performed.
      * @param findRequest information Glossary Artifact for find calls.
+     * @param exactValue should the result match exactly?
+     * @param ignoreCase should the match be case insensitive?
      * @return list Glossary Artifacts of the T type relevant in the findRequest information.
      *
      * @throws PropertyServerException    something went wrong with the REST call stack.

@@ -7,9 +7,12 @@ import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationError
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
+import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigsResponse;
 import org.odpi.openmetadata.adminservices.rest.URLRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+
+import java.util.Set;
 
 
 /**
@@ -18,34 +21,36 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
  */
 public class ConfigurationManagementClient
 {
-    private String serverName;               /* Initialized in constructor */
+    private String adminUserId;              /* Initialized in constructor */
     private String serverPlatformRootURL;    /* Initialized in constructor */
 
     private InvalidParameterHandler         invalidParameterHandler = new InvalidParameterHandler();
     private AdminServicesRESTClient         restClient;               /* Initialized in constructor */
 
+    private static final String NULL_SERVER_NAME = "<*>";
+
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
-     * @param serverName            name of the server to connect to
+     * @param adminUserId           administrator's (end user's) userId to associate with calls.
      * @param serverPlatformRootURL the network address of the server running the admin services
      * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
-    public ConfigurationManagementClient(String serverName,
+    public ConfigurationManagementClient(String adminUserId,
                                          String serverPlatformRootURL) throws OMAGInvalidParameterException
     {
         final String methodName = "Client Constructor";
 
         try
         {
-            invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformRootURL, serverName, methodName);
+            invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformRootURL, NULL_SERVER_NAME, methodName);
 
-            this.serverName            = serverName;
+            this.adminUserId           = adminUserId;
             this.serverPlatformRootURL = serverPlatformRootURL;
 
-            this.restClient = new AdminServicesRESTClient(serverName, serverPlatformRootURL);
+            this.restClient = new AdminServicesRESTClient(NULL_SERVER_NAME, serverPlatformRootURL);
         }
         catch (InvalidParameterException error)
         {
@@ -58,14 +63,14 @@ public class ConfigurationManagementClient
      * Create a new client that passes userId and password in each HTTP request.  This is the
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
-     * @param serverName            name of the server to connect to
+     * @param adminUserId           administrator's (end user's) userId to associate with calls.
      * @param serverPlatformRootURL the network address of the server running the admin services
      * @param userId                caller's userId embedded in all HTTP requests
      * @param password              caller's userId embedded in all HTTP requests
      * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
-    public ConfigurationManagementClient(String serverName,
+    public ConfigurationManagementClient(String adminUserId,
                                          String serverPlatformRootURL,
                                          String userId,
                                          String password) throws OMAGInvalidParameterException
@@ -74,12 +79,12 @@ public class ConfigurationManagementClient
 
         try
         {
-            invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformRootURL, serverName, methodName);
+            invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformRootURL, NULL_SERVER_NAME, methodName);
 
-            this.serverName            = serverName;
+            this.adminUserId           = adminUserId;
             this.serverPlatformRootURL = serverPlatformRootURL;
 
-            this.restClient = new AdminServicesRESTClient(serverName, serverPlatformRootURL, userId, password);
+            this.restClient = new AdminServicesRESTClient(NULL_SERVER_NAME, serverPlatformRootURL, userId, password);
         }
         catch (InvalidParameterException error)
         {
@@ -87,17 +92,40 @@ public class ConfigurationManagementClient
         }
     }
 
+
+    /**
+     * Return all the the OMAG Server configurations that are stored on this platform
+     *
+     * @return the OMAG Server configurations that are stored on this platform
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public Set<OMAGServerConfig> getAllServerConfigurations() throws OMAGNotAuthorizedException,
+                                                                     OMAGConfigurationErrorException,
+                                                                     OMAGInvalidParameterException
+    {
+        final String methodName  = "getAllServerConfigurations";
+        final String urlTemplate = "/open-metadata/admin-services/users/{0}/configurations";
+
+        OMAGServerConfigsResponse restResult = restClient.callGetAllServerConfigurationsRESTCall(methodName,
+                                                                                                 serverPlatformRootURL + urlTemplate,
+                                                                                                 adminUserId);
+
+        return restResult.getOMAGServerConfigs();
+    }
+
+
+
     /**
      * Set up the configuration properties for an OMAG Server in a single command.
      *
-     * @param userId       user that is issuing the request
      * @param serverConfig configuration for the server
      * @throws OMAGNotAuthorizedException      the supplied userId is not authorized to issue this command.
      * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
      * @throws OMAGInvalidParameterException   invalid serverName or destinationPlatform parameter.
      */
-    public void setOMAGServerConfig(String           userId,
-                                    OMAGServerConfig serverConfig) throws OMAGNotAuthorizedException,
+    public void setOMAGServerConfig(OMAGServerConfig serverConfig) throws OMAGNotAuthorizedException,
                                                                           OMAGConfigurationErrorException,
                                                                           OMAGInvalidParameterException
     {
@@ -107,23 +135,21 @@ public class ConfigurationManagementClient
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         serverConfig,
-                                        userId,
-                                        serverName);
+                                        adminUserId,
+                                        serverConfig.getLocalServerName());
     }
 
 
     /**
      * Push the configuration for the server to another OMAG Server Platform.
      *
-     * @param userId                     user that is issuing the request
      * @param serverName                 local server name
      * @param destinationPlatformURLRoot location of the platform where the config is to be deployed to
      * @throws OMAGNotAuthorizedException      the supplied userId is not authorized to issue this command.
      * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
      * @throws OMAGInvalidParameterException   invalid serverName or destinationPlatform parameter.
      */
-    public void deployOMAGServerConfig(String userId,
-                                       String serverName,
+    public void deployOMAGServerConfig(String serverName,
                                        String destinationPlatformURLRoot) throws OMAGNotAuthorizedException,
                                                                                  OMAGConfigurationErrorException,
                                                                                  OMAGInvalidParameterException
@@ -138,7 +164,7 @@ public class ConfigurationManagementClient
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
                                         requestBody,
-                                        userId,
+                                        adminUserId,
                                         serverName);
     }
 
@@ -146,15 +172,13 @@ public class ConfigurationManagementClient
     /**
      * Return the complete set of configuration properties in use by the server.
      *
-     * @param userId     user that is issuing the request
      * @param serverName local server name
      * @return OMAGServerConfig properties
      * @throws OMAGNotAuthorizedException      the supplied userId is not authorized to issue this command.
      * @throws OMAGInvalidParameterException   invalid serverName parameter.
      * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
      */
-    public OMAGServerConfig getOMAGServerConfig(String userId,
-                                                String serverName) throws OMAGNotAuthorizedException,
+    public OMAGServerConfig getOMAGServerConfig(String serverName) throws OMAGNotAuthorizedException,
                                                                           OMAGInvalidParameterException,
                                                                           OMAGConfigurationErrorException
     {
@@ -163,7 +187,7 @@ public class ConfigurationManagementClient
 
         OMAGServerConfigResponse restResult = restClient.callOMAGServerConfigGetRESTCall(methodName,
                                                                                          serverPlatformRootURL + urlTemplate,
-                                                                                         userId,
+                                                                                         adminUserId,
                                                                                          serverName);
 
         return restResult.getOMAGServerConfig();

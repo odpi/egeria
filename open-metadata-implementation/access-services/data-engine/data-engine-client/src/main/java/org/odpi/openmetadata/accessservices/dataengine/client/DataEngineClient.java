@@ -324,6 +324,7 @@ public interface DataEngineClient {
      *
      * @param userId   the name of the calling user
      * @param dataFile the data file  bean
+     * @param incomplete should the incomplete classification be added?
      *
      * @return unique identifier of the relational table in the repository
      *
@@ -468,6 +469,7 @@ public interface DataEngineClient {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      * @throws ConnectorCheckedException  problem with the underlying connector (if used)
+     * @throws FunctionNotSupportedException this request is not supported in the target repositories
      */
     GUIDListResponse find(String userId, FindRequestBody findRequestBody) throws ConnectorCheckedException,
                                                                                  InvalidParameterException,
