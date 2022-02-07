@@ -37,14 +37,16 @@ public class EffectiveDatesFVT
         {
             System.out.println("Error getting user input");
         } catch (SubjectAreaFVTCheckedException e) {
-            System.out.println("ERROR: " + e.getMessage() );
+            log.error("ERROR: " + e.getMessage() );
         } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
-            System.out.println("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
+            log.error("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
         }
 
     }
     public EffectiveDatesFVT(String url, String serverName,String userId) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        log.debug("Create a glossary");
+        if (log.isDebugEnabled()) {
+            log.debug("Create a glossary");
+        }
         glossaryFVT = new GlossaryFVT(url,serverName,userId);
         termFVT= new TermFVT(url,serverName,userId);
     }

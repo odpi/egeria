@@ -55,9 +55,9 @@ public class GraphFVT
         {
             System.out.println("Error getting user input");
         } catch (SubjectAreaFVTCheckedException e) {
-            System.out.println("ERROR: " + e.getMessage() );
+            log.error("ERROR: " + e.getMessage() );
         } catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
-            System.out.println("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
+            log.error("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
 
         }
 

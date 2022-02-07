@@ -65,9 +65,9 @@ public class TermFVT {
         {
             System.out.println("Error getting user input");
         } catch (SubjectAreaFVTCheckedException e) {
-            System.out.println("ERROR: " + e.getMessage() );
+            log.error("ERROR: " + e.getMessage() );
         } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
-            System.out.println("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
+            log.error("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
         }
 
     }
@@ -76,14 +76,18 @@ public class TermFVT {
         subjectAreaTerm = new SubjectAreaTermClient<>(client);
         subjectAreaTermClient = (SubjectAreaTermClient)subjectAreaTerm;
 
-        log.debug("Create a glossary");
+        if (log.isDebugEnabled()) {
+            log.debug("Create a glossary");
+        }
         glossaryFVT = new GlossaryFVT(url,serverName,userId);
         categoryFVT = new CategoryFVT(url, serverName,userId);
         subjectAreaFVT = new SubjectAreaDefinitionCategoryFVT(url, serverName,userId);
 
         this.userId=userId;
         existingTermCount = findTerms("").size();
-        log.debug("existingTermCount " + existingTermCount);
+        if (log.isDebugEnabled()) {
+            log.debug("existingTermCount " + existingTermCount);
+        }
     }
     public static void runWith2Servers(String url) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         runIt(url, FVTConstants.SERVER_NAME1, FVTConstants.USERID);
@@ -110,14 +114,20 @@ public class TermFVT {
 
     public void run() throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         Glossary glossary= glossaryFVT.createGlossary(DEFAULT_TEST_GLOSSARY_NAME);
-        log.debug("Create a term1");
+        if (log.isDebugEnabled()) {
+            log.debug("Create a term1");
+        }
         String glossaryGuid = glossary.getSystemAttributes().getGUID();
         Term term1 = createTerm(DEFAULT_TEST_TERM_NAME, glossaryGuid);
         FVTUtils.validateNode(term1);
-        log.debug("Create a term1 using glossary userId");
+        if (log.isDebugEnabled()) {
+            log.debug("Create a term1 using glossary userId");
+        }
         Term term2 = createTerm(DEFAULT_TEST_TERM_NAME, glossaryGuid);
         FVTUtils.validateNode(term2);
-        log.debug("Create a term2 using glossary userId");
+        if (log.isDebugEnabled()) {
+            log.debug("Create a term2 using glossary userId");
+        }
 
         FindRequest findRequest = new FindRequest();
         List<Term> results = glossaryFVT.getTerms(glossaryGuid, findRequest);
@@ -132,26 +142,40 @@ public class TermFVT {
 
         Term termForUpdate = new Term();
         termForUpdate.setName(DEFAULT_TEST_TERM_NAME_UPDATED);
-        log.debug("Get term1");
+        if (log.isDebugEnabled()) {
+            log.debug("Get term1");
+        }
         String guid = term1.getSystemAttributes().getGUID();
         Term gotTerm = getTermByGUID(guid);
         FVTUtils.validateNode(gotTerm);
-        log.debug("Update term1");
+        if (log.isDebugEnabled()) {
+            log.debug("Update term1");
+        }
         Term updatedTerm = updateTerm(guid, termForUpdate);
         FVTUtils.validateNode(updatedTerm);
-        log.debug("Get term1 again");
+        if (log.isDebugEnabled()) {
+            log.debug("Get term1 again");
+        }
         gotTerm = getTermByGUID(guid);
         FVTUtils.validateNode(gotTerm);
-        log.debug("Delete term1");
+        if (log.isDebugEnabled()) {
+            log.debug("Delete term1");
+        }
         deleteTerm(guid);
-        log.debug("Restore term1");
+        if (log.isDebugEnabled()) {
+            log.debug("Restore term1");
+        }
         //FVTUtils.validateNode(gotTerm);
         gotTerm = restoreTerm(guid);
         FVTUtils.validateNode(gotTerm);
-        log.debug("Delete term1 again");
+        if (log.isDebugEnabled()) {
+            log.debug("Delete term1 again");
+        }
         deleteTerm(guid);
         //FVTUtils.validateNode(gotTerm);
-        log.debug("Create term3 with governance actions");
+        if (log.isDebugEnabled()) {
+            log.debug("Create term3 with governance actions");
+        }
         GovernanceClassifications governanceClassifications = createGovernanceClassifications();
         Term term3 = createTermWithGovernanceClassifications(DEFAULT_TEST_TERM_NAME, glossaryGuid, governanceClassifications);
         FVTUtils.validateNode(term3);
@@ -168,7 +192,9 @@ public class TermFVT {
             throw new SubjectAreaFVTCheckedException("ERROR: Governance actions criticality not returned  as expected. ");
         }
         GovernanceClassifications governanceClassifications2 = create2ndGovernanceClassifications();
-        log.debug("Update term3 with and change governance actions");
+        if (log.isDebugEnabled()) {
+            log.debug("Update term3 with and change governance actions");
+        }
         Term term3ForUpdate = new Term();
         term3ForUpdate.setName(DEFAULT_TEST_TERM_NAME_UPDATED);
         term3ForUpdate.setGovernanceClassifications(governanceClassifications2);
@@ -194,7 +220,9 @@ public class TermFVT {
         int zzzcount = findTerms("zzz").size();
         int spacedTermcount = findTerms( spacedTermName).size();
 
-        log.debug("create terms to find");
+        if (log.isDebugEnabled()) {
+            log.debug("create terms to find");
+        }
         Term termForFind1 = getTermForInput("abc",glossaryGuid);
         termForFind1.setDescription("yyy");
         termForFind1 = issueCreateTerm(termForFind1);
@@ -435,7 +463,9 @@ public class TermFVT {
         if (newTerm != null)
         {
             String guid = newTerm.getSystemAttributes().getGUID();
-            log.debug("Created Term " + newTerm.getName() + " with guid " + guid);
+            if (log.isDebugEnabled()) {
+                log.debug("Created Term " + newTerm.getName() + " with guid " + guid);
+            }
             createdTermsSet.add(guid);
         }
         return newTerm;
@@ -499,7 +529,9 @@ public class TermFVT {
         Term term = subjectAreaTerm.getByGUID(this.userId, guid);
         if (term != null)
         {
-            log.debug("Got Term " + term.getName() + " with userId " + term.getSystemAttributes().getGUID() + " and status " + term.getSystemAttributes().getStatus());
+            if (log.isDebugEnabled()) {
+                log.debug("Got Term " + term.getName() + " with userId " + term.getSystemAttributes().getGUID() + " and status " + term.getSystemAttributes().getStatus());
+            }
         }
         return term;
     }
@@ -514,7 +546,9 @@ public class TermFVT {
         Term updatedTerm = subjectAreaTerm.update(this.userId, guid, term);
         if (updatedTerm != null)
         {
-            log.debug("Updated Term name to " + updatedTerm.getName());
+            if (log.isDebugEnabled()) {
+                log.debug("Updated Term name to " + updatedTerm.getName());
+            }
         }
         return updatedTerm;
     }
@@ -522,7 +556,9 @@ public class TermFVT {
         Term updatedTerm = subjectAreaTerm.replace(this.userId, guid, term);
         if (updatedTerm != null)
         {
-            log.debug("Replaced Term name to " + updatedTerm.getName());
+            if (log.isDebugEnabled()) {
+                log.debug("Replaced Term name to " + updatedTerm.getName());
+            }
         }
         return updatedTerm;
     }
@@ -530,7 +566,9 @@ public class TermFVT {
         Term restoredTerm = subjectAreaTerm.restore(this.userId, guid);
         if (restoredTerm != null)
         {
-            log.debug("Restored Term " + restoredTerm.getName());
+            if (log.isDebugEnabled()) {
+                log.debug("Restored Term " + restoredTerm.getName());
+            }
             createdTermsSet.add(guid);
         }
         return restoredTerm;
@@ -542,7 +580,9 @@ public class TermFVT {
         Term updatedTerm = subjectAreaTerm.update(this.userId, guid, term);
         if (updatedTerm != null)
         {
-            log.debug("Updated Term name to " + updatedTerm.getName());
+            if (log.isDebugEnabled()) {
+                log.debug("Updated Term name to " + updatedTerm.getName());
+            }
         }
         return updatedTerm;
     }
@@ -550,7 +590,9 @@ public class TermFVT {
     public void deleteTerm(String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
             subjectAreaTerm.delete(this.userId, guid);
             createdTermsSet.remove(guid);
-            log.debug("Delete succeeded");
+            if (log.isDebugEnabled()) {
+                log.debug("Delete succeeded");
+            }
     }
 
     public List<Relationship> getTermRelationships(Term term) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
@@ -590,10 +632,14 @@ public class TermFVT {
     }
 
     private void testCategorizedTermsWithSearchCriteria() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
-        log.debug("Create a glossary");
+        if (log.isDebugEnabled()) {
+            log.debug("Create a glossary");
+        }
         Glossary glossary = glossaryFVT.createGlossary("Glossary name for CategorizedTermsWithSearchCriteria");
         String glossaryGuid = glossary.getSystemAttributes().getGUID();
-        log.debug("Create a ttt");
+        if (log.isDebugEnabled()) {
+            log.debug("Create a ttt");
+        }
         Category category = categoryFVT.createCategoryWithGlossaryGuid("ttt", glossary.getSystemAttributes().getGUID());
         String parentGuid = category.getSystemAttributes().getGUID();
         // create 20 children
@@ -714,7 +760,9 @@ public class TermFVT {
 
     }
     private void testAdditionalParameters() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
-        log.debug("Create a glossary");
+        if (log.isDebugEnabled()) {
+            log.debug("Create a glossary");
+        }
         Glossary glossary = glossaryFVT.createGlossary("Glossary name for CategorizedTermsWithSearchCriteria");
         String glossaryGuid = glossary.getSystemAttributes().getGUID();
         Term term = getTermForInput("test",glossaryGuid);

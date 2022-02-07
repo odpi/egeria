@@ -59,7 +59,9 @@ public class ProjectFVT
         this.serverName=serverName;
         this.userId=userId;
         existingProjectCount = findProjects("").size();
-        log.debug("existingProjectCount " + existingProjectCount);
+        if (log.isDebugEnabled()) {
+            log.debug("existingProjectCount " + existingProjectCount);
+        }
     }
     public static void runWith2Servers(String url) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         runIt(url, FVTConstants.SERVER_NAME1, FVTConstants.USERID);
@@ -76,9 +78,9 @@ public class ProjectFVT
         {
             System.out.println("Error getting user input");
         } catch (SubjectAreaFVTCheckedException e) {
-            System.out.println("ERROR: " + e.getMessage() );
+            log.error("ERROR: " + e.getMessage() );
         } catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
-            System.out.println("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
+            log.error("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
         }
     }
 
@@ -101,7 +103,9 @@ public class ProjectFVT
     }
 
     public void run() throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        log.debug("Create a project");
+        if (log.isDebugEnabled()) {
+            log.debug("Create a project");
+        }
         Project project = createProject(serverName+" "+DEFAULT_TEST_PROJECT_NAME);
         FVTUtils.validateNode(project);
         Project project2 = createProject(serverName+" "+DEFAULT_TEST_PROJECT_NAME2);
@@ -116,30 +120,46 @@ public class ProjectFVT
 
         Project projectForUpdate = new Project();
         projectForUpdate.setName(serverName+" "+DEFAULT_TEST_PROJECT_NAME3);
-        log.debug("Get the project");
+        if (log.isDebugEnabled()) {
+            log.debug("Get the project");
+        }
         String guid = project.getSystemAttributes().getGUID();
         Project gotProject = getProjectByGUID(guid);
         FVTUtils.validateNode(gotProject);
-        log.debug("Update the project");
+        if (log.isDebugEnabled()) {
+            log.debug("Update the project");
+        }
         Project updatedProject = updateProject(guid, projectForUpdate);
         FVTUtils.validateNode(updatedProject);
-        log.debug("Get the project again");
+        if (log.isDebugEnabled()) {
+            log.debug("Get the project again");
+        }
         gotProject = getProjectByGUID(guid);
         FVTUtils.validateNode(gotProject);
-        log.debug("Delete the project");
+        if (log.isDebugEnabled()) {
+            log.debug("Delete the project");
+        }
         deleteProject(guid);
         //FVTUtils.validateNode(gotProject);
-        log.debug("restore the project");
+        if (log.isDebugEnabled()) {
+            log.debug("restore the project");
+        }
         gotProject = restoreProject(guid);
         FVTUtils.validateNode(gotProject);
-        log.debug("Delete the project again");
+        if (log.isDebugEnabled()) {
+            log.debug("Delete the project again");
+        }
         deleteProject(guid);
         //FVTUtils.validateNode(gotProject);
-        log.debug("Create project with the same name as a deleted one");
+        if (log.isDebugEnabled()) {
+            log.debug("Create project with the same name as a deleted one");
+        }
         project = createProject(serverName + " " + DEFAULT_TEST_PROJECT_NAME);
         FVTUtils.validateNode(project);
 
-        log.debug("create projects to find");
+        if (log.isDebugEnabled()) {
+            log.debug("create projects to find");
+        }
         Project projectForFind1 = getProjectForInput(DEFAULT_TEST_PROJECT_NAME7);
         projectForFind1.setQualifiedName(DEFAULT_TEST_PROJECT_NAME6);
         projectForFind1 = issueCreateProject(projectForFind1);
@@ -196,7 +216,9 @@ public class ProjectFVT
         if (newProject != null)
         {
             createdProjectsSet.add(newProject.getSystemAttributes().getGUID());
-            log.debug("Created Project " + newProject.getName() + " with userId " + newProject.getSystemAttributes().getGUID());
+            if (log.isDebugEnabled()) {
+                log.debug("Created Project " + newProject.getName() + " with userId " + newProject.getSystemAttributes().getGUID());
+            }
         }
         return newProject;
     }
@@ -222,7 +244,9 @@ public class ProjectFVT
     public  Project getProjectByGUID(String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
         Project project = subjectAreaProject.getByGUID(this.userId, guid);
         FVTUtils.validateNode(project);
-        log.debug("Got Project " + project.getName() + " with userId " + project.getSystemAttributes().getGUID() + " and status " + project.getSystemAttributes().getStatus());
+        if (log.isDebugEnabled()) {
+            log.debug("Got Project " + project.getName() + " with userId " + project.getSystemAttributes().getGUID() + " and status " + project.getSystemAttributes().getStatus());
+        }
 
         return project;
     }
@@ -234,20 +258,26 @@ public class ProjectFVT
     public  Project updateProject(String guid, Project project) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
         Project updatedProject = subjectAreaProject.update(this.userId, guid, project);
         FVTUtils.validateNode(updatedProject);
-        log.debug("Updated Project name to " + updatedProject.getName());
+        if (log.isDebugEnabled()) {
+            log.debug("Updated Project name to " + updatedProject.getName());
+        }
         return updatedProject;
     }
 
     public void deleteProject(String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
             subjectAreaProject.delete(this.userId, guid);
             createdProjectsSet.remove(guid);
-            log.debug("Deleted Project succeeded");
+            if (log.isDebugEnabled()) {
+                log.debug("Deleted Project succeeded");
+            }
     }
     public Project restoreProject(String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
         Project restoredProject = subjectAreaProject.restore(this.userId, guid);
         FVTUtils.validateNode(restoredProject);
         createdProjectsSet.add(restoredProject.getSystemAttributes().getGUID());
-        log.debug("Restored Project name is " + restoredProject.getName());
+        if (log.isDebugEnabled()) {
+            log.debug("Restored Project name is " + restoredProject.getName());
+        }
         return restoredProject;
     }
 

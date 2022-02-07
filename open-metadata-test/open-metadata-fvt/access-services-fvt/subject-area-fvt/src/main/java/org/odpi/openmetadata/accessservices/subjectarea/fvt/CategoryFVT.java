@@ -55,7 +55,7 @@ public class CategoryFVT {
         } catch (IOException e1) {
             System.out.println("Error getting user input");
         } catch (SubjectAreaFVTCheckedException e) {
-            System.out.println("ERROR: " + e.getMessage() );
+            log.error("ERROR: " + e.getMessage() );
         } catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
             e.printStackTrace();
         }
@@ -75,7 +75,9 @@ public class CategoryFVT {
         this.serverName = serverName;
         this.userId = userId;
         existingCategoryCount = findCategories("", false, false).size();
-        log.debug("existingCategoryCount " + existingCategoryCount);
+        if (log.isDebugEnabled()) {
+            log.debug("existingCategoryCount " + existingCategoryCount);
+        }
     }
 
     public static void runIt(String url, String serverName, String userId) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
@@ -98,12 +100,18 @@ public class CategoryFVT {
 
     public void run() throws  SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
-        log.debug("Create a glossary");
+        if (log.isDebugEnabled()) {
+            log.debug("Create a glossary");
+        }
         Glossary glossary = glossaryFVT.createGlossary(serverName + " " + DEFAULT_TEST_GLOSSARY_NAME);
         String glossaryGuid = glossary.getSystemAttributes().getGUID();
-        log.debug("Create a category1");
+        if (log.isDebugEnabled()) {
+            log.debug("Create a category1");
+        }
         Category category1 = createCategoryWithGlossaryGuid(serverName + " " + DEFAULT_TEST_CATEGORY_NAME, glossary.getSystemAttributes().getGUID());
-        log.debug("Create a category2");
+        if (log.isDebugEnabled()) {
+            log.debug("Create a category2");
+        }
         Category category2 = createCategoryWithGlossaryGuid(serverName + " " + DEFAULT_TEST_CATEGORY_NAME2, glossary.getSystemAttributes().getGUID());
 
         FVTUtils.validateNode(category1);
@@ -147,31 +155,47 @@ public class CategoryFVT {
 
         Category categoryForUpdate = new Category();
         categoryForUpdate.setName(serverName + " " + DEFAULT_TEST_CATEGORY_NAME_UPDATED);
-        log.debug("Get the category1");
+        if (log.isDebugEnabled()) {
+            log.debug("Get the category1");
+        }
         String guid = category1Guid;
         Category gotCategory = getCategoryByGUID(guid);
         FVTUtils.validateNode(gotCategory);
-        log.debug("Update the category1");
+        if (log.isDebugEnabled()) {
+            log.debug("Update the category1");
+        }
         Category updatedCategory = updateCategory(guid, categoryForUpdate);
         FVTUtils.validateNode(updatedCategory);
-        log.debug("Get the category1 again");
+        if (log.isDebugEnabled()) {
+            log.debug("Get the category1 again");
+        }
         gotCategory = getCategoryByGUID(guid);
         FVTUtils.validateNode(gotCategory);
-        log.debug("Delete the category1");
+        if (log.isDebugEnabled()) {
+            log.debug("Delete the category1");
+        }
         deleteCategory(guid);
         //FVTUtils.validateNode(gotCategory);
-        log.debug("Restore the category1");
+        if (log.isDebugEnabled()) {
+            log.debug("Restore the category1");
+        }
         gotCategory = restoreCategory(guid);
         FVTUtils.validateNode(gotCategory);
-        log.debug("Delete the category1");
+        if (log.isDebugEnabled()) {
+            log.debug("Delete the category1");
+        }
         deleteCategory(guid);
         //FVTUtils.validateNode(gotCategory);
         // create category DEFAULT_TEST_CATEGORY_NAME3 with parent
-        log.debug("Create a category with a parent category");
+        if (log.isDebugEnabled()) {
+            log.debug("Create a category with a parent category");
+        }
         Category category3 = createCategoryWithParentGlossaryGuid(serverName + " " + DEFAULT_TEST_CATEGORY_NAME3, category2.getSystemAttributes().getGUID(), glossary.getSystemAttributes().getGUID());
         FVTUtils.validateNode(category3);
 
-        log.debug("create categories to find");
+        if (log.isDebugEnabled()) {
+            log.debug("create categories to find");
+        }
         results = findCategories("zzz");
         if (results.size() != 0) {
             for (Category result : results) {
@@ -253,10 +277,14 @@ public class CategoryFVT {
     }
 
     private void testHierarchyWithSearchCriteria() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
-        log.debug("Create a glossary");
+        if (log.isDebugEnabled()) {
+            log.debug("Create a glossary");
+        }
         Glossary glossary = glossaryFVT.createGlossary(serverName + " " + DEFAULT_TEST_GLOSSARY_NAME2);
         String glossaryGuid = glossary.getSystemAttributes().getGUID();
-        log.debug("Create a ttt");
+        if (log.isDebugEnabled()) {
+            log.debug("Create a ttt");
+        }
         Category parentCategory = createCategoryWithGlossaryGuid("ttt", glossary.getSystemAttributes().getGUID());
         String parentGuid = parentCategory.getSystemAttributes().getGUID();
 
@@ -424,7 +452,9 @@ public class CategoryFVT {
     }
 
     private void testUpdateCategoryParent() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
-        log.debug("Create a glossary");
+        if (log.isDebugEnabled()) {
+            log.debug("Create a glossary");
+        }
         Glossary glossary = glossaryFVT.createGlossary(serverName + " " + DEFAULT_TEST_GLOSSARY_NAME2);
         String glossaryGuid = glossary.getSystemAttributes().getGUID();
         Category parentCategory = createCategoryWithGlossaryGuid("Parent1", glossary.getSystemAttributes().getGUID());
@@ -500,7 +530,9 @@ public class CategoryFVT {
         Category newCategory =issueCreateCategory(category);
         FVTUtils.validateNode(newCategory);
 
-        log.debug("Created Category " + newCategory.getName() + " with glossaryGuid " + newCategory.getSystemAttributes().getGUID());
+        if (log.isDebugEnabled()) {
+            log.debug("Created Category " + newCategory.getName() + " with glossaryGuid " + newCategory.getSystemAttributes().getGUID());
+        }
         return newCategory;
     }
 
@@ -512,7 +544,9 @@ public class CategoryFVT {
         category.setGlossary(GlossarySummary);
         Category newCategory = issueCreateCategory(category);
         FVTUtils.validateNode(newCategory);
-        log.debug("Created Category " + newCategory.getName() + " with userId " + newCategory.getSystemAttributes().getGUID());
+        if (log.isDebugEnabled()) {
+            log.debug("Created Category " + newCategory.getName() + " with userId " + newCategory.getSystemAttributes().getGUID());
+        }
         return newCategory;
     }
     /**
@@ -534,7 +568,9 @@ public class CategoryFVT {
         category.setParentCategory(parentCategorySummary);
         Category newCategory = issueCreateCategory(category);
         FVTUtils.validateNode(newCategory);
-        log.debug("Created Category " + newCategory.getName() + " with guid " + newCategory.getSystemAttributes().getGUID());
+        if (log.isDebugEnabled()) {
+            log.debug("Created Category " + newCategory.getName() + " with guid " + newCategory.getSystemAttributes().getGUID());
+        }
 
         return newCategory;
     }
@@ -548,7 +584,9 @@ public class CategoryFVT {
         Category newCategory = subjectAreaCategory.create(this.userId, category);
         if (newCategory != null) {
             createdCategoriesSet.add(newCategory.getSystemAttributes().getGUID());
-            log.debug("Created Category " + newCategory.getName() + " with userId " + newCategory.getSystemAttributes().getGUID());
+            if (log.isDebugEnabled()) {
+                log.debug("Created Category " + newCategory.getName() + " with userId " + newCategory.getSystemAttributes().getGUID());
+            }
         }
         return newCategory;
     }
@@ -566,7 +604,9 @@ public class CategoryFVT {
     public Category getCategoryByGUID(String guid) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         Category category = subjectAreaCategory.getByGUID(this.userId, guid);
         FVTUtils.validateNode(category);
-        log.debug("Got Category " + category.getName() + " with userId " + category.getSystemAttributes().getGUID() + " and status " + category.getSystemAttributes().getStatus());
+        if (log.isDebugEnabled()) {
+            log.debug("Got Category " + category.getName() + " with userId " + category.getSystemAttributes().getGUID() + " and status " + category.getSystemAttributes().getStatus());
+        }
         return category;
     }
 
@@ -584,20 +624,26 @@ public class CategoryFVT {
     public Category updateCategory(String guid, Category category) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         Category updatedCategory = subjectAreaCategory.update(this.userId, guid, category);
         FVTUtils.validateNode(updatedCategory);
-        log.debug("Updated Category name to " + updatedCategory.getName());
+        if (log.isDebugEnabled()) {
+            log.debug("Updated Category name to " + updatedCategory.getName());
+        }
         return updatedCategory;
     }
 
     public void deleteCategory(String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
             subjectAreaCategory.delete(this.userId, guid);
             createdCategoriesSet.remove(guid);
-            log.debug("Deleted Category succeeded");
+            if (log.isDebugEnabled()) {
+                log.debug("Deleted Category succeeded");
+            }
     }
     public Category restoreCategory(String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
         Category restoredCategory = subjectAreaCategory.restore(this.userId, guid);
         FVTUtils.validateNode(restoredCategory);
         createdCategoriesSet.add(guid);
-        log.debug("restored Category name is " + restoredCategory.getName());
+        if (log.isDebugEnabled()) {
+            log.debug("restored Category name is " + restoredCategory.getName());
+        }
         return restoredCategory;
     }
 

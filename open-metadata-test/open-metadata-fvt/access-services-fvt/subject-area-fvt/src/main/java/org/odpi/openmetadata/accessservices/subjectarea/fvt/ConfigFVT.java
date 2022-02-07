@@ -37,14 +37,16 @@ public class ConfigFVT
         {
             System.out.println("Error getting user input");
         } catch (SubjectAreaFVTCheckedException e) {
-            System.out.println("ERROR: " + e.getMessage() );
+            log.error("ERROR: " + e.getMessage() );
         } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
-            log.debug("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
+            log.error("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
         }
 
     }
     public ConfigFVT(String url, String serverName, String userId) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        log.debug("Config FVT");
+        if (log.isDebugEnabled()) {
+            log.debug("Config FVT");
+        }
         this.url =url;
         this.userId = userId;
         this.serverName = serverName;
