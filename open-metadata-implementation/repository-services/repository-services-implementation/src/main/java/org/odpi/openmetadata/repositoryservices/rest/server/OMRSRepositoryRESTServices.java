@@ -2161,7 +2161,7 @@ public class OMRSRepositoryRESTServices
                 response.setPageSize(pageSize);
                 if (response.getRelationships().size() == pageSize)
                 {
-                    final String urlTemplate = "/{0}/instances/entity/{1}/relationships";
+                    final String urlTemplate = "{0}/instances/entity/{1}/relationships";
 
                     TypeLimitedFindRequest nextFindRequestParameters = new TypeLimitedFindRequest(findRequestParameters);
                     nextFindRequestParameters.setOffset(fromRelationshipElement + pageSize);
@@ -9192,7 +9192,7 @@ public class OMRSRepositoryRESTServices
 
                     String serverURLRoot = instance.getLocalServerURL();
 
-                    MessageFormat mf = new MessageFormat(serverURLRoot + requestURLTemplate);
+                    MessageFormat mf = new MessageFormat(serverURLRoot + "/" + requestURLTemplate);
 
                     return mf.format(parameters) + "{" + jsonString + "}";
                 }
