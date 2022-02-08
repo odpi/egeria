@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "23f71964-54f6-4fff-af8b-c2d5bb1e6c2f",
+		"_postman_id": "aa9e0c39-2179-46cd-b8fd-a37f9c5a18c1",
 		"name": "Egeria-governance-engine-omas",
 		"description": "Requests for configuring an OMAG Server",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -383,6 +383,58 @@
 							"key": "maxElements",
 							"value": "100"
 						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Link duplicates",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "demo",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "demo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"class\" : \"DuplicatesRequestBody\",\n    \"metadataElement1GUID\" : \"{{guid1}}\",\n    \"metadataElement2GUID\" : \"{{guid2}}\",\n    \"statusIdentifier\" : 1,\n    \"steward\" : \"steward\",\n    \"stewardTypeName\" : \"stewardTypeName\",\n    \"stewardPropertyName\" : \"stewardPropertyName\",\n    \"source\" : \"source\",\n    \"notes\" : \"notes\"\n}"
+				},
+				"url": {
+					"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/data-engine/users/{{user}}/open-metadata-store/related-elements/link-as-peer-duplicate",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"servers",
+						"{{server}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user}}",
+						"open-metadata-store",
+						"related-elements",
+						"link-as-peer-duplicate"
 					]
 				}
 			},
