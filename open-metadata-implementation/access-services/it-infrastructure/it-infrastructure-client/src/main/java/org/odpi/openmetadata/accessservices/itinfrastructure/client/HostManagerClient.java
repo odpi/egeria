@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * HostManagerClient supports the APIs to maintain hosts and their related objects.
  */
-public class HostManagerClient extends AssetManagerClient implements HostManagerInterface
+public class HostManagerClient extends AssetManagerClientBase implements HostManagerInterface
 {
     private static final String hostEntityType                = "Host";
     private static final String hostedHostRelationship        = "HostedHost";

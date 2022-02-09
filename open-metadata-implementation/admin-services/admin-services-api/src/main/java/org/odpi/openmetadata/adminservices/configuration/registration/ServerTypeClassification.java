@@ -21,7 +21,7 @@ public enum ServerTypeClassification
                             "open metadata repositories connected through one or more open metadata repository cohorts.",
                  ServerTypeClassification.COHORT_MEMBER,
                 "https://odpi.github.io/egeria-docs/concepts/metadata-access-point/"),
-    METADATA_SERVER("Metadata Server",
+    METADATA_SERVER("Metadata Access Store",
                 "Server that is a metadata access point with its own native open metadata repository.",
                  ServerTypeClassification.METADATA_ACCESS_POINT,
                 "https://odpi.github.io/egeria-docs/concepts/metadata-server/"),

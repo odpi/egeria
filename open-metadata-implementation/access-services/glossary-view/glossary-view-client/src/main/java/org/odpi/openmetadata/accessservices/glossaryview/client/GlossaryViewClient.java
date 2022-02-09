@@ -346,8 +346,8 @@ public class GlossaryViewClient extends OmasClient {
 
         GlossaryViewEntityDetailResponse response = getSingleEntityResponse("getTerm", GET_TERM, serverName,
                 userId, termGUID);
-
-        return (GlossaryTerm) castOmasResult(response.getResult()).get(0);
+        List<GlossaryViewEntityDetail> glossaryViewEntityDetails = castOmasResult(response.getResult());
+        return (GlossaryTerm) firstEntity(glossaryViewEntityDetails);
     }
 
     /**

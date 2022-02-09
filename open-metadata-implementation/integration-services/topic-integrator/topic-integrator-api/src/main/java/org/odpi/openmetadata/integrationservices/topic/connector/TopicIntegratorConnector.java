@@ -31,6 +31,7 @@ public abstract class TopicIntegratorConnector extends IntegrationConnectorBase
      * Return the context for this connector.  It is called by the connector.
      *
      * @return context for this connector's private use.
+     * @throws ConnectorCheckedException internal issue setting up context
      */
     public synchronized TopicIntegratorContext getContext() throws ConnectorCheckedException
     {

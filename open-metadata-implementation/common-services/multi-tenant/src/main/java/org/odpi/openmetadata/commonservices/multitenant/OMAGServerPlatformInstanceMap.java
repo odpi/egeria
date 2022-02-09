@@ -107,7 +107,7 @@ public class OMAGServerPlatformInstanceMap
                 {
                     if (registration.getAccessServiceOperationalStatus() == ServiceOperationalStatus.ENABLED)
                     {
-                        response.add(getServiceDescription(registration.getAccessServiceName(),
+                        response.add(getServiceDescription(registration.getAccessServiceFullName(),
                                                            registration.getAccessServiceURLMarker(),
                                                            registration.getAccessServiceDescription(),
                                                            registration.getAccessServiceWiki()));
@@ -156,7 +156,7 @@ public class OMAGServerPlatformInstanceMap
                 {
                     if (registration.getEngineServiceOperationalStatus() == ServiceOperationalStatus.ENABLED)
                     {
-                        response.add(getServiceDescription(registration.getEngineServiceName(),
+                        response.add(getServiceDescription(registration.getEngineServiceFullName(),
                                                            registration.getEngineServiceURLMarker(),
                                                            registration.getEngineServiceDescription(),
                                                            registration.getEngineServiceWiki()));
@@ -221,7 +221,7 @@ public class OMAGServerPlatformInstanceMap
                 {
                     if (registration.getViewServiceOperationalStatus() == ServiceOperationalStatus.ENABLED)
                     {
-                        response.add(getServiceDescription(registration.getViewServiceName(),
+                        response.add(getServiceDescription(registration.getViewServiceFullName(),
                                                            registration.getViewServiceURLMarker(),
                                                            registration.getViewServiceDescription(),
                                                            registration.getViewServiceWiki()));
