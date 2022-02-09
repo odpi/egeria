@@ -2164,6 +2164,7 @@ public class OMRSRepositoryRESTServices
                     final String urlTemplate = "{0}/instances/entity/{1}/relationships";
 
                     TypeLimitedFindRequest nextFindRequestParameters = new TypeLimitedFindRequest(findRequestParameters);
+                    nextFindRequestParameters.setPageSize(pageSize);
                     nextFindRequestParameters.setOffset(fromRelationshipElement + pageSize);
 
                     response.setNextPageURL(formatNextPageURL(methodName,
