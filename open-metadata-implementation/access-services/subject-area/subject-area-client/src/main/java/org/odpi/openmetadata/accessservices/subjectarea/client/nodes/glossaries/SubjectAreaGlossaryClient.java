@@ -50,6 +50,8 @@ public class SubjectAreaGlossaryClient<G extends Glossary> extends AbstractSubje
      * @param guid        unique identifier of the object to which the found objects should relate.
      * @param findRequest information object for find calls. This include pageSize to limit the number of elements returned.
      * @param onlyTop     when only the top categories (those categories without parents) are returned.
+     * @param exactValue  should the match be an exact value?
+     * @param ignoreCase  should the search be case insensitive?
      * @return list of Categories
      * @throws PropertyServerException    something went wrong with the REST call stack.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -67,6 +69,8 @@ public class SubjectAreaGlossaryClient<G extends Glossary> extends AbstractSubje
      * @param guid        unique identifier of the object to which the found objects should relate.
      * @param findRequest information object for find calls. This include pageSize to limit the number of elements returned.
      * @param onlyTop     when only the top categories (those categories without parents) are returned.
+     * @param exactValue  should the match be an exact value?
+     * @param ignoreCase  should the search be case insensitive?
      * @param maximumPageSizeOnRestCall maximum page size that can be specified on a rest call
      * @return list of Categories
      * @throws PropertyServerException    something went wrong with the REST call stack.
@@ -107,6 +111,8 @@ public class SubjectAreaGlossaryClient<G extends Glossary> extends AbstractSubje
      * @param userId unique identifier for requesting user, under which the request is performed.
      * @param guid  unique identifier of the object to which the found objects should relate.
      * @param findRequest information object for find calls. This include pageSize to limit the number of elements returned.
+     * @param exactValue  should the match be an exact value?
+     * @param ignoreCase  should the search be case insensitive?
      * @return list of Terms
      * @throws PropertyServerException    something went wrong with the REST call stack.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -122,6 +128,8 @@ public class SubjectAreaGlossaryClient<G extends Glossary> extends AbstractSubje
      * @param userId unique identifier for requesting user, under which the request is performed.
      * @param guid  unique identifier of the object to which the found objects should relate.
      * @param findRequest information object for find calls. This include pageSize to limit the number of elements returned.
+     * @param exactValue  should the match be an exact value?
+     * @param ignoreCase  should the search be case insensitive?
      * @param maximumPageSizeOnRestCall maximum page size on rest call.
      * @return list of Terms
      * @throws PropertyServerException    something went wrong with the REST call stack.

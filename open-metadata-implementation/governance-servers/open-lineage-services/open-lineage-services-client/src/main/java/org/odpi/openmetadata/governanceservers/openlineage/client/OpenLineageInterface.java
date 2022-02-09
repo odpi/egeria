@@ -22,6 +22,8 @@ public interface OpenLineageInterface {
      * @param includeProcesses  Will filter out all processes and subprocesses from the response if false.
      * @return A subgraph containing all relevant paths, in graphSON format.
      * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem contacting the metadata server
+     * @throws OpenLineageException open lineage exception
      */
     LineageVerticesAndEdges lineage(String userId, Scope scope, String guid, String displaynameMustContain, boolean includeProcesses)
             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException, OpenLineageException;

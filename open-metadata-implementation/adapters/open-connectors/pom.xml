@@ -10,7 +10,7 @@
     <parent>
         <artifactId>adapters</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.5-SNAPSHOT</version>
+        <version>3.6-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -40,6 +40,7 @@
         <module>governance-daemon-connectors</module>
         <module>discovery-service-connectors</module>
         <module>governance-action-connectors</module>
+        <module>dynamic-archiver-connectors</module>
         <module>configuration-store-connectors</module>
         <module>rest-client-connectors</module>
         <module>connector-configuration-factory</module>

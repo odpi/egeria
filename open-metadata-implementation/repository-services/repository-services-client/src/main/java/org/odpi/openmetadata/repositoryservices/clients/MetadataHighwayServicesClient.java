@@ -7,6 +7,7 @@ import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientFactory;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistrystore.properties.MemberRegistration;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
@@ -19,9 +20,9 @@ import java.util.Map;
  * The MetadataHighwayServicesClient supports the OMRS Metadata Highway REST API.
  * Requests to this client are translated one-for-one to requests to the metadata highway service since
  * the OMRS REST API has a one-to-one correspondence with the metadata highway API.
- * 
+ *
  * The URLs for the REST APIs are of this form:
- * 
+ *
  * <ul>
  *     <li><i>restURLroot</i> - serverURLroot + "/servers/" + serverName</li>
  *     <li><i>rootServiceNameInURL</i> - "/open-metadata/repository-services"</li>
@@ -31,8 +32,8 @@ import java.util.Map;
  */
 public class MetadataHighwayServicesClient implements AuditLoggingComponent
 {
-    static final private String rootServiceNameInURL  = "/open-metadata/repository-services";
-    static final private String userIdInURL           = "/users/{0}";
+    static final private String rootServiceNameInURL  = "/servers/{0}/open-metadata/repository-services";
+    static final private String userIdInURL           = "/users/{1}";
 
     private String              localServerUserId   = null;
     private String              localServerPassword = null;
@@ -99,9 +100,9 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
      * @throws InvalidParameterException bad input parameters
      */
     public MetadataHighwayServicesClient(String     serverName,
-                                  String     restURLRoot,
-                                  String     userId,
-                                  String     password) throws InvalidParameterException
+                                         String     restURLRoot,
+                                         String     userId,
+                                         String     password) throws InvalidParameterException
     {
         final String methodName = "Constructor (with security)";
 
@@ -136,9 +137,27 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
      *
      * @param auditLog audit log object
      */
+    @Override
     public void setAuditLog(AuditLog auditLog)
     {
         this.auditLog = auditLog;
+    }
+
+
+    /**
+     * Return the component description that is used by this connector in the audit log.
+     *
+     * @return id, name, description, wiki page URL.
+     */
+    @Override
+    public ComponentDescription getConnectorComponentDescription()
+    {
+        if ((this.auditLog != null) && (this.auditLog.getReport() != null))
+        {
+            return auditLog.getReport().getReportingComponent();
+        }
+
+        return null;
     }
 
 
@@ -151,9 +170,6 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
      * @throws RepositoryErrorException there is a problem communicating with the remote server.
      * @throws UserNotAuthorizedException the user is not authorized to perform the operation requested
      */
-
-
-
     public List<CohortDescription> getCohortDescriptions(String   userId) throws InvalidParameterException,
                                                                                  RepositoryErrorException,
                                                                                  UserNotAuthorizedException
@@ -161,12 +177,14 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
         final String methodName  = "getCohortDescriptions";
         final String operationSpecificURL = "/metadata-highway/cohort-descriptions";
 
-        CohortListResponse restResult = null;
+        CohortListResponse restResult;
 
-        try {
+        try
+        {
             restResult = restClient.callGetRESTCall(methodName,
                                                     CohortListResponse.class,
                                                     restURLRoot + rootServiceNameInURL + userIdInURL + operationSpecificURL,
+                                                    serverName,
                                                     userId);
         }
         catch (Exception error)
@@ -204,8 +222,8 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
     public MemberRegistration getLocalRegistration(String serverName,
                                                    String userId,
                                                    String cohortName) throws InvalidParameterException,
-                                                                                 RepositoryErrorException,
-                                                                                 UserNotAuthorizedException
+                                                                             RepositoryErrorException,
+                                                                             UserNotAuthorizedException
     {
         final String methodName  = "getLocalRegistration";
 
@@ -219,6 +237,7 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
             restResult = restClient.callGetRESTCall(methodName,
                                                     CohortMembershipResponse.class,
                                                     restURLRoot + rootServiceNameInURL + userIdInURL + operationSpecificURL,
+                                                    serverName,
                                                     userId);
         }
         catch (Exception error)
@@ -252,10 +271,10 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
      */
 
     public List<MemberRegistration> getRemoteRegistrations(String serverName,
-                                                   String userId,
-                                                   String cohortName) throws InvalidParameterException,
-                                                                             RepositoryErrorException,
-                                                                             UserNotAuthorizedException
+                                                           String userId,
+                                                           String cohortName) throws InvalidParameterException,
+                                                                                     RepositoryErrorException,
+                                                                                     UserNotAuthorizedException
     {
         final String methodName  = "getRemoteRegistrations";
 
@@ -269,6 +288,7 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
             restResult = restClient.callGetRESTCall(methodName,
                                                     CohortMembershipListResponse.class,
                                                     restURLRoot + rootServiceNameInURL + userIdInURL + operationSpecificURL,
+                                                    serverName,
                                                     userId);
         }
         catch (Exception error)
@@ -339,11 +359,11 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
         }
         catch (Exception error)
         {
-           throw new InvalidParameterException(OMRSErrorCode.NO_REST_CLIENT.getMessageDefinition(serverName, error.getMessage()),
-                                               this.getClass().getName(),
-                                               methodName,
-                                               error,
-                                               "client");
+            throw new InvalidParameterException(OMRSErrorCode.NO_REST_CLIENT.getMessageDefinition(serverName, error.getMessage()),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                error,
+                                                "client");
         }
     }
 
@@ -364,13 +384,13 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
      * @throws RepositoryErrorException something went wrong with the REST call stack. TODO
      */
     private CohortListResponse callCohortListGetRESTCall(String    methodName,
-                                                                   String    operationSpecificURL,
-                                                                   Object... params) throws RepositoryErrorException
+                                                         String    operationSpecificURL,
+                                                         Object... params) throws RepositoryErrorException
     {
         return this.callGetRESTCall(methodName,
                                     CohortListResponse.class,
-                                     operationSpecificURL,
-                                     params);
+                                    operationSpecificURL,
+                                    params);
     }
 
 

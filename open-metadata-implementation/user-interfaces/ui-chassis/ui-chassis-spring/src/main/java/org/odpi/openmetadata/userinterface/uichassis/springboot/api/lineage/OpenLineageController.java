@@ -3,7 +3,10 @@
 package org.odpi.openmetadata.userinterface.uichassis.springboot.api.lineage;
 
 
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.governanceservers.openlineage.converters.ScopeEnumConverter;
+import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.beans.Graph;
@@ -36,7 +39,7 @@ public class OpenLineageController {
      * @return graph of nodes and edges describing the ultimate sources of the asset
      */
     @GetMapping( value = "/entities/{guid}/ultimate-source")
-    public Graph ultimateSourceGraph(@PathVariable("guid") String guid , @RequestParam boolean includeProcesses){
+    public Graph ultimateSourceGraph(@PathVariable("guid") String guid , @RequestParam boolean includeProcesses) throws InvalidParameterException, PropertyServerException, OpenLineageException {
         Graph exportedGraph;
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         exportedGraph = openLineageService.getUltimateSource(userId, guid, includeProcesses);
@@ -51,7 +54,7 @@ public class OpenLineageController {
      */
     @GetMapping( value = "/entities/{guid}/end2end")
     @ResponseBody
-    public Graph endToEndLineage(@PathVariable("guid") String guid, @RequestParam boolean includeProcesses){
+    public Graph endToEndLineage(@PathVariable("guid") String guid, @RequestParam boolean includeProcesses) throws InvalidParameterException, PropertyServerException, OpenLineageException {
         Graph exportedGraph;
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         exportedGraph = openLineageService.getEndToEndLineage(userId, guid, includeProcesses);
@@ -65,7 +68,7 @@ public class OpenLineageController {
      * @return graph of nodes and edges describing the ultimate destination of the asset
      */
     @GetMapping( value = "/entities/{guid}/ultimate-destination")
-    public Graph ultimateDestination(@PathVariable("guid") String guid, @RequestParam boolean includeProcesses){
+    public Graph ultimateDestination(@PathVariable("guid") String guid, @RequestParam boolean includeProcesses) throws InvalidParameterException, PropertyServerException, OpenLineageException {
         Graph exportedGraph;
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         exportedGraph = openLineageService.getUltimateDestination(userId, guid, includeProcesses);
@@ -80,7 +83,7 @@ public class OpenLineageController {
      * @return graph of nodes and edges describing the assets linked to the glossary term
      */
     @GetMapping( value = "/entities/{guid}/vertical-lineage")
-    public Graph verticalLineage(@PathVariable("guid") String guid, @RequestParam boolean includeProcesses){
+    public Graph verticalLineage(@PathVariable("guid") String guid, @RequestParam boolean includeProcesses) throws InvalidParameterException, PropertyServerException, OpenLineageException {
         Graph exportedGraph;
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         exportedGraph = openLineageService.getVerticalLineage(userId, guid, includeProcesses);
@@ -92,7 +95,7 @@ public class OpenLineageController {
      * @return the entity details
      */
     @GetMapping( value = "entities/{guid}/details")
-    public LineageVertex getEntityDetails(@PathVariable("guid") String guid) {
+    public LineageVertex getEntityDetails(@PathVariable("guid") String guid) throws InvalidParameterException, PropertyServerException, OpenLineageException {
         String user = SecurityContextHolder.getContext().getAuthentication().getName();
         return openLineageService.getEntityDetails(user, guid);
     }

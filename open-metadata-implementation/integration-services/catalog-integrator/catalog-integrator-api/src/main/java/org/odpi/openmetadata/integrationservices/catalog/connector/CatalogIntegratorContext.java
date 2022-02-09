@@ -33,7 +33,7 @@ public class CatalogIntegratorContext
     private static String validValuesExchangeServiceName    = "ValidValuesExchangeService";
 
 
-    private AssetManagerClient            assetManagerClient;
+    private ExternalAssetManagerClient    assetManagerClient;
     private AssetManagerEventClient       eventClient;
     private CollaborationExchangeService  collaborationExchangeService;
     private ConnectionExchangeService     connectionExchangeService;
@@ -84,7 +84,7 @@ public class CatalogIntegratorContext
      * @param integrationServiceName name of this service
      * @param auditLog logging destination
      */
-    public CatalogIntegratorContext(AssetManagerClient           assetManagerClient,
+    public CatalogIntegratorContext(ExternalAssetManagerClient assetManagerClient,
                                     AssetManagerEventClient      eventClient,
                                     CollaborationExchangeClient  collaborationExchangeClient,
                                     ConnectionExchangeClient     connectionExchangeClient,

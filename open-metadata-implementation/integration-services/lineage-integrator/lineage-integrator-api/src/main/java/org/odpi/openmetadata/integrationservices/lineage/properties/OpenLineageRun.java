@@ -51,7 +51,8 @@ public class OpenLineageRun
 
     /**
      * Set up the unique identifier of the job run.
-     * @param runId
+     *
+     * @param runId UUID value
      */
     public void setRunId(UUID runId)
     {

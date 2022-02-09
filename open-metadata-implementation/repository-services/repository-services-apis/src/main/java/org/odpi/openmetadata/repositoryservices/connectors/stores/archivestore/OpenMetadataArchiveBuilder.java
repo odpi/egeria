@@ -126,6 +126,15 @@ public interface OpenMetadataArchiveBuilder
 
 
     /**
+     * Retrieve the relationshipDef or null if it is not defined.
+     *
+     * @param classificationDef name of the classification
+     * @return the retrieved classification def
+     */
+    ClassificationDef  getClassificationDef(String   classificationDef);
+
+
+    /**
      * Add a new EntityDef to the archive.
      *
      * @param entityDef type to add
@@ -149,15 +158,6 @@ public interface OpenMetadataArchiveBuilder
      * @return the retrieved relationship def
      */
     RelationshipDef  getRelationshipDef(String   relationshipDefName);
-
-
-    /**
-     * Retrieve the relationshipDef or null if it is not defined.
-     *
-     * @param classificationDef name of the classification
-     * @return the retrieved classification def
-     */
-    ClassificationDef  getClassificationDef(String   classificationDef);
 
 
     /**
@@ -234,4 +234,15 @@ public interface OpenMetadataArchiveBuilder
      * @param classification instance to add
      */
     void addClassification(ClassificationEntityExtension classification);
+
+
+    /**
+     * Retrieve a classification extension from the archive.
+     *
+     * @param entityGUID unique identifier of entity
+     * @param classificationName name of the classification
+     * @return requested classification extension
+     */
+    ClassificationEntityExtension getClassification(String entityGUID,
+                                                    String classificationName);
 }
