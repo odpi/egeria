@@ -65,7 +65,7 @@ public class AssetLineageServicesInstance extends OMASServiceInstance {
 
         if (repositoryHandler == null) {
             String methodName = "AssetLineageServicesInstance";
-            throw new NewInstanceException(AssetLineageErrorCode.OMRS_NOT_INITIALIZED.getMessageDefinition(methodName),
+            throw new NewInstanceException(AssetLineageErrorCode.OMRS_NOT_INITIALIZED.getMessageDefinition(serverName),
                     this.getClass().getName(), methodName);
         }
 

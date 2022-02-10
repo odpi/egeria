@@ -31,19 +31,19 @@ public enum AssetLineageAuditCode implements AuditLogMessageSet {
 
     SERVICE_INSTANCE_FAILURE("OMAS-ASSET-LINEAGE-0004",
             OMRSAuditLogRecordSeverity.ERROR,
-            "The Asset Lineage Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
+            "The Asset Lineage Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0} from server {1}",
             "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
             "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
 
     EVENT_PROCESSING_EXCEPTION("OMAS-ASSET-LINEAGE-0005",
             OMRSAuditLogRecordSeverity.EXCEPTION,
-            "An exception occurred while processing incoming event {0}",
+            "An exception {0} occurred from server {1} while processing incoming event {2}",
             "The event could not be processed",
             "Review the exception to determine the source of the error and correct it."),
 
     PUBLISH_PROCESS_INFO("OMAS-ASSET-LINEAGE-0006",
             OMRSAuditLogRecordSeverity.INFO,
-            "{0} Processing sequence entity type {1} items {2}",
+            "{0} Processing sequence entity type {1} with a total of {2} items",
             "The Asset Lineage OMAS records information about processing sequence.",
             Constants.NO_ACTION_IS_REQUIRED),
 
