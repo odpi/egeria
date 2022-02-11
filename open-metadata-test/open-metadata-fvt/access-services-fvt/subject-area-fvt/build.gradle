@@ -24,6 +24,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-engine'
     testImplementation localGroovy()
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    implementation 'org.slf4j:slf4j-api'
     testImplementation("org.junit.jupiter:junit-jupiter-params")
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
     testImplementation 'org.apache.commons:commons-lang3'
@@ -72,7 +73,7 @@ task startServer(dependsOn: ['cleanData',':open-metadata-distribution:open-metad
 // Configuration of the platform
 
 task configServer(dependsOn: ['startServer','classes'], type: JavaExec) {
-    main = 'configureStartServer'
+    mainClass = 'configureStartServer'
     classpath = sourceSets.test.runtimeClasspath
     //TODO: These parms aren't currently correctly passed. We rely on defaults in the script
     systemProperties = [

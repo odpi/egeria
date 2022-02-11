@@ -72,6 +72,6 @@ public class FileBasedRegistryStoreProvider extends OMRSCohortRegistryStoreProvi
         componentDescription.setComponentDescription(connectorDescription);
         componentDescription.setComponentWikiURL(connectorWikiPage);
 
-        super.setConnectorComponentDescription(OMRSAuditingComponent.REGISTRY_STORE);
+        super.setConnectorComponentDescription(componentDescription);
     }
 }

@@ -614,29 +614,16 @@ public class OMRSOperationalServices
      */
     private OMRSTopicConnector  initializeEnterpriseOMRSTopicConnector(EnterpriseAccessConfig  enterpriseAccessConfig)
     {
-        final String methodName = "initializeEnterpriseOMRSTopicConnector";
-
         OMRSTopicConnector    enterpriseOMRSTopicConnector = null;
 
         if (enterpriseAccessConfig != null)
         {
-            try
-            {
-                Connection enterpriseOMRSTopicConnection = enterpriseAccessConfig.getEnterpriseOMRSTopicConnection();
+            Connection enterpriseOMRSTopicConnection = enterpriseAccessConfig.getEnterpriseOMRSTopicConnection();
 
-                if (enterpriseOMRSTopicConnection != null)
-                {
-                    enterpriseOMRSTopicConnector = getTopicConnector("Enterprise Access", enterpriseOMRSTopicConnection);
-                    enterpriseOMRSTopicConnector.start();
-                }
-            }
-            catch (Exception  error)
+            if (enterpriseOMRSTopicConnection != null)
             {
-                throw new OMRSLogicErrorException(OMRSErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                          methodName,
-                                                                                                          error.getMessage()),
-                                                  this.getClass().getName(),
-                                                  methodName);
+                enterpriseOMRSTopicConnector = getTopicConnector("Enterprise Access",
+                        enterpriseOMRSTopicConnection);
             }
         }
 

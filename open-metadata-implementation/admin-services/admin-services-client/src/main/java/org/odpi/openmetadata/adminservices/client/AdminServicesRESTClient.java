@@ -605,7 +605,6 @@ class AdminServicesRESTClient
     }
 
 
-
     /**
      * Issue a GET REST call that returns a response object.
      *
@@ -654,41 +653,6 @@ class AdminServicesRESTClient
         try
         {
             return clientConnector.callGetRESTCall(methodName, returnClass, urlTemplate, params);
-        }
-        catch (Exception error)
-        {
-            exceptionHandler.logRESTCallException(serverPlatformURLRoot, methodName, error);
-        }
-
-        return null;
-    }
-
-    /**
-     * Issue a PUT REST call that returns a void response object. This is typically an update.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody request body for the request.
-     * @param params  a list of parameters that are slotted into the url template.
-     *
-     * @return VoidResponse
-     *
-     * @return response object
-     * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
-     */
-    protected  VoidResponse callVoidPutRESTCall(String    methodName,
-                                     String    urlTemplate,
-                                     Object    requestBody,
-                                     Object... params) throws OMAGConfigurationErrorException
-    {
-        try
-        {
-            VoidResponse restResult = clientConnector.callPutRESTCall(methodName,
-                                                   VoidResponse.class,
-                                                   urlTemplate,
-                                                   requestBody,
-                                                   params);
-            exceptionHandler.detectAndThrowAdminExceptions(restResult);
         }
         catch (Exception error)
         {

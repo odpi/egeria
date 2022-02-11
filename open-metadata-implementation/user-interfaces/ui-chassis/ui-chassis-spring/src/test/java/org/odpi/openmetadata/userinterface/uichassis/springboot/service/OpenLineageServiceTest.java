@@ -73,7 +73,7 @@ public class OpenLineageServiceTest {
 
     @Test
     @DisplayName("Ultimate Source")
-    public void testUltimateSource() throws PropertyServerException, InvalidParameterException {
+    public void testUltimateSource() throws PropertyServerException, InvalidParameterException, OpenLineageException {
         try {
             when(openLineageClient.lineage(USER_ID, Scope.ULTIMATE_SOURCE, guid, "", true))
                     .thenReturn(lineageVerticesAndEdges);
@@ -86,7 +86,7 @@ public class OpenLineageServiceTest {
 
     @Test
     @DisplayName("End To End")
-    public void testEndToEnd() throws PropertyServerException, InvalidParameterException {
+    public void testEndToEnd() throws PropertyServerException, InvalidParameterException, OpenLineageException {
         try {
             when(openLineageClient.lineage(USER_ID, Scope.END_TO_END, guid, "", true))
                     .thenReturn(lineageVerticesAndEdges);
@@ -100,7 +100,7 @@ public class OpenLineageServiceTest {
 
     @Test
     @DisplayName("Ultimate Destination")
-    public void testUltimateDestination() throws PropertyServerException, InvalidParameterException {
+    public void testUltimateDestination() throws PropertyServerException, InvalidParameterException, OpenLineageException {
         try {
             when(openLineageClient.lineage(USER_ID, Scope.ULTIMATE_DESTINATION, guid, "", true))
                     .thenReturn(lineageVerticesAndEdges);
@@ -113,7 +113,7 @@ public class OpenLineageServiceTest {
 
     @Test
     @DisplayName("GlossaryLineage")
-    public void testGlossaryLineage() throws PropertyServerException, InvalidParameterException {
+    public void testGlossaryLineage() throws PropertyServerException, InvalidParameterException, OpenLineageException {
         try {
             when(openLineageClient.lineage(USER_ID, Scope.VERTICAL, guid, "", true))
                     .thenReturn(lineageVerticesAndEdges);
@@ -128,7 +128,7 @@ public class OpenLineageServiceTest {
     @Test
     @DisplayName("TestNodesLevels")
     @SuppressWarnings("unchecked")
-    public void testNodesLevels() throws PropertyServerException, InvalidParameterException, IOException {
+    public void testNodesLevels() throws PropertyServerException, InvalidParameterException, IOException, OpenLineageException {
         setupLineageVerticesAndEdges();
         try {
             when(openLineageClient.lineage(USER_ID, Scope.END_TO_END, "n11", "", true))

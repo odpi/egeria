@@ -6,4 +6,4 @@
  * messages for the audit log and the DynamicArchiverConnectorsErrorCode contains the messages for any exceptions
  * that are thrown by the connectors.
  */
-package org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc;
+package org.odpi.openmetadata.adapters.connectors.dynamicarchivers.ffdc;

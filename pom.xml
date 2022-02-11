@@ -24,7 +24,7 @@
     <artifactId>egeria</artifactId>
     <version>3.6-SNAPSHOT</version>
 
-    <url>https://egeria.odpi.org</url>
+    <url>https://odpi.github.io/egeria-docs/</url>
 
     <!-- The Apache license is used for code and the creative commons license is used for documentation -->
 
@@ -2055,7 +2055,7 @@
                 <version>${open-metadata.version}</version>
             </dependency>
 
-                        <dependency>
+            <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>open-metadata-types-utility</artifactId>
                 <scope>compile</scope>
@@ -3643,12 +3643,12 @@
                                 <banDuplicatePomDependencyVersions/>
                                 <requireSameVersions/>
                                 <reactorModuleConvergence/>
-				<requireUpperBoundDeps>
-				    <excludes>
-				        <!-- Required as the ui chassis pulls in dependencies using older, but later versioned beta code -->
+				                <requireUpperBoundDeps>
+                                    <excludes>
+				                        <!-- Required as the ui chassis pulls in dependencies using older, but later versioned beta code -->
                                         <exclude>org.slf4j:slf4j-api</exclude>
                                     </excludes>
-			        </requireUpperBoundDeps>
+			                    </requireUpperBoundDeps>
                             </rules>
                         </configuration>
                     </execution>
@@ -3661,6 +3661,7 @@
                 <configuration>
                     <useDefaultExcludes>true</useDefaultExcludes>
                     <useMavenDefaultExcludes>true</useMavenDefaultExcludes>
+
                     <useIdeaDefaultExcludes>true</useIdeaDefaultExcludes>
                     <useEclipseDefaultExcludes>true</useEclipseDefaultExcludes>
                     <excludeSubProjects>true</excludeSubProjects>

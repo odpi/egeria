@@ -206,15 +206,6 @@
                 </configuration>
             </plugin>
 
-            <!-- Javadoc  -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <configuration>
-                    <skip>false</skip>
-                </configuration>
-            </plugin>
-
             <!-- We don't make use of the assembly at a jar level, but we need it to have been created to run the integration tests -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

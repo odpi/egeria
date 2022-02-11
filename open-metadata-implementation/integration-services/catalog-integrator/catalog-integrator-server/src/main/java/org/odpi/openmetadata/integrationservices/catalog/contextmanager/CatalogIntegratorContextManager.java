@@ -33,7 +33,7 @@ public class CatalogIntegratorContextManager extends IntegrationContextManager
 {
     private static String disabledExchangeServicesOption = "disabledExchangeServices";
 
-    private AssetManagerClient           assetManagerClient;
+    private ExternalAssetManagerClient   assetManagerClient;
     private CollaborationExchangeClient  collaborationExchangeClient;
     private ConnectionExchangeClient     connectionExchangeClient;
     private DataAssetExchangeClient      dataAssetExchangeClient;
@@ -107,11 +107,11 @@ public class CatalogIntegratorContextManager extends IntegrationContextManager
                                                     auditLog);
         }
 
-        assetManagerClient = new AssetManagerClient(partnerOMASServerName,
-                                                    partnerOMASPlatformRootURL,
-                                                    restClient,
-                                                    maxPageSize,
-                                                    auditLog);
+        assetManagerClient = new ExternalAssetManagerClient(partnerOMASServerName,
+                                                            partnerOMASPlatformRootURL,
+                                                            restClient,
+                                                            maxPageSize,
+                                                            auditLog);
 
         collaborationExchangeClient = new CollaborationExchangeClient(partnerOMASServerName,
                                                                       partnerOMASPlatformRootURL,

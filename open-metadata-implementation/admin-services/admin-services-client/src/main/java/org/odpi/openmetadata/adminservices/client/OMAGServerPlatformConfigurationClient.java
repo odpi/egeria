@@ -257,6 +257,8 @@ public class OMAGServerPlatformConfigurationClient
         return restResult.getConnection();
     }
 
+
+
     /**
      * Return all the the OMAG Server configurations that are stored on this platform
      *
@@ -266,8 +268,8 @@ public class OMAGServerPlatformConfigurationClient
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
     public Set<OMAGServerConfig> getAllServerConfigurations() throws OMAGNotAuthorizedException,
-                                                                   OMAGConfigurationErrorException,
-                                                                   OMAGInvalidParameterException
+                                                                     OMAGConfigurationErrorException,
+                                                                     OMAGInvalidParameterException
     {
         final String methodName  = "getPlatformServerConfigs";
         final String urlTemplate = "/open-metadata/admin-services/users/{0}/configurations";
