@@ -298,6 +298,7 @@ allprojects {
     javadoc {
         include ( "**/*api/**/*.java" )
         include ( "**/*client/**/*.java" )
+        include ( "**/*framework/**/*.java" )
     }
 
 }
