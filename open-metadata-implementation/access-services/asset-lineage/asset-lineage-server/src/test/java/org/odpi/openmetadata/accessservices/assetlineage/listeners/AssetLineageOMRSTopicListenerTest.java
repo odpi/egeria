@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.assetlineage.listeners;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.collect.Multimap;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,6 +17,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship;
 import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
+import org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageTypesValidator;
 import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
@@ -30,12 +30,8 @@ import org.odpi.openmetadata.repositoryservices.events.OMRSEventOriginator;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEvent;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventType;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -61,19 +57,11 @@ class AssetLineageOMRSTopicListenerTest {
     AssetLineagePublisher assetLineagePublisher;
     @Mock
     Converter converter;
-    private final Set<String> lineageClassificationTypes = new HashSet<>(Collections.singletonList(CLASSIFICATION_NAME_ASSET_ZONE_MEMBERSHIP));
+    @Mock
+    AssetLineageTypesValidator assetLineageTypesValidator;
 
     @InjectMocks
     private AssetLineageOMRSTopicListener assetLineageOMRSTopicListener;
-
-    @BeforeEach
-    public void beforeEach() throws NoSuchFieldException, IllegalAccessException {
-        Field lineageClassificationTypesField = AssetLineageOMRSTopicListener.class.getDeclaredField("lineageClassificationTypes");
-        boolean connectionHandlerIsAccessible = lineageClassificationTypesField.canAccess(assetLineageOMRSTopicListener);
-        lineageClassificationTypesField.setAccessible(true);
-        lineageClassificationTypesField.set(assetLineageOMRSTopicListener, lineageClassificationTypes);
-        lineageClassificationTypesField.setAccessible(connectionHandlerIsAccessible);
-    }
 
     @Test
     void processInstanceEvent_updateEntityEvent_process_withContext() throws OCFCheckedExceptionBase, JsonProcessingException {
@@ -81,7 +69,7 @@ class AssetLineageOMRSTopicListenerTest {
         EntityDetail originalEntity = mockEntityDetail(PROCESS, InstanceStatus.DRAFT);
         OMRSInstanceEvent instanceEvent = mockInstanceEvent(entityDetail, originalEntity, OMRSInstanceEventType.UPDATED_ENTITY_EVENT);
         mockContext(entityDetail, false);
-
+        when(assetLineageTypesValidator.isValidLineageEntityType(entityDetail, null)).thenReturn(true);
         assetLineageOMRSTopicListener.processInstanceEvent(instanceEvent);
         verify(assetLineagePublisher, times(1)).publishProcessContext(entityDetail);
     }
@@ -93,6 +81,7 @@ class AssetLineageOMRSTopicListenerTest {
         OMRSInstanceEvent instanceEvent = mockInstanceEvent(entityDetail, originalEntity, OMRSInstanceEventType.UPDATED_ENTITY_EVENT);
         mockContext(entityDetail, true);
         LineageEntity lineageEntity = mockLineageEntity(entityDetail);
+        when(assetLineageTypesValidator.isValidLineageEntityType(entityDetail, null)).thenReturn(true);
         when(assetLineagePublisher.isEntityEligibleForPublishing(entityDetail)).thenReturn(true);
 
         assetLineageOMRSTopicListener.processInstanceEvent(instanceEvent);
@@ -111,7 +100,7 @@ class AssetLineageOMRSTopicListenerTest {
         mockContext(entityDetail, true);
         LineageEntity lineageEntity = mockLineageEntity(entityDetail);
         when(assetLineagePublisher.isEntityEligibleForPublishing(entityDetail)).thenReturn(true);
-
+        when(assetLineageTypesValidator.isValidLineageEntityType(entityDetail, null)).thenReturn(true);
         assetLineageOMRSTopicListener.processInstanceEvent(instanceEvent);
 
         verify(assetLineagePublisher, times(0)).publishProcessContext(entityDetail);
@@ -125,7 +114,7 @@ class AssetLineageOMRSTopicListenerTest {
         EntityDetail entityDetail = mockEntityDetail(DATABASE, InstanceStatus.ACTIVE);
         EntityDetail originalEntity = mockEntityDetail(DATABASE, InstanceStatus.ACTIVE);
         OMRSInstanceEvent instanceEvent = mockInstanceEvent(entityDetail, originalEntity, OMRSInstanceEventType.UPDATED_ENTITY_EVENT);
-
+        when(assetLineageTypesValidator.isValidLineageEntityType(entityDetail, null)).thenReturn(false);
         assetLineageOMRSTopicListener.processInstanceEvent(instanceEvent);
 
         verify(assetLineagePublisher, times(0)).publishProcessContext(entityDetail);
@@ -138,6 +127,7 @@ class AssetLineageOMRSTopicListenerTest {
         OMRSInstanceEvent instanceEvent = mockInstanceEvent(entityDetail, null, OMRSInstanceEventType.DELETED_ENTITY_EVENT);
         LineageEntity lineageEntity = mockLineageEntity(entityDetail);
         when(assetLineagePublisher.isEntityEligibleForPublishing(entityDetail)).thenReturn(true);
+        when(assetLineageTypesValidator.isValidLineageEntityType(entityDetail, null)).thenReturn(true);
 
         assetLineageOMRSTopicListener.processInstanceEvent(instanceEvent);
 
@@ -150,6 +140,7 @@ class AssetLineageOMRSTopicListenerTest {
     void processInstanceEvent_deleteEntityEvent_notValidType() throws OCFCheckedExceptionBase {
         EntityDetail entityDetail = mockEntityDetail(DATABASE, InstanceStatus.ACTIVE);
         OMRSInstanceEvent instanceEvent = mockInstanceEvent(entityDetail, null, OMRSInstanceEventType.DELETED_ENTITY_EVENT);
+        when(assetLineageTypesValidator.isValidLineageEntityType(entityDetail, null)).thenReturn(false);
 
         assetLineageOMRSTopicListener.processInstanceEvent(instanceEvent);
 
@@ -161,8 +152,9 @@ class AssetLineageOMRSTopicListenerTest {
         EntityDetail entityDetail = mockEntityDetail(RELATIONAL_TABLE, InstanceStatus.ACTIVE);
         OMRSInstanceEvent instanceEvent = mockInstanceEvent(entityDetail, null, OMRSInstanceEventType.CLASSIFIED_ENTITY_EVENT);
         mockClassifications(entityDetail, CLASSIFICATION_NAME_ASSET_ZONE_MEMBERSHIP);
+        when(assetLineageTypesValidator.isValidLineageEntityType(entityDetail, null)).thenReturn(true);
         when(assetLineagePublisher.isEntityEligibleForPublishing(entityDetail)).thenReturn(true);
-
+        when(assetLineageTypesValidator.hasValidClassificationTypes(entityDetail)).thenReturn(true);
         assetLineageOMRSTopicListener.processInstanceEvent(instanceEvent);
 
         verify(assetLineagePublisher, times(1)).isEntityEligibleForPublishing(entityDetail);
@@ -175,6 +167,7 @@ class AssetLineageOMRSTopicListenerTest {
         EntityDetail entityDetail = mockEntityDetail(DATABASE, InstanceStatus.ACTIVE);
         OMRSInstanceEvent instanceEvent = mockInstanceEvent(entityDetail, null, OMRSInstanceEventType.CLASSIFIED_ENTITY_EVENT);
         mockClassifications(entityDetail, CLASSIFICATION_NAME_ASSET_ZONE_MEMBERSHIP);
+        when(assetLineageTypesValidator.isValidLineageEntityType(entityDetail, null)).thenReturn(false);
 
         assetLineageOMRSTopicListener.processInstanceEvent(instanceEvent);
 
@@ -213,6 +206,9 @@ class AssetLineageOMRSTopicListenerTest {
         EntityDetail entityDetail = mockEntityDetail(RELATIONAL_TABLE, InstanceStatus.ACTIVE);
         OMRSInstanceEvent instanceEvent = mockInstanceEvent(entityDetail, null, OMRSInstanceEventType.DECLASSIFIED_ENTITY_EVENT);
         mockClassifications(entityDetail, CLASSIFICATION_NAME_ASSET_ZONE_MEMBERSHIP);
+        when(assetLineagePublisher.isEntityEligibleForPublishing(entityDetail)).thenReturn(true);
+        when(assetLineageTypesValidator.isValidLineageEntityType(entityDetail, null)).thenReturn(true);
+        when(assetLineageTypesValidator.hasValidClassificationTypes(entityDetail)).thenReturn(true);
 
         assetLineageOMRSTopicListener.processInstanceEvent(instanceEvent);
 
@@ -227,6 +223,8 @@ class AssetLineageOMRSTopicListenerTest {
         mockClassifications(entityDetail, TEST_CLASSIFICATION);
         LineageEntity lineageEntity = mockLineageEntity(entityDetail);
         when(assetLineagePublisher.isEntityEligibleForPublishing(entityDetail)).thenReturn(true);
+        when(assetLineageTypesValidator.isValidLineageEntityType(entityDetail, null)).thenReturn(true);
+        when(assetLineageTypesValidator.hasValidClassificationTypes(entityDetail)).thenReturn(true);
 
         assetLineageOMRSTopicListener.processInstanceEvent(instanceEvent);
 
@@ -239,7 +237,7 @@ class AssetLineageOMRSTopicListenerTest {
         EntityDetail entityDetail = mockEntityDetail(DATABASE, InstanceStatus.ACTIVE);
         OMRSInstanceEvent instanceEvent = mockInstanceEvent(entityDetail, null, OMRSInstanceEventType.DECLASSIFIED_ENTITY_EVENT);
         mockClassifications(entityDetail, CLASSIFICATION_NAME_ASSET_ZONE_MEMBERSHIP);
-
+        when(assetLineageTypesValidator.isValidLineageEntityType(entityDetail, null)).thenReturn(false);
         assetLineageOMRSTopicListener.processInstanceEvent(instanceEvent);
 
         verify(assetLineagePublisher, times(0)).publishClassificationContext(entityDetail,
@@ -252,6 +250,8 @@ class AssetLineageOMRSTopicListenerTest {
         OMRSInstanceEvent instanceEvent = mockInstanceEvent(entityDetail, null, OMRSInstanceEventType.RECLASSIFIED_ENTITY_EVENT);
         mockClassifications(entityDetail, CLASSIFICATION_NAME_ASSET_ZONE_MEMBERSHIP);
         when(assetLineagePublisher.isEntityEligibleForPublishing(entityDetail)).thenReturn(true);
+        when(assetLineageTypesValidator.isValidLineageEntityType(entityDetail, null)).thenReturn(true);
+        when(assetLineageTypesValidator.hasValidClassificationTypes(entityDetail)).thenReturn(true);
 
         assetLineageOMRSTopicListener.processInstanceEvent(instanceEvent);
 
@@ -291,6 +291,7 @@ class AssetLineageOMRSTopicListenerTest {
     void processInstanceEvent_newRelationship_SemanticAssignment() throws OCFCheckedExceptionBase, JsonProcessingException {
         Relationship relationship = mockRelationship(SEMANTIC_ASSIGNMENT);
         OMRSInstanceEvent instanceEvent = mockInstanceEvent(relationship, OMRSInstanceEventType.NEW_RELATIONSHIP_EVENT);
+        when(assetLineageTypesValidator.isValidLineageRelationshipType(relationship)).thenReturn(true);
 
         assetLineageOMRSTopicListener.processInstanceEvent(instanceEvent);
 
@@ -301,6 +302,7 @@ class AssetLineageOMRSTopicListenerTest {
     void processInstanceEvent_newRelationship_TermCategorization() throws OCFCheckedExceptionBase, JsonProcessingException {
         Relationship relationship = mockRelationship(TERM_CATEGORIZATION);
         OMRSInstanceEvent instanceEvent = mockInstanceEvent(relationship, OMRSInstanceEventType.NEW_RELATIONSHIP_EVENT);
+        when(assetLineageTypesValidator.isValidLineageRelationshipType(relationship)).thenReturn(true);
 
         assetLineageOMRSTopicListener.processInstanceEvent(instanceEvent);
 
@@ -312,6 +314,7 @@ class AssetLineageOMRSTopicListenerTest {
         Relationship relationship = mockRelationship(PROCESS_HIERARCHY);
         OMRSInstanceEvent instanceEvent = mockInstanceEvent(relationship, OMRSInstanceEventType.NEW_RELATIONSHIP_EVENT);
         LineageRelationship lineageRelationship = mockLineageRelationship(relationship);
+        when(assetLineageTypesValidator.isValidLineageRelationshipType(relationship)).thenReturn(true);
 
         assetLineageOMRSTopicListener.processInstanceEvent(instanceEvent);
 
@@ -339,6 +342,7 @@ class AssetLineageOMRSTopicListenerTest {
         Relationship relationship = mockRelationship(LINEAGE_MAPPING);
         OMRSInstanceEvent instanceEvent = mockInstanceEvent(relationship, OMRSInstanceEventType.NEW_RELATIONSHIP_EVENT);
         LineageRelationship lineageRelationship = mockLineageRelationship(relationship);
+        when(assetLineageTypesValidator.isValidLineageRelationshipType(relationship)).thenReturn(true);
 
         assetLineageOMRSTopicListener.processInstanceEvent(instanceEvent);
 
@@ -351,6 +355,7 @@ class AssetLineageOMRSTopicListenerTest {
         Relationship relationship = mockRelationship(LINEAGE_MAPPING);
         OMRSInstanceEvent instanceEvent = mockInstanceEvent(relationship, OMRSInstanceEventType.UPDATED_RELATIONSHIP_EVENT);
         LineageRelationship lineageRelationship = mockLineageRelationship(relationship);
+        when(assetLineageTypesValidator.isValidLineageRelationshipType(relationship)).thenReturn(true);
 
         assetLineageOMRSTopicListener.processInstanceEvent(instanceEvent);
 
@@ -363,6 +368,7 @@ class AssetLineageOMRSTopicListenerTest {
         Relationship relationship = mockRelationship(LINEAGE_MAPPING);
         OMRSInstanceEvent instanceEvent = mockInstanceEvent(relationship, OMRSInstanceEventType.DELETED_RELATIONSHIP_EVENT);
         LineageRelationship lineageRelationship = mockLineageRelationship(relationship);
+        when(assetLineageTypesValidator.isValidLineageRelationshipType(relationship)).thenReturn(true);
 
         assetLineageOMRSTopicListener.processInstanceEvent(instanceEvent);
 
