@@ -62,10 +62,10 @@ public class IncompleteRule implements Rule {
                     if(classificationNode.isPresent()) {
                         nodesToRemove.add(classificationNode.get());
                         node.getProperties().put(TYPE, INCOMPLETE);
+                        edgesToRemove.add(edge);
                     }
                 }
             }
-            edgesToRemove.add(edge);
         }
         graph.getNodes().removeAll(nodesToRemove);
         graph.getEdges().removeAll(edgesToRemove);
