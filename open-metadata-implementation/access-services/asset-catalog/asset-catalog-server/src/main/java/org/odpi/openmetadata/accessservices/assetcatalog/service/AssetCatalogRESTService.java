@@ -230,7 +230,7 @@ public class AssetCatalogRESTService {
         AssetCatalogListResponse response = new AssetCatalogListResponse();
         try {
             AssetCatalogHandler assetCatalogHandler = instanceHandler.getAssetCatalogHandler(userId, serverName, methodName);
-            response.setAssetCatalogBeanList(assetCatalogHandler.getIntermediateAssets(userId, startAssetId, endAssetId));
+            response.setAssetCatalogBeanList(assetCatalogHandler.getIntermediateAssets(userId, startAssetId, endAssetId, serverName));
         } catch (AssetCatalogException e) {
             exceptionHandler.captureAssetCatalogExeption(response, e);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException e) {
@@ -265,7 +265,7 @@ public class AssetCatalogRESTService {
         AssetCatalogListResponse response = new AssetCatalogListResponse();
         try {
             AssetCatalogHandler assetCatalogHandler = instanceHandler.getAssetCatalogHandler(userId, serverName, methodName);
-            List<AssetCatalogBean> entitiesFromNeighborhood = assetCatalogHandler.getEntitiesFromNeighborhood(userId, assetGUID, searchParameters);
+            List<AssetCatalogBean> entitiesFromNeighborhood = assetCatalogHandler.getEntitiesFromNeighborhood(userId, assetGUID, searchParameters, serverName);
 
             response.setAssetCatalogBeanList(entitiesFromNeighborhood);
         } catch (AssetCatalogException e) {

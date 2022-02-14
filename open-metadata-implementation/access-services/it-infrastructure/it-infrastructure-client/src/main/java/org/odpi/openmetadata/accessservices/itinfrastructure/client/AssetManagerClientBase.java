@@ -28,10 +28,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * AssetManagerClient supports the APIs to maintain assets and their related objects.  It is called from the specific clients
+ * AssetManagerClientBase supports the APIs to maintain assets and their related objects.  It is called from the specific clients
  * that manage the specializations of asset.
  */
-public abstract class AssetManagerClient
+public abstract class AssetManagerClientBase
 {
     private static final String assetURLTemplatePrefix = "/servers/{0}/open-metadata/access-services/it-infrastructure/users/{1}/assets";
 
@@ -53,9 +53,9 @@ public abstract class AssetManagerClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    AssetManagerClient(String   serverName,
-                       String   serverPlatformURLRoot,
-                       AuditLog auditLog) throws InvalidParameterException
+    AssetManagerClientBase(String   serverName,
+                           String   serverPlatformURLRoot,
+                           AuditLog auditLog) throws InvalidParameterException
     {
         final String methodName = "Client Constructor";
 
@@ -76,8 +76,8 @@ public abstract class AssetManagerClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    AssetManagerClient(String serverName,
-                       String serverPlatformURLRoot) throws InvalidParameterException
+    AssetManagerClientBase(String serverName,
+                           String serverPlatformURLRoot) throws InvalidParameterException
     {
         final String methodName = "Client Constructor";
 
@@ -101,10 +101,10 @@ public abstract class AssetManagerClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    AssetManagerClient(String serverName,
-                       String serverPlatformURLRoot,
-                       String userId,
-                       String password) throws InvalidParameterException
+    AssetManagerClientBase(String serverName,
+                           String serverPlatformURLRoot,
+                           String userId,
+                           String password) throws InvalidParameterException
     {
         final String methodName = "Client Constructor";
 
@@ -130,11 +130,11 @@ public abstract class AssetManagerClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    AssetManagerClient(String   serverName,
-                       String   serverPlatformURLRoot,
-                       String   userId,
-                       String   password,
-                       AuditLog auditLog) throws InvalidParameterException
+    AssetManagerClientBase(String   serverName,
+                           String   serverPlatformURLRoot,
+                           String   userId,
+                           String   password,
+                           AuditLog auditLog) throws InvalidParameterException
     {
         final String methodName = "Client Constructor";
 
@@ -157,10 +157,10 @@ public abstract class AssetManagerClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public AssetManagerClient(String                     serverName,
-                              String                     serverPlatformURLRoot,
-                              ITInfrastructureRESTClient restClient,
-                              int                        maxPageSize) throws InvalidParameterException
+    public AssetManagerClientBase(String                     serverName,
+                                  String                     serverPlatformURLRoot,
+                                  ITInfrastructureRESTClient restClient,
+                                  int                        maxPageSize) throws InvalidParameterException
     {
         final String methodName = "Client Constructor";
 

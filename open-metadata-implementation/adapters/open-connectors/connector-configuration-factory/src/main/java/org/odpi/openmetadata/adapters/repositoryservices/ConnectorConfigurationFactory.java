@@ -117,7 +117,7 @@ public class ConnectorConfigurationFactory
             }
         }
 
-        return getConsoleAuditLogConnection(supportedSeverities);
+        return getConsoleAuditLogConnection("- default", supportedSeverities);
     }
 
 
@@ -144,15 +144,18 @@ public class ConnectorConfigurationFactory
      * Return the connection for the console audit log destination.
      * This audit log destination writes to stdout.
      *
+     * @param qualifier unique qualifier for the connection
      * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
      * @return OCF Connection used to create the stdout console audit logger
      */
-   public Connection getConsoleAuditLogConnection(List<String> supportedSeverities)
+   public Connection getConsoleAuditLogConnection(String       qualifier,
+                                                  List<String> supportedSeverities)
     {
         final String destinationName = "Console";
 
         Connection connection = new Connection();
 
+        connection.setQualifiedName(destinationName + qualifier);
         connection.setDisplayName(destinationName);
         connection.setConnectorType(getConnectorType(CONSOLE_AUDIT_LOG_STORE_PROVIDER));
 
@@ -183,6 +186,7 @@ public class ConnectorConfigurationFactory
 
         Connection connection = new Connection();
 
+        connection.setQualifiedName(destinationName + " in " + endpointAddress);
         connection.setDisplayName(destinationName + " in " + endpointAddress);
         connection.setEndpoint(endpoint);
         connection.setConnectorType(getConnectorType(FILE_BASED_AUDIT_LOG_STORE_PROVIDER));
@@ -197,15 +201,18 @@ public class ConnectorConfigurationFactory
      * Return the connection for the file-based audit log.
      * By default, the File-based Audit log is stored in a directory called localServerName.auditlog.
      *
+     * @param qualifier unique qualifier for the connection
      * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
      * @return OCF Connection used to create the file based audit logger
      */
-    public Connection getSLF4JAuditLogConnection(List<String> supportedSeverities)
+    public Connection getSLF4JAuditLogConnection(String       qualifier,
+                                                 List<String> supportedSeverities)
     {
         final String destinationName = "SLF4J";
 
         Connection connection = new Connection();
 
+        connection.setQualifiedName(destinationName + qualifier);
         connection.setDisplayName(destinationName);
         connection.setConnectorType(getConnectorType(SLF_4_J_AUDIT_LOG_STORE_PROVIDER));
 
@@ -239,6 +246,7 @@ public class ConnectorConfigurationFactory
 
         VirtualConnection connection = new VirtualConnection();
 
+        connection.setQualifiedName(destinationName + " " + topicName);
         connection.setDisplayName(destinationName + " " + topicName);
         connection.setConnectorType(getConnectorType(EVENT_TOPIC_AUDIT_LOG_STORE_PROVIDER));
         connection.setEmbeddedConnections(getEmbeddedEventBusConnection(localServerName + " Audit Log Event Topic Destination",

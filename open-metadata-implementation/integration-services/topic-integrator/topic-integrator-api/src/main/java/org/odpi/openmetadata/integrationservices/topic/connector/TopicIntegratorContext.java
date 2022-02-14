@@ -687,6 +687,7 @@ public class TopicIntegratorContext
      * Create a new metadata element to represent a list of possible schema types that can be used for the attached schema attribute.
      *
      * @param schemaTypeProperties properties about the schema type to store
+     * @param schemaTypeOptionGUIDs list of unique identifiers for schema types that represent the options for the schema type choice
      *
      * @return unique identifier of the new schema type
      *
@@ -1431,6 +1432,7 @@ public class TopicIntegratorContext
      * Retrieve the list of metadata elements with a matching qualified or display name.
      * There are no wildcards supported on this request.
      *
+     * @param name name of the connection to retrieve
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *

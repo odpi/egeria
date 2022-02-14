@@ -55,7 +55,7 @@ public class AssetLineagePublisher {
 
     private static final Logger log = LoggerFactory.getLogger(AssetLineagePublisher.class);
     private static final String GLOSSARY_TERM_LINEAGE_EVENTS_CHUNK_SIZE = "glossaryTermLineageEventsChunkSize";
-    private static AssetLineageInstanceHandler instanceHandler = new AssetLineageInstanceHandler();
+    private static final AssetLineageInstanceHandler instanceHandler = new AssetLineageInstanceHandler();
     private final OpenMetadataTopicConnector outTopicConnector;
     private final String serverUserName;
     private final ProcessContextHandler processContextHandler;
@@ -390,10 +390,10 @@ public class AssetLineagePublisher {
         publishLineageRelationshipsEvents(Multimaps.forMap(assetContextHandler.buildColumnContext(serverUserName, lineageEntity)));
         publishLineageRelationshipsEvents(Multimaps.forMap(assetContextHandler.buildAssetContext(serverUserName, lineageEntity)));
 
-        Optional<LineageEntity> assetEntityContext =
-                assetContextHandler.buildAssetEntityContext(serverUserName, lineageEntity.getGuid(), lineageEntity.getTypeDefName());
-        if (assetEntityContext.isPresent()) {
-            publishLineageEntityEvent(assetEntityContext.get(), AssetLineageEventType.UPDATE_ENTITY_EVENT);
+        Optional<LineageEntity> entityContext = assetContextHandler.buildEntityContext(serverUserName, lineageEntity.getGuid(),
+                lineageEntity.getTypeDefName());
+        if (entityContext.isPresent()) {
+            publishLineageEntityEvent(entityContext.get(), AssetLineageEventType.UPDATE_ENTITY_EVENT);
         }
 
         log.debug("Asset Lineage OMAS published the context for entity with guid {} and type {}", lineageEntity.getGuid(),

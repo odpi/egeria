@@ -14,6 +14,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
 import org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants;
+import org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageTypesValidator;
 import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
@@ -86,9 +87,10 @@ class HandlerHelperTest {
     @Mock
     private OpenMetadataAPIGenericHandler genericHandler;
     @Mock
-    private Set<String> lineageClassificationTypes;
-    @Mock
     private Converter converter;
+    @Mock
+    private AssetLineageTypesValidator assetLineageTypesValidator;
+
     @InjectMocks
     private HandlerHelper handlerHelper;
 
@@ -205,7 +207,7 @@ class HandlerHelperTest {
         EntityDetail entityDetail = mock(EntityDetail.class);
         entities.add(entityDetail);
         when(genericHandler.findEntities(USER, ENTITY_TYPE_GUID, guids, searchProperties, Collections.emptyList(),
-                null,null, null, null, true, false, 0, 0,
+                null, null, null, null, true, false, 0, 0,
                 "findEntitiesByType")).thenReturn(entities);
 
         Optional<List<EntityDetail>> response = handlerHelper.findEntitiesByType(USER, ENTITY_TYPE_NAME, searchProperties, findEntitiesParameters);
@@ -222,8 +224,8 @@ class HandlerHelperTest {
 
         mockTypeDef(ENTITY_TYPE_NAME, ENTITY_TYPE_GUID);
         when(genericHandler.findEntities(USER, ENTITY_TYPE_GUID, guids, searchProperties, Collections.emptyList(),
-                null,null, null, null, true,
-                false, 0, 0,"findEntitiesByType")).thenReturn(null);
+                null, null, null, null, true,
+                false, 0, 0, "findEntitiesByType")).thenReturn(null);
 
         Optional<List<EntityDetail>> response = handlerHelper.findEntitiesByType(USER, ENTITY_TYPE_NAME, searchProperties, findEntitiesParameters);
         assertTrue(response.isEmpty());
@@ -290,8 +292,11 @@ class HandlerHelperTest {
 
     @Test
     void buildContextForLineageClassifications() {
-        EntityDetail entityDetail = mockEntityDetailWithClassifications(GUID);
-        when(lineageClassificationTypes.contains(CLASSIFICATION_NAME_ASSET_ZONE_MEMBERSHIP)).thenReturn(true);
+        List<Classification> classifications = new ArrayList<>();
+        Classification classification = mockClassification(CLASSIFICATION_NAME_ASSET_ZONE_MEMBERSHIP);
+        classifications.add(classification);
+        EntityDetail entityDetail = mockEntityDetailWithClassifications(GUID, classifications);
+        when(assetLineageTypesValidator.filterLineageClassifications(entityDetail.getClassifications())).thenReturn(classifications);
 
         LineageEntity originalEntityVertex = mock(LineageEntity.class);
         when(converter.createLineageEntity(entityDetail)).thenReturn(originalEntityVertex);
@@ -304,14 +309,16 @@ class HandlerHelperTest {
 
         LineageEntity expectedClassificationVertex = getExpectedClassificationVertex();
         assertEquals(new GraphContext(CLASSIFICATION, CLASSIFICATION_NAME_ASSET_ZONE_MEMBERSHIP + GUID, originalEntityVertex,
-                        expectedClassificationVertex),
-                relationship.get());
+                        expectedClassificationVertex), relationship.get());
     }
 
     @Test
     void addContextForRelationships() throws OCFCheckedExceptionBase {
-        EntityDetail entityDetail = mockEntityDetailWithClassifications(ENTITY_ONE_GUID);
-        when(lineageClassificationTypes.contains(CLASSIFICATION_NAME_ASSET_ZONE_MEMBERSHIP)).thenReturn(true);
+        List<Classification> classifications = new ArrayList<>();
+        Classification classification = mockClassification(CLASSIFICATION_NAME_ASSET_ZONE_MEMBERSHIP);
+        classifications.add(classification);
+        EntityDetail entityDetail = mockEntityDetailWithClassifications(ENTITY_ONE_GUID, classifications);
+        when(assetLineageTypesValidator.filterLineageClassifications(entityDetail.getClassifications())).thenReturn(classifications);
 
         LineageEntity originalEntityVertex = mock(LineageEntity.class);
         when(converter.createLineageEntity(entityDetail)).thenReturn(originalEntityVertex);
@@ -352,7 +359,7 @@ class HandlerHelperTest {
         handlerHelper.validateAsset(entityDetail, methodName, supportedZones);
         verify(invalidParameterHandler, times(1)).validateGUID(GUID, GUID_PARAMETER, methodName);
         verify(invalidParameterHandler, times(1)).validateAssetInSupportedZone(GUID, GUID_PARAMETER,
-               Collections.emptyList(), supportedZones, ASSET_LINEAGE_OMAS, methodName);
+                Collections.emptyList(), supportedZones, ASSET_LINEAGE_OMAS, methodName);
     }
 
     @Test
@@ -362,14 +369,6 @@ class HandlerHelperTest {
         when(converter.createLineageEntity(entityDetail)).thenReturn(lineageEntity);
 
         assertEquals(lineageEntity, handlerHelper.getLineageEntity(entityDetail));
-    }
-
-    @Test
-    void isTableOrDataStore() {
-        EntityDetail entityDetail = mockEntityDetailWithType(DATA_STORE);
-        when(repositoryHelper.isTypeOf(SERVICE_NAME, DATA_STORE, DATA_STORE)).thenReturn(true);
-
-        assertTrue(handlerHelper.isTableOrDataStore(SERVICE_NAME, entityDetail));
     }
 
     @Test
@@ -429,11 +428,7 @@ class HandlerHelperTest {
         return classification;
     }
 
-    private EntityDetail mockEntityDetailWithClassifications(String guid) {
-        List<Classification> classifications = new ArrayList<>();
-        Classification classification = mockClassification(CLASSIFICATION_NAME_ASSET_ZONE_MEMBERSHIP);
-        classifications.add(classification);
-        classifications.add(mockClassification(CLASSIFICATION_NAME_ASSET_OWNERSHIP));
+    private EntityDetail mockEntityDetailWithClassifications(String guid, List<Classification> classifications) {
         EntityDetail entityDetail = mock(EntityDetail.class);
         when(entityDetail.getClassifications()).thenReturn(classifications);
         when(entityDetail.getGUID()).thenReturn(guid);

@@ -41,11 +41,6 @@ public enum AssetCatalogErrorCode implements ExceptionMessageSet {
             "The system is unable to retrieve the assets neighborhood from the specified asset identifier.",
             "Check that the unique identifier for the asset is correct."),
 
-    NO_RELATIONSHIPS_FROM_NEIGHBORHOOD_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-013 ",
-            "There is no relationships available in the neighbourhood of asset {0} in OMAS Server {1}",
-            "The system is unable to retrieve the neighborhood relationships for the specified asset identifier.",
-            "Check that the unique identifier for the asset is correct."),
-
     LINKING_RELATIONSHIPS_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-015 ",
             "There is no intermediate relationships that connect the {0} with the {1} in OMAS Server {2}",
             "The system is unable to retrieve the linking relationship.",

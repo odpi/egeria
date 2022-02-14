@@ -193,7 +193,7 @@ public class AssetCatalogServiceTest {
                 .thenReturn(assetCatalogHandler);
 
         when(assetCatalogHandler
-                .getIntermediateAssets(USER, FIRST_GUID, SECOND_GUID))
+                .getIntermediateAssets(USER, FIRST_GUID, SECOND_GUID, SERVER_NAME))
                 .thenReturn(response);
 
         AssetCatalogListResponse assetCatalogListResponse = assetCatalogRESTService.getLinkingAssets(SERVER_NAME,
@@ -239,7 +239,7 @@ public class AssetCatalogServiceTest {
                 .thenReturn(assetCatalogHandler);
 
         when(assetCatalogHandler
-                .getEntitiesFromNeighborhood(USER, FIRST_GUID, searchParameters))
+                .getEntitiesFromNeighborhood(USER, FIRST_GUID, searchParameters, SERVER_NAME))
                 .thenReturn(response);
 
         AssetCatalogListResponse assetsFromNeighborhood = assetCatalogRESTService.getAssetsFromNeighborhood(SERVER_NAME,

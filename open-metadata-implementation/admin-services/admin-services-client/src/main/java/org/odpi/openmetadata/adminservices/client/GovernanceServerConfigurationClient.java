@@ -9,7 +9,7 @@ import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterEx
  * GovernanceServerConfigurationClient provides the common configuration for all types of governance server.
  * It is abstract because it is extended by the concrete types of governance server.
  */
-abstract class GovernanceServerConfigurationClient extends OMAGServerConfigurationClient
+public class GovernanceServerConfigurationClient extends OMAGServerConfigurationClient
 {
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -20,9 +20,9 @@ abstract class GovernanceServerConfigurationClient extends OMAGServerConfigurati
      * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
-    GovernanceServerConfigurationClient(String adminUserId,
-                                        String serverName,
-                                        String serverPlatformRootURL) throws OMAGInvalidParameterException
+    public GovernanceServerConfigurationClient(String adminUserId,
+                                               String serverName,
+                                               String serverPlatformRootURL) throws OMAGInvalidParameterException
     {
         super(adminUserId, serverName, serverPlatformRootURL);
     }
@@ -40,13 +40,12 @@ abstract class GovernanceServerConfigurationClient extends OMAGServerConfigurati
      * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
-    GovernanceServerConfigurationClient(String adminUserId,
-                                        String serverName,
-                                        String serverPlatformRootURL,
-                                        String connectionUserId,
-                                        String connectionPassword) throws OMAGInvalidParameterException
+    public GovernanceServerConfigurationClient(String adminUserId,
+                                               String serverName,
+                                               String serverPlatformRootURL,
+                                               String connectionUserId,
+                                               String connectionPassword) throws OMAGInvalidParameterException
     {
         super(adminUserId, serverName, serverPlatformRootURL, connectionUserId, connectionPassword);
     }
-
 }

@@ -27,6 +27,7 @@ public class SearchIntegratorContext {
      * @param assetManagerGUID       unique identifier of the software server capability for the asset manager
      * @param assetManagerName       unique name of the software server capability for the asset manager
      * @param connectorName          name of the connector using this context
+     * @param assetCatalogEventClient client to access the Asset Catalog OMAS out topic
      * @param integrationServiceName name of this service
      * @param auditLog               logging destination
      */
