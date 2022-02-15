@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetcatalog.handlers;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.odpi.openmetadata.accessservices.assetcatalog.builders.AssetCatalogConverter;
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogErrorCode;
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogException;
@@ -372,7 +373,7 @@ public class AssetCatalogHandler {
             throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
             FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
             PropertyErrorException, TypeErrorException, PagingErrorException,
-            InvalidParameterException, RepositoryErrorException, EntityNotKnownException {
+            InvalidParameterException, RepositoryErrorException, EntityNotKnownException, PropertyServerException, UserNotAuthorizedException {
 
         String methodName = "searchByType";
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -380,12 +381,20 @@ public class AssetCatalogHandler {
         invalidParameterHandler.validateObject(searchParameters, SEARCH_PARAMETER, methodName);
         invalidParameterHandler.validatePaging(searchParameters.getFrom(), searchParameters.getPageSize(), methodName);
 
-        Map<String, String> typesAndGUIDsFilter = defaultSearchTypes;
+        List<EntityDetail> result;
+        Map<String, String> typesAndGUIDsFilter;
         if (CollectionUtils.isNotEmpty(searchParameters.getEntityTypes())) {
             typesAndGUIDsFilter = commonHandler.getTypesAndGUIDs(userId, searchParameters.getEntityTypes());
+            for( Map.Entry<String, String> typeAndGUID : typesAndGUIDsFilter.entrySet()) {
+                if (StringUtils.isEmpty(typeAndGUID.getValue())) {
+                    ExceptionMessageDefinition messageDefinition = AssetCatalogErrorCode.TYPE_DEF_NOT_FOUND.getMessageDefinition(typeAndGUID.getKey());
+                    throw new EntityNotKnownException(messageDefinition, this.getClass().getName(), messageDefinition.getUserAction());
+                }
+            }
+             result = collectSearchedEntitiesByType(userId, searchCriteria, searchParameters, typesAndGUIDsFilter, methodName);
+        } else {
+            result = collectSearchedEntitiesByType(userId, searchCriteria, searchParameters, defaultSearchTypes, methodName);
         }
-        List<EntityDetail> result = collectSearchedEntitiesByType(userId, searchCriteria, searchParameters,
-                typesAndGUIDsFilter, methodName);
 
         Set<Elements> searchResults = new HashSet<>();
 

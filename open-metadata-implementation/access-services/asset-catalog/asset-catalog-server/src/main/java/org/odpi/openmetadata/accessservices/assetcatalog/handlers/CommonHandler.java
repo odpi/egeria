@@ -24,6 +24,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorExceptio
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -235,8 +236,16 @@ public class CommonHandler {
         if (CollectionUtils.isEmpty(types)) {
             return Collections.emptyMap();
         }
-        return types.stream().collect(Collectors.toMap(type -> type,
-                type -> repositoryHelper.getTypeDefByName(userId, type).getGUID()));
+        Map<String, String> typesAndGUIDs = new HashMap<>();
+        for (String type : types) {
+            TypeDef typeDef = repositoryHelper.getTypeDefByName(userId, type);
+            String typeDefGUID = null;
+            if(typeDef != null) {
+                typeDefGUID = typeDef.getGUID();
+            }
+            typesAndGUIDs.put(type, typeDefGUID);
+        }
+        return typesAndGUIDs;
     }
 
     private void collectSubTypes(List<Type> types, List<TypeDef> activeTypeDefs, List<Type> collector) {

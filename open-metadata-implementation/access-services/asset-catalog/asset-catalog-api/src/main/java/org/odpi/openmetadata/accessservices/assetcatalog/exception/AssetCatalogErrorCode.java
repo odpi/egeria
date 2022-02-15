@@ -52,7 +52,7 @@ public enum AssetCatalogErrorCode implements ExceptionMessageSet {
             "Check that the unique identifier for the asset is correct."),
 
     TYPE_DEF_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-017 ",
-            "The provided entity type/s are non known to the OMAS Server",
+            "The provided entity type {0} is non known to the OMAS Server",
             "The system is unable to retrieve assets of an unknown type/s.",
             "Check that the entity type/s provided is/are correct."),
 
