@@ -71,7 +71,19 @@ public enum AssetLineageAuditCode implements AuditLogMessageSet {
             "The asset context for the entity with guid {0} is requested through REST endpoint and will be " +
                     "retrieved on the out topic.",
             "The Asset Lineage OMAS retrieves entity's asset context.",
-            Constants.NO_ACTION_IS_REQUIRED);
+            Constants.NO_ACTION_IS_REQUIRED),
+
+    CONFIGURED_PUBLISHER_BATCH_SIZE("OMAS-ASSET-LINEAGE-0011",
+                                     OMRSAuditLogRecordSeverity.STARTUP,
+                                     "The Asset Lineage OMAS is configured with property name {0} and value {1}.",
+                                             "The access service was passed this value in the {0} property of the access service's options.",
+                                             "Verify that this value is correct for your organization."),
+
+    INVALID_PUBLISHER_BATCH_SIZE("OMAS-ASSET-LINEAGE-0012",
+            OMRSAuditLogRecordSeverity.ERROR,
+            "The Asset Lineage OMAS cannot be configured with property name {0}",
+            "The access service was passed invalid value in access service's options.",
+            "Verify that the value provided is correct.");
 
     private AuditLogMessageDefinition messageDefinition;
 
