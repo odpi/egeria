@@ -5,6 +5,7 @@ package org.odpi.openmetadata.integrationservices.files.rest;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.properties.ConnectorReport;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceDescription;
@@ -69,9 +70,14 @@ public class FilesIntegratorRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setConnectorType(instanceHandler.validateConnector(connectorProviderClassName,
-                                                                        FilesIntegratorConnector.class,
-                                                                        IntegrationServiceDescription.FILES_INTEGRATOR_OMIS.getIntegrationServiceFullName()));
+            ConnectorReport connectorReport = instanceHandler.validateConnector(connectorProviderClassName,
+                                                                                FilesIntegratorConnector.class,
+                                                                                IntegrationServiceDescription.FILES_INTEGRATOR_OMIS.getIntegrationServiceFullName());
+
+            if (connectorReport != null)
+            {
+                response = new ConnectorTypeResponse(connectorReport);
+            }
         }
         catch (Exception error)
         {

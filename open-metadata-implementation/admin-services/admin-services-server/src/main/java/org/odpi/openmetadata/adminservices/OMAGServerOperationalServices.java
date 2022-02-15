@@ -377,7 +377,8 @@ public class OMAGServerOperationalServices
                  * Each access service is given access to the events from open metadata repository cohorts that this server connects to.
                  * The enterprise topic connector supplies these events.  The access service registers a listener with it to receive them.
                  */
-                OMRSTopicConnector        enterpriseTopicConnector = operationalRepositoryServices.getEnterpriseOMRSTopicConnector();
+                OMRSTopicConnector enterpriseTopicConnector = operationalRepositoryServices.getEnterpriseOMRSTopicConnector();
+                OMRSTopicConnector remoteEnterpriseTopicConnector = operationalRepositoryServices.getRemoteEnterpriseOMRSTopicConnector();
 
                 initializeAccessServices(instance,
                                          configuration.getAccessServicesConfig(),
@@ -426,6 +427,30 @@ public class OMAGServerOperationalServices
                     catch (Exception  error)
                     {
                         throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.ENTERPRISE_TOPIC_START_FAILED.getMessageDefinition(serverName,
+                                                                                                                                        "in memory",
+                                                                                                                                        error.getClass().getName(),
+                                                                                                                                        error.getMessage()),
+                                                                  this.getClass().getName(),
+                                                                  methodName);
+                    }
+                }
+
+
+                /*
+                 * Similarly the remote enterprise topic passes OMRS Events from the cohort to remote applications that are listening on the event
+                 * bus topic. Starting the remote enterprise topic will start the flow of events to the event bus.
+                 */
+                if (remoteEnterpriseTopicConnector != null)
+                {
+                    try
+                    {
+                        remoteEnterpriseTopicConnector.start();
+                    }
+                    catch (Exception  error)
+                    {
+                        throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.ENTERPRISE_TOPIC_START_FAILED.getMessageDefinition(serverName,
+                                                                                                                                        "remote",
+                                                                                                                                        error.getClass().getName(),
                                                                                                                                         error.getMessage()),
                                                                   this.getClass().getName(),
                                                                   methodName);

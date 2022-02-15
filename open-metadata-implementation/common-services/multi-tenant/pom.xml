@@ -85,6 +85,16 @@
         </dependency>
 
         <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>governance-action-framework</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>integration-daemon-services-api</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <scope>test</scope>

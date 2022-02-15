@@ -140,6 +140,17 @@ public class OMRSOperationalServices
 
 
     /**
+     * Return the Report Enterprise OMRS Topic Connector.
+     *
+     * @return OMRSTopicConnector for use by the start up services.
+     */
+    public OMRSTopicConnector getRemoteEnterpriseOMRSTopicConnector()
+    {
+        return remoteEnterpriseOMRSTopicConnector;
+    }
+
+
+    /**
      * Create repository connector for an access service.
      *
      * @param callingServiceName name of the access service name.
@@ -627,7 +638,6 @@ public class OMRSOperationalServices
                 if (enterpriseOMRSTopicConnection != null)
                 {
                     enterpriseOMRSTopicConnector = getTopicConnector("Enterprise Access", enterpriseOMRSTopicConnection);
-                    enterpriseOMRSTopicConnector.start();
                 }
             }
             catch (Exception  error)
@@ -666,7 +676,6 @@ public class OMRSOperationalServices
                 if (enterpriseOMRSTopicConnection != null)
                 {
                     enterpriseOMRSTopicConnector = getTopicConnector("Remote Enterprise Access", enterpriseOMRSTopicConnection);
-                    enterpriseOMRSTopicConnector.start();
                 }
             }
             catch (Exception error)
@@ -1110,7 +1119,7 @@ public class OMRSOperationalServices
 
             log.debug("Unable to create topic connector: " + error.toString());
 
-           auditLog.logMessage(methodName,
+            auditLog.logMessage(methodName,
                                 OMRSAuditCode.BAD_TOPIC_CONNECTION.getMessageDefinition(sourceName, error.getClass().getName(), error.getMessage()));
 
             throw new OMRSConfigErrorException(OMRSErrorCode.NULL_TOPIC_CONNECTOR.getMessageDefinition(sourceName),
