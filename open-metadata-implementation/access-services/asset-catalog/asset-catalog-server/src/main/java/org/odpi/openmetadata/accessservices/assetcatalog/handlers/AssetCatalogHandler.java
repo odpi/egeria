@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.assetcatalog.handlers;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.odpi.openmetadata.accessservices.assetcatalog.builders.AssetCatalogConverter;
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogErrorCode;
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogException;
@@ -386,7 +385,7 @@ public class AssetCatalogHandler {
         if (CollectionUtils.isNotEmpty(searchParameters.getEntityTypes())) {
             typesAndGUIDsFilter = commonHandler.getTypesAndGUIDs(userId, searchParameters.getEntityTypes());
             for( Map.Entry<String, String> typeAndGUID : typesAndGUIDsFilter.entrySet()) {
-                if (StringUtils.isEmpty(typeAndGUID.getValue())) {
+                if (typeAndGUID.getValue() == null) {
                     ExceptionMessageDefinition messageDefinition = AssetCatalogErrorCode.TYPE_DEF_NOT_FOUND.getMessageDefinition(typeAndGUID.getKey());
                     throw new EntityNotKnownException(messageDefinition, this.getClass().getName(), messageDefinition.getUserAction());
                 }
