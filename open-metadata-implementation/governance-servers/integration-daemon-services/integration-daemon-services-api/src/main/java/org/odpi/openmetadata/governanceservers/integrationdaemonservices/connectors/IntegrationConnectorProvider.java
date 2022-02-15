@@ -17,9 +17,9 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
  */
 public class IntegrationConnectorProvider extends ConnectorProviderBase
 {
-    static final String  connectorTypeGUID = "2212a2a0-9ee0-40b3-b046-c20ac6186e97";
-    static final String  connectorTypeName = "Integration Connector";
-    static final String  connectorTypeDescription = "Connector supports the exchange of metadata between a third party technology and open metadata.";
+    private long    refreshTimeInterval = 60L; // default to once an hour
+    private boolean usesBlockingCalls   = false;
+
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
@@ -27,19 +27,54 @@ public class IntegrationConnectorProvider extends ConnectorProviderBase
      */
     public IntegrationConnectorProvider()
     {
-        Class<?> connectorClass = IntegrationConnectorBase.class;
-
-        super.setConnectorClassName(connectorClass.getName());
-
-        ConnectorType connectorType = new ConnectorType();
-        connectorType.setType(ConnectorType.getConnectorTypeType());
-        connectorType.setGUID(connectorTypeGUID);
-        connectorType.setQualifiedName(connectorTypeName);
-        connectorType.setDisplayName(connectorTypeName);
-        connectorType.setDescription(connectorTypeDescription);
-        connectorType.setConnectorProviderClassName(this.getClass().getName());
-
-        super.connectorTypeBean = connectorType;
         super.setConnectorComponentDescription(OMRSAuditingComponent.INTEGRATION_CONNECTOR);
+    }
+
+
+    /**
+     * Return the recommended number of minutes between each call to the connector to refresh the metadata.  Zero means that refresh
+     * is only called at server start up and whenever the refresh REST API request is made to the integration daemon.
+     * If the refresh time interval is greater than 0 then additional calls to refresh are added spaced out by the refresh time interval.
+     *
+     * @return minute count
+     */
+    public long getRefreshTimeInterval()
+    {
+        return refreshTimeInterval;
+    }
+
+
+    /**
+     * Set up the recommended number of minutes between each call to the connector to refresh the metadata.  Zero means that refresh
+     * is only called at server start up and whenever the refresh REST API request is made to the integration daemon.
+     * If the refresh time interval is greater than 0 then additional calls to refresh are added spaced out by the refresh time interval.
+     *
+     * @param refreshTimeInterval minute count
+     */
+    protected void setRefreshTimeInterval(long refreshTimeInterval)
+    {
+        this.refreshTimeInterval = refreshTimeInterval;
+    }
+
+
+    /**
+     * Return if the connector should be started in its own thread to allow it is block on a listening call.
+     *
+     * @return boolean flag
+     */
+    public boolean getUsesBlockingCalls()
+    {
+        return usesBlockingCalls;
+    }
+
+
+    /**
+     * Set up if the connector should be started in its own thread to allow it is block on a listening call.
+     *
+     * @param usesBlockingCalls boolean flag
+     */
+    protected void setUsesBlockingCalls(boolean usesBlockingCalls)
+    {
+        this.usesBlockingCalls = usesBlockingCalls;
     }
 }

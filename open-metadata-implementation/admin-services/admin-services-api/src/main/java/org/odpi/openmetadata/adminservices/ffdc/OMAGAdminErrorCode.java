@@ -132,7 +132,7 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
                               "Set the maximum page size in the configuration document to an appropriate value and restart the server."),
 
     ENTERPRISE_TOPIC_START_FAILED(400, "OMAG-ADMIN-400-015",
-            "The OMAG server {0} is unable to start the enterprise OMRS topic connector, error message was {1}",
+            "The OMAG server {0} is unable to start the {1} enterprise OMRS topic connector, {2} exception with error message {3} occurred",
             "The open metadata access services will not be able to receive events from the connected repositories.",
             "Review the error messages and once the source of the problem is resolved, restart the server and retry the request."),
 

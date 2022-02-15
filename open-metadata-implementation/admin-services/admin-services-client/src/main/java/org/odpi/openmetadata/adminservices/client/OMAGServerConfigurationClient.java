@@ -298,11 +298,9 @@ public class OMAGServerConfigurationClient
         final String methodName  = "setServerDescription";
         final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/server-description";
 
-        StringRequestBody requestBody = new StringRequestBody();
-        requestBody.setString(description);
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
-                                        requestBody,
+                                        description,
                                         adminUserId,
                                         serverName,
                                         description);
