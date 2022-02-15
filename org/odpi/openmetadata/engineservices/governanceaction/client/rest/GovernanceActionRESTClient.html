@@ -26,12 +26,6 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10};
-var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
-var altColor = "altColor";
-var rowColor = "rowColor";
-var tableTab = "tableTab";
-var activeTableTab = "activeTableTab";
 var pathtoroot = "../../../../../../../";
 var useModuleDirectories = true;
 loadScripts(document, 'script');</script>
@@ -96,7 +90,7 @@ loadScripts(document, 'script');</script>
 <li>Detail:&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
-<li><a href="#method.detail">Method</a></li>
+<li>Method</li>
 </ul>
 </div>
 <a id="skip.navbar.top">
@@ -142,7 +136,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <hr>
 <pre>public class <span class="typeNameLabel">GovernanceActionRESTClient</span>
 extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
-<div class="block">AssetAnalysisRESTClient is responsible for issuing the REST API calls</div>
+<div class="block">GovernanceActionRESTClient is responsible for issuing the REST API calls</div>
 </li>
 </ul>
 </div>
@@ -224,23 +218,6 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <!--   -->
 </a>
 <h3>Method Summary</h3>
-<table class="memberSummary">
-<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t4" class="tableTab"><span><a href="javascript:show(8);">Concrete Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
-<tr>
-<th class="colFirst" scope="col">Modifier and Type</th>
-<th class="colSecond" scope="col">Method</th>
-<th class="colLast" scope="col">Description</th>
-</tr>
-<tr id="i0" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.engineservices.governanceaction.rest.ProviderReportResponse</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callProviderReportGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callProviderReportGetRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
-                             java.lang.String&nbsp;urlTemplate,
-                             java.lang.Object...&nbsp;params)</code></th>
-<td class="colLast">
-<div class="block">Issue a GET REST call that returns a ProviderReportResponse object.</div>
-</td>
-</tr>
-</table>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient">
 <!--   -->
@@ -373,43 +350,6 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 </li>
 </ul>
 </section>
-<!-- ============ METHOD DETAIL ========== -->
-<section role="region">
-<ul class="blockList">
-<li class="blockList"><a id="method.detail">
-<!--   -->
-</a>
-<h3>Method Detail</h3>
-<a id="callProviderReportGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">
-<!--   -->
-</a>
-<ul class="blockListLast">
-<li class="blockList">
-<h4>callProviderReportGetRESTCall</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.engineservices.governanceaction.rest.ProviderReportResponse&nbsp;callProviderReportGetRESTCall&#8203;(java.lang.String&nbsp;methodName,
-                                                                                                                       java.lang.String&nbsp;urlTemplate,
-                                                                                                                       java.lang.Object...&nbsp;params)
-                                                                                                                throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                       org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                       org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
-<div class="block">Issue a GET REST call that returns a ProviderReportResponse object.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>methodName</code> - name of the method being called.</dd>
-<dd><code>urlTemplate</code> - template of the URL for the REST API call with place-holders for the parameters.</dd>
-<dd><code>params</code> - a list of parameters that are slotted into the url template.</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>ProviderReportResponse</dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to make this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - something went wrong with the REST call stack.</dd>
-</dl>
-</li>
-</ul>
-</li>
-</ul>
-</section>
 </li>
 </ul>
 </div>
@@ -467,7 +407,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <li>Detail:&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
-<li><a href="#method.detail">Method</a></li>
+<li>Method</li>
 </ul>
 </div>
 <a id="skip.navbar.bottom">

@@ -210,7 +210,7 @@ implements <a href="../api/DisplayIntegratorAPI.html" title="interface in org.od
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType</code></td>
+<td class="colFirst"><code>org.odpi.openmetadata.commonservices.ffdc.properties.ConnectorReport</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateConnector(java.lang.String,java.lang.String)">validateConnector</a></span>&#8203;(java.lang.String&nbsp;userId,
                  java.lang.String&nbsp;connectorProviderClassName)</code></th>
 <td class="colLast">
@@ -351,11 +351,11 @@ implements <a href="../api/DisplayIntegratorAPI.html" title="interface in org.od
 <ul class="blockListLast">
 <li class="blockList">
 <h4>validateConnector</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType&nbsp;validateConnector&#8203;(java.lang.String&nbsp;userId,
-                                                                                                    java.lang.String&nbsp;connectorProviderClassName)
-                                                                                             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                    org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                    org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.commonservices.ffdc.properties.ConnectorReport&nbsp;validateConnector&#8203;(java.lang.String&nbsp;userId,
+                                                                                              java.lang.String&nbsp;connectorProviderClassName)
+                                                                                       throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
+                                                                                              org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
+                                                                                              org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
 <div class="block">Validate the connector and return its connector type.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -364,7 +364,7 @@ implements <a href="../api/DisplayIntegratorAPI.html" title="interface in org.od
 <dd><code>userId</code> - calling user</dd>
 <dd><code>connectorProviderClassName</code> - name of a specific connector or null for all connectors</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>connector type for this connector</dd>
+<dd>connector report for this connector</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the connector provider class name is not a valid connector fo this service</dd>
 <dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request</dd>
