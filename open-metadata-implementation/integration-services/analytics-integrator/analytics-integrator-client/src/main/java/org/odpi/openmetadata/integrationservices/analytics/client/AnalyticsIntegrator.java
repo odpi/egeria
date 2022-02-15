@@ -4,13 +4,13 @@
 package org.odpi.openmetadata.integrationservices.analytics.client;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.ffdc.properties.ConnectorReport;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.integrationservices.analytics.api.AnalyticsIntegratorAPI;
 
 /**
@@ -125,10 +125,10 @@ public class AnalyticsIntegrator implements AnalyticsIntegratorAPI
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException there was a problem detected by the integration service
      */
-    public ConnectorType validateConnector(String userId,
-                                           String connectorProviderClassName) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+    public ConnectorReport validateConnector(String userId,
+                                             String connectorProviderClassName) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
     {
         final String   methodName = "validateConnector";
         final String   nameParameter = "connectorProviderClassName";
@@ -143,6 +143,6 @@ public class AnalyticsIntegrator implements AnalyticsIntegratorAPI
                                                                                       userId,
                                                                                       connectorProviderClassName);
 
-        return restResult.getConnectorType();
+        return new ConnectorReport(restResult);
     }
 }

@@ -377,7 +377,7 @@ public class OMAGServerOperationalServices
                  * Each access service is given access to the events from open metadata repository cohorts that this server connects to.
                  * The enterprise topic connector supplies these events.  The access service registers a listener with it to receive them.
                  */
-                OMRSTopicConnector        enterpriseTopicConnector = operationalRepositoryServices.getEnterpriseOMRSTopicConnector();
+                OMRSTopicConnector enterpriseTopicConnector = operationalRepositoryServices.getEnterpriseOMRSTopicConnector();
 
                 initializeAccessServices(instance,
                                          configuration.getAccessServicesConfig(),
@@ -426,6 +426,8 @@ public class OMAGServerOperationalServices
                     catch (Exception  error)
                     {
                         throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.ENTERPRISE_TOPIC_START_FAILED.getMessageDefinition(serverName,
+                                                                                                                                        "in memory",
+                                                                                                                                        error.getClass().getName(),
                                                                                                                                         error.getMessage()),
                                                                   this.getClass().getName(),
                                                                   methodName);

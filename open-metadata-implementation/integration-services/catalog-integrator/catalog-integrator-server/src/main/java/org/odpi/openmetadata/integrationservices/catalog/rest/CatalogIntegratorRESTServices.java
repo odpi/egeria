@@ -2,9 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.integrationservices.catalog.rest;
 
+import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.properties.ConnectorReport;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceDescription;
@@ -68,9 +70,14 @@ public class CatalogIntegratorRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setConnectorType(instanceHandler.validateConnector(connectorProviderClassName,
-                                                                        CatalogIntegratorConnector.class,
-                                                                        IntegrationServiceDescription.CATALOG_INTEGRATOR_OMIS.getIntegrationServiceFullName()));
+            ConnectorReport connectorReport = instanceHandler.validateConnector(connectorProviderClassName,
+                                                                                CatalogIntegratorConnector.class,
+                                                                                IntegrationServiceDescription.CATALOG_INTEGRATOR_OMIS.getIntegrationServiceFullName());
+
+            if (connectorReport != null)
+            {
+                response = new ConnectorTypeResponse(connectorReport);
+            }
         }
         catch (Exception error)
         {
