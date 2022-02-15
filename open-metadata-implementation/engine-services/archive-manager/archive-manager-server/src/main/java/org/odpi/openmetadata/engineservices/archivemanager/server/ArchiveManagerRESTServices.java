@@ -12,7 +12,6 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
 
 import org.odpi.openmetadata.engineservices.archivemanager.connector.ArchiveService;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceDescription;
 import org.slf4j.LoggerFactory;
 
 
