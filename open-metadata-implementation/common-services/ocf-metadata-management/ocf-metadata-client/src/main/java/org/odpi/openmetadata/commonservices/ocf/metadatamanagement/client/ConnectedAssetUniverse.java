@@ -454,13 +454,13 @@ public class ConnectedAssetUniverse extends AssetUniverse
 
         try
         {
-            restResult = restClient.callAssetGetRESTCall(methodName,
-                                                         omasServerURL + urlTemplate,
-                                                         remoteServerName,
-                                                         serviceName,
-                                                         userId,
-                                                         assetGUID,
-                                                         connectionGUID);
+            restResult = restClient.callOCFAssetGetRESTCall(methodName,
+                                                            omasServerURL + urlTemplate,
+                                                            remoteServerName,
+                                                            serviceName,
+                                                            userId,
+                                                            assetGUID,
+                                                            connectionGUID);
 
             restExceptionHandler.detectAndThrowInvalidParameterException(restResult);
             restExceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
@@ -470,7 +470,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
         {
             throw error;
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             restExceptionHandler.handleUnexpectedException(error, methodName, remoteServerName, omasServerURL);
         }
@@ -513,12 +513,12 @@ public class ConnectedAssetUniverse extends AssetUniverse
 
         try
         {
-            restResult = restClient.callAssetGetRESTCall(methodName,
-                                                         omasServerURL + urlTemplate,
-                                                         remoteServerName,
-                                                         serviceName,
-                                                         userId,
-                                                         assetGUID);
+            restResult = restClient.callOCFAssetGetRESTCall(methodName,
+                                                            omasServerURL + urlTemplate,
+                                                            remoteServerName,
+                                                            serviceName,
+                                                            userId,
+                                                            assetGUID);
 
             restExceptionHandler.detectAndThrowInvalidParameterException(restResult);
             restExceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
@@ -528,7 +528,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
         {
             throw error;
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             restExceptionHandler.handleUnexpectedException(error, methodName, remoteServerName, omasServerURL);
         }

@@ -22,8 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * ActorProfileHandler provides the exchange of metadata about glossaries between the repository and the OMAS.
- * Note glossaries are governance metadata and are always defined with LOCAL-COHORT provenance.
+ * ActorProfileHandler provides the exchange of metadata about actor profiles between the repository and the OMAS.
  *
  * @param <B> class that represents the profile
  */
@@ -554,6 +553,8 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
      * @param userId calling user
      * @param searchString string to find in the properties
      * @param searchStringParameterName name of parameter supplying the search string
+     * @param typeGUID unique identifier of the type of the profile to retrieve
+     * @param typeName unique name of the type of the profile to retrieve
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -568,6 +569,8 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
     public List<B> findActorProfiles(String userId,
                                      String searchString,
                                      String searchStringParameterName,
+                                     String typeGUID,
+                                     String typeName,
                                      int    startFrom,
                                      int    pageSize,
                                      Date   effectiveTime,
@@ -578,8 +581,8 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
         List<EntityDetail> entities = this.findEntities(userId,
                                                         searchString,
                                                         searchStringParameterName,
-                                                        OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_GUID,
-                                                        OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                                        typeGUID,
+                                                        typeName,
                                                         null,
                                                         null,
                                                         null,
@@ -596,7 +599,7 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
             {
                 if (entity != null)
                 {
-                    B bean = this.getFullProfileBean(userId, entity, effectiveTime, methodName);
+                    B bean = this.getFullProfileBean(userId, entity, typeName, effectiveTime, methodName);
 
                     if (bean != null)
                     {
@@ -622,6 +625,8 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
      * @param userId calling user
      * @param name name to search for
      * @param nameParameterName parameter supplying name
+     * @param typeGUID unique identifier of the type of the profile to retrieve
+     * @param typeName unique name of the type of the profile to retrieve
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -636,6 +641,8 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
     public List<B> getActorProfilesByName(String userId,
                                           String name,
                                           String nameParameterName,
+                                          String typeGUID,
+                                          String typeName,
                                           int    startFrom,
                                           int    pageSize,
                                           Date   effectiveTime,
@@ -650,8 +657,8 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
         List<EntityDetail> entities = this.getEntitiesByValue(userId,
                                                               name,
                                                               nameParameterName,
-                                                              OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_GUID,
-                                                              OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                                              typeGUID,
+                                                              typeName,
                                                               specificMatchPropertyNames,
                                                               true,
                                                               null,
@@ -673,84 +680,7 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
             {
                 if (entity != null)
                 {
-                    B bean = this.getFullProfileBean(userId, entity, effectiveTime, methodName);
-
-                    if (bean != null)
-                    {
-                        beans.add(bean);
-                    }
-                }
-            }
-
-            if (! beans.isEmpty())
-            {
-                return beans;
-            }
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Retrieve the list of personal profile metadata elements with a matching qualified or display name.
-     * There are no wildcards supported on this request.
-     *
-     * @param userId calling user
-     * @param name name to search for
-     * @param nameParameterName parameter supplying name
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param methodName calling method
-     *
-     * @return list of matching metadata elements
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public List<B> getPersonalProfilesByName(String userId,
-                                             String name,
-                                             String nameParameterName,
-                                             int    startFrom,
-                                             int    pageSize,
-                                             Date   effectiveTime,
-                                             String methodName) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
-    {
-        List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.NAME_PROPERTY_NAME);
-
-        List<EntityDetail> entities = this.getEntitiesByValue(userId,
-                                                              name,
-                                                              nameParameterName,
-                                                              OpenMetadataAPIMapper.PERSON_TYPE_GUID,
-                                                              OpenMetadataAPIMapper.PERSON_TYPE_NAME,
-                                                              specificMatchPropertyNames,
-                                                              true,
-                                                              null,
-                                                              null,
-                                                              false,
-                                                              false,
-                                                              supportedZones,
-                                                              null,
-                                                              startFrom,
-                                                              pageSize,
-                                                              effectiveTime,
-                                                              methodName);
-
-        if (entities != null)
-        {
-            List<B> beans = new ArrayList<>();
-
-            for (EntityDetail entity : entities)
-            {
-                if (entity != null)
-                {
-                    B bean = this.getPersonalProfileBean(userId, entity, effectiveTime, methodName);
+                    B bean = this.getFullProfileBean(userId, entity, typeName, effectiveTime, methodName);
 
                     if (bean != null)
                     {
@@ -776,6 +706,7 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
      * @param userId calling user
      * @param guid unique identifier of the requested metadata element
      * @param guidParameterName parameter name of guid
+     * @param typeName unique name of the type of the profile to retrieve
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
@@ -788,6 +719,7 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
     public B getActorProfileByGUID(String userId,
                                    String guid,
                                    String guidParameterName,
+                                   String typeName,
                                    Date   effectiveTime,
                                    String methodName) throws InvalidParameterException,
                                                              UserNotAuthorizedException,
@@ -796,7 +728,7 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
         EntityDetail entity = this.getEntityFromRepository(userId,
                                                            guid,
                                                            guidParameterName,
-                                                           OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                                           typeName,
                                                            null,
                                                            null,
                                                            false,
@@ -807,53 +739,7 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
 
         if (entity != null)
         {
-            return getFullProfileBean(userId, entity, effectiveTime, methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Retrieve the personal profile metadata element with the supplied unique identifier.
-     * This includes contact details, contribution record and pointers to related elements such as
-     * roles and peers.
-     *
-     * @param userId calling user
-     * @param guid unique identifier of the requested metadata element
-     * @param guidParameterName parameter name of guid
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param methodName calling method
-     *
-     * @return matching metadata element
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public B getPersonalProfileByGUID(String userId,
-                                      String guid,
-                                      String guidParameterName,
-                                      Date   effectiveTime,
-                                      String methodName) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException
-    {
-        EntityDetail entity = this.getEntityFromRepository(userId,
-                                                           guid,
-                                                           guidParameterName,
-                                                           OpenMetadataAPIMapper.PERSON_TYPE_NAME,
-                                                           null,
-                                                           null,
-                                                           false,
-                                                           false,
-                                                           supportedZones,
-                                                           effectiveTime,
-                                                           methodName);
-
-        if (entity != null)
-        {
-            return getPersonalProfileBean(userId, entity, effectiveTime, methodName);
+            return getFullProfileBean(userId, entity, typeName, effectiveTime, methodName);
         }
 
         return null;
@@ -866,6 +752,7 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
      * @param userId calling user
      * @param profileUserId unique name of the linked user id
      * @param profileUserIdParameterName parameter name of profileUserId
+     * @param typeName unique name of the type of the profile to retrieve
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
@@ -878,6 +765,7 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
     public B getActorProfileForUser(String userId,
                                     String profileUserId,
                                     String profileUserIdParameterName,
+                                    String typeName,
                                     Date   effectiveTime,
                                     String methodName) throws InvalidParameterException,
                                                               UserNotAuthorizedException,
@@ -902,7 +790,7 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                                          OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
                                                          OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_GUID,
                                                          OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME,
-                                                         OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                                         typeName,
                                                          false,
                                                          false,
                                                          supportedZones,
@@ -911,66 +799,7 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
 
             if (entity != null)
             {
-                return getFullProfileBean(userId, entity, effectiveTime, methodName);
-            }
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Retrieve the profile metadata element with the supplied unique identifier.
-     *
-     * @param userId calling user
-     * @param profileUserId unique name of the linked user id
-     * @param profileUserIdParameterName parameter name of profileUserId
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param methodName calling method
-     *
-     * @return matching metadata element
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public B getPersonalProfileForUser(String userId,
-                                       String profileUserId,
-                                       String profileUserIdParameterName,
-                                       Date   effectiveTime,
-                                       String methodName) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
-    {
-        final String userGUIDParameterName = "userIdentity.getGUID";
-        EntityDetail userIdentity = this.getEntityByUniqueQualifiedName(userId,
-                                                                        OpenMetadataAPIMapper.USER_IDENTITY_TYPE_GUID,
-                                                                        OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
-                                                                        profileUserId,
-                                                                        profileUserIdParameterName,
-                                                                        false,
-                                                                        false,
-                                                                        effectiveTime,
-                                                                        methodName);
-
-        if (userIdentity != null)
-        {
-            EntityDetail profileEntity = this.getAttachedEntity(userId,
-                                                                userIdentity.getGUID(),
-                                                                userGUIDParameterName,
-                                                                OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
-                                                                OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_GUID,
-                                                                OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME,
-                                                                OpenMetadataAPIMapper.PERSON_TYPE_NAME,
-                                                                false,
-                                                                false,
-                                                                supportedZones,
-                                                                effectiveTime,
-                                                                methodName);
-
-            if (profileEntity != null)
-            {
-                return getPersonalProfileBean(userId, profileEntity, effectiveTime, methodName);
+                return getFullProfileBean(userId, entity, typeName,  effectiveTime, methodName);
             }
         }
 
@@ -984,6 +813,8 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
      * @param userId calling user
      * @param qualifiedName unique name of the linked user id
      * @param qualifiedNameParameterName parameter name of qualifiedName
+     * @param typeGUID unique identifier of type of profile
+     * @param typeName unique name of type of profile
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
@@ -996,14 +827,16 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
     public B getActorProfileByUniqueName(String userId,
                                          String qualifiedName,
                                          String qualifiedNameParameterName,
+                                         String typeGUID,
+                                         String typeName,
                                          Date   effectiveTime,
                                          String methodName) throws InvalidParameterException,
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException
     {
         EntityDetail entity = this.getEntityByUniqueQualifiedName(userId,
-                                                                  OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_GUID,
-                                                                  OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                                                  typeGUID,
+                                                                  typeName,
                                                                   qualifiedName,
                                                                   qualifiedNameParameterName,
                                                                   false,
@@ -1013,65 +846,21 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
 
         if (entity != null)
         {
-            return getFullProfileBean(userId, entity, effectiveTime, methodName);
+            return getFullProfileBean(userId, entity, typeName, effectiveTime, methodName);
         }
 
         return null;
     }
-
-
 
 
     /**
      * Retrieve the profile metadata element with the supplied unique identifier.
-     *
-     * @param userId calling user
-     * @param qualifiedName unique name of the linked user id
-     * @param qualifiedNameParameterName parameter name of qualifiedName
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param methodName calling method
-     *
-     * @return matching metadata element
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public B getPersonalProfileByUniqueName(String userId,
-                                            String qualifiedName,
-                                            String qualifiedNameParameterName,
-                                            Date   effectiveTime,
-                                            String methodName) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
-    {
-        EntityDetail entity = this.getEntityByUniqueQualifiedName(userId,
-                                                                  OpenMetadataAPIMapper.PERSON_TYPE_GUID,
-                                                                  OpenMetadataAPIMapper.PERSON_TYPE_NAME,
-                                                                  qualifiedName,
-                                                                  qualifiedNameParameterName,
-                                                                  false,
-                                                                  false,
-                                                                  effectiveTime,
-                                                                  methodName);
-
-        if (entity != null)
-        {
-            return getPersonalProfileBean(userId, entity, effectiveTime, methodName);
-        }
-
-        return null;
-    }
-
-
-
-    /**
-     * Retrieve the personal profile metadata element with the supplied unique identifier.
-     * This includes contact details, contribution record and pointers to related elements such as
+     * This includes contact details, user identity, contribution record and pointers to related elements such as
      * roles and peers.
      *
      * @param userId calling user
-     * @param primaryEntity root entity for a personal profile
+     * @param primaryEntity root entity for a profile
+     * @param typeName type name of the primary entity
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
@@ -1083,94 +872,11 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
      */
     private B getFullProfileBean(String       userId,
                                  EntityDetail primaryEntity,
+                                 String       typeName,
                                  Date         effectiveTime,
                                  String       methodName) throws InvalidParameterException,
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
-    {
-        final String profileGUIDParameterName = "profileGUID";
-
-        List<EntityDetail> supplementaryEntities = new ArrayList<>();
-
-        List<EntityDetail> userIdentities = this.getAttachedEntities(userId,
-                                                                     primaryEntity.getGUID(),
-                                                                     profileGUIDParameterName,
-                                                                     OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
-                                                                     OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_GUID,
-                                                                     OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME,
-                                                                     OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
-                                                                     null,
-                                                                     null,
-                                                                     false,
-                                                                     false,
-                                                                     supportedZones,
-                                                                     0,
-                                                                     0,
-                                                                      effectiveTime,
-                                                                      methodName);
-
-        if (userIdentities != null)
-        {
-            supplementaryEntities.addAll(userIdentities);
-        }
-
-
-        List<EntityDetail> contactDetails = this.getAttachedEntities(userId,
-                                                                     primaryEntity.getGUID(),
-                                                                     profileGUIDParameterName,
-                                                                     OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
-                                                                     OpenMetadataAPIMapper.CONTACT_THROUGH_RELATIONSHIP_TYPE_GUID,
-                                                                     OpenMetadataAPIMapper.CONTACT_THROUGH_RELATIONSHIP_TYPE_NAME,
-                                                                     OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_NAME,
-                                                                     null,
-                                                                     null,
-                                                                     false,
-                                                                     false,
-                                                                     supportedZones,
-                                                                     0,
-                                                                     0,
-                                                                     effectiveTime,
-                                                                     methodName);
-
-        if (contactDetails != null)
-        {
-            supplementaryEntities.addAll(contactDetails);
-        }
-
-
-        return converter.getNewComplexBean(beanClass,
-                                           primaryEntity,
-                                           supplementaryEntities,
-                                           null,
-                                           methodName);
-
-    }
-
-
-
-
-    /**
-     * Retrieve the personal profile metadata element with the supplied unique identifier.
-     * This includes contact details, contribution record and pointers to related elements such as
-     * roles and peers.
-     *
-     * @param userId calling user
-     * @param primaryEntity root entity for a personal profile
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param methodName calling method
-     *
-     * @return matching metadata element
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    private B getPersonalProfileBean(String       userId,
-                                     EntityDetail primaryEntity,
-                                     Date         effectiveTime,
-                                     String       methodName) throws InvalidParameterException,
-                                                                     UserNotAuthorizedException,
-                                                                     PropertyServerException
     {
         final String profileGUIDParameterName = "profileGUID";
         final String userIdentityGUIDParameterName = "userIdentityGUID";
@@ -1181,7 +887,7 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
         List<Relationship> relationships = this.getAllAttachmentLinks(userId,
                                                                       primaryEntity.getGUID(),
                                                                       profileGUIDParameterName,
-                                                                      OpenMetadataAPIMapper.PERSON_TYPE_NAME,
+                                                                      typeName,
                                                                       false,
                                                                       effectiveTime,
                                                                       methodName);
@@ -1266,6 +972,5 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                            supplementaryEntities,
                                            relationships,
                                            methodName);
-
     }
 }

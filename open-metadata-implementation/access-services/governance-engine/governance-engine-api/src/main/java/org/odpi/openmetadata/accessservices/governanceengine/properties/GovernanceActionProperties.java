@@ -26,29 +26,33 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GovernanceActionProperties extends ReferenceableProperties
 {
-    private static final long          serialVersionUID = 1L;
+    private static final long      serialVersionUID = 1L;
 
-    private int                        domainIdentifier       = 0;
-    private String                     displayName            = null;
-    private String                     description            = null;
+    private int                        domainIdentifier         = 0;
+    private String                     displayName              = null;
+    private String                     description              = null;
 
-    private List<String>               mandatoryGuards        = null;
-    private List<String>               receivedGuards         = null;
+    private List<String>               mandatoryGuards          = null;
+    private List<String>               receivedGuards           = null;
 
-    private String                     governanceEngineGUID  = null;
-    private String                     governanceEngineName  = null;
-    private String                     requestType           = null;
-    private Map<String, String>        requestParameters     = null;
-    private List<RequestSourceElement> requestSourceElements = null;
-    private List<ActionTargetElement>  actionTargetElements  = null;
+    private String                     governanceEngineGUID     = null;
+    private String                     governanceEngineName     = null;
+    private String                     processName              = null;
+    private String                     governanceActionTypeGUID = null;
+    private String                     governanceActionTypeName = null;
+    private String                     requestType              = null;
+    private Map<String, String>        requestParameters        = null;
+    private List<RequestSourceElement> requestSourceElements    = null;
+    private List<ActionTargetElement>  actionTargetElements     = null;
 
-    private GovernanceActionStatus     actionStatus           = null;
+    private GovernanceActionStatus     actionStatus             = null;
 
-    private Date                       startTime              = null;
-    private String                     processingEngineUserId = null;
+    private Date                       requestedTime            = null;
+    private Date                       startTime                = null;
+    private String                     processingEngineUserId   = null;
 
-    private Date                       completionTime         = null;
-    private List<String>               completionGuards       = null;
+    private Date                       completionTime           = null;
+    private List<String>               completionGuards         = null;
 
     /**
      * Default constructor
@@ -79,13 +83,15 @@ public class GovernanceActionProperties extends ReferenceableProperties
 
             governanceEngineGUID = template.getGovernanceEngineGUID();
             governanceEngineName = template.getGovernanceEngineName();
+            processName = template.getProcessName();
+            governanceActionTypeGUID = template.getGovernanceActionTypeGUID();
+            governanceActionTypeName = template.getGovernanceActionTypeName();
             requestType = template.getRequestType();
             requestParameters = template.getRequestParameters();
-            requestSourceElements = template.getRequestSourceElements();
-            actionTargetElements = template.getActionTargetElements();
 
             actionStatus = template.getActionStatus();
 
+            requestedTime = template.getRequestedTime();
             startTime = template.getStartTime();
             processingEngineUserId = template.getProcessingEngineUserId();
 
@@ -266,6 +272,72 @@ public class GovernanceActionProperties extends ReferenceableProperties
 
 
     /**
+     * Return the name of the governance action process - or similar request source.
+     *
+     * @return name
+     */
+    public String getProcessName()
+    {
+        return processName;
+    }
+
+
+    /**
+     * Set up the name of the governance action process - or similar request source.
+     *
+     * @param processName name
+     */
+    public void setProcessName(String processName)
+    {
+        this.processName = processName;
+    }
+
+
+    /**
+     * Return the unique identifier for the governance action type that acted as a template for this governance action (if appropriate).
+     *
+     * @return guid
+     */
+    public String getGovernanceActionTypeGUID()
+    {
+        return governanceActionTypeGUID;
+    }
+
+
+    /**
+     * Set up the unique identifier for the governance action type that acted as a template for this governance action (if appropriate).
+     *
+     * @param governanceActionTypeGUID guid
+     */
+    public void setGovernanceActionTypeGUID(String governanceActionTypeGUID)
+    {
+        this.governanceActionTypeGUID = governanceActionTypeGUID;
+    }
+
+
+    /**
+     * Return the unique name for the governance action type that acted as a template for this governance action (if appropriate).
+     *
+     * @return name
+     */
+    public String getGovernanceActionTypeName()
+    {
+        return governanceActionTypeName;
+    }
+
+
+    /**
+     * Set up the unique name for the governance action type that acted as a template for this governance action (if appropriate).
+     *
+     * @param governanceActionTypeName name
+     */
+    public void setGovernanceActionTypeName(String governanceActionTypeName)
+    {
+        this.governanceActionTypeName = governanceActionTypeName;
+    }
+
+
+    /**
      * Return the current status of the governance action.
      *
      * @return status enum
@@ -370,6 +442,28 @@ public class GovernanceActionProperties extends ReferenceableProperties
     public void setActionTargetElements(List<ActionTargetElement> actionTargetElements)
     {
         this.actionTargetElements = actionTargetElements;
+    }
+
+
+    /**
+     * Return the time that the governance action was created.
+     *
+     * @return date/time
+     */
+    public Date getRequestedTime()
+    {
+        return requestedTime;
+    }
+
+
+    /**
+     * Set up the time that the governance action was created.
+     *
+     * @param requestedTime date/time
+     */
+    public void setRequestedTime(Date requestedTime)
+    {
+        this.requestedTime = requestedTime;
     }
 
 
@@ -515,14 +609,19 @@ public class GovernanceActionProperties extends ReferenceableProperties
                        "domainIdentifier=" + domainIdentifier +
                        ", displayName='" + displayName + '\'' +
                        ", description='" + description + '\'' +
+                       ", mandatoryGuards=" + mandatoryGuards +
                        ", receivedGuards=" + receivedGuards +
                        ", governanceEngineGUID='" + governanceEngineGUID + '\'' +
                        ", governanceEngineName='" + governanceEngineName + '\'' +
+                       ", processName='" + processName + '\'' +
+                       ", governanceActionTypeGUID='" + governanceActionTypeGUID + '\'' +
+                       ", governanceActionTypeName='" + governanceActionTypeName + '\'' +
                        ", requestType='" + requestType + '\'' +
                        ", requestParameters=" + requestParameters +
                        ", requestSourceElements=" + requestSourceElements +
                        ", actionTargetElements=" + actionTargetElements +
                        ", actionStatus=" + actionStatus +
+                       ", requestedTime=" + requestedTime +
                        ", startTime=" + startTime +
                        ", processingEngineUserId='" + processingEngineUserId + '\'' +
                        ", completionTime=" + completionTime +
@@ -550,7 +649,7 @@ public class GovernanceActionProperties extends ReferenceableProperties
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
@@ -558,14 +657,19 @@ public class GovernanceActionProperties extends ReferenceableProperties
         return domainIdentifier == that.domainIdentifier &&
                        Objects.equals(displayName, that.displayName) &&
                        Objects.equals(description, that.description) &&
+                       Objects.equals(mandatoryGuards, that.mandatoryGuards) &&
                        Objects.equals(receivedGuards, that.receivedGuards) &&
                        Objects.equals(governanceEngineGUID, that.governanceEngineGUID) &&
                        Objects.equals(governanceEngineName, that.governanceEngineName) &&
+                       Objects.equals(processName, that.processName) &&
+                       Objects.equals(governanceActionTypeGUID, that.governanceActionTypeGUID) &&
+                       Objects.equals(governanceActionTypeName, that.governanceActionTypeName) &&
                        Objects.equals(requestType, that.requestType) &&
                        Objects.equals(requestParameters, that.requestParameters) &&
                        Objects.equals(requestSourceElements, that.requestSourceElements) &&
                        Objects.equals(actionTargetElements, that.actionTargetElements) &&
                        actionStatus == that.actionStatus &&
+                       Objects.equals(requestedTime, that.requestedTime) &&
                        Objects.equals(startTime, that.startTime) &&
                        Objects.equals(processingEngineUserId, that.processingEngineUserId) &&
                        Objects.equals(completionTime, that.completionTime) &&
@@ -581,8 +685,9 @@ public class GovernanceActionProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), domainIdentifier, displayName, description, receivedGuards, governanceEngineGUID, governanceEngineName,
-                            requestType, requestParameters, requestSourceElements, actionTargetElements, actionStatus, startTime,
-                            processingEngineUserId, completionTime, completionGuards);
+        return Objects.hash(super.hashCode(), domainIdentifier, displayName, description, mandatoryGuards, receivedGuards, governanceEngineGUID,
+                            governanceEngineName, processName, governanceActionTypeGUID, governanceActionTypeName, requestType, requestParameters,
+                            requestSourceElements, actionTargetElements, actionStatus, requestedTime, startTime, processingEngineUserId, completionTime,
+                            completionGuards);
     }
 }

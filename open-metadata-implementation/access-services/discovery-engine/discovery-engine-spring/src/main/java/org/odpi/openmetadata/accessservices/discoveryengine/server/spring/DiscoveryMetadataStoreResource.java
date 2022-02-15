@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/discovery-engine/users/{userId}")
 
-@Tag(name="Discovery Engine OMAS", description="The Discovery Engine OMAS provides APIs and events for metadata discovery tools that are surveying the data landscape and recording information in metadata repositories.", externalDocs=@ExternalDocumentation(description="Discovery Engine Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/discovery-engine/"))
+@Tag(name="Discovery Engine OMAS", description="The Discovery Engine OMAS provides APIs and events for metadata discovery tools that are surveying the data landscape and recording information in metadata repositories.", externalDocs=@ExternalDocumentation(description="Discovery Engine Open Metadata Access Service (OMAS)",url="https://odpi.github.io/egeria-docs/services/omas/discovery-engine/overview/"))
 
 public class DiscoveryMetadataStoreResource
 {
@@ -749,6 +749,7 @@ public class DiscoveryMetadataStoreResource
      * @param serverName name of server instance to route request to
      * @param userId identifier of calling user
      * @param dataFieldGUID unique identifier of the data field
+     * @param requestBody null request body
      *
      * @return void or
      *  InvalidParameterException one of the parameters is invalid or

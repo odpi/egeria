@@ -9,7 +9,7 @@
     <parent>
         <artifactId>access-services-fvt</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.4-SNAPSHOT</version>
+        <version>3.6-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -71,6 +71,11 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>governance-leadership-sample</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>governance-subject-area-sample</artifactId>
         </dependency>
 
         <dependency>
@@ -219,15 +224,6 @@
                     <systemPropertyVariables>
                         <fvt.url>https://localhost:${fvt.serverport}</fvt.url>
                     </systemPropertyVariables>
-                </configuration>
-            </plugin>
-
-            <!-- Javadoc  -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <configuration>
-                    <skip>false</skip>
                 </configuration>
             </plugin>
 

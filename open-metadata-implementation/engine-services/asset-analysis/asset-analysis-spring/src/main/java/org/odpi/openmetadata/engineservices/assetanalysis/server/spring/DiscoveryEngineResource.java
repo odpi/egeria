@@ -22,7 +22,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/engine-services/asset-analysis/users/{userId}/discovery-engines/{discoveryEngineName}")
 
-@Tag(name="Asset Analysis OMES", description="The Asset Analysis OMES provide the core subsystem for driving requests for automated metadata discovery services.", externalDocs=@ExternalDocumentation(description="Asset Analysis Open Metadata Engine Services (OMES)",url="https://egeria.odpi.org/open-metadata-implementation/engine-services/asset-analysis/"))
+@Tag(name="Asset Analysis OMES", description="The Asset Analysis OMES provide the core subsystem for driving requests for automated metadata discovery services.",
+     externalDocs=@ExternalDocumentation(description="Asset Analysis Open Metadata Engine Services (OMES)",
+                                         url="https://odpi.github.io/egeria-docs/services/omes/asset-analysis/overview/"))
 
 public class DiscoveryEngineResource
 {

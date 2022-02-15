@@ -123,10 +123,14 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
      * @param displayName the stored display name property for the data container
      * @param description the stored description property associated with the data container
      * @param isDeprecated is this table deprecated?
+     * @param elementPosition which order is the element when listing from parent's perspective
+     * @param maxCardinality maximum number of instances of this element
+     * @param minCardinality minimum number of instances of this element
      * @param additionalProperties any arbitrary properties not part of the type system
      * @param typeName name of the type that is a subtype of DisplayDataContainer - or null to create standard type
      * @param extendedProperties properties from any subtype
      * @param vendorProperties additional properties relating to the source of the data container technology
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the new metadata element for the data container
@@ -150,6 +154,7 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                       String               typeName,
                                       Map<String, Object>  extendedProperties,
                                       Map<String, String>  vendorProperties,
+                                      Date                 effectiveTime,
                                       String               methodName) throws InvalidParameterException,
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException
@@ -166,6 +171,7 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                                                     OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
                                                                                     OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID,
                                                                                     OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
+                                                                                    effectiveTime,
                                                                                     methodName);
 
         if (databaseSchemaTypeGUID != null)
@@ -274,17 +280,18 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createDataContainerFromTemplate(String               userId,
-                                                  String               externalSourceGUID,
-                                                  String               externalSourceName,
-                                                  String               templateGUID,
-                                                  String               parentGUID,
-                                                  String               qualifiedName,
-                                                  String               displayName,
-                                                  String               description,
-                                                  String               methodName) throws InvalidParameterException,
-                                                                                          UserNotAuthorizedException,
-                                                                                          PropertyServerException
+    public String createDataContainerFromTemplate(String userId,
+                                                  String externalSourceGUID,
+                                                  String externalSourceName,
+                                                  String templateGUID,
+                                                  String parentGUID,
+                                                  String qualifiedName,
+                                                  String displayName,
+                                                  String description,
+                                                  Date   effectiveTime,
+                                                  String methodName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         final String guidParameterName = "parentGUID";
         final String parentElementGUIDParameterName = "parentGUID";
@@ -307,6 +314,7 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                                                     OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
                                                                                     OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID,
                                                                                     OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
+                                                                                    effectiveTime,
                                                                                     methodName);
 
         if (databaseSchemaTypeGUID != null)
@@ -552,6 +560,7 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -564,6 +573,7 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                      String searchString,
                                                      int    startFrom,
                                                      int    pageSize,
+                                                     Date   effectiveTime,
                                                      String methodName) throws InvalidParameterException,
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
@@ -582,6 +592,7 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                          null,
                                                          startFrom,
                                                          pageSize,
+                                                         effectiveTime,
                                                          methodName);
     }
 
@@ -593,6 +604,7 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
      * @param parentGUID unique identifier of the data container's parent of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of associated metadata elements
@@ -605,6 +617,7 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                          String parentGUID,
                                                          int    startFrom,
                                                          int    pageSize,
+                                                         Date   effectiveTime,
                                                          String methodName) throws InvalidParameterException,
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
@@ -623,6 +636,7 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                                                     OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
                                                                                     OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID,
                                                                                     OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
+                                                                                    effectiveTime,
                                                                                     methodName);
 
         if (databaseSchemaTypeGUID != null)
@@ -636,6 +650,7 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                                                 OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
                                                                                 startFrom,
                                                                                 pageSize,
+                                                                                effectiveTime,
                                                                                 methodName);
         }
 
@@ -651,6 +666,7 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
      * @param name name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -663,6 +679,7 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                           String name,
                                                           int    startFrom,
                                                           int    pageSize,
+                                                          Date   effectiveTime,
                                                           String methodName) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
@@ -675,6 +692,7 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                               null,
                                                               startFrom,
                                                               pageSize,
+                                                              effectiveTime,
                                                               methodName);
     }
 
@@ -684,6 +702,7 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
      *
      * @param userId calling user
      * @param guid unique identifier of the requested metadata element
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return matching metadata element
@@ -694,6 +713,7 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
      */
     public SCHEMA_ATTRIBUTE getDataContainerByGUID(String userId,
                                                    String guid,
+                                                   Date   effectiveTime,
                                                    String methodName) throws InvalidParameterException,
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
@@ -706,6 +726,7 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                        OpenMetadataAPIMapper.DISPLAY_DATA_CONTAINER_TYPE_NAME,
                                                        null,
                                                        null,
+                                                       effectiveTime,
                                                        methodName);
     }
 }

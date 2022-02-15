@@ -35,7 +35,7 @@ public class DiscoveryEnginePropertiesConverter<B> extends DiscoveryEngineOMASCo
 
     /**
      * Using the supplied instances, return a new instance of the bean. This is used for beans that have
-     * contain a combination of the properties from an entity and a that os a connected relationship.
+     * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
      * @param entity entity containing the properties
@@ -75,7 +75,7 @@ public class DiscoveryEnginePropertiesConverter<B> extends DiscoveryEngineOMASCo
                 bean.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                 bean.setDisplayName(this.removeName(instanceProperties));
                 bean.setDescription(this.removeDescription(instanceProperties));
-                bean.setTypeDescription(this.removeDeployedImplementationType(instanceProperties));
+                bean.setTypeDescription(this.removeCapabilityType(instanceProperties));
                 bean.setVersion(this.removeCapabilityVersion(instanceProperties));
                 bean.setPatchLevel(this.removePatchLevel(instanceProperties));
                 bean.setSource(this.removeSource(instanceProperties));
@@ -101,7 +101,7 @@ public class DiscoveryEnginePropertiesConverter<B> extends DiscoveryEngineOMASCo
 
     /**
      * Using the supplied instances, return a new instance of the bean. This is used for beans that have
-     * contain a combination of the properties from an entity and a that os a connected relationship.
+     * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
      * @param entity entity containing the properties

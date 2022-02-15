@@ -53,7 +53,7 @@ public enum DigitalArchitectureAuditCode implements AuditLogMessageSet
 
     ;
 
-    AuditLogMessageDefinition messageDefinition;
+    private final AuditLogMessageDefinition messageDefinition;
 
 
     /**

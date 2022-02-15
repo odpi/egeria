@@ -32,13 +32,6 @@ public enum DiscoveryEngineAuditCode implements AuditLogMessageSet
              "This is part of the normal start up of the service.  No action is required if this service " +
                                  "startup was intentional."),
 
-    SERVICE_PUBLISHING("OMAS-DISCOVERY-ENGINE-0002",
-            OMRSAuditLogRecordSeverity.STARTUP,
-            "The Discovery Engine Open Metadata Access Service (OMAS) is ready to publish configuration refresh notifications to topic {0}",
-            "The local server has started up the event publisher for the Discovery Engine OMAS.  " +
-                               "It will begin publishing discovery engine configuration changes to its out topic.",
-            "This is part of the normal start up of the service. Check that there are no errors from the event bus."),
-
     SERVICE_INITIALIZED("OMAS-DISCOVERY-ENGINE-0003",
              OMRSAuditLogRecordSeverity.STARTUP,
              "The Discovery Engine Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
@@ -61,25 +54,6 @@ public enum DiscoveryEngineAuditCode implements AuditLogMessageSet
              "Review the error message and any other reported failures to determine the cause of the problem.  In particular consider the" +
                                                 " state of the Event Bus.  Once this is resolved, restart the server."),
 
-    PUBLISHING_SHUTDOWN("OMAS-DISCOVERY-ENGINE-0006",
-             OMRSAuditLogRecordSeverity.SHUTDOWN,
-             "The Discovery Engine Open Metadata Access Service (OMAS) is no longer publishing events to topic {0}",
-             "The local administrator has requested shut down of an Discovery Engine OMAS instance.  " +
-                             "No more configuration events will be published to the named topic.",
-             "This is part of the normal shutdown of the service.   No action is required if this is service" +
-                             "shutdown was intentional."),
-
-    PUBLISHING_SHUTDOWN_ERROR("OMAS-DISCOVERY-ENGINE-0007",
-             OMRSAuditLogRecordSeverity.SHUTDOWN,
-             "The Discovery Engine Open Metadata Access Service (OMAS) caught an unexpected {0} exception whilst shutting down the out " +
-                                      "topic {1}. The error message was: {2}",
-             "The local administrator has requested shut down of an Discovery Engine OMAS instance.  " +
-                                "No more configuration events will be published to the named topic, although the connection to the event bus may " +
-                                      "not be released properly.",
-             "This is part of the normal shutdown of the service. However, an exception is not expected at this point unless it " +
-                                      "is the consequence of a previous error. Review the error message and any other reported failures to " +
-                                      "determine if this exception needs special attention."),
-
     SERVICE_SHUTDOWN("OMAS-DISCOVERY-ENGINE-0008",
             OMRSAuditLogRecordSeverity.SHUTDOWN,
             "The Discovery Engine Open Metadata Access Service (OMAS) is shutting down its instance for server {0}",
@@ -88,47 +62,6 @@ public enum DiscoveryEngineAuditCode implements AuditLogMessageSet
                              "be published to the out topic",
             "This is part of the normal shutdown of the service.  Verify that all resources have been released."),
 
-    REFRESH_DISCOVERY_ENGINE("OMAS-DISCOVERY-ENGINE-0009",
-            OMRSAuditLogRecordSeverity.INFO,
-            "The Discovery Engine Open Metadata Access Service (OMAS) sent notification that the configuration for discovery engine {0} " +
-                                     "({1}) has changed",
-            "The access service sends out configuration notifications to ensure connected discovery servers have the most up to-date " +
-                                     "configuration about the discovery engine.",
-            "This is part of the normal operation of the service.  No action is required if this change is expected beyond verifying that" +
-                                     " the affected discovery engines are updated in the discovery servers.  If the change is " +
-                                     "unexpected, use the " +
-                                     "Discovery Engine OMAS configuration interface to query the status of the discovery engine properties.  " +
-                                     "It should be possible to trace the source of the update to correct it."),
-
-    REFRESH_DISCOVERY_SERVICE("OMAS-DISCOVERY-ENGINE-0010",
-             OMRSAuditLogRecordSeverity.INFO,
-             "The Discovery Engine Open Metadata Access Service (OMAS) sent notification that discovery engine {0} ({1}) had a " +
-                                      "configuration change for discovery request type {2} mapped to registered discovery service {3}",
-             "The access service sends out configuration notifications to ensure connected discovery servers have the most up to-date " +
-                                      "configuration about the discovery service.",
-              "This is part of the normal operation of the service.  No action is required if this change is expected beyond verifying that" +
-                                      " the affected discovery engines are updated with the latest discovery services information.  If the change " +
-                                      "is unexpected, use the " +
-                                      "Discovery Engine OMAS configuration interface to query the status of the registered discovery services for " +
-                                      "the affected discovery engine.  It should be possible to trace the source of the update to correct it."),
-
-    OUT_TOPIC_FAILURE("OMAS-DISCOVERY-ENGINE-0011",
-             OMRSAuditLogRecordSeverity.EXCEPTION,
-             "The Discovery Engine Open Metadata Access Service (OMAS) is unable to send an event on its out topic {0}; exception {1} returned " +
-                              "error message: {2}",
-             "The access service detected an error during the start up of the out topic.  Its services are not available for the server.",
-             "Review the error message and any other reported failures to determine the cause of the problem.  Check the status of the event " +
-                              "bus.  Once this is resolved, restart the server."),
-
-    OUT_TOPIC_EVENT("OMAS-DISCOVERY-ENGINE-0012",
-             OMRSAuditLogRecordSeverity.EVENT,
-             "The Discovery Engine Open Metadata Access Service (OMAS) has sent event: {0}",
-             "The access service sends out configuration notifications to ensure connected discovery servers have the most up to-date " +
-                            "configuration.  This message is to create a record of the events that are being published.",
-             "This event indicates that the configuration for a discovery engine, or discovery service has changed.  " +
-                            "Check that each connected discovery server receives this event and updates its configuration if " +
-                            "the change affects their operation."),
-
     ASSET_AUDIT_LOG("OMAS-DISCOVERY-ENGINE-0013",
              OMRSAuditLogRecordSeverity.INFO,
             "Log message for asset {0} from discovery service {1}: {2}",
@@ -136,7 +69,7 @@ public enum DiscoveryEngineAuditCode implements AuditLogMessageSet
             "Review the message to ensure no action is required.")
     ;
 
-    AuditLogMessageDefinition messageDefinition;
+    private final AuditLogMessageDefinition messageDefinition;
 
 
     /**

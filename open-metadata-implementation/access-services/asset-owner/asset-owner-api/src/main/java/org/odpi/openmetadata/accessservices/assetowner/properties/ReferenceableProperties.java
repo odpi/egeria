@@ -26,7 +26,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = ReferenceableElement.class, name = "ReferenceableElement"),
                 @JsonSubTypes.Type(value = AssetProperties.class, name = "AssetProperties"),
                 @JsonSubTypes.Type(value = MeaningProperties.class, name = "MeaningProperties"),
-                @JsonSubTypes.Type(value = SoftwareServerCapabilityProperties.class, name = "SoftwareServerCapabilityProperties"),
+                @JsonSubTypes.Type(value = SoftwareCapabilityProperties.class, name = "SoftwareCapabilityProperties"),
                 @JsonSubTypes.Type(value = SchemaElementProperties.class, name = "SchemaElementProperties")
         })
 public abstract class ReferenceableProperties implements Serializable

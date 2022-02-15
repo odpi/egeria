@@ -2,14 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.client;
 
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.Config;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.utils.QueryBuilder;
+import org.odpi.openmetadata.accessservices.subjectarea.utils.QueryParams;
 import org.odpi.openmetadata.accessservices.subjectarea.utils.QueryUtils;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GenericResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GenericResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ResponseParameterization;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -18,11 +17,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 /**
  * RESTClient is responsible for issuing calls to the Subject Area OMAS REST APIs.
@@ -173,7 +167,8 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
      * @param type class of the response for generic object. Descried using {@link ParameterizedTypeReference}
      *             An example can be seen here {@link ResponseParameterization#getParameterizedType()}
      * @param urnTemplate  template of the URN for the REST API call with place-holders for the parameters.
-
+     * @param findRequest search specification
+     *
      * @return GenericResponse with T result
      * @throws PropertyServerException something went wrong with the REST call stack.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -201,6 +196,8 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
      *             An example can be seen here {@link ResponseParameterization#getParameterizedType()}
      * @param urnTemplate  template of the URN for the REST API call with place-holders for the parameters.
      * @param maximumPageSizeOnRestCall maximum page size that can be used on rest calls, null and 0 mean no limit set.
+     * @param findRequest search specification
+     * @param queryParams {@link QueryParams}
      * @return GenericResponse with T result
      * @throws PropertyServerException something went wrong with the REST call stack.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -213,7 +210,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
                                                   String urnTemplate,
                                                   FindRequest findRequest,
                                                   Integer maximumPageSizeOnRestCall,
-                                                  Map<String, String> params) throws InvalidParameterException,
+                                                  QueryParams queryParams) throws InvalidParameterException,
                                                                                      PropertyServerException,
                                                                                      UserNotAuthorizedException
     {
@@ -237,13 +234,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
             if (findRequest == null) {
                 expandedURL = String.format(serverPlatformURLRoot + urnTemplate, serverName, userId, guid);
             } else {
-                QueryBuilder queryBuilder = createFindQuery(methodName, findRequest);
-                if (params != null && params.keySet().size() >0) {
-                    for (String param: params.keySet()) {
-                        queryBuilder.addParam(param,params.get(param));
-                    }
-                }
-
+                QueryBuilder queryBuilder = createFindQuery(methodName, findRequest, queryParams);
                 String findUrlTemplate = urnTemplate + queryBuilder.toString();
                 expandedURL = String.format(serverPlatformURLRoot + findUrlTemplate, serverName, userId, guid);
             }
@@ -275,6 +266,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
      * @param type class of the response for generic object. Descried using {@link ParameterizedTypeReference}
      *             An example can be seen here {@link ResponseParameterization#getParameterizedType()}
      * @param findRequest {@link FindRequest}
+     * @param queryParams {@link QueryParams}
      *
      * @return GenericResponse with T results
      * @throws PropertyServerException something went wrong with the REST call stack.
@@ -286,11 +278,10 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
                                                String urnTemplate,
                                                ParameterizedTypeReference<GenericResponse<T>> type,
                                                FindRequest findRequest,
-                                               boolean exactValue,
-                                               boolean ignoreCase) throws InvalidParameterException,
+                                               QueryParams queryParams) throws InvalidParameterException,
                                                                                          PropertyServerException,
                                                                                          UserNotAuthorizedException {
-        return findRESTCall(userId, methodName, urnTemplate, type, findRequest, exactValue, ignoreCase, null);
+        return findRESTCall(userId, methodName, urnTemplate, type, findRequest, queryParams, null);
     }
     /**
      * Issue a GET REST call that returns a response found objects using the information described in findRequest,
@@ -304,6 +295,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
      *             An example can be seen here {@link ResponseParameterization#getParameterizedType()}
      * @param findRequest {@link FindRequest}
      * @param maximumPageSizeOnRestCall maximum page size that can be used on rest calls, null and 0 mean no limit set.
+     * @param queryParams {@link QueryParams}
      *
      * @return GenericResponse with T results
      * @throws PropertyServerException something went wrong with the REST call stack.
@@ -315,8 +307,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
                                                String urnTemplate,
                                                ParameterizedTypeReference<GenericResponse<T>> type,
                                                FindRequest findRequest,
-                                               boolean exactValue,
-                                               boolean ignoreCase,
+                                               QueryParams queryParams,
                                                Integer maximumPageSizeOnRestCall) throws InvalidParameterException,
                                                                                PropertyServerException,
                                                                                UserNotAuthorizedException {
@@ -334,7 +325,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
             // Only need to make one call
             String findUrlTemplate = String.format(serverPlatformURLRoot + urnTemplate, serverName, userId);
             // the searchCriteria could contain utf-8 characters that could include % characters, that format would incorrectly interpret. So we add the query params after the format
-            String expandedURL = findUrlTemplate + createFindQuery(methodName, findRequest, exactValue, ignoreCase).toString();
+            String expandedURL = findUrlTemplate + createFindQuery(methodName, findRequest, queryParams).toString();
             completeResponse = callGetRESTCall(methodName, type, expandedURL);
             exceptionHandler.detectAndThrowStandardExceptions(methodName, completeResponse);
         } else {
@@ -400,6 +391,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
      * @param type class of the response for generic object. Descried using {@link ParameterizedTypeReference}
      *             An example can be seen here {@link ResponseParameterization#getParameterizedType()}
      * @param findRequest {@link FindRequest}
+     * @param maximumPageSizeOnRestCall maximum number of results
      *
      * @return GenericResponse with T results
      * @throws PropertyServerException something went wrong with the REST call stack.
@@ -547,7 +539,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
      * @throws InvalidParameterException one of the parameters is null or invalid
      * */
     public QueryBuilder createFindQuery(String methodName, FindRequest findRequest) throws InvalidParameterException {
-        return createFindQuery(methodName, findRequest, false,true);
+        return createFindQuery(methodName, findRequest, null);
     }
 
     /**
@@ -556,11 +548,12 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
      *
      * @param methodName  name of the method being called.
      * @param findRequest {@link FindRequest}
+     * @param queryParams {@link QueryParams}
      *
      * @return query
      * @throws InvalidParameterException one of the parameters is null or invalid
      * */
-    public QueryBuilder createFindQuery(String methodName, FindRequest findRequest, boolean exactValue, boolean ignoreCase) throws InvalidParameterException {
+    public QueryBuilder createFindQuery(String methodName, FindRequest findRequest, QueryParams queryParams) throws InvalidParameterException {
         QueryBuilder queryBuilder = new QueryBuilder();
         SequencingOrder sequencingOrder = findRequest.getSequencingOrder();
         if (sequencingOrder == null) {
@@ -584,8 +577,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
             property = QueryUtils.encodeParams(methodName, "sequencingProperty", property);
             queryBuilder.addParam("sequencingProperty", property);
         }
-        queryBuilder.addParam("exactValue", exactValue);
-        queryBuilder.addParam("ignoreCase", ignoreCase);
+        queryBuilder.addParams(queryParams);
         return queryBuilder;
     }
 

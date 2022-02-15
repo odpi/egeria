@@ -27,6 +27,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -216,7 +217,11 @@ public class CommonHandler {
         if (CollectionUtils.isEmpty(types)) {
             return Collections.emptyList();
         }
-        return types.stream().map(type -> repositoryHelper.getTypeDefByName(userId, type).getGUID()).collect(Collectors.toList());
+        return types.stream().
+                map(type -> repositoryHelper.getTypeDefByName(userId, type)).
+                filter(Objects::nonNull).
+                map(TypeDef::getGUID).
+                collect(Collectors.toList());
     }
 
     /**

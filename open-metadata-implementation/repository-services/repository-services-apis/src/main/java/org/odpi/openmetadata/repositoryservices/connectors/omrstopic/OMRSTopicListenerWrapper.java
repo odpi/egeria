@@ -21,23 +21,25 @@ public class OMRSTopicListenerWrapper implements OMRSTopicListener
 {
     private final String THREAD_NAME_DESCRIPTION = " OMRSTopicListener";
 
-    private OMRSTopicListener  realListener;
-    private AuditLog           auditLog;
-    private String             serviceName = "<Unknown Service>";
+    private OMRSTopicListener                fullListener;
+    private OMRSTopicRepositoryEventListener repositoryListener;
+    private AuditLog                         auditLog;
+    private String                           serviceName = "<Unknown Service>";
 
 
     /**
      * Save the real listener and other error handling information.
      *
-     * @param realListener this is the topic listener that was registered.
+     * @param fullListener this is the topic listener that was registered.
      * @param serviceName this is the name of the service that owns the topic listener.
      * @param auditLog this is the log destination
      */
-    OMRSTopicListenerWrapper(OMRSTopicListener  realListener,
-                             String             serviceName,
-                             AuditLog           auditLog)
+    OMRSTopicListenerWrapper(OMRSTopicListener fullListener,
+                             String            serviceName,
+                             AuditLog          auditLog)
     {
-        this.realListener = realListener;
+        this.fullListener = fullListener;
+        this.repositoryListener = fullListener;
         this.serviceName = serviceName;
         this.auditLog = auditLog;
     }
@@ -46,14 +48,31 @@ public class OMRSTopicListenerWrapper implements OMRSTopicListener
     /**
      * Save the real listener and other error handling information.
      *
-     * @param realListener this is the topic listener that was registered.
+     * @param repositoryEventListener this is the topic listener that was registered.
+     * @param serviceName this is the name of the service that owns the topic listener.
+     * @param auditLog this is the log destination
+     */
+    OMRSTopicListenerWrapper(OMRSTopicRepositoryEventListener repositoryEventListener,
+                             String                           serviceName,
+                             AuditLog                         auditLog)
+    {
+        this.repositoryListener = repositoryEventListener;
+        this.serviceName = serviceName;
+        this.auditLog = auditLog;
+    }
+
+
+    /**
+     * Save the real listener and other error handling information.
+     *
+     * @param fullListener this is the topic listener that was registered.
      * @param auditLog this is the log destination
      */
     @Deprecated
-    OMRSTopicListenerWrapper(OMRSTopicListener  realListener,
-                             AuditLog           auditLog)
+    OMRSTopicListenerWrapper(OMRSTopicListener fullListener,
+                             AuditLog          auditLog)
     {
-        this.realListener = realListener;
+        this.fullListener = fullListener;
         this.auditLog = auditLog;
     }
 
@@ -91,9 +110,9 @@ public class OMRSTopicListenerWrapper implements OMRSTopicListener
 
         try
         {
-            realListener.processRegistryEvent(event);
+            fullListener.processRegistryEvent(event);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             logUnhandledException(error, methodName);
         }
@@ -117,9 +136,9 @@ public class OMRSTopicListenerWrapper implements OMRSTopicListener
 
         try
         {
-            realListener.processTypeDefEvent(event);
+            repositoryListener.processTypeDefEvent(event);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             logUnhandledException(error, methodName);
         }
@@ -143,9 +162,9 @@ public class OMRSTopicListenerWrapper implements OMRSTopicListener
 
         try
         {
-            realListener.processInstanceEvent(event);
+            repositoryListener.processInstanceEvent(event);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             logUnhandledException(error, methodName);
         }

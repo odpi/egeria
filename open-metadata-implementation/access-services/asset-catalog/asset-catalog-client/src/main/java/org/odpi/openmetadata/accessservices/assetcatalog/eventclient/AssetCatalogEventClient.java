@@ -154,14 +154,14 @@ public class AssetCatalogEventClient {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateObject(listener, nameParameter, methodName);
 
-        ConnectionResponse restResult = restClient.callConnectionGetRESTCall(methodName,
-                serverPlatformURLRoot + urlTemplate,
-                serverName,
-                userId,
-                callerId);
+        ConnectionResponse restResult = restClient.callOCFConnectionGetRESTCall(methodName,
+                                                                                serverPlatformURLRoot + urlTemplate,
+                                                                                serverName,
+                                                                                userId,
+                                                                                callerId);
 
         Connection topicConnection = restResult.getConnection();
-        ConnectorBroker connectorBroker = new ConnectorBroker();
+        ConnectorBroker connectorBroker = new ConnectorBroker(auditLog);
         Connector connector = connectorBroker.getConnector(topicConnection);
 
         if (connector == null) {

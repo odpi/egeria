@@ -17,6 +17,7 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -139,6 +140,7 @@ import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.V
 public class AssetCatalogHandler {
 
     private static final Logger log = LoggerFactory.getLogger(AssetCatalogHandler.class);
+    private static final String THIS_ASSET_IF_A_DIFFERENT_ZONE = "This asset if a different zone: {}";
 
     private final String serverUserName;
     private final String sourceName;
@@ -320,13 +322,14 @@ public class AssetCatalogHandler {
      * @param userId           user identifier that issues the call
      * @param assetGUID        the asset identifier
      * @param searchParameters additional parameters for searching and filtering
+     * @param serverName
      * @return a list of entities from the neighborhood of the given entity
      * @throws AssetCatalogException      is thrown by the Asset Catalog OMAS when the asset passed on a request is not found in the repository
      * @throws InvalidParameterException  is thrown by the OMAG Service when a parameter is null or an invalid value.
      * @throws PropertyServerException    reporting errors when connecting to a metadata repository to retrieve properties about the connection and/or connector
      * @throws UserNotAuthorizedException is thrown by the OCF when a userId passed on a request is not authorized to perform the requested action.
      */
-    public List<AssetCatalogBean> getEntitiesFromNeighborhood(String userId, String assetGUID, SearchParameters searchParameters)
+    public List<AssetCatalogBean> getEntitiesFromNeighborhood(String userId, String assetGUID, SearchParameters searchParameters, String serverName)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, AssetCatalogException {
 
         String methodName = "getEntitiesFromNeighborhood";
@@ -336,11 +339,11 @@ public class AssetCatalogHandler {
         invalidParameterHandler.validateObject(searchParameters, SEARCH_PARAMETER, methodName);
         invalidParameterHandler.validatePaging(searchParameters.getFrom(), searchParameters.getPageSize(), methodName);
 
-        InstanceGraph entityNeighborhood = getAssetNeighborhood(userId, assetGUID, searchParameters);
+        InstanceGraph entityNeighborhood = getAssetNeighborhood(userId, assetGUID, searchParameters, serverName);
 
         List<EntityDetail> entities = entityNeighborhood.getEntities();
         if (CollectionUtils.isEmpty(entities)) {
-            throw new AssetCatalogException(AssetCatalogErrorCode.NO_ASSET_FROM_NEIGHBORHOOD_NOT_FOUND.getMessageDefinition(methodName),
+            throw new AssetCatalogException(AssetCatalogErrorCode.NO_ASSET_FROM_NEIGHBORHOOD_NOT_FOUND.getMessageDefinition(assetGUID, serverName),
                     this.getClass().getName(),
                     methodName);
         }
@@ -369,7 +372,7 @@ public class AssetCatalogHandler {
             throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
             FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
             PropertyErrorException, TypeErrorException, PagingErrorException,
-            InvalidParameterException, RepositoryErrorException, PropertyServerException, UserNotAuthorizedException {
+            InvalidParameterException, RepositoryErrorException, EntityNotKnownException {
 
         String methodName = "searchByType";
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -397,7 +400,7 @@ public class AssetCatalogHandler {
                     Elements elements = assetCatalogConverter.buildAssetElements(entityDetail);
                 searchResults.add(elements);
             } catch (org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException e) {
-                log.debug("This asset if a different zone: {}", entityDetail.getGUID());
+                log.debug(THIS_ASSET_IF_A_DIFFERENT_ZONE, entityDetail.getGUID());
             }
         }
         SequencingOrder sequencingOrder = searchParameters.getSequencingOrder();
@@ -1241,7 +1244,7 @@ public class AssetCatalogHandler {
         return classifications.stream().filter(classification -> classification.getName().equals(classificationName)).collect(Collectors.toList());
     }
 
-    private InstanceGraph getAssetNeighborhood(String userId, String entityGUID, SearchParameters searchParameters)
+    private InstanceGraph getAssetNeighborhood(String userId, String entityGUID, SearchParameters searchParameters, String serverName)
             throws AssetCatalogException, PropertyServerException, InvalidParameterException, UserNotAuthorizedException {
         OMRSMetadataCollection metadataCollection = commonHandler.getOMRSMetadataCollection();
 
@@ -1269,7 +1272,7 @@ public class AssetCatalogHandler {
         }
 
         if (entityNeighborhood == null) {
-            throw new AssetCatalogException(AssetCatalogErrorCode.ASSET_NEIGHBORHOOD_NOT_FOUND.getMessageDefinition(methodName),
+            throw new AssetCatalogException(AssetCatalogErrorCode.ASSET_NEIGHBORHOOD_NOT_FOUND.getMessageDefinition(entityGUID, serverName),
                     this.getClass().getName(),
                     methodName);
         }

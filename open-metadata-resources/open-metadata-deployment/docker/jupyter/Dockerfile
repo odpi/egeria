@@ -2,7 +2,7 @@
 # Copyright Contributors to the Egeria project.
 
 FROM docker.io/jupyter/base-notebook:latest
-ARG version=3.4-SNAPSHOT
+ARG version=3.6-SNAPSHOT
 ARG VCS_REF=unknown
 ARG VCS_ORIGIN=unknown
 ARG BUILD_TIME=unknown
@@ -39,5 +39,9 @@ USER root
 COPY target/assembly/notebooks $HOME
 RUN chown -R $NB_UID:$NB_GID $HOME
 
-USER $NB_UID
+# https://cloud.redhat.com/blog/jupyter-on-openshift-part-6-running-as-an-assigned-user-id
+RUN chgrp -Rf root /home/$NB_USER && chmod -Rf g+w /home/$NB_USER
+
+#USER $NB_UID
+USER 1000
 # Leave EXPOSE, ENTRYPOINT and CMD as per official images

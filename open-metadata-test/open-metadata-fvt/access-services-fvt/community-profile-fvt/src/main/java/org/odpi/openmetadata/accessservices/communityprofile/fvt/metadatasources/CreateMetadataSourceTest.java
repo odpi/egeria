@@ -6,9 +6,9 @@ package org.odpi.openmetadata.accessservices.communityprofile.fvt.metadatasource
 
 import org.odpi.openmetadata.accessservices.communityprofile.client.MetadataSourceClient;
 import org.odpi.openmetadata.accessservices.communityprofile.client.rest.CommunityProfileRESTClient;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.ElementClassification;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.ElementHeader;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.MetadataSourceElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ElementClassification;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ElementHeader;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.MetadataSourceElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.MetadataSourceProperties;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -131,7 +131,7 @@ public class CreateMetadataSourceTest
 
             return new MetadataSourceClient(serverName, serverPlatformRootURL, restClient, maxPageSize);
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -178,7 +178,7 @@ public class CreateMetadataSourceTest
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -294,7 +294,7 @@ public class CreateMetadataSourceTest
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }

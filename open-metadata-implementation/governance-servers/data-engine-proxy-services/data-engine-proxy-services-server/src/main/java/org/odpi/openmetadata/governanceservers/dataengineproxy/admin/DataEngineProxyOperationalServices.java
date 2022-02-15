@@ -131,7 +131,7 @@ public class DataEngineProxyOperationalServices {
                 // Configure and start the topic connector
                 ConnectionResponse connectionResponse = ((DataEngineRESTConfigurationClient) dataEngineClient).getInTopicConnection(dataEngineProxyConfig.getAccessServiceServerName(), localServerUserId);
 
-                ConnectorBroker connectorBroker = new ConnectorBroker();
+                ConnectorBroker connectorBroker = new ConnectorBroker(auditLog);
                 VirtualConnection virtualConnection = (VirtualConnection)connectionResponse.getConnection();
 
                 // Replace connection configuration properties relevant to the server hosting the client connector
@@ -148,7 +148,6 @@ public class DataEngineProxyOperationalServices {
                 virtualConnection.setEmbeddedConnections(embeddedConnections);
 
                 dataEngineTopicConnector = (DataEngineInTopicClientConnector) connectorBroker.getConnector(virtualConnection);
-                dataEngineTopicConnector.setAuditLog(auditLog);
                 dataEngineTopicConnector.start();
                 dataEngineClient = new DataEngineEventClient(dataEngineTopicConnector);
 
@@ -166,7 +165,7 @@ public class DataEngineProxyOperationalServices {
         Connection dataEngineConnection = dataEngineProxyConfig.getDataEngineConnection();
         if (dataEngineConnection != null) {
             try {
-                ConnectorBroker connectorBroker = new ConnectorBroker();
+                ConnectorBroker connectorBroker = new ConnectorBroker(auditLog);
                 dataEngineConnector = (DataEngineConnectorBase) connectorBroker.getConnector(dataEngineConnection);
                 dataEngineConnector.start();
                 // If the config says we should poll for changes, do so via a new thread
@@ -181,7 +180,7 @@ public class DataEngineProxyOperationalServices {
                     changePoller.start();
                 }
                 // TODO: otherwise we likely need to look for and process events
-            } catch (ConnectionCheckedException | ConnectorCheckedException e) {
+            } catch (ConnectorCheckedException | ConnectionCheckedException | UserNotAuthorizedException | InvalidParameterException | PropertyServerException  e) {
                 throw new OMAGConfigurationErrorException(
                         DataEngineProxyErrorCode.ERROR_INITIALIZING_CONNECTION.getMessageDefinition(),
                         this.getClass().getName(),

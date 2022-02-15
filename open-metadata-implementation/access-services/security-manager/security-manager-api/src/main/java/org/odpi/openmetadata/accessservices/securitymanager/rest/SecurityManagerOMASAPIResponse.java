@@ -22,16 +22,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = DatabaseColumnResponse.class, name = "DatabaseColumnResponse"),
-                @JsonSubTypes.Type(value = DatabaseColumnsResponse.class, name = "DatabaseColumnsResponse"),
-                @JsonSubTypes.Type(value = DatabaseResponse.class, name = "DatabaseResponse"),
-                @JsonSubTypes.Type(value = DatabasesResponse.class, name = "DatabasesResponse"),
-                @JsonSubTypes.Type(value = DatabaseSchemaResponse.class, name = "DatabaseSchemaResponse"),
-                @JsonSubTypes.Type(value = DatabaseSchemasResponse.class, name = "DatabaseSchemasResponse"),
-                @JsonSubTypes.Type(value = DatabaseTableResponse.class, name = "DatabaseTableResponse"),
-                @JsonSubTypes.Type(value = DatabaseTablesResponse.class, name = "DatabaseTablesResponse"),
-                @JsonSubTypes.Type(value = DatabaseViewResponse.class, name = "DatabaseViewResponse"),
-                @JsonSubTypes.Type(value = DatabaseViewsResponse.class, name = "DatabaseViewsResponse"),
+                @JsonSubTypes.Type(value = SecurityGroupResponse.class, name = "SecurityGroupResponse"),
+                @JsonSubTypes.Type(value = SecurityGroupsResponse.class, name = "SecurityGroupsResponse"),
+                @JsonSubTypes.Type(value = UserIdentityResponse.class, name = "UserIdentityResponse"),
+                @JsonSubTypes.Type(value = UserIdentitiesResponse.class, name = "UserIdentitiesResponse"),
         })
 public abstract class SecurityManagerOMASAPIResponse extends FFDCResponseBase
 {

@@ -127,14 +127,14 @@ public class AssetConsumerEventClient implements AssetConsumerEventInterface
              * The connector is only created if/when a listener is registered to prevent unnecessary load on the
              * event bus.
              */
-            ConnectionResponse restResult = restClient.callConnectionGetRESTCall(methodName,
-                                                                                 serverPlatformURLRoot + urlTemplate,
-                                                                                 serverName,
-                                                                                 userId,
-                                                                                 callerId);
+            ConnectionResponse restResult = restClient.callOCFConnectionGetRESTCall(methodName,
+                                                                                    serverPlatformURLRoot + urlTemplate,
+                                                                                    serverName,
+                                                                                    userId,
+                                                                                    callerId);
 
             Connection      topicConnection = restResult.getConnection();
-            ConnectorBroker connectorBroker = new ConnectorBroker();
+            ConnectorBroker connectorBroker = new ConnectorBroker(auditLog);
             Connector       connector       = connectorBroker.getConnector(topicConnection);
 
             if (connector == null)
@@ -150,7 +150,6 @@ public class AssetConsumerEventClient implements AssetConsumerEventInterface
             if (connector instanceof AssetConsumerOutTopicClientConnector)
             {
                 configurationEventTopicConnector = (AssetConsumerOutTopicClientConnector)connector;
-                configurationEventTopicConnector.setAuditLog(auditLog);
                 configurationEventTopicConnector.start();
             }
             else

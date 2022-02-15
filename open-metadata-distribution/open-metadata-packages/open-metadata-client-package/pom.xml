@@ -10,7 +10,7 @@
     <parent>
         <artifactId>open-metadata-packages</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.4-SNAPSHOT</version>
+        <version>3.6-SNAPSHOT</version>
     </parent>
 
     <name>Open Metadata Client Package</name>
@@ -153,6 +153,14 @@
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>infrastructure-integrator-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>search-integrator-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>organization-integrator-client</artifactId>
         </dependency>
         <dependency>
@@ -170,6 +178,10 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-analysis-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>archive-manager-client</artifactId>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>

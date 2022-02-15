@@ -41,7 +41,12 @@ Once you have an instance of the client, you can use it to:
 
 * Fetch the classification for a specific asset - [getClassificationsForAsset]()
 
-* Return a list of assets matching the search criteria without the full context [searchByType]()
+* Returns a list of supported asset types - [getSupportedTypes]()
+
+* Return a list of assets matching the search criteria without the full context [searchByType](). Entity types are case
+  insensitive, so proper values should be given in the request, otherwise an EntityNotKnownException will be thrown. If
+  no type will be provided the operation will be made using the default search types. In order to determine de supported types
+  call [getSupportedTypes]() before.
 
 * Return the full context of an asset/glossary term based on its identifier. The response contains the list of the connections assigned to the asset - [getAssetContext]()
 

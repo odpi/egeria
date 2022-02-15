@@ -351,6 +351,7 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
                                                                null,
                                                                null,
+                                                               0,
                                                                false,
                                                                false,
                                                                supportedZones,

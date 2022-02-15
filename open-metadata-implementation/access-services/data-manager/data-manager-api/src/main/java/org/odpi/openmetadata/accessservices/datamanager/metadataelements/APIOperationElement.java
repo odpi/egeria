@@ -26,7 +26,6 @@ public class APIOperationElement implements MetadataElement, Serializable
 
     private APIOperationProperties properties    = null;
     private ElementHeader          elementHeader = null;
-    private int                    payloadCount  = 0;
 
     /**
      * Default constructor
@@ -48,8 +47,6 @@ public class APIOperationElement implements MetadataElement, Serializable
         {
             elementHeader = template.getElementHeader();
             properties = template.getProperties();
-
-            payloadCount = template.getPayloadCount();
         }
     }
 
@@ -100,26 +97,6 @@ public class APIOperationElement implements MetadataElement, Serializable
     }
 
 
-
-    /**
-     * Return the count of the payloads (header, request, response) defined for this operation.
-     *
-     * @return int
-     */
-    public int getPayloadCount() { return payloadCount; }
-
-
-    /**
-     * Set up the count of payloads (header, request, response) defined for this operation
-     *
-     * @param payloadCount int
-     */
-    public void setPayloadCount(int payloadCount)
-    {
-        this.payloadCount = payloadCount;
-    }
-
-
     /**
      * JSON-style toString
      *
@@ -131,7 +108,6 @@ public class APIOperationElement implements MetadataElement, Serializable
         return "APIOperationElement{" +
                        "properties=" + properties +
                        ", elementHeader=" + elementHeader +
-                       ", payloadCount=" + payloadCount +
                        '}';
     }
 
@@ -154,8 +130,7 @@ public class APIOperationElement implements MetadataElement, Serializable
             return false;
         }
         APIOperationElement that = (APIOperationElement) objectToCompare;
-        return payloadCount == that.payloadCount &&
-                       Objects.equals(properties, that.properties) &&
+        return Objects.equals(properties, that.properties) &&
                        Objects.equals(elementHeader, that.elementHeader);
     }
 
@@ -168,6 +143,6 @@ public class APIOperationElement implements MetadataElement, Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties, payloadCount);
+        return Objects.hash(super.hashCode(), elementHeader, properties);
     }
 }

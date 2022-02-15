@@ -7,10 +7,7 @@ package org.odpi.openmetadata.accessservices.securityofficer.api.ffdc;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.text.MessageFormat;
 
 public enum SecurityOfficerAuditCode implements AuditLogMessageSet
 {
@@ -86,7 +83,7 @@ public enum SecurityOfficerAuditCode implements AuditLogMessageSet
 
     OUT_TOPIC_EVENT("OMAS-OMAS-SECURITY-OFFICER-0015",
                     OMRSAuditLogRecordSeverity.EVENT,
-                    "The Security Officer Open Metadata Access Service (OMAS) has sent event: {0}",
+                    "The Security Officer Open Metadata Access Service (OMAS) has sent event of type: {0}",
                     "The access service sends out configuration notifications to ensure connected governance servers have the most up to-date " +
                             "configuration.  This message is to create a record of the events that are being published.",
                     "This event indicates that the configuration for a governance engine, or governance service has changed.  " +
@@ -96,7 +93,7 @@ public enum SecurityOfficerAuditCode implements AuditLogMessageSet
 
 
 
-    private AuditLogMessageDefinition messageDefinition;
+    private final AuditLogMessageDefinition messageDefinition;
 
     /**
      * The constructor for SecurityOfficerAuditCode expects to be passed one of the enumeration rows defined in

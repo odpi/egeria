@@ -3,15 +3,17 @@
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.lineagegraph;
 
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
-import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.janusgraph.core.JanusGraphFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.factory.GraphFactory;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph.LineageGraphConnectorHelper;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.ffdc.JanusConnectorException;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,18 +39,16 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 public class LineageGraphConnectorHelperTest {
 
     static LineageGraphConnectorHelper lineageGraphConnectorHelper;
+    private static final String CONNECTOR_PROVIDER_NAME = "org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph.LineageGraphConnectorProvider";
 
     @BeforeAll
-    public static void beforeClass() {
-        Graph graph = JanusGraphFactory.build().set("storage.backend", "inmemory").open();
-        GraphTraversalSource g = graph.traversal();
-        lineageGraphConnectorHelper = new LineageGraphConnectorHelper(g, true);
-
-        addColumnLineageData(g);
-
-        addGlossaryLineageData(g);
-
-        addTableLineageData(g);
+    public static void beforeClass() throws JanusConnectorException, OpenLineageException {
+        GraphFactory graphFactory = new GraphFactory();
+        graphFactory.openGraph(CONNECTOR_PROVIDER_NAME, Collections.singletonMap("storage.backend", "inmemory"), null);
+        lineageGraphConnectorHelper = new LineageGraphConnectorHelper(graphFactory, true);
+        addColumnLineageData(graphFactory.getGraphTraversalSource());
+        addGlossaryLineageData(graphFactory.getGraphTraversalSource());
+        addTableLineageData(graphFactory.getGraphTraversalSource());
     }
 
 
@@ -61,7 +61,7 @@ public class LineageGraphConnectorHelperTest {
         expectedNodeIDs.add(queriedNodeID);
         expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE);
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphConnectorHelper.ultimateSource(queriedNodeID, true).get();
+        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphConnectorHelper.ultimateSource(queriedNodeID).get();
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
         validateResponse(expectedNodeIDs, lineageVertices);
     }
@@ -75,7 +75,7 @@ public class LineageGraphConnectorHelperTest {
         expectedNodeIDs.add(queriedNodeID);
         expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION);
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphConnectorHelper.ultimateDestination(queriedNodeID, true).get();
+        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphConnectorHelper.ultimateDestination(queriedNodeID).get();
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
 
         validateResponse(expectedNodeIDs, lineageVertices);
@@ -93,10 +93,10 @@ public class LineageGraphConnectorHelperTest {
         expectedNodeIDs.add("c32");
         expectedNodeIDs.add("c41");
         expectedNodeIDs.add("c42");
-        expectedNodeIDs.add("p1");
-        expectedNodeIDs.add("p2");
-        expectedNodeIDs.add("p3");
-        expectedNodeIDs.add("p4");
+        expectedNodeIDs.add("sp1");
+        expectedNodeIDs.add("sp2");
+        expectedNodeIDs.add("sp3");
+        expectedNodeIDs.add("sp4");
 
         LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphConnectorHelper.endToEnd(queriedNodeID, true).get();
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
@@ -130,7 +130,7 @@ public class LineageGraphConnectorHelperTest {
         expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE);
         expectedNodeIDs.add(queriedNodeID);
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphConnectorHelper.ultimateSource(queriedNodeID, true).get();
+        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphConnectorHelper.ultimateSource(queriedNodeID).get();
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
         validateResponse(expectedNodeIDs, lineageVertices);
     }
@@ -143,7 +143,7 @@ public class LineageGraphConnectorHelperTest {
         expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION);
         expectedNodeIDs.add(queriedNodeID);
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphConnectorHelper.ultimateDestination(queriedNodeID, true).get();
+        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphConnectorHelper.ultimateDestination(queriedNodeID).get();
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
 
         validateResponse(expectedNodeIDs, lineageVertices);
@@ -173,7 +173,7 @@ public class LineageGraphConnectorHelperTest {
         expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE);
         expectedNodeIDs.add(queriedNodeID);
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphConnectorHelper.ultimateSource(queriedNodeID, true).get();
+        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphConnectorHelper.ultimateSource(queriedNodeID).get();
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
         validateResponse(expectedNodeIDs, lineageVertices);
     }
@@ -186,7 +186,7 @@ public class LineageGraphConnectorHelperTest {
         expectedNodeIDs.add("t20");
         expectedNodeIDs.add(queriedNodeID);
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphConnectorHelper.ultimateDestination(queriedNodeID, true).get();
+        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphConnectorHelper.ultimateDestination(queriedNodeID).get();
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
 
         validateResponse(expectedNodeIDs, lineageVertices);
@@ -243,36 +243,36 @@ public class LineageGraphConnectorHelperTest {
         Vertex c41 = getVertex(g, TABULAR_COLUMN, "c41", "c41");
         Vertex c42 = getVertex(g, TABULAR_COLUMN, "c42", "c42");
 
-        Vertex p1 = getVertex(g, NODE_LABEL_SUB_PROCESS, "p1", "p1");
-        Vertex p2 = getVertex(g, NODE_LABEL_SUB_PROCESS, "p2", "p2");
-        Vertex p3 = getVertex(g, NODE_LABEL_SUB_PROCESS, "p3", "p3");
-        Vertex p4 = getVertex(g, NODE_LABEL_SUB_PROCESS, "p4", "p4");
+        Vertex sp1 = getVertex(g, NODE_LABEL_SUB_PROCESS, "sp1", "sp1");
+        Vertex sp2 = getVertex(g, NODE_LABEL_SUB_PROCESS, "sp2", "sp2");
+        Vertex sp3 = getVertex(g, NODE_LABEL_SUB_PROCESS, "sp3", "sp3");
+        Vertex sp4 = getVertex(g, NODE_LABEL_SUB_PROCESS, "sp4", "sp4");
 
-        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(c11).to(p1).next();
-        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(c12).to(p1).next();
+        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(c11).to(sp1).next();
+        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(c12).to(sp1).next();
 
-        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(p1).to(c21).next();
-        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(p1).to(c21).next();
+        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(sp1).to(c21).next();
+        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(sp1).to(c21).next();
 
-        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(c21).to(p2).next();
-        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(c22).to(p2).next();
+        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(c21).to(sp2).next();
+        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(c22).to(sp2).next();
 
-        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(p2).to(c31).next();
-        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(p2).to(c32).next();
+        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(sp2).to(c31).next();
+        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(sp2).to(c32).next();
 
-        //p3 branch causes the cycle
-        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(c31).to(p3).next();
-        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(c32).to(p3).next();
+        //sp3 branch causes the cycle
+        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(c31).to(sp3).next();
+        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(c32).to(sp3).next();
 
-        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(p3).to(c21).next();
-        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(p3).to(c22).next();
+        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(sp3).to(c21).next();
+        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(sp3).to(c22).next();
 
-        //p4 branch leads to the destination
-        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(c31).to(p4).next();
-        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(c32).to(p4).next();
+        //sp4 branch leads to the destination
+        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(c31).to(sp4).next();
+        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(c32).to(sp4).next();
 
-        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(p4).to(c41).next();
-        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(p4).to(c42).next();
+        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(sp4).to(c41).next();
+        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(sp4).to(c42).next();
     }
 
     private static void addTableLineageData(GraphTraversalSource g) {

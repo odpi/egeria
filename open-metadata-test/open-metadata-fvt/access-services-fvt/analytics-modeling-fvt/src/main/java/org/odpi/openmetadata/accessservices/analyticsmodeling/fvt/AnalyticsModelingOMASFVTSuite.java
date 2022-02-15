@@ -42,28 +42,28 @@ public class AnalyticsModelingOMASFVTSuite extends FVTSuiteBase
         {
             returnCode --;
         }
-        results.printResults();
+        results.printResults(serverName);
 
         results = InvalidParameterTest.performFVT(serverName, serverPlatformRootURL, userId);
         if (! results.isSuccessful())
         {
             returnCode --;
         }
-        results.printResults();
+        results.printResults(serverName);
 
         results = ImportsTest.performFVT(serverName, serverPlatformRootURL, userId);
         if (! results.isSuccessful())
         {
             returnCode --;
         }
-        results.printResults();
+        results.printResults(serverName);
 
         results = SynchronizationTest.performFVT(serverName, serverPlatformRootURL, userId);
         if (! results.isSuccessful())
         {
             returnCode --;
         }
-        results.printResults();
+        results.printResults(serverName);
 
         return returnCode;
     }

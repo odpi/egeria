@@ -18,8 +18,7 @@ import java.util.Map;
  */
 public class ExchangeClientBase
 {
-    final String externalIdentifierParameterName = "externalIdentifier";
-    final String urlTemplatePrefix             = "/servers/{0}/open-metadata/access-services/asset-manager/users/{1}";
+    final String urlTemplatePrefix = "/servers/{0}/open-metadata/access-services/asset-manager/users/{1}";
 
     String   serverName;               /* Initialized in constructor */
     String   serverPlatformURLRoot;    /* Initialized in constructor */
@@ -28,7 +27,6 @@ public class ExchangeClientBase
     AssetManagerRESTClient  restClient;               /* Initialized in constructor */
 
     AuditLog auditLog = null;
-
 
 
     /**
@@ -181,9 +179,11 @@ public class ExchangeClientBase
      * @param methodName calling method
      * @throws InvalidParameterException resulting exception
      */
-    void handleMissingScope(String externalIdentifier,
-                            String methodName) throws InvalidParameterException
+    private void handleMissingScope(String externalIdentifier,
+                                    String methodName) throws InvalidParameterException
     {
+        final String externalIdentifierParameterName = "externalIdentifier";
+
         throw new InvalidParameterException(AssetManagerErrorCode.NO_SCOPE_FOR_EXTERNAL_ID.getMessageDefinition(externalIdentifier,
                                                                                                                 methodName),
                                             this.getClass().getName(),
@@ -212,8 +212,6 @@ public class ExchangeClientBase
 
         if (assetManagerGUID != null)
         {
-            invalidParameterHandler.validateName(externalIdentifier, externalIdentifierParameterName, methodName);
-
             correlationProperties.setAssetManagerGUID(assetManagerGUID);
             correlationProperties.setAssetManagerName(assetManagerName);
             correlationProperties.setExternalIdentifier(externalIdentifier);
@@ -234,7 +232,7 @@ public class ExchangeClientBase
      *
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param externalIdentifier unique identifier of the glossary in the external asset manager
+     * @param externalIdentifier unique identifier of the element in the external asset manager
      * @param externalIdentifierName name of property for the external identifier in the external asset manager
      * @param externalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
      * @param externalIdentifierSource component that issuing this request.
@@ -258,17 +256,19 @@ public class ExchangeClientBase
 
         if (assetManagerGUID != null)
         {
-            invalidParameterHandler.validateName(externalIdentifier, externalIdentifierParameterName, methodName);
-
             correlationProperties.setAssetManagerGUID(assetManagerGUID);
             correlationProperties.setAssetManagerName(assetManagerName);
-            correlationProperties.setKeyPattern(KeyPattern.LOCAL_KEY);
-            correlationProperties.setExternalIdentifier(externalIdentifier);
-            correlationProperties.setExternalIdentifierName(externalIdentifierName);
-            correlationProperties.setExternalIdentifierUsage(externalIdentifierUsage);
-            correlationProperties.setExternalIdentifierSource(externalIdentifierSource);
-            correlationProperties.setKeyPattern(externalIdentifierKeyPattern);
-            correlationProperties.setMappingProperties(mappingProperties);
+
+            if (externalIdentifier != null)
+            {
+                correlationProperties.setKeyPattern(KeyPattern.LOCAL_KEY);
+                correlationProperties.setExternalIdentifier(externalIdentifier);
+                correlationProperties.setExternalIdentifierName(externalIdentifierName);
+                correlationProperties.setExternalIdentifierUsage(externalIdentifierUsage);
+                correlationProperties.setExternalIdentifierSource(externalIdentifierSource);
+                correlationProperties.setKeyPattern(externalIdentifierKeyPattern);
+                correlationProperties.setMappingProperties(mappingProperties);
+            }
         }
         else if (externalIdentifier != null)
         {

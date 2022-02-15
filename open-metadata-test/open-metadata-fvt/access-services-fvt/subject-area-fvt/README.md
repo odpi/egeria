@@ -14,7 +14,7 @@ In a development environment:
 
 Each FVT file has a static runIt method that runs the the FVT with the supplied server name , url and userid.  
 
-As part of a maven install the FVTs are automatically run. The maven install calls each of the runIt methods in turn abd runs them against an OMAG Server started in a docker container.
+As part of a maven install the FVTs are automatically run. The maven install calls each of the runIt methods in turn and runs them against an OMAG Server.
     
 
  

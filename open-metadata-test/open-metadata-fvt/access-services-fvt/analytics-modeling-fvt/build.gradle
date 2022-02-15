@@ -78,7 +78,7 @@ task startServer(dependsOn: ['cleanData',':open-metadata-distribution:open-metad
 
 // Configuration of the platform
 task configServer(dependsOn: ['startServer','classes'], type: JavaExec) {
-    main = 'configureStartServer'
+    mainClass = 'configureStartServer'
     classpath = sourceSets.test.runtimeClasspath
     //TODO: These parms aren't currently correctly passed. We rely on defaults in the script
     systemProperties = [
@@ -101,7 +101,8 @@ test {
     group = 'verification'
     outputs.upToDateWhen {return false}
     systemProperties = [
-            'fvt.url': 'https://localhost:10453'
+            'fvt.url': 'https://localhost:10453',
+            'junit.jupiter.testclass.order.default': 'org.junit.jupiter.api.ClassOrderer$ClassName'
     ]
     useJUnitPlatform()
     testLogging.showStandardStreams = true

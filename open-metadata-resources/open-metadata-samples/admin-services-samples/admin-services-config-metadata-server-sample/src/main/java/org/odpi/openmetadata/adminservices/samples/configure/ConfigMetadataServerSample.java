@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.adminservices.samples.configure;
 
-import org.odpi.openmetadata.adminservices.client.MetadataServerConfigurationClient;
+import org.odpi.openmetadata.adminservices.client.MetadataAccessStoreConfigurationClient;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * ConfigMetadataServerSample illustrates how to use the MetadataServerConfigurationClient
+ * ConfigMetadataServerSample illustrates how to use the MetadataAccessStoreConfigurationClient
  * to configure a Metadata Server.
  */
 public class ConfigMetadataServerSample
@@ -42,7 +42,7 @@ public class ConfigMetadataServerSample
     private static final String[] supportedZones = { "quarantine", "clinical-trials", "research", "data-lake", "trash-can" };
     private static final String[] defaultZones   = { "quarantine" };
 
-    private MetadataServerConfigurationClient configurationClient;
+    private MetadataAccessStoreConfigurationClient configurationClient;
 
 
     /**
@@ -64,7 +64,7 @@ public class ConfigMetadataServerSample
         System.out.println();
         System.out.println("Configuring server: " + metadataServerName);
 
-        configurationClient = new MetadataServerConfigurationClient(adminUserId, metadataServerName, adminPlatformURLRoot);
+        configurationClient = new MetadataAccessStoreConfigurationClient(adminUserId, metadataServerName, adminPlatformURLRoot);
     }
 
 
@@ -92,7 +92,7 @@ public class ConfigMetadataServerSample
         System.out.println();
         System.out.println("Configuring server: " + metadataServerName);
 
-        configurationClient = new MetadataServerConfigurationClient(adminUserId, metadataServerName, adminPlatformURLRoot, connectionUserId, connectionPassword);
+        configurationClient = new MetadataAccessStoreConfigurationClient(adminUserId, metadataServerName, adminPlatformURLRoot, connectionUserId, connectionPassword);
     }
 
 
@@ -200,7 +200,7 @@ public class ConfigMetadataServerSample
 
                 sample.run();
             }
-            catch (Throwable  error)
+            catch (Exception  error)
             {
                 System.out.println("Exception: " + error.getClass().getName() + " with message " + error.getMessage());
                 System.exit(-1);
@@ -214,7 +214,7 @@ public class ConfigMetadataServerSample
 
                 sample.run();
             }
-            catch (Throwable  error)
+            catch (Exception  error)
             {
                 System.out.println("Exception: " + error.getClass().getName() + " with message " + error.getMessage());
                 System.exit(-1);

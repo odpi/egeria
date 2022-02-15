@@ -23,8 +23,7 @@ import java.util.Set;
 
 
 /**
- * KafkaMonitorIntegrationConnector provides common methods for the connectors
- * in this module.
+ * KafkaMonitorIntegrationConnector catalogues active topics in a kafka broker.
  */
 public class KafkaMonitorIntegrationConnector extends TopicIntegratorConnector
 {
@@ -129,9 +128,9 @@ public class KafkaMonitorIntegrationConnector extends TopicIntegratorConnector
      * Refresh is called when the integration connector first starts and then at intervals defined in the connector's configuration
      * as well as any external REST API calls to explicitly refresh the connector.
      *
-     * This method performs two sweeps.  It first retrieves the files in the directory and validates that are in the
-     * catalog - adding or updating them if necessary.  The second sweep is to ensure that all of the assets catalogued
-     * in this directory actually exist on the file system.
+     * This method performs two sweeps. It first retrieves the topics from the event broker (Kafka) and validates that are in the
+     * catalog - adding or updating them if necessary. The second sweep is to ensure that all of the topics catalogued
+     * actually exist in the event broker.
      *
      * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the metadata.
      */
@@ -282,7 +281,7 @@ public class KafkaMonitorIntegrationConnector extends TopicIntegratorConnector
 
 
     /**
-     * Shutdown file monitoring
+     * Shutdown kafka monitoring
      *
      * @throws ConnectorCheckedException something failed in the super class
      */

@@ -17,13 +17,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ContextClosedEvent;
-import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
@@ -32,12 +31,13 @@ import javax.annotation.PostConstruct;
 import java.util.*;
 
 
-@SpringBootApplication
-@ComponentScan(basePackages = {"${scan.packages}"})
+@SpringBootApplication(
+        scanBasePackages = {"${scan.packages}"}
+)
 @OpenAPIDefinition(
         info = @Info(
                 title = "Egeria's Open Metadata and Governance (OMAG) Server Platform",
-                version = "3.4-SNAPSHOT",
+                version = "3.6-SNAPSHOT",
                 description = "The OMAG Server Platform provides a runtime process and platform for Open Metadata and Governance (OMAG) Services.\n" +
                         "\n" +
                         "The OMAG services are configured and activated in OMAG Servers using the Administration Services.\n" +
@@ -55,13 +55,15 @@ import java.util.*;
                         "operation for a cloud service, " +
                         "or host a variety of different OMAG Servers needed at a particular location.\n" +
                         "\n" +
-                        "Click on the documentation link to find out more ...",
+                        "NOTE: many REST APIS are not guaranteed to be backward-compatible from release to release since they have supported Java clients.  " +
+                        "REST APIs may be used for development, testing, evaluation.  Click on the documentation for each module to discover more ...",
                 license = @License(name = "Apache 2.0", url = "https://www.apache.org/licenses/LICENSE-2.0"),
-                contact = @Contact(url = "https://egeria.odpi.org", name = "Egeria Project", email = "egeria-technical-discuss@lists.lfaidata.foundation")
+                contact = @Contact(url = "https://odpi.github.io/egeria-docs", name = "Egeria Project",
+                                   email = "egeria-technical-discuss@lists.lfaidata.foundation")
         ),
 
         externalDocs = @ExternalDocumentation(description = "OMAG Server Platform documentation",
-                url="https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/user")
+                url="https://odpi.github.io/egeria-docs/guides/admin/")
         )
 
 
@@ -102,7 +104,6 @@ public class OMAGServerPlatform
                 log.warn("strict.ssl is set to false! Invalid certificates will be accepted for connection!");
                 HttpHelper.noStrictSSL();
             }
-            autoStartConfig();
         };
     }
 
@@ -117,7 +118,9 @@ public class OMAGServerPlatform
         {
             String[] splits = startupServers.split(",");
             //remove eventual duplicates
-            HashSet<String> serverSet = new HashSet<>(Arrays.asList(splits));
+            TreeSet<String> serverSet = new TreeSet<String>();
+
+            Collections.addAll(serverSet, splits);
 
             if (! serverSet.isEmpty())
             {
@@ -148,7 +151,7 @@ public class OMAGServerPlatform
         }
         else
         {
-            startupMessage = response.getExceptionErrorMessage();
+            startupMessage = "Server startup failed with error: " + response.getExceptionErrorMessage();
 
             StartupFailEvent customSpringEvent = new StartupFailEvent(this, startupMessage);
             applicationEventPublisher.publishEvent(customSpringEvent);
@@ -166,10 +169,9 @@ public class OMAGServerPlatform
 
         if (servers != null)
         {
-            log.info("Temporarily deactivating the auto-started servers '{}'", servers.toString());
+            log.info("Temporarily deactivating any auto-started servers '{}'", servers);
 
-            System.out.println(new Date().toString() + " OMag Server Platform shutdown requested. Temporarily deactivating the following " +
-                                       "auto-started servers: " + servers.toString());
+            System.out.println(new Date() + " OMAG Server Platform shutdown requested. Shutting down auto-started servers (if running): " + servers);
 
             operationalServices.deactivateTemporarilyServerList(sysUser, servers);
         }
@@ -179,15 +181,15 @@ public class OMAGServerPlatform
     public class ApplicationContextListener
     {
 
-        @EventListener
-        public void onApplicationEvent(ContextRefreshedEvent event)
-        {
-            System.out.println();
+        @EventListener(ApplicationReadyEvent.class)
+        public void applicationReady() {
+            autoStartConfig();
             System.out.println(OMAGServerPlatform.this.startupMessage);
+
             if(triggeredRuntimeHalt){
                 Runtime.getRuntime().halt(43);
             }
-            System.out.println(new Date().toString() + " OMAG server platform ready for more configuration");
+            System.out.println(new Date() + " OMAG server platform ready for more configuration");
         }
 
         @EventListener

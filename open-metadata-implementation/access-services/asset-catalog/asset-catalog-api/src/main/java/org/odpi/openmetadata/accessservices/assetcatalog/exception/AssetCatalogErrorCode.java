@@ -34,27 +34,27 @@ public enum AssetCatalogErrorCode implements ExceptionMessageSet {
     ASSET_NEIGHBORHOOD_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-011 ",
             "There is no assets or relationships available in the neighbourhood of asset {0} in OMAS Server {1}",
             "The system is unable to retrieve the neighbourhood for the given asset.",
-            Constants.CORRECT_UNIQUE_IDENTIFIER),
+            "Check that the unique identifier for the asset is correct."),
 
     NO_ASSET_FROM_NEIGHBORHOOD_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-012 ",
             "There is no assets available in the neighbourhood of asset {0} in OMAS Server {1}",
             "The system is unable to retrieve the assets neighborhood from the specified asset identifier.",
-            Constants.CORRECT_UNIQUE_IDENTIFIER),
-
-    NO_RELATIONSHIPS_FROM_NEIGHBORHOOD_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-013 ",
-            "There is no relationships available in the neighbourhood of asset {0} in OMAS Server {1}",
-            "The system is unable to retrieve the neighborhood relationships for the specified asset identifier.",
-            Constants.CORRECT_UNIQUE_IDENTIFIER),
+            "Check that the unique identifier for the asset is correct."),
 
     LINKING_RELATIONSHIPS_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-015 ",
             "There is no intermediate relationships that connect the {0} with the {1} in OMAS Server {2}",
             "The system is unable to retrieve the linking relationship.",
-            "Check that the unique identifiers of the assets are correct."),
+            "Check that the unique identifier for the asset is correct."),
 
     LINKING_ASSETS_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-016 ",
             "There is no intermediate assets that connect the {0} with the {1} in OMAS Server {2}",
             "The system is unable to retrieve linking assets.",
-            "Check that the unique identifiers of the assets are correct."),
+            "Check that the unique identifier for the asset is correct."),
+
+    TYPE_DEF_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-017 ",
+            "The provided entity type/s are non known to the OMAS Server",
+            "The system is unable to retrieve assets of an unknown type/s.",
+            "Check that the entity type/s provided is/are correct."),
 
     SERVICE_NOT_INITIALIZED(503, "OMAS-ASSET-CATALOG-503-001 ",
             "The access service has not been initialized for server {0} and can not support REST API calls",
@@ -110,7 +110,4 @@ public enum AssetCatalogErrorCode implements ExceptionMessageSet {
         return messageDefinition;
     }
 
-    private static class Constants {
-        public static final String CORRECT_UNIQUE_IDENTIFIER = "Check that the unique identifier for the asset is correct.";
-    }
 }

@@ -5,7 +5,7 @@
  * These are the client interfaces of the Asset Manager OMAS.
  *
  * <ul>
- *     <li>AssetManagerClient enables the caller to create the Software Server Capability that represents
+ *     <li>ExternalAssetManagerClient enables the caller to create the Software Server Capability that represents
  *         the source, or owner, of the metadata.  These sources are typically metadata catalogs that
  *         are not sophisticated enough to join an open metadata cohort through the OMRS Repository Connector.</li>
  *

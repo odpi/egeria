@@ -139,14 +139,14 @@ public class ConnectedAssetSchemaAttributes extends AssetSchemaAttributes
 
         try
         {
-            SchemaAttributesResponse restResult = restClient.callSchemaAttributesGetRESTCall(methodName,
-                                                                                             omasServerURL + urlTemplate,
-                                                                                             serverName,
-                                                                                             serviceName,
-                                                                                             userId,
-                                                                                             schemaGUID,
-                                                                                             cacheStartPointer,
-                                                                                             maximumSize);
+            SchemaAttributesResponse restResult = restClient.callOCFSchemaAttributesGetRESTCall(methodName,
+                                                                                                omasServerURL + urlTemplate,
+                                                                                                serverName,
+                                                                                                serviceName,
+                                                                                                userId,
+                                                                                                schemaGUID,
+                                                                                                cacheStartPointer,
+                                                                                                maximumSize);
 
             restExceptionHandler.detectAndThrowInvalidParameterException(restResult);
             restExceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
@@ -175,7 +175,7 @@ public class ConnectedAssetSchemaAttributes extends AssetSchemaAttributes
                 }
             }
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             restExceptionHandler.handleUnexpectedException(error, methodName, serverName, omasServerURL);
         }

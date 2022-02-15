@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
                 "the connected Open Metadata Repository Cohorts.  They also consolidate events from these cohorts and " +
                 "distribute them to the access services running on the server.",
         externalDocs=@ExternalDocumentation(description="Further information",
-                url="https://egeria.odpi.org/open-metadata-implementation/repository-services/"))
+                url="https://odpi.github.io/egeria-docs/services/omrs/"))
 
 
 public class EnterpriseRepositoryServicesResource
@@ -1858,5 +1858,30 @@ public class EnterpriseRepositoryServicesResource
                                                     @PathVariable String    deletedRelationshipGUID)
     {
         return restAPI.restoreRelationship(serverName, userId, deletedRelationshipGUID);
+    }
+
+
+
+    /* ======================================================================
+     * Remote Enterprise OMRS Topic Connection
+     */
+
+    /**
+     * Return the connection for remote access to the enterprise topic connector.
+     * May be null if remote access to this topic is not configured in the OMAG Server.
+     *
+     * @param serverName unique identifier for requested server
+     * @param userId unique identifier for requesting server
+     * @return null or connection object or
+     *  InvalidParameterException unknown servername
+     *  UserNotAuthorizedException unsupported userId
+     *  RepositoryErrorException null local repository
+     */
+    @GetMapping(path = "/remote-topic-connection")
+
+    public ConnectionResponse getEnterpriseOMRSTopicConnection(@PathVariable String serverName,
+                                                               @PathVariable String userId)
+    {
+        return restAPI.getEnterpriseOMRSTopicConnection(serverName, userId);
     }
 }

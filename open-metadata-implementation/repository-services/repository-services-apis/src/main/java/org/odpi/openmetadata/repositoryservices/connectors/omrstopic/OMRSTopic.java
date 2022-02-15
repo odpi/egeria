@@ -43,6 +43,18 @@ public interface OMRSTopic
                           String            serviceName);
 
 
+
+    /**
+     * Register a listener object.  This object will be supplied with all of the events
+     * received on the topic.
+     *
+     * @param newListener object implementing the OMRSTopicRepositoryEventListener interface
+     * @param serviceName name of service that the listener is from
+     */
+    void registerListener(OMRSTopicRepositoryEventListener newListener,
+                          String                           serviceName);
+
+
     /**
      * Sends the supplied event to the topic.
      *

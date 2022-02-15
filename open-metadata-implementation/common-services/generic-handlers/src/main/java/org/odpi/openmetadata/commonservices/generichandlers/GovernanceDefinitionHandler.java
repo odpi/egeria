@@ -94,6 +94,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
      * @param implementationDescription for GovernanceControl - how should this be implemented
      * @param namePattern for NamingStandardsRule - the pattern used to for new names
      * @param details for License or Certification - additional details about the definition
+     * @param distinguishedName for Security groups - qualified name for LDAP
      * @param additionalProperties additional properties for a definition
      * @param suppliedTypeName type name from the caller (enables creation of subtypes)
      * @param extendedProperties  properties for a definition subtype
@@ -120,6 +121,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                              String              implementationDescription,
                                              String              namePattern,
                                              String              details,
+                                             String              distinguishedName,
                                              Map<String, String> additionalProperties,
                                              String              suppliedTypeName,
                                              Map<String, Object> extendedProperties,
@@ -157,6 +159,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                                                               implementationDescription,
                                                                               namePattern,
                                                                               details,
+                                                                              distinguishedName,
                                                                               additionalProperties,
                                                                               typeGUID,
                                                                               typeName,
@@ -199,6 +202,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
      * @param implementationDescription for GovernanceControl - how should this be implemented
      * @param namePattern for NamingStandardsRule - the pattern used to for new names
      * @param details for License or Certification - additional details about the definition
+     * @param distinguishedName for Security groups - qualified name for LDAP
      * @param additionalProperties additional properties for a governance definition
      * @param suppliedTypeName type of term
      * @param extendedProperties  properties for a governance definition subtype
@@ -227,6 +231,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                            String              implementationDescription,
                                            String              namePattern,
                                            String              details,
+                                           String              distinguishedName,
                                            Map<String, String> additionalProperties,
                                            String              suppliedTypeName,
                                            Map<String, Object> extendedProperties,
@@ -269,6 +274,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                                                               implementationDescription,
                                                                               namePattern,
                                                                               details,
+                                                                              distinguishedName,
                                                                               additionalProperties,
                                                                               typeGUID,
                                                                               typeName,
@@ -754,6 +760,65 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
         return this.getBeansByValue(userId,
                                     name,
                                     nameParameterName,
+                                    typeGUID,
+                                    typeName,
+                                    specificMatchPropertyNames,
+                                    true,
+                                    null,
+                                    null,
+                                    false,
+                                    false,
+                                    supportedZones,
+                                    null,
+                                    startFrom,
+                                    pageSize,
+                                    new Date(),
+                                    methodName);
+    }
+
+
+
+    /**
+     * Retrieve the list of definition metadata elements with a matching qualified or title.
+     * There are no wildcards supported on this request.
+     *
+     * @param userId calling user
+     * @param typeGUID GUID of the type of governance definition
+     * @param typeName name of the type of governance definition
+     * @param parameterValue value to search for
+     * @param parameterParameterName parameter supplying value
+     * @param parameterPropertyName property name in entity to search in
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of matching governance definitions
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<B> getGovernanceDefinitionsByStringParameter(String userId,
+                                                             String typeGUID,
+                                                             String typeName,
+                                                             String parameterValue,
+                                                             String parameterParameterName,
+                                                             String parameterPropertyName,
+                                                             int    startFrom,
+                                                             int    pageSize,
+                                                             String methodName) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(parameterValue, parameterParameterName, methodName);
+
+        List<String> specificMatchPropertyNames = new ArrayList<>();
+        specificMatchPropertyNames.add(parameterPropertyName);
+
+        return this.getBeansByValue(userId,
+                                    parameterValue,
+                                    parameterParameterName,
                                     typeGUID,
                                     typeName,
                                     specificMatchPropertyNames,

@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetmanager.converters;
 
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.SoftwareServerCapabilityElement;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.SoftwareCapabilityElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -15,7 +15,7 @@ import java.lang.reflect.InvocationTargetException;
 
 /**
  * AssetManagerConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- * EntityDetail object into a SoftwareServerCapabilityElement bean.
+ * EntityDetail object into a SoftwareCapabilityElement bean.
  */
 public class AssetManagerConverter<B> extends AssetManagerOMASConverter<B>
 {
@@ -27,8 +27,8 @@ public class AssetManagerConverter<B> extends AssetManagerOMASConverter<B>
      * @param serverName local server name
      */
     public AssetManagerConverter(OMRSRepositoryHelper repositoryHelper,
-                                    String               serviceName,
-                                    String               serverName)
+                                 String               serviceName,
+                                 String               serverName)
     {
         super(repositoryHelper, serviceName, serverName);
     }
@@ -36,7 +36,7 @@ public class AssetManagerConverter<B> extends AssetManagerOMASConverter<B>
 
     /**
      * Using the supplied instances, return a new instance of the bean. This is used for beans that have
-     * contain a combination of the properties from an entity and a that os a connected relationship.
+     * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
      * @param entity entity containing the properties
@@ -56,10 +56,10 @@ public class AssetManagerConverter<B> extends AssetManagerOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof SoftwareServerCapabilityElement)
+            if (returnBean instanceof SoftwareCapabilityElement)
             {
-                SoftwareServerCapabilityElement bean = (SoftwareServerCapabilityElement) returnBean;
-                AssetManagerProperties databaseManagerProperties = new AssetManagerProperties();
+                SoftwareCapabilityElement bean                   = (SoftwareCapabilityElement) returnBean;
+                AssetManagerProperties    assetManagerProperties = new AssetManagerProperties();
 
                 if (entity != null)
                 {
@@ -67,23 +67,23 @@ public class AssetManagerConverter<B> extends AssetManagerOMASConverter<B>
 
                     InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
 
-                    databaseManagerProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
-                    databaseManagerProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    databaseManagerProperties.setDisplayName(this.removeName(instanceProperties));
-                    databaseManagerProperties.setDescription(this.removeDescription(instanceProperties));
-                    databaseManagerProperties.setTypeDescription(this.removeDeployedImplementationType(instanceProperties));
-                    databaseManagerProperties.setVersion(this.removeCapabilityVersion(instanceProperties));
-                    databaseManagerProperties.setPatchLevel(this.removePatchLevel(instanceProperties));
-                    databaseManagerProperties.setSource(this.removeSource(instanceProperties));
+                    assetManagerProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    assetManagerProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                    assetManagerProperties.setDisplayName(this.removeName(instanceProperties));
+                    assetManagerProperties.setDescription(this.removeDescription(instanceProperties));
+                    assetManagerProperties.setTypeDescription(this.removeCapabilityType(instanceProperties));
+                    assetManagerProperties.setVersion(this.removeCapabilityVersion(instanceProperties));
+                    assetManagerProperties.setPatchLevel(this.removePatchLevel(instanceProperties));
+                    assetManagerProperties.setSource(this.removeSource(instanceProperties));
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are
                      * assumed to be defined in a subtype.
                      */
-                    databaseManagerProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
-                    databaseManagerProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+                    assetManagerProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+                    assetManagerProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
-                    bean.setSoftwareServerCapabilitiesProperties(databaseManagerProperties);
+                    bean.setSoftwareCapabilitiesProperties(assetManagerProperties);
                 }
                 else
                 {
@@ -106,7 +106,7 @@ public class AssetManagerConverter<B> extends AssetManagerOMASConverter<B>
 
     /**
      * Using the supplied instances, return a new instance of the bean. This is used for beans that have
-     * contain a combination of the properties from an entity and a that os a connected relationship.
+     * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
      * @param entity entity containing the properties

@@ -23,7 +23,7 @@ public class AssetConsumerOutTopicServerConnector extends OpenMetadataTopicSende
      *
      * @param event event object
      * @throws InvalidParameterException the event is null
-     * @throws ConnectorCheckedException there is a problem with the embedded event bus connector(s)./
+     * @throws ConnectorCheckedException there is a problem with the embedded event bus connector(s).
      */
     public void sendEvent(AssetConsumerEvent event) throws InvalidParameterException, ConnectorCheckedException
     {
@@ -37,7 +37,9 @@ public class AssetConsumerOutTopicServerConnector extends OpenMetadataTopicSende
 
             if (super.auditLog != null)
             {
-                super.auditLog.logMessage(methodName, AssetConsumerAuditCode.OUT_TOPIC_EVENT.getMessageDefinition(eventString));
+                super.auditLog.logMessage(methodName,
+                                          AssetConsumerAuditCode.OUT_TOPIC_EVENT.getMessageDefinition(event.getEventType().getEventTypeName()),
+                                          eventString);
             }
         }
         catch (InvalidParameterException | ConnectorCheckedException error)
@@ -47,9 +49,9 @@ public class AssetConsumerOutTopicServerConnector extends OpenMetadataTopicSende
         catch (Exception  error)
         {
             throw new ConnectorCheckedException(AssetConsumerErrorCode.UNABLE_TO_SEND_EVENT.getMessageDefinition(connectionName,
-                                                                                                                   event.toString(),
-                                                                                                                   error.getClass().getName(),
-                                                                                                                   error.getMessage()),
+                                                                                                                 event.toString(),
+                                                                                                                 error.getClass().getName(),
+                                                                                                                 error.getMessage()),
                                                 this.getClass().getName(),
                                                 methodName,
                                                 error);

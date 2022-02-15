@@ -140,14 +140,14 @@ public class ConnectedAssetLocations extends AssetLocations
 
         try
         {
-            LocationsResponse restResult = restClient.callLocationsGetRESTCall(methodName,
-                                                                               omasServerURL + urlTemplate,
-                                                                               serverName,
-                                                                               serviceName,
-                                                                               userId,
-                                                                               assetGUID,
-                                                                               cacheStartPointer,
-                                                                               maximumSize);
+            LocationsResponse restResult = restClient.callOCFLocationsGetRESTCall(methodName,
+                                                                                  omasServerURL + urlTemplate,
+                                                                                  serverName,
+                                                                                  serviceName,
+                                                                                  userId,
+                                                                                  assetGUID,
+                                                                                  cacheStartPointer,
+                                                                                  maximumSize);
 
             restExceptionHandler.detectAndThrowInvalidParameterException(restResult);
             restExceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
@@ -173,7 +173,7 @@ public class ConnectedAssetLocations extends AssetLocations
                 return resultList;
             }
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             restExceptionHandler.handleUnexpectedException(error, methodName, serverName, omasServerURL);
         }

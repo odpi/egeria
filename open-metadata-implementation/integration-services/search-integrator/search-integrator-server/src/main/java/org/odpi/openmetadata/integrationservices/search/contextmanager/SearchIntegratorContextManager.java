@@ -4,9 +4,9 @@
 package org.odpi.openmetadata.integrationservices.search.contextmanager;
 
 import org.odpi.openmetadata.accessservices.assetcatalog.AssetCatalog;
+import org.odpi.openmetadata.accessservices.assetmanager.client.ExternalAssetManagerClient;
 import org.odpi.openmetadata.integrationservices.search.client.AssetCatalogOutTopicEventListener;
 import org.odpi.openmetadata.accessservices.assetcatalog.eventclient.AssetCatalogEventClient;
-import org.odpi.openmetadata.accessservices.assetmanager.client.AssetManagerClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties;
 import org.odpi.openmetadata.adminservices.configuration.properties.PermittedSynchronization;
@@ -32,10 +32,10 @@ import java.util.Map;
  * SearchIntegratorContextManager provides the bridge between the integration daemon services and
  * the specific implementation of an integration service
  */
-public class SearchIntegratorContextManager extends IntegrationContextManager {
-
-    private AssetManagerClient assetManagerClient = null;
-    private AssetCatalogEventClient assetCatalogEventClient;
+public class SearchIntegratorContextManager extends IntegrationContextManager
+{
+    private ExternalAssetManagerClient        assetManagerClient = null;
+    private AssetCatalogEventClient           assetCatalogEventClient;
     private AssetCatalogOutTopicEventListener eventListener;
 
     /**
@@ -48,22 +48,23 @@ public class SearchIntegratorContextManager extends IntegrationContextManager {
     /**
      * Initialize server properties for the context manager.
      *
-     * @param partnerOMASServerName      name of the server to connect to
+     * @param partnerOMASServerName name of the server to connect to
      * @param partnerOMASPlatformRootURL the network address of the server running the OMAS REST servers
-     * @param userId                     caller's userId embedded in all HTTP requests
-     * @param password                   caller's userId embedded in all HTTP requests
-     * @param maxPageSize                maximum number of results that can be returned on a single REST call
-     * @param auditLog                   logging destination
+     * @param userId caller's userId embedded in all HTTP requests
+     * @param password caller's userId embedded in all HTTP requests
+     * @param serviceOptions options from the integration service's configuration
+     * @param maxPageSize maximum number of results that can be returned on a single REST call
+     * @param auditLog logging destination
      */
-    @Override
-    public void initializeContextManager(String partnerOMASServerName,
-                                         String partnerOMASPlatformRootURL,
-                                         String userId,
-                                         String password,
-                                         int maxPageSize,
-                                         AuditLog auditLog) {
+    public void initializeContextManager(String              partnerOMASServerName,
+                                         String              partnerOMASPlatformRootURL,
+                                         String              userId,
+                                         String              password,
+                                         Map<String, Object> serviceOptions,
+                                         int                 maxPageSize,
+                                         AuditLog            auditLog) {
 
-        super.initializeContextManager(partnerOMASServerName, partnerOMASPlatformRootURL, userId, password, maxPageSize, auditLog);
+        super.initializeContextManager(partnerOMASServerName, partnerOMASPlatformRootURL, userId, password, serviceOptions, maxPageSize, auditLog);
 
         final String methodName = "initializeContextManager";
 
@@ -117,11 +118,11 @@ public class SearchIntegratorContextManager extends IntegrationContextManager {
                     auditLog);
         }
 
-        assetManagerClient = new AssetManagerClient(partnerOMASServerName,
-                partnerOMASPlatformRootURL,
-                assetManagerRestClient,
-                maxPageSize,
-                auditLog);
+        assetManagerClient = new ExternalAssetManagerClient(partnerOMASServerName,
+                                                            partnerOMASPlatformRootURL,
+                                                            assetManagerRestClient,
+                                                            maxPageSize,
+                                                            auditLog);
     }
 
 
@@ -168,10 +169,10 @@ public class SearchIntegratorContextManager extends IntegrationContextManager {
      * @param connectorId                 unique identifier of the connector (used to configure the event listener)
      * @param connectorName               name of connector from config
      * @param metadataSourceQualifiedName unique name of the software server capability that represents the metadata source.
-     * @param integrationConnector        connector created from connection integration service configuration
-     * @param permittedSynchronization    controls the direction(s) that metadata is allowed to flow
-     * @param serviceOptions              options from the integration service's configuration
-     * @throws InvalidParameterException  the connector is not of the correct type
+     * @param integrationConnector connector created from connection integration service configuration
+     * @param permittedSynchronization controls the direction(s) that metadata is allowed to flow
+     *
+     * @throws InvalidParameterException the connector is not of the correct type
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
@@ -180,8 +181,7 @@ public class SearchIntegratorContextManager extends IntegrationContextManager {
                            String connectorName,
                            String metadataSourceQualifiedName,
                            IntegrationConnector integrationConnector,
-                           PermittedSynchronization permittedSynchronization,
-                           Map<String, Object> serviceOptions) throws InvalidParameterException,
+                           PermittedSynchronization permittedSynchronization) throws InvalidParameterException,
             UserNotAuthorizedException,
             PropertyServerException {
         final String methodName = "setContext";

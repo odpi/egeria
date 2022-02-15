@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.CommentElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.CommentElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.CommentProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.CommentType;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
@@ -38,7 +38,7 @@ public class CommentConverter<B> extends CommunityProfileOMASConverter<B>
 
     /**
      * Using the supplied instances, return a new instance of the bean. This is used for beans that have
-     * contain a combination of the properties from an entity and a that os a connected relationship.
+     * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
      * @param entity entity containing the properties
@@ -82,6 +82,9 @@ public class CommentConverter<B> extends CommunityProfileOMASConverter<B>
                     commentProperties.setCommentType(this.removeCommentTypeFromProperties(instanceProperties));
                     commentProperties.setCommentText(this.removeCommentText(instanceProperties));
 
+                    commentProperties.setEffectiveFrom(instanceProperties.getEffectiveFromTime());
+                    commentProperties.setEffectiveTo(instanceProperties.getEffectiveToTime());
+
                     /*
                      * Any remaining properties are returned in the extended properties.  They are
                      * assumed to be defined in a subtype.
@@ -117,7 +120,7 @@ public class CommentConverter<B> extends CommunityProfileOMASConverter<B>
 
     /**
      * Using the supplied instances, return a new instance of the bean. This is used for beans that have
-     * contain a combination of the properties from an entity and a that os a connected relationship.
+     * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
      * @param entity entity containing the properties

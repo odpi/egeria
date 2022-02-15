@@ -75,7 +75,7 @@ public class ProfileConverter<B> extends GovernanceProgramOMASConverter<B>
 
                 if (primaryEntity != null)
                 {
-                    bean.setElementHeader(this.getMetadataElementHeader(beanClass, primaryEntity, methodName));
+                    bean.setElementHeader(this.getMetadataElementHeader(beanClass, primaryEntity, primaryEntity.getClassifications(), methodName));
 
                     /*
                      * The initial set of values come from the entity.
@@ -112,11 +112,12 @@ public class ProfileConverter<B> extends GovernanceProgramOMASConverter<B>
                                     UserIdentityElement    userBean       = new UserIdentityElement();
                                     UserIdentityProperties userProperties = new UserIdentityProperties();
 
-                                    bean.setElementHeader(this.getMetadataElementHeader(beanClass, entity, methodName));
+                                    bean.setElementHeader(this.getMetadataElementHeader(beanClass, entity, entity.getClassifications(), methodName));
 
                                     InstanceProperties entityProperties = new InstanceProperties(entity.getProperties());
 
                                     userProperties.setQualifiedName(this.removeQualifiedName(entityProperties));
+                                    userProperties.setDistinguishedName(this.removeDistinguishedName(entityProperties));
                                     userProperties.setAdditionalProperties(this.removeAdditionalProperties(entityProperties));
 
                                     userProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
@@ -131,7 +132,7 @@ public class ProfileConverter<B> extends GovernanceProgramOMASConverter<B>
                                     ContactMethodElement    contactMethodBean       = new ContactMethodElement();
                                     ContactMethodProperties contactMethodProperties = new ContactMethodProperties();
 
-                                    contactMethodBean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));
+                                    contactMethodBean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, entity.getClassifications(), methodName));
 
                                     InstanceProperties entityProperties = new InstanceProperties(entity.getProperties());
 

@@ -214,7 +214,7 @@ public class GovernanceActionProcessClient implements GovernanceActionProcessInt
     /**
      * Update the zones for the asset so that it becomes visible to consumers.
      * (The zones are set to the list of zones in the publishedZones option configured for each
-     * instance of the Asset Manager OMAS).
+     * instance of the Governance Engine OMAS).
      *
      * @param userId calling user
      * @param processGUID unique identifier of the metadata element to publish
@@ -249,7 +249,7 @@ public class GovernanceActionProcessClient implements GovernanceActionProcessInt
     /**
      * Update the zones for the asset so that it is no longer visible to consumers.
      * (The zones are set to the list of zones in the defaultZones option configured for each
-     * instance of the Asset Manager OMAS.  This is the setting when the process is first created).
+     * instance of the Governance Engine OMAS.  This is the setting when the process is first created).
      *
      * @param userId calling user
      * @param processGUID unique identifier of the metadata element to withdraw

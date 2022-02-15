@@ -234,7 +234,6 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
      * @param correlationProperties  properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param assetManagerIsHome ensure that only the process manager can update this process
      * @param processProperties properties about the process to store
-     * @param initialStatus status value for the new process (default = ACTIVE)
      * @param methodName calling method
      *
      * @return unique identifier of the new process
@@ -247,7 +246,6 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                 MetadataCorrelationProperties correlationProperties,
                                 boolean                       assetManagerIsHome,
                                 ProcessProperties             processProperties,
-                                ProcessStatus                 initialStatus,
                                 String                        methodName) throws InvalidParameterException,
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
@@ -277,7 +275,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                                           processProperties.getAdditionalProperties(),
                                                           typeName,
                                                           processProperties.getExtendedProperties(),
-                                                          this.getInstanceStatus(initialStatus),
+                                                          this.getInstanceStatus(processProperties.getProcessStatus()),
                                                           methodName);
 
         if (processGUID != null)
@@ -306,6 +304,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
      *
      * @param userId calling user
      * @param correlationProperties  properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param assetManagerIsHome ensure that only the process manager can update this process
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
      * @param methodName calling method
@@ -779,7 +778,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
         List<EntityDetail> processEntities = externalIdentifierHandler.getElementEntitiesForScope(userId,
                                                                                                   assetManagerGUID,
                                                                                                   assetManagerGUIDParameterName,
-                                                                                                  OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                                                                  OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                                                                   OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
                                                                                                   startFrom,
                                                                                                   validatedPageSize,
@@ -2646,6 +2645,8 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
      * @param sourceElementGUID unique identifier of the source
      * @param methodName calling method
      *
+     * @return list of mapping elements
+     *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -2674,6 +2675,8 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
      * @param userId calling user
      * @param destinationElementGUID unique identifier of the destination
      * @param methodName calling method
+     *
+     * @return list of mapping elements
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request

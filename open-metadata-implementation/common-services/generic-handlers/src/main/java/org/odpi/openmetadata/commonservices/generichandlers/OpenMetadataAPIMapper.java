@@ -378,23 +378,30 @@ public class OpenMetadataAPIMapper
     public static final String ENCRYPTION_METHOD_PROPERTY_NAME           = "encryptionMethod";                     /* from Endpoint entity */
 
 
-    public static final String SOFTWARE_SERVER_CAPABILITY_TYPE_GUID   = "fe30a033-8f86-4d17-8986-e6166fa24177";
-    public static final String SOFTWARE_SERVER_CAPABILITY_TYPE_NAME   = "SoftwareServerCapability";
+    public static final String SOFTWARE_CAPABILITY_TYPE_GUID   = "54055c38-b9ad-4a66-a75b-14dc643d4c69";
+    public static final String SOFTWARE_CAPABILITY_TYPE_NAME   = "SoftwareCapability";
     /* Referenceable */
 
-    public static final String CAPABILITY_VERSION_PROPERTY_NAME     = "capabilityVersion";       /* from SoftwareServerCapability entity */
-    public static final String CAPABILITY_VERSION_PROPERTY_NAME_DEP = "version";       /* from SoftwareServerCapability entity */
-    public static final String PATCH_LEVEL_PROPERTY_NAME            = "patchLevel";    /* from SoftwareServerCapability entity */
+    public static final String SOFTWARE_SERVER_CAPABILITY_TYPE_GUID   = "fe30a033-8f86-4d17-8986-e6166fa24177";
+    public static final String SOFTWARE_SERVER_CAPABILITY_TYPE_NAME   = "SoftwareServerCapability";
+    /* SoftwareCapability */
 
-    public static final String SUPPORTED_CAPABILITY_TYPE_GUID         = "8b7d7da5-0668-4174-a43b-8f8c6c068dd0";
-    public static final String SUPPORTED_CAPABILITY_TYPE_NAME         = "SoftwareServerSupportedCapability";
-    /* End 1 = SoftwareServer; End 2 = SoftwareServerCapability */
+    public static final String CAPABILITY_TYPE_PROPERTY_NAME        = "capabilityType";             /* from SoftwareCapability entity */
+    public static final String CAPABILITY_TYPE_PROPERTY_NAME_DEP1   = "type";                       /* from SoftwareServerCapability entity */
+    public static final String CAPABILITY_TYPE_PROPERTY_NAME_DEP2   = "deployedImplementationType"; /* from SoftwareServerCapability entity */
+    public static final String CAPABILITY_VERSION_PROPERTY_NAME     = "capabilityVersion";          /* from SoftwareCapability entity */
+    public static final String CAPABILITY_VERSION_PROPERTY_NAME_DEP = "version";       /* from SoftwareCapability entity */
+    public static final String PATCH_LEVEL_PROPERTY_NAME            = "patchLevel";    /* from SoftwareCapability entity */
+
+    public static final String SUPPORTED_CAPABILITY_TYPE_GUID         = "2480aa71-44c5-414d-8b32-9c4340786d77";
+    public static final String SUPPORTED_CAPABILITY_TYPE_NAME         = "SupportedSoftwareCapability";
+    /* End 1 = ITInfrastructure; End 2 = SoftwareCapability */
 
     public static final String SERVER_CAPABILITY_STATUS_PROPERTY_NAME = "serverCapabilityStatus";  /* from SoftwareServerSupportedCapability */
 
     public static final String SERVER_ASSET_USE_TYPE_GUID                = "56315447-88a6-4235-ba91-fead86524ebf";  /* from Area 0 */
     public static final String SERVER_ASSET_USE_TYPE_NAME                = "ServerAssetUse";
-    /* End1 = SoftwareServerCapability; End 2 = Asset */
+    /* End1 = SoftwareCapability; End 2 = Asset */
 
     public static final String USE_TYPE_PROPERTY_NAME                    = "useType";                       /* from ServerAssetUse relationship */
     public static final String MINIMUM_INSTANCES_PROPERTY_NAME           = "minimumInstances";              /* from ServerAssetUse relationship */
@@ -557,6 +564,9 @@ public class OpenMetadataAPIMapper
     public static final String PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME   = "ProfileIdentity";
     /* End1 = ActorProfile; End 2 = UserIdentity */
 
+    public static final String ROLE_TYPE_NAME_PROPERTY_NAME              = "roleTypeName"; /* from ProfileIdentity relationship */
+    public static final String ROLE_GUID_PROPERTY_NAME                   = "roleGUID";     /* from ProfileIdentity relationship */
+
     public static final String CONTACT_DETAILS_TYPE_GUID                 = "79296df8-645a-4ef7-a011-912d1cdcf75a";
     public static final String CONTACT_DETAILS_TYPE_NAME                 = "ContactDetails";
 
@@ -575,8 +585,15 @@ public class OpenMetadataAPIMapper
     public static final String PERSON_TYPE_NAME                          = "Person";                 /* from Area 1 */
     /* ActorProfile */
 
-    public static final String FULL_NAME_PROPERTY_NAME                   = "fullName";   /* from Person entity */
-    public static final String JOB_TITLE_PROPERTY_NAME                   = "jobTitle";   /* from Person entity */
+    public static final String TITLE_PROPERTY_NAME                       = "title";          /* from Person entity */
+    public static final String INITIALS_PROPERTY_NAME                    = "initials";       /* from Person entity */
+    public static final String GIVEN_NAMES_PROPERTY_NAME                 = "givenNames";     /* from Person entity */
+    public static final String SURNAME_PROPERTY_NAME                     = "surname";        /* from Person entity */
+    public static final String FULL_NAME_PROPERTY_NAME                   = "fullName";       /* from Person entity */
+    public static final String PREFERRED_LANGUAGE_PROPERTY_NAME          = "preferredLanguage";       /* from Person entity */
+    public static final String JOB_TITLE_PROPERTY_NAME                   = "jobTitle";       /* from Person entity */
+    public static final String EMPLOYEE_NUMBER_PROPERTY_NAME             = "employeeNumber"; /* from Person entity */
+    public static final String EMPLOYEE_TYPE_PROPERTY_NAME               = "employeeType";   /* from Person entity */
 
     public static final String PERSONAL_CONTRIBUTION_RELATIONSHIP_TYPE_GUID  = "4a316abe-eeee-4d11-ad5a-4bfb4079b80b";   /* from Area 1 */
     public static final String PERSONAL_CONTRIBUTION_RELATIONSHIP_TYPE_NAME  = "PersonalContribution";
@@ -631,6 +648,10 @@ public class OpenMetadataAPIMapper
     public static final String IT_PROFILE_TYPE_GUID                      = "81394f85-6008-465b-926e-b3fae4668937";
     public static final String IT_PROFILE_TYPE_NAME                      = "ITProfile";                 /* from Area 1 */
     /* ActorProfile */
+
+    public static final String IT_INFRASTRUCTURE_PROFILE_RELATIONSHIP_TYPE_GUID = "4c579e3d-a4ff-41c1-9931-33e6fc992f2b";   /* from Area 1 */
+    public static final String IT_INFRASTRUCTURE_PROFILE_RELATIONSHIP_TYPE_NAME = "ITInfrastructureProfile";
+    /* End1 = ITInfrastructure; End 2 = ITProfile */
 
     public static final String COMMUNITY_TYPE_GUID                       = "ba846a7b-2955-40bf-952b-2793ceca090a";
     public static final String COMMUNITY_TYPE_NAME                       = "Community";          /* from Area 1 */
@@ -914,18 +935,18 @@ public class OpenMetadataAPIMapper
 
     public static final String FILE_SYSTEM_CLASSIFICATION_TYPE_GUID = "cab5ba1d-cfd3-4fca-857d-c07711fc4157";
     public static final String FILE_SYSTEM_CLASSIFICATION_TYPE_NAME = "FileSystem";
-    /* SoftwareServerCapability */
+    /* SoftwareCapability */
 
     public static final String FORMAT_PROPERTY_NAME                  = "format";                /* from FileSystem */
     public static final String ENCRYPTION_PROPERTY_NAME              = "encryption";            /* from FileSystem */
 
     public static final String FILE_MANAGER_CLASSIFICATION_TYPE_GUID = "eadec807-02f0-4d6f-911c-261eddd0c2f5";
     public static final String FILE_MANAGER_CLASSIFICATION_TYPE_NAME = "FileManager";
-    /* SoftwareServerCapability */
+    /* SoftwareCapability */
 
     public static final String NOTIFICATION_MANAGER_CLASSIFICATION_GUID   = "3e7502a7-396a-4737-a106-378c9c94c1057";
     public static final String NOTIFICATION_MANAGER_CLASSIFICATION_NAME   = "NotificationManager";
-    /* SoftwareServerCapability */
+    /* SoftwareCapability */
 
     public static final String ENTERPRISE_ACCESS_LAYER_TYPE_GUID     = "39444bf9-638e-4124-a5f9-1b8f3e1b008b";
     public static final String ENTERPRISE_ACCESS_LAYER_TYPE_NAME     = "EnterpriseAccessLayer";
@@ -1287,7 +1308,6 @@ public class OpenMetadataAPIMapper
     public static final String DOMAIN_IDENTIFIER_PROPERTY_NAME           = "domainIdentifier";          /* from many governance entities */
     public static final String CRITERIA_PROPERTY_NAME                    = "criteria";                  /* from many governance entities */
 
-    public static final String TITLE_PROPERTY_NAME                       = "title";                     /* from GovernanceDefinition entity */
     public static final String PRIORITY_PROPERTY_NAME                    = "priority";                  /* from GovernanceDefinition and To Do entity */
     public static final String IMPLICATIONS_PROPERTY_NAME                = "implications";              /* from GovernanceDefinition entity */
     public static final String OUTCOMES_PROPERTY_NAME                    = "outcomes";                  /* from GovernanceDefinition entity */
@@ -1375,6 +1395,14 @@ public class OpenMetadataAPIMapper
     public static final String RETENTION_ARCHIVE_AFTER_PROPERTY_NAME                = "archiveAfter";
     public static final String RETENTION_DELETE_AFTER_PROPERTY_NAME                 = "deleteAfter";
 
+    public static final String SECURITY_GROUP_TYPE_GUID                             = "042d9b5c-677e-477b-811f-1c39bf716759";
+    public static final String SECURITY_GROUP_TYPE_NAME                             = "SecurityGroup";
+    /* TechnicalControl */
+
+    public static final String SECURITY_GROUP_MEMBERSHIP_CLASSIFICATION_TYPE_GUID   = "21a16f1e-9231-4983-b371-a0686d555273";
+    public static final String SECURITY_GROUP_MEMBERSHIP_CLASSIFICATION_TYPE_NAME   = "SecurityGroupMembership";
+    public static final String GROUPS_PROPERTY_NAME                                 = "groups";
+    public static final String DISTINGUISHED_NAME_PROPERTY_NAME                     = "distinguishedName";
 
     public static final String SECURITY_TAG_CLASSIFICATION_TYPE_GUID             = "a0b07a86-9fd3-40ca-bb9b-fe83c6981deb";
     public static final String SECURITY_TAG_CLASSIFICATION_TYPE_NAME             = "SecurityTags";
@@ -1560,7 +1588,7 @@ public class OpenMetadataAPIMapper
     public static final String SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME    = "SupportedGovernanceService";
     /* End1 = GovernanceEngine; End 2 = GovernanceService */
 
-    public static final String REQUEST_TYPE_PROPERTY_NAME                = "requestType";               /* from SupportedGovernanceService relationship */
+    public static final String REQUEST_TYPE_PROPERTY_NAME                = "requestType";        /* from SupportedGovernanceService relationship */
     public static final String REQUEST_PARAMETERS_PROPERTY_NAME          = "requestParameters";  /* from SupportedGovernanceService relationship */
 
     public static final String GOVERNANCE_ACTION_PROCESS_TYPE_GUID       = "4d3a2b8d-9e2e-4832-b338-21c74e45b238";
@@ -1605,8 +1633,13 @@ public class OpenMetadataAPIMapper
     public static final String GOVERNANCE_ACTION_TYPE_NAME               = "GovernanceAction";
     /* Reference */
 
-    public static final String MANDATORY_GUARDS_PROPERTY_NAME            = "mandatoryGuards";        /* from GovernanceAction entity */
-    public static final String RECEIVED_GUARDS_PROPERTY_NAME             = "receivedGuards";         /* from GovernanceAction entity */
+    public static final String EXECUTOR_ENGINE_GUID_PROPERTY_NAME        = "executorEngineGUID";       /* from GovernanceAction entity */
+    public static final String EXECUTOR_ENGINE_NAME_PROPERTY_NAME        = "executorEngineName";       /* from GovernanceAction entity */
+    public static final String PROCESS_NAME_PROPERTY_NAME                = "processName";              /* from GovernanceAction entity */
+    public static final String GOVERNANCE_ACTION_TYPE_GUID_PROPERTY_NAME = "governanceActionTypeGUID"; /* from GovernanceAction entity */
+    public static final String GOVERNANCE_ACTION_TYPE_NAME_PROPERTY_NAME = "governanceActionTypeName"; /* from GovernanceAction entity */
+    public static final String MANDATORY_GUARDS_PROPERTY_NAME            = "mandatoryGuards";          /* from GovernanceAction entity */
+    public static final String RECEIVED_GUARDS_PROPERTY_NAME             = "receivedGuards";           /* from GovernanceAction entity */
     public static final String START_DATE_PROPERTY_NAME                  = "startDate";              /* from GovernanceAction and Project entity */
     public static final String PLANNED_END_DATE_PROPERTY_NAME            = "plannedEndDate";         /* from Project entity */
     public static final String CREATION_TIME_PROPERTY_NAME               = "creationTime";           /* from To Do entity */
@@ -2024,7 +2057,7 @@ public class OpenMetadataAPIMapper
     public static final String EVENT_TYPE_LIST_TYPE_NAME                = "EventTypeList";
     /* ComplexSchemaType */
 
-    public static final String EVENT_TYPE_TYPE_GUID                     = "bead9aa4-214a-4596-8036-aa78395bbfb1";   /* from Area 5 */
+    public static final String EVENT_TYPE_TYPE_GUID                     = "8bc88aba-d7e4-4334-957f-cfe8e8eadc32";   /* from Area 5 */
     public static final String EVENT_TYPE_TYPE_NAME                     = "EventType";
     /* ComplexSchemaType */
 
@@ -2032,7 +2065,7 @@ public class OpenMetadataAPIMapper
     public static final String EVENT_SCHEMA_ATTRIBUTE_TYPE_NAME         = "EventSchemaAttribute";
     /* SchemaAttribute */
 
-    public static final String EVENT_SET_TYPE_GUID                      = "8bc88aba-d7e4-4334-957f-cfe8e8eadc32";   /* from Area 5 */
+    public static final String EVENT_SET_TYPE_GUID                      = "bead9aa4-214a-4596-8036-aa78395bbfb1";   /* from Area 5 */
     public static final String EVENT_SET_TYPE_NAME                      = "EventSet";
     /* Collection */
 

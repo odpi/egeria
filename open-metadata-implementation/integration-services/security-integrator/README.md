@@ -16,7 +16,7 @@ The modules are as follows:
 
 * [security-integrator-api](security-integrator-api) - defines the interface for an integration
 connector that is supported by the Security Integrator OMIS. This includes the implementation
-of the context that wraps the Asset Manager OMAS's clients.
+of the context that wraps the Security Manager OMAS's clients.
 
 * [security-integrator-server](security-integrator-server) - implements the context manager for
 the Security Integrator OMIS.
@@ -29,7 +29,7 @@ integration connector is able to run under this service.
 
 This integration service will ultimately be paired with the [Security Manager](../../access-services/security-manager)
 Open Metadata Access Service (OMAS).  However, it is currently calling the 
-[Asset Manager OMAS](../../access-services/asset-manager) while the Security Manager OMAS is implemented.
+[Security Manager OMAS](../../access-services/security-manager) while the Security Manager OMAS is implemented.
 This means it is only monitoring security tags for assets rather than data fields.
 
 ----

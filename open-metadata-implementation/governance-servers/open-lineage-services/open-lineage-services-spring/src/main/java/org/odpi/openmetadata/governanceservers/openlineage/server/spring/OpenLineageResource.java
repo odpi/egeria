@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/open-lineage/users/{userId}")
 
-@Tag(name="Open Lineage Services", description="The Open Lineage Services provides a historic reporting warehouse for lineage. It listens to events that are sent out by the Asset Lineage OMAS, and stores lineage data in a database. ", externalDocs=@ExternalDocumentation(description="Open Lineage Services",url="https://egeria.odpi.org/open-metadata-implementation//governance-servers/open-lineage-services/"))
+@Tag(name="Open Lineage Services", description="The Open Lineage Services provides a historic reporting warehouse for lineage. It listens to events that are sent out by the Asset Lineage OMAS, and stores lineage data in a database. ", externalDocs=@ExternalDocumentation(description="Open Lineage Services",url="https://odpi.github.io/egeria-docs/services/open-lineage-services/"))
 
 public class OpenLineageResource {
 

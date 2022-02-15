@@ -228,7 +228,7 @@ public abstract class GovernanceEngineHandler
             {
                 for (String registeredGovernanceServiceGUID : registeredGovernanceServices)
                 {
-                    refreshServiceConfig(registeredGovernanceServiceGUID);
+                    refreshServiceConfig(registeredGovernanceServiceGUID, null);
                 }
 
                 if (registeredGovernanceServices.size() < maxPageSize)
@@ -256,14 +256,17 @@ public abstract class GovernanceEngineHandler
      * by calling the metadata server. This request just ensures that the latest configuration
      * is in use.
      *
-     * @param registeredGovernanceServiceGUID unique identifier of the SupportedGovernanceService relationship
+     * @param registeredGovernanceServiceGUID unique identifier of the GovernanceService entity
+     * @param specificRequestType specific request type to refresh
+     *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user id not allowed to access configuration
      * @throws PropertyServerException problem in configuration server
      */
-    public void refreshServiceConfig(String  registeredGovernanceServiceGUID) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+    public void refreshServiceConfig(String  registeredGovernanceServiceGUID,
+                                     String  specificRequestType) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
     {
         final String methodName = "refreshServiceConfig";
 
@@ -281,11 +284,22 @@ public abstract class GovernanceEngineHandler
 
                 if (governanceService.getRequestTypes() != null)
                 {
-                    Set<String> governanceRequestTypes = governanceService.getRequestTypes().keySet();
+                    Set<String> governanceRequestTypes;
+
+                    if (specificRequestType == null)
+                    {
+                        governanceRequestTypes = governanceService.getRequestTypes().keySet();
+                    }
+                    else
+                    {
+                        governanceRequestTypes = new HashSet<>();
+
+                        governanceRequestTypes.add(specificRequestType);
+                    }
 
                     for (String governanceRequestType : governanceRequestTypes)
                     {
-                        GovernanceServiceCache governanceServiceCache = new GovernanceServiceCache(serverName, governanceEngineName, governanceServiceElement);
+                        GovernanceServiceCache governanceServiceCache = new GovernanceServiceCache(serverName, governanceEngineName, governanceServiceElement, auditLog);
                         governanceServiceLookupTable.put(governanceRequestType, governanceServiceCache);
 
                         auditLog.logMessage(methodName,

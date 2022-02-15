@@ -120,12 +120,12 @@ public class ConnectedAssetClientBase
     {
         final String   urlTemplate = "/servers/{0}/open-metadata/common-services/{1}/connected-asset/users/{2}/assets/{3}";
 
-        AssetResponse restResult = restClient.callAssetGetRESTCall(methodName,
-                                                                   serverPlatformURLRoot + urlTemplate,
-                                                                   serverName,
-                                                                   serviceName,
-                                                                   userId,
-                                                                   guid);
+        AssetResponse restResult = restClient.callOCFAssetGetRESTCall(methodName,
+                                                                      serverPlatformURLRoot + urlTemplate,
+                                                                      serverName,
+                                                                      serviceName,
+                                                                      userId,
+                                                                      guid);
 
         return restResult.getAsset();
     }
@@ -168,7 +168,7 @@ public class ConnectedAssetClientBase
         {
             throw error;
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             throw new PropertyServerException(OMAGOCFErrorCode.NO_ASSET_PROPERTIES.getMessageDefinition(assetGUID,
                                                                                                         error.getClass().getName(),
@@ -200,7 +200,7 @@ public class ConnectedAssetClientBase
                                                   String          methodName) throws ConnectionCheckedException,
                                                                                      ConnectorCheckedException
     {
-        ConnectorBroker connectorBroker = new ConnectorBroker();
+        ConnectorBroker connectorBroker = new ConnectorBroker(auditLog);
 
         /*
          * Pass the connection to the ConnectorBroker to create the connector instance.
@@ -247,7 +247,7 @@ public class ConnectedAssetClientBase
              */
             newConnector.initializeConnectedAssetProperties(connectedAssetProperties);
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             /*
              * Ignore error - connectedAssetProperties is left at null.
@@ -257,7 +257,7 @@ public class ConnectedAssetClientBase
         /*
          * At this stage, the asset properties are not retrieved from the server.  This does not happen until the caller
          * issues a connector.getConnectedAssetProperties.  This causes the connectedAssetProperties.refresh() call
-         * to be made, which contacts the OMAS server and retrieves the asset properties.
+         * to be made, which contacts the OMAG server and retrieves the asset properties.
          *
          * Delaying the population of the connected asset properties ensures the latest values are returned to the
          * caller (consider a long running connection).  Alternatively, these properties may not ever be used by the
@@ -292,12 +292,12 @@ public class ConnectedAssetClientBase
         final String   methodName  = "getConnectionByGUID";
         final String   urlTemplate = "/servers/{0}/open-metadata/common-services/{1}/connected-asset/users/{2}/connections/{3}";
 
-        ConnectionResponse   restResult = restClient.callConnectionGetRESTCall(methodName,
-                                                                               serverPlatformURLRoot + urlTemplate,
-                                                                               serverName,
-                                                                               serviceName,
-                                                                               userId,
-                                                                               guid);
+        ConnectionResponse   restResult = restClient.callOCFConnectionGetRESTCall(methodName,
+                                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                                  serverName,
+                                                                                  serviceName,
+                                                                                  userId,
+                                                                                  guid);
 
          return restResult.getConnection();
     }
@@ -327,12 +327,12 @@ public class ConnectedAssetClientBase
         final String   methodName = "getConnectionByName";
         final String   urlTemplate = "/servers/{0}/open-metadata/common-services/{1}/connected-asset/users/{2}/connections/by-name/{3}";
 
-        ConnectionResponse restResult = restClient.callConnectionGetRESTCall(methodName,
-                                                                             serverPlatformURLRoot + urlTemplate,
-                                                                             serverName,
-                                                                             serviceName,
-                                                                             userId,
-                                                                             name);
+        ConnectionResponse restResult = restClient.callOCFConnectionGetRESTCall(methodName,
+                                                                                serverPlatformURLRoot + urlTemplate,
+                                                                                serverName,
+                                                                                serviceName,
+                                                                                userId,
+                                                                                name);
 
         return restResult.getConnection();
     }
@@ -361,12 +361,12 @@ public class ConnectedAssetClientBase
         final String   methodName = "getConnectionForAsset";
         final String   urlTemplate = "/servers/{0}/open-metadata/common-services/{1}/connected-asset/users/{2}/assets/{3}/connection";
 
-        ConnectionResponse restResult = restClient.callConnectionGetRESTCall(methodName,
-                                                                             serverPlatformURLRoot + urlTemplate,
-                                                                             serverName,
-                                                                             serviceName,
-                                                                             userId,
-                                                                             assetGUID);
+        ConnectionResponse restResult = restClient.callOCFConnectionGetRESTCall(methodName,
+                                                                                serverPlatformURLRoot + urlTemplate,
+                                                                                serverName,
+                                                                                serviceName,
+                                                                                userId,
+                                                                                assetGUID);
 
         return restResult.getConnection();
     }

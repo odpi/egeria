@@ -35,10 +35,10 @@ public enum ProcessStatus implements Serializable
     ACTIVE    (4,15, "Active",   "The process is approved and in use.");
 
 
-    private int    ordinal;
-    private int    openTypeOrdinal;
-    private String name;
-    private String description;
+    private final int    ordinal;
+    private final int    openTypeOrdinal;
+    private final String name;
+    private final String description;
 
     private static final long     serialVersionUID = 1L;
 
@@ -115,7 +115,7 @@ public enum ProcessStatus implements Serializable
     @Override
     public String toString()
     {
-        return "GlossaryTermStatus{" +
+        return "ProcessStatus{" +
                        "ordinal=" + ordinal +
                        ", openTypeOrdinal=" + openTypeOrdinal +
                        ", name='" + name + '\'' +

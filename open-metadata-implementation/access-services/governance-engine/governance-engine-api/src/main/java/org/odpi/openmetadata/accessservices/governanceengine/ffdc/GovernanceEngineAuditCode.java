@@ -167,7 +167,7 @@ public enum GovernanceEngineAuditCode implements AuditLogMessageSet
 
     OUT_TOPIC_EVENT("OMAS-GOVERNANCE-ENGINE-0019",
                     OMRSAuditLogRecordSeverity.EVENT,
-                    "The Governance Engine Open Metadata Access Service (OMAS) has sent event of type {0} ",
+                    "The Governance Engine Open Metadata Access Service (OMAS) has sent event of type {0}",
                     "The access service sends out configuration notifications to ensure connected governance servers have the most up to-date " +
                             "configuration.  This message is to create a record of the events that are being published.",
                     "This event indicates that the configuration for a governance engine, or governance service has changed.  " +
@@ -190,7 +190,7 @@ public enum GovernanceEngineAuditCode implements AuditLogMessageSet
     ;
 
 
-    private AuditLogMessageDefinition messageDefinition;
+    private final AuditLogMessageDefinition messageDefinition;
 
     /**
      * The constructor for GovernanceEngineAuditCode expects to be passed one of the enumeration rows defined in

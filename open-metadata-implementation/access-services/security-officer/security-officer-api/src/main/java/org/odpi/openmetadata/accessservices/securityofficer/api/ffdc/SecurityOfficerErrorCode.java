@@ -7,7 +7,8 @@ package org.odpi.openmetadata.accessservices.securityofficer.api.ffdc;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
 
-public enum SecurityOfficerErrorCode implements ExceptionMessageSet {
+public enum SecurityOfficerErrorCode implements ExceptionMessageSet
+{
 
     OMRS_NOT_INITIALIZED(404, "OMAS-SECURITY-OFFICER-404-001 ",
             "The open metadata repository services are not initialized for server {0}",
@@ -68,7 +69,7 @@ public enum SecurityOfficerErrorCode implements ExceptionMessageSet {
 
 
 
-    private ExceptionMessageDefinition messageDefinition;
+    private final ExceptionMessageDefinition messageDefinition;
 
     /**
      * The constructor for SecurityOfficerErrorCode expects to be passed one of the enumeration rows defined in

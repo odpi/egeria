@@ -605,6 +605,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param searchString string to find in the properties
+     * @param searchStringParameterName name of parameter for search string
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param methodName calling method
@@ -709,7 +710,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
         List<EntityDetail> glossaryEntities = externalIdentifierHandler.getElementEntitiesForScope(userId,
                                                                                                    assetManagerGUID,
                                                                                                    assetManagerGUIDParameterName,
-                                                                                                   OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                                                                   OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                                                                    OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
                                                                                                    startFrom,
                                                                                                    pageSize,
@@ -1265,6 +1266,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
      * @param glossaryCategoryGUID unique identifier of the requested metadata element
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param methodName calling method
      *
      * @return list of glossary category element
      *

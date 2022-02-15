@@ -5,11 +5,36 @@ package org.odpi.openmetadata.accessservices.governanceengine.server;
 import org.odpi.openmetadata.accessservices.governanceengine.ffdc.GovernanceEngineAuditCode;
 import org.odpi.openmetadata.accessservices.governanceengine.handlers.MetadataElementHandler;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionElement;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.*;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.ActionTargetStatusRequestBody;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.CompletionStatusRequestBody;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.DuplicatesRequestBody;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.FindRequestBody;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.GovernanceActionElementResponse;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.GovernanceActionElementsResponse;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.GovernanceActionProcessRequestBody;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.GovernanceActionRequestBody;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.IncidentReportRequestBody;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.NewClassificationRequestBody;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.NewMetadataElementRequestBody;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.NewRelatedElementsRequestBody;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.OpenMetadataElementResponse;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.OpenMetadataElementsResponse;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.RelatedMetadataElementListResponse;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.RelatedMetadataElementsListResponse;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.StatusRequestBody;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.UpdateEffectivityDatesRequestBody;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.UpdatePropertiesRequestBody;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.UpdateRequestBody;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.UpdateStatusRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -1141,6 +1166,70 @@ public class GovernanceEngineRESTServices
         return response;
     }
 
+    /**
+     * Create a simple relationship between two elements. If the relationship already exists,
+     * the properties are updated.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param userId calling user
+     * @param requestBody parameters for the relationship
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid, or the elements are of different types
+     * PropertyServerException problem accessing property server
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse linkElementsAsDuplicates(String                serverName,
+                                                 String                userId,
+                                                 DuplicatesRequestBody requestBody)
+    {
+        final String methodName = "linkElementsAsDuplicates";
+
+        final String element1GUIDParameterName = "element1GUID";
+        final String element2GUIDParameterName = "element2GUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                handler.linkElementsAsPeerDuplicates(userId,
+                                                     requestBody.getMetadataElement1GUID(),
+                                                     element1GUIDParameterName,
+                                                     requestBody.getMetadataElement2GUID(),
+                                                     element2GUIDParameterName,
+                                                     true,
+                                                     requestBody.getStatusIdentifier(),
+                                                     requestBody.getSteward(),
+                                                     requestBody.getStewardTypeName(),
+                                                     requestBody.getStewardPropertyName(),
+                                                     requestBody.getSource(),
+                                                     requestBody.getNotes(),
+                                                     methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
 
     /**
      * Update the properties associated with a relationship.
@@ -1541,6 +1630,7 @@ public class GovernanceEngineRESTServices
                                                                   governanceEngineName,
                                                                   requestBody.getRequestType(),
                                                                   requestBody.getRequestParameters(),
+                                                                  null,
                                                                   null,
                                                                   null,
                                                                   methodName,

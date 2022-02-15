@@ -141,14 +141,14 @@ public class ConnectedAssetRelatedMediaReferences extends AssetRelatedMediaRefer
 
         try
         {
-            RelatedMediaReferencesResponse restResult = restClient.callRelatedMediaReferencesGetRESTCall(methodName,
-                                                                                                         omasServerURL + urlTemplate,
-                                                                                                         serverName,
-                                                                                                         serviceName,
-                                                                                                         userId,
-                                                                                                         assetGUID,
-                                                                                                         cacheStartPointer,
-                                                                                                         maximumSize);
+            RelatedMediaReferencesResponse restResult = restClient.callOCFRelatedMediaReferencesGetRESTCall(methodName,
+                                                                                                            omasServerURL + urlTemplate,
+                                                                                                            serverName,
+                                                                                                            serviceName,
+                                                                                                            userId,
+                                                                                                            assetGUID,
+                                                                                                            cacheStartPointer,
+                                                                                                            maximumSize);
 
             restExceptionHandler.detectAndThrowInvalidParameterException(restResult);
             restExceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
@@ -174,7 +174,7 @@ public class ConnectedAssetRelatedMediaReferences extends AssetRelatedMediaRefer
                 return resultList;
             }
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             restExceptionHandler.handleUnexpectedException(error, methodName, serverName, omasServerURL);
         }

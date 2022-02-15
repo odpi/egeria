@@ -691,7 +691,7 @@ public class APIManagerRESTServices
             List<APIElement> apiElements = handler.getAttachedElements(userId,
                                                                        apiManagerGUID,
                                                                        apiManagerGUIDParameterName,
-                                                                       OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                                       OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                                        OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                                        OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
                                                                        OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,

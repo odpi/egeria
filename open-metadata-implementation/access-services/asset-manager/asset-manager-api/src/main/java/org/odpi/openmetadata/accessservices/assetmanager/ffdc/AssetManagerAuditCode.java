@@ -89,16 +89,16 @@ public enum AssetManagerAuditCode implements AuditLogMessageSet
 
     OUT_TOPIC_EVENT("OMAS-ASSET-MANAGER-0013",
                     OMRSAuditLogRecordSeverity.EVENT,
-                    "The Asset Manager Open Metadata Access Service (OMAS) has sent event: {0}",
+                    "The Asset Manager Open Metadata Access Service (OMAS) has sent event of type: {0}",
                     "The access service sends out notifications about changes to assets located on " +
                             "asset managers.  This message is to create a record of the events that are being published.",
                     "This event indicates that one of the assets within a asset manager has changed."),
 
     PROCESS_EVENT_EXCEPTION("OMAS-ASSET-MANAGER-0014",
                             OMRSAuditLogRecordSeverity.EXCEPTION,
-                            "Event {0} could not be consumed. Error: {1}",
-                            "The system is unable to process the request.",
-                            "Verify the topic configuration."),
+                            "Event {0} could not be published due to {1} exception with message: {2}",
+                            "The system is unable to publish the event to the Asset Manager OMAS's OutTopic.",
+                            "Verify the topic configuration and that the event broker is running."),
 
     PARSE_EVENT_EXCEPTION("OMAS-ASSET-MANAGER-0015",
           OMRSAuditLogRecordSeverity.EXCEPTION,
@@ -111,7 +111,7 @@ public enum AssetManagerAuditCode implements AuditLogMessageSet
 
     private static final long    serialVersionUID = 1L;
 
-    private AuditLogMessageDefinition messageDefinition;
+    private final AuditLogMessageDefinition messageDefinition;
 
 
     /**

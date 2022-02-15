@@ -71,14 +71,14 @@ public abstract class EngineServiceAdmin
      * @return root URL
      * @throws OMAGConfigurationErrorException No root URL present in the config
      */
-    protected String getAccessServiceRootURL(EngineServiceConfig engineServicesConfig) throws OMAGConfigurationErrorException
+    protected String getPartnerServiceRootURL(EngineServiceConfig engineServicesConfig) throws OMAGConfigurationErrorException
     {
         String accessServiceRootURL = engineServicesConfig.getOMAGServerPlatformRootURL();
 
         if (accessServiceRootURL == null)
         {
             final String actionDescription = "Validate engine services configuration.";
-            final String methodName        = "getAccessServiceRootURL";
+            final String methodName        = "getPartnerServiceRootURL";
 
             auditLog.logMessage(actionDescription,
                                 EngineHostServicesAuditCode.NO_OMAS_SERVER_URL.getMessageDefinition(engineServicesConfig.getEngineServiceFullName(),
@@ -131,14 +131,14 @@ public abstract class EngineServiceAdmin
      * @return server name
      * @throws OMAGConfigurationErrorException No server name present in the config
      */
-    protected String getAccessServiceServerName(EngineServiceConfig engineServiceConfig) throws OMAGConfigurationErrorException
+    protected String getPartnerServiceServerName(EngineServiceConfig engineServiceConfig) throws OMAGConfigurationErrorException
     {
         String accessServiceServerName = engineServiceConfig.getOMAGServerName();
 
         if (accessServiceServerName == null)
         {
             final String actionDescription = "Validate engine service configuration.";
-            final String methodName        = "getAccessServiceServerName";
+            final String methodName        = "getPartnerServiceServerName";
 
             auditLog.logMessage(actionDescription,
                                 EngineHostServicesAuditCode.NO_OMAS_SERVER_NAME.getMessageDefinition(engineServiceConfig.getEngineServiceFullName(),

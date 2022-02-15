@@ -28,11 +28,11 @@ public enum GlossaryTermRelationshipStatus implements Serializable
     public static final String ENUM_TYPE_GUID  = "42282652-7d60-435e-ad3e-7cfe5291bcc7";
     public static final String ENUM_TYPE_NAME  = "TermRelationshipStatus";
 
-    private int    openTypeOrdinal;
+    private final int    openTypeOrdinal;
 
-    private int    ordinal;
-    private String name;
-    private String description;
+    private final int    ordinal;
+    private final String name;
+    private final String description;
 
     private static final long     serialVersionUID = 1L;
 

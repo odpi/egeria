@@ -3,8 +3,9 @@
 package org.odpi.openmetadata.accessservices.governanceprogram.samples.leadership;
 
 import org.odpi.openmetadata.accessservices.communityprofile.client.PersonalProfileManagement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.PersonalProfileUniverse;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.UserIdentityElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonalProfileUniverse;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ProfileIdentityElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.UserIdentityElement;
 import org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceRoleManager;
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceAppointee;
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceRoleAppointee;
@@ -103,7 +104,7 @@ public class GovernanceLeadershipSample
         System.out.println("----------------------------");
         System.out.println("Profile: " + guid);
 
-        List<UserIdentityElement> userIdentities = profile.getUserIdentities();
+        List<ProfileIdentityElement> userIdentities = profile.getUserIdentities();
         if (userIdentities == null)
         {
             System.out.println("  UserId: null <ERROR>");
@@ -114,7 +115,8 @@ public class GovernanceLeadershipSample
         }
         else if (userIdentities.size() == 1)
         {
-            UserIdentityElement   userIdentity = userIdentities.get(0);
+            ProfileIdentityElement firstUser = userIdentities.get(0);
+            UserIdentityElement    userIdentity = firstUser.getProperties();
             if (userIdentity == null)
             {
                 System.out.println("  UserId: empty <ERROR>");
@@ -127,7 +129,7 @@ public class GovernanceLeadershipSample
         else
         {
             System.out.print("  UserIds:");
-            for (UserIdentityElement  userIdentity : userIdentities)
+            for (ProfileIdentityElement  userIdentity : userIdentities)
             {
                 if (userIdentity == null)
                 {
@@ -135,7 +137,7 @@ public class GovernanceLeadershipSample
                 }
                 else
                 {
-                    System.out.print(" " + userIdentity.getProperties().getQualifiedName());
+                    System.out.print(" " + userIdentity.getProperties().getProperties().getQualifiedName());
                 }
             }
             System.out.println();

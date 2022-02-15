@@ -6,6 +6,8 @@ updates:
   directory: "/"
   schedule:
     interval: monthly
+    time: "03:00"
+    timezone: "Etc/UTC"
   open-pull-requests-limit: 100
   reviewers:
   - planetf1
@@ -13,6 +15,8 @@ updates:
   directory: "/"
   schedule:
     interval: monthly
+    time: "03:00"
+    timezone: "Etc/UTC"
   open-pull-requests-limit: 100
   reviewers:
   - planetf1
@@ -20,6 +24,8 @@ updates:
   directory: "/open-metadata-resources/open-metadata-deployment/docker/egeria"
   schedule:
     interval: monthly
+    time: "03:00"
+    timezone: "Etc/UTC"
   open-pull-requests-limit: 5
   reviewers:
   - planetf1
@@ -27,14 +33,17 @@ updates:
   directory: "/open-metadata-resources/open-metadata-deployment/docker/configure"
   schedule:
     interval: monthly
+    time: "03:00"
+    timezone: "Etc/UTC"
   open-pull-requests-limit: 5
   reviewers:
-  - cmgrote
   - planetf1
 - package-ecosystem: docker
   directory: "./open-metadata-resources/open-metadata-deployment/docker/jupyter"
   schedule:
     interval: monthly
+    time: "03:00"
+    timezone: "Etc/UTC"
   open-pull-requests-limit: 5
   reviewers:
   - planetf1
@@ -42,6 +51,8 @@ updates:
   directory: "/"
   schedule:
     interval: monthly
+    time: "03:00"
+    timezone: "Etc/UTC"
   open-pull-requests-limit: 10
   reviewers:
   - planetf1

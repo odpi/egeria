@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.integrationservices.catalog.connector;
 
+import org.odpi.openmetadata.accessservices.assetmanager.api.AssetManagerEventListener;
 import org.odpi.openmetadata.accessservices.assetmanager.client.*;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ElementHeader;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern;
@@ -32,7 +33,7 @@ public class CatalogIntegratorContext
     private static String validValuesExchangeServiceName    = "ValidValuesExchangeService";
 
 
-    private AssetManagerClient            assetManagerClient;
+    private ExternalAssetManagerClient    assetManagerClient;
     private AssetManagerEventClient       eventClient;
     private CollaborationExchangeService  collaborationExchangeService;
     private ConnectionExchangeService     connectionExchangeService;
@@ -83,7 +84,7 @@ public class CatalogIntegratorContext
      * @param integrationServiceName name of this service
      * @param auditLog logging destination
      */
-    public CatalogIntegratorContext(AssetManagerClient           assetManagerClient,
+    public CatalogIntegratorContext(ExternalAssetManagerClient assetManagerClient,
                                     AssetManagerEventClient      eventClient,
                                     CollaborationExchangeClient  collaborationExchangeClient,
                                     ConnectionExchangeClient     connectionExchangeClient,
@@ -224,6 +225,41 @@ public class CatalogIntegratorContext
             }
         }
     }
+
+
+
+    /* ========================================================
+     * Register for inbound events from the Asset Manager OMAS OutTopic
+     */
+
+
+    /**
+     * Register a listener object that will be passed each of the events published by the Asset Manager OMAS.
+     *
+     * @param listener listener object
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
+     *                                      the creation of a connector.
+     * @throws ConnectorCheckedException there are errors in the initialization of the connector.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void registerListener(AssetManagerEventListener listener) throws InvalidParameterException,
+                                                                            ConnectionCheckedException,
+                                                                            ConnectorCheckedException,
+                                                                            PropertyServerException,
+                                                                            UserNotAuthorizedException
+    {
+        eventClient.registerListener(userId, listener);
+    }
+
+
+
+    /* ========================================================
+     * Support external identifiers
+     */
+
 
 
     /**

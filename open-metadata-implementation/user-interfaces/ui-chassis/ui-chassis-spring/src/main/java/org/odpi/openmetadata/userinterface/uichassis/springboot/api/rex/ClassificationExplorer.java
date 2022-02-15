@@ -5,14 +5,15 @@ package org.odpi.openmetadata.userinterface.uichassis.springboot.api.rex;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.ClassificationDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class ClassificationExplorer {
 
     private ClassificationDef classificationDef;
-    private List<TypeDefAttribute> inheritedAttributes;
-    private List<String>             subTypeNames;
+    private List<TypeDefAttribute> inheritedAttributes = new ArrayList<>();
+    private List<String>             subTypeNames = new ArrayList<>();
 
 
     public ClassificationExplorer(ClassificationDef def) {
@@ -25,12 +26,17 @@ public class ClassificationExplorer {
 
     public List<String> getSubTypeNames() { return subTypeNames; }
 
-    public void addSubTypName(String subTypeName) {
+    public void addSubTypeName(String subTypeName) {
+        if (subTypeNames == null) {
+            subTypeNames = new ArrayList<>();
+        }
         subTypeNames.add(subTypeName);
     }
-
     public void addInheritedAttributes(List<TypeDefAttribute> inheritedAttrs) {
         if (inheritedAttrs != null) {
+            if (inheritedAttributes == null) {
+                inheritedAttributes = new ArrayList<>();
+            }
             inheritedAttributes.addAll(inheritedAttrs);
         }
     }

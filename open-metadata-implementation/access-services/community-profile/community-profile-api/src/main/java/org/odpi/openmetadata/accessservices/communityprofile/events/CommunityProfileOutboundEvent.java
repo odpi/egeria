@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.communityprofile.events;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelement.ElementStub;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ElementStub;
 
 import java.util.Objects;
 
@@ -41,6 +41,7 @@ public class CommunityProfileOutboundEvent extends CommunityProfileEventHeader
      * For karma point plateau events
      */
     private String                            userId             = null;
+    private boolean                           isPublic           = false;
     private long                              pointsTotal        = 0;
     private long                              plateau            = 0;
 
@@ -148,7 +149,9 @@ public class CommunityProfileOutboundEvent extends CommunityProfileEventHeader
 
     /**
      * Return the element at end one of the relationship that is described in the principleElement. This is only set up on
-     * @return
+     * events about relationships.
+     *
+     * @return stub
      */
     public ElementStub getEndOneElement()
     {
@@ -156,18 +159,36 @@ public class CommunityProfileOutboundEvent extends CommunityProfileEventHeader
     }
 
 
+    /**
+     * Set up the element at end one of the relationship that is described in the principleElement. This is only set up on
+     * events about relationships.
+     *
+     * @param endOneElement stub
+     */
     public void setEndOneElement(ElementStub endOneElement)
     {
         this.endOneElement = endOneElement;
     }
 
 
+    /**
+     * Return the element at end two of the relationship that is described in the principleElement. This is only set up on
+     * events about relationships.
+     *
+     * @return stub
+     */
     public ElementStub getEndTwoElement()
     {
         return endTwoElement;
     }
 
 
+    /**
+     * Set up the element at end two of the relationship that is described in the principleElement. This is only set up on
+     * events about relationships.
+     *
+     * @param endTwoElement stub
+     */
     public void setEndTwoElement(ElementStub endTwoElement)
     {
         this.endTwoElement = endTwoElement;
@@ -193,6 +214,28 @@ public class CommunityProfileOutboundEvent extends CommunityProfileEventHeader
     public void setUserId(String userId)
     {
         this.userId = userId;
+    }
+
+
+    /**
+     * Return whether this award can be shared with colleagues.
+     *
+     * @return flag
+     */
+    public boolean getIsPublic()
+    {
+        return isPublic;
+    }
+
+
+    /**
+     * Set up whether this award can be shared by colleagues.
+     *
+     * @param isPublic flag
+     */
+    public void setIsPublic(boolean isPublic)
+    {
+        this.isPublic = isPublic;
     }
 
 
@@ -249,9 +292,17 @@ public class CommunityProfileOutboundEvent extends CommunityProfileEventHeader
     public String toString()
     {
         return "CommunityProfileOutboundEvent{" +
-                "eventType=" + eventType +
-                ", eventVersionId=" + getEventVersionId() +
-                '}';
+                       "eventType=" + eventType +
+                       ", principleElement=" + principleElement +
+                       ", classificationName='" + classificationName + '\'' +
+                       ", endOneElement=" + endOneElement +
+                       ", endTwoElement=" + endTwoElement +
+                       ", userId='" + userId + '\'' +
+                       ", isPublic=" + isPublic +
+                       ", pointsTotal=" + pointsTotal +
+                       ", plateau=" + plateau +
+                       ", eventVersionId=" + getEventVersionId() +
+                       '}';
     }
 
 
@@ -268,16 +319,24 @@ public class CommunityProfileOutboundEvent extends CommunityProfileEventHeader
         {
             return true;
         }
-        if (!(objectToCompare instanceof CommunityProfileOutboundEvent))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
-        CommunityProfileOutboundEvent that = (CommunityProfileOutboundEvent) objectToCompare;
-        return getEventType() == that.getEventType();
+        CommunityProfileOutboundEvent event = (CommunityProfileOutboundEvent) objectToCompare;
+        return isPublic == event.isPublic &&
+                       pointsTotal == event.pointsTotal &&
+                       plateau == event.plateau &&
+                       eventType == event.eventType &&
+                       Objects.equals(principleElement, event.principleElement) &&
+                       Objects.equals(classificationName, event.classificationName) &&
+                       Objects.equals(endOneElement, event.endOneElement) &&
+                       Objects.equals(endTwoElement, event.endTwoElement) &&
+                       Objects.equals(userId, event.userId);
     }
 
 
@@ -289,6 +348,7 @@ public class CommunityProfileOutboundEvent extends CommunityProfileEventHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getEventType());
+        return Objects.hash(super.hashCode(), eventType, principleElement, classificationName, endOneElement, endTwoElement, userId, isPublic,
+                            pointsTotal, plateau);
     }
 }

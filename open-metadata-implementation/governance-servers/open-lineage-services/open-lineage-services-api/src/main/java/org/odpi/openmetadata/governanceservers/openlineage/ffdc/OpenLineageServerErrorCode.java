@@ -43,6 +43,11 @@ public enum OpenLineageServerErrorCode {
             "The server is not able to retrieve its configuration.  It fails to start.",
             "Add the Open Lineage configuration to the Open Lineage server's configuration document."),
 
+    BAD_ACCESS_SERVICE_CONFIG(400, "OPEN-LINEAGE-SERVER-400-002 ",
+            "Open Lineage access service configuration field {0} does not have a valid value.",
+            "The server does not have a proper access service configuration. It fails to start.",
+            "Update the Open Lineage configuration with a correct access service configuration."),
+
     SERVICE_INSTANCE_FAILURE(400, "OPEN-LINEAGE-SERVER-400-005 ",
             "The open lineage  services are unable to initialize a new instance of open lineage server {0};" +
                     " error message is {1}",
@@ -90,6 +95,16 @@ public enum OpenLineageServerErrorCode {
             "The Open Lineage Services server {0} encountered an error while disconnecting the In-topic connector",
             "An error occured while disconnecting the In-topic connector",
             "Please verify that the Open Lineage Services have shut down properly."),
+
+    ERROR_ENTITY_NOT_FOUND(404, "OPEN-LINEAGE-SERVER-404-001",
+            "The entity with guid {0} could not be found",
+            "The entity could not be found",
+            "Please verify that the guid for the entity is correct."),
+
+    ERROR_LINEAGE_NOT_FOUND(404, "OPEN-LINEAGE-SERVER-404-002",
+            "Lineage for entity with guid {0} could not be found",
+            "Lineage for the entity could not be found",
+            "Please verify that the guid for the entity is correct."),
 
     GRAPH_INITIALIZATION_ERROR(500, "OPEN-LINEAGE-SERVICES-500-001 ",
             "The graph database could not be initialized for open metadata repository {0}.",

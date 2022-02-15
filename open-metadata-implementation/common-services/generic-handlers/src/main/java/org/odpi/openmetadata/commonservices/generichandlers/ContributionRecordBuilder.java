@@ -16,6 +16,7 @@ import java.util.Map;
 public class ContributionRecordBuilder extends ReferenceableBuilder
 {
     private long karmaPoints;
+    private boolean isPublic;
 
 
     /**
@@ -23,6 +24,7 @@ public class ContributionRecordBuilder extends ReferenceableBuilder
      *
      * @param qualifiedName unique name for the role
      * @param karmaPoints number of karma points
+     * @param isPublic  can this information be shared with colleagues
      * @param additionalProperties additional properties for a role
      * @param typeGUID unique identifier of this element's type
      * @param typeName unique name of this element's type
@@ -33,6 +35,7 @@ public class ContributionRecordBuilder extends ReferenceableBuilder
      */
     public ContributionRecordBuilder(String               qualifiedName,
                                      long                 karmaPoints,
+                                     boolean              isPublic,
                                      Map<String, String>  additionalProperties,
                                      String               typeGUID,
                                      String               typeName,
@@ -51,6 +54,7 @@ public class ContributionRecordBuilder extends ReferenceableBuilder
               serverName);
 
         this.karmaPoints = karmaPoints;
+        this.isPublic = isPublic;
     }
 
 
@@ -65,6 +69,12 @@ public class ContributionRecordBuilder extends ReferenceableBuilder
     public InstanceProperties getInstanceProperties(String  methodName) throws InvalidParameterException
     {
         InstanceProperties properties = super.getInstanceProperties(methodName);
+
+        properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
+                                                                   properties,
+                                                                   OpenMetadataAPIMapper.IS_PUBLIC_PROPERTY_NAME,
+                                                                   isPublic,
+                                                                   methodName);
 
         return repositoryHelper.addLongPropertyToInstance(serviceName,
                                                           properties,

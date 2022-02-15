@@ -23,7 +23,6 @@ dependencies {
     runtimeOnly 'org.antlr:antlr-runtime'
     runtimeOnly 'org.xerial.snappy:snappy-java'
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
-
 }
 
 description = 'Graph Repository Connector'
@@ -31,3 +30,16 @@ description = 'Graph Repository Connector'
 java {
     withJavadocJar()
 }
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': ''
+    }
+    archiveBaseName = project.name + '-jar-with-dependencies'
+
+    duplicatesStrategy = 'include'
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+build.dependsOn fatJar

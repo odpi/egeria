@@ -651,7 +651,7 @@
 							"response": []
 						}
 					],
-					"description": "This folder has the configuration commands that are common for all types of OMAG Server.\n\nThis is the link to their documentation https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/user/configuring-omag-server-basic-properties.html"
+					"description": "This folder has the configuration commands that are common for all types of OMAG Server.\n\nThis is the link to their documentation: https://odpi.github.io/egeria-docs/guides/admin/servers/"
 				},
 				{
 					"name": "Configuration for Cohort Members",
@@ -795,7 +795,7 @@
 									"response": []
 								}
 							],
-							"description": "These values need to be set up first when configuring a cohort member.  These are the links to the documentation:\n* https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/user/configuring-event-bus.html\n* https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/user/configuring-local-server-url.html"
+							"description": "These values need to be set up first when configuring a cohort member.  These are the links to the documentation: https://odpi.github.io/egeria-docs/guides/admin/servers/"
 						},
 						{
 							"name": "Configuration for Metadata Access Points",
@@ -2145,7 +2145,7 @@
 							"response": []
 						}
 					],
-					"description": "An Integration Daemon is an OMAG Server that hosts integration services.  Each integration service hosts one or more integration connectors.\n\nThe Integration daemon is configured in two stages:\n* Add the audit log configuration\n* Add the list of Connections for the integration connectors for each of the integration services that are to run in the integration connector.\n\nDetails on configuring integration daemons can be found here:\nhttps://egeria.odpi.org/open-metadata-implementation/admin-services/docs/concepts/integration-daemon.html"
+					"description": "An Integration Daemon is an OMAG Server that hosts integration services.  Each integration service hosts one or more integration connectors.\n\nThe Integration daemon is configured in two stages:\n* Add the audit log configuration\n* Add the list of Connections for the integration connectors for each of the integration services that are to run in the integration connector.\n\nDetails on configuring integration daemons can be found here: https://odpi.github.io/egeria-docs/guides/admin/servers/"
 				},
 				{
 					"name": "Configuring View Servers",

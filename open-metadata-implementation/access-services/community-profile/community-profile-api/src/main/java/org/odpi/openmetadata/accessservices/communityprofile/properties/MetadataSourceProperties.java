@@ -201,18 +201,20 @@ public class MetadataSourceProperties extends ReferenceableProperties
     public String toString()
     {
         return "MetadataSourceProperties{" +
-                "displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", typeDescription='" + typeDescription + '\'' +
-                ", version='" + version + '\'' +
-                ", patchLevel='" + patchLevel + '\'' +
-                ", source='" + source + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", vendorProperties=" + getVendorProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                       "displayName='" + displayName + '\'' +
+                       ", description='" + description + '\'' +
+                       ", typeDescription='" + typeDescription + '\'' +
+                       ", version='" + version + '\'' +
+                       ", patchLevel='" + patchLevel + '\'' +
+                       ", source='" + source + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 
 

@@ -159,9 +159,10 @@ public class OperatingPlatformProperties extends ConfigurationItemProperties
                        ", description='" + description + '\'' +
                        ", operatingSystem='" + operatingSystem + '\'' +
                        ", byteOrdering=" + byteOrdering +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
-                       ", classifications=" + getClassifications() +
                        ", vendorProperties=" + getVendorProperties() +
                        ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +

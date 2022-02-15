@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/community-profile/users/{userId}")
 
-@Tag(name="Community Profile OMAS", description="The Community Profile OMAS provides APIs and events for tools and applications that are managing information about people and the way they work together.", externalDocs=@ExternalDocumentation(description="Community Profile Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/community-profile/"))
+@Tag(name="Community Profile OMAS", description="The Community Profile OMAS provides APIs and events for tools and applications that are managing information about people and the way they work together.",
+     externalDocs=@ExternalDocumentation(description="Community Profile Open Metadata Access Service (OMAS)",
+                                         url="https://odpi.github.io/egeria-docs/services/omas/community-profile/overview/"))
 
 public class UserIdentityResource
 {
@@ -221,9 +223,11 @@ public class UserIdentityResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public UserIdentityResponse getUserIdentityByGUID(String serverName,
-                                                      String userId,
-                                                      String userIdentityGUID)
+    @GetMapping(path = "/user-identities/{userIdentityGUID}")
+
+    public UserIdentityResponse getUserIdentityByGUID(@PathVariable String serverName,
+                                                      @PathVariable String userId,
+                                                      @PathVariable String userIdentityGUID)
     {
         return restAPI.getUserIdentityByGUID(serverName, userId, userIdentityGUID);
     }

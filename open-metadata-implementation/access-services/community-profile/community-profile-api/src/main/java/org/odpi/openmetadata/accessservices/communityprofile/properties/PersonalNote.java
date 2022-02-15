@@ -47,11 +47,13 @@ public class PersonalNote extends NoteLogEntryProperties
     public String toString()
     {
         return "PersonalNote{" +
-                       "user='" + getContributors() + '\'' +
+                       "contributors=" + getContributors() +
                        ", title='" + getTitle() + '\'' +
                        ", text='" + getText() + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
                        ", vendorProperties=" + getVendorProperties() +
                        ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +

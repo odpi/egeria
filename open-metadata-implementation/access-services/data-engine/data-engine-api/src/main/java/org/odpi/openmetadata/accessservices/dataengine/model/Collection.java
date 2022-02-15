@@ -22,8 +22,20 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @Setter
 @EqualsAndHashCode(callSuper = true)
 @ToString
+/**
+ * The collection entity is a group of related items.
+ */
 public class Collection extends Referenceable {
 
+    /**
+     * The name of the collection
+     * -- GETTER --
+     * Return the name of the collection.
+     * @return name string name
+     * -- SETTER --
+     * Set up the name of the collection.
+     * @param name String name
+     */
     private String name;
 
 }

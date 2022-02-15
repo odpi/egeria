@@ -18,6 +18,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.util.ExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
@@ -183,10 +184,10 @@ public class AssetCatalogRESTService {
      * Return a list of assets/glossary terms/schema elements matching the search criteria without the full context.
      * If the searchParameters have an empty list of entity types, the response contains Glossary Terms, Schema Elements, Assets
      *
-     * @param serverName       unique identifier for requested server.
+     * @param serverName       unique identifier for requested server
      * @param userId           the unique identifier for the user
      * @param searchCriteria   a string expression of the characteristics of the required assets
-     * @param searchParameters constrains to make the assets's search results more precise
+     * @param searchParameters constraints to make the assets' search results more precise
      * @return list of properties used to narrow the search
      */
     public AssetListResponse searchByType(String serverName,
@@ -207,7 +208,8 @@ public class AssetCatalogRESTService {
                 | PropertyErrorException
                 | RepositoryErrorException
                 | InvalidParameterException
-                | FunctionNotSupportedException e) {
+                | FunctionNotSupportedException
+                | EntityNotKnownException e) {
             exceptionHandler.captureOMRSCheckedExceptionBase(response, e);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException e) {
             restExceptionHandler.captureUserNotAuthorizedException(response, e);

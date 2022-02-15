@@ -252,6 +252,22 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                                          "shutdown after the integration daemon has completed, there should still be an orderly shutdown of " +
                                          "the connector."),
 
+    INITIALIZE_ERROR("INTEGRATION-DAEMON-SERVICES-0036",
+                    OMRSAuditLogRecordSeverity.ERROR,
+                    "The integration service {0} method {1} has returned with a {2} exception containing message {3} when attempting to connect to the associated metadata server",
+                    "The server will change the integration connector's status to Initialize Failed.  It will retry the call to the metadata server during each refresh() call until the metadata server is contacted.",
+                    "Check the status of the associated metadata server - it may need restarting.  Alternatively, the integration " +
+                            "connector may be configured with the wrong metadata server, in which case the integration connector's " +
+                            "configuration needs updating and the integration daemon will need restarting.  " +
+                            "If neither of these are the cause of the problem, use the message from the exception and knowledge of the open metadata landscape to " +
+                            "track down and resolve the cause of the error and then restart the connector."),
+
+    CONFIG_ERROR("INTEGRATION-DAEMON-SERVICES-0037",
+                     OMRSAuditLogRecordSeverity.ERROR,
+                     "The integration service {0} method {1} has returned with a {2} exception containing message {3} when attempting to create and initialize a connector",
+                     "The server will change the integration connector's status to Configuration Failed.  It will ignore the connector during each refresh() call until the connector is restarted with workable configuration.",
+                     "Check the configuration of the connector."),
+
     DAEMON_THREAD_STARTING("INTEGRATION-DAEMON-SERVICES-0040",
                               OMRSAuditLogRecordSeverity.STARTUP,
                               "The integration daemon thread for integration daemon {0} has started",

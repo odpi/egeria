@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.integrationservices.lineage.client;
 
+import io.openlineage.client.OpenLineage;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
@@ -36,8 +37,8 @@ public class LineageIntegrator implements LineageIntegratorAPI
      * REST API calls.
      */
     public LineageIntegrator(String   serverName,
-                           String   serverPlatformRootURL,
-                           AuditLog auditLog) throws InvalidParameterException
+                             String   serverPlatformRootURL,
+                             AuditLog auditLog) throws InvalidParameterException
     {
         this.serverName = serverName;
         this.serverPlatformRootURL = serverPlatformRootURL;
@@ -55,7 +56,7 @@ public class LineageIntegrator implements LineageIntegratorAPI
      * REST API calls.
      */
     public LineageIntegrator(String serverName,
-                           String serverPlatformRootURL) throws InvalidParameterException
+                             String serverPlatformRootURL) throws InvalidParameterException
     {
         this.serverName = serverName;
         this.serverPlatformRootURL = serverPlatformRootURL;
@@ -78,10 +79,10 @@ public class LineageIntegrator implements LineageIntegratorAPI
      * REST API calls.
      */
     public LineageIntegrator(String   serverName,
-                           String   serverPlatformRootURL,
-                           String   userId,
-                           String   password,
-                           AuditLog auditLog) throws InvalidParameterException
+                             String   serverPlatformRootURL,
+                             String   userId,
+                             String   password,
+                             AuditLog auditLog) throws InvalidParameterException
     {
         this.serverName = serverName;
         this.serverPlatformRootURL = serverPlatformRootURL;
@@ -102,9 +103,9 @@ public class LineageIntegrator implements LineageIntegratorAPI
      * REST API calls.
      */
     public LineageIntegrator(String serverName,
-                           String serverPlatformRootURL,
-                           String userId,
-                           String password) throws InvalidParameterException
+                             String serverPlatformRootURL,
+                             String userId,
+                             String password) throws InvalidParameterException
     {
         this.serverName = serverName;
         this.serverPlatformRootURL = serverPlatformRootURL;
@@ -123,26 +124,58 @@ public class LineageIntegrator implements LineageIntegratorAPI
      *
      * @throws InvalidParameterException the connector provider class name is not a valid connector fo this service
      * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException there was a problem detected by the integration service
+     * @throws PropertyServerException there is a problem processing the request
      */
     public ConnectorType validateConnector(String userId,
                                            String connectorProviderClassName) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        final String   methodName = "validateConnector";
-        final String   nameParameter = "connectorProviderClassName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/integration-services/lineage-integrator/users/{1}/validate-connector";
+        final String methodName = "validateConnector";
+        final String nameParameter = "connectorProviderClassName";
+        final String urlTemplate = "/servers/{0}/open-metadata/integration-services/lineage-integrator/users/{1}/validate-connector";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(connectorProviderClassName, nameParameter, methodName);
 
-        ConnectorTypeResponse restResult = restClient.callConnectorTypeGetRESTCall(methodName,
-                                                                                   serverPlatformRootURL + urlTemplate,
-                                                                                   serverName,
-                                                                                   userId,
-                                                                                   connectorProviderClassName);
+        ConnectorTypeResponse restResult = restClient.callOCFConnectorTypeGetRESTCall(methodName,
+                                                                                      serverPlatformRootURL + urlTemplate,
+                                                                                      serverName,
+                                                                                      userId,
+                                                                                      connectorProviderClassName);
 
         return restResult.getConnectorType();
+    }
+
+
+
+    /**
+     * Pass an open lineage event to the integration service.  It will pass it on to the integration connectors that have registered a
+     * listener for open lineage events.
+     *
+     * @param userId calling user
+     * @param event open lineage event to publish.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UserNotAuthorizedException the caller is not authorized to call the service
+     * @throws PropertyServerException there is a problem processing the request
+     */
+    public void publishOpenLineageEvent(String               userId,
+                                        OpenLineage.RunEvent event) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        final String methodName = "publishOpenLineageEvent";
+        final String eventParameter = "event";
+        final String urlTemplate = "/servers/{0}/open-metadata/integration-services/lineage-integrator/users/{1}/publish-open-lineage-event";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(event, eventParameter, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        event,
+                                        serverName,
+                                        userId);
     }
 }

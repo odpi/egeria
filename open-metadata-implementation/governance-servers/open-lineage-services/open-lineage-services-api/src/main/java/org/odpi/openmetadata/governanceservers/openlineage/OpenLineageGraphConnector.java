@@ -27,7 +27,8 @@ public interface OpenLineageGraphConnector {
 
     /**
      * Initialize the connectors
-     * @throws OpenLineageException
+     * @param auditLog logging destination
+     * @throws OpenLineageException internal error
      */
     void initializeGraphDB(AuditLog auditLog) throws OpenLineageException;
 

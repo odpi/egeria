@@ -9,7 +9,6 @@ import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstanceHandl
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
 class SecurityManagerInstanceHandler extends OMASServiceInstanceHandler
 {
@@ -35,21 +34,145 @@ class SecurityManagerInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
-    SoftwareServerCapabilityHandler<SoftwareServerCapabilityElement> getSoftwareServerCapabilityHandler(String userId,
-                                                                                                        String serverName,
-                                                                                                        String serviceOperationName) throws InvalidParameterException,
-                                                                                                                                         UserNotAuthorizedException,
-                                                                                                                                         PropertyServerException
+    SoftwareCapabilityHandler<SecurityManagerElement> getSoftwareCapabilityHandler(String userId,
+                                                                                   String serverName,
+                                                                                   String serviceOperationName) throws InvalidParameterException,
+                                                                                                                       UserNotAuthorizedException,
+                                                                                                                       PropertyServerException
     {
         SecurityManagerServicesInstance instance = (SecurityManagerServicesInstance)super.getServerServiceInstance(userId,
-                                                                                                           serverName,
-                                                                                                           serviceOperationName);
+                                                                                                                   serverName,
+                                                                                                                   serviceOperationName);
 
         if (instance != null)
         {
-            return instance.getSecurityManagerIntegratorHandler();
+            return instance.getSoftwareCapabilityHandler();
         }
 
         return null;
     }
+
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    GovernanceDefinitionHandler<SecurityGroupElement> getSecurityGroupHandler(String userId,
+                                                                              String serverName,
+                                                                              String serviceOperationName) throws InvalidParameterException,
+                                                                                                                  UserNotAuthorizedException,
+                                                                                                                  PropertyServerException
+    {
+        SecurityManagerServicesInstance instance = (SecurityManagerServicesInstance)super.getServerServiceInstance(userId,
+                                                                                                                     serverName,
+                                                                                                                     serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getSecurityGroupHandler();
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    UserIdentityHandler<UserIdentityElement> getUserIdentityHandler(String userId,
+                                                                    String serverName,
+                                                                    String serviceOperationName) throws InvalidParameterException,
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        PropertyServerException
+    {
+        SecurityManagerServicesInstance instance = (SecurityManagerServicesInstance)super.getServerServiceInstance(userId,
+                                                                                                                     serverName,
+                                                                                                                     serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getUserIdentityHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    ActorProfileHandler<ActorProfileElement> getActorProfileHandler(String userId,
+                                                                    String serverName,
+                                                                    String serviceOperationName) throws InvalidParameterException,
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        PropertyServerException
+    {
+        SecurityManagerServicesInstance instance = (SecurityManagerServicesInstance)super.getServerServiceInstance(userId,
+                                                                                                                   serverName,
+                                                                                                                   serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getActorProfileHandler();
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    PersonRoleHandler<PersonRoleElement> getPersonRoleHandler(String userId,
+                                                              String serverName,
+                                                              String serviceOperationName) throws InvalidParameterException,
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        PropertyServerException
+    {
+        SecurityManagerServicesInstance instance = (SecurityManagerServicesInstance)super.getServerServiceInstance(userId,
+                                                                                                                   serverName,
+                                                                                                                   serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getPersonRoleHandler();
+        }
+
+        return null;
+    }
+
 }

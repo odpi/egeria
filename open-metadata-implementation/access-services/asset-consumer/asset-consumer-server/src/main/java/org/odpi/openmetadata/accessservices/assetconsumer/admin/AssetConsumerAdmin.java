@@ -2,15 +2,20 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.admin;
 
-import org.odpi.openmetadata.accessservices.assetconsumer.connectors.outtopic.AssetConsumerOutTopicClientProvider;
+import org.odpi.openmetadata.accessservices.assetconsumer.connectors.outtopic.AssetConsumerOutTopicServerConnector;
+import org.odpi.openmetadata.accessservices.assetconsumer.connectors.outtopic.AssetConsumerOutTopicServerProvider;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerAuditCode;
 import org.odpi.openmetadata.accessservices.assetconsumer.listener.AssetConsumerOMRSTopicListener;
+import org.odpi.openmetadata.accessservices.assetconsumer.outtopic.AssetConsumerPublisher;
 import org.odpi.openmetadata.accessservices.assetconsumer.server.AssetConsumerServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
@@ -22,17 +27,11 @@ import java.util.List;
  */
 public class AssetConsumerAdmin extends AccessServiceAdmin
 {
-    private AuditLog                      auditLog   = null;
-    private AssetConsumerServicesInstance instance   = null;
-    private String                        serverName = null;
-
-    /**
-     * Default constructor
-     */
-    public AssetConsumerAdmin()
-    {
-    }
-
+    private AuditLog                      auditLog       = null;
+    private AssetConsumerServicesInstance instance       = null;
+    private String                        serverName     = null;
+    private AssetConsumerPublisher        eventPublisher = null;
+    
 
     /**
      * Initialize the access service.
@@ -51,7 +50,7 @@ public class AssetConsumerAdmin extends AccessServiceAdmin
                            AuditLog                auditLog,
                            String                  serverUserName) throws OMAGConfigurationErrorException
     {
-        final String           actionDescription = "initialize";
+        final String actionDescription = "initialize";
 
         auditLog.logMessage(actionDescription, AssetConsumerAuditCode.SERVICE_INITIALIZING.getMessageDefinition());
 
@@ -72,26 +71,47 @@ public class AssetConsumerAdmin extends AccessServiceAdmin
             this.serverName = instance.getServerName();
 
             /*
-             * Only set up the listening and event publishing if requested in the config.
+             * This piece is setting up the server-side mechanism for the out topic.
              */
-            if (accessServiceConfig.getAccessServiceOutTopic() != null)
-            {
-                AssetConsumerOMRSTopicListener omrsTopicListener;
+            Connection outTopicEventBusConnection = accessServiceConfig.getAccessServiceOutTopic();
 
-                omrsTopicListener = new AssetConsumerOMRSTopicListener(accessServiceConfig.getAccessServiceOutTopic(),
-                                                                       repositoryConnector.getRepositoryHelper(),
-                                                                       repositoryConnector.getRepositoryValidator(),
-                                                                       accessServiceConfig.getAccessServiceName(),
-                                                                       serverName,
-                                                                       supportedZones,
-                                                                       auditLog);
-                super.registerWithEnterpriseTopic(accessServiceConfig.getAccessServiceName(),
-                                                  serverName,
-                                                  omrsTopicConnector,
-                                                  omrsTopicListener,
-                                                  auditLog);
+            if (outTopicEventBusConnection != null)
+            {
+                /*
+                 * Only set up the listening and event publishing if requested in the config.
+                 */
+                Endpoint endpoint = outTopicEventBusConnection.getEndpoint();
+
+                AuditLog outTopicAuditLog = auditLog.createNewAuditLog(OMRSAuditingComponent.OMAS_OUT_TOPIC);
+                Connection serverSideOutTopicConnection = this.getOutTopicConnection(accessServiceConfig.getAccessServiceOutTopic(),
+                                                                                     AccessServiceDescription.ASSET_CONSUMER_OMAS.getAccessServiceFullName(),
+                                                                                     AssetConsumerOutTopicServerProvider.class.getName(),
+                                                                                     auditLog);
+                AssetConsumerOutTopicServerConnector outTopicServerConnector = super.getTopicConnector(serverSideOutTopicConnection,
+                                                                                                       AssetConsumerOutTopicServerConnector.class,
+                                                                                                       outTopicAuditLog,
+                                                                                                       AccessServiceDescription.ASSET_CONSUMER_OMAS.getAccessServiceFullName(),
+                                                                                                       actionDescription);
+                eventPublisher = new AssetConsumerPublisher(outTopicServerConnector, endpoint.getAddress(), outTopicAuditLog);
+
+                this.registerWithEnterpriseTopic(AccessServiceDescription.ASSET_CONSUMER_OMAS.getAccessServiceFullName(),
+                                                 serverName,
+                                                 omrsTopicConnector,
+                                                 new AssetConsumerOMRSTopicListener(eventPublisher,
+                                                                                    repositoryConnector.getRepositoryHelper(),
+                                                                                    repositoryConnector.getRepositoryValidator(),
+                                                                                    accessServiceConfig.getAccessServiceName(),
+                                                                                    serverName,
+                                                                                    supportedZones,
+                                                                                    auditLog),
+                                                 auditLog);
+
             }
 
+            /*
+             * Initialization is complete.  The service is now waiting for REST API calls (typically from the Engine Host) and events
+             * from OMRS to indicate that there are metadata changes.
+             */
             auditLog.logMessage(actionDescription,
                                 AssetConsumerAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName),
                                 accessServiceConfig.toString());
@@ -125,6 +145,11 @@ public class AssetConsumerAdmin extends AccessServiceAdmin
         if (instance != null)
         {
             this.instance.shutdown();
+        }
+
+        if (this.eventPublisher != null)
+        {
+            this.eventPublisher.disconnect();
         }
 
         auditLog.logMessage(actionDescription, AssetConsumerAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(serverName));

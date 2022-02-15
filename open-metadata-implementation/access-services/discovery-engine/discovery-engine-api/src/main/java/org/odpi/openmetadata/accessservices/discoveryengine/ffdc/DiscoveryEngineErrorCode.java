@@ -53,7 +53,7 @@ public enum DiscoveryEngineErrorCode implements ExceptionMessageSet
             ;
 
 
-    private ExceptionMessageDefinition messageDefinition;
+    private final ExceptionMessageDefinition messageDefinition;
 
     /**
      * The constructor for DiscoveryEngineErrorCode expects to be passed one of the enumeration rows defined in

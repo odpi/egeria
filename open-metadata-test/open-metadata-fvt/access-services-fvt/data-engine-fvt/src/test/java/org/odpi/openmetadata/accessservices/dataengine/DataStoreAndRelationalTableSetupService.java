@@ -39,7 +39,7 @@ public class DataStoreAndRelationalTableSetupService {
         if(database == null){
             database = getDefaultDatabase();
         }
-        dataEngineClient.upsertDatabase(userId, database);
+        dataEngineClient.upsertDatabase(userId, database, false);
         return database;
     }
 

@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.userinterface.uichassis.springboot.auth;
 
 import org.apache.commons.collections4.set.UnmodifiableSet;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.ldap.userdetails.InetOrgPerson;
 
 import java.io.Serializable;
@@ -26,6 +25,8 @@ public class TokenUser implements Serializable {
     private String avatarUrl;
 
     private Set<String> roles;
+
+    private Set<String> visibleComponents;
 
     public TokenUser() {}
 
@@ -97,5 +98,13 @@ public class TokenUser implements Serializable {
 
     public void setRoles(Set<String> roles) {
        this.roles = UnmodifiableSet.unmodifiableSet(roles);
+    }
+
+    public Set<String> getVisibleComponents() {
+        return visibleComponents;
+    }
+
+    public void setVisibleComponents(Set<String> visibleComponents) {
+        this.visibleComponents = visibleComponents;
     }
 }

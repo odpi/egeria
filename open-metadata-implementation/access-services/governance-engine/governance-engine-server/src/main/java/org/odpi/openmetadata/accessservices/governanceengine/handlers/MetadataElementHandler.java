@@ -6,8 +6,8 @@ import org.odpi.openmetadata.accessservices.governanceengine.converters.RelatedE
 import org.odpi.openmetadata.accessservices.governanceengine.converters.RelatedElementsConverter;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -36,7 +36,7 @@ import java.util.*;
  * MetadataElementHandler manages MetadataElement objects from the Governance Action Framework (GAF).
  * These objects are 1-1 with an open metadata entity.
  */
-public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
+public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 {
     private PropertyHelper propertyHelper = new PropertyHelper();
 
@@ -1483,7 +1483,7 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
         invalidParameterHandler.validateName(classificationName, classificationParameterName, methodName);
 
         String classificationTypeGUID = invalidParameterHandler.validateTypeName(classificationName,
-                                                                                 OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                                                 null,
                                                                                  serviceName,
                                                                                  methodName,
                                                                                  repositoryHelper);
@@ -1550,7 +1550,7 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
         invalidParameterHandler.validateName(classificationName, classificationParameterName, methodName);
 
         String classificationTypeGUID = invalidParameterHandler.validateTypeName(classificationName,
-                                                                                 OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                                                 null,
                                                                                  serviceName,
                                                                                  methodName,
                                                                                  repositoryHelper);
@@ -1616,7 +1616,7 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
         invalidParameterHandler.validateName(classificationName, classificationParameterName, methodName);
 
         String classificationTypeGUID = invalidParameterHandler.validateTypeName(classificationName,
-                                                                                 OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                                                 null,
                                                                                  serviceName,
                                                                                  methodName,
                                                                                  repositoryHelper);
@@ -1672,7 +1672,7 @@ public class MetadataElementHandler<B> extends OpenMetadataAPIGenericHandler<B>
         invalidParameterHandler.validateName(classificationName, classificationParameterName, methodName);
 
         String classificationTypeGUID = invalidParameterHandler.validateTypeName(classificationName,
-                                                                                 OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                                                 null,
                                                                                  serviceName,
                                                                                  methodName,
                                                                                  repositoryHelper);

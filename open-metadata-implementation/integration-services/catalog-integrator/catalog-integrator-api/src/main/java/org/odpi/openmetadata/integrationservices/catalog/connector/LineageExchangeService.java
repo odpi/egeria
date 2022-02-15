@@ -96,8 +96,7 @@ public class LineageExchangeService extends SchemaExchangeService
                                                        connectorName,
                                                        processExternalIdentifierKeyPattern,
                                                        mappingProperties,
-                                                       processProperties,
-                                                       initialStatus);
+                                                       processProperties);
         }
         else
         {

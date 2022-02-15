@@ -4,8 +4,8 @@
 package org.odpi.openmetadata.accessservices.securitymanager.connectors.outtopic;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.accessservices.securitymanager.ffdc.SecurityManagerAuditCode;
 import org.odpi.openmetadata.accessservices.securitymanager.events.SecurityManagerOutTopicEvent;
+import org.odpi.openmetadata.accessservices.securitymanager.ffdc.SecurityManagerAuditCode;
 import org.odpi.openmetadata.accessservices.securitymanager.ffdc.SecurityManagerErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -37,7 +37,9 @@ public class SecurityManagerOutTopicServerConnector extends OpenMetadataTopicSen
 
             if (super.auditLog != null)
             {
-                super.auditLog.logMessage(methodName, SecurityManagerAuditCode.OUT_TOPIC_EVENT.getMessageDefinition(eventString));
+                super.auditLog.logMessage(methodName,
+                                          SecurityManagerAuditCode.OUT_TOPIC_EVENT.getMessageDefinition(event.getEventType().getEventTypeName()),
+                                          eventString);
             }
         }
         catch (InvalidParameterException | ConnectorCheckedException error)

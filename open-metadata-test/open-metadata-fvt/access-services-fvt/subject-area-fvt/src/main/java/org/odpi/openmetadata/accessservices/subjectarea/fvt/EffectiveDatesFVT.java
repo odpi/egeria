@@ -9,6 +9,9 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 import java.io.IOException;
+import java.util.Date;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * FVT resource to call subject area client APIs to test the effectivity dates
@@ -21,6 +24,7 @@ public class EffectiveDatesFVT
     private static final String DEFAULT_TEST_TERM_NAME = "Test term A";
     private GlossaryFVT glossaryFVT =null;
     private TermFVT termFVT=null;
+    private static Logger log = LoggerFactory.getLogger(EffectiveDatesFVT.class);
 
 
     public static void main(String args[])
@@ -33,14 +37,16 @@ public class EffectiveDatesFVT
         {
             System.out.println("Error getting user input");
         } catch (SubjectAreaFVTCheckedException e) {
-            System.out.println("ERROR: " + e.getMessage() );
+            log.error("ERROR: " + e.getMessage() );
         } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
-            System.out.println("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
+            log.error("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
         }
 
     }
     public EffectiveDatesFVT(String url, String serverName,String userId) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        System.out.println("Create a glossary");
+        if (log.isDebugEnabled()) {
+            log.debug("Create a glossary");
+        }
         glossaryFVT = new GlossaryFVT(url,serverName,userId);
         termFVT= new TermFVT(url,serverName,userId);
     }
@@ -68,25 +74,26 @@ public class EffectiveDatesFVT
     }
 
     public void run() throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        long now = new Date().getTime();
         try
         {
-            glossaryFVT.createPastToGlossary(DEFAULT_TEST_PAST_GLOSSARY_NAME);
+            glossaryFVT.createPastToGlossary(now, DEFAULT_TEST_PAST_GLOSSARY_NAME);
         } catch (InvalidParameterException e) {
-            System.out.println("Expected creation of a Glossary with to in the past failed");
+            log.error("Expected creation of a Glossary with to in the past failed");
         }
         try
         {
-            glossaryFVT.createPastFromGlossary(DEFAULT_TEST_PAST_GLOSSARY_NAME);
+            glossaryFVT.createPastFromGlossary(now, DEFAULT_TEST_PAST_GLOSSARY_NAME);
         } catch (InvalidParameterException e) {
-            System.out.println("Expected creation of a Glossary with from in the past failed");
+            log.error("Expected creation of a Glossary with from in the past failed");
         }
         try
         {
            glossaryFVT.createInvalidEffectiveDateGlossary(DEFAULT_TEST_PAST_GLOSSARY_NAME);
         } catch (InvalidParameterException e) {
-            System.out.println("Expected creation of a Glossary with invalid Effectivity dates failed");
+            log.error("Expected creation of a Glossary with invalid Effectivity dates failed");
         }
-        Glossary futureGloss = glossaryFVT.createFutureGlossary(DEFAULT_TEST_FUTURE_GLOSSARY_NAME);
+        Glossary futureGloss = glossaryFVT.createFutureGlossary(now, DEFAULT_TEST_FUTURE_GLOSSARY_NAME);
         FVTUtils.validateNode(futureGloss);
         Term term5 =termFVT.createTerm(DEFAULT_TEST_TERM_NAME, futureGloss.getSystemAttributes().getGUID());
         FVTUtils.validateNode(term5);
@@ -97,7 +104,7 @@ public class EffectiveDatesFVT
         checkTermGlossaryEffectivity(futureGloss, gotTerm5);
 
         // update the term so that its effective dates not longer are compatible with the glossary
-        Term futureTerm = termFVT.updateTermToFuture(gotTerm5.getSystemAttributes().getGUID(), term5);
+        Term futureTerm = termFVT.updateTermToFuture(now, gotTerm5.getSystemAttributes().getGUID(), term5);
         FVTUtils.validateNode(futureTerm);
         checkTermGlossaryEffectivity(futureGloss, futureTerm);
         futureTerm = termFVT.getTermByGUID(term5.getSystemAttributes().getGUID());

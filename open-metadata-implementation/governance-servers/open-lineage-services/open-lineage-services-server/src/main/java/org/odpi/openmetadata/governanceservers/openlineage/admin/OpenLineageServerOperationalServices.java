@@ -51,11 +51,13 @@ public class OpenLineageServerOperationalServices {
     private static final Logger log = LoggerFactory.getLogger(OpenLineageServerOperationalServices.class);
 
     private static final String EMPTY_STRING = "";
+    private static final int RETRIEVE_OUT_TOPIC_CONNECTION_TIMEOUT = 60_000;
 
     private final String localServerName;
     private final String localServerUserId;
     private final String localServerPassword;
     private final int maxPageSize;
+    private final String localServerId;
 
     private OpenLineageServerConfig openLineageServerConfig;
     private OpenLineageServerInstance openLineageServerInstance;
@@ -74,10 +76,12 @@ public class OpenLineageServerOperationalServices {
      * @param localServerPassword password for this server to use if sending REST requests.
      * @param maxPageSize         maximum number of records that can be requested on the pageSize parameter
      */
-    public OpenLineageServerOperationalServices(String localServerName,
+    public OpenLineageServerOperationalServices(String localServerId,
+                                                String localServerName,
                                                 String localServerUserId,
                                                 String localServerPassword,
                                                 int maxPageSize) {
+        this.localServerId = localServerId;
         this.localServerName = localServerName;
         this.localServerUserId = localServerUserId;
         this.localServerPassword = localServerPassword;
@@ -98,9 +102,10 @@ public class OpenLineageServerOperationalServices {
         final String actionDescription = "Initialize Open lineage Services";
 
         logRecord(OpenLineageServerAuditCode.SERVER_INITIALIZING, actionDescription);
-        if (openLineageServerConfig == null)
-            throwOMAGConfigurationErrorException(OpenLineageServerErrorCode.NO_CONFIG_DOC, methodName, OpenLineageServerAuditCode.NO_CONFIG_DOC, actionDescription);
-
+        if (openLineageServerConfig == null) {
+            throwOMAGConfigurationErrorException(OpenLineageServerErrorCode.NO_CONFIG_DOC, localServerName,methodName, OpenLineageServerAuditCode.NO_CONFIG_DOC, actionDescription);
+        }
+        validateAccessServiceConfig(openLineageServerConfig.getAccessServiceConfig(), methodName);
         try {
             initializeOLS(openLineageServerConfig);
         } catch (OMAGConfigurationErrorException e) {
@@ -110,8 +115,23 @@ public class OpenLineageServerOperationalServices {
         }
     }
 
-    private void initializeOLS(OpenLineageServerConfig openLineageServerConfig) throws OMAGConfigurationErrorException, InvalidParameterException,
-            org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException, UserNotAuthorizedException {
+    private void validateAccessServiceConfig(OLSSimplifiedAccessServiceConfig accessServiceConfig, String methodName) throws OMAGConfigurationErrorException {
+        String actionDescription = "Verify the access service configuration";
+        if (accessServiceConfig.getServerName() == null || accessServiceConfig.getServerName().isEmpty()) {
+            throwOMAGConfigurationErrorException(OpenLineageServerErrorCode.BAD_ACCESS_SERVICE_CONFIG, "serverName",methodName,
+                    OpenLineageServerAuditCode.BAD_ACCESS_SERVICE_CONFIG, actionDescription);
+        }
+        if (accessServiceConfig.getServerPlatformUrlRoot() == null || accessServiceConfig.getServerPlatformUrlRoot().isEmpty()) {
+            throwOMAGConfigurationErrorException(OpenLineageServerErrorCode.BAD_ACCESS_SERVICE_CONFIG, "serverPlatformUrlRoot", methodName,
+                    OpenLineageServerAuditCode.BAD_ACCESS_SERVICE_CONFIG, actionDescription);
+        }
+        if (accessServiceConfig.getUser() == null || accessServiceConfig.getUser().isEmpty()) {
+            throwOMAGConfigurationErrorException(OpenLineageServerErrorCode.BAD_ACCESS_SERVICE_CONFIG, "user", methodName,
+                    OpenLineageServerAuditCode.BAD_ACCESS_SERVICE_CONFIG, actionDescription);
+        }
+    }
+
+    private void initializeOLS(OpenLineageServerConfig openLineageServerConfig) throws OMAGConfigurationErrorException, InvalidParameterException, InterruptedException {
         final String methodName = "initializeOLS";
         final String actionDescription = "Initialize Open lineage Services";
         Connection lineageGraphConnection = openLineageServerConfig.getLineageGraphConnection();
@@ -140,10 +160,8 @@ public class OpenLineageServerOperationalServices {
         logRecord(OpenLineageServerAuditCode.SERVER_INITIALIZED, actionDescription);
     }
 
-    private Connection getAssetLineageOutTopicConnection(String methodName, OLSSimplifiedAccessServiceConfig accessServiceConfig) throws
-            InvalidParameterException, org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException, UserNotAuthorizedException {
+    private Connection getAssetLineageOutTopicConnection(String methodName, OLSSimplifiedAccessServiceConfig accessServiceConfig) throws InvalidParameterException, InterruptedException {
 
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-lineage/users/{1}/topics/out-topic-connection/{2}";
         OCFRESTClient restClient;
         String serverName = accessServiceConfig.getServerName();
         String serverPlatformURLRoot = accessServiceConfig.getServerPlatformUrlRoot();
@@ -154,17 +172,32 @@ public class OpenLineageServerOperationalServices {
         } else {
             restClient = new OCFRESTClient(serverName, serverPlatformURLRoot, serverUserId, serverPassword, auditLog);
         }
-        ConnectionResponse restResult = restClient.callConnectionGetRESTCall(methodName,
-                serverPlatformURLRoot + urlTemplate,
-                serverName,
-                serverUserId,
-                serverUserId);
-
-        Connection inTopicConnection = null;
-        if (restResult != null) {
-            inTopicConnection = restResult.getConnection();
+        ConnectionResponse restResult;
+        restResult = getConnection(methodName, restClient, accessServiceConfig);
+        while (restResult == null) {
+            Thread.sleep(RETRIEVE_OUT_TOPIC_CONNECTION_TIMEOUT);
+            restResult = getConnection(methodName, restClient, accessServiceConfig);
         }
-        return inTopicConnection;
+        return restResult.getConnection();
+    }
+
+    private ConnectionResponse getConnection(String methodName, OCFRESTClient restClient, OLSSimplifiedAccessServiceConfig accessServiceConfig) {
+        final String actionDescription = "Retrieve topic Asset Lineage out topic connection";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-lineage/users/{1}/topics/out-topic-connection/{2}";
+        String serverName = accessServiceConfig.getServerName();
+        String serverPlatformURLRoot = accessServiceConfig.getServerPlatformUrlRoot();
+        String serverUserId = accessServiceConfig.getUser();
+        ConnectionResponse restResult = null;
+        try {
+            restResult = restClient.callOCFConnectionGetRESTCall(methodName,
+                                                                 serverPlatformURLRoot + urlTemplate,
+                                                                 serverName,
+                                                                 serverUserId,
+                                                                 localServerId);
+        } catch (InvalidParameterException | UserNotAuthorizedException | org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException e) {
+            logException(OpenLineageServerAuditCode.COULD_NOT_RETRIEVE_TOPIC_CONNECTOR, actionDescription, e);
+        }
+        return restResult;
     }
 
     private void initializeAndStartBackgroundJobs() {
@@ -224,7 +257,7 @@ public class OpenLineageServerOperationalServices {
         final String methodName = "getGraphConnector";
         Connector connector = null;
         try {
-            connector = new ConnectorBroker().getConnector(connection);
+            connector = new ConnectorBroker(auditLog).getConnector(connection);
         } catch (OCFCheckedExceptionBase e) {
             OCFCheckedExceptionToOMAGConfigurationError(e, auditCode, actionDescription);
         } catch (Exception e) {
@@ -331,8 +364,10 @@ public class OpenLineageServerOperationalServices {
      * @param actionDescription The action that was taking place when the error occurred.
      * @throws OMAGConfigurationErrorException
      */
-    private void throwOMAGConfigurationErrorException(OpenLineageServerErrorCode errorCode, String methodName, OpenLineageServerAuditCode auditCode, String actionDescription) throws OMAGConfigurationErrorException {
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(localServerName);
+    private void throwOMAGConfigurationErrorException(OpenLineageServerErrorCode errorCode, String errorDetails, String methodName,
+                                                      OpenLineageServerAuditCode auditCode, String actionDescription)
+            throws OMAGConfigurationErrorException {
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(errorDetails);
         OMAGConfigurationErrorException e = new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
                 this.getClass().getName(),
                 methodName,

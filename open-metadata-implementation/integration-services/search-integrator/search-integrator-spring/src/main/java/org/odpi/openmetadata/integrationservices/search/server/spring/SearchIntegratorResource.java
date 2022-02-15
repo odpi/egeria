@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name="Search Integrator OMIS", description="Supports the detection and creation of metadata for file systems and file servers.",
         externalDocs=@ExternalDocumentation(description="Search Integrator Open Metadata Integration Service (OMIS)",
-                url="https://egeria.odpi.org/open-metadata-implementation/integration-services/search-integrator"))
+                url="https://odpi.github.io/egeria-docs/services/omis/search-integrator/overview/"))
 
 public class SearchIntegratorResource
 {

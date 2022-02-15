@@ -141,14 +141,14 @@ public class ConnectedAssetRelatedAssets extends AssetRelatedAssets
 
         try
         {
-            RelatedAssetsResponse restResult = restClient.callRelatedAssetsGetRESTCall(methodName,
-                                                                                       omasServerURL + urlTemplate,
-                                                                                       serverName,
-                                                                                       serviceName,
-                                                                                       userId,
-                                                                                       assetGUID,
-                                                                                       cacheStartPointer,
-                                                                                       maximumSize);
+            RelatedAssetsResponse restResult = restClient.callOCFRelatedAssetsGetRESTCall(methodName,
+                                                                                          omasServerURL + urlTemplate,
+                                                                                          serverName,
+                                                                                          serviceName,
+                                                                                          userId,
+                                                                                          assetGUID,
+                                                                                          cacheStartPointer,
+                                                                                          maximumSize);
 
             restExceptionHandler.detectAndThrowInvalidParameterException(restResult);
             restExceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
@@ -183,7 +183,7 @@ public class ConnectedAssetRelatedAssets extends AssetRelatedAssets
                 return resultList;
             }
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             restExceptionHandler.handleUnexpectedException(error, methodName, serverName, omasServerURL);
         }

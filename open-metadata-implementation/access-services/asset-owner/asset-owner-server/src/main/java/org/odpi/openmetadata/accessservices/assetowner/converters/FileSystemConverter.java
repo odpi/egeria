@@ -37,7 +37,7 @@ public class FileSystemConverter<B> extends AssetOwnerOMASConverter<B>
 
     /**
      * Using the supplied instances, return a new instance of the bean. This is used for beans that have
-     * contain a combination of the properties from an entity and a that os a connected relationship.
+     * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
      * @param entity entity containing the properties
@@ -73,7 +73,7 @@ public class FileSystemConverter<B> extends AssetOwnerOMASConverter<B>
                     fileSystemProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     fileSystemProperties.setDisplayName(this.removeName(instanceProperties));
                     fileSystemProperties.setDescription(this.removeDescription(instanceProperties));
-                    fileSystemProperties.setTypeDescription(this.removeDeployedImplementationType(instanceProperties));
+                    fileSystemProperties.setTypeDescription(this.removeCapabilityType(instanceProperties));
                     fileSystemProperties.setVersion(this.removeCapabilityVersion(instanceProperties));
                     fileSystemProperties.setPatchLevel(this.removePatchLevel(instanceProperties));
                     fileSystemProperties.setSource(this.removeSource(instanceProperties));
@@ -111,7 +111,7 @@ public class FileSystemConverter<B> extends AssetOwnerOMASConverter<B>
 
     /**
      * Using the supplied instances, return a new instance of the bean. This is used for beans that have
-     * contain a combination of the properties from an entity and a that os a connected relationship.
+     * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
      * @param entity entity containing the properties

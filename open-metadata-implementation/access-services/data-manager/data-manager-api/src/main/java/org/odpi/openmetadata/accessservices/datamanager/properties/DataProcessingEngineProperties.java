@@ -7,7 +7,7 @@ package org.odpi.openmetadata.accessservices.datamanager.properties;
  * DataProcessingEngineProperties describes an engine.  Set up the typeName to create common subtypes such as
  * ReportingEngine, WorkflowEngine, AnalyticsEngine, DataMovementEngine or DataVirtualizationEngine.
  */
-public class DataProcessingEngineProperties extends SoftwareServerCapabilitiesProperties
+public class DataProcessingEngineProperties extends SoftwareCapabilitiesProperties
 {
     private static final long    serialVersionUID = 1L;
 
@@ -36,7 +36,7 @@ public class DataProcessingEngineProperties extends SoftwareServerCapabilitiesPr
      *
      * @param template object to copy
      */
-    public DataProcessingEngineProperties(SoftwareServerCapabilitiesProperties template)
+    public DataProcessingEngineProperties(SoftwareCapabilitiesProperties template)
     {
         super(template);
     }
