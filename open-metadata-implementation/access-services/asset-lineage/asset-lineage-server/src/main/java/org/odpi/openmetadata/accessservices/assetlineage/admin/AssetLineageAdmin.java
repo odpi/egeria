@@ -8,7 +8,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.auditlog.AssetLineageAu
 import org.odpi.openmetadata.accessservices.assetlineage.listeners.AssetLineageOMRSTopicListener;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
 import org.odpi.openmetadata.accessservices.assetlineage.server.AssetLineageServicesInstance;
-import org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants;
+import org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageTypesValidator;
 import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
@@ -22,10 +22,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * AssetLineageAdmin is the class that is called by the OMAG Server to initialize and terminate
@@ -58,18 +56,18 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
 
         try {
             this.auditLog = auditLog;
-
-            List<String> supportedZones = this.extractSupportedZones(accessServiceConfigurationProperties.getAccessServiceOptions(),
+            Map<String, Object> accessServiceOptions = accessServiceConfigurationProperties.getAccessServiceOptions();
+            List<String> supportedZones = this.extractSupportedZones(accessServiceOptions,
                     accessServiceConfigurationProperties.getAccessServiceName(), auditLog);
 
-            Set<String> lineageClassificationTypes = getLineageClassificationTypes(accessServiceConfigurationProperties);
-            this.instance =
-                    new AssetLineageServicesInstance(repositoryConnector, supportedZones, lineageClassificationTypes,
-                            serverUserName, auditLog, accessServiceConfigurationProperties.getAccessServiceOutTopic());
+            AssetLineageTypesValidator assetLineageTypesValidator = new AssetLineageTypesValidator(repositoryConnector.getRepositoryHelper(),
+                    accessServiceOptions);
+            this.instance = new AssetLineageServicesInstance(repositoryConnector, supportedZones, serverUserName, auditLog,
+                    accessServiceConfigurationProperties.getAccessServiceOutTopic(), assetLineageTypesValidator);
             this.serverName = instance.getServerName();
 
             Connection outTopicConnection = accessServiceConfigurationProperties.getAccessServiceOutTopic();
-            Map<String, Object> accessServiceOptions = accessServiceConfigurationProperties.getAccessServiceOptions();
+
             if (outTopicConnection != null) {
                 OpenMetadataTopicConnector outTopicConnector = super.getOutTopicEventBusConnector(outTopicConnection,
                         accessServiceConfigurationProperties.getAccessServiceName(), auditLog);
@@ -77,7 +75,7 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
                 Converter converter = new Converter(repositoryConnector.getRepositoryHelper());
                 AssetLineagePublisher publisher = new AssetLineagePublisher(outTopicConnector, serverName, serverUserName, accessServiceOptions);
                 AssetLineageOMRSTopicListener omrsTopicListener = new AssetLineageOMRSTopicListener(converter, serverName, publisher,
-                        lineageClassificationTypes, auditLog);
+                        assetLineageTypesValidator, auditLog);
 
                 super.registerWithEnterpriseTopic(accessServiceConfigurationProperties.getAccessServiceName(), serverName,
                         enterpriseOMRSTopicConnector, omrsTopicListener, auditLog);
@@ -93,27 +91,6 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
             super.throwUnexpectedInitializationException(actionDescription, AccessServiceDescription.ASSET_LINEAGE_OMAS.getAccessServiceFullName(),
                     error);
         }
-    }
-
-    /**
-     * Returns the list of lineage classifications
-     *
-     * @param accessServiceConfig Asset Lineage Configuration
-     *
-     * @return the list of the lineage classifications
-     */
-    private Set<String> getLineageClassificationTypes(AccessServiceConfig accessServiceConfig) {
-
-        Set<String> lineageClassificationTypes = new HashSet<>();
-        if (accessServiceConfig.getAccessServiceOptions() != null) {
-            Object lineageClassificationTypesProperty = accessServiceConfig.getAccessServiceOptions()
-                    .get(AssetLineageConstants.LINEAGE_CLASSIFICATION_TYPES_KEY);
-            if (lineageClassificationTypesProperty != null) {
-                lineageClassificationTypes = new HashSet<>((List<String>) lineageClassificationTypesProperty);
-            }
-        }
-        lineageClassificationTypes.addAll(AssetLineageConstants.immutableDefaultLineageClassifications);
-        return lineageClassificationTypes;
     }
 
     /**

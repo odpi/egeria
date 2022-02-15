@@ -140,17 +140,6 @@ public class OMRSOperationalServices
 
 
     /**
-     * Return the Report Enterprise OMRS Topic Connector.
-     *
-     * @return OMRSTopicConnector for use by the start up services.
-     */
-    public OMRSTopicConnector getRemoteEnterpriseOMRSTopicConnector()
-    {
-        return remoteEnterpriseOMRSTopicConnector;
-    }
-
-
-    /**
      * Create repository connector for an access service.
      *
      * @param callingServiceName name of the access service name.
@@ -625,28 +614,19 @@ public class OMRSOperationalServices
      */
     private OMRSTopicConnector  initializeEnterpriseOMRSTopicConnector(EnterpriseAccessConfig  enterpriseAccessConfig)
     {
-        final String methodName = "initializeEnterpriseOMRSTopicConnector";
-
         OMRSTopicConnector    enterpriseOMRSTopicConnector = null;
 
         if (enterpriseAccessConfig != null)
         {
-            try
-            {
-                Connection enterpriseOMRSTopicConnection = enterpriseAccessConfig.getEnterpriseOMRSTopicConnection();
+            Connection enterpriseOMRSTopicConnection = enterpriseAccessConfig.getEnterpriseOMRSTopicConnection();
 
-                if (enterpriseOMRSTopicConnection != null)
-                {
-                    enterpriseOMRSTopicConnector = getTopicConnector("Enterprise Access", enterpriseOMRSTopicConnection);
-                }
-            }
-            catch (Exception  error)
+            if (enterpriseOMRSTopicConnection != null)
             {
-                throw new OMRSLogicErrorException(OMRSErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                          methodName,
-                                                                                                          error.getMessage()),
-                                                  this.getClass().getName(),
-                                                  methodName);
+                enterpriseOMRSTopicConnector = getTopicConnector("Enterprise Access", enterpriseOMRSTopicConnection);
+
+                /*
+                 * This connector is started by admin services when all of the Access Services have been started and have registered their listeners.
+                 */
             }
         }
 
@@ -676,6 +656,7 @@ public class OMRSOperationalServices
                 if (enterpriseOMRSTopicConnection != null)
                 {
                     enterpriseOMRSTopicConnector = getTopicConnector("Remote Enterprise Access", enterpriseOMRSTopicConnection);
+                    enterpriseOMRSTopicConnector.start();
                 }
             }
             catch (Exception error)

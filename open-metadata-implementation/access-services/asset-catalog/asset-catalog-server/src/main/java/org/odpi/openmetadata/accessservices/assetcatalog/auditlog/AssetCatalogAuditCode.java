@@ -49,7 +49,7 @@ public enum AssetCatalogAuditCode implements AuditLogMessageSet {
 
     EVENT_PROCESSING_EXCEPTION("OMAS-ASSET-CATALOG-0005",
             OMRSAuditLogRecordSeverity.EXCEPTION,
-            "An exception occurred while processing incoming event {0}",
+            "An exception with message {0} occurred while processing incoming event {1}",
             "The event could not be processed",
             "Review the exception to determine the source of the error and correct it."),
     EVENT_NOT_PROCESSING("OMAS-ASSET-CATALOG-0006",

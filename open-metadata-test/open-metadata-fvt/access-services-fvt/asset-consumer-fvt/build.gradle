@@ -76,7 +76,7 @@ task startServer(dependsOn: [':open-metadata-distribution:open-metadata-assembli
 
 // Configuration of the platform
 task configServer(dependsOn: ['startServer','classes'], type: JavaExec) {
-            main = 'configureStartServer'
+            mainClass = 'configureStartServer'
             classpath = sourceSets.test.runtimeClasspath
             //TODO: These parms aren't currently correctly passed. We rely on defaults in the script
             systemProperties = [

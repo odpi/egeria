@@ -74,7 +74,7 @@ class AssetCatalogServicesInstance extends OMASServiceInstance {
             relationshipHandler = new RelationshipHandler(sourceName, invalidParameterHandler, repositoryHandler, repositoryHelper, errorHandler);
         } else {
             final String methodName = "new ServiceInstance";
-            throw new NewInstanceException(AssetCatalogErrorCode.OMRS_NOT_INITIALIZED.getMessageDefinition(methodName),
+            throw new NewInstanceException(AssetCatalogErrorCode.OMRS_NOT_INITIALIZED.getMessageDefinition(serverName),
                     this.getClass().getName(),
                     methodName);
         }
