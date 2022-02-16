@@ -63,8 +63,11 @@ public class KafkaOpenMetadataEventConsumerConfiguration
 		{
 			final String actionDescription = "getProperty";
 
-			auditLog.logMessage(actionDescription,
-								KafkaOpenMetadataTopicConnectorAuditCode.MISSING_PROPERTY.getMessageDefinition(property.getPropertyName()));
+			if (auditLog != null)
+			{
+				auditLog.logMessage(actionDescription,
+									KafkaOpenMetadataTopicConnectorAuditCode.MISSING_PROPERTY.getMessageDefinition(property.getPropertyName()));
+			}
 
 			return "0";
 		}

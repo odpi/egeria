@@ -97,9 +97,12 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
      */
     public void run()
     {
-        auditLog.logMessage(listenerThreadName,
-                            OMRSAuditCode.OPEN_METADATA_TOPIC_LISTENER_START.getMessageDefinition(topicName),
-                            this.getConnection().toString());
+        if (auditLog != null)
+        {
+            auditLog.logMessage(listenerThreadName,
+                                OMRSAuditCode.OPEN_METADATA_TOPIC_LISTENER_START.getMessageDefinition(topicName),
+                                this.getConnection().toString());
+        }
 
         while (keepRunning)
         {
@@ -133,9 +136,12 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
             }
         }
 
-        auditLog.logMessage(listenerThreadName,
-                            OMRSAuditCode.OPEN_METADATA_TOPIC_LISTENER_SHUTDOWN.getMessageDefinition(topicName),
-                           this.getConnection().toString());
+        if (auditLog != null)
+        {
+            auditLog.logMessage(listenerThreadName,
+                                OMRSAuditCode.OPEN_METADATA_TOPIC_LISTENER_SHUTDOWN.getMessageDefinition(topicName),
+                                this.getConnection().toString());
+        }
     }
 
 
@@ -156,14 +162,17 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
             {
                 topicListener.processEvent(event.getJson());
             }
-            catch (Throwable  error)
+            catch (Exception  error)
             {
                 final String   actionDescription = "distributeEvent";
 
-                auditLog.logException(actionDescription,
-                                      OMRSAuditCode.EVENT_PROCESSING_ERROR.getMessageDefinition(event.getJson(), error.toString()),
-                                      event.getJson(),
-                                      error);
+                if (auditLog != null)
+                {
+                    auditLog.logException(actionDescription,
+                                          OMRSAuditCode.EVENT_PROCESSING_ERROR.getMessageDefinition(event.getJson(), error.toString()),
+                                          event.getJson(),
+                                          error);
+                }
             }
         }
         
