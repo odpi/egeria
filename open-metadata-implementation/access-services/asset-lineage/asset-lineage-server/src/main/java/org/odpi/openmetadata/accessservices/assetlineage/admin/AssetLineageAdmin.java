@@ -100,10 +100,11 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
 
     /**
      * Extract the value from access service options property defined with PUBLISHER_BATCH_SIZE_PROPERTY_NAME static field.
+     * If the value provided in the access service options is not usable (NaN or negative number), default value is returned.
      *
-     * @param accessServiceOptions
-     * @param accessServiceFullName
-     * @param auditLog
+     * @param accessServiceOptions Options for the access service
+     * @param accessServiceFullName Name of the access service
+     * @param auditLog Audit log instance
      * @return
      * @throws OMAGConfigurationErrorException
      */
@@ -121,7 +122,7 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
             int value = Integer.parseInt(propertyValue.toString());
             auditLog.logMessage(methodName, AssetLineageAuditCode.CONFIGURED_PUBLISHER_BATCH_SIZE.getMessageDefinition(PUBLISHER_BATCH_SIZE_PROPERTY_NAME,
                     Integer.toString(value)));
-            return value;
+            return value < 1 ? defaultPublisherBatchSize : value;
         }
         catch (Exception error)
         {
