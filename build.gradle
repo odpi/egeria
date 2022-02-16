@@ -299,6 +299,12 @@ allprojects {
         include ( "**/*api/**/*.java" )
         include ( "**/*client/**/*.java" )
         include ( "**/*framework/**/*.java" )
+        // See 6148 - additional refinements
+        include ( "**/accessservices/dataengine/**/*.java" )
+        exclude ( "**/accessservices/dataengine/server/**/*.java" )
+        exclude ( "**/accessservices/**/connectors/**/*.java" )
+        exclude ( "**/fvt/client/**/*.java" )
+        exclude ( "**/userinterface/**/*.java" )
     }
 
 }
