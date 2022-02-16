@@ -4,13 +4,13 @@
 package org.odpi.openmetadata.integrationservices.organization.client;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.ffdc.properties.ConnectorReport;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.integrationservices.organization.api.OrganizationIntegratorAPI;
 
 /**
@@ -119,16 +119,16 @@ public class OrganizationIntegrator implements OrganizationIntegratorAPI
      * @param userId calling user
      * @param connectorProviderClassName name of a specific connector or null for all connectors
      *
-     * @return connector type for this connector
+     * @return connector report for this connector
      *
      * @throws InvalidParameterException the connector provider class name is not a valid connector fo this service
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException there was a problem detected by the integration service
      */
-    public ConnectorType validateConnector(String userId,
-                                           String connectorProviderClassName) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+    public ConnectorReport validateConnector(String userId,
+                                             String connectorProviderClassName) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
     {
         final String   methodName = "validateConnector";
         final String   nameParameter = "connectorProviderClassName";
@@ -143,6 +143,6 @@ public class OrganizationIntegrator implements OrganizationIntegratorAPI
                                                                                       userId,
                                                                                       connectorProviderClassName);
 
-        return restResult.getConnectorType();
+        return new ConnectorReport(restResult);
     }
 }

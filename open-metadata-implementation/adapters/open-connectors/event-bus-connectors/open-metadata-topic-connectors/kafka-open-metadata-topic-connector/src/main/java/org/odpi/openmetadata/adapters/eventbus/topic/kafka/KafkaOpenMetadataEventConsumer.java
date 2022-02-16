@@ -95,10 +95,13 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
 
         final String           actionDescription = "initialize";
 
-        auditLog.logMessage(actionDescription,
-                            KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_CONSUMER_PROPERTIES.getMessageDefinition
-                                    (Integer.toString(kafkaConsumerProperties.size()), topicName),
-                            kafkaConsumerProperties.toString());
+        if (auditLog != null)
+        {
+            auditLog.logMessage(actionDescription,
+                                KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_CONSUMER_PROPERTIES.getMessageDefinition
+                                                                                                             (Integer.toString(kafkaConsumerProperties.size()), topicName),
+                                kafkaConsumerProperties.toString());
+        }
         
         this.maxMsBetweenPolls = new KafkaConfigurationWrapper(kafkaConsumerProperties).getMaxPollIntervalMs();
         this.recoverySleepTimeSec = config.getLongProperty(KafkaOpenMetadataEventConsumerProperty.RECOVERY_SLEEP_TIME);
@@ -544,7 +547,10 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                     This is usually encountered during development because a debug session has prevented the kafka client
                     from honouring the heartbeat configuration.
                      */
-                    auditLog.logMessage( methodName, KafkaOpenMetadataTopicConnectorAuditCode.FAILED_TO_COMMIT_CONSUMED_EVENTS.getMessageDefinition());
+                    if (auditLog != null)
+                    {
+                        auditLog.logMessage( methodName, KafkaOpenMetadataTopicConnectorAuditCode.FAILED_TO_COMMIT_CONSUMED_EVENTS.getMessageDefinition());
+                    }
                 }
                 catch (Exception error)
                 {

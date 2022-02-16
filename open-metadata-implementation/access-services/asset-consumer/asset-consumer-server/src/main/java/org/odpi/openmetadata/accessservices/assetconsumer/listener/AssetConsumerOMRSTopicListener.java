@@ -100,6 +100,16 @@ public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
                     this.processUpdatedEntity(instanceEvent.getEntity(),
                                               instanceEvent.getOriginalEntity());
                 }
+                else if (instanceEventType == OMRSInstanceEventType.CLASSIFIED_ENTITY_EVENT)
+                {
+                    this.processUpdatedEntity(instanceEvent.getEntity(),
+                                              instanceEvent.getOriginalEntity());
+                }
+                else if (instanceEventType == OMRSInstanceEventType.RECLASSIFIED_ENTITY_EVENT)
+                {
+                    this.processUpdatedEntity(instanceEvent.getEntity(),
+                                              instanceEvent.getOriginalEntity());
+                }
             }
             else
             {
