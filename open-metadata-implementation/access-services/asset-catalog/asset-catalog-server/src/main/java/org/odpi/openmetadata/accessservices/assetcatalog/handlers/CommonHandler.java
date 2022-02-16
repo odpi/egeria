@@ -3,10 +3,10 @@
 package org.odpi.openmetadata.accessservices.assetcatalog.handlers;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.odpi.openmetadata.accessservices.assetcatalog.builders.AssetCatalogConverter;
+import org.odpi.openmetadata.accessservices.assetcatalog.converters.AssetCatalogConverter;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogBean;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
-import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -50,7 +50,7 @@ public class CommonHandler {
     private final String sourceName;
     private final RepositoryHandler repositoryHandler;
     private final OMRSRepositoryHelper repositoryHelper;
-    private final AssetHandler<AssetCatalogBean> assetHandler;
+    private final OpenMetadataAPIGenericHandler<AssetCatalogBean> assetHandler;
     private final RepositoryErrorHandler errorHandler;
 
     /**
@@ -59,10 +59,11 @@ public class CommonHandler {
      * @param sourceName        the name of the component
      * @param repositoryHandler manages calls to the repository services
      * @param repositoryHelper  provides utilities for manipulating the repository services objects
+     * @param assetHandler      provides utilities for manipulating asset catalog objects using a generic handler
      * @param errorHandler      provides common validation routines for the other handler classes
      */
     CommonHandler(String sourceName, RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper,
-                  AssetHandler<AssetCatalogBean> assetHandler, RepositoryErrorHandler errorHandler) {
+                  OpenMetadataAPIGenericHandler<AssetCatalogBean> assetHandler, RepositoryErrorHandler errorHandler) {
         this.sourceName = sourceName;
         this.repositoryHandler = repositoryHandler;
         this.repositoryHelper = repositoryHelper;

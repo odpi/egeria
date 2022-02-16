@@ -1,9 +1,9 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetcatalog.listenenrs;
+package org.odpi.openmetadata.accessservices.assetcatalog.listeners;
 
 import org.odpi.openmetadata.accessservices.assetcatalog.auditlog.AssetCatalogAuditCode;
-import org.odpi.openmetadata.accessservices.assetcatalog.builders.AssetCatalogConverter;
+import org.odpi.openmetadata.accessservices.assetcatalog.converters.AssetCatalogConverter;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogBean;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogEvent;
 import org.odpi.openmetadata.accessservices.assetcatalog.publishers.AssetCatalogSearchPublisher;

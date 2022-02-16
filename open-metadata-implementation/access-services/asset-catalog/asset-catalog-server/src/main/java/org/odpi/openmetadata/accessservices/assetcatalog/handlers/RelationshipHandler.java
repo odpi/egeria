@@ -2,11 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetcatalog.handlers;
 
-import org.odpi.openmetadata.accessservices.assetcatalog.builders.AssetCatalogConverter;
+import org.odpi.openmetadata.accessservices.assetcatalog.converters.AssetCatalogConverter;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogBean;
 import org.odpi.openmetadata.accessservices.assetcatalog.util.Constants;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -23,7 +23,7 @@ public class RelationshipHandler {
 
     private final OMRSRepositoryHelper repositoryHelper;
     private final InvalidParameterHandler invalidParameterHandler;
-    private final AssetHandler<AssetCatalogBean> assetHandler;
+    private final OpenMetadataAPIGenericHandler<AssetCatalogBean> assetHandler;
     private final CommonHandler commonHandler;
 
     private final String sourceName;
@@ -39,7 +39,7 @@ public class RelationshipHandler {
      * @param errorHandler            provides common validation routines for the other handler classes
      */
     public RelationshipHandler(String sourceName, InvalidParameterHandler invalidParameterHandler, RepositoryHandler repositoryHandler,
-                               OMRSRepositoryHelper repositoryHelper, AssetHandler<AssetCatalogBean> assetHandler,
+                               OMRSRepositoryHelper repositoryHelper, OpenMetadataAPIGenericHandler<AssetCatalogBean> assetHandler,
                                RepositoryErrorHandler errorHandler) {
         this.sourceName = sourceName;
         this.invalidParameterHandler = invalidParameterHandler;

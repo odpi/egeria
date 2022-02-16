@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetcatalog.handlers;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.odpi.openmetadata.accessservices.assetcatalog.builders.AssetCatalogConverter;
+import org.odpi.openmetadata.accessservices.assetcatalog.converters.AssetCatalogConverter;
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogErrorCode;
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogException;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogBean;
@@ -14,7 +14,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.Elements;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
@@ -150,7 +150,7 @@ public class AssetCatalogHandler {
     private final RepositoryErrorHandler errorHandler;
     private final CommonHandler commonHandler;
     private final AssetCatalogConverter<AssetCatalogBean> assetCatalogConverter;
-    private final AssetHandler<AssetCatalogBean> assetHandler;
+    private final OpenMetadataAPIGenericHandler<AssetCatalogBean> assetHandler;
     private final Map<String, String> defaultSearchTypes = new HashMap<>();
     private List<String> supportedTypesForSearch = new ArrayList<>(Arrays.asList(GLOSSARY_TERM, ASSET, SCHEMA_ELEMENT));
 
@@ -164,13 +164,15 @@ public class AssetCatalogHandler {
      * @param invalidParameterHandler handler for managing parameter errors
      * @param repositoryHandler       manages calls to the repository services
      * @param repositoryHelper        provides utilities for manipulating the repository services objects
+     * @param assetHandler            provides utilities for manipulating asset catalog objects using a generic handler
+     * @param assetCatalogConverter   asset catalog bean converter
      * @param errorHandler            provides common validation routines for the other handler classes
      * @param supportedZones          configurable list of zones that Asset Catalog is allowed to serve Assets from
      * @param supportedTypesForSearch configurable list of supported types used for search
      */
     public AssetCatalogHandler(String serverUserName, String sourceName, InvalidParameterHandler invalidParameterHandler,
                                RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper,
-                               AssetHandler<AssetCatalogBean> assetHandler, AssetCatalogConverter<AssetCatalogBean> assetCatalogConverter,
+                               OpenMetadataAPIGenericHandler<AssetCatalogBean> assetHandler, AssetCatalogConverter<AssetCatalogBean> assetCatalogConverter,
                                RepositoryErrorHandler errorHandler, List<String> supportedZones, List<String> supportedTypesForSearch) {
         this.serverUserName = serverUserName;
         this.sourceName = sourceName;
@@ -1237,10 +1239,11 @@ public class AssetCatalogHandler {
         }
 
         SequencingOrder sequencingOrder = searchParameters.getSequencingOrder() == null ? SequencingOrder.ANY : searchParameters.getSequencingOrder();
-        List<EntityDetail> entitiesByPropertyValue = assetHandler.getEntitiesByProperty(userId, searchCriteria,
+        List<EntityDetail> entitiesByPropertyValue = assetHandler.getEntitiesByValue(userId, searchCriteria,
                 SEARCH_STRING_PARAMETER_NAME, entityTypeGUID, entityTypeName, Collections.singletonList(propertyName),
-                searchParameters.getExactMatch(), false, false, supportedZones,
-                sequencingOrder.getName(), searchParameters.getFrom(), searchParameters.getPageSize(), null, methodName);
+                searchParameters.getExactMatch(), null, null, false,
+                false, supportedZones, sequencingOrder.getName(),searchParameters.getFrom(),
+                searchParameters.getPageSize(), null, methodName);
 
         if (CollectionUtils.isNotEmpty(entitiesByPropertyValue)) {
             return entitiesByPropertyValue;

@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.odpi.openmetadata.accessservices.assetcatalog.builders.AssetCatalogConverter;
+import org.odpi.openmetadata.accessservices.assetcatalog.converters.AssetCatalogConverter;
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogErrorCode;
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogException;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogBean;
@@ -423,9 +423,10 @@ public class AssetCatalogHandlerTest {
         mockSearchString(SEARCH_CRITERIA, searchParams.getCaseInsensitive());
 
         List<EntityDetail> mockedEntities = mockEntities();
-        when(assetHandler.getEntitiesByProperty(USER, SEARCH_CRITERIA,
+        when(assetHandler.getEntitiesByValue(USER, SEARCH_CRITERIA,
                 SEARCH_STRING_PARAMETER_NAME, ASSET_TYPE_GUID, ASSET_TYPE, Collections.singletonList(NAME),
-                searchParams.getCaseInsensitive(), false, false, null,
+                searchParams.getCaseInsensitive(), null, null,
+                false, false, null,
                 SequencingOrder.ANY.getName(), FROM, PAGE_SIZE, null, methodName)).thenReturn(mockedEntities);
 
         for(EntityDetail mockedEntity : mockedEntities) {

@@ -4,13 +4,13 @@ package org.odpi.openmetadata.accessservices.assetcatalog.admin;
 
 import lombok.Getter;
 import org.odpi.openmetadata.accessservices.assetcatalog.connectors.outtopic.AssetCatalogOutTopicClientProvider;
-import org.odpi.openmetadata.accessservices.assetcatalog.builders.AssetCatalogConverter;
+import org.odpi.openmetadata.accessservices.assetcatalog.converters.AssetCatalogConverter;
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogErrorCode;
 import org.odpi.openmetadata.accessservices.assetcatalog.handlers.AssetCatalogHandler;
 import org.odpi.openmetadata.accessservices.assetcatalog.handlers.RelationshipHandler;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogBean;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -73,9 +73,12 @@ class AssetCatalogServicesInstance extends OMASServiceInstance {
         if (repositoryHandler != null) {
             AssetCatalogConverter<AssetCatalogBean> assetCatalogConverter =
                     new AssetCatalogConverter<>(repositoryHelper, serviceName, serverName);
-            AssetHandler<AssetCatalogBean> assetHandler = new AssetHandler<>(assetCatalogConverter, AssetCatalogBean.class,
-                    serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, localServerUserId,
-                    securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
+
+            OpenMetadataAPIGenericHandler<AssetCatalogBean> assetHandler =
+                    new OpenMetadataAPIGenericHandler<>(new AssetCatalogConverter<>(repositoryHelper, serviceName, serverName),
+                            AssetCatalogBean.class, serviceName, serverName, invalidParameterHandler, repositoryHandler,
+                            repositoryHelper, localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones,
+                            auditLog);
 
             assetCatalogHandler = new AssetCatalogHandler(serverName, sourceName, invalidParameterHandler,
                     repositoryHandler, repositoryHelper, assetHandler, assetCatalogConverter,  errorHandler,
