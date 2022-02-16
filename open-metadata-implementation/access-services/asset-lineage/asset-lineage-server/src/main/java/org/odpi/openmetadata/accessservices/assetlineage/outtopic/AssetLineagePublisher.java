@@ -54,7 +54,6 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 public class AssetLineagePublisher {
 
     private static final Logger log = LoggerFactory.getLogger(AssetLineagePublisher.class);
-    private static final String GLOSSARY_TERM_LINEAGE_EVENTS_CHUNK_SIZE = "glossaryTermLineageEventsChunkSize";
     private static final AssetLineageInstanceHandler instanceHandler = new AssetLineageInstanceHandler();
     private final OpenMetadataTopicConnector outTopicConnector;
     private final String serverUserName;
@@ -62,10 +61,11 @@ public class AssetLineagePublisher {
     private final ClassificationHandler classificationHandler;
     private final GlossaryContextHandler glossaryHandler;
     private final AssetContextHandler assetContextHandler;
-    private int glossaryTermLineageEventsChunkSize;
+    private int batchSize;
 
     /**
      * The constructor is given the connection to the out topic for Asset Lineage OMAS
+     *
      * along with classes for testing and manipulating instances.
      *
      * @param outTopicConnector connection to the out topic
@@ -73,21 +73,16 @@ public class AssetLineagePublisher {
      * @param serverUserName    name of this server instance
      */
     public AssetLineagePublisher(OpenMetadataTopicConnector outTopicConnector, String serverName, String serverUserName,
-                                 Map<String, Object> accessServiceOptions) throws OCFCheckedExceptionBase {
+                                 int batchSize) throws OCFCheckedExceptionBase {
         String methodName = "AssetLineagePublisher";
 
         this.outTopicConnector = outTopicConnector;
         this.serverUserName = serverUserName;
+        this.batchSize = batchSize;
         this.processContextHandler = instanceHandler.getProcessHandler(serverUserName, serverName, methodName);
         this.classificationHandler = instanceHandler.getClassificationHandler(serverUserName, serverName, methodName);
         this.glossaryHandler = instanceHandler.getGlossaryHandler(serverUserName, serverName, methodName);
         this.assetContextHandler = instanceHandler.getAssetContextHandler(serverUserName, serverName, methodName);
-        if (accessServiceOptions != null && accessServiceOptions.get(GLOSSARY_TERM_LINEAGE_EVENTS_CHUNK_SIZE) != null) {
-            glossaryTermLineageEventsChunkSize = (int) accessServiceOptions.get(GLOSSARY_TERM_LINEAGE_EVENTS_CHUNK_SIZE);
-        }
-        if (glossaryTermLineageEventsChunkSize < 1) {
-            glossaryTermLineageEventsChunkSize = 1;
-        }
 
     }
 
@@ -186,16 +181,16 @@ public class AssetLineagePublisher {
             for (RelationshipsContext relationshipsContext : contextMap.get(eventType)) {
                 if (CollectionUtils.isNotEmpty(relationshipsContext.getRelationships())) {
                     int noOfRelationships = relationshipsContext.getRelationships().size();
-                    int chunksToSend = (noOfRelationships / glossaryTermLineageEventsChunkSize) + 1;
+                    int batchNumber = (noOfRelationships / batchSize) + 1;
                     Iterator<GraphContext> relationshipsIterator = relationshipsContext.getRelationships().iterator();
 
-                    for (int i = 0; i < chunksToSend; i++) {
-                        Set<GraphContext> chunk = new HashSet<>();
-                        for (int j = 0; j < glossaryTermLineageEventsChunkSize && relationshipsIterator.hasNext(); j++) {
-                            chunk.add(relationshipsIterator.next());
+                    for (int i = 0; i < batchNumber; i++) {
+                        Set<GraphContext> batch = new HashSet<>();
+                        for (int j = 0; j < batchSize && relationshipsIterator.hasNext(); j++) {
+                            batch.add(relationshipsIterator.next());
                         }
                         RelationshipsContext relationshipContextChunk = new RelationshipsContext();
-                        relationshipContextChunk.setRelationships(chunk);
+                        relationshipContextChunk.setRelationships(batch);
                         relationshipContextChunk.setEntityGuid(relationshipsContext.getEntityGuid());
                         LineageRelationshipsEvent event = new LineageRelationshipsEvent();
                         event.setRelationshipsContext(relationshipContextChunk);
