@@ -4801,18 +4801,13 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
              */
             if (produceEventsForRealConnector)
             {
-                Classification newClassification = repositoryHelper.getClassificationFromEntity(repositoryName,
-                                                                                                entityProxy,
-                                                                                                classificationName,
-                                                                                                methodName);
-
                 outboundRepositoryEventProcessor.processClassifiedEntityEvent(repositoryName,
                                                                               metadataCollectionId,
                                                                               localServerName,
                                                                               localServerType,
                                                                               localOrganizationName,
                                                                               entityProxy,
-                                                                              newClassification);
+                                                                              classification);
             }
         }
 
