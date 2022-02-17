@@ -964,7 +964,7 @@ implements <a href="../api/AssetConsumerAssetInterface.html" title="interface in
 <dd><code>userId</code> - userId of user making request.</dd>
 <dd><code>connectionName</code> - this may be the qualifiedName or displayName of the connection.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>Connector   connector instance.</dd>
+<dd>Connector   connector instance - or null if there is no connection</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
 <dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException</code> - there are errors in the configuration of the connection which is preventing
@@ -996,7 +996,7 @@ implements <a href="../api/AssetConsumerAssetInterface.html" title="interface in
 <dd><code>userId</code> - userId of user making request.</dd>
 <dd><code>assetGUID</code> - the unique id for the asset within the metadata repository.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>Connector   connector instance.</dd>
+<dd>Connector   connector instance - or null if there is no connection</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
 <dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException</code> - there are errors in the configuration of the connection which is preventing
@@ -1028,7 +1028,7 @@ implements <a href="../api/AssetConsumerAssetInterface.html" title="interface in
 <dd><code>userId</code> - userId of user making request.</dd>
 <dd><code>connectionGUID</code> - the unique id for the connection within the metadata repository.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>Connector   connector instance.</dd>
+<dd>Connector   connector instance - or null if there is no connection</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
 <dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException</code> - there are errors in the configuration of the connection which is preventing
