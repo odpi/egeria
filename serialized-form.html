@@ -98,6 +98,1776 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <section role="region">
+<h2 title="Package">Package&nbsp;org.odpi.openmetadata.accessservices.dataengine.event</h2>
+<ul class="blockList">
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.event.DatabaseEvent">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/event/DatabaseEvent.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">org.odpi.openmetadata.accessservices.dataengine.event.DatabaseEvent</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/event/DataEngineEventHeader.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">DataEngineEventHeader</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>database</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/model/Database.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Database</a> database</pre>
+<div class="block">The database to be created</div>
+</li>
+<li class="blockListLast">
+<h4>incomplete</h4>
+<pre>boolean incomplete</pre>
+<div class="block">Determines if the entities inside the database are incomplete</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.event.DatabaseSchemaEvent">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/event/DatabaseSchemaEvent.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">org.odpi.openmetadata.accessservices.dataengine.event.DatabaseSchemaEvent</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/event/DataEngineEventHeader.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">DataEngineEventHeader</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>databaseQualifiedName</h4>
+<pre>java.lang.String databaseQualifiedName</pre>
+<div class="block">The database qualified name to which the database schema will be linked, if it exists</div>
+</li>
+<li class="blockList">
+<h4>databaseSchema</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/model/DatabaseSchema.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">DatabaseSchema</a> databaseSchema</pre>
+<div class="block">The database schema to be created</div>
+</li>
+<li class="blockListLast">
+<h4>incomplete</h4>
+<pre>boolean incomplete</pre>
+<div class="block">Determines if the database schema is an incomplete asset</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.event.DataEngineEventHeader">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/event/DataEngineEventHeader.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">org.odpi.openmetadata.accessservices.dataengine.event.DataEngineEventHeader</a> extends java.lang.Object implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>dataEngineEventType</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/event/DataEngineEventType.html" title="enum in org.odpi.openmetadata.accessservices.dataengine.event">DataEngineEventType</a> dataEngineEventType</pre>
+<div class="block">The Data Engine event type</div>
+</li>
+<li class="blockList">
+<h4>eventVersionId</h4>
+<pre>long eventVersionId</pre>
+<div class="block">Event version ID</div>
+</li>
+<li class="blockList">
+<h4>externalSourceName</h4>
+<pre>java.lang.String externalSourceName</pre>
+<div class="block">The external source type unique name</div>
+</li>
+<li class="blockListLast">
+<h4>userId</h4>
+<pre>java.lang.String userId</pre>
+<div class="block">Producer user ID</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.event.DataEngineRegistrationEvent">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/event/DataEngineRegistrationEvent.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">org.odpi.openmetadata.accessservices.dataengine.event.DataEngineRegistrationEvent</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/event/DataEngineEventHeader.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">DataEngineEventHeader</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>softwareServerCapability</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/model/SoftwareServerCapability.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">SoftwareServerCapability</a> softwareServerCapability</pre>
+<div class="block">Software server capability</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.event.DataFileEvent">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/event/DataFileEvent.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">org.odpi.openmetadata.accessservices.dataengine.event.DataFileEvent</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/event/DataEngineEventHeader.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">DataEngineEventHeader</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>dataFile</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/model/DataFile.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">DataFile</a> dataFile</pre>
+<div class="block">The data file to be created</div>
+</li>
+<li class="blockListLast">
+<h4>incomplete</h4>
+<pre>boolean incomplete</pre>
+<div class="block">Determines if the data file is incomplete or not</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.event.DeleteEvent">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/event/DeleteEvent.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">org.odpi.openmetadata.accessservices.dataengine.event.DeleteEvent</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/event/DataEngineEventHeader.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">DataEngineEventHeader</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>deleteSemantic</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/model/DeleteSemantic.html" title="enum in org.odpi.openmetadata.accessservices.dataengine.model">DeleteSemantic</a> deleteSemantic</pre>
+<div class="block">The delete semantic</div>
+</li>
+<li class="blockList">
+<h4>guid</h4>
+<pre>java.lang.String guid</pre>
+<div class="block">The unique identifier of the entity</div>
+</li>
+<li class="blockListLast">
+<h4>qualifiedName</h4>
+<pre>java.lang.String qualifiedName</pre>
+<div class="block">The qualified name of the entity</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.event.EventTypeEvent">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/event/EventTypeEvent.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">org.odpi.openmetadata.accessservices.dataengine.event.EventTypeEvent</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/event/DataEngineEventHeader.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">DataEngineEventHeader</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>eventType</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/model/EventType.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">EventType</a> eventType</pre>
+<div class="block">The event type to be created</div>
+</li>
+<li class="blockListLast">
+<h4>topicQualifiedName</h4>
+<pre>java.lang.String topicQualifiedName</pre>
+<div class="block">The topic qualified name to which the event type will be linked</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.event.FindEvent">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/event/FindEvent.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">org.odpi.openmetadata.accessservices.dataengine.event.FindEvent</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/event/DataEngineEventHeader.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">DataEngineEventHeader</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>findRequestBody</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/rest/FindRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">FindRequestBody</a> findRequestBody</pre>
+<div class="block">The find request body</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.event.LineageMappingsEvent">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/event/LineageMappingsEvent.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">org.odpi.openmetadata.accessservices.dataengine.event.LineageMappingsEvent</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/event/DataEngineEventHeader.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">DataEngineEventHeader</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>lineageMappings</h4>
+<pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/dataengine/model/LineageMapping.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">LineageMapping</a>&gt; lineageMappings</pre>
+<div class="block">The lineage mappings</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.event.PortAliasEvent">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/event/PortAliasEvent.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">org.odpi.openmetadata.accessservices.dataengine.event.PortAliasEvent</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/event/DataEngineEventHeader.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">DataEngineEventHeader</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>portAlias</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/model/PortAlias.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">PortAlias</a> portAlias</pre>
+<div class="block">The port alias</div>
+</li>
+<li class="blockListLast">
+<h4>processQualifiedName</h4>
+<pre>java.lang.String processQualifiedName</pre>
+<div class="block">The process qualified name</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.event.PortImplementationEvent">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/event/PortImplementationEvent.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">org.odpi.openmetadata.accessservices.dataengine.event.PortImplementationEvent</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/event/DataEngineEventHeader.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">DataEngineEventHeader</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>portImplementation</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/model/PortImplementation.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">PortImplementation</a> portImplementation</pre>
+<div class="block">The port implementation</div>
+</li>
+<li class="blockListLast">
+<h4>processQualifiedName</h4>
+<pre>java.lang.String processQualifiedName</pre>
+<div class="block">The process qualified name</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.event.ProcessEvent">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/event/ProcessEvent.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">org.odpi.openmetadata.accessservices.dataengine.event.ProcessEvent</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/event/DataEngineEventHeader.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">DataEngineEventHeader</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>process</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/model/Process.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Process</a> process</pre>
+<div class="block">The process</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.event.ProcessHierarchyEvent">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/event/ProcessHierarchyEvent.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">org.odpi.openmetadata.accessservices.dataengine.event.ProcessHierarchyEvent</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/event/DataEngineEventHeader.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">DataEngineEventHeader</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>processHierarchy</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/model/ProcessHierarchy.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">ProcessHierarchy</a> processHierarchy</pre>
+<div class="block">The process hierarchy</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.event.ProcessListEvent">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/event/ProcessListEvent.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">org.odpi.openmetadata.accessservices.dataengine.event.ProcessListEvent</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/event/DataEngineEventHeader.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">DataEngineEventHeader</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>failedGUIDs</h4>
+<pre>java.util.List&lt;java.lang.String&gt; failedGUIDs</pre>
+<div class="block">The failed GUIDs</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.event.RelationalTableEvent">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/event/RelationalTableEvent.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">org.odpi.openmetadata.accessservices.dataengine.event.RelationalTableEvent</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/event/DataEngineEventHeader.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">DataEngineEventHeader</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>databaseSchemaQualifiedName</h4>
+<pre>java.lang.String databaseSchemaQualifiedName</pre>
+<div class="block">The qualified name of the database schema</div>
+</li>
+<li class="blockList">
+<h4>incomplete</h4>
+<pre>boolean incomplete</pre>
+<div class="block">Determines if the relational table is an incomplete asset</div>
+</li>
+<li class="blockListLast">
+<h4>relationalTable</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/model/RelationalTable.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">RelationalTable</a> relationalTable</pre>
+<div class="block">The relational table to be created</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.event.SchemaTypeEvent">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/event/SchemaTypeEvent.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">org.odpi.openmetadata.accessservices.dataengine.event.SchemaTypeEvent</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/event/DataEngineEventHeader.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">DataEngineEventHeader</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>portQualifiedName</h4>
+<pre>java.lang.String portQualifiedName</pre>
+<div class="block">The port qualified name</div>
+</li>
+<li class="blockListLast">
+<h4>schemaType</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/model/SchemaType.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">SchemaType</a> schemaType</pre>
+<div class="block">The schema type</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.event.TopicEvent">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/event/TopicEvent.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">org.odpi.openmetadata.accessservices.dataengine.event.TopicEvent</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/event/DataEngineEventHeader.html" title="class in org.odpi.openmetadata.accessservices.dataengine.event">DataEngineEventHeader</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>topic</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/model/Topic.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Topic</a> topic</pre>
+<div class="block">The topic to be created</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+</li>
+<li class="blockList">
+<section role="region">
+<h2 title="Package">Package&nbsp;org.odpi.openmetadata.accessservices.dataengine.ffdc</h2>
+<ul class="blockList">
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineException">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/ffdc/DataEngineException.html" title="class in org.odpi.openmetadata.accessservices.dataengine.ffdc">org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineException</a> extends org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase implements Serializable</h3>
+</li>
+</ul>
+</section>
+</li>
+<li class="blockList">
+<section role="region">
+<h2 title="Package">Package&nbsp;org.odpi.openmetadata.accessservices.dataengine.model</h2>
+<ul class="blockList">
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.model.Asset">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/model/Asset.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">org.odpi.openmetadata.accessservices.dataengine.model.Asset</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/model/Referenceable.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Referenceable</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>description</h4>
+<pre>java.lang.String description</pre>
+<div class="block">The stored description property associated with the asset</div>
+</li>
+<li class="blockList">
+<h4>displayName</h4>
+<pre>java.lang.String displayName</pre>
+<div class="block">The stored display name property for the asset</div>
+</li>
+<li class="blockList">
+<h4>originBusinessCapabilityGUID</h4>
+<pre>java.lang.String originBusinessCapabilityGUID</pre>
+<div class="block">The unique identifier of the business capability that originated this asset</div>
+</li>
+<li class="blockList">
+<h4>originOrganizationGUID</h4>
+<pre>java.lang.String originOrganizationGUID</pre>
+<div class="block">The unique identifier for the organization that originated this asset</div>
+</li>
+<li class="blockList">
+<h4>otherOriginValues</h4>
+<pre>java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt; otherOriginValues</pre>
+<div class="block">The properties that characterize where this asset is from</div>
+</li>
+<li class="blockList">
+<h4>owner</h4>
+<pre>java.lang.String owner</pre>
+<div class="block">The name of the owner for this asset</div>
+</li>
+<li class="blockList">
+<h4>ownerType</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/model/OwnerType.html" title="enum in org.odpi.openmetadata.accessservices.dataengine.model">OwnerType</a> ownerType</pre>
+<div class="block">The owner type for this asset</div>
+</li>
+<li class="blockListLast">
+<h4>zoneMembership</h4>
+<pre>java.util.List&lt;java.lang.String&gt; zoneMembership</pre>
+<div class="block">The names of the zones that this asset is a member of</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.model.Attribute">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/model/Attribute.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">org.odpi.openmetadata.accessservices.dataengine.model.Attribute</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/model/Referenceable.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Referenceable</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>aliases</h4>
+<pre>java.util.List&lt;java.lang.String&gt; aliases</pre>
+<div class="block">A list of alternative names for the attribute</div>
+</li>
+<li class="blockList">
+<h4>allowsDuplicateValues</h4>
+<pre>boolean allowsDuplicateValues</pre>
+<div class="block">Indicates whether the same value can be used by more than one instance of this attribute</div>
+</li>
+<li class="blockList">
+<h4>dataType</h4>
+<pre>java.lang.String dataType</pre>
+<div class="block">The data type for this element</div>
+</li>
+<li class="blockList">
+<h4>defaultValue</h4>
+<pre>java.lang.String defaultValue</pre>
+<div class="block">The default value for the element</div>
+</li>
+<li class="blockList">
+<h4>defaultValueOverride</h4>
+<pre>java.lang.String defaultValueOverride</pre>
+<div class="block">Default value override</div>
+</li>
+<li class="blockList">
+<h4>description</h4>
+<pre>java.lang.String description</pre>
+<div class="block">The stored description property for the schema element</div>
+</li>
+<li class="blockList">
+<h4>displayName</h4>
+<pre>java.lang.String displayName</pre>
+<div class="block">The simple name of the schema element</div>
+</li>
+<li class="blockList">
+<h4>externalTypeGUID</h4>
+<pre>java.lang.String externalTypeGUID</pre>
+<div class="block">The unique identifier of this column's type</div>
+</li>
+<li class="blockList">
+<h4>fixedValue</h4>
+<pre>java.lang.String fixedValue</pre>
+<div class="block">A fixed literal value - an alternative to default value</div>
+</li>
+<li class="blockList">
+<h4>isDeprecated</h4>
+<pre>boolean isDeprecated</pre>
+<div class="block">Indicates if the schema element is deprecated</div>
+</li>
+<li class="blockList">
+<h4>isNullable</h4>
+<pre>boolean isNullable</pre>
+<div class="block">Indicates whether the field is nullable or not</div>
+</li>
+<li class="blockList">
+<h4>length</h4>
+<pre>int length</pre>
+<div class="block">The length of the data field</div>
+</li>
+<li class="blockList">
+<h4>maxCardinality</h4>
+<pre>int maxCardinality</pre>
+<div class="block">The maximum number of instances allowed for this attribute</div>
+</li>
+<li class="blockList">
+<h4>minCardinality</h4>
+<pre>int minCardinality</pre>
+<div class="block">This minimum number of instances allowed for this attribute</div>
+</li>
+<li class="blockList">
+<h4>minimumLength</h4>
+<pre>int minimumLength</pre>
+<div class="block">The minimum length of the data</div>
+</li>
+<li class="blockList">
+<h4>nativeClass</h4>
+<pre>java.lang.String nativeClass</pre>
+<div class="block">The name of the Java class to use to represent this type</div>
+</li>
+<li class="blockList">
+<h4>orderedValues</h4>
+<pre>boolean orderedValues</pre>
+<div class="block">Indicates whether the attribute instances are arranged in an order</div>
+</li>
+<li class="blockList">
+<h4>position</h4>
+<pre>int position</pre>
+<div class="block">The position of this schema attribute in its parent schema</div>
+</li>
+<li class="blockList">
+<h4>precision</h4>
+<pre>int precision</pre>
+<div class="block">The number of significant digits to the right of decimal point</div>
+</li>
+<li class="blockList">
+<h4>sortOrder</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/model/DataItemSortOrder.html" title="enum in org.odpi.openmetadata.accessservices.dataengine.model">DataItemSortOrder</a> sortOrder</pre>
+<div class="block">The order that the attribute instances are arranged in</div>
+</li>
+<li class="blockList">
+<h4>typeGuid</h4>
+<pre>java.lang.String typeGuid</pre>
+<div class="block">Unique identifier of the type for this schema element</div>
+</li>
+<li class="blockList">
+<h4>typeName</h4>
+<pre>java.lang.String typeName</pre>
+<div class="block">The name of the type for this schema element</div>
+</li>
+<li class="blockListLast">
+<h4>validValuesSetGUID</h4>
+<pre>java.lang.String validValuesSetGUID</pre>
+<div class="block">The set of valid values for this column</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.model.Collection">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/model/Collection.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">org.odpi.openmetadata.accessservices.dataengine.model.Collection</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/model/Referenceable.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Referenceable</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>name</h4>
+<pre>java.lang.String name</pre>
+<div class="block">The name of the collection</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.model.Connection">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/model/Connection.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">org.odpi.openmetadata.accessservices.dataengine.model.Connection</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/model/Referenceable.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Referenceable</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>assetSummary</h4>
+<pre>java.lang.String assetSummary</pre>
+<div class="block">The asset summary</div>
+</li>
+<li class="blockList">
+<h4>clearPassword</h4>
+<pre>java.lang.String clearPassword</pre>
+<div class="block">The clear password</div>
+</li>
+<li class="blockList">
+<h4>configurationProperties</h4>
+<pre>java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt; configurationProperties</pre>
+<div class="block">The configuration properties</div>
+</li>
+<li class="blockList">
+<h4>connectorType</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/model/ConnectorType.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">ConnectorType</a> connectorType</pre>
+<div class="block">The connector type</div>
+</li>
+<li class="blockList">
+<h4>description</h4>
+<pre>java.lang.String description</pre>
+<div class="block">The description</div>
+</li>
+<li class="blockList">
+<h4>displayName</h4>
+<pre>java.lang.String displayName</pre>
+<div class="block">The display name</div>
+</li>
+<li class="blockList">
+<h4>encryptedPassword</h4>
+<pre>java.lang.String encryptedPassword</pre>
+<div class="block">The encrypted password</div>
+</li>
+<li class="blockList">
+<h4>endpoint</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/model/Endpoint.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Endpoint</a> endpoint</pre>
+<div class="block">The endpoint</div>
+</li>
+<li class="blockList">
+<h4>securedProperties</h4>
+<pre>java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt; securedProperties</pre>
+<div class="block">The secured properties</div>
+</li>
+<li class="blockListLast">
+<h4>userId</h4>
+<pre>java.lang.String userId</pre>
+<div class="block">The user id</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.model.ConnectorType">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/model/ConnectorType.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">org.odpi.openmetadata.accessservices.dataengine.model.ConnectorType</a> extends org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>connectorFrameworkName</h4>
+<pre>java.lang.String connectorFrameworkName</pre>
+</li>
+<li class="blockList">
+<h4>connectorInterfaceLanguage</h4>
+<pre>java.lang.String connectorInterfaceLanguage</pre>
+</li>
+<li class="blockList">
+<h4>connectorInterfaces</h4>
+<pre>java.util.List&lt;java.lang.String&gt; connectorInterfaces</pre>
+</li>
+<li class="blockList">
+<h4>connectorProviderClassName</h4>
+<pre>java.lang.String connectorProviderClassName</pre>
+</li>
+<li class="blockList">
+<h4>description</h4>
+<pre>java.lang.String description</pre>
+</li>
+<li class="blockList">
+<h4>displayName</h4>
+<pre>java.lang.String displayName</pre>
+</li>
+<li class="blockList">
+<h4>expectedDataFormat</h4>
+<pre>java.lang.String expectedDataFormat</pre>
+</li>
+<li class="blockList">
+<h4>recognizedAdditionalProperties</h4>
+<pre>java.util.List&lt;java.lang.String&gt; recognizedAdditionalProperties</pre>
+</li>
+<li class="blockList">
+<h4>recognizedConfigurationProperties</h4>
+<pre>java.util.List&lt;java.lang.String&gt; recognizedConfigurationProperties</pre>
+</li>
+<li class="blockList">
+<h4>recognizedSecuredProperties</h4>
+<pre>java.util.List&lt;java.lang.String&gt; recognizedSecuredProperties</pre>
+</li>
+<li class="blockList">
+<h4>supportedAssetTypeName</h4>
+<pre>java.lang.String supportedAssetTypeName</pre>
+</li>
+<li class="blockList">
+<h4>targetTechnologyInterfaces</h4>
+<pre>java.util.List&lt;java.lang.String&gt; targetTechnologyInterfaces</pre>
+</li>
+<li class="blockList">
+<h4>targetTechnologyName</h4>
+<pre>java.lang.String targetTechnologyName</pre>
+</li>
+<li class="blockList">
+<h4>targetTechnologySource</h4>
+<pre>java.lang.String targetTechnologySource</pre>
+</li>
+<li class="blockListLast">
+<h4>targetTechnologyVersions</h4>
+<pre>java.util.List&lt;java.lang.String&gt; targetTechnologyVersions</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.model.CSVFile">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/model/CSVFile.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">org.odpi.openmetadata.accessservices.dataengine.model.CSVFile</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/model/DataFile.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">DataFile</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>delimiterCharacter</h4>
+<pre>java.lang.String delimiterCharacter</pre>
+<div class="block">The delimited character</div>
+</li>
+<li class="blockListLast">
+<h4>quoteCharacter</h4>
+<pre>java.lang.String quoteCharacter</pre>
+<div class="block">The quote character</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.model.Database">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/model/Database.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">org.odpi.openmetadata.accessservices.dataengine.model.Database</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/model/DataStore.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">DataStore</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>databaseImportedFrom</h4>
+<pre>java.lang.String databaseImportedFrom</pre>
+<div class="block">The the source (typically connection name) of the database information</div>
+</li>
+<li class="blockList">
+<h4>databaseInstance</h4>
+<pre>java.lang.String databaseInstance</pre>
+<div class="block">The name of this database instance</div>
+</li>
+<li class="blockList">
+<h4>databaseSchema</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/model/DatabaseSchema.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">DatabaseSchema</a> databaseSchema</pre>
+<div class="block">The database schema</div>
+</li>
+<li class="blockList">
+<h4>databaseType</h4>
+<pre>java.lang.String databaseType</pre>
+<div class="block">The description of the database type</div>
+</li>
+<li class="blockList">
+<h4>databaseVersion</h4>
+<pre>java.lang.String databaseVersion</pre>
+<div class="block">The version of the database</div>
+</li>
+<li class="blockList">
+<h4>networkAddress</h4>
+<pre>java.lang.String networkAddress</pre>
+<div class="block">The Endpoint network address</div>
+</li>
+<li class="blockList">
+<h4>protocol</h4>
+<pre>java.lang.String protocol</pre>
+<div class="block">The Endpoint protocol</div>
+</li>
+<li class="blockListLast">
+<h4>tables</h4>
+<pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/dataengine/model/RelationalTable.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">RelationalTable</a>&gt; tables</pre>
+<div class="block">The relational tables inside the database</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/model/DatabaseSchema.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/model/Asset.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Asset</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.model.DataFile">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/model/DataFile.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">org.odpi.openmetadata.accessservices.dataengine.model.DataFile</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/model/DataStore.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">DataStore</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>columns</h4>
+<pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/dataengine/model/Attribute.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Attribute</a>&gt; columns</pre>
+<div class="block">The file columns</div>
+</li>
+<li class="blockList">
+<h4>fileType</h4>
+<pre>java.lang.String fileType</pre>
+<div class="block">The file type</div>
+</li>
+<li class="blockList">
+<h4>networkAddress</h4>
+<pre>java.lang.String networkAddress</pre>
+<div class="block">The network address</div>
+</li>
+<li class="blockList">
+<h4>protocol</h4>
+<pre>java.lang.String protocol</pre>
+<div class="block">The Endpoint protocol</div>
+</li>
+<li class="blockListLast">
+<h4>schema</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/model/SchemaType.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">SchemaType</a> schema</pre>
+<div class="block">The file schema</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.model.DataStore">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/model/DataStore.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">org.odpi.openmetadata.accessservices.dataengine.model.DataStore</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/model/Asset.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Asset</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>createTime</h4>
+<pre>java.util.Date createTime</pre>
+<div class="block">The time that the data store was created</div>
+</li>
+<li class="blockList">
+<h4>encodingDescription</h4>
+<pre>java.lang.String encodingDescription</pre>
+<div class="block">The description of the encoding used in the data store</div>
+</li>
+<li class="blockList">
+<h4>encodingLanguage</h4>
+<pre>java.lang.String encodingLanguage</pre>
+<div class="block">The name of the natural language used for text strings within the data store</div>
+</li>
+<li class="blockList">
+<h4>encodingProperties</h4>
+<pre>java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt; encodingProperties</pre>
+<div class="block">The additional properties associated with the encoding process</div>
+</li>
+<li class="blockList">
+<h4>encodingType</h4>
+<pre>java.lang.String encodingType</pre>
+<div class="block">The name of the encoding style used in the data store</div>
+</li>
+<li class="blockList">
+<h4>modifiedTime</h4>
+<pre>java.util.Date modifiedTime</pre>
+<div class="block">The last known time the data store was modified</div>
+</li>
+<li class="blockListLast">
+<h4>pathName</h4>
+<pre>java.lang.String pathName</pre>
+<div class="block">The fully qualified physical location of the data store</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.model.Endpoint">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/model/Endpoint.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">org.odpi.openmetadata.accessservices.dataengine.model.Endpoint</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/model/Referenceable.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Referenceable</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>description</h4>
+<pre>java.lang.String description</pre>
+<div class="block">The description of the endpoint</div>
+</li>
+<li class="blockList">
+<h4>displayName</h4>
+<pre>java.lang.String displayName</pre>
+<div class="block">The display name of the endpoint</div>
+</li>
+<li class="blockList">
+<h4>encryptionMethod</h4>
+<pre>java.lang.String encryptionMethod</pre>
+<div class="block">The encryption method of the endpoint</div>
+</li>
+<li class="blockList">
+<h4>name</h4>
+<pre>java.lang.String name</pre>
+<div class="block">The name of the endpoint</div>
+</li>
+<li class="blockList">
+<h4>networkAddress</h4>
+<pre>java.lang.String networkAddress</pre>
+<div class="block">The network address of the endpoint</div>
+</li>
+<li class="blockListLast">
+<h4>protocol</h4>
+<pre>java.lang.String protocol</pre>
+<div class="block">The protocol of the endpoint</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.model.EventType">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/model/EventType.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">org.odpi.openmetadata.accessservices.dataengine.model.EventType</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/model/SchemaType.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">SchemaType</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>attributeList</h4>
+<pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/dataengine/model/Attribute.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Attribute</a>&gt; attributeList</pre>
+<div class="block">The attribute list</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.model.FileFolder">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/model/FileFolder.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">org.odpi.openmetadata.accessservices.dataengine.model.FileFolder</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/model/DataStore.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">DataStore</a> implements Serializable</h3>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/model/LineageMapping.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping</a> extends java.lang.Object implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>sourceAttribute</h4>
+<pre>java.lang.String sourceAttribute</pre>
+<div class="block">The source attribute</div>
+</li>
+<li class="blockListLast">
+<h4>targetAttribute</h4>
+<pre>java.lang.String targetAttribute</pre>
+<div class="block">The target attribute</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.model.ParentProcess">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/model/ParentProcess.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">org.odpi.openmetadata.accessservices.dataengine.model.ParentProcess</a> extends java.lang.Object implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>processContainmentType</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/model/ProcessContainmentType.html" title="enum in org.odpi.openmetadata.accessservices.dataengine.model">ProcessContainmentType</a> processContainmentType</pre>
+<div class="block">The process containment type</div>
+</li>
+<li class="blockListLast">
+<h4>qualifiedName</h4>
+<pre>java.lang.String qualifiedName</pre>
+<div class="block">The qualified name</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.model.Port">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/model/Port.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">org.odpi.openmetadata.accessservices.dataengine.model.Port</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/model/Referenceable.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Referenceable</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>displayName</h4>
+<pre>java.lang.String displayName</pre>
+<div class="block">The display name</div>
+</li>
+<li class="blockList">
+<h4>portType</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/model/PortType.html" title="enum in org.odpi.openmetadata.accessservices.dataengine.model">PortType</a> portType</pre>
+<div class="block">The port type</div>
+</li>
+<li class="blockListLast">
+<h4>updateSemantic</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/model/UpdateSemantic.html" title="enum in org.odpi.openmetadata.accessservices.dataengine.model">UpdateSemantic</a> updateSemantic</pre>
+<div class="block">The update semantic</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.model.PortAlias">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/model/PortAlias.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">org.odpi.openmetadata.accessservices.dataengine.model.PortAlias</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/model/Port.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Port</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>delegatesTo</h4>
+<pre>java.lang.String delegatesTo</pre>
+<div class="block">Delegates to</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/model/PortImplementation.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/model/Port.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Port</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>schemaType</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/model/SchemaType.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">SchemaType</a> schemaType</pre>
+<div class="block">The schema type</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.model.Process">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/model/Process.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">org.odpi.openmetadata.accessservices.dataengine.model.Process</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/model/Asset.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Asset</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>collection</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/model/Collection.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Collection</a> collection</pre>
+<div class="block">The collection to which the process belongs</div>
+</li>
+<li class="blockList">
+<h4>formula</h4>
+<pre>java.lang.String formula</pre>
+<div class="block">The description of the processing performed by this process</div>
+</li>
+<li class="blockList">
+<h4>implementationLanguage</h4>
+<pre>java.lang.String implementationLanguage</pre>
+<div class="block">The name of the programming language that this process is implemented in</div>
+</li>
+<li class="blockList">
+<h4>lineageMappings</h4>
+<pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/dataengine/model/LineageMapping.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">LineageMapping</a>&gt; lineageMappings</pre>
+<div class="block">The lineage mappings</div>
+</li>
+<li class="blockList">
+<h4>name</h4>
+<pre>java.lang.String name</pre>
+<div class="block">The process name</div>
+</li>
+<li class="blockList">
+<h4>parentProcesses</h4>
+<pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/dataengine/model/ParentProcess.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">ParentProcess</a>&gt; parentProcesses</pre>
+<div class="block">The parent processes</div>
+</li>
+<li class="blockList">
+<h4>portAliases</h4>
+<pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/dataengine/model/PortAlias.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">PortAlias</a>&gt; portAliases</pre>
+<div class="block">The port aliases</div>
+</li>
+<li class="blockList">
+<h4>portImplementations</h4>
+<pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/dataengine/model/PortImplementation.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">PortImplementation</a>&gt; portImplementations</pre>
+<div class="block">The port implementations</div>
+</li>
+<li class="blockListLast">
+<h4>updateSemantic</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/model/UpdateSemantic.html" title="enum in org.odpi.openmetadata.accessservices.dataengine.model">UpdateSemantic</a> updateSemantic</pre>
+<div class="block">The update semantic</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.model.ProcessHierarchy">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/model/ProcessHierarchy.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">org.odpi.openmetadata.accessservices.dataengine.model.ProcessHierarchy</a> extends java.lang.Object implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>childProcess</h4>
+<pre>java.lang.String childProcess</pre>
+<div class="block">The child process</div>
+</li>
+<li class="blockList">
+<h4>parentProcess</h4>
+<pre>java.lang.String parentProcess</pre>
+<div class="block">The parent process</div>
+</li>
+<li class="blockListLast">
+<h4>processContainmentType</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/model/ProcessContainmentType.html" title="enum in org.odpi.openmetadata.accessservices.dataengine.model">ProcessContainmentType</a> processContainmentType</pre>
+<div class="block">The process containment type</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.model.Referenceable">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/model/Referenceable.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">org.odpi.openmetadata.accessservices.dataengine.model.Referenceable</a> extends java.lang.Object implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>additionalProperties</h4>
+<pre>java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt; additionalProperties</pre>
+<div class="block">A copy of the additional properties</div>
+</li>
+<li class="blockListLast">
+<h4>qualifiedName</h4>
+<pre>java.lang.String qualifiedName</pre>
+<div class="block">The stored qualified name property for the metadata entity</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.model.RelationalColumn">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/model/RelationalColumn.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">org.odpi.openmetadata.accessservices.dataengine.model.RelationalColumn</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/model/Attribute.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Attribute</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>formula</h4>
+<pre>java.lang.String formula</pre>
+<div class="block">The name of the formula</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/model/RelationalTable.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/model/Referenceable.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Referenceable</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>aliases</h4>
+<pre>java.util.List&lt;java.lang.String&gt; aliases</pre>
+<div class="block">The list of aliases of the relational table</div>
+</li>
+<li class="blockList">
+<h4>columns</h4>
+<pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/dataengine/model/RelationalColumn.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">RelationalColumn</a>&gt; columns</pre>
+<div class="block">The list of columns of the relational table</div>
+</li>
+<li class="blockList">
+<h4>description</h4>
+<pre>java.lang.String description</pre>
+<div class="block">The description of the relational table</div>
+</li>
+<li class="blockList">
+<h4>displayName</h4>
+<pre>java.lang.String displayName</pre>
+<div class="block">The display name of the relational table</div>
+</li>
+<li class="blockList">
+<h4>isDeprecated</h4>
+<pre>boolean isDeprecated</pre>
+<div class="block">Determines if the relational table if deprecated</div>
+</li>
+<li class="blockListLast">
+<h4>type</h4>
+<pre>java.lang.String type</pre>
+<div class="block">The type of the relational table</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.model.SchemaType">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/model/SchemaType.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">org.odpi.openmetadata.accessservices.dataengine.model.SchemaType</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/model/Referenceable.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Referenceable</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>attributeList</h4>
+<pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/dataengine/model/Attribute.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Attribute</a>&gt; attributeList</pre>
+<div class="block">The attribute list</div>
+</li>
+<li class="blockList">
+<h4>author</h4>
+<pre>java.lang.String author</pre>
+<div class="block">The author</div>
+</li>
+<li class="blockList">
+<h4>description</h4>
+<pre>java.lang.String description</pre>
+<div class="block">The stored description property associated with the schema type</div>
+</li>
+<li class="blockList">
+<h4>displayName</h4>
+<pre>java.lang.String displayName</pre>
+<div class="block">The display name</div>
+</li>
+<li class="blockList">
+<h4>encodingStandard</h4>
+<pre>java.lang.String encodingStandard</pre>
+<div class="block">The encoding standard</div>
+</li>
+<li class="blockList">
+<h4>isDeprecated</h4>
+<pre>boolean isDeprecated</pre>
+<div class="block">Determines if the schema type is deprecated</div>
+</li>
+<li class="blockList">
+<h4>namespace</h4>
+<pre>java.lang.String namespace</pre>
+<div class="block">The he name of the namespace that this schema type belongs to</div>
+</li>
+<li class="blockList">
+<h4>type</h4>
+<pre>java.lang.String type</pre>
+<div class="block">The type</div>
+</li>
+<li class="blockList">
+<h4>usage</h4>
+<pre>java.lang.String usage</pre>
+<div class="block">The usage</div>
+</li>
+<li class="blockListLast">
+<h4>versionNumber</h4>
+<pre>java.lang.String versionNumber</pre>
+<div class="block">The version number</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/model/SoftwareServerCapability.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability</a> extends java.lang.Object implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>additionalProperties</h4>
+<pre>java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt; additionalProperties</pre>
+<div class="block">Additional properties</div>
+</li>
+<li class="blockList">
+<h4>description</h4>
+<pre>java.lang.String description</pre>
+<div class="block">The description</div>
+</li>
+<li class="blockList">
+<h4>engineType</h4>
+<pre>java.lang.String engineType</pre>
+<div class="block">The engine type</div>
+</li>
+<li class="blockList">
+<h4>engineVersion</h4>
+<pre>java.lang.String engineVersion</pre>
+<div class="block">The engine version</div>
+</li>
+<li class="blockList">
+<h4>name</h4>
+<pre>java.lang.String name</pre>
+<div class="block">The display name</div>
+</li>
+<li class="blockList">
+<h4>patchLevel</h4>
+<pre>java.lang.String patchLevel</pre>
+<div class="block">The patch level</div>
+</li>
+<li class="blockList">
+<h4>qualifiedName</h4>
+<pre>java.lang.String qualifiedName</pre>
+<div class="block">The qualified name</div>
+</li>
+<li class="blockListLast">
+<h4>source</h4>
+<pre>java.lang.String source</pre>
+<div class="block">The source</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.model.Topic">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/model/Topic.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">org.odpi.openmetadata.accessservices.dataengine.model.Topic</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/model/Asset.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Asset</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>eventTypes</h4>
+<pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/dataengine/model/EventType.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">EventType</a>&gt; eventTypes</pre>
+<div class="block">The list of event types</div>
+</li>
+<li class="blockListLast">
+<h4>topicType</h4>
+<pre>java.lang.String topicType</pre>
+<div class="block">The description of the topic type</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+</li>
+<li class="blockList">
+<section role="region">
+<h2 title="Package">Package&nbsp;org.odpi.openmetadata.accessservices.dataengine.rest</h2>
+<ul class="blockList">
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.rest.DatabaseRequestBody">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/rest/DatabaseRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">org.odpi.openmetadata.accessservices.dataengine.rest.DatabaseRequestBody</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/rest/DataEngineOMASAPIRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">DataEngineOMASAPIRequestBody</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>database</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/model/Database.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Database</a> database</pre>
+<div class="block">The database to be created</div>
+</li>
+<li class="blockListLast">
+<h4>incomplete</h4>
+<pre>boolean incomplete</pre>
+<div class="block">Determines if the entities inside the database are incomplete</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.rest.DatabaseSchemaRequestBody">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/rest/DatabaseSchemaRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">org.odpi.openmetadata.accessservices.dataengine.rest.DatabaseSchemaRequestBody</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/rest/DataEngineOMASAPIRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">DataEngineOMASAPIRequestBody</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>databaseQualifiedName</h4>
+<pre>java.lang.String databaseQualifiedName</pre>
+<div class="block">The database qualified name to which the database schema will be linked, if it exists</div>
+</li>
+<li class="blockList">
+<h4>databaseSchema</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/model/DatabaseSchema.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">DatabaseSchema</a> databaseSchema</pre>
+<div class="block">The database schema to be created</div>
+</li>
+<li class="blockListLast">
+<h4>incomplete</h4>
+<pre>boolean incomplete</pre>
+<div class="block">Determines if the database schema is an incomplete asset</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineOMASAPIRequestBody">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/rest/DataEngineOMASAPIRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineOMASAPIRequestBody</a> extends java.lang.Object implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>externalSourceName</h4>
+<pre>java.lang.String externalSourceName</pre>
+<div class="block">The unique name of the external source</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineRegistrationRequestBody">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/rest/DataEngineRegistrationRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineRegistrationRequestBody</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/rest/DataEngineOMASAPIRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">DataEngineOMASAPIRequestBody</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>softwareServerCapability</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/model/SoftwareServerCapability.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">SoftwareServerCapability</a> softwareServerCapability</pre>
+<div class="block">Software server capability</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.rest.DataFileRequestBody">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/rest/DataFileRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">org.odpi.openmetadata.accessservices.dataengine.rest.DataFileRequestBody</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/rest/DataEngineOMASAPIRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">DataEngineOMASAPIRequestBody</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>dataFile</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/model/DataFile.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">DataFile</a> dataFile</pre>
+<div class="block">The data file to be created</div>
+</li>
+<li class="blockListLast">
+<h4>incomplete</h4>
+<pre>boolean incomplete</pre>
+<div class="block">Determines if the data file is incomplete or not</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.rest.DeleteRequestBody">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/rest/DeleteRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">org.odpi.openmetadata.accessservices.dataengine.rest.DeleteRequestBody</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/rest/DataEngineOMASAPIRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">DataEngineOMASAPIRequestBody</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>deleteSemantic</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/model/DeleteSemantic.html" title="enum in org.odpi.openmetadata.accessservices.dataengine.model">DeleteSemantic</a> deleteSemantic</pre>
+<div class="block">The delete semantic</div>
+</li>
+<li class="blockList">
+<h4>guid</h4>
+<pre>java.lang.String guid</pre>
+<div class="block">The unique identifier of the entity</div>
+</li>
+<li class="blockListLast">
+<h4>qualifiedName</h4>
+<pre>java.lang.String qualifiedName</pre>
+<div class="block">The qualified name of the entity</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.rest.EventTypeRequestBody">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/rest/EventTypeRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">org.odpi.openmetadata.accessservices.dataengine.rest.EventTypeRequestBody</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/rest/DataEngineOMASAPIRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">DataEngineOMASAPIRequestBody</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>eventType</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/model/EventType.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">EventType</a> eventType</pre>
+<div class="block">The event type to be created</div>
+</li>
+<li class="blockListLast">
+<h4>topicQualifiedName</h4>
+<pre>java.lang.String topicQualifiedName</pre>
+<div class="block">The qualified name of the topic</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.rest.FindRequestBody">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/rest/FindRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">org.odpi.openmetadata.accessservices.dataengine.rest.FindRequestBody</a> extends java.lang.Object implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>externalSourceName</h4>
+<pre>java.lang.String externalSourceName</pre>
+<div class="block">The externalSourceName of the entity</div>
+</li>
+<li class="blockList">
+<h4>identifiers</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/rest/Identifiers.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">Identifiers</a> identifiers</pre>
+<div class="block">The identifiers name of the entity</div>
+</li>
+<li class="blockListLast">
+<h4>type</h4>
+<pre>java.lang.String type</pre>
+<div class="block">The type of the entity</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/rest/LineageMappingsRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/rest/DataEngineOMASAPIRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">DataEngineOMASAPIRequestBody</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>lineageMappings</h4>
+<pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/dataengine/model/LineageMapping.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">LineageMapping</a>&gt; lineageMappings</pre>
+<div class="block">The lineage mappings</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/rest/PortAliasRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/rest/DataEngineOMASAPIRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">DataEngineOMASAPIRequestBody</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>portAlias</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/model/PortAlias.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">PortAlias</a> portAlias</pre>
+<div class="block">The port alias</div>
+</li>
+<li class="blockListLast">
+<h4>processQualifiedName</h4>
+<pre>java.lang.String processQualifiedName</pre>
+<div class="block">The process qualified name</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/rest/PortImplementationRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/rest/DataEngineOMASAPIRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">DataEngineOMASAPIRequestBody</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>portImplementation</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/model/PortImplementation.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">PortImplementation</a> portImplementation</pre>
+<div class="block">The port implementation</div>
+</li>
+<li class="blockListLast">
+<h4>processQualifiedName</h4>
+<pre>java.lang.String processQualifiedName</pre>
+<div class="block">The process qualified name</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.rest.PortListRequestBody">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/rest/PortListRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">org.odpi.openmetadata.accessservices.dataengine.rest.PortListRequestBody</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/rest/DataEngineOMASAPIRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">DataEngineOMASAPIRequestBody</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>ports</h4>
+<pre>java.util.List&lt;java.lang.String&gt; ports</pre>
+<div class="block">The ports</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.rest.ProcessHierarchyRequestBody">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/rest/ProcessHierarchyRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">org.odpi.openmetadata.accessservices.dataengine.rest.ProcessHierarchyRequestBody</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/rest/DataEngineOMASAPIRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">DataEngineOMASAPIRequestBody</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>processHierarchy</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/model/ProcessHierarchy.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">ProcessHierarchy</a> processHierarchy</pre>
+<div class="block">The process hierarchy</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/rest/ProcessRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/rest/DataEngineOMASAPIRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">DataEngineOMASAPIRequestBody</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>process</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/model/Process.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Process</a> process</pre>
+<div class="block">The process</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.rest.RelationalTableRequestBody">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/rest/RelationalTableRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">org.odpi.openmetadata.accessservices.dataengine.rest.RelationalTableRequestBody</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/rest/DataEngineOMASAPIRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">DataEngineOMASAPIRequestBody</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>databaseSchemaQualifiedName</h4>
+<pre>java.lang.String databaseSchemaQualifiedName</pre>
+<div class="block">The qualified name of the database schema</div>
+</li>
+<li class="blockList">
+<h4>incomplete</h4>
+<pre>boolean incomplete</pre>
+<div class="block">Determines if the relational table is an incomplete asset</div>
+</li>
+<li class="blockListLast">
+<h4>relationalTable</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/model/RelationalTable.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">RelationalTable</a> relationalTable</pre>
+<div class="block">The relational table to be created</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/rest/SchemaTypeRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/rest/DataEngineOMASAPIRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">DataEngineOMASAPIRequestBody</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>schemaType</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/model/SchemaType.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">SchemaType</a> schemaType</pre>
+<div class="block">The schema type</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.dataengine.rest.TopicRequestBody">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/dataengine/rest/TopicRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">org.odpi.openmetadata.accessservices.dataengine.rest.TopicRequestBody</a> extends <a href="org/odpi/openmetadata/accessservices/dataengine/rest/DataEngineOMASAPIRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">DataEngineOMASAPIRequestBody</a> implements Serializable</h3>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>topic</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/dataengine/model/Topic.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Topic</a> topic</pre>
+<div class="block">The topic to be created</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+</li>
+<li class="blockList">
+<section role="region">
 <h2 title="Package">Package&nbsp;org.odpi.openmetadata.accessservices.securityofficer.api.events</h2>
 <ul class="blockList">
 <li class="blockList"><a id="org.odpi.openmetadata.accessservices.securityofficer.api.events.GovernedAssetEvent">
@@ -1543,122 +3313,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockListLast">
 <h4>restExceptionHandler</h4>
 <pre>org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler restExceptionHandler</pre>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</section>
-</li>
-<li class="blockList">
-<section role="region">
-<h2 title="Package">Package&nbsp;org.odpi.openmetadata.userinterface.uichassis.springboot.api</h2>
-<ul class="blockList">
-<li class="blockList"><a id="org.odpi.openmetadata.userinterface.uichassis.springboot.api.MalformedInputException">
-<!--   -->
-</a>
-<h3>Class <a href="org/odpi/openmetadata/userinterface/uichassis/springboot/api/MalformedInputException.html" title="class in org.odpi.openmetadata.userinterface.uichassis.springboot.api">org.odpi.openmetadata.userinterface.uichassis.springboot.api.MalformedInputException</a> extends java.lang.RuntimeException implements Serializable</h3>
-</li>
-</ul>
-</section>
-</li>
-<li class="blockList">
-<section role="region">
-<h2 title="Package">Package&nbsp;org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions</h2>
-<ul class="blockList">
-<li class="blockList"><a id="org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.BadRequestException">
-<!--   -->
-</a>
-<h3>Class <a href="org/odpi/openmetadata/userinterface/uichassis/springboot/api/exceptions/BadRequestException.html" title="class in org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions">org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.BadRequestException</a> extends org.springframework.web.client.HttpServerErrorException implements Serializable</h3>
-<ul class="blockList">
-<li class="blockList">
-<h3>Serialized Fields</h3>
-<ul class="blockList">
-<li class="blockListLast">
-<h4>errorCode</h4>
-<pre><a href="org/odpi/openmetadata/userinterface/uichassis/springboot/api/UserInterfaceErrorCodes.html" title="enum in org.odpi.openmetadata.userinterface.uichassis.springboot.api">UserInterfaceErrorCodes</a> errorCode</pre>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="blockList"><a id="org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.CategoryNotFoundException">
-<!--   -->
-</a>
-<h3>Class <a href="org/odpi/openmetadata/userinterface/uichassis/springboot/api/exceptions/CategoryNotFoundException.html" title="class in org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions">org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.CategoryNotFoundException</a> extends java.lang.RuntimeException implements Serializable</h3>
-</li>
-<li class="blockList"><a id="org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.GlossaryNotFoundException">
-<!--   -->
-</a>
-<h3>Class <a href="org/odpi/openmetadata/userinterface/uichassis/springboot/api/exceptions/GlossaryNotFoundException.html" title="class in org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions">org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.GlossaryNotFoundException</a> extends java.lang.RuntimeException implements Serializable</h3>
-</li>
-<li class="blockList"><a id="org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.LineageNotFoundException">
-<!--   -->
-</a>
-<h3>Class <a href="org/odpi/openmetadata/userinterface/uichassis/springboot/api/exceptions/LineageNotFoundException.html" title="class in org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions">org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.LineageNotFoundException</a> extends java.lang.RuntimeException implements Serializable</h3>
-</li>
-<li class="blockList"><a id="org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.OpenLineageServiceException">
-<!--   -->
-</a>
-<h3>Class <a href="org/odpi/openmetadata/userinterface/uichassis/springboot/api/exceptions/OpenLineageServiceException.html" title="class in org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions">org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.OpenLineageServiceException</a> extends java.lang.RuntimeException implements Serializable</h3>
-</li>
-<li class="blockList"><a id="org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.TermNotFoundException">
-<!--   -->
-</a>
-<h3>Class <a href="org/odpi/openmetadata/userinterface/uichassis/springboot/api/exceptions/TermNotFoundException.html" title="class in org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions">org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.TermNotFoundException</a> extends java.lang.RuntimeException implements Serializable</h3>
-</li>
-<li class="blockList"><a id="org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.UserNotAuthorizedException">
-<!--   -->
-</a>
-<h3>Class <a href="org/odpi/openmetadata/userinterface/uichassis/springboot/api/exceptions/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions">org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.UserNotAuthorizedException</a> extends org.springframework.web.client.HttpServerErrorException implements Serializable</h3>
-</li>
-</ul>
-</section>
-</li>
-<li class="blockList">
-<section role="region">
-<h2 title="Package">Package&nbsp;org.odpi.openmetadata.userinterface.uichassis.springboot.api.settings</h2>
-<ul class="blockList">
-<li class="blockList"><a id="org.odpi.openmetadata.userinterface.uichassis.springboot.api.settings.AppBean">
-<!--   -->
-</a>
-<h3>Class <a href="org/odpi/openmetadata/userinterface/uichassis/springboot/api/settings/AppBean.html" title="class in org.odpi.openmetadata.userinterface.uichassis.springboot.api.settings">org.odpi.openmetadata.userinterface.uichassis.springboot.api.settings.AppBean</a> extends java.lang.Object implements Serializable</h3>
-<ul class="blockList">
-<li class="blockList">
-<h3>Serialized Fields</h3>
-<ul class="blockList">
-<li class="blockList">
-<h4>description</h4>
-<pre>java.lang.String description</pre>
-</li>
-<li class="blockListLast">
-<h4>title</h4>
-<pre>java.lang.String title</pre>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="blockList"><a id="org.odpi.openmetadata.userinterface.uichassis.springboot.api.settings.UISettings">
-<!--   -->
-</a>
-<h3>Class <a href="org/odpi/openmetadata/userinterface/uichassis/springboot/api/settings/UISettings.html" title="class in org.odpi.openmetadata.userinterface.uichassis.springboot.api.settings">org.odpi.openmetadata.userinterface.uichassis.springboot.api.settings.UISettings</a> extends java.lang.Object implements Serializable</h3>
-<ul class="blockList">
-<li class="blockList">
-<h3>Serialized Fields</h3>
-<ul class="blockList">
-<li class="blockList">
-<h4>baseUrl</h4>
-<pre>java.lang.String baseUrl</pre>
-</li>
-<li class="blockList">
-<h4>pageSize</h4>
-<pre>java.lang.String pageSize</pre>
-</li>
-<li class="blockListLast">
-<h4>serverName</h4>
-<pre>java.lang.String serverName</pre>
 </li>
 </ul>
 </li>
