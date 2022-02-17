@@ -534,6 +534,40 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
 
 
     /**
+     * A new classification has been added to an entity.
+     *
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
+     *                   local repository, or event mapper name.
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param entity details of the entity with the new classification added.
+     * @param classification new classification
+     */
+    public void processClassifiedEntityEvent(String         sourceName,
+                                             String         originatorMetadataCollectionId,
+                                             String         originatorServerName,
+                                             String         originatorServerType,
+                                             String         originatorOrganizationName,
+                                             EntityProxy    entity,
+                                             Classification classification)
+    {
+        if (repositoryValidator.validEntity(sourceName, entity))
+        {
+            super.processClassifiedEntityEvent(sourceName,
+                                               originatorMetadataCollectionId,
+                                               originatorServerName,
+                                               originatorServerType,
+                                               originatorOrganizationName,
+                                               entity,
+                                               classification);
+        }
+    }
+
+
+    /**
      * A classification has been removed from an entity.
      *
      * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
@@ -552,6 +586,41 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
                                                String         originatorServerType,
                                                String         originatorOrganizationName,
                                                EntityDetail   entity,
+                                               Classification originalClassification)
+    {
+        if (repositoryValidator.validEntity(sourceName, entity))
+        {
+            super.processDeclassifiedEntityEvent(sourceName,
+                                                 originatorMetadataCollectionId,
+                                                 originatorServerName,
+                                                 originatorServerType,
+                                                 originatorOrganizationName,
+                                                 entity,
+                                                 originalClassification);
+        }
+    }
+
+
+
+    /**
+     * A classification has been removed from an entity.
+     *
+     * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
+     *                                       local repository, or event mapper name.
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName           name of the server that the event came from.
+     * @param originatorServerType           type of server that the event came from.
+     * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
+     * @param entity                         details of the entity after the classification has been removed.
+     * @param originalClassification         classification that was removed
+     */
+    public void processDeclassifiedEntityEvent(String         sourceName,
+                                               String         originatorMetadataCollectionId,
+                                               String         originatorServerName,
+                                               String         originatorServerType,
+                                               String         originatorOrganizationName,
+                                               EntityProxy    entity,
                                                Classification originalClassification)
     {
         if (repositoryValidator.validEntity(sourceName, entity))
@@ -587,6 +656,43 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
                                                String         originatorServerType,
                                                String         originatorOrganizationName,
                                                EntityDetail   entity,
+                                               Classification originalClassification,
+                                               Classification classification)
+    {
+        if (repositoryValidator.validEntity(sourceName, entity))
+        {
+            super.processReclassifiedEntityEvent(sourceName,
+                                                 originatorMetadataCollectionId,
+                                                 originatorServerName,
+                                                 originatorServerType,
+                                                 originatorOrganizationName,
+                                                 entity,
+                                                 originalClassification,
+                                                 classification);
+        }
+    }
+
+
+    /**
+     * An existing classification has been changed on an entity.
+     *
+     * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
+     *                                       local repository, or event mapper name.
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName           name of the server that the event came from.
+     * @param originatorServerType           type of server that the event came from.
+     * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
+     * @param entity                         details of the entity after the classification has been changed.
+     * @param originalClassification         classification that was changed
+     * @param classification                 new classification
+     */
+    public void processReclassifiedEntityEvent(String         sourceName,
+                                               String         originatorMetadataCollectionId,
+                                               String         originatorServerName,
+                                               String         originatorServerType,
+                                               String         originatorOrganizationName,
+                                               EntityProxy    entity,
                                                Classification originalClassification,
                                                Classification classification)
     {
