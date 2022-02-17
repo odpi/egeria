@@ -8,6 +8,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
+import org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventManager;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
@@ -16,7 +17,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryeventmapper.OMRSRepositoryEventProcessor;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSTypeDefManager;
 
@@ -30,13 +30,13 @@ import java.util.Date;
  */
 public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 {
-    private OMRSMetadataCollection       realMetadataCollection;
-    private String                       localServerName;
-    private String                       localServerType;
-    private String                       localOrganizationName;
-    private boolean                      produceEventsForRealConnector;
-    private OMRSRepositoryEventProcessor outboundRepositoryEventProcessor;
-    private OMRSTypeDefManager           localTypeDefManager;
+    private OMRSMetadataCollection     realMetadataCollection;
+    private String                     localServerName;
+    private String                     localServerType;
+    private String                     localOrganizationName;
+    private boolean                    produceEventsForRealConnector;
+    private OMRSRepositoryEventManager outboundRepositoryEventProcessor;
+    private OMRSTypeDefManager         localTypeDefManager;
 
     /*
      * The security verifier is initialized with a null security verifier.
@@ -72,7 +72,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                  String                       localServerType,
                                  String                       localOrganizationName,
                                  OMRSMetadataCollection       realMetadataCollection,
-                                 OMRSRepositoryEventProcessor outboundRepositoryEventProcessor,
+                                 OMRSRepositoryEventManager   outboundRepositoryEventProcessor,
                                  boolean                      produceEventsForRealConnector,
                                  OMRSTypeDefManager           typeDefManager)
     {
@@ -4548,8 +4548,8 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         if (! repositoryValidator.isActiveType(repositoryName, typeDef.getGUID(), typeDef.getName()))
         {
             throw new ClassificationErrorException(OMRSErrorCode.UNSUPPORTED_CLASSIFICATION.getMessageDefinition(repositoryName, classificationName),
-                    this.getClass().getName(),
-                    methodName);
+                                                   this.getClass().getName(),
+                                                   methodName);
         }
 
         /*
@@ -4576,25 +4576,24 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                               classificationName,
                                                                               classificationProperties);
 
-        // TODO add classify events
-//        if (entity != null)
-//        {
-//
-//            /*
-//             * OK to send out
-//             */
-//            if (produceEventsForRealConnector)
-//            {
-//
-//                outboundRepositoryEventProcessor.processClassifiedEntityEvent(repositoryName,
-//                        metadataCollectionId,
-//                        localServerName,
-//                        localServerType,
-//                        localOrganizationName,
-//                        entity,
-//                        newClassification);
-//            }
-//        }
+        if (classification != null)
+        {
+            setLocalProvenance(classification);
+
+            /*
+             * OK to send out
+             */
+            if (produceEventsForRealConnector)
+            {
+                outboundRepositoryEventProcessor.processClassifiedEntityEvent(repositoryName,
+                                                                              metadataCollectionId,
+                                                                              localServerName,
+                                                                              localServerType,
+                                                                              localOrganizationName,
+                                                                              entityProxy,
+                                                                              classification);
+            }
+        }
 
         return classification;
     }
@@ -4761,8 +4760,8 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         if (! repositoryValidator.isActiveType(repositoryName, typeDef.getGUID(), typeDef.getName()))
         {
             throw new ClassificationErrorException(OMRSErrorCode.UNSUPPORTED_CLASSIFICATION.getMessageDefinition(repositoryName, classificationName),
-                    this.getClass().getName(),
-                    methodName);
+                                                   this.getClass().getName(),
+                                                   methodName);
         }
 
         /*
@@ -4793,23 +4792,24 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                               classificationOriginGUID,
                                                                               classificationProperties);
 
-        // TODO add classify events
-//        if (entity != null)
-//        {
-//            /*
-//             * OK to send out
-//             */
-//            if (produceEventsForRealConnector)
-//            {
-//                outboundRepositoryEventProcessor.processClassifiedEntityEvent(repositoryName,
-//                        metadataCollectionId,
-//                        localServerName,
-//                        localServerType,
-//                        localOrganizationName,
-//                        entity,
-//                        newClassification);
-//            }
-//        }
+        if (classification != null)
+        {
+            setLocalProvenance(classification);
+
+            /*
+             * OK to send out
+             */
+            if (produceEventsForRealConnector)
+            {
+                outboundRepositoryEventProcessor.processClassifiedEntityEvent(repositoryName,
+                                                                              metadataCollectionId,
+                                                                              localServerName,
+                                                                              localServerType,
+                                                                              localOrganizationName,
+                                                                              entityProxy,
+                                                                              classification);
+            }
+        }
 
         return classification;
     }
@@ -4956,29 +4956,21 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                                        entityProxy,
                                                                                        classificationName);
 
-        // TODO removed classification events
-//        if (entity != null)
-//        {
-//            setLocalProvenanceThroughoutEntity(entity);
-//
-//            /*
-//             * OK to send out
-//             */
-//            if (produceEventsForRealConnector)
-//            {
-//                Classification currentClassification = repositoryHelper.getClassificationFromEntity(repositoryName,
-//                        entityProxy,
-//                        classificationName,
-//                        methodName);
-//                outboundRepositoryEventProcessor.processDeclassifiedEntityEvent(repositoryName,
-//                        metadataCollectionId,
-//                        localServerName,
-//                        localServerType,
-//                        localOrganizationName,
-//                        entity,
-//                        currentClassification);
-//            }
-//        }
+        setLocalProvenance(removedClassification);
+
+        /*
+         * OK to send out
+         */
+        if (produceEventsForRealConnector)
+        {
+            outboundRepositoryEventProcessor.processDeclassifiedEntityEvent(repositoryName,
+                                                                            metadataCollectionId,
+                                                                            localServerName,
+                                                                            localServerType,
+                                                                            localOrganizationName,
+                                                                            entityProxy,
+                                                                            removedClassification);
+        }
 
         return removedClassification;
     }
