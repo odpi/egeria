@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.rest.server;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.MessageFormatter;
@@ -2159,21 +2158,6 @@ public class OMRSRepositoryRESTServices
             {
                 response.setOffset(fromRelationshipElement);
                 response.setPageSize(pageSize);
-                if (response.getRelationships().size() == pageSize)
-                {
-                    final String urlTemplate = "{0}/instances/entity/{1}/relationships";
-
-                    TypeLimitedFindRequest nextFindRequestParameters = new TypeLimitedFindRequest(findRequestParameters);
-                    nextFindRequestParameters.setOffset(fromRelationshipElement + pageSize);
-
-                    response.setNextPageURL(formatNextPageURL(methodName,
-                                                              serverName,
-                                                              userId,
-                                                              urlTemplate,
-                                                              nextFindRequestParameters,
-                                                              userId,
-                                                              entityGUID));
-                }
             }
 
         }
@@ -2287,21 +2271,6 @@ public class OMRSRepositoryRESTServices
             {
                 response.setOffset(fromRelationshipElement);
                 response.setPageSize(pageSize);
-                if (response.getRelationships().size() == pageSize)
-                {
-                    final String urlTemplate = "{0}/instances/entity/{1}/relationships/history";
-
-                    TypeLimitedHistoricalFindRequest nextFindRequestParameters = new TypeLimitedHistoricalFindRequest(findRequestParameters);
-                    nextFindRequestParameters.setOffset(fromRelationshipElement + pageSize);
-
-                    response.setNextPageURL(formatNextPageURL(methodName,
-                                                              serverName,
-                                                              userId,
-                                                              urlTemplate,
-                                                              nextFindRequestParameters,
-                                                              userId,
-                                                              entityGUID));
-                }
             }
 
         }
@@ -2420,20 +2389,6 @@ public class OMRSRepositoryRESTServices
             {
                 response.setOffset(fromEntityElement);
                 response.setPageSize(pageSize);
-                if (entities.size() == pageSize)
-                {
-                    final String urlTemplate = "{0}/instances/entities";
-
-                    EntityFindRequest nextFindRequestParameters = new EntityFindRequest(findRequestParameters);
-                    nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
-
-                    response.setNextPageURL(formatNextPageURL(methodName,
-                            serverName,
-                            userId,
-                            urlTemplate,
-                            nextFindRequestParameters,
-                            userId));
-                }
             }
 
         }
@@ -2550,20 +2505,6 @@ public class OMRSRepositoryRESTServices
             {
                 response.setOffset(fromEntityElement);
                 response.setPageSize(pageSize);
-                if (entities.size() == pageSize)
-                {
-                    final String urlTemplate = "{0}/instances/entities/history";
-
-                    EntityHistoricalFindRequest nextFindRequestParameters = new EntityHistoricalFindRequest(findRequestParameters);
-                    nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
-
-                    response.setNextPageURL(formatNextPageURL(methodName,
-                            serverName,
-                            userId,
-                            urlTemplate,
-                            nextFindRequestParameters,
-                            userId));
-                }
             }
 
         }
@@ -2679,20 +2620,6 @@ public class OMRSRepositoryRESTServices
             {
                 response.setOffset(fromEntityElement);
                 response.setPageSize(pageSize);
-                if (entities.size() == pageSize)
-                {
-                    final String urlTemplate = "{0}/instances/entities/by-property";
-
-                    EntityPropertyFindRequest nextFindRequestParameters = new EntityPropertyFindRequest(findRequestParameters);
-                    nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
-
-                    response.setNextPageURL(formatNextPageURL(methodName,
-                                                              serverName,
-                                                              userId,
-                                                              urlTemplate,
-                                                              nextFindRequestParameters,
-                                                              userId));
-                }
             }
 
         }
@@ -2810,20 +2737,6 @@ public class OMRSRepositoryRESTServices
             {
                 response.setOffset(fromEntityElement);
                 response.setPageSize(pageSize);
-                if (entities.size() == pageSize)
-                {
-                    final String urlTemplate = "{0}/instances/entities/by-property/history";
-
-                    EntityPropertyFindRequest nextFindRequestParameters = new EntityPropertyFindRequest(findRequestParameters);
-                    nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
-
-                    response.setNextPageURL(formatNextPageURL(methodName,
-                                                              serverName,
-                                                              userId,
-                                                              urlTemplate,
-                                                              nextFindRequestParameters,
-                                                              userId));
-                }
             }
 
         }
@@ -2939,20 +2852,6 @@ public class OMRSRepositoryRESTServices
             {
                 response.setOffset(fromEntityElement);
                 response.setPageSize(pageSize);
-                if (entities.size() == pageSize)
-                {
-                    final String urlTemplate = "{0}/instances/entities/by-classification/{1}";
-
-                    PropertyMatchFindRequest nextFindRequestParameters = new PropertyMatchFindRequest(findRequestParameters);
-                    nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
-                    response.setNextPageURL(formatNextPageURL(methodName,
-                                                              serverName,
-                                                              userId,
-                                                              urlTemplate,
-                                                              nextFindRequestParameters,
-                                                              userId,
-                                                              classificationName));
-                }
             }
         }
         catch (RepositoryErrorException  error)
@@ -3073,20 +2972,6 @@ public class OMRSRepositoryRESTServices
             {
                 response.setOffset(fromEntityElement);
                 response.setPageSize(pageSize);
-                if (entities.size() == pageSize)
-                {
-                    final String urlTemplate = "{0}/instances/entities/by-classification/{1}/history";
-
-                    PropertyMatchHistoricalFindRequest nextFindRequestParameters = new PropertyMatchHistoricalFindRequest(findRequestParameters);
-                    nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
-                    response.setNextPageURL(formatNextPageURL(methodName,
-                                                              serverName,
-                                                              userId,
-                                                              urlTemplate,
-                                                              nextFindRequestParameters,
-                                                              userId,
-                                                              classificationName));
-                }
             }
         }
         catch (RepositoryErrorException  error)
@@ -3202,20 +3087,6 @@ public class OMRSRepositoryRESTServices
             {
                 response.setOffset(fromEntityElement);
                 response.setPageSize(pageSize);
-                if (entities.size() == pageSize)
-                {
-                    final String urlTemplate = "{0}/instances/entities/by-property-value?searchCriteria={1}";
-                    EntityPropertyFindRequest nextFindRequestParameters = new EntityPropertyFindRequest(findRequestParameters);
-                    nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
-
-                    response.setNextPageURL(formatNextPageURL(methodName,
-                                                              serverName,
-                                                              userId,
-                                                              urlTemplate,
-                                                              nextFindRequestParameters,
-                                                              userId,
-                                                              searchCriteria));
-                }
             }
 
         }
@@ -3330,20 +3201,6 @@ public class OMRSRepositoryRESTServices
             {
                 response.setOffset(fromEntityElement);
                 response.setPageSize(pageSize);
-                if (entities.size() == pageSize)
-                {
-                    final String urlTemplate = "{0}/instances/entities/by-property-value/history?searchCriteria={1}";
-                    EntityPropertyHistoricalFindRequest nextFindRequestParameters = new EntityPropertyHistoricalFindRequest(findRequestParameters);
-                    nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
-
-                    response.setNextPageURL(formatNextPageURL(methodName,
-                                                              serverName,
-                                                              userId,
-                                                              urlTemplate,
-                                                              nextFindRequestParameters,
-                                                              userId,
-                                                              searchCriteria));
-                }
             }
         }
         catch (RepositoryErrorException  error)
@@ -3741,20 +3598,6 @@ public class OMRSRepositoryRESTServices
             {
                 response.setOffset(fromRelationshipElement);
                 response.setPageSize(pageSize);
-                if (response.getRelationships().size() == pageSize)
-                {
-                    final String urlTemplate = "{0}/instances/relationships";
-
-                    InstanceFindRequest nextFindRequestParameters = new InstanceFindRequest(findRequestParameters);
-                    nextFindRequestParameters.setOffset(fromRelationshipElement + pageSize);
-
-                    response.setNextPageURL(formatNextPageURL(methodName,
-                                                              serverName,
-                                                              userId,
-                                                              urlTemplate,
-                                                              nextFindRequestParameters,
-                                                              userId));
-                }
             }
 
         }
@@ -3867,20 +3710,6 @@ public class OMRSRepositoryRESTServices
             {
                 response.setOffset(fromRelationshipElement);
                 response.setPageSize(pageSize);
-                if (response.getRelationships().size() == pageSize)
-                {
-                    final String urlTemplate = "{0}/instances/relationships/history";
-
-                    InstanceHistoricalFindRequest nextFindRequestParameters = new InstanceHistoricalFindRequest(findRequestParameters);
-                    nextFindRequestParameters.setOffset(fromRelationshipElement + pageSize);
-
-                    response.setNextPageURL(formatNextPageURL(methodName,
-                                                              serverName,
-                                                              userId,
-                                                              urlTemplate,
-                                                              nextFindRequestParameters,
-                                                              userId));
-                }
             }
 
         }
@@ -3992,20 +3821,6 @@ public class OMRSRepositoryRESTServices
             {
                 response.setOffset(fromRelationshipElement);
                 response.setPageSize(pageSize);
-                if (response.getRelationships().size() == pageSize)
-                {
-                    final String urlTemplate = "{0}/instances/relationships/by-property";
-
-                    PropertyMatchFindRequest nextFindRequestParameters = new PropertyMatchFindRequest(findRequestParameters);
-                    nextFindRequestParameters.setOffset(fromRelationshipElement + pageSize);
-
-                    response.setNextPageURL(formatNextPageURL(methodName,
-                                                              serverName,
-                                                              userId,
-                                                              urlTemplate,
-                                                              nextFindRequestParameters,
-                                                              userId));
-                }
             }
 
         }
@@ -4119,20 +3934,6 @@ public class OMRSRepositoryRESTServices
             {
                 response.setOffset(fromRelationshipElement);
                 response.setPageSize(pageSize);
-                if (response.getRelationships().size() == pageSize)
-                {
-                    final String urlTemplate = "{0}/instances/relationships/by-property/history";
-
-                    PropertyMatchHistoricalFindRequest nextFindRequestParameters = new PropertyMatchHistoricalFindRequest(findRequestParameters);
-                    nextFindRequestParameters.setOffset(fromRelationshipElement + pageSize);
-
-                    response.setNextPageURL(formatNextPageURL(methodName,
-                                                              serverName,
-                                                              userId,
-                                                              urlTemplate,
-                                                              nextFindRequestParameters,
-                                                              userId));
-                }
             }
 
         }
@@ -4239,21 +4040,6 @@ public class OMRSRepositoryRESTServices
             {
                 response.setOffset(fromRelationshipElement);
                 response.setPageSize(pageSize);
-                if (response.getRelationships().size() == pageSize)
-                {
-                    final String urlTemplate = "{0}/instances/relationships/by-property-value?searchCriteria={1}";
-
-                    TypeLimitedFindRequest nextFindRequestParameters = new TypeLimitedFindRequest(findRequestParameters);
-                    nextFindRequestParameters.setOffset(fromRelationshipElement + pageSize);
-
-                    response.setNextPageURL(formatNextPageURL(methodName,
-                                                              serverName,
-                                                              userId,
-                                                              urlTemplate,
-                                                              nextFindRequestParameters,
-                                                              userId,
-                                                              searchCriteria));
-                }
             }
 
         }
@@ -4362,21 +4148,6 @@ public class OMRSRepositoryRESTServices
             {
                 response.setOffset(fromRelationshipElement);
                 response.setPageSize(pageSize);
-                if (response.getRelationships().size() == pageSize)
-                {
-                    final String urlTemplate = "{0}/instances/relationships/by-property-value/history?searchCriteria={1}";
-
-                    TypeLimitedHistoricalFindRequest nextFindRequestParameters = new TypeLimitedHistoricalFindRequest(findRequestParameters);
-                    nextFindRequestParameters.setOffset(fromRelationshipElement + pageSize);
-
-                    response.setNextPageURL(formatNextPageURL(methodName,
-                                                              serverName,
-                                                              userId,
-                                                              urlTemplate,
-                                                              nextFindRequestParameters,
-                                                              userId,
-                                                              searchCriteria));
-                }
             }
 
         }
@@ -4878,22 +4649,6 @@ public class OMRSRepositoryRESTServices
             {
                 response.setOffset(fromEntityElement);
                 response.setPageSize(pageSize);
-                if (entities.size() == pageSize)
-                {
-                    final String urlTemplate = "{0}/instances/entities/from-entity/{1}/by-relationship";
-
-                    RelatedEntitiesFindRequest  nextFindRequestParameters = new RelatedEntitiesFindRequest(findRequestParameters);
-
-                    nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
-
-                    response.setNextPageURL(formatNextPageURL(methodName,
-                                                              serverName,
-                                                              userId,
-                                                              urlTemplate,
-                                                              nextFindRequestParameters,
-                                                              userId,
-                                                              startEntityGUID));
-                }
             }
         }
         catch (RepositoryErrorException  error)
@@ -5014,22 +4769,6 @@ public class OMRSRepositoryRESTServices
             {
                 response.setOffset(fromEntityElement);
                 response.setPageSize(pageSize);
-                if (entities.size() == pageSize)
-                {
-                    final String urlTemplate = "{0}/instances/entities/from-entity/{1}/by-relationship/history";
-
-                    RelatedEntitiesHistoricalFindRequest  nextFindRequestParameters = new RelatedEntitiesHistoricalFindRequest(findRequestParameters);
-
-                    nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
-
-                    response.setNextPageURL(formatNextPageURL(methodName,
-                                                              serverName,
-                                                              userId,
-                                                              urlTemplate,
-                                                              nextFindRequestParameters,
-                                                              userId,
-                                                              startEntityGUID));
-                }
             }
         }
         catch (RepositoryErrorException  error)
@@ -9155,58 +8894,4 @@ public class OMRSRepositoryRESTServices
         response.setExceptionProperties(exceptionProperties);
     }
 
-
-    /**
-     * Format the url for the next page of a request that includes paging.
-     *
-     * @param methodName calling method
-     * @param serverName name of the server
-     * @param userId calling user
-     * @param requestURLTemplate template of the request URL
-     * @param requestBody requestBody to include
-     * @param parameters parameters to include in the url
-     * @return formatted string
-     * @throws InvalidParameterException the server name is not known
-     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
-     * @throws RepositoryErrorException the service name is not know - indicating a logic error
-     */
-    private String  formatNextPageURL(String    methodName,
-                                      String    serverName,
-                                      String    userId,
-                                      String    requestURLTemplate,
-                                      Object    requestBody,
-                                      Object... parameters) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   RepositoryErrorException
-    {
-        if (serverName != null)
-        {
-            OMRSRepositoryServicesInstance  instance = instanceHandler.getInstance(userId, serverName, methodName);
-
-            if (instance != null)
-            {
-                try
-                {
-                    ObjectMapper objectMapper = new ObjectMapper();
-                    String       jsonString = objectMapper.writeValueAsString(requestBody);
-
-                    String serverURLRoot = instance.getLocalServerURL();
-
-                    MessageFormat mf = new MessageFormat(serverURLRoot + requestURLTemplate);
-
-                    return mf.format(parameters) + "{" + jsonString + "}";
-                }
-                catch (Exception  exc)
-                {
-                    /*
-                     * No further action is taken because the URL is a "nice to have" and do not want to
-                     * fail the entire request.
-                     */
-                    log.debug("Unable to format return URL; exception is: " + exc.getMessage());
-                }
-            }
-        }
-
-        return null;
-    }
 }

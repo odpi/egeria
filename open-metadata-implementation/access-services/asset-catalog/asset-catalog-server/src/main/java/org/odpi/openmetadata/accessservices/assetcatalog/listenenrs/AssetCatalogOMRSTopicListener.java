@@ -82,7 +82,7 @@ public class AssetCatalogOMRSTopicListener extends OMRSTopicListenerBase
             log.debug("Ignored instance event - null OMRSEventOriginator");
             auditLog.logMessage(
                     "No instance origin. Event IGNORED!",
-                    AssetCatalogAuditCode.EVENT_NOT_PROCESSING.getMessageDefinition());
+                    AssetCatalogAuditCode.EVENT_NOT_PROCESSING.getMessageDefinition("no instance origin"));
             return;
         }
 
@@ -99,7 +99,9 @@ public class AssetCatalogOMRSTopicListener extends OMRSTopicListenerBase
                 case CLASSIFIED_ENTITY_EVENT:
                 case RECLASSIFIED_ENTITY_EVENT:
                 case DECLASSIFIED_ENTITY_EVENT:
-                    processEntityDetail(entityDetail);
+                    if (entityDetail != null) {
+                        processEntityDetail(entityDetail);
+                    }
                     break;
                 case NEW_RELATIONSHIP_EVENT :
                 case UPDATED_RELATIONSHIP_EVENT:
@@ -208,7 +210,7 @@ public class AssetCatalogOMRSTopicListener extends OMRSTopicListenerBase
         String actionDescription = "Asset Lineage OMAS is unable to process an OMRSTopic event.";
 
         auditLog.logException(actionDescription,
-                AssetCatalogAuditCode.EVENT_PROCESSING_EXCEPTION.getMessageDefinition(e.getMessage(), serverName),
+                AssetCatalogAuditCode.EVENT_PROCESSING_EXCEPTION.getMessageDefinition(e.getMessage(), instanceEvent.toString()),
                 instanceEvent.toString(), e);
     }
 }

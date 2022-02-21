@@ -238,7 +238,7 @@ public class AssetCatalogHandler {
         }
 
         if (linkingEntities == null || CollectionUtils.isEmpty(linkingEntities.getRelationships())) {
-            throw new AssetCatalogException(AssetCatalogErrorCode.LINKING_RELATIONSHIPS_NOT_FOUND.getMessageDefinition(methodName),
+            throw new AssetCatalogException(AssetCatalogErrorCode.LINKING_RELATIONSHIPS_NOT_FOUND.getMessageDefinition(startAssetGUID, endAssetGUID, serverName),
                     this.getClass().getName(),
                     methodName);
         }
@@ -292,13 +292,14 @@ public class AssetCatalogHandler {
      * @param userId         user identifier that issues the call
      * @param startAssetGUID the  starting asset identifier
      * @param endAssetGUID   the ending  asset identifier
+     * @param serverName     the name of the server
      * @return a list of the entities that connects the given assets from the request
      * @throws AssetCatalogException      is thrown by the Asset Catalog OMAS when the asset passed on a request is not found in the repository
      * @throws InvalidParameterException  is thrown by the OMAG Service when a parameter is null or an invalid value.
      * @throws PropertyServerException    reporting errors when connecting to a metadata repository to retrieve properties about the connection and/or connector
      * @throws UserNotAuthorizedException is thrown by the OCF when a userId passed on a request is not authorized to perform the requested action.
      */
-    public List<AssetCatalogBean> getIntermediateAssets(String userId, String startAssetGUID, String endAssetGUID)
+    public List<AssetCatalogBean> getIntermediateAssets(String userId, String startAssetGUID, String endAssetGUID, String serverName)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, AssetCatalogException {
 
         String methodName = "getIntermediateAssets";
@@ -324,7 +325,7 @@ public class AssetCatalogHandler {
         }
 
         if (linkingEntities == null || CollectionUtils.isEmpty(linkingEntities.getEntities())) {
-            throw new AssetCatalogException(AssetCatalogErrorCode.LINKING_ASSETS_NOT_FOUND.getMessageDefinition(methodName),
+            throw new AssetCatalogException(AssetCatalogErrorCode. LINKING_ASSETS_NOT_FOUND.getMessageDefinition(startAssetGUID, endAssetGUID, serverName),
                     this.getClass().getName(),
                     methodName);
         }
@@ -336,13 +337,14 @@ public class AssetCatalogHandler {
      * @param userId           user identifier that issues the call
      * @param assetGUID        the asset identifier
      * @param searchParameters additional parameters for searching and filtering
+     * @param serverName
      * @return a list of entities from the neighborhood of the given entity
      * @throws AssetCatalogException      is thrown by the Asset Catalog OMAS when the asset passed on a request is not found in the repository
      * @throws InvalidParameterException  is thrown by the OMAG Service when a parameter is null or an invalid value.
      * @throws PropertyServerException    reporting errors when connecting to a metadata repository to retrieve properties about the connection and/or connector
      * @throws UserNotAuthorizedException is thrown by the OCF when a userId passed on a request is not authorized to perform the requested action.
      */
-    public List<AssetCatalogBean> getEntitiesFromNeighborhood(String userId, String assetGUID, SearchParameters searchParameters)
+    public List<AssetCatalogBean> getEntitiesFromNeighborhood(String userId, String assetGUID, SearchParameters searchParameters, String serverName)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, AssetCatalogException {
 
         String methodName = "getEntitiesFromNeighborhood";
@@ -352,11 +354,11 @@ public class AssetCatalogHandler {
         invalidParameterHandler.validateObject(searchParameters, SEARCH_PARAMETER, methodName);
         invalidParameterHandler.validatePaging(searchParameters.getFrom(), searchParameters.getPageSize(), methodName);
 
-        InstanceGraph entityNeighborhood = getAssetNeighborhood(userId, assetGUID, searchParameters);
+        InstanceGraph entityNeighborhood = getAssetNeighborhood(userId, assetGUID, searchParameters, serverName);
 
         List<EntityDetail> entities = entityNeighborhood.getEntities();
         if (CollectionUtils.isEmpty(entities)) {
-            throw new AssetCatalogException(AssetCatalogErrorCode.NO_ASSET_FROM_NEIGHBORHOOD_NOT_FOUND.getMessageDefinition(methodName),
+            throw new AssetCatalogException(AssetCatalogErrorCode.NO_ASSET_FROM_NEIGHBORHOOD_NOT_FOUND.getMessageDefinition(assetGUID, serverName),
                     this.getClass().getName(),
                     methodName);
         }
@@ -1431,7 +1433,7 @@ public class AssetCatalogHandler {
         return classifications.stream().filter(classification -> classification.getName().equals(classificationName)).collect(Collectors.toList());
     }
 
-    private InstanceGraph getAssetNeighborhood(String userId, String entityGUID, SearchParameters searchParameters)
+    private InstanceGraph getAssetNeighborhood(String userId, String entityGUID, SearchParameters searchParameters, String serverName)
             throws AssetCatalogException, PropertyServerException, InvalidParameterException, UserNotAuthorizedException {
         OMRSMetadataCollection metadataCollection = commonHandler.getOMRSMetadataCollection();
 
@@ -1459,7 +1461,7 @@ public class AssetCatalogHandler {
         }
 
         if (entityNeighborhood == null) {
-            throw new AssetCatalogException(AssetCatalogErrorCode.ASSET_NEIGHBORHOOD_NOT_FOUND.getMessageDefinition(methodName),
+            throw new AssetCatalogException(AssetCatalogErrorCode.ASSET_NEIGHBORHOOD_NOT_FOUND.getMessageDefinition(entityGUID, serverName),
                     this.getClass().getName(),
                     methodName);
         }

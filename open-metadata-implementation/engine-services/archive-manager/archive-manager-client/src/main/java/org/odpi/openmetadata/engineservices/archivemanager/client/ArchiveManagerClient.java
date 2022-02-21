@@ -5,6 +5,7 @@ package org.odpi.openmetadata.engineservices.archivemanager.client;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.properties.ConnectorReport;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
 import org.odpi.openmetadata.engineservices.archivemanager.api.ArchiveManagerAPI;
 import org.odpi.openmetadata.engineservices.archivemanager.client.rest.ArchiveManagerRESTClient;
@@ -78,16 +79,16 @@ public class ArchiveManagerClient  implements ArchiveManagerAPI
      * @param userId calling user
      * @param connectorProviderClassName name of a specific connector or null for all connectors
      *
-     * @return connector type for this connector
+     * @return connector report for this connector
      *
      * @throws InvalidParameterException the connector provider class name is not a valid connector fo this service
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException there was a problem detected by the integration service
      */
-    public ConnectorType validateConnector(String userId,
-                                           String connectorProviderClassName) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+    public ConnectorReport validateConnector(String userId,
+                                             String connectorProviderClassName) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
     {
         final String   methodName = "validateConnector";
         final String   nameParameter = "connectorProviderClassName";
@@ -102,7 +103,7 @@ public class ArchiveManagerClient  implements ArchiveManagerAPI
                                                                                       userId,
                                                                                       connectorProviderClassName);
 
-        return restResult.getConnectorType();
+        return new ConnectorReport(restResult);
     }
 
 

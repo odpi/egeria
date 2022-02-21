@@ -95,7 +95,6 @@ public class CohortMembershipListResponse extends OMRSAPIPagedResponse
     {
         return "CohortMembershipListResponse{" +
                 "members=" + cohortMembers +
-                ", nextPageURL='" + nextPageURL + '\'' +
                 ", offset=" + offset +
                 ", pageSize=" + pageSize +
                 ", relatedHTTPCode=" + relatedHTTPCode +

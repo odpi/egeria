@@ -14,14 +14,12 @@ The current Egeria maintainers are:
 
 | Name           | Email |
 | -------------- | -----------------
-| Mandy Chessell | mandy_chessell@uk.ibm.com |
+| Mandy Chessell | mandy.e.chessell@gmail.com |
 | Nigel Jones    | jonesn@uk.ibm.com         |
 | David Radley   | david_radley@uk.ibm.com   |
-| Graham Wallis | graham_wallis@uk.ibm.com |
 | Maryna Strelchuk | maryna.strelchuk@gmail.com |
 | Bogdan Sava | bogdan.sava@gmail.com |
 | Chris Replogle | chris.replogle@gmail.com | 
-| Daniela Valentina Otelea | daniela-valentina.otelea@ing.com |
 | Chris Grote | chris@thegrotes.net |
 | Raluca Popa | raluca.popa2@ing.com |
 | Chris Replogle | Chris.Replogle@sas.com |
@@ -43,6 +41,8 @@ contributions, we have a strong foundation to build on.
 
 | Name           | Email |
 | -------------- | -----------------
+| Graham Wallis | graham_wallis@uk.ibm.com |
+| Daniela Valentina Otelea | daniela-valentina.otelea@ing.com |
 | Kees van de Fliert | keesvandefliert@gmail.com |
 | Ruxandra Gabriela Rosu | ruxandra-gabriela.rosu@ing.com |
 | Cong Chen | cong.chen@ing.com |

@@ -165,6 +165,7 @@ public class BasicFileStoreConnector extends ConnectorBase implements BasicFileS
     /**
      * Close the file
      */
+    @Override
     public void disconnect()
     {
         try

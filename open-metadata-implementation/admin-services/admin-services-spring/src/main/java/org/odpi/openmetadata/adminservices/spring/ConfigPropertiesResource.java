@@ -97,8 +97,8 @@ public class ConfigPropertiesResource
      */
     @PostMapping(path = "/server-description")
     public VoidResponse setServerDescription(@PathVariable String userId,
-                                            @PathVariable String serverName,
-                                            @RequestBody String description)
+                                             @PathVariable String serverName,
+                                             @RequestBody String description)
     {
         return adminAPI.setServerDescription(userId, serverName, description);
     }

@@ -277,7 +277,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         zoneAccess.put(trashCanZoneName, npaAccounts);
         zoneAccess.put(personalFilesZoneName, allEmployees);
         zoneAccess.put(quarantineZoneName, assetOnboarding);
-        zoneAccess.put(dataLakeZoneName, allEmployees);
+        zoneAccess.put(dataLakeZoneName, allUsers);
         zoneAccess.put(externalAccessZoneName, externalUsers);
 
         zoneSetUp.add(callieQuartileUserId);

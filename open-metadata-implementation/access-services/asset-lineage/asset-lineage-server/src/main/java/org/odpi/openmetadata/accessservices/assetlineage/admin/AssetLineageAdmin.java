@@ -8,11 +8,12 @@ import org.odpi.openmetadata.accessservices.assetlineage.auditlog.AssetLineageAu
 import org.odpi.openmetadata.accessservices.assetlineage.listeners.AssetLineageOMRSTopicListener;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
 import org.odpi.openmetadata.accessservices.assetlineage.server.AssetLineageServicesInstance;
-import org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants;
+import org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageTypesValidator;
 import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
@@ -22,10 +23,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * AssetLineageAdmin is the class that is called by the OMAG Server to initialize and terminate
@@ -38,6 +37,8 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
     private AuditLog auditLog;
     private AssetLineageServicesInstance instance;
     private String serverName;
+    private final int defaultPublisherBatchSize = 1;
+    private final String PUBLISHER_BATCH_SIZE_PROPERTY_NAME = "LineagePublisherBatchSize";
 
     /**
      * Initialize the access service.
@@ -58,26 +59,28 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
 
         try {
             this.auditLog = auditLog;
-
-            List<String> supportedZones = this.extractSupportedZones(accessServiceConfigurationProperties.getAccessServiceOptions(),
+            Map<String, Object> accessServiceOptions = accessServiceConfigurationProperties.getAccessServiceOptions();
+            List<String> supportedZones = this.extractSupportedZones(accessServiceOptions,
                     accessServiceConfigurationProperties.getAccessServiceName(), auditLog);
 
-            Set<String> lineageClassificationTypes = getLineageClassificationTypes(accessServiceConfigurationProperties);
-            this.instance =
-                    new AssetLineageServicesInstance(repositoryConnector, supportedZones, lineageClassificationTypes,
-                            serverUserName, auditLog, accessServiceConfigurationProperties.getAccessServiceOutTopic());
+            AssetLineageTypesValidator assetLineageTypesValidator = new AssetLineageTypesValidator(repositoryConnector.getRepositoryHelper(),
+                    accessServiceOptions);
+            this.instance = new AssetLineageServicesInstance(repositoryConnector, supportedZones, serverUserName, auditLog,
+                    accessServiceConfigurationProperties.getAccessServiceOutTopic(), assetLineageTypesValidator);
             this.serverName = instance.getServerName();
 
             Connection outTopicConnection = accessServiceConfigurationProperties.getAccessServiceOutTopic();
-            Map<String, Object> accessServiceOptions = accessServiceConfigurationProperties.getAccessServiceOptions();
+
             if (outTopicConnection != null) {
                 OpenMetadataTopicConnector outTopicConnector = super.getOutTopicEventBusConnector(outTopicConnection,
                         accessServiceConfigurationProperties.getAccessServiceName(), auditLog);
 
                 Converter converter = new Converter(repositoryConnector.getRepositoryHelper());
-                AssetLineagePublisher publisher = new AssetLineagePublisher(outTopicConnector, serverName, serverUserName, accessServiceOptions);
+
+                int batchSize = extractLineagePublisherBatchSize(accessServiceOptions, this.getFullServiceName(), auditLog);
+                AssetLineagePublisher publisher = new AssetLineagePublisher(outTopicConnector, serverName, serverUserName, batchSize);
                 AssetLineageOMRSTopicListener omrsTopicListener = new AssetLineageOMRSTopicListener(converter, serverName, publisher,
-                        lineageClassificationTypes, auditLog);
+                        assetLineageTypesValidator, auditLog);
 
                 super.registerWithEnterpriseTopic(accessServiceConfigurationProperties.getAccessServiceName(), serverName,
                         enterpriseOMRSTopicConnector, omrsTopicListener, auditLog);
@@ -96,24 +99,43 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
     }
 
     /**
-     * Returns the list of lineage classifications
+     * Extract the value from access service options property defined with PUBLISHER_BATCH_SIZE_PROPERTY_NAME static field.
+     * If the value provided in the access service options is not usable (NaN or negative number), default value is returned.
      *
-     * @param accessServiceConfig Asset Lineage Configuration
-     *
-     * @return the list of the lineage classifications
+     * @param accessServiceOptions Options for the access service
+     * @param accessServiceFullName Name of the access service
+     * @param auditLog Audit log instance
+     * @return
+     * @throws OMAGConfigurationErrorException
      */
-    private Set<String> getLineageClassificationTypes(AccessServiceConfig accessServiceConfig) {
-
-        Set<String> lineageClassificationTypes = new HashSet<>();
-        if (accessServiceConfig.getAccessServiceOptions() != null) {
-            Object lineageClassificationTypesProperty = accessServiceConfig.getAccessServiceOptions()
-                    .get(AssetLineageConstants.LINEAGE_CLASSIFICATION_TYPES_KEY);
-            if (lineageClassificationTypesProperty != null) {
-                lineageClassificationTypes = new HashSet<>((List<String>) lineageClassificationTypesProperty);
-            }
+    private int extractLineagePublisherBatchSize(Map<String, Object> accessServiceOptions,
+                                                 String              accessServiceFullName,
+                                                 AuditLog            auditLog) throws OMAGConfigurationErrorException
+    {
+        final String methodName = "extractLineagePublisherBatchSize";
+        Object   propertyValue = accessServiceOptions.get(PUBLISHER_BATCH_SIZE_PROPERTY_NAME);
+        if (propertyValue == null) {
+            return defaultPublisherBatchSize;
         }
-        lineageClassificationTypes.addAll(AssetLineageConstants.immutableDefaultLineageClassifications);
-        return lineageClassificationTypes;
+        try
+        {
+            int value = Integer.parseInt(propertyValue.toString());
+            auditLog.logMessage(methodName, AssetLineageAuditCode.CONFIGURED_PUBLISHER_BATCH_SIZE.getMessageDefinition(PUBLISHER_BATCH_SIZE_PROPERTY_NAME,
+                    Integer.toString(value)));
+            return value < 1 ? defaultPublisherBatchSize : value;
+        }
+        catch (Exception error)
+        {
+            auditLog.logMessage(methodName, AssetLineageAuditCode.INVALID_PUBLISHER_BATCH_SIZE.getMessageDefinition(PUBLISHER_BATCH_SIZE_PROPERTY_NAME));
+            throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.BAD_CONFIG_PROPERTIES.getMessageDefinition(accessServiceFullName,
+                    propertyValue.toString(),
+                    PUBLISHER_BATCH_SIZE_PROPERTY_NAME,
+                    error.getClass().getName(),
+                    error.getMessage()),
+                    this.getClass().getName(),
+                    methodName,
+                    error);
+        }
     }
 
     /**
