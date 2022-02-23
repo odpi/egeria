@@ -51,7 +51,7 @@ public class OrganizationManagement implements OrganizationManagementInterface
 
     private InvalidParameterHandler    invalidParameterHandler = new InvalidParameterHandler();
 
-    private final String urlTemplatePrefix = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/organizations";
+    private final String urlTemplatePrefix = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}";
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.

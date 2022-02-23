@@ -30,7 +30,7 @@ class GetGovernanceDefinitionsForDomainInvalidParameterTest
         {
             testGetDefinitionForDomainNoUserId(client);
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -56,7 +56,7 @@ class GetGovernanceDefinitionsForDomainInvalidParameterTest
         {
             // ignore
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }

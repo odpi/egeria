@@ -121,7 +121,7 @@ public class SynchronizationTest extends AnalyticsModelingTestBase
             }
 
         }
-        catch (Throwable unexpectedError) {
+        catch (Exception unexpectedError) {
             throw new FVTUnexpectedCondition(TESTCASENAME, activityName, unexpectedError);
         }
     }
@@ -145,7 +145,7 @@ public class SynchronizationTest extends AnalyticsModelingTestBase
                 throw new FVTUnexpectedCondition(TESTCASENAME, activityName + RESPONSE_DOES_NOT_CONTAIN_GUID_OF_THE_AFFECTED_ARTIFACT);
             }
         }
-        catch (Throwable unexpectedError) {
+        catch (Exception unexpectedError) {
             throw new FVTUnexpectedCondition(TESTCASENAME, activityName, unexpectedError);
         }
     }
@@ -168,7 +168,7 @@ public class SynchronizationTest extends AnalyticsModelingTestBase
                 throw new FVTUnexpectedCondition(TESTCASENAME, activityName + RESPONSE_DOES_NOT_CONTAIN_GUID_OF_THE_AFFECTED_ARTIFACT);
             }
         } 
-        catch (Throwable unexpectedError) {
+        catch (Exception unexpectedError) {
             throw new FVTUnexpectedCondition(TESTCASENAME, activityName, unexpectedError);
         }
     }

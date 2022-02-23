@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.accessservices.assetmanager.converters;
 
 
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryTermElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryCategoryElement;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryCategoryProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -57,34 +57,34 @@ public class GlossaryCategoryConverter<B> extends AssetManagerOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof GlossaryTermElement)
+            if (returnBean instanceof GlossaryCategoryElement)
             {
-                GlossaryTermElement bean = (GlossaryTermElement) returnBean;
+                GlossaryCategoryElement bean = (GlossaryCategoryElement) returnBean;
 
                 if (entity != null)
                 {
                     bean.setElementHeader(this.getMetadataElementHeader(beanClass, entity, methodName));
-                    GlossaryTermProperties glossaryTermProperties = new GlossaryTermProperties();
+                    GlossaryCategoryProperties glossaryCategoryProperties = new GlossaryCategoryProperties();
 
                     /*
                      * The initial set of values come from the entity.
                      */
                     InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
 
-                    glossaryTermProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
-                    glossaryTermProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    glossaryTermProperties.setDisplayName(this.removeDisplayName(instanceProperties));
-                    glossaryTermProperties.setDescription(this.removeDescription(instanceProperties));
+                    glossaryCategoryProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    glossaryCategoryProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                    glossaryCategoryProperties.setDisplayName(this.removeDisplayName(instanceProperties));
+                    glossaryCategoryProperties.setDescription(this.removeDescription(instanceProperties));
 
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are
                      * assumed to be defined in a subtype.
                      */
-                    glossaryTermProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
-                    glossaryTermProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+                    glossaryCategoryProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+                    glossaryCategoryProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
-                    bean.setGlossaryTermProperties(glossaryTermProperties);
+                    bean.setGlossaryCategoryProperties(glossaryCategoryProperties);
                 }
                 else
                 {

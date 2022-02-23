@@ -32,7 +32,7 @@ class CreateGovernanceMetricInvalidParameterTest
             testCreateGovernanceMetricNoProperties(client, userId);
             testCreateGovernanceMetricNoQualifiedName(client, userId);
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -60,7 +60,7 @@ class CreateGovernanceMetricInvalidParameterTest
         {
             // ignore
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -88,7 +88,7 @@ class CreateGovernanceMetricInvalidParameterTest
         {
             // ignore
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -118,7 +118,7 @@ class CreateGovernanceMetricInvalidParameterTest
         {
             // ignore
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }

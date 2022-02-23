@@ -30,7 +30,7 @@ class CreateStandardClassificationLevelsInvalidParameterTest
             testCreateCertificationTypeNoUserId(client);
             testCreateCertificationTypeNoClassificationName(client, userId);
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -57,7 +57,7 @@ class CreateStandardClassificationLevelsInvalidParameterTest
         {
             // ignore
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -85,7 +85,7 @@ class CreateStandardClassificationLevelsInvalidParameterTest
         {
             // ignore
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
