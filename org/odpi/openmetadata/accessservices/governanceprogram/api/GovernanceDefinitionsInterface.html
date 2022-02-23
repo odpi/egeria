@@ -211,8 +211,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createGovernanceDefinition(java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionProperties)">createGovernanceDefinition</a></span>&#8203;(java.lang.String&nbsp;userId,
-                          org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionProperties&nbsp;properties)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createGovernanceDefinition(java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionProperties,org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus)">createGovernanceDefinition</a></span>&#8203;(java.lang.String&nbsp;userId,
+                          org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionProperties&nbsp;properties,
+                          org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus&nbsp;initialStatus)</code></th>
 <td class="colLast">
 <div class="block">Create a new governance definition.</div>
 </td>
@@ -293,14 +294,15 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a id="createGovernanceDefinition(java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionProperties)">
+<a id="createGovernanceDefinition(java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionProperties,org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>createGovernanceDefinition</h4>
 <pre class="methodSignature">java.lang.String&nbsp;createGovernanceDefinition&#8203;(java.lang.String&nbsp;userId,
-                                            org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionProperties&nbsp;properties)
+                                            org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionProperties&nbsp;properties,
+                                            org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus&nbsp;initialStatus)
                                      throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
                                             org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
                                             org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
@@ -309,6 +311,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>properties</code> - properties of the definition</dd>
+<dd><code>initialStatus</code> - what is the initial status for the governance definition - default value is DRAFT</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the definition</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>

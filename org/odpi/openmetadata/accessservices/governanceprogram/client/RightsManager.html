@@ -222,8 +222,9 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createLicenseType(java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseTypeProperties)">createLicenseType</a></span>&#8203;(java.lang.String&nbsp;userId,
-                 org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseTypeProperties&nbsp;properties)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createLicenseType(java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseTypeProperties,org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus)">createLicenseType</a></span>&#8203;(java.lang.String&nbsp;userId,
+                 org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseTypeProperties&nbsp;properties,
+                 org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus&nbsp;initialStatus)</code></th>
 <td class="colLast">
 <div class="block">Create a description of the license type.</div>
 </td>
@@ -464,24 +465,26 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a id="createLicenseType(java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseTypeProperties)">
+<a id="createLicenseType(java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseTypeProperties,org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>createLicenseType</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;createLicenseType&#8203;(java.lang.String&nbsp;userId,
-                                          org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseTypeProperties&nbsp;properties)
+                                          org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseTypeProperties&nbsp;properties,
+                                          org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus&nbsp;initialStatus)
                                    throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
                                           org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
                                           org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
 <div class="block">Create a description of the license type.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/RightsManagementInterface.html#createLicenseType(java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseTypeProperties)">createLicenseType</a></code>&nbsp;in interface&nbsp;<code><a href="../api/RightsManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">RightsManagementInterface</a></code></dd>
+<dd><code><a href="../api/RightsManagementInterface.html#createLicenseType(java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseTypeProperties,org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus)">createLicenseType</a></code>&nbsp;in interface&nbsp;<code><a href="../api/RightsManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">RightsManagementInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>properties</code> - license properties</dd>
+<dd><code>initialStatus</code> - what is the initial status for the license type definition - default value is DRAFT</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of new definition</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
