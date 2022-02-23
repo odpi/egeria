@@ -56,7 +56,6 @@ public class GovernanceDefinitionProperties implements Serializable
     private String                           description          = null;
     private String                           scope                = null;
     private int                              domainIdentifier     = 0;
-    private GovernanceDefinitionStatus       status               = null;
     private String                           priority             = null;
     private List<String>                     implications         = null;
     private List<String>                     outcomes             = null;
@@ -91,7 +90,6 @@ public class GovernanceDefinitionProperties implements Serializable
             this.description = template.getDescription();
             this.scope = template.getScope();
             this.domainIdentifier = template.getDomainIdentifier();
-            this.status = template.getStatus();
             this.priority = template.getPriority();
             this.implications = template.getImplications();
             this.outcomes = template.getOutcomes();
@@ -332,30 +330,6 @@ public class GovernanceDefinitionProperties implements Serializable
 
 
     /**
-     * Return the status of this governance definition.  The meaning of the different values are defined in the
-     * GovernanceDefinitionStatus enumeration.
-     *
-     * @return GovernanceDefinitionStatus enumeration
-     */
-    public GovernanceDefinitionStatus getStatus()
-    {
-        return status;
-    }
-
-
-    /**
-     * Set up the status of this governance definition.  The meaning of the different values are defined in the
-     * GovernanceDefinitionStatus enumeration.
-     *
-     * @param status GovernanceDefinitionStatus enumeration
-     */
-    public void setStatus(GovernanceDefinitionStatus status)
-    {
-        this.status = status;
-    }
-
-
-    /**
      * Return the priority of the governance definition.  This may be something like high, medium or low,
      * or maybe a time frame or more detailed explanation.
      *
@@ -487,7 +461,6 @@ public class GovernanceDefinitionProperties implements Serializable
                        ", description='" + description + '\'' +
                        ", scope='" + scope + '\'' +
                        ", domainIdentifier=" + domainIdentifier +
-                       ", status=" + status +
                        ", priority='" + priority + '\'' +
                        ", implications=" + implications +
                        ", outcomes=" + outcomes +
@@ -523,7 +496,6 @@ public class GovernanceDefinitionProperties implements Serializable
                        Objects.equals(summary, that.summary) &&
                        Objects.equals(description, that.description) &&
                        Objects.equals(scope, that.scope) &&
-                       status == that.status &&
                        Objects.equals(priority, that.priority) &&
                        Objects.equals(implications, that.implications) &&
                        Objects.equals(outcomes, that.outcomes) &&
@@ -541,7 +513,7 @@ public class GovernanceDefinitionProperties implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(documentIdentifier, additionalProperties, title, summary, description, scope, domainIdentifier, status, priority,
+        return Objects.hash(documentIdentifier, additionalProperties, title, summary, description, scope, domainIdentifier, priority,
                             implications, outcomes, results, typeName, extendedProperties);
     }
 }
