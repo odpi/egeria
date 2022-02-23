@@ -100,7 +100,7 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
 
     /**
      * Extract the value from access service options property defined with PUBLISHER_BATCH_SIZE_PROPERTY_NAME static field.
-     * If the value provided in the access service options is not usable (NaN or negative number), default value is returned.
+     * If accessServiceOptions is null or the property provided value is not usable (NaN or negative number), default value is returned.
      *
      * @param accessServiceOptions Options for the access service
      * @param accessServiceFullName Name of the access service
@@ -113,19 +113,19 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
                                                  AuditLog            auditLog) throws OMAGConfigurationErrorException
     {
         final String methodName = "extractLineagePublisherBatchSize";
-        Object   propertyValue = accessServiceOptions.get(PUBLISHER_BATCH_SIZE_PROPERTY_NAME);
+        if(accessServiceOptions == null) {
+            return defaultPublisherBatchSize;
+        }
+        Object propertyValue = accessServiceOptions.get(PUBLISHER_BATCH_SIZE_PROPERTY_NAME);
         if (propertyValue == null) {
             return defaultPublisherBatchSize;
         }
-        try
-        {
+        try {
             int value = Integer.parseInt(propertyValue.toString());
             auditLog.logMessage(methodName, AssetLineageAuditCode.CONFIGURED_PUBLISHER_BATCH_SIZE.getMessageDefinition(PUBLISHER_BATCH_SIZE_PROPERTY_NAME,
                     Integer.toString(value)));
             return value < 1 ? defaultPublisherBatchSize : value;
-        }
-        catch (Exception error)
-        {
+        } catch (Exception error) {
             auditLog.logMessage(methodName, AssetLineageAuditCode.INVALID_PUBLISHER_BATCH_SIZE.getMessageDefinition(PUBLISHER_BATCH_SIZE_PROPERTY_NAME));
             throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.BAD_CONFIG_PROPERTIES.getMessageDefinition(accessServiceFullName,
                     propertyValue.toString(),
