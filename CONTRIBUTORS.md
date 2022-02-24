@@ -11,15 +11,18 @@ This file recognizes the people who have make an important contribution to Egeri
 | -------------- | -----------------
 | Ferd Scheepers | ferd.scheepers@mamahuhu.nl |
 | Ernie Ostic | ernie.ostic@getmanta.com |
-| Moya Brannan |  moyabrannan@uk.ibm.com |
-| Chris Nott |  chris_nott@uk.ibm.com |
-| Billy Bittles |  wbittles@uk.ibm.com |
-| Ilya Ksenofontov |  fonto.trg@gmail.com |
-| Jacob Madsen |  jacob.madsen@ibm.com |
-| David Kneisly |  dskneisl@us.ibm.com |
-| Brian Gillikin |  brian.gillikin@ibm.com |
+| Moya Brannan | moyabrannan@uk.ibm.com |
+| Chris Nott | chris_nott@uk.ibm.com |
+| Billy Bittles | wbittles@uk.ibm.com |
+| Ilya Ksenofontov | fonto.trg@gmail.com |
+| Jacob Madsen | jacob.madsen@ibm.com |
+| David Kneisly | dskneisl@us.ibm.com |
+| Brian Gillikin | brian.gillikin@ibm.com |
 | Alexandra Bucur | alexandra-nona.bucur@ing.com |
 | Cezar Sirbu | sirbunicolaecezar@gmail.com |
+| Federica Donald | federica.donald@ibm.com |
+| Adinarayana Harida | adharida@in.ibm.com |
+| Sachin Naik |  sachin.naik@ibm.com |
 
 
 To understand how to become an Egeria contributor see the [Egeria Operations Guide](Egeria-Operations.md).
