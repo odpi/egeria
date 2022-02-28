@@ -13,6 +13,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
@@ -36,6 +37,8 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
     private AuditLog auditLog;
     private AssetLineageServicesInstance instance;
     private String serverName;
+    private final int defaultPublisherBatchSize = 1;
+    private final String PUBLISHER_BATCH_SIZE_PROPERTY_NAME = "LineagePublisherBatchSize";
 
     /**
      * Initialize the access service.
@@ -73,7 +76,9 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
                         accessServiceConfigurationProperties.getAccessServiceName(), auditLog);
 
                 Converter converter = new Converter(repositoryConnector.getRepositoryHelper());
-                AssetLineagePublisher publisher = new AssetLineagePublisher(outTopicConnector, serverName, serverUserName, accessServiceOptions);
+
+                int batchSize = extractLineagePublisherBatchSize(accessServiceOptions, this.getFullServiceName(), auditLog);
+                AssetLineagePublisher publisher = new AssetLineagePublisher(outTopicConnector, serverName, serverUserName, batchSize);
                 AssetLineageOMRSTopicListener omrsTopicListener = new AssetLineageOMRSTopicListener(converter, serverName, publisher,
                         assetLineageTypesValidator, auditLog);
 
@@ -89,6 +94,46 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
                     AssetLineageAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage(), serverName), error);
 
             super.throwUnexpectedInitializationException(actionDescription, AccessServiceDescription.ASSET_LINEAGE_OMAS.getAccessServiceFullName(),
+                    error);
+        }
+    }
+
+    /**
+     * Extract the value from access service options property defined with PUBLISHER_BATCH_SIZE_PROPERTY_NAME static field.
+     * If accessServiceOptions is null or the property provided value is not usable (NaN or negative number), default value is returned.
+     *
+     * @param accessServiceOptions Options for the access service
+     * @param accessServiceFullName Name of the access service
+     * @param auditLog Audit log instance
+     * @return
+     * @throws OMAGConfigurationErrorException
+     */
+    private int extractLineagePublisherBatchSize(Map<String, Object> accessServiceOptions,
+                                                 String              accessServiceFullName,
+                                                 AuditLog            auditLog) throws OMAGConfigurationErrorException
+    {
+        final String methodName = "extractLineagePublisherBatchSize";
+        if(accessServiceOptions == null) {
+            return defaultPublisherBatchSize;
+        }
+        Object propertyValue = accessServiceOptions.get(PUBLISHER_BATCH_SIZE_PROPERTY_NAME);
+        if (propertyValue == null) {
+            return defaultPublisherBatchSize;
+        }
+        try {
+            int value = Integer.parseInt(propertyValue.toString());
+            auditLog.logMessage(methodName, AssetLineageAuditCode.CONFIGURED_PUBLISHER_BATCH_SIZE.getMessageDefinition(PUBLISHER_BATCH_SIZE_PROPERTY_NAME,
+                    Integer.toString(value)));
+            return value < 1 ? defaultPublisherBatchSize : value;
+        } catch (Exception error) {
+            auditLog.logMessage(methodName, AssetLineageAuditCode.INVALID_PUBLISHER_BATCH_SIZE.getMessageDefinition(PUBLISHER_BATCH_SIZE_PROPERTY_NAME));
+            throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.BAD_CONFIG_PROPERTIES.getMessageDefinition(accessServiceFullName,
+                    propertyValue.toString(),
+                    PUBLISHER_BATCH_SIZE_PROPERTY_NAME,
+                    error.getClass().getName(),
+                    error.getMessage()),
+                    this.getClass().getName(),
+                    methodName,
                     error);
         }
     }

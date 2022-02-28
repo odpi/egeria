@@ -3,12 +3,14 @@
 package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.server.converters;
 
 import org.odpi.openmetadata.commonservices.generichandlers.OCFConverter;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.RelatedAsset;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.lang.reflect.InvocationTargetException;
@@ -50,28 +52,7 @@ public class RelatedAssetConverter<B> extends OCFConverter<B>
                         EntityDetail entity,
                         String       methodName) throws PropertyServerException
     {
-        try
-        {
-            /*
-             * This is initial confirmation that the generic converter has been initialized with an appropriate bean class.
-             */
-            B returnBean = beanClass.getDeclaredConstructor().newInstance();
-
-            if (returnBean instanceof RelatedAsset)
-            {
-                RelatedAsset bean = (RelatedAsset) returnBean;
-
-                // todo
-            }
-
-            return returnBean;
-        }
-        catch (IllegalAccessException | InstantiationException | ClassCastException | NoSuchMethodException | InvocationTargetException error)
-        {
-            super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
-        }
-
-        return null;
+        return this.getNewBean(beanClass, entity, null, methodName);
     }
 
 
@@ -91,6 +72,61 @@ public class RelatedAssetConverter<B> extends OCFConverter<B>
                         Relationship relationship,
                         String       methodName) throws PropertyServerException
     {
-        return this.getNewBean(beanClass, entity, methodName);
+        try
+        {
+            /*
+             * This is initial confirmation that the generic converter has been initialized with an appropriate bean class.
+             */
+            B returnBean = beanClass.getDeclaredConstructor().newInstance();
+
+            if (returnBean instanceof RelatedAsset)
+            {
+                RelatedAsset bean = (RelatedAsset) returnBean;
+
+                if (relationship != null)
+                {
+                    bean.setTypeName(relationship.getType().getTypeDefName());
+
+                    boolean relatedAssetAtEndOne = true;
+
+                    if (relationship.getEntityTwoProxy().getGUID().equals(entity.getGUID()))
+                    {
+                        relatedAssetAtEndOne = false;
+                    }
+
+                    TypeDef typeDef = repositoryHelper.getTypeDefByName(methodName, relationship.getType().getTypeDefName());
+
+                    if (typeDef instanceof RelationshipDef)
+                    {
+                        RelationshipDef relationshipDef = (RelationshipDef)typeDef;
+
+                        RelationshipEndDef endDef;
+
+                        if (relatedAssetAtEndOne)
+                        {
+                            endDef = relationshipDef.getEndDef1();
+                        }
+                        else
+                        {
+                            endDef = relationshipDef.getEndDef2();
+                        }
+
+                        bean.setAttributeName(endDef.getAttributeName());
+                    }
+                }
+
+                AssetConverter<Asset> assetConverter = new AssetConverter<>(repositoryHelper, serviceName, serverName);
+
+                bean.setRelatedAsset(assetConverter.getNewBean(Asset.class, entity, methodName));
+            }
+
+            return returnBean;
+        }
+        catch (IllegalAccessException | InstantiationException | ClassCastException | NoSuchMethodException | InvocationTargetException error)
+        {
+            super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
+        }
+
+        return null;
     }
 }

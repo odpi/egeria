@@ -51,12 +51,13 @@ public class SimpleCatalogArchiveHelper
     private static final String HAS_A_RELATIONSHIP_NAME                  = "TermHASARelationship";
     private static final String RELATED_TERM_RELATIONSHIP_NAME           = "RelatedTerm";
 
-    private static final String SOFTWARE_CAPABILIITY_TYPE_NAME           = "SoftwareCapability";
+    private static final String SOFTWARE_CAPABILITY_TYPE_NAME            = "SoftwareCapability";
 
     private static final String ASSET_TYPE_NAME                          = "Asset";
     private static final String CONNECTION_TO_ASSET_TYPE_NAME            = "ConnectionToAsset";
     private static final String DATA_CONTENT_FOR_DATA_SET_TYPE_NAME      = "DataContentForDataSet";
     private static final String ASSET_SCHEMA_TYPE_TYPE_NAME              = "AssetSchemaType";
+    private static final String ASSET_ZONE_MEMBERSHIP_TYPE_NAME          = "AssetZoneMembership";
 
     private static final String SCHEMA_TYPE_TYPE_NAME                    = "SchemaType";
     private static final String PRIMITIVE_SCHEMA_TYPE_TYPE_NAME          = "PrimitiveSchemaType";
@@ -87,6 +88,7 @@ public class SimpleCatalogArchiveHelper
     private static final String DESCRIPTION_PROPERTY                         = "description";
 
     private static final String ASSET_SUMMARY_PROPERTY                       = "assetSummary";
+    private static final String ZONE_MEMBERSHIP_PROPERTY                     = "zoneMembership";
 
     private static final String CAPABILITY_TYPE_PROPERTY                     = "capabilityType";
     private static final String CAPABILITY_VERSION_PROPERTY                  = "capabilityVersion";
@@ -183,13 +185,13 @@ public class SimpleCatalogArchiveHelper
      * @param versionNumber version number of the archive.
      * @param versionName version name for the archive.
      */
-    protected SimpleCatalogArchiveHelper(OpenMetadataArchiveBuilder archiveBuilder,
-                                         String                     archiveGUID,
-                                         String                     archiveRootName,
-                                         String                     originatorName,
-                                         Date                       creationDate,
-                                         long                       versionNumber,
-                                         String                     versionName)
+    public SimpleCatalogArchiveHelper(OpenMetadataArchiveBuilder archiveBuilder,
+                                      String                     archiveGUID,
+                                      String                     archiveRootName,
+                                      String                     originatorName,
+                                      Date                       creationDate,
+                                      long                       versionNumber,
+                                      String                     versionName)
     {
         this.archiveBuilder = archiveBuilder;
 
@@ -228,15 +230,17 @@ public class SimpleCatalogArchiveHelper
      * @param description description about the asset
      * @param additionalProperties any other properties
      * @param extendedProperties additional properties defined in the sub type
+     * @param classifications list of classifications (if any)
      *
      * @return id for the asset
      */
-    public String addAsset(String              typeName,
-                           String              qualifiedName,
-                           String              displayName,
-                           String              description,
-                           Map<String, String> additionalProperties,
-                           Map<String, Object> extendedProperties)
+    public String addAsset(String               typeName,
+                           String               qualifiedName,
+                           String               displayName,
+                           String               description,
+                           Map<String, String>  additionalProperties,
+                           Map<String, Object>  extendedProperties,
+                           List<Classification> classifications)
     {
         final String methodName = "addAsset";
 
@@ -257,11 +261,82 @@ public class SimpleCatalogArchiveHelper
                                                                  idToGUIDMap.getGUID(qualifiedName),
                                                                  properties,
                                                                  InstanceStatus.ACTIVE,
-                                                                 null);
+                                                                 classifications);
 
         archiveBuilder.addEntity(assetEntity);
 
         return assetEntity.getGUID();
+    }
+
+
+    /**
+     * Create an asset entity.
+     *
+     * @param typeName name of asset subtype to use - default is Asset
+     * @param qualifiedName unique name for the asset
+     * @param displayName display name for the asset
+     * @param description description about the asset
+     * @param additionalProperties any other properties
+     * @param extendedProperties additional properties defined in the sub type
+     *
+     * @return id for the asset
+     */
+    public String addAsset(String              typeName,
+                           String              qualifiedName,
+                           String              displayName,
+                           String              description,
+                           Map<String, String> additionalProperties,
+                           Map<String, Object> extendedProperties)
+    {
+        return this.addAsset(typeName, qualifiedName, displayName, description, additionalProperties, extendedProperties, null);
+    }
+
+
+    /**
+     * Create an asset entity.
+     *
+     * @param typeName name of asset subtype to use - default is Asset
+     * @param qualifiedName unique name for the asset
+     * @param displayName display name for the asset
+     * @param description description about the asset
+     * @param governanceZones list of zones to add to the asset
+     * @param additionalProperties any other properties
+     * @param extendedProperties additional properties defined in the sub type
+     *
+     * @return id for the asset
+     */
+    public String addAsset(String              typeName,
+                           String              qualifiedName,
+                           String              displayName,
+                           String              description,
+                           List<String>        governanceZones,
+                           Map<String, String> additionalProperties,
+                           Map<String, Object> extendedProperties)
+    {
+        final String methodName = "addAsset (with governance zones)";
+
+        if (governanceZones == null)
+        {
+            return this.addAsset(typeName, qualifiedName, displayName, description, additionalProperties, extendedProperties, null);
+        }
+        else
+        {
+            List<Classification> classifications = new ArrayList<>();
+
+            InstanceProperties properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName,
+                                                                                           null,
+                                                                                           ZONE_MEMBERSHIP_PROPERTY,
+                                                                                           governanceZones,
+                                                                                           methodName);
+
+            Classification classification = archiveHelper.getClassification(ASSET_ZONE_MEMBERSHIP_TYPE_NAME,
+                                                                            properties,
+                                                                            InstanceStatus.ACTIVE);
+
+            classifications.add(classification);
+
+            return this.addAsset(typeName, qualifiedName, displayName, description, additionalProperties, extendedProperties, classifications);
+        }
     }
 
 
@@ -289,7 +364,7 @@ public class SimpleCatalogArchiveHelper
     {
         final String methodName = "addSoftwareCapability";
 
-        String assetTypeName = SOFTWARE_CAPABILIITY_TYPE_NAME;
+        String assetTypeName = SOFTWARE_CAPABILITY_TYPE_NAME;
 
         if (typeName != null)
         {

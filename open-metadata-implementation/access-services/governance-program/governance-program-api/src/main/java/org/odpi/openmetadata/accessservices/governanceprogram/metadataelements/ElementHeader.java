@@ -32,6 +32,7 @@ public class ElementHeader implements Serializable
      * Common header for first class elements from a metadata repository
      */
     private String          guid = null;
+    private ElementStatus   status = null;
     private ElementType     type = null;
     private ElementOrigin   origin = null;
     private ElementVersions versions = null;
@@ -57,11 +58,56 @@ public class ElementHeader implements Serializable
         if (template != null)
         {
             guid             = template.getGUID();
+            status           = template.getStatus();
             type             = template.getType();
             origin           = template.getOrigin();
             versions         = template.getVersions();
             classifications  = template.getClassifications();
         }
+    }
+
+
+    /**
+     * Return the unique id for the properties object.  Null means no guid is assigned.
+     *
+     * @return String unique id
+     */
+    public String getGUID()
+    {
+        return guid;
+    }
+
+
+    /**
+     * Set up the guid for the element.
+     *
+     * @param guid String unique identifier
+     */
+    public void setGUID(String guid)
+    {
+        this.guid = guid;
+    }
+
+
+    /**
+     * Return the current status of the element - typically ACTIVE.
+     *
+     * @return status enum
+     */
+    public ElementStatus getStatus()
+    {
+        return status;
+    }
+
+
+    /**
+     * Set up the current status of the element - typically ACTIVE.
+     *
+     * @param status status enum
+     */
+    public void setStatus(ElementStatus status)
+    {
+        this.status = status;
     }
 
 
@@ -92,28 +138,6 @@ public class ElementHeader implements Serializable
     public void setType(ElementType type)
     {
         this.type = type;
-    }
-
-
-    /**
-     * Return the unique id for the properties object.  Null means no guid is assigned.
-     *
-     * @return String unique id
-     */
-    public String getGUID()
-    {
-        return guid;
-    }
-
-
-    /**
-     * Set up the guid for the element.
-     *
-     * @param guid String unique identifier
-     */
-    public void setGUID(String guid)
-    {
-        this.guid = guid;
     }
 
 
@@ -204,6 +228,7 @@ public class ElementHeader implements Serializable
     {
         return "ElementHeader{" +
                        "guid='" + guid + '\'' +
+                       ", status=" + status +
                        ", type=" + type +
                        ", origin=" + origin +
                        ", versions=" + versions +
@@ -232,6 +257,7 @@ public class ElementHeader implements Serializable
         }
         ElementHeader that = (ElementHeader) objectToCompare;
         return Objects.equals(guid, that.guid) &&
+                       status == that.status &&
                        Objects.equals(type, that.type) &&
                        Objects.equals(origin, that.origin) &&
                        Objects.equals(versions, that.versions) &&
@@ -247,6 +273,6 @@ public class ElementHeader implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(guid, type, origin, versions, classifications);
+        return Objects.hash(guid, status, type, origin, versions, classifications);
     }
 }

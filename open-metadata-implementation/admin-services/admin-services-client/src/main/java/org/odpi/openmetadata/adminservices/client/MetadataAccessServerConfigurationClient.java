@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * MetadataAccessPointConfigurationClient configures a MetadataAccessServer OMAG Server.  This server
+ * MetadataAccessServerConfigurationClient configures a MetadataAccessServer OMAG Server.  This server
  * can become a cohort member and, through the access services, offers a wide range of specialist APIs
  * and event streams to access and store metadata.
  */

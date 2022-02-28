@@ -7,6 +7,7 @@ import org.odpi.openmetadata.adminservices.configuration.registration.EngineServ
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.properties.ConnectorReport;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
 
 import org.odpi.openmetadata.engineservices.archivemanager.connector.ArchiveService;
@@ -57,9 +58,14 @@ public class ArchiveManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setConnectorType(instanceHandler.validateConnector(connectorProviderClassName,
-                                                                        ArchiveService.class,
-                                                                        EngineServiceDescription.ARCHIVE_MANAGER_OMES.getEngineServiceFullName()));
+            ConnectorReport connectorReport = instanceHandler.validateConnector(connectorProviderClassName,
+                                                                                ArchiveService.class,
+                                                                                EngineServiceDescription.ARCHIVE_MANAGER_OMES.getEngineServiceFullName());
+
+            if (connectorReport != null)
+            {
+                response = new ConnectorTypeResponse(connectorReport);
+            }
         }
         catch (Exception error)
         {

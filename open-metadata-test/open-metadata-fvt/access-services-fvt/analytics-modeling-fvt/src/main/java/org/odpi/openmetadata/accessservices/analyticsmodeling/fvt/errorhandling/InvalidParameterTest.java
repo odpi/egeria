@@ -122,7 +122,7 @@ public class InvalidParameterTest extends AnalyticsModelingTestBase
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
         	if (!(unexpectedError instanceof InvalidParameterException)) {
                 throw new FVTUnexpectedCondition(TESTCASENAME, activityName, unexpectedError);
@@ -143,7 +143,7 @@ public class InvalidParameterTest extends AnalyticsModelingTestBase
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
         	if (!(unexpectedError instanceof InvalidParameterException)) {
                 throw new FVTUnexpectedCondition(TESTCASENAME, activityName, unexpectedError);
@@ -165,7 +165,7 @@ public class InvalidParameterTest extends AnalyticsModelingTestBase
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
         	if (!(unexpectedError instanceof InvalidParameterException)) {
                 throw new FVTUnexpectedCondition(TESTCASENAME, activityName, unexpectedError);
@@ -208,7 +208,7 @@ public class InvalidParameterTest extends AnalyticsModelingTestBase
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
         	if (!(unexpectedError instanceof InvalidParameterException)) {
                 throw new FVTUnexpectedCondition(TESTCASENAME, activityName, unexpectedError);
@@ -228,7 +228,7 @@ public class InvalidParameterTest extends AnalyticsModelingTestBase
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
         	if (!(unexpectedError instanceof InvalidParameterException)) {
                 throw new FVTUnexpectedCondition(TESTCASENAME, activityName, unexpectedError);
@@ -248,7 +248,7 @@ public class InvalidParameterTest extends AnalyticsModelingTestBase
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
         	if (!(unexpectedError instanceof InvalidParameterException)) {
                 throw new FVTUnexpectedCondition(TESTCASENAME, activityName, unexpectedError);
@@ -270,7 +270,7 @@ public class InvalidParameterTest extends AnalyticsModelingTestBase
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
         	if (!(unexpectedError instanceof InvalidParameterException)) {
                 throw new FVTUnexpectedCondition(TESTCASENAME, activityName, unexpectedError);
@@ -311,7 +311,7 @@ public class InvalidParameterTest extends AnalyticsModelingTestBase
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
         	if (!(unexpectedError instanceof InvalidParameterException)) {
                 throw new FVTUnexpectedCondition(TESTCASENAME, activityName, unexpectedError);
@@ -333,7 +333,7 @@ public class InvalidParameterTest extends AnalyticsModelingTestBase
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
         	if (!(unexpectedError instanceof InvalidParameterException)) {
                 throw new FVTUnexpectedCondition(TESTCASENAME, activityName, unexpectedError);
@@ -373,7 +373,7 @@ public class InvalidParameterTest extends AnalyticsModelingTestBase
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
         	if (!(unexpectedError instanceof InvalidParameterException)) {
                 throw new FVTUnexpectedCondition(TESTCASENAME, activityName, unexpectedError);
@@ -395,7 +395,7 @@ public class InvalidParameterTest extends AnalyticsModelingTestBase
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
         	if (!(unexpectedError instanceof InvalidParameterException)) {
                 throw new FVTUnexpectedCondition(TESTCASENAME, activityName, unexpectedError);
@@ -439,7 +439,7 @@ public class InvalidParameterTest extends AnalyticsModelingTestBase
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
         	if (!(unexpectedError instanceof InvalidParameterException)) {
                 throw new FVTUnexpectedCondition(TESTCASENAME, activityName, unexpectedError);
@@ -459,7 +459,7 @@ public class InvalidParameterTest extends AnalyticsModelingTestBase
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
         	if (!(unexpectedError instanceof InvalidParameterException)) {
                 throw new FVTUnexpectedCondition(TESTCASENAME, activityName, unexpectedError);
@@ -479,7 +479,7 @@ public class InvalidParameterTest extends AnalyticsModelingTestBase
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
         	if (!(unexpectedError instanceof InvalidParameterException)) {
                 throw new FVTUnexpectedCondition(TESTCASENAME, activityName, unexpectedError);

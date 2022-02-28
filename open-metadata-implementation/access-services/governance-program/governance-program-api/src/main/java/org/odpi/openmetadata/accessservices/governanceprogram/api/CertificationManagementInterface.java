@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.C
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceRoleElement;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.CertificationProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.CertificationTypeProperties;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -27,6 +28,7 @@ public interface CertificationManagementInterface
      *
      * @param userId calling user
      * @param properties certification properties
+     * @param initialStatus what is the initial status for the certification type - default value is DRAFT
      *
      * @return unique identifier of new definition
      *
@@ -35,9 +37,10 @@ public interface CertificationManagementInterface
      * @throws UserNotAuthorizedException security access problem
      */
     String createCertificationType(String                      userId,
-                                   CertificationTypeProperties properties) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException;
+                                   CertificationTypeProperties properties,
+                                   GovernanceDefinitionStatus  initialStatus) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException;
 
 
     /**

@@ -10,7 +10,7 @@
     <parent>
         <artifactId>search-integrator</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.6-SNAPSHOT</version>
+        <version>3.7-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -50,6 +50,12 @@
             <groupId>org.odpi.egeria</groupId>
             <artifactId>repository-services-apis</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>ffdc-services</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-catalog-client</artifactId>
@@ -60,6 +66,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-catalog-api</artifactId>

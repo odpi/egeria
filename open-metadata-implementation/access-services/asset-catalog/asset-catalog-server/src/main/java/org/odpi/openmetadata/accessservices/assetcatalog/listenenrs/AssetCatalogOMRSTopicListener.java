@@ -99,7 +99,9 @@ public class AssetCatalogOMRSTopicListener extends OMRSTopicListenerBase
                 case CLASSIFIED_ENTITY_EVENT:
                 case RECLASSIFIED_ENTITY_EVENT:
                 case DECLASSIFIED_ENTITY_EVENT:
-                    processEntityDetail(entityDetail);
+                    if (entityDetail != null) {
+                        processEntityDetail(entityDetail);
+                    }
                     break;
                 case NEW_RELATIONSHIP_EVENT :
                 case UPDATED_RELATIONSHIP_EVENT:
