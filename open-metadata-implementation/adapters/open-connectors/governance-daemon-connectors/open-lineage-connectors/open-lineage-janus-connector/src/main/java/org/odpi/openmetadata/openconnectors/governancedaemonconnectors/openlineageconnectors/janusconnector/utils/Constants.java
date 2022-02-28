@@ -48,6 +48,7 @@ public final class Constants {
     public static final Collection<String> ASSETS = Arrays.asList(RELATIONAL_TABLE, DATA_FILE, AVRO_FILE, CSV_FILE, JSON_FILE,
             KEYSTORE_FILE, LOG_FILE, MEDIA_FILE, DOCUMENT, TOPIC);
 
+
     public static final String RELATIONAL_TABLE_KEY = "relationalTable";
     public static final String TRANSFORMATION_PROJECT_KEY = "transformationProject";
     public static final String SCHEMA_TYPE_KEY = "schema";
@@ -82,4 +83,7 @@ public final class Constants {
     public static final String NESTED_SCHEMA_ATTRIBUTE = "NestedSchemaAttribute";
     public static final String FOLDER_HIERARCHY = "FolderHierarchy";
     public static final String SCHEMA_TYPE_OPTION = "SchemaTypeOption";
+
+    public static final String[] RELATIONAL_TABLE_CONTEXT_IN_EDGES = new String[]{ATTRIBUTE_FOR_SCHEMA, ASSET_SCHEMA_TYPE, DATA_CONTENT_FOR_DATA_SET, CONNECTION_TO_ASSET};
+
 }

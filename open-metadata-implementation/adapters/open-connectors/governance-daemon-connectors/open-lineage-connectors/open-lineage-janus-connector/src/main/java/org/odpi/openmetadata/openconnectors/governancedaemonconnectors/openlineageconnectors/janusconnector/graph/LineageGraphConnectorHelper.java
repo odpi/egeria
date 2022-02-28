@@ -38,49 +38,7 @@ import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.hasLab
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.inE;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.outE;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.until;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ASSETS;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ASSET_SCHEMA_TYPE;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ATTRIBUTE_FOR_SCHEMA;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.AVRO_FILE;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.COLLECTION;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.CONNECTION;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.CONNECTION_KEY;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.CSV_FILE;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DATABASE;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DATABASE_KEY;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DATA_FILE;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DATA_FILE_AND_SUBTYPES;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DOCUMENT;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.EVENT_SCHEMA_ATTRIBUTE;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.EVENT_TYPE;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.EVENT_TYPE_KEY;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.EVENT_TYPE_LIST;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.EVENT_TYPE_LIST_KEY;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.FILE_FOLDER;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.FILE_FOLDER_KEY;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.FOLDER_HIERARCHY;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.GLOSSARY;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.GLOSSARY_CATEGORY;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.GLOSSARY_KEY;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.GLOSSARY_TERM;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.JSON_FILE;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.KEYSTORE_FILE;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.LINEAGE_MAPPING;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.LOG_FILE;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.MEDIA_FILE;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.NESTED_SCHEMA_ATTRIBUTE;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.PROCESS;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.RELATIONAL_COLUMN;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.RELATIONAL_DB_SCHEMA_TYPE;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.RELATIONAL_TABLE;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.RELATIONAL_TABLE_KEY;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.SCHEMA_TYPE_KEY;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TABULAR_COLUMN;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TABULAR_FILE_COLUMN;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TABULAR_SCHEMA_TYPE;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TOPIC;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TOPIC_KEY;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TRANSFORMATION_PROJECT_KEY;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.*;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.CONDENSED_NODE_DISPLAY_NAME;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.DESTINATION_CONDENSATION;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_ANTONYM;
@@ -191,7 +149,7 @@ public class LineageGraphConnectorHelper {
         try {
             sourceList = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
                     until(inE(edgeLabel).count().is(0)).
-                    repeat(inE(edgeLabel).outV().simplePath()).
+                    repeat(inE(edgeLabel).outV().simplePath().dedup()).
                     dedup().toList();
 
             commitTransaction(g);
@@ -252,7 +210,7 @@ public class LineageGraphConnectorHelper {
         try {
             destinationList = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
                     until(outE(edgeLabel).count().is(0)).
-                    repeat(outE(edgeLabel).inV().simplePath()).
+                    repeat(outE(edgeLabel).inV().simplePath().dedup()).
                     dedup().toList();
 
             commitTransaction(g);
@@ -321,9 +279,9 @@ public class LineageGraphConnectorHelper {
                     g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
                             union(
                                     until(inE(edgeLabel).count().is(0)).
-                                            repeat((Traversal) inE(edgeLabel).subgraph(SUB_GRAPH).outV().simplePath()),
+                                            repeat((Traversal) inE(edgeLabel).subgraph(SUB_GRAPH).outV().simplePath().dedup()),
                                     until(outE(edgeLabel).count().is(0)).
-                                            repeat((Traversal) outE(edgeLabel).subgraph(SUB_GRAPH).inV().simplePath())
+                                            repeat((Traversal) outE(edgeLabel).subgraph(SUB_GRAPH).inV().simplePath().dedup())
                             ).cap(SUB_GRAPH).next();
 
             commitTransaction(g);
@@ -840,31 +798,38 @@ public class LineageGraphConnectorHelper {
 
     private Map<String, String> getRelationalTableProperties(GraphTraversalSource g, Object vertexId) {
         Map<String, String> properties = new HashMap<>();
-
-        Iterator<Vertex> relationalDBSchemaType =
-                g.V(vertexId).emit().repeat(bothE().outV().simplePath()).times(1).or(hasLabel(RELATIONAL_DB_SCHEMA_TYPE));
-        commitTransaction(g);
-        if (relationalDBSchemaType.hasNext()) {
-            properties.put(SCHEMA_TYPE_KEY, getDisplayNameForVertex(relationalDBSchemaType.next()));
+        Iterator<Vertex> outVertices = g.V(vertexId).repeat(inE(RELATIONAL_TABLE_CONTEXT_IN_EDGES).otherV()).emit().times(4);
+        while (outVertices.hasNext()) {
+            Vertex vertex = outVertices.next();
+            String vertexLabel = vertex.label();
+            switch (vertexLabel) {
+                case RELATIONAL_DB_SCHEMA_TYPE:
+                    properties.put(SCHEMA_TYPE_KEY, getDisplayNameForVertex(vertex));
+                    break;
+                case DATABASE:
+                    properties.put(DATABASE_KEY,  getDisplayNameForVertex(vertex));
+                    break;
+                case CONNECTION:
+                    properties.put(CONNECTION_KEY,  getDisplayNameForVertex(vertex));
+                    break;
+                default:
+                    log.info("ignored vertex with label {}", vertexLabel);
+            }
         }
-
-        Iterator<Vertex> database = g.V(vertexId).emit().repeat(bothE().outV().simplePath()).times(3).or(hasLabel(DATABASE));
-        commitTransaction(g);
-        if (database.hasNext()) {
-            properties.put(DATABASE_KEY, getDisplayNameForVertex(database.next()));
-        }
-
-        Iterator<Vertex> connection = g.V(vertexId).emit().repeat(bothE().outV().simplePath()).times(4).hasLabel(CONNECTION);
-        commitTransaction(g);
-        if (connection.hasNext()) {
-            properties.put(CONNECTION_KEY, getDisplayNameForVertex(connection.next()));
-        }
-
         return properties;
 
     }
 
     private String getDisplayNameForVertex(Vertex vertex) {
+
+        if (vertex.properties(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).hasNext()) {
+            return (String) vertex.properties(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).next().value();
+        }
+
+        if (vertex.properties(PROPERTY_NAME_INSTANCEPROP_QUALIFIED_NAME).hasNext()) {
+            return (String) vertex.properties(PROPERTY_NAME_INSTANCEPROP_QUALIFIED_NAME).next().value();
+        }
+
         GraphTraversalSource g = graphFactory.getGraphTraversalSource();
         GraphTraversal<Vertex, Map<Object, List<String>>> vertexMapGraphTraversal = g.V(vertex.id()).valueMap();
         if (!vertexMapGraphTraversal.hasNext()) {
