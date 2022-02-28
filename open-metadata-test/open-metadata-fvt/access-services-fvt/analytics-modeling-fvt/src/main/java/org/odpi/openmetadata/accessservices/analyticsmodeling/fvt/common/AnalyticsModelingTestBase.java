@@ -41,7 +41,7 @@ public class AnalyticsModelingTestBase
 
             return new ImportClient(serverName, serverPlatformRootURL, restClient, maxPageSize);
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -71,7 +71,7 @@ public class AnalyticsModelingTestBase
 
             return new SynchronizationClient(serverName, serverPlatformRootURL, restClient, maxPageSize);
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -97,7 +97,7 @@ public class AnalyticsModelingTestBase
         	return new RepositoryService(serverName, userId, serverPlatformRootURL, activityName);
 
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }

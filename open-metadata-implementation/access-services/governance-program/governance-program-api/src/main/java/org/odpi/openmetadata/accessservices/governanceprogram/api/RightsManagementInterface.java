@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.governanceprogram.api;
 
 
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.LicenseTypeElement;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseTypeProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -26,6 +27,7 @@ public interface RightsManagementInterface
      *
      * @param userId calling user
      * @param properties license properties
+     * @param initialStatus what is the initial status for the license type - default value is DRAFT
      *
      * @return unique identifier of new definition
      *
@@ -33,10 +35,11 @@ public interface RightsManagementInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    String createLicenseType(String                userId,
-                             LicenseTypeProperties properties) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException;
+    String createLicenseType(String                     userId,
+                             LicenseTypeProperties      properties,
+                             GovernanceDefinitionStatus initialStatus) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException;
 
 
     /**

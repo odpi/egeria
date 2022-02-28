@@ -5,7 +5,10 @@ package org.odpi.openmetadata.accessservices.assetmanager.fvt.glossaries;
 
 import org.odpi.openmetadata.accessservices.assetmanager.client.GlossaryExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.fvt.common.AssetManagerTestBase;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ElementHeader;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ElementStatus;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryCategoryElement;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryTermElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
@@ -41,11 +44,11 @@ public class CreateGlossaryTest extends AssetManagerTestBase
     private final static KeyPattern externalGlossaryIdentifierKeyPattern = KeyPattern.CALLERS_KEY;
     private final static String     externalGlossaryIdentifierSource     = "TestExternalIdentifierSource";
 
-    private final static String     externalCategoryIdentifier           = "TestExternalIdentifier";
-    private final static String     externalCategoryIdentifierName       = "TestExternalIdentifierName";
-    private final static String     externalCategoryIdentifierUsage      = "TestExternalIdentifierUsage";
+    private final static String     externalCategoryIdentifier           = "TestExternalCategoryIdentifier";
+    private final static String     externalCategoryIdentifierName       = "TestExternalCategoryIdentifierName";
+    private final static String     externalCategoryIdentifierUsage      = "TestExternalCategoryIdentifierUsage";
     private final static KeyPattern externalCategoryIdentifierKeyPattern = KeyPattern.RECYCLED_KEY;
-    private final static String     externalCategoryIdentifierSource     = "TestExternalIdentifierSource";
+    private final static String     externalCategoryIdentifierSource     = "TestExternalCategoryIdentifierSource";
 
 
     private final static String     externalTermIdentifier           = "TestExternalTermIdentifier";
@@ -56,21 +59,25 @@ public class CreateGlossaryTest extends AssetManagerTestBase
 
 
 
-    private final static String glossaryName        = "TestGlossary";
+    private final static String glossaryName        = "TestGlossaryCreate";
     private final static String glossaryDisplayName = "Glossary displayName";
     private final static String glossaryDescription = "Glossary description";
     private final static String glossaryUsage       = "Glossary usage";
     private final static String glossaryLanguage    = "Glossary language";
 
-    private final static String glossaryCategoryName        = "TestGlossaryCategory";
+    private final static String glossaryCategoryName        = "TestGlossaryCreateCategory";
     private final static String glossaryCategoryDisplayName = "GlossaryCategory displayName";
     private final static String glossaryCategoryDescription = "GlossaryCategory description";
 
-    private final static String glossaryTermName        = "TestGlossaryTerm";
+    private final static String glossaryTermName        = "TestGlossaryCreateTerm";
     private final static String glossaryTermDisplayName = "GlossaryTerm displayName";
     private final static String glossaryTermDescription = "GlossaryTerm description";
-    private final static String glossaryTermType        = "GlossaryTerm type";
-    private final static String glossaryTermVersion     = "GlossaryTerm version";
+
+
+    private final static String controlledGlossaryTermName        = "TestGlossaryCreateControlledTerm";
+    private final static String controlledGlossaryTermDisplayName = "ControlledGlossaryTerm displayName";
+    private final static String controlledGlossaryTermDescription = "ControlledGlossaryTerm description";
+
 
 
     /**
@@ -128,7 +135,7 @@ public class CreateGlossaryTest extends AssetManagerTestBase
 
         GlossaryExchangeClient client = thisTest.getGlossaryExchangeClient(serverName, serverPlatformRootURL, auditLog, testCaseName);
 
-        String activityName = "getGlossary("+ glossaryName +")";
+        String activityName = "getGlossary("+ glossaryName + ")";
         String glossaryGUID = thisTest.getGlossary(client,
                                                    testCaseName,
                                                    activityName,
@@ -147,7 +154,60 @@ public class CreateGlossaryTest extends AssetManagerTestBase
                                                    externalGlossaryIdentifierKeyPattern,
                                                    null);
 
-        // String glossaryCategoryGUID = thisTest.getGlossaryCategory(client, assetManagerGUID, glossaryGUID, userId);
+        try
+        {
+            GlossaryElement glossaryElement = client.getGlossaryByGUID(userId, assetManagerGUID, assetManagerName, glossaryGUID);
+
+            if (glossaryElement == null)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no glossary element)");
+            }
+            else if (glossaryElement.getElementHeader() == null)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no glossary header) " + glossaryElement.toString());
+            }
+            else if (glossaryElement.getGlossaryProperties() == null)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no glossary properties) " + glossaryElement.toString());
+            }
+        }
+        catch (FVTUnexpectedCondition testCaseError)
+        {
+            throw testCaseError;
+        }
+        catch (Exception unexpectedError)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
+        }
+
+        String glossaryCategoryGUID = thisTest.getGlossaryCategory(client, assetManagerGUID, glossaryGUID, userId);
+
+        String glossaryTermGUID = thisTest.getGlossaryTerm(client, assetManagerGUID, glossaryGUID, userId);
+        String controlledGlossaryTermGUID = thisTest.getControlledGlossaryTerm(client, glossaryGUID, userId);
+
+
+        thisTest.addTermToCategory(client,
+                                   assetManagerGUID,
+                                   glossaryCategoryGUID,
+                                   glossaryTermGUID,
+                                   userId,
+                                   "GlossaryTerm",
+                                   glossaryTermName,
+                                   glossaryTermDisplayName,
+                                   glossaryTermDescription,
+                                   ElementStatus.ACTIVE);
+
+        thisTest.addTermToCategory(client,
+                                   assetManagerGUID,
+                                   glossaryCategoryGUID,
+                                   controlledGlossaryTermGUID,
+                                   userId,
+                                   "ControlledGlossaryTerm",
+                                   controlledGlossaryTermName,
+                                   controlledGlossaryTermDisplayName,
+                                   controlledGlossaryTermDescription,
+                                   ElementStatus.DRAFT);
+
 
         try
         {
@@ -223,22 +283,27 @@ public class CreateGlossaryTest extends AssetManagerTestBase
             }
 
             GlossaryCategoryElement    retrievedElement = client.getGlossaryCategoryByGUID(userId, assetManagerGUID, assetManagerName, glossaryCategoryGUID);
-            GlossaryCategoryProperties retrievedSchema  = retrievedElement.getGlossaryCategoryProperties();
+            GlossaryCategoryProperties retrievedCategory  = retrievedElement.getGlossaryCategoryProperties();
 
-            if (retrievedSchema == null)
+            if (retrievedCategory == null)
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GlossaryCategory from Retrieve)");
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GlossaryCategory from Retrieve) " + retrievedElement.toString());
             }
 
-            if (! glossaryCategoryName.equals(retrievedSchema.getQualifiedName()))
+            if (retrievedElement.getElementHeader() == null)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no Header from Retrieve) " + retrievedElement.toString());
+            }
+
+            if (! glossaryCategoryName.equals(retrievedCategory.getQualifiedName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from Retrieve)");
             }
-            if (! glossaryCategoryDisplayName.equals(retrievedSchema.getDisplayName()))
+            if (! glossaryCategoryDisplayName.equals(retrievedCategory.getDisplayName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from Retrieve)");
             }
-            if (! glossaryCategoryDescription.equals(retrievedSchema.getDescription()))
+            if (! glossaryCategoryDescription.equals(retrievedCategory.getDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from Retrieve)");
             }
@@ -262,17 +327,17 @@ public class CreateGlossaryTest extends AssetManagerTestBase
             }
 
             retrievedElement = glossaryCategoryList.get(0);
-            retrievedSchema = retrievedElement.getGlossaryCategoryProperties();
+            retrievedCategory = retrievedElement.getGlossaryCategoryProperties();
 
-            if (! glossaryCategoryName.equals(retrievedSchema.getQualifiedName()))
+            if (! glossaryCategoryName.equals(retrievedCategory.getQualifiedName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from RetrieveByName)");
             }
-            if (! glossaryCategoryDisplayName.equals(retrievedSchema.getDisplayName()))
+            if (! glossaryCategoryDisplayName.equals(retrievedCategory.getDisplayName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from RetrieveByName)");
             }
-            if (! glossaryCategoryDescription.equals(retrievedSchema.getDescription()))
+            if (! glossaryCategoryDescription.equals(retrievedCategory.getDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName)");
             }
@@ -291,19 +356,74 @@ public class CreateGlossaryTest extends AssetManagerTestBase
 
 
     /**
-     * Create a glossary and return its GUID.
+     * Add the term to the category and then retrieve the categories terms and check that the term is there.
      *
      * @param client interface to Asset Manager OMAS
      * @param assetManagerGUID unique id of the asset manager
-     * @param glossaryCategoryGUID unique id of the glossaryCategory
+     * @param glossaryCategoryGUID unique id of the glossary category
+     * @param glossaryTermGUID unique id of the glossary term
+     * @param userId calling user id
+     * @param typeName expected type name of the glossary term
+     * @param qualifiedName expected qualified name of the glossary term
+     * @param displayName expected display name of the glossary term
+     * @param description expected description of the glossary term
+     * @param status expected status of the glossary term
+     * @throws FVTUnexpectedCondition the test case failed
+     */
+    private void addTermToCategory(GlossaryExchangeClient client,
+                                   String                 assetManagerGUID,
+                                   String                 glossaryCategoryGUID,
+                                   String                 glossaryTermGUID,
+                                   String                 userId,
+                                   String                 typeName,
+                                   String                 qualifiedName,
+                                   String                 displayName,
+                                   String                 description,
+                                   ElementStatus          status) throws FVTUnexpectedCondition
+    {
+        final String activityName = "addTermToCategory";
+
+        try
+        {
+            GlossaryTermCategorization categorizationProperties = new GlossaryTermCategorization();
+            categorizationProperties.setDescription("Category for " + glossaryTermGUID);
+            categorizationProperties.setStatus(GlossaryTermRelationshipStatus.ACTIVE);
+
+            client.setupTermCategory(userId, assetManagerGUID, assetManagerName, glossaryCategoryGUID, glossaryTermGUID, categorizationProperties);
+
+            List<GlossaryTermElement> glossaryTermList = client.getTermsForGlossaryCategory(userId, null, null, glossaryCategoryGUID, 0 , 0);
+
+            this.validateGlossaryTermElements(activityName,
+                                              "RetrieveByCategory",
+                                              glossaryTermList,
+                                              glossaryTermGUID,
+                                              typeName,
+                                              qualifiedName,
+                                              displayName,
+                                              description,
+                                              status);
+        }
+        catch (Exception unexpectedError)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
+        }
+    }
+
+
+    /**
+     * Create a glossary term and return its GUID.
+     *
+     * @param client interface to Asset Manager OMAS
+     * @param assetManagerGUID unique id of the asset manager
+     * @param glossaryGUID unique id of the glossaryCategory
      * @param userId calling user
      * @return GUID of glossary
      * @throws FVTUnexpectedCondition the test case failed
      */
     private String getGlossaryTerm(GlossaryExchangeClient client,
-                                     String               assetManagerGUID,
-                                     String               glossaryCategoryGUID,
-                                     String               userId) throws FVTUnexpectedCondition
+                                   String                 assetManagerGUID,
+                                   String                 glossaryGUID,
+                                   String                 userId) throws FVTUnexpectedCondition
     {
         final String activityName = "getGlossaryTerm";
 
@@ -322,7 +442,7 @@ public class CreateGlossaryTest extends AssetManagerTestBase
             String glossaryTermGUID = client.createGlossaryTerm(userId,
                                                                 assetManagerGUID,
                                                                 assetManagerName,
-                                                                glossaryCategoryGUID,
+                                                                glossaryGUID,
                                                                 externalTermIdentifier,
                                                                 externalTermIdentifierName,
                                                                 externalTermIdentifierUsage,
@@ -333,62 +453,20 @@ public class CreateGlossaryTest extends AssetManagerTestBase
 
             if (glossaryTermGUID == null)
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GUID for tableCreate)");
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GUID for GlossaryTerm Create)");
             }
 
-            GlossaryTermElement    retrievedElement = client.getGlossaryTermByGUID(userId, assetManagerGUID, assetManagerName, glossaryTermGUID);
-            GlossaryTermProperties retrievedTable   = retrievedElement.getGlossaryTermProperties();
-
-            if (retrievedTable == null)
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GlossaryTerm from Retrieve)");
-            }
-
-            if (! glossaryTermName.equals(retrievedTable.getQualifiedName()))
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from Retrieve)");
-            }
-            if (! glossaryTermDisplayName.equals(retrievedTable.getDisplayName()))
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from Retrieve)");
-            }
-            if (! glossaryTermDescription.equals(retrievedTable.getDescription()))
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from Retrieve)");
-            }
-
-            List<GlossaryTermElement> glossaryTermList = client.getGlossaryTermsByName(userId, assetManagerGUID, assetManagerName, glossaryTermName, 0, maxPageSize);
-
-            if (glossaryTermList == null)
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GlossaryTerm for RetrieveByName)");
-            }
-            else if (glossaryTermList.isEmpty())
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Empty GlossaryTerm list for RetrieveByName)");
-            }
-            else if (glossaryTermList.size() != 1)
-            {
-                throw new FVTUnexpectedCondition(testCaseName,
-                                                 activityName + "(GlossaryTerm list for RetrieveByName contains" + glossaryTermList.size() +
-                                                         " elements)");
-            }
-
-            retrievedElement = glossaryTermList.get(0);
-            retrievedTable = retrievedElement.getGlossaryTermProperties();
-
-            if (! glossaryTermName.equals(retrievedTable.getQualifiedName()))
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from RetrieveByName)");
-            }
-            if (! glossaryTermDisplayName.equals(retrievedTable.getDisplayName()))
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from RetrieveByName)");
-            }
-            if (! glossaryTermDescription.equals(retrievedTable.getDescription()))
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName)");
-            }
+            validateGlossaryTerm(client,
+                                 userId,
+                                 assetManagerGUID,
+                                 activityName,
+                                 glossaryGUID,
+                                 glossaryTermGUID,
+                                 "GlossaryTerm",
+                                 glossaryTermName,
+                                 glossaryTermDisplayName,
+                                 glossaryTermDescription,
+                                 ElementStatus.ACTIVE);
 
             return glossaryTermGUID;
         }
@@ -400,5 +478,336 @@ public class CreateGlossaryTest extends AssetManagerTestBase
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
+    }
+
+
+
+    /**
+     * Create a local cohort controlled glossary term and return its GUID.
+     *
+     * @param client interface to Asset Manager OMAS
+     * @param glossaryGUID unique id of the glossaryCategory
+     * @param userId calling user
+     * @return GUID of glossary
+     * @throws FVTUnexpectedCondition the test case failed
+     */
+    private String getControlledGlossaryTerm(GlossaryExchangeClient client,
+                                             String                 glossaryGUID,
+                                             String                 userId) throws FVTUnexpectedCondition
+    {
+        final String activityName = "getControlledGlossaryTerm";
+
+        try
+        {
+            GlossaryTermProperties properties = new GlossaryTermProperties();
+
+            properties.setQualifiedName(controlledGlossaryTermName);
+            properties.setDisplayName(controlledGlossaryTermDisplayName);
+            properties.setDescription(controlledGlossaryTermDescription);
+
+
+            String glossaryTermGUID = client.createControlledGlossaryTerm(userId,
+                                                                          null,
+                                                                          null,
+                                                                          glossaryGUID,
+                                                                          null,
+                                                                          null,
+                                                                          null,
+                                                                          null,
+                                                                          null,
+                                                                          null,
+                                                                          properties,
+                                                                          GlossaryTermStatus.DRAFT);
+
+            if (glossaryTermGUID == null)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GUID for ControlledGlossaryTerm Create)");
+            }
+
+            validateGlossaryTerm(client,
+                                 userId,
+                                 null,
+                                 activityName,
+                                 glossaryGUID,
+                                 glossaryTermGUID,
+                                 "ControlledGlossaryTerm",
+                                 controlledGlossaryTermName,
+                                 controlledGlossaryTermDisplayName,
+                                 controlledGlossaryTermDescription,
+                                 ElementStatus.DRAFT);
+
+            client.updateGlossaryTermStatus(userId, null, null, glossaryTermGUID, null, GlossaryTermStatus.PROPOSED);
+
+            validateGlossaryTerm(client,
+                                 userId,
+                                 null,
+                                 activityName,
+                                 glossaryGUID,
+                                 glossaryTermGUID,
+                                 "ControlledGlossaryTerm",
+                                 controlledGlossaryTermName,
+                                 controlledGlossaryTermDisplayName,
+                                 controlledGlossaryTermDescription,
+                                 ElementStatus.PROPOSED);
+
+            client.updateGlossaryTermStatus(userId, null, null, glossaryTermGUID, null, GlossaryTermStatus.APPROVED);
+
+            validateGlossaryTerm(client,
+                                 userId,
+                                 null,
+                                 activityName,
+                                 glossaryGUID,
+                                 glossaryTermGUID,
+                                 "ControlledGlossaryTerm",
+                                 controlledGlossaryTermName,
+                                 controlledGlossaryTermDisplayName,
+                                 controlledGlossaryTermDescription,
+                                 ElementStatus.APPROVED);
+
+            client.updateGlossaryTermStatus(userId, null, null, glossaryTermGUID, null, GlossaryTermStatus.ACTIVE);
+
+            validateGlossaryTerm(client,
+                                 userId,
+                                 null,
+                                 activityName,
+                                 glossaryGUID,
+                                 glossaryTermGUID,
+                                 "ControlledGlossaryTerm",
+                                 controlledGlossaryTermName,
+                                 controlledGlossaryTermDisplayName,
+                                 controlledGlossaryTermDescription,
+                                 ElementStatus.ACTIVE);
+
+            client.updateGlossaryTermStatus(userId, null, null, glossaryTermGUID, null, GlossaryTermStatus.DRAFT);
+
+            validateGlossaryTerm(client,
+                                 userId,
+                                 null,
+                                 activityName,
+                                 glossaryGUID,
+                                 glossaryTermGUID,
+                                 "ControlledGlossaryTerm",
+                                 controlledGlossaryTermName,
+                                 controlledGlossaryTermDisplayName,
+                                 controlledGlossaryTermDescription,
+                                 ElementStatus.DRAFT);
+
+            return glossaryTermGUID;
+        }
+        catch (FVTUnexpectedCondition testCaseError)
+        {
+            throw testCaseError;
+        }
+        catch (Exception unexpectedError)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
+        }
+    }
+
+
+    private void validateGlossaryTerm(GlossaryExchangeClient client,
+                                      String                 userId,
+                                      String                 assetManagerGUID,
+                                      String                 activityName,
+                                      String                 glossaryGUID,
+                                      String                 glossaryTermGUID,
+                                      String                 typeName,
+                                      String                 qualifiedName,
+                                      String                 displayName,
+                                      String                 description,
+                                      ElementStatus          status) throws FVTUnexpectedCondition
+    {
+        try
+        {
+            GlossaryTermElement    retrievedElement = client.getGlossaryTermByGUID(userId, assetManagerGUID, assetManagerName, glossaryTermGUID);
+
+            if (retrievedElement == null)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GlossaryTerm from Retrieve)");
+            }
+
+            validateGlossaryTermElement(activityName,
+                                        "Retrieve",
+                                        retrievedElement,
+                                        glossaryTermGUID,
+                                        typeName,
+                                        qualifiedName,
+                                        displayName,
+                                        description,
+                                        status);
+
+            List<GlossaryTermElement> glossaryTermList = client.getGlossaryTermsByName(userId, assetManagerGUID, assetManagerName, qualifiedName, 0, maxPageSize);
+
+            validateGlossaryTermElements(activityName,
+                                        "RetrieveByQualifiedName",
+                                        glossaryTermList,
+                                        glossaryTermGUID,
+                                        typeName,
+                                        qualifiedName,
+                                        displayName,
+                                        description,
+                                        status);
+
+            glossaryTermList = client.getGlossaryTermsByName(userId, assetManagerGUID, assetManagerName, displayName, 0, 0);
+
+            validateGlossaryTermElements(activityName,
+                                         "RetrieveTermsByGlossary",
+                                         glossaryTermList,
+                                         glossaryTermGUID,
+                                         typeName,
+                                         qualifiedName,
+                                         displayName,
+                                         description,
+                                         status);
+
+            glossaryTermList = client.getTermsForGlossary(userId, null, null, glossaryGUID, 0, 0);
+
+            validateGlossaryTermElements(activityName,
+                                         "RetrieveTermsByGlossary",
+                                         glossaryTermList,
+                                         glossaryTermGUID,
+                                         typeName,
+                                         qualifiedName,
+                                         displayName,
+                                         description,
+                                         status);
+        }
+        catch (FVTUnexpectedCondition testCaseError)
+        {
+            throw testCaseError;
+        }
+        catch (Exception unexpectedError)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
+        }
+    }
+
+
+    /**
+     * Validate a returned list of glossary term elements.
+     *
+     * @param activityName which test
+     * @param stepName which step in test
+     * @param retrievedElements elements retrieved from the repository
+     * @param glossaryTermGUID unique identifier of the element to focus on
+     * @param typeName name of type of glossary term
+     * @param qualifiedName expected qualified name
+     * @param displayName expected display name
+     * @param description expected description
+     * @param status expected status
+     * @throws FVTUnexpectedCondition something was wrong.
+     */
+    private void validateGlossaryTermElements(String                    activityName,
+                                              String                    stepName,
+                                              List<GlossaryTermElement> retrievedElements,
+                                              String                    glossaryTermGUID,
+                                              String                    typeName,
+                                              String                    qualifiedName,
+                                              String                    displayName,
+                                              String                    description,
+                                              ElementStatus             status) throws FVTUnexpectedCondition
+    {
+        if (retrievedElements == null)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GlossaryTerm for " + stepName + ")");
+        }
+        else if (retrievedElements.isEmpty())
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName + "(Empty GlossaryTerm list for " + stepName + ")");
+        }
+
+        boolean elementFound = false;
+
+        for (GlossaryTermElement termElement : retrievedElements)
+        {
+            if (validateGlossaryTermElement(activityName, stepName, termElement, glossaryTermGUID, typeName, qualifiedName, displayName, description, status))
+            {
+                elementFound = true;
+            }
+        }
+
+        if (! elementFound)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName + "(Element " + glossaryTermGUID + " not found for " + stepName + ") " + retrievedElements.size() + " elements retrieved: " + retrievedElements.toString());
+        }
+    }
+
+
+    /**
+     * Verify that an element returned is as expected.
+     *
+     * @param activityName which test
+     * @param stepName which step in test
+     * @param retrievedElement element to test
+     * @param glossaryTermGUID guid of element of interest
+     * @param typeName name of type of glossary term
+     * @param qualifiedName expected qualified name
+     * @param displayName expected display name
+     * @param description expected description
+     * @param status expected status
+     * @return boolean to indicate that the element matched the supplied GUID
+     * @throws FVTUnexpectedCondition something was wrong.
+     */
+    private boolean validateGlossaryTermElement(String              activityName,
+                                                String              stepName,
+                                                GlossaryTermElement retrievedElement,
+                                                String              glossaryTermGUID,
+                                                String              typeName,
+                                                String              qualifiedName,
+                                                String              displayName,
+                                                String              description,
+                                                ElementStatus       status) throws FVTUnexpectedCondition
+    {
+        ElementHeader retrievedHeader = retrievedElement.getElementHeader();
+
+        if (retrievedHeader == null)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GlossaryTerm header from " + stepName + ")" + retrievedElement.toString());
+        }
+
+        if (! glossaryTermGUID.equals(retrievedHeader.getGUID()))
+        {
+            /*
+             * Not this element
+             */
+            return false;
+        }
+
+        if (! typeName.equals(retrievedHeader.getType().getTypeName()))
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad GlossaryTerm type of " +  retrievedHeader.getType().getTypeName() + " rather than " + typeName + " from " + stepName + ")");
+        }
+
+        if (retrievedHeader.getOrigin().getHomeMetadataCollectionId() == null)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName + "(Null GlossaryTerm metadata collection id from " + stepName + ")");
+        }
+
+        GlossaryTermProperties retrievedTerm   = retrievedElement.getGlossaryTermProperties();
+
+        if (status != retrievedHeader.getStatus())
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad GlossaryTerm status of " +  retrievedHeader.getStatus() + " rather than " + status + " from " + stepName + ")");
+        }
+
+        if (retrievedTerm == null)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName + "(No GlossaryTerm from " + stepName + ")");
+        }
+
+        if (! qualifiedName.equals(retrievedTerm.getQualifiedName()))
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from " + stepName + ": " + retrievedTerm.getQualifiedName() + " rather than " + qualifiedName + ")");
+        }
+        if (! displayName.equals(retrievedTerm.getDisplayName()))
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from " + stepName + ": " + retrievedTerm.getDisplayName() + " rather than " + displayName + ")");
+        }
+        if (! description.equals(retrievedTerm.getDescription()))
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from " + stepName + ": " + retrievedTerm.getDescription() + " rather than " + description + ")");
+        }
+
+        return true;
     }
 }

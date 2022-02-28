@@ -91,7 +91,7 @@ if(postRC1.equals(200)) {
 
 // --- Enable OMAS - any errors here and we exit
 System.out.println("=== Enabling Governance Program OMAS: " + serverMem + " ===");
-post2 = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverMem + "/access-services/governance-program" ).openConnection()
+post2 = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverMem + "/access-services/governance-program/no-topics" ).openConnection()
 post2.setRequestMethod("POST")
 post2.setRequestProperty("Content-Type", "application/json")
 postRC2 = post2.getResponseCode();
@@ -103,7 +103,7 @@ if(postRC2.equals(200)) {
 
 // --- Enable OMAS - any errors here and we exit
 System.out.println("=== Enabling Community Profile OMAS: " + serverMem + " ===");
-post2 = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverMem + "/access-services/community-profile" ).openConnection()
+post2 = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverMem + "/access-services/community-profile/no-topics" ).openConnection()
 post2.setRequestMethod("POST")
 post2.setRequestProperty("Content-Type", "application/json")
 postRC2 = post2.getResponseCode();
@@ -138,7 +138,7 @@ if(postRC1g.equals(200)) {
 
 // --- Enable OMAS - any errors here and we exit
 System.out.println("=== Enabling Governance Program OMAS: " + serverGraph + " ===");
-post2g = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverGraph + "/access-services/governance-program" ).openConnection()
+post2g = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverGraph + "/access-services/governance-program/no-topics" ).openConnection()
 post2g.setRequestMethod("POST")
 post2g.setRequestProperty("Content-Type", "application/json")
 postRC2g = post2.getResponseCode();
@@ -149,7 +149,7 @@ if(postRC2g.equals(200)) {
 
 // --- Enable OMAS - any errors here and we exit
 System.out.println("=== Enabling Governance Program OMAS: " + serverGraph + " ===");
-post2g = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverGraph + "/access-services/community-profile" ).openConnection()
+post2g = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverGraph + "/access-services/community-profile/no-topics" ).openConnection()
 post2g.setRequestMethod("POST")
 post2g.setRequestProperty("Content-Type", "application/json")
 postRC2g = post2.getResponseCode();

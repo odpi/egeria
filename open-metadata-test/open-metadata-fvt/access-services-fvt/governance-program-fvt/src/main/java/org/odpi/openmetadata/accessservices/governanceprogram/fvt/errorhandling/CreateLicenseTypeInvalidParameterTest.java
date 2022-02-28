@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.governanceprogram.fvt.errorhandling;
 
 import org.odpi.openmetadata.accessservices.governanceprogram.client.RightsManager;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseTypeProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
@@ -32,7 +33,7 @@ class CreateLicenseTypeInvalidParameterTest
             testCreateLicenseTypeNoProperties(client, userId);
             testCreateLicenseTypeNoQualifiedName(client, userId);
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -53,14 +54,14 @@ class CreateLicenseTypeInvalidParameterTest
 
         try
         {
-            client.createLicenseType(null, properties);
+            client.createLicenseType(null, properties, GovernanceDefinitionStatus.ACTIVE);
             throw new FVTUnexpectedCondition(testCaseName, activityName);
         }
         catch (InvalidParameterException expectedException)
         {
             // ignore
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -81,14 +82,14 @@ class CreateLicenseTypeInvalidParameterTest
 
         try
         {
-            client.createLicenseType(userId, null);
+            client.createLicenseType(userId, null, GovernanceDefinitionStatus.ACTIVE);
             throw new FVTUnexpectedCondition(testCaseName, activityName);
         }
         catch (InvalidParameterException expectedException)
         {
             // ignore
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -111,14 +112,14 @@ class CreateLicenseTypeInvalidParameterTest
         {
             LicenseTypeProperties properties = new LicenseTypeProperties();
 
-            client.createLicenseType(userId, properties);
+            client.createLicenseType(userId, properties, GovernanceDefinitionStatus.ACTIVE);
             throw new FVTUnexpectedCondition(testCaseName, activityName);
         }
         catch (InvalidParameterException expectedException)
         {
             // ignore
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }

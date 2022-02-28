@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetmanager.handlers;
 
+import org.odpi.openmetadata.accessservices.assetmanager.converters.GlossaryCategoryConverter;
 import org.odpi.openmetadata.accessservices.assetmanager.converters.GlossaryConverter;
 import org.odpi.openmetadata.accessservices.assetmanager.converters.GlossaryTermConverter;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.*;
@@ -88,7 +89,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                 publishZones,
                                                 auditLog);
 
-        glossaryCategoryHandler = new GlossaryCategoryHandler<>(new GlossaryConverter<>(repositoryHelper, serviceName, serverName),
+        glossaryCategoryHandler = new GlossaryCategoryHandler<>(new GlossaryCategoryConverter<>(repositoryHelper, serviceName, serverName),
                                                                 GlossaryCategoryElement.class,
                                                                 serviceName,
                                                                 serverName,
@@ -238,13 +239,13 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                 if ((glossaryTerm != null) && (glossaryTerm.getElementHeader() != null) && (glossaryTerm.getElementHeader().getGUID() != null))
                 {
                     glossaryTerm.setCorrelationHeaders(this.getCorrelationProperties(userId,
-                                                                                         glossaryTerm.getElementHeader().getGUID(),
-                                                                                         glossaryTermGUIDParameterName,
-                                                                                         OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                                                                         assetManagerGUID,
-                                                                                         assetManagerName,
-                                                                                         null,
-                                                                                         methodName));
+                                                                                     glossaryTerm.getElementHeader().getGUID(),
+                                                                                     glossaryTermGUIDParameterName,
+                                                                                     OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                                     assetManagerGUID,
+                                                                                     assetManagerName,
+                                                                                     null,
+                                                                                     methodName));
                 }
             }
         }
@@ -1436,7 +1437,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
             }
         }
 
-        return InstanceStatus.UNKNOWN;
+        return null;
     }
 
 

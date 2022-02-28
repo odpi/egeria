@@ -69,6 +69,7 @@ public interface GovernanceDefinitionsInterface
      *
      * @param userId calling user
      * @param properties properties of the definition
+     * @param initialStatus what is the initial status for the governance definition - default value is DRAFT
      *
      * @return unique identifier of the definition
      *
@@ -77,9 +78,10 @@ public interface GovernanceDefinitionsInterface
      * @throws UserNotAuthorizedException security access problem
      */
     String createGovernanceDefinition(String                         userId,
-                                      GovernanceDefinitionProperties properties) throws InvalidParameterException,
-                                                                                        UserNotAuthorizedException,
-                                                                                        PropertyServerException;
+                                      GovernanceDefinitionProperties properties,
+                                      GovernanceDefinitionStatus     initialStatus) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException;
 
     /**
      * Update an existing governance definition.
