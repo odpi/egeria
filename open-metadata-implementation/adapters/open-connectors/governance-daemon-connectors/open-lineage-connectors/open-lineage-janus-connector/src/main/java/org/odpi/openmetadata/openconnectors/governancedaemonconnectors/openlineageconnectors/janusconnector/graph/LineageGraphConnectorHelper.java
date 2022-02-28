@@ -493,7 +493,7 @@ public class LineageGraphConnectorHelper {
         String nodeType = originalVertex.label();
         String nodeID = getNodeID(originalVertex);
         LineageVertex lineageVertex = new LineageVertex(nodeID, nodeType);
-
+        lineageVertex.setId(originalVertex.id());
         if (originalVertex.property(PROPERTY_KEY_DISPLAY_NAME).isPresent()) {
             String displayName = originalVertex.property(PROPERTY_KEY_DISPLAY_NAME).value().toString();
             lineageVertex.setDisplayName(displayName);
@@ -693,13 +693,12 @@ public class LineageGraphConnectorHelper {
             return;
         }
         GraphTraversalSource g = graphFactory.getGraphTraversalSource();
-        lineageVertices.stream().filter(this::needsAdditionalNodeContext).forEach(lineageVertex -> {
-            Vertex graphVertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, lineageVertex.getGuid()).next();
-            commitTransaction(g);
-            Object vertexId = graphVertex.id();
+        lineageVertices.stream().filter(this::needsAdditionalNodeContext).forEach(vertex -> {
+            String type = vertex.getNodeType();
+            Object vertexId = vertex.getId();
             Map<String, String> properties = new HashMap<>();
 
-            switch (lineageVertex.getNodeType()) {
+            switch (type) {
                 case TABULAR_FILE_COLUMN:
                 case TABULAR_COLUMN:
                     properties = getTabularColumnProperties(g, vertexId);
@@ -735,7 +734,7 @@ public class LineageGraphConnectorHelper {
                     properties = getGlossaryTermProperties(g, vertexId);
                     break;
             }
-            lineageVertex.setProperties(properties);
+            vertex.setProperties(properties);
         });
     }
 
