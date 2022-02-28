@@ -13,8 +13,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * The ElementStatus defines the status of an element in the metadata collection.  It effectively
- * defines its visibility to different types of queries.  Most queries by default will only return instances in the
- * active status.
+ * defines its visibility to different types of queries.  Most queries by default will only return instances not in the
+ * deleted status.
  * <ul>
  *     <li>Unknown: Unknown instance status.</li>
  *     <li>Draft: The content is incomplete.</li>

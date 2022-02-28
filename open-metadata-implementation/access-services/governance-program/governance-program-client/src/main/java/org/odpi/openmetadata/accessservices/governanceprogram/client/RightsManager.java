@@ -5,10 +5,12 @@ package org.odpi.openmetadata.accessservices.governanceprogram.client;
 import org.odpi.openmetadata.accessservices.governanceprogram.api.RightsManagementInterface;
 import org.odpi.openmetadata.accessservices.governanceprogram.client.rest.GovernanceProgramRESTClient;
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.LicenseTypeElement;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseTypeProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.CertificateIdRequestBody;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.LicenseTypeListResponse;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.LicenseTypeRequestBody;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.LicenseTypeResponse;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -173,6 +175,7 @@ public class RightsManager implements RightsManagementInterface
      *
      * @param userId calling user
      * @param properties license properties
+     * @param initialStatus what is the initial status for the license type definition - default value is DRAFT
      *
      * @return unique identifier of new definition
      *
@@ -181,10 +184,11 @@ public class RightsManager implements RightsManagementInterface
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public String createLicenseType(String                      userId,
-                                    LicenseTypeProperties properties) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+    public String createLicenseType(String                     userId,
+                                    LicenseTypeProperties      properties,
+                                    GovernanceDefinitionStatus initialStatus) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
         final String   methodName = "createLicenseType";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/license-types";
@@ -198,9 +202,14 @@ public class RightsManager implements RightsManagementInterface
         invalidParameterHandler.validateName(properties.getDocumentIdentifier(), docIdParameterName, methodName);
         invalidParameterHandler.validateName(properties.getTitle(), titleParameterName, methodName);
 
+        LicenseTypeRequestBody requestBody = new LicenseTypeRequestBody();
+
+        requestBody.setProperties(properties);
+        requestBody.setInitialStatus(initialStatus);
+
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   serverPlatformURLRoot + urlTemplate,
-                                                                  properties,
+                                                                  requestBody,
                                                                   serverName,
                                                                   userId);
 

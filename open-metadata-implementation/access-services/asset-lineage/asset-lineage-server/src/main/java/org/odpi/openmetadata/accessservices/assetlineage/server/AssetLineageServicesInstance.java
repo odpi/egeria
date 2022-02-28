@@ -13,6 +13,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessContext
 import org.odpi.openmetadata.accessservices.assetlineage.model.GenericStub;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.connector.AssetLineageOutTopicClientProvider;
+import org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageTypesValidator;
 import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
@@ -23,7 +24,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * AssetLineageServicesInstance caches references to OMRS objects for a specific server.
@@ -44,28 +44,25 @@ public class AssetLineageServicesInstance extends OMASServiceInstance {
      *
      * @param repositoryConnector        link to the repository responsible for servicing the REST calls.
      * @param supportedZones             list of zones that AssetLineage is allowed to serve Assets from.
-     * @param lineageClassificationTypes list of lineage classification supported
      * @param localServerUserId          userId used for server initiated actions
      * @param auditLog                   destination for audit log events.
      * @param outTopicEventBusConnection the out topic connector
+     * @param assetLineageTypesValidator service for validating types
      *
      * @throws NewInstanceException a problem occurred during initialization
      */
-    public AssetLineageServicesInstance(OMRSRepositoryConnector repositoryConnector, List<String> supportedZones,
-                                        Set<String> lineageClassificationTypes, String localServerUserId, AuditLog auditLog, Connection outTopicEventBusConnection) throws
-            NewInstanceException {
-
-
-        super(description.getAccessServiceFullName(), repositoryConnector, null, null, null, auditLog, localServerUserId,
-                repositoryConnector.getMaxPageSize(), null, null,
-                AssetLineageOutTopicClientProvider.class.getName(),
-                outTopicEventBusConnection);
+    public AssetLineageServicesInstance(OMRSRepositoryConnector repositoryConnector, List<String> supportedZones, String localServerUserId,
+                                        AuditLog auditLog, Connection outTopicEventBusConnection,
+                                        AssetLineageTypesValidator assetLineageTypesValidator) throws NewInstanceException {
+        super(description.getAccessServiceFullName(), repositoryConnector, null, null, null, auditLog,
+                localServerUserId, repositoryConnector.getMaxPageSize(), null, null,
+                AssetLineageOutTopicClientProvider.class.getName(), outTopicEventBusConnection);
 
         super.supportedZones = supportedZones;
 
         if (repositoryHandler == null) {
             String methodName = "AssetLineageServicesInstance";
-            throw new NewInstanceException(AssetLineageErrorCode.OMRS_NOT_INITIALIZED.getMessageDefinition(methodName),
+            throw new NewInstanceException(AssetLineageErrorCode.OMRS_NOT_INITIALIZED.getMessageDefinition(serverName),
                     this.getClass().getName(), methodName);
         }
 
@@ -75,7 +72,7 @@ public class AssetLineageServicesInstance extends OMASServiceInstance {
                         localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
 
         Converter converter = new Converter(repositoryHelper);
-        handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, genericHandler, converter, lineageClassificationTypes);
+        handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, genericHandler, converter, assetLineageTypesValidator);
         assetContextHandler = new AssetContextHandler(genericHandler, handlerHelper, supportedZones);
         processContextHandler = new ProcessContextHandler(assetContextHandler, handlerHelper, supportedZones);
         glossaryContextHandler = new GlossaryContextHandler(invalidParameterHandler, assetContextHandler, handlerHelper);

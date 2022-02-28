@@ -1,10 +1,13 @@
-/* SPDX-License-Identifier: Apache 2.0 */
+/* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.engineservices.governanceaction.properties;
+
+package org.odpi.openmetadata.commonservices.ffdc.properties;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 
 import java.io.Serializable;
@@ -16,28 +19,33 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * ProviderReport provides details og a governance action service that could potentially run in the Governance Action Open Metadata Engine Service (OMES).
+ * ConnectorReport is a collection of information provided by a connector provider that describes the operation of
+ * a connector.  It is designed to aid an administrator setting up the configuration for a connector.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ProviderReport implements Serializable
+public class ConnectorReport implements Serializable
 {
     private static final long    serialVersionUID = 1L;
 
-    private ConnectorType connectorType = null;
-    private List<String>  supportedRequestTypes = null;
-    private List<String>  supportedRequestParameters = null;
-    private List<String>  supportedRequestSourceNames = null;
-    private List<String>  supportedActionTargetNames = null;
-    private List<String>  supportedGuards = null;
+    private ComponentDescription componentDescription        = null;
+    private ConnectorType        connectorType               = null;
+    private long                 refreshTimeInterval         = 0L;
+    private boolean              usesBlockingCalls           = false;
+    private List<String>         supportedRequestTypes       = null;
+    private List<String>         supportedRequestParameters  = null;
+    private List<String>         supportedRequestSourceNames = null;
+    private List<String>         supportedActionTargetNames  = null;
+    private List<String>         supportedGuards             = null;
 
 
     /**
      * Default constructor
      */
-    public ProviderReport()
+    public ConnectorReport()
     {
+        super();
     }
 
 
@@ -46,24 +54,66 @@ public class ProviderReport implements Serializable
      *
      * @param template object to copy
      */
-    public ProviderReport(ProviderReport template)
+    public ConnectorReport(ConnectorReport template)
     {
         if (template != null)
         {
-            connectorType = template.getConnectorType();
-            supportedRequestTypes = template.getSupportedRequestTypes();
-            supportedRequestParameters = template.getSupportedRequestParameters();
-            supportedRequestSourceNames = template.getSupportedRequestSourceNames();
-            supportedActionTargetNames = template.getSupportedActionTargetNames();
-            supportedGuards = template.getSupportedGuards();
+            this.componentDescription        = template.getComponentDescription();
+            this.connectorType               = template.getConnectorType();
+            this.refreshTimeInterval         = template.getRefreshTimeInterval();
+            this.usesBlockingCalls           = template.getUsesBlockingCalls();
+            this.supportedRequestTypes       = template.getSupportedRequestTypes();
+            this.supportedRequestParameters  = template.getSupportedRequestParameters();
+            this.supportedRequestSourceNames = template.getSupportedRequestSourceNames();
+            this.supportedActionTargetNames  = template.getSupportedActionTargetNames();
+            this.supportedGuards             = template.getSupportedGuards();
         }
     }
 
 
     /**
-     * Return the connector type for this connector.
+     * Copy/clone constructor
      *
-     * @return OCF ConnectorType object that can be used in connection objects
+     * @param template object to copy
+     */
+    public ConnectorReport(ConnectorTypeResponse template)
+    {
+        if (template != null)
+        {
+            this.componentDescription     = template.getComponentDescription();
+            this.connectorType            = template.getConnectorType();
+            this.refreshTimeInterval      = template.getRefreshTimeInterval();
+            this.usesBlockingCalls        = template.getUsesBlockingCalls();
+        }
+    }
+
+
+    /**
+     * Return the component description information that the connector uses to register with the audit log.
+     *
+     * @return component description structure
+     */
+    public ComponentDescription getComponentDescription()
+    {
+        return componentDescription;
+    }
+
+
+    /**
+     * Set up the component description information that the connector uses to register with the audit log.
+     *
+     * @param componentDescription component description structure
+     */
+    public void setComponentDescription(ComponentDescription componentDescription)
+    {
+        this.componentDescription = componentDescription;
+    }
+
+
+    /**
+     * Return the ConnectorType object.
+     *
+     * @return connectorType
      */
     public ConnectorType getConnectorType()
     {
@@ -72,13 +122,61 @@ public class ProviderReport implements Serializable
 
 
     /**
-     * Set up the connector type for this connector.
+     * Set up the ConnectorType object.
      *
-     * @param connectorType OCF ConnectorType object
+     * @param connectorType - connectorType object
      */
     public void setConnectorType(ConnectorType connectorType)
     {
         this.connectorType = connectorType;
+    }
+
+
+    /**
+     * Return the recommended number of minutes between each call to the connector to refresh the metadata.  Zero means that refresh
+     * is only called at server start up and whenever the refresh REST API request is made to the integration daemon.
+     * If the refresh time interval is greater than 0 then additional calls to refresh are added spaced out by the refresh time interval.
+     *
+     * @return minute count
+     */
+    public long getRefreshTimeInterval()
+    {
+        return refreshTimeInterval;
+    }
+
+
+    /**
+     * Set up the recommended number of minutes between each call to the connector to refresh the metadata.  Zero means that refresh
+     * is only called at server start up and whenever the refresh REST API request is made to the integration daemon.
+     * If the refresh time interval is greater than 0 then additional calls to refresh are added spaced out by the refresh time interval.
+     *
+     * @param refreshTimeInterval minute count
+     */
+    public void setRefreshTimeInterval(long refreshTimeInterval)
+    {
+        this.refreshTimeInterval = refreshTimeInterval;
+    }
+
+
+    /**
+     * Return if the connector should be started in its own thread to allow it is block on a listening call.
+     *
+     * @return boolean flag
+     */
+    public boolean getUsesBlockingCalls()
+    {
+        return usesBlockingCalls;
+    }
+
+
+    /**
+     * Set up if the connector should be started in its own thread to allow it is block on a listening call.
+     *
+     * @param usesBlockingCalls boolean flag
+     */
+    public void setUsesBlockingCalls(boolean usesBlockingCalls)
+    {
+        this.usesBlockingCalls = usesBlockingCalls;
     }
 
 
@@ -205,8 +303,11 @@ public class ProviderReport implements Serializable
     @Override
     public String toString()
     {
-        return "ProviderReport{" +
-                       "connectorType=" + connectorType +
+        return "ConnectorReport{" +
+                       "componentDescription=" + componentDescription +
+                       ", connectorType=" + connectorType +
+                       ", refreshTimeInterval=" + refreshTimeInterval +
+                       ", usesBlockingCalls=" + usesBlockingCalls +
                        ", supportedRequestTypes=" + supportedRequestTypes +
                        ", supportedRequestParameters=" + supportedRequestParameters +
                        ", supportedRequestSourceNames=" + supportedRequestSourceNames +
@@ -233,8 +334,11 @@ public class ProviderReport implements Serializable
         {
             return false;
         }
-        ProviderReport that = (ProviderReport) objectToCompare;
-        return Objects.equals(connectorType, that.connectorType) &&
+        ConnectorReport that = (ConnectorReport) objectToCompare;
+        return refreshTimeInterval == that.refreshTimeInterval &&
+                       usesBlockingCalls == that.usesBlockingCalls &&
+                       Objects.equals(componentDescription, that.componentDescription) &&
+                       Objects.equals(connectorType, that.connectorType) &&
                        Objects.equals(supportedRequestTypes, that.supportedRequestTypes) &&
                        Objects.equals(supportedRequestParameters, that.supportedRequestParameters) &&
                        Objects.equals(supportedRequestSourceNames, that.supportedRequestSourceNames) &&
@@ -251,7 +355,7 @@ public class ProviderReport implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(connectorType, supportedRequestTypes, supportedRequestParameters, supportedRequestSourceNames, supportedActionTargetNames,
-                            supportedGuards);
+        return Objects.hash(componentDescription, connectorType, refreshTimeInterval, usesBlockingCalls, supportedRequestTypes,
+                            supportedRequestParameters, supportedRequestSourceNames, supportedActionTargetNames, supportedGuards);
     }
 }

@@ -622,8 +622,11 @@ public class OMRSOperationalServices
 
             if (enterpriseOMRSTopicConnection != null)
             {
-                enterpriseOMRSTopicConnector = getTopicConnector("Enterprise Access",
-                        enterpriseOMRSTopicConnection);
+                enterpriseOMRSTopicConnector = getTopicConnector("Enterprise Access", enterpriseOMRSTopicConnection);
+
+                /*
+                 * This connector is started by admin services when all of the Access Services have been started and have registered their listeners.
+                 */
             }
         }
 
@@ -1097,7 +1100,7 @@ public class OMRSOperationalServices
 
             log.debug("Unable to create topic connector: " + error.toString());
 
-           auditLog.logMessage(methodName,
+            auditLog.logMessage(methodName,
                                 OMRSAuditCode.BAD_TOPIC_CONNECTION.getMessageDefinition(sourceName, error.getClass().getName(), error.getMessage()));
 
             throw new OMRSConfigErrorException(OMRSErrorCode.NULL_TOPIC_CONNECTOR.getMessageDefinition(sourceName),

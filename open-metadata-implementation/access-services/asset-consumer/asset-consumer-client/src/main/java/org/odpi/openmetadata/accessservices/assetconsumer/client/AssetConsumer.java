@@ -439,7 +439,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @param userId           userId of user making request.
      * @param connectionName   this may be the qualifiedName or displayName of the connection.
      *
-     * @return Connector   connector instance.
+     * @return Connector   connector instance - or null if there is no connection
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
@@ -456,17 +456,24 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
                                                                       PropertyServerException,
                                                                       UserNotAuthorizedException
     {
-        final String   methodName = "getConnectorByName";
-        final  String  nameParameter = "connectionName";
+        final String methodName = "getConnectorByName";
+        final String nameParameter = "connectionName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(connectionName, nameParameter, methodName);
 
-        return this.getConnectorForConnection(restClient,
-                                              serviceURLName,
-                                              userId,
-                                              super.getConnectionByName(restClient, serviceURLName, userId, connectionName),
-                                              methodName);
+        Connection connection = super.getConnectionByName(restClient, serviceURLName, userId, connectionName);
+
+        if (connection != null)
+        {
+            return this.getConnectorForConnection(restClient,
+                                                  serviceURLName,
+                                                  userId,
+                                                  connection,
+                                                  methodName);
+        }
+
+        return null;
     }
 
 
@@ -476,7 +483,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @param userId       userId of user making request.
      * @param assetGUID   the unique id for the asset within the metadata repository.
      *
-     * @return Connector   connector instance.
+     * @return Connector   connector instance - or null if there is no connection
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
@@ -499,11 +506,18 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, guidParameter, methodName);
 
-        return this.getConnectorForConnection(restClient,
-                                              serviceURLName,
-                                              userId,
-                                              this.getConnectionForAsset(restClient, serviceURLName, userId, assetGUID),
-                                              methodName);
+        Connection connection = this.getConnectionForAsset(restClient, serviceURLName, userId, assetGUID);
+
+        if (connection != null)
+        {
+            return this.getConnectorForConnection(restClient,
+                                                  serviceURLName,
+                                                  userId,
+                                                  connection,
+                                                  methodName);
+        }
+
+        return null;
     }
 
 
@@ -513,7 +527,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @param userId           userId of user making request.
      * @param connectionGUID   the unique id for the connection within the metadata repository.
      *
-     * @return Connector   connector instance.
+     * @return Connector   connector instance - or null if there is no connection
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
@@ -536,11 +550,18 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(connectionGUID, guidParameter, methodName);
 
-        return this.getConnectorForConnection(restClient,
-                                              serviceURLName,
-                                              userId,
-                                              super.getConnectionByGUID(restClient, serviceURLName, userId, connectionGUID),
-                                              methodName);
+        Connection connection = super.getConnectionByGUID(restClient, serviceURLName, userId, connectionGUID);
+
+        if (connection != null)
+        {
+            return this.getConnectorForConnection(restClient,
+                                                  serviceURLName,
+                                                  userId,
+                                                  connection,
+                                                  methodName);
+        }
+
+        return null;
     }
 
 

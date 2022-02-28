@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType;
+import org.odpi.openmetadata.accessservices.assetlineage.model.GenericStub;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
@@ -46,7 +47,7 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
  */
 public class AssetContextHandler {
 
-    private final OpenMetadataAPIGenericHandler genericHandler;
+    private final OpenMetadataAPIGenericHandler<GenericStub> genericHandler;
     private final HandlerHelper handlerHelper;
     private final List<String> supportedZones;
 
@@ -58,7 +59,7 @@ public class AssetContextHandler {
      * @param handlerHelper     helper handler
      * @param supportedZones    configurable list of zones that Asset Lineage is allowed to retrieve Assets from
      */
-    public AssetContextHandler(OpenMetadataAPIGenericHandler genericHandler, HandlerHelper handlerHelper, List<String> supportedZones) {
+    public AssetContextHandler(OpenMetadataAPIGenericHandler<GenericStub> genericHandler, HandlerHelper handlerHelper, List<String> supportedZones) {
         this.genericHandler = genericHandler;
         this.handlerHelper = handlerHelper;
         this.supportedZones = supportedZones;
@@ -184,12 +185,8 @@ public class AssetContextHandler {
      *
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
-    public Optional<LineageEntity> buildAssetEntityContext(String userId, String guid, String typeDefName) throws OCFCheckedExceptionBase {
+    public Optional<LineageEntity> buildEntityContext(String userId, String guid, String typeDefName) throws OCFCheckedExceptionBase {
         EntityDetail entityDetail = handlerHelper.getEntityDetails(userId, guid, typeDefName);
-        if (!handlerHelper.isTableOrDataStore(userId, entityDetail)) {
-            return Optional.empty();
-        }
-
         return Optional.of(handlerHelper.getLineageEntity(entityDetail));
     }
 
