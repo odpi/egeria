@@ -188,7 +188,7 @@
         <quartz.version>2.3.2</quartz.version>
         <lucene.version>8.11.1</lucene.version>
         <lucene-analyzers-common.version>8.11.1</lucene-analyzers-common.version>
-        <guava.version>31.0.1-jre</guava.version>
+        <guava.version>31.1-jre</guava.version>
         <tink.version>1.6.1</tink.version>
         <jsonld.version>0.13.4</jsonld.version>
         <commons-logging.version>1.2</commons-logging.version>
