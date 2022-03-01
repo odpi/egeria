@@ -121,7 +121,7 @@ allprojects {
         testngVersion = '7.5'
         thriftVersion = '0.16.0'
         tinkVersion = '1.6.1'
-        tomcatVersion = '9.0.58'
+        tomcatVersion = '9.0.59'
         validationVersion = '2.0.1.Final'
     }
 
