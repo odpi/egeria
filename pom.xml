@@ -221,7 +221,7 @@
         <lombok-plugin.version>1.18.20.0</lombok-plugin.version>
         <javax.servlet.version>4.0.1</javax.servlet.version>
         <thrift.version>0.15.0</thrift.version>
-        <elasticsearch.version>7.15.2</elasticsearch.version>
+        <elasticsearch.version>7.16.0</elasticsearch.version>
         <hibernate-validator.version>6.2.0.Final</hibernate-validator.version>
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
@@ -3225,10 +3225,10 @@
             </dependency>
 
             <dependency>
-                <groupId>org.elasticsearch.client</groupId>
-                <artifactId>elasticsearch-rest-high-level-client</artifactId>
+                <groupId>co.elastic.clients</groupId>
+                <artifactId>elasticsearch-java</artifactId>
                 <version>${elasticsearch.version}</version>
-                <scope>provided</scope>
+                <scope>compile</scope>
             </dependency>
 
             <dependency>
