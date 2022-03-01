@@ -56,10 +56,8 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.NODE_LABEL_CONDENSED;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.NODE_LABEL_SUB_PROCESS;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROCESS_NODES;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ADDITIONAL_PROPERTIES;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_DISPLAY_NAME;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_GUID;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_EXTENDED_PROPERTIES;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_INSTANCE_PROP_ADDITIONAL_PROPERTIES;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_LABEL;
@@ -75,19 +73,6 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 public class LineageGraphConnectorHelper {
 
     private static final Logger log = LoggerFactory.getLogger(LineageGraphConnectorHelper.class);
-    private static final String EMPTY_STRING = "";
-    private static final String COMMA_SPACE_DELIMITER = ", ";
-    private static final String COLUMN_SPACE_DELIMITER = ": ";
-    private static final List<String> EMBEDDED_PROPERTIES = Arrays.asList(PROPERTY_KEY_ADDITIONAL_PROPERTIES, PROPERTY_KEY_EXTENDED_PROPERTIES);
-    private static final String SUB_GRAPH = "subGraph";
-    private static final String GENERIC_QUERY_EXCEPTION = "Exception while querying {} of guid {}: {}. Executed rollback.";
-    private static final String ULTIMATE_DESTINATION_HORIZONTAL_LINEAGE = "ultimate destination horizontal lineage";
-    private static final String TABULAR_COLUMN_VERTICAL_LINEAGE = "tabular column vertical lineage";
-    private static final String RELATIONAL_COLUMN_VERTICAL_LINEAGE = "relational column vertical lineage";
-    private static final String GLOSSARY_TERM_VERTICAL_LINEAGE = "glossary term vertical lineage";
-    private static final String END_TO_END_HORIZONTAL_LINEAGE = "end to end horizontal lineage";
-    private static final String ULTIMATE_SOURCE_HORIZONTAL_LINEAGE = "ultimate source horizontal lineage";
-    private static final String S = "s";
 
     private final GraphFactory graphFactory;
     private final boolean supportingTransactions;
@@ -98,7 +83,7 @@ public class LineageGraphConnectorHelper {
             {NESTED_SCHEMA_ATTRIBUTE, EDGE_LABEL_CLASSIFICATION, EDGE_LABEL_SEMANTIC_ASSIGNMENT};
     private final String[] tabularColumnAndClassificationEdges = {ATTRIBUTE_FOR_SCHEMA, EDGE_LABEL_CLASSIFICATION, EDGE_LABEL_SEMANTIC_ASSIGNMENT};
 
-    public LineageGraphConnectorHelper(GraphFactory graphFactory, boolean supportingTransactions) {;
+    public LineageGraphConnectorHelper(GraphFactory graphFactory, boolean supportingTransactions) {
         this.graphFactory = graphFactory;
         this.supportingTransactions = supportingTransactions;
     }
@@ -454,6 +439,8 @@ public class LineageGraphConnectorHelper {
 
         addColumnProperties(lineageVertices);
 
+        addIncompleteClassifications(lineageVertices, lineageEdges);
+
         return new LineageVerticesAndEdges(lineageVertices, lineageEdges);
     }
 
@@ -609,11 +596,37 @@ public class LineageGraphConnectorHelper {
         Set<LineageVertex> lineageVertices = getLineageVertices(subGraph);
         Set<LineageEdge> lineageEdges = getLineageEdges(subGraph);
 
+        addIncompleteClassifications(lineageVertices, lineageEdges);
+
         condenseProcesses(includeProcesses, lineageVertices, lineageEdges);
 
         addColumnProperties(lineageVertices);
 
         return new LineageVerticesAndEdges(lineageVertices, lineageEdges);
+    }
+
+    private void addIncompleteClassifications(Set<LineageVertex> lineageVertices, Set<LineageEdge> lineageEdges) {
+        GraphTraversalSource g = graphFactory.getGraphTraversalSource();
+        Set<LineageVertex> incompleteVertices = new HashSet<>();
+        Set<LineageEdge> incompleteEdges = new HashSet<>();
+
+        for(LineageVertex lineageVertex : lineageVertices) {
+            Graph graph = (Graph) g.V().has(PROPERTY_KEY_ENTITY_GUID, lineageVertex.getGuid()).bothE(EDGE_LABEL_CLASSIFICATION)
+                    .inV().hasLabel(INCOMPLETE).bothE().subgraph(CLASSIFICATION_GRAPH).cap(CLASSIFICATION_GRAPH).next();
+            incompleteVertices.addAll(getLineageVertices(graph));
+            incompleteEdges.addAll(getLineageEdges(graph));
+        }
+
+        // The processed vertices don't always have all properties, so here we need to check for the node id to avoid duplicates.
+        // equals from LineageVertex takes into account all properties
+        for(LineageVertex incompleteVertex : incompleteVertices) {
+            Optional<LineageVertex> optionalLineageVertex = lineageVertices.stream()
+                    .filter(lineageVertex -> lineageVertex.getNodeID().equals(incompleteVertex.getNodeID())).findAny();
+            if(optionalLineageVertex.isEmpty()) {
+                lineageVertices.add(incompleteVertex);
+            }
+        }
+        lineageEdges.addAll(incompleteEdges);
     }
 
     private boolean isVertexToBeCondensed(LineageVertex lineageVertex, LineageVertex queriedVertex, Set<LineageVertex> ultimateVertices) {
