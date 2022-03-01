@@ -279,6 +279,24 @@ public class OMRSMetadataDefaultRepositorySecurity implements OpenMetadataReposi
     {
     }
 
+    /**
+     * Tests for whether a specific user should have the right to add a classification to an entity instance
+     * within a repository.
+     *
+     * @param userId identifier of user
+     * @param metadataCollectionName configurable name of the metadata collection
+     * @param instance instance details
+     * @param classificationName String name for the classification.
+     * @param properties list of properties for the classification.
+     */
+    @Override
+    public void  validateUserForEntityClassificationAdd(String               userId,
+                                                        String               metadataCollectionName,
+                                                        EntitySummary        instance,
+                                                        String               classificationName,
+                                                        InstanceProperties   properties)
+    {
+    }
 
     /**
      * Tests for whether a specific user should have the right to update the classification for an entity instance
@@ -299,6 +317,25 @@ public class OMRSMetadataDefaultRepositorySecurity implements OpenMetadataReposi
     {
     }
 
+    /**
+     * Tests for whether a specific user should have the right to update the classification for an entity instance
+     * within a repository.
+     *
+     * @param userId identifier of user
+     * @param metadataCollectionName configurable name of the metadata collection
+     * @param instance instance details
+     * @param classificationName String name for the classification.
+     * @param properties list of properties for the classification.
+     */
+    @Override
+    public void  validateUserForEntityClassificationUpdate(String               userId,
+                                                           String               metadataCollectionName,
+                                                           EntitySummary        instance,
+                                                           String               classificationName,
+                                                           InstanceProperties   properties)
+    {
+    }
+
 
     /**
      * Tests for whether a specific user should have the right to delete a classification from an entity instance
@@ -313,6 +350,23 @@ public class OMRSMetadataDefaultRepositorySecurity implements OpenMetadataReposi
     public void  validateUserForEntityClassificationDelete(String               userId,
                                                            String               metadataCollectionName,
                                                            EntityDetail         instance,
+                                                           String               classificationName)
+    {
+    }
+
+    /**
+     * Tests for whether a specific user should have the right to delete a classification from an entity instance
+     * within a repository.
+     *
+     * @param userId identifier of user
+     * @param metadataCollectionName configurable name of the metadata collection
+     * @param instance instance details
+     * @param classificationName String name for the classification.
+     */
+    @Override
+    public void  validateUserForEntityClassificationDelete(String               userId,
+                                                           String               metadataCollectionName,
+                                                           EntitySummary        instance,
                                                            String               classificationName)
     {
     }
