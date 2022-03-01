@@ -225,7 +225,7 @@
         <hibernate-validator.version>6.2.0.Final</hibernate-validator.version>
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
-        <maven-javadoc-plugin.version>3.3.1</maven-javadoc-plugin.version>
+        <maven-javadoc-plugin.version>3.3.2</maven-javadoc-plugin.version>
         <maven-reports-plugin.version>3.1.2</maven-reports-plugin.version>
         <maven-site-plugin.version>3.10.0</maven-site-plugin.version>
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
