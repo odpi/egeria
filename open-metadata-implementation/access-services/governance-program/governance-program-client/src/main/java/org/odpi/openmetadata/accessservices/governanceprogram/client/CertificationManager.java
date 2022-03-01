@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.governanceprogram.client.rest.Govern
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.CertificationTypeElement;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.CertificationProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.CertificationTypeProperties;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -171,6 +172,7 @@ public class CertificationManager implements CertificationManagementInterface
      *
      * @param userId calling user
      * @param properties certification properties
+     * @param initialStatus what is the initial status for the certification type - default value is DRAFT
      *
      * @return unique identifier of new definition
      *
@@ -180,9 +182,10 @@ public class CertificationManager implements CertificationManagementInterface
      */
     @Override
     public String createCertificationType(String                      userId,
-                                          CertificationTypeProperties properties) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException
+                                          CertificationTypeProperties properties,
+                                          GovernanceDefinitionStatus  initialStatus) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
     {
         final String   methodName = "createCertificationType";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/certification-types";
@@ -196,9 +199,14 @@ public class CertificationManager implements CertificationManagementInterface
         invalidParameterHandler.validateName(properties.getDocumentIdentifier(), docIdParameterName, methodName);
         invalidParameterHandler.validateName(properties.getTitle(), titleParameterName, methodName);
 
+        CertificationTypeRequestBody requestBody = new CertificationTypeRequestBody();
+
+        requestBody.setProperties(properties);
+        requestBody.setInitialStatus(initialStatus);
+
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   serverPlatformURLRoot + urlTemplate,
-                                                                  properties,
+                                                                  requestBody,
                                                                   serverName,
                                                                   userId);
 

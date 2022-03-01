@@ -5126,6 +5126,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
             throw new UserNotAuthorizedException(error);
         }
 
+
         /*
          * Update entity
          */
@@ -5134,35 +5135,31 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                                              classificationName,
                                                                                              properties);
 
-        // TODO add events
 
-//        if (entity != null)
-//        {
-//            setLocalProvenanceThroughoutEntity(entity);
-//
-//            /*
-//             * OK to send out
-//             */
-//            if (produceEventsForRealConnector)
-//            {
-//                Classification currentClassification = repositoryHelper.getClassificationFromEntity(repositoryName,
-//                        currentEntity,
-//                        classificationName,
-//                        methodName);
-//                Classification newClassification = repositoryHelper.getClassificationFromEntity(repositoryName,
-//                        entity,
-//                        classificationName,
-//                        methodName);
-//                outboundRepositoryEventProcessor.processReclassifiedEntityEvent(repositoryName,
-//                        metadataCollectionId,
-//                        localServerName,
-//                        localServerType,
-//                        localOrganizationName,
-//                        entity,
-//                        currentClassification,
-//                        newClassification);
-//            }
-//        }
+
+        setLocalProvenance(newClassification);
+
+
+
+        /*
+         * OK to send out
+         */
+        if (produceEventsForRealConnector)
+        {
+            Classification currentClassification = repositoryHelper.getClassificationFromEntity(repositoryName,
+                                                                                                entityProxy,
+                                                                                                classificationName,
+                                                                                                methodName);
+
+            outboundRepositoryEventProcessor.processReclassifiedEntityEvent(repositoryName,
+                                                                            metadataCollectionId,
+                                                                            localServerName,
+                                                                            localServerType,
+                                                                            localOrganizationName,
+                                                                            entityProxy,
+                                                                            currentClassification,
+                                                                            newClassification);
+        }
 
         return newClassification;
     }

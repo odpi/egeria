@@ -89,7 +89,7 @@ if(inMemoryRepositoryResponse.equals(200)) {
 
 // --- Enable Data Engine OMAS - any errors here and we exit
 System.out.println("=== Enabling Data Engine OMAS: " + serverMem + " ===")
-addDataEngineToInMemoryServerRequest = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverMem + "/access-services/data-engine" ).openConnection()
+addDataEngineToInMemoryServerRequest = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverMem + "/access-services/data-engine/no-topics" ).openConnection()
 addDataEngineToInMemoryServerRequest.setRequestMethod("POST")
 addDataEngineToInMemoryServerRequest.setRequestProperty("Content-Type", "application/json")
 addDataEngineToInMemoryServerResponse = addDataEngineToInMemoryServerRequest.getResponseCode()
@@ -139,7 +139,7 @@ if(localGraphRepositoryResponse.equals(200)) {
 
 // --- Enable Data Engine OMAS - any errors here and we exit
 System.out.println("=== Enabling Data Engine OMAS: " + serverGraph + " ===")
-addDataEngineToLocalGraphServerRequest = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverGraph + "/access-services/data-engine" ).openConnection()
+addDataEngineToLocalGraphServerRequest = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverGraph + "/access-services/data-engine/no-topics" ).openConnection()
 addDataEngineToLocalGraphServerRequest.setRequestMethod("POST")
 addDataEngineToLocalGraphServerRequest.setRequestProperty("Content-Type", "application/json")
 addDataEngineToLocalGraphServerResponse = addDataEngineToLocalGraphServerRequest.getResponseCode()

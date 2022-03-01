@@ -173,7 +173,7 @@ public class ImportsTest extends AnalyticsModelingTestBase
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(TESTCASENAME, activityName, unexpectedError);
         }
@@ -211,7 +211,7 @@ public class ImportsTest extends AnalyticsModelingTestBase
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(TESTCASENAME, activityName, unexpectedError);
         }
@@ -250,7 +250,7 @@ public class ImportsTest extends AnalyticsModelingTestBase
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(TESTCASENAME, activityName, unexpectedError);
         }
@@ -291,7 +291,7 @@ public class ImportsTest extends AnalyticsModelingTestBase
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(TESTCASENAME, activityName, unexpectedError);
         }
