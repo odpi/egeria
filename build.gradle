@@ -70,7 +70,7 @@ allprojects {
         glassfishVersion = '1.1.4'
         gremlinVersion = '3.5.1'
         groovyVersion = '3.0.9'
-        guavaVersion = '31.0.1-jre'
+        guavaVersion = '31.1-jre'
         hamcrestVersion = '2.2'
         hdrhistogramVersion = '2.1.12'
         hibernatevalidatorVersion = '6.2.0.Final'
