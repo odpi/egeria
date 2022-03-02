@@ -3028,33 +3028,13 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "name";
-        final String attribute1Description     = "Name of the software server capability.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "description";
-        final String attribute2Description     = "Description of the software server capability.";
-        final String attribute2DescriptionGUID = null;
         final String attribute3Name            = "type";
         final String attribute3Description     = "Type of the software server capability.";
         final String attribute3DescriptionGUID = null;
         final String attribute4Name            = "version";
         final String attribute4Description     = "Version number of the software server capability.";
         final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "patchLevel";
-        final String attribute5Description     = "Patch level of the software server capability.";
-        final String attribute5DescriptionGUID = null;
-        final String attribute6Name            = "source";
-        final String attribute6Description     = "Supplier of the software server capability.";
-        final String attribute6DescriptionGUID = null;
 
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        properties.add(property);
         property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
                                                            attribute3Description,
                                                            attribute3DescriptionGUID);
@@ -3062,14 +3042,6 @@ public class OpenMetadataTypesArchive1_2
         property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
                                                            attribute4Description,
                                                            attribute4DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute5Name,
-                                                           attribute5Description,
-                                                           attribute5DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute6Name,
-                                                           attribute6Description,
-                                                           attribute6DescriptionGUID);
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
