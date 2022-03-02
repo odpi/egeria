@@ -3107,24 +3107,10 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "deploymentTime";
-        final String attribute1Description     = "Time that the software server capability was deployed to the software server.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "deployer";
-        final String attribute2Description     = "Person, organization or engine that deployed the software server capability.";
-        final String attribute2DescriptionGUID = null;
         final String attribute3Name            = "serverCapabilityStatus";
         final String attribute3Description     = "The operational status of the software server capability on this software server.";
         final String attribute3DescriptionGUID = null;
 
-        property = archiveHelper.getDateTypeDefAttribute(attribute1Name,
-                                                         attribute1Description,
-                                                         attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        properties.add(property);
         property = archiveHelper.getEnumTypeDefAttribute("OperationalStatus",
                                                          attribute3Name,
                                                          attribute3Description,
