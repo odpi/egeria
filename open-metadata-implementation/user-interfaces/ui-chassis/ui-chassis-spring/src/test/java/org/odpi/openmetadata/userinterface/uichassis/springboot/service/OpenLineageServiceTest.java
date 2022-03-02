@@ -133,7 +133,6 @@ public class OpenLineageServiceTest {
         try {
             when(openLineageClient.lineage(USER_ID, Scope.END_TO_END, "n11", "", true))
                     .thenReturn(lineageVerticesAndEdges);
-            doCallRealMethod().when(lineageGraphDisplayService).setNodesLevel(anyList(), anyList(),anyList());
         } catch (OpenLineageException e) {
             e.printStackTrace();
         }
