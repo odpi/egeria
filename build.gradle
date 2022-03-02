@@ -20,7 +20,7 @@ buildscript {
 
 plugins {
         id "io.freefair.aggregate-javadoc" version "6.3.0"
-        id "io.freefair.lombok" version "6.3.0"
+        id "io.freefair.lombok" version "6.4.1"
     }
 
 /*
