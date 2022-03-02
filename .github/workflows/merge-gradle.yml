@@ -31,7 +31,7 @@ jobs:
         run: './gradlew aggregateJavadoc'
       - name: publish
         if: ${{ github.repository == 'odpi/egeria' && github.ref == 'refs/heads/master'}}
-        uses: JamesIves/github-pages-deploy-action@v4.2.3
+        uses: JamesIves/github-pages-deploy-action@v4.2.5
         with:
           branch: gh-pages
           folder: build/docs/javadoc
