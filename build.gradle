@@ -65,7 +65,7 @@ allprojects {
         commonsioVersion = '2.11.0'
         commonsloggingVersion = '1.2'
         commonstextVersion = '1.9'
-        elasticsearchVersion = '7.15.2'
+        elasticsearchVersion = '7.17.1'
         findbugsVersion = '3.0.2'
         glassfishVersion = '1.1.4'
         gremlinVersion = '3.5.1'
@@ -193,8 +193,8 @@ allprojects {
             implementation("org.codehaus.groovy:groovy-templates:${groovyVersion}")
             implementation("org.codehaus.groovy:groovysh:${groovyVersion}")
             compileOnly("org.elasticsearch:elasticsearch:${elasticsearchVersion}")
-            compileOnly("org.elasticsearch.client:elasticsearch-rest-high-level-client:${elasticsearchVersion}")
             implementation("org.elasticsearch.client:elasticsearch-rest-client:${elasticsearchVersion}")
+            implementation("co.elastic.clients:elasticsearch-java:${elasticsearchVersion}")
             implementation("org.codehaus.plexus:plexus-utils:${plexusVersion}")
             implementation("org.hdrhistogram:HdrHistogram:${hdrhistogramVersion}")
             implementation("org.janusgraph:janusgraph-core:${janusVersion}")
