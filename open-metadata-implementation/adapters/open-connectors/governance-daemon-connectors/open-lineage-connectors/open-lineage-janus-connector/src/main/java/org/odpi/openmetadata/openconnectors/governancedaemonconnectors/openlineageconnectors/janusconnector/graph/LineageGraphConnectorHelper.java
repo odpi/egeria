@@ -825,7 +825,7 @@ public class LineageGraphConnectorHelper {
                     properties.put(CONNECTION_KEY,  getDisplayNameForVertex(vertex));
                     break;
                 default:
-                    log.info("ignored vertex with label {}", vertexLabel);
+                    break;
             }
         }
         return properties;
