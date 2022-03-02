@@ -97,7 +97,7 @@ allprojects {
         logbackVersion = '1.2.10'
         luceneVersion = '8.11.1'
         nettyVersion = '4.1.73.Final'
-        openlineageVersion = '0.5.1'
+        openlineageVersion = '0.5.2'
         mockitoVersion = '4.3.1'
         ossVersion = '4.13.0'
         plexusVersion = '3.4.1'
