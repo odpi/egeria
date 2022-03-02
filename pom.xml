@@ -3225,10 +3225,10 @@
             </dependency>
 
             <dependency>
-                <groupId>org.elasticsearch.client</groupId>
-                <artifactId>elasticsearch-rest-high-level-client</artifactId>
+                <groupId>co.elastic.clients</groupId>
+                <artifactId>elasticsearch-java</artifactId>
                 <version>${elasticsearch.version}</version>
-                <scope>provided</scope>
+                <scope>compile</scope>
             </dependency>
 
             <dependency>
