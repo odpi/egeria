@@ -102,4 +102,7 @@ public final class Constants {
     public static final String INCOMPLETE = "Incomplete";
     public static final String CLASSIFICATION_GRAPH = "classificationGraph";
 
+
+    public static final String[] RELATIONAL_TABLE_CONTEXT_IN_EDGES = new String[]{ATTRIBUTE_FOR_SCHEMA, ASSET_SCHEMA_TYPE, DATA_CONTENT_FOR_DATA_SET, CONNECTION_TO_ASSET};
+
 }
