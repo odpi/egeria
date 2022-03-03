@@ -4275,7 +4275,8 @@ public class OpenMetadataAPIGenericHandler<B>
         /*
          * Only adding latest change classification to anchors that are Assets or Glossaries.
          */
-        if ((OpenMetadataAPIMapper.ASSET_TYPE_NAME.equals(anchorTypeName) || (OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME.equals(anchorTypeName))))
+        if ((repositoryHelper.isTypeOf(serviceName, anchorTypeName, OpenMetadataAPIMapper.ASSET_TYPE_NAME)) ||
+            (repositoryHelper.isTypeOf(serviceName, anchorTypeName, OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME)))
         {
             try
             {
