@@ -202,10 +202,6 @@ public class OpenLineageService {
                 .filter(n -> n.getId().equals(guid))
                 .collect(Collectors.toList());
 
-        if (!startList.isEmpty()) {
-            lineageGraphDisplayService.setNodesLevel(startList, new ArrayList<>(nodes), new ArrayList<>(edges));
-        }
-
         Graph graph = new Graph(nodes, edges);
         lineageGraphDisplayService.applyRules(graph, guid);
 

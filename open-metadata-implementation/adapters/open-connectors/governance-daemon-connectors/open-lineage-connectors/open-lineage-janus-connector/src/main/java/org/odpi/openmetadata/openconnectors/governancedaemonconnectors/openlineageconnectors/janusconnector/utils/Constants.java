@@ -3,6 +3,10 @@ package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openline
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ADDITIONAL_PROPERTIES;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_EXTENDED_PROPERTIES;
 
 public final class Constants {
 
@@ -82,4 +86,23 @@ public final class Constants {
     public static final String NESTED_SCHEMA_ATTRIBUTE = "NestedSchemaAttribute";
     public static final String FOLDER_HIERARCHY = "FolderHierarchy";
     public static final String SCHEMA_TYPE_OPTION = "SchemaTypeOption";
+    public static final String EMPTY_STRING = "";
+    public static final String COMMA_SPACE_DELIMITER = ", ";
+    public static final String COLUMN_SPACE_DELIMITER = ": ";
+    public static final List<String> EMBEDDED_PROPERTIES = Arrays.asList(PROPERTY_KEY_ADDITIONAL_PROPERTIES, PROPERTY_KEY_EXTENDED_PROPERTIES);
+    public static final String SUB_GRAPH = "subGraph";
+    public static final String GENERIC_QUERY_EXCEPTION = "Exception while querying {} of guid {}: {}. Executed rollback.";
+    public static final String ULTIMATE_DESTINATION_HORIZONTAL_LINEAGE = "ultimate destination horizontal lineage";
+    public static final String TABULAR_COLUMN_VERTICAL_LINEAGE = "tabular column vertical lineage";
+    public static final String RELATIONAL_COLUMN_VERTICAL_LINEAGE = "relational column vertical lineage";
+    public static final String GLOSSARY_TERM_VERTICAL_LINEAGE = "glossary term vertical lineage";
+    public static final String END_TO_END_HORIZONTAL_LINEAGE = "end to end horizontal lineage";
+    public static final String ULTIMATE_SOURCE_HORIZONTAL_LINEAGE = "ultimate source horizontal lineage";
+    public static final String S = "s";
+    public static final String INCOMPLETE = "Incomplete";
+    public static final String CLASSIFICATION_GRAPH = "classificationGraph";
+
+
+    public static final String[] RELATIONAL_TABLE_CONTEXT_IN_EDGES = new String[]{ATTRIBUTE_FOR_SCHEMA, ASSET_SCHEMA_TYPE, DATA_CONTENT_FOR_DATA_SET, CONNECTION_TO_ASSET};
+
 }
