@@ -26,6 +26,7 @@ public class LineageVertex implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    private Object id;
     private String nodeID;
     private String nodeType;
     private String displayName;
@@ -83,6 +84,14 @@ public class LineageVertex implements Serializable {
 
     public void setQualifiedName(String qualifiedName) {
         this.qualifiedName = qualifiedName;
+    }
+
+    public Object getId() {
+        return id;
+    }
+
+    public void setId(Object id) {
+        this.id = id;
     }
 
     @Override
