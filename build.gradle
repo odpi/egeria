@@ -19,8 +19,8 @@ buildscript {
  */
 
 plugins {
-        id "io.freefair.aggregate-javadoc" version "6.3.0"
-        id "io.freefair.lombok" version "6.3.0"
+        id "io.freefair.aggregate-javadoc" version "6.4.1"
+        id "io.freefair.lombok" version "6.4.1"
     }
 
 /*
@@ -56,7 +56,7 @@ allprojects {
     ext {
         antlrVersion = '3.5.2'
         avroVersion = '1.11.0'
-        classgraphVersion = '4.8.138'
+        classgraphVersion = '4.8.141'
         classmateVersion = '1.5.1'
         collections4Version='4.4'
         commonscodecVersion = '1.15'
@@ -70,7 +70,7 @@ allprojects {
         glassfishVersion = '1.1.4'
         gremlinVersion = '3.5.1'
         groovyVersion = '3.0.9'
-        guavaVersion = '31.0.1-jre'
+        guavaVersion = '31.1-jre'
         hamcrestVersion = '2.2'
         hdrhistogramVersion = '2.1.12'
         hibernatevalidatorVersion = '6.2.0.Final'
@@ -96,32 +96,32 @@ allprojects {
         lettuceVersion = '6.1.6.RELEASE'
         logbackVersion = '1.2.10'
         luceneVersion = '8.11.1'
-        nettyVersion = '4.1.73.Final'
-        openlineageVersion = '0.5.1'
+        nettyVersion = '4.1.74.Final'
+        openlineageVersion = '0.5.2'
         mockitoVersion = '4.3.1'
-        ossVersion = '4.13.0'
+        ossVersion = '4.14.0'
         plexusVersion = '3.4.1'
-        prometheusVersion = '1.8.2'
+        prometheusVersion = '1.8.3'
         quartzVersion = '2.3.2'
         reflectionsVersion = '0.10.2'
         sanitizerVersion = '1.2.3'
         servletVersion = '4.0.1'
         sleepycatVersion = '18.3.12'
-        slf4jVersion = '1.7.35'
+        slf4jVersion = '1.7.36'
         snakeyamlVersion = '1.30'
         snappyVersion = '1.1.8.4'
-        springbootVersion = '2.6.3'
-        springdataVersion = '2.6.1'
+        springdataVersion = '2.6.2'
+        springbootVersion = '2.6.4'
         spotbugsVersion = '4.5.3'
-        springdocVersion = '1.6.5'
+        springdocVersion = '1.6.6'
         springldapVersion = '2.3.5.RELEASE'
-        springsecurityVersion = '5.6.1'
-        springwebVersion = '5.3.15'
-        swaggerVersion = '2.1.12'
+        springsecurityVersion = '5.6.2'
+        swaggerVersion = '2.1.13'
+        springwebVersion = '5.3.16'
         testngVersion = '7.5'
-        thriftVersion = '0.15.0'
+        thriftVersion = '0.16.0'
         tinkVersion = '1.6.1'
-        tomcatVersion = '9.0.58'
+        tomcatVersion = '9.0.59'
         validationVersion = '2.0.1.Final'
     }
 

@@ -154,22 +154,22 @@
         <junit.version>4.13.2</junit.version>
         <surefire.plugin.version>3.0.0-M5</surefire.plugin.version>
         <mockito.version>4.3.1</mockito.version>
-        <slf4j.version>1.7.35</slf4j.version>
+        <slf4j.version>1.7.36</slf4j.version>
         <testng.version>7.5</testng.version>
         <jackson.version>2.13.1</jackson.version>
         <logback.version>1.2.10</logback.version>
         <jackson.databind.version>2.10.0</jackson.databind.version>
-        <spring-boot.version>2.6.3</spring-boot.version>
-        <netty.version>4.1.73.Final</netty.version>
+        <netty.version>4.1.74.Final</netty.version>
+        <spring-boot.version>2.6.4</spring-boot.version>
         <kafka.version>3.1.0</kafka.version>
         <janus.version>0.6.1</janus.version>
-        <tomcat.version>9.0.58</tomcat.version>
-        <spring.ldap.core>2.3.5.RELEASE</spring.ldap.core>
+        <tomcat.version>9.0.59</tomcat.version>
+        <spring.ldap.core>2.3.6.RELEASE</spring.ldap.core>
         <gremlin.version>3.5.1</gremlin.version>
-        <spring-data.version>2.6.1</spring-data.version>
-        <spring-security.version>5.6.1</spring-security.version>
-        <springdoc.version>1.6.5</springdoc.version>
-        <spring.version>5.3.15</spring.version>
+        <spring-data.version>2.6.2</spring-data.version>
+        <springdoc.version>1.6.6</springdoc.version>
+        <spring.version>5.3.16</spring.version>
+        <spring-security.version>5.6.2</spring-security.version>
         <springdoc-plugin.version>1.3</springdoc-plugin.version>
         <commons-io.version>2.11.0</commons-io.version>
 	    <commons-text.version>1.9</commons-text.version>
@@ -188,26 +188,26 @@
         <quartz.version>2.3.2</quartz.version>
         <lucene.version>8.11.1</lucene.version>
         <lucene-analyzers-common.version>8.11.1</lucene-analyzers-common.version>
-        <guava.version>31.0.1-jre</guava.version>
+        <guava.version>31.1-jre</guava.version>
         <tink.version>1.6.1</tink.version>
         <jsonld.version>0.13.4</jsonld.version>
         <commons-logging.version>1.2</commons-logging.version>
         <commons-codec.version>1.15</commons-codec.version>
         <json-sanitizer.version>1.2.3</json-sanitizer.version>
         <googlefindbugs.version>3.0.2</googlefindbugs.version>
-        <oss.version>4.13.0</oss.version>
+        <oss.version>4.14.0</oss.version>
         <spotbugs-annotations.version>4.5.3</spotbugs-annotations.version>
         <sleepycat.version>18.3.12</sleepycat.version>
         <joda.version>2.10.13</joda.version>
         <jackson-asl.version>1.9.14-atlassian-6</jackson-asl.version>
         <antlr.version>3.5.2</antlr.version>
         <snappy.version>1.1.8.4</snappy.version>
-        <swagger.version>2.1.12</swagger.version>
+        <swagger.version>2.1.13</swagger.version>
         <snakeyaml.version>1.30</snakeyaml.version>
-        <classgraph.version>4.8.138</classgraph.version>
+        <classgraph.version>4.8.141</classgraph.version>
         <groovy.version>3.0.9</groovy.version>
-        <jcl-over-slf4j.version>1.7.35</jcl-over-slf4j.version>
-        <micrometer-registry-prometheus.version>1.8.2</micrometer-registry-prometheus.version>
+        <micrometer-registry-prometheus.version>1.8.3</micrometer-registry-prometheus.version>
+        <jcl-over-slf4j.version>1.7.36</jcl-over-slf4j.version>
         <reflections.version>0.10.2</reflections.version>
         <HdrHistogram.version>2.1.12</HdrHistogram.version>
         <glassfish.json.version>1.1.4</glassfish.json.version>
@@ -220,21 +220,21 @@
         <lombok.version>1.18.22</lombok.version>
         <lombok-plugin.version>1.18.20.0</lombok-plugin.version>
         <javax.servlet.version>4.0.1</javax.servlet.version>
-        <thrift.version>0.15.0</thrift.version>
+        <thrift.version>0.16.0</thrift.version>
         <elasticsearch.version>7.17.1</elasticsearch.version>
         <hibernate-validator.version>6.2.0.Final</hibernate-validator.version>
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
-        <maven-javadoc-plugin.version>3.3.1</maven-javadoc-plugin.version>
-        <maven-reports-plugin.version>3.1.2</maven-reports-plugin.version>
-        <maven-site-plugin.version>3.10.0</maven-site-plugin.version>
+        <maven-javadoc-plugin.version>3.3.2</maven-javadoc-plugin.version>
+        <maven-site-plugin.version>3.11.0</maven-site-plugin.version>
+        <maven-reports-plugin.version>3.2.2</maven-reports-plugin.version>
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
         <maven-shade.version>3.2.4</maven-shade.version>
         <maven-install.version>3.0.0-M1</maven-install.version>
-        <owasp.version>6.5.3</owasp.version>
+        <owasp.version>7.0.0</owasp.version>
         <maven-jar-plugin.version>3.2.2</maven-jar-plugin.version>
-        <maven-compiler.version>3.9.0</maven-compiler.version>
-        <maven-pmd.version>3.15.0</maven-pmd.version>
+        <maven-pmd.version>3.16.0</maven-pmd.version>
+        <maven-compiler.version>3.10.0</maven-compiler.version>
         <maven-download.version>1.6.8</maven-download.version>
         <spotbugs-maven.version>4.5.3</spotbugs-maven.version>
         <maven-antrun.version>3.0.0</maven-antrun.version>
@@ -250,7 +250,7 @@
         <maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
         <maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
-        <nexus-staging-maven-plugin>1.6.8</nexus-staging-maven-plugin>
+        <nexus-staging-maven-plugin>1.6.12</nexus-staging-maven-plugin>
         <license-plugin.version>2.0.0</license-plugin.version>
         <build-helper.version>3.3.0</build-helper.version>
         <failsafe-plugin.version>3.0.0-M5</failsafe-plugin.version>
@@ -258,7 +258,7 @@
         <process-exec-plugin.version>0.9</process-exec-plugin.version>
         <groovy-plugin.version>2.1.1</groovy-plugin.version>
         <properties.plugin.version>1.0.0</properties.plugin.version>
-        <openlineage.version>0.5.1</openlineage.version>
+        <openlineage.version>0.5.2</openlineage.version>
 
         <!-- Configuration of sonar code scanning-->
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
