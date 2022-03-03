@@ -4270,67 +4270,76 @@ public class OpenMetadataAPIGenericHandler<B>
 
         InstanceProperties newProperties = null;
 
-        try
+        String anchorTypeName = anchorEntity.getType().getTypeDefName();
+
+        /*
+         * Only adding latest change classification to anchors that are Assets or Glossaries.
+         */
+        if ((repositoryHelper.isTypeOf(serviceName, anchorTypeName, OpenMetadataAPIMapper.ASSET_TYPE_NAME)) ||
+            (repositoryHelper.isTypeOf(serviceName, anchorTypeName, OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME)))
         {
-            invalidParameterHandler.validateObject(anchorEntity, guidParameterName, methodName);
-
-            newProperties = this.getLatestChangeClassificationProperties(latestChangeTargetOrdinal,
-                                                                         latestChangeActionOrdinal,
-                                                                         classificationName,
-                                                                         attachmentGUID,
-                                                                         attachmentTypeName,
-                                                                         relationshipTypeName,
-                                                                         userId,
-                                                                         actionDescription,
-                                                                         methodName);
-
-            Classification classification = repositoryHelper.getClassificationFromEntity(serviceName,
-                                                                                         anchorEntity,
-                                                                                         OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_NAME,
-                                                                                         methodName);
-            if (classification != null)
+            try
             {
-                repositoryHandler.reclassifyEntity(localServerUserId,
-                                                   null,
-                                                   null,
-                                                   anchorEntity.getGUID(),
-                                                   guidParameterName,
-                                                   anchorEntity.getType().getTypeDefName(),
-                                                   OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_GUID,
-                                                   OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_NAME,
-                                                   classification,
-                                                   newProperties,
-                                                   false,
-                                                   false,
-                                                   effectiveTime,
-                                                   methodName);
+                invalidParameterHandler.validateObject(anchorEntity, guidParameterName, methodName);
+
+                newProperties = this.getLatestChangeClassificationProperties(latestChangeTargetOrdinal,
+                                                                             latestChangeActionOrdinal,
+                                                                             classificationName,
+                                                                             attachmentGUID,
+                                                                             attachmentTypeName,
+                                                                             relationshipTypeName,
+                                                                             userId,
+                                                                             actionDescription,
+                                                                             methodName);
+
+                Classification classification = repositoryHelper.getClassificationFromEntity(serviceName,
+                                                                                             anchorEntity,
+                                                                                             OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_NAME,
+                                                                                             methodName);
+                if (classification != null)
+                {
+                    repositoryHandler.reclassifyEntity(localServerUserId,
+                                                       null,
+                                                       null,
+                                                       anchorEntity.getGUID(),
+                                                       guidParameterName,
+                                                       anchorEntity.getType().getTypeDefName(),
+                                                       OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_GUID,
+                                                       OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_NAME,
+                                                       classification,
+                                                       newProperties,
+                                                       false,
+                                                       false,
+                                                       effectiveTime,
+                                                       methodName);
+                }
             }
-        }
-        catch (ClassificationErrorException newClassificationNeeded)
-        {
-            /*
-             * This is not an error - it just means that the classification is not present on the anchor entity.
-             */
-            repositoryHandler.classifyEntity(localServerUserId,
-                                             null,
-                                             null,
-                                             anchorEntity.getGUID(),
-                                             anchorEntity,
-                                             guidParameterName,
-                                             anchorEntity.getType().getTypeDefName(),
-                                             OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_GUID,
-                                             OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_NAME,
-                                             ClassificationOrigin.ASSIGNED,
-                                             null,
-                                             newProperties,
-                                             false,
-                                             false,
-                                             new Date(),
-                                             methodName);
-        }
-        catch (InvalidParameterException | TypeErrorException error)
-        {
-            throw new PropertyServerException(error);
+            catch (ClassificationErrorException newClassificationNeeded)
+            {
+                /*
+                 * This is not an error - it just means that the classification is not present on the anchor entity.
+                 */
+                repositoryHandler.classifyEntity(localServerUserId,
+                                                 null,
+                                                 null,
+                                                 anchorEntity.getGUID(),
+                                                 anchorEntity,
+                                                 guidParameterName,
+                                                 anchorEntity.getType().getTypeDefName(),
+                                                 OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_NAME,
+                                                 ClassificationOrigin.ASSIGNED,
+                                                 null,
+                                                 newProperties,
+                                                 false,
+                                                 false,
+                                                 new Date(),
+                                                 methodName);
+            }
+            catch (InvalidParameterException | TypeErrorException error)
+            {
+                throw new PropertyServerException(error);
+            }
         }
     }
 
