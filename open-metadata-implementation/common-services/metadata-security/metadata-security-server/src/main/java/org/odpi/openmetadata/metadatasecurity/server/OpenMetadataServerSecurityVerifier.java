@@ -1138,10 +1138,10 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
         if (repositorySecurityConnector != null)
         {
             repositorySecurityConnector.validateUserForEntityClassificationAdd(userId,
-                    metadataCollectionName,
-                    instance,
-                    classificationName,
-                    properties);
+                                                                               metadataCollectionName,
+                                                                               instance,
+                                                                               classificationName,
+                                                                               properties);
         }
     }
 
@@ -1195,10 +1195,10 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
         if (repositorySecurityConnector != null)
         {
             repositorySecurityConnector.validateUserForEntityClassificationUpdate(userId,
-                    metadataCollectionName,
-                    instance,
-                    classificationName,
-                    properties);
+                                                                                  metadataCollectionName,
+                                                                                  instance,
+                                                                                  classificationName,
+                                                                                  properties);
         }
     }
 
@@ -1247,9 +1247,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
         if (repositorySecurityConnector != null)
         {
             repositorySecurityConnector.validateUserForEntityClassificationDelete(userId,
-                    metadataCollectionName,
-                    instance,
-                    classificationName);
+                                                                                  metadataCollectionName,
+                                                                                  instance,
+                                                                                  classificationName);
         }
     }
 

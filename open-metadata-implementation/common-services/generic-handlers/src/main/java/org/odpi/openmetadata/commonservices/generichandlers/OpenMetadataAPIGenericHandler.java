@@ -4292,28 +4292,28 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                              actionDescription,
                                                                              methodName);
 
-            Classification classification = repositoryHelper.getClassificationFromEntity(serviceName,
-                                                                                         anchorEntity,
-                                                                                         OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_NAME,
-                                                                                         methodName);
-            if (classification != null)
-            {
-                repositoryHandler.reclassifyEntity(localServerUserId,
-                                                   null,
-                                                   null,
-                                                   anchorEntity.getGUID(),
-                                                   guidParameterName,
-                                                   anchorEntity.getType().getTypeDefName(),
-                                                   OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_GUID,
-                                                   OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_NAME,
-                                                   classification,
-                                                   newProperties,
-                                                   false,
-                                                   false,
-                                                   effectiveTime,
-                                                   methodName);
+                Classification classification = repositoryHelper.getClassificationFromEntity(serviceName,
+                                                                                             anchorEntity,
+                                                                                             OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_NAME,
+                                                                                             methodName);
+               if (classification != null)
+               {
+                    repositoryHandler.reclassifyEntity(localServerUserId,
+                                                       null,
+                                                       null,
+                                                       anchorEntity.getGUID(),
+                                                       guidParameterName,
+                                                       anchorEntity.getType().getTypeDefName(),
+                                                       OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_GUID,
+                                                       OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_NAME,
+                                                       classification,
+                                                       newProperties,
+                                                       false,
+                                                       false,
+                                                      effectiveTime,
+                                                       methodName);
+                }
             }
-        }
             catch (ClassificationErrorException newClassificationNeeded)
             {
                 /*
