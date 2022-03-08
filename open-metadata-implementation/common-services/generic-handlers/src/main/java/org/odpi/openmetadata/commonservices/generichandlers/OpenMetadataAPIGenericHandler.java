@@ -4296,8 +4296,8 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                              anchorEntity,
                                                                                              OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_NAME,
                                                                                              methodName);
-               if (classification != null)
-               {
+                if (classification != null)
+                {
                     repositoryHandler.reclassifyEntity(localServerUserId,
                                                        null,
                                                        null,
@@ -4310,7 +4310,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                        newProperties,
                                                        false,
                                                        false,
-                                                      effectiveTime,
+                                                       effectiveTime,
                                                        methodName);
                 }
             }
