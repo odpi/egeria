@@ -32,7 +32,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
     String  templateQualifiedName = null;
     boolean allowCatalogDelete    = false;
 
-    private String            fileDirectoryName     = null;
+    private String            fileDirectoryName = null;
     private FileFolderElement dataFolderElement = null;
     private File              dataFolderFile    = null;
 

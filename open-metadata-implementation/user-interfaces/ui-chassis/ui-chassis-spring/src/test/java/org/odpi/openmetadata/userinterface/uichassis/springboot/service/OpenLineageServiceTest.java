@@ -19,7 +19,6 @@ import org.odpi.openmetadata.governanceservers.openlineage.model.LineageEdge;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
-import org.odpi.openmetadata.userinterface.uichassis.springboot.beans.Edge;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.beans.Graph;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.beans.Node;
 import org.slf4j.Logger;
@@ -29,16 +28,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.when;
 
 
@@ -124,42 +119,6 @@ public class OpenLineageServiceTest {
         checkResponse(response);
     }
 
-
-    @Test
-    @DisplayName("TestNodesLevels")
-    @SuppressWarnings("unchecked")
-    public void testNodesLevels() throws PropertyServerException, InvalidParameterException, IOException, OpenLineageException {
-        setupLineageVerticesAndEdges();
-        try {
-            when(openLineageClient.lineage(USER_ID, Scope.END_TO_END, "n11", "", true))
-                    .thenReturn(lineageVerticesAndEdges);
-            doCallRealMethod().when(lineageGraphDisplayService).setNodesLevel(anyList(), anyList(),anyList());
-        } catch (OpenLineageException e) {
-            e.printStackTrace();
-        }
-
-        Graph response = openLineageService.getEndToEndLineage(USER_ID, "n11", true);
-
-        List<Node> nodes = response.getNodes();
-        List<Edge> edges = response.getEdges();
-
-        assertEquals("Response should contain 21 nodes", 21, nodes.size());
-        assertEquals("Response should contain 20 edges", 20, edges.size());
-
-        Map<String,Node> nodesMap = nodes.stream()
-                .collect(Collectors.toMap(Node::getId, Function.identity()));
-        assertEquals("Level of n11 should be 0", Integer.valueOf(0), nodesMap.get("n11").getLevel());
-        assertEquals("Level of n7 should be -1", Integer.valueOf(-1), nodesMap.get("n7").getLevel());
-        assertEquals("Level of n10 should be -1", Integer.valueOf(-1), nodesMap.get("n10").getLevel());
-        assertEquals("Level of n1 should be -4", Integer.valueOf(-4), nodesMap.get("n1").getLevel());
-        assertEquals("Level of n3 should be -2", Integer.valueOf(-4), nodesMap.get("n1").getLevel());
-        assertEquals("Level of n19 should be1", Integer.valueOf(1), nodesMap.get("n19").getLevel());
-        assertEquals("Level of n20 should be2", Integer.valueOf(2), nodesMap.get("n20").getLevel());
-        assertEquals("Level of n17 should be 3", Integer.valueOf(3), nodesMap.get("n17").getLevel());
-        assertEquals("Level of n15 should be 4", Integer.valueOf(4), nodesMap.get("n15").getLevel());
-
-        readResource();
-    }
 
     @SuppressWarnings("unchecked")
     private void checkResponse(Graph responseGraph) {

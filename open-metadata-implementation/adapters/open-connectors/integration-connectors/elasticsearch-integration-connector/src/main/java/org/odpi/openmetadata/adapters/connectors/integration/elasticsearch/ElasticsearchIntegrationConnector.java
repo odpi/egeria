@@ -4,13 +4,13 @@
 package org.odpi.openmetadata.adapters.connectors.integration.elasticsearch;
 
 
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.json.jackson.JacksonJsonpMapper;
+import co.elastic.clients.transport.ElasticsearchTransport;
+import co.elastic.clients.transport.rest_client.RestClientTransport;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpHost;
-import org.elasticsearch.action.index.IndexRequest;
-import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
-import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.common.xcontent.XContentType;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogEvent;
 import org.odpi.openmetadata.adapters.connectors.integration.elasticsearch.ffdc.ElasticsearchIntegrationConnectorAuditCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -39,7 +39,7 @@ public class ElasticsearchIntegrationConnector extends SearchIntegratorConnector
     private String targetRootURL = null;
     private String targetRootProtocol = null;
     private SearchIntegratorContext myContext = null;
-    private RestHighLevelClient client;
+    private ElasticsearchClient client;
     private String indexName = "test";
     private ObjectMapper objectMapper;
 
@@ -127,8 +127,9 @@ public class ElasticsearchIntegrationConnector extends SearchIntegratorConnector
             throw new ConnectorCheckedException(BAD_CONFIG.getMessageDefinition("port", "targetRootURL", callingMethodName, e.getMessage()), this.getClass().getName(),
                     callingMethodName);
         }
-        client = new RestHighLevelClient(
-                RestClient.builder(new HttpHost(hostname, port, targetRootProtocol)));
+        RestClient restClient = RestClient.builder(new HttpHost(hostname, port, targetRootProtocol)).build();
+        ElasticsearchTransport transport = new RestClientTransport(restClient, new JacksonJsonpMapper());
+        client = new ElasticsearchClient(transport);
 
     }
 
@@ -147,12 +148,10 @@ public class ElasticsearchIntegrationConnector extends SearchIntegratorConnector
             return;
         }
         log.debug("saving to elasticsearch {}", asset);
-        IndexRequest indexRequest = new IndexRequest(indexName);
-
         try {
             String jsonAsset = objectMapper.writeValueAsString(asset);
-            indexRequest.id(asset.getGUID()).source(jsonAsset, XContentType.JSON);
-            client.index(indexRequest, RequestOptions.DEFAULT);
+            client.index(s-> s.index(jsonAsset).index(indexName).id(asset.getGUID()));
+
         } catch (IOException ioException) {
             String actionDescription = "The client could not write to the Elasticsearch cluster";
             auditLog.logException(actionDescription, ElasticsearchIntegrationConnectorAuditCode.IO_EXCEPTION.getMessageDefinition(), ioException);

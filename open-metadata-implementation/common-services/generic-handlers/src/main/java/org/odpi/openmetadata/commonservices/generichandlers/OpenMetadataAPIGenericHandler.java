@@ -4270,19 +4270,27 @@ public class OpenMetadataAPIGenericHandler<B>
 
         InstanceProperties newProperties = null;
 
-        try
-        {
-            invalidParameterHandler.validateObject(anchorEntity, guidParameterName, methodName);
+        String anchorTypeName = anchorEntity.getType().getTypeDefName();
 
-            newProperties = this.getLatestChangeClassificationProperties(latestChangeTargetOrdinal,
-                                                                         latestChangeActionOrdinal,
-                                                                         classificationName,
-                                                                         attachmentGUID,
-                                                                         attachmentTypeName,
-                                                                         relationshipTypeName,
-                                                                         userId,
-                                                                         actionDescription,
-                                                                         methodName);
+        /*
+         * Only adding latest change classification to anchors that are Assets or Glossaries.
+         */
+        if ((repositoryHelper.isTypeOf(serviceName, anchorTypeName, OpenMetadataAPIMapper.ASSET_TYPE_NAME)) ||
+            (repositoryHelper.isTypeOf(serviceName, anchorTypeName, OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME)))
+        {
+            try
+            {
+                invalidParameterHandler.validateObject(anchorEntity, guidParameterName, methodName);
+
+                newProperties = this.getLatestChangeClassificationProperties(latestChangeTargetOrdinal,
+                                                                             latestChangeActionOrdinal,
+                                                                             classificationName,
+                                                                             attachmentGUID,
+                                                                             attachmentTypeName,
+                                                                             relationshipTypeName,
+                                                                             userId,
+                                                                             actionDescription,
+                                                                             methodName);
 
             Classification classification = repositoryHelper.getClassificationFromEntity(serviceName,
                                                                                          anchorEntity,
