@@ -47,11 +47,11 @@ public class MessageFormatter
 
         if (mf.getFormats().length > parameterCount)
         {
-            log.error("Missing parameter for message {}", messageTemplate);
+            log.warn("Missing parameter for message {}", messageTemplate);
         }
         else if (mf.getFormats().length < parameterCount)
         {
-            log.error("Too many parameters for message {}", messageTemplate);
+            log.warn("Too many parameters for message {}", messageTemplate);
         }
 
         log.debug("New message: {}", formattedMessage);
