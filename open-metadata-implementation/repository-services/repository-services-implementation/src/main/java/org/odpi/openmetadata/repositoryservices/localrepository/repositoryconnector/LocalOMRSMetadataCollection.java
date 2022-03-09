@@ -3419,47 +3419,6 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
-     * Validate the requested entity is suitable for a classification update by this repository.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param entityGUID unique identifier (guid) for the requested entity.
-     * @param methodName calling method
-     * @return current entity
-     * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                  the metadata collection is stored.
-     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    private EntityDetail validateEntityCanBeClassified(String  userId,
-                                                       String  entityGUID,
-                                                       String  methodName) throws InvalidParameterException,
-                                                                                  RepositoryErrorException,
-                                                                                  EntityNotKnownException,
-                                                                                  UserNotAuthorizedException
-    {
-
-        /*
-         * This method will check:
-         *
-         *   that the entity can be retrieved (it exists and the entity is not a proxy) -
-         *      if the entity is not found this method will throw EntityNotKnownException
-         *      if the entity is found but is a proxy this method will map the underlying EntityProxyOnlyException to InvalidParameterException
-         *   that the classification is supported by this repository
-         *
-         * This method differs from the other entity validation methods because it is valid to classify or declassify a reference copy. So there
-         * is no check as in the update validation regarding reference copies of entities sourced from the local cohort or externally sourced.
-         *
-         *   if something really ugly happens this method will throw RepositoryErrorException but not in any of the above scenarios
-         */
-
-        return this.validateEntityIsNotProxy(userId, entityGUID, methodName);
-    }
-
-
-
-
-    /**
      * Validate the requested entity is suitable for a rehome operation initiated by this repository.
      *
      * @param userId unique identifier for requesting user.
@@ -4454,7 +4413,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         /*
          * Locate entity and check it can be updated
          */
-        EntityDetail currentEntity = this.validateEntityCanBeClassified(userId, entityGUID, methodName);
+        EntitySummary  currentEntity = this.getEntitySummary(userId, entityGUID);
 
         /*
          * Check operation is allowed
@@ -4654,7 +4613,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         /*
          * Locate entity and check it can be updated
          */
-        EntityDetail currentEntity = this.validateEntityCanBeClassified(userId, entityGUID, methodName);
+        EntitySummary  currentEntity = this.getEntitySummary(userId, entityGUID);
 
         /*
          * Check operation is allowed
@@ -4850,7 +4809,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         /*
          * Locate entity and check it can be updated
          */
-        EntityDetail currentEntity = this.validateEntityCanBeClassified(userId, entityGUID, methodName);
+        EntitySummary  currentEntity = this.getEntitySummary(userId, entityGUID);
 
         Classification currentClassification = repositoryHelper.getClassificationFromEntity(repositoryName,
                                                                                             currentEntity,
@@ -5014,9 +4973,9 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         this.classifyEntityParameterValidation(userId, entityGUID, classificationName, properties, methodName);
 
         /*
-         * Locate entity and check it can be updated
+         * Locate entity and retrieve classification.
          */
-        EntityDetail currentEntity = this.validateEntityCanBeClassified(userId, entityGUID, methodName);
+        EntitySummary  currentEntity         = this.getEntitySummary(userId, entityGUID);
         Classification currentClassification = repositoryHelper.getClassificationFromEntity(repositoryName,
                                                                                             currentEntity,
                                                                                             classificationName,
