@@ -44,7 +44,8 @@ public class AssetCatalogRelationshipRESTService {
 
         try {
             RelationshipHandler relationshipHandler = instanceHandler.getRelationshipHandler(userId, serverName, methodName);
-            Relationship relationshipBetweenEntities = relationshipHandler.getRelationshipBetweenEntities(userId, entity1GUID, entity2GUID, relationshipType);
+            Relationship relationshipBetweenEntities = relationshipHandler.getRelationshipBetweenEntities(userId, serverName,
+                    entity1GUID, entity2GUID, relationshipType);
             response.setRelationship(relationshipBetweenEntities);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
             restExceptionHandler.captureInvalidParameterException(response, e);
