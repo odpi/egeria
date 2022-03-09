@@ -34,7 +34,7 @@ public enum RexViewAuditCode implements AuditLogMessageSet
 
     SERVICE_INITIALIZED("OMVS-REPOSITORY-EXPLORER-0002",
             OMRSAuditLogRecordSeverity.STARTUP,
-            "The Repository Explorer View Service (OMVS) is initialized",
+            "The Repository Explorer View Service (OMVS) has initialized a new instance for server {0}",
             "The Repository Explorer OMVS has completed initialization. Calls will be accepted by this service, if OMRS is also configured and the view server has been started. ",
             "No action is required.  This is part of the normal operation of the Repository Explorer OMVS. Once the OMRS is configured and the server is started, Repository Explorer view service requests can be accepted."),
 
