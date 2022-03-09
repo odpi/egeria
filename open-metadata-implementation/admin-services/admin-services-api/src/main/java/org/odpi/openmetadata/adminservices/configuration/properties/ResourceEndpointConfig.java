@@ -22,7 +22,7 @@ public class ResourceEndpointConfig extends AdminServicesConfigHeader
 {
     private static final long    serialVersionUID = 1L;
 
-    private String              resourceCategory       = null;  // should be set to { "platform" | "server" }
+    private String              resourceCategory       = null;  // should be set to { "Platform" | "Server" }
     private String              description            = null;  // a descriptive string that describes the endpoint - can be displayed to a UI user
     private String              platformRootURL        = null;  // the root URL of the platform - always "platform" whether the resource is a platform or server running on the platform
     private String              serverName             = null;  // always null for a platform, but for a server this MUST contain the real server name to use in URL construction
