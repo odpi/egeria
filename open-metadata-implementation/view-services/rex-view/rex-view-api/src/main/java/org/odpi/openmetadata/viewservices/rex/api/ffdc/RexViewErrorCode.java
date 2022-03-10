@@ -201,10 +201,15 @@ public enum RexViewErrorCode implements ExceptionMessageSet
             (400, "OMVS-REPOSITORY-EXPLORER-400-028",
              "The repository explorer view service caught an unknown error during operation {0}. The detailed message is {1}",
              "The system could not perform the requested action.",
-             "Please check the detailed message and the system log.")
+             "Please check the detailed message and the system log."),
+
+    HISTORICAL_FUNCTION_NOT_SUPPORTED
+            (400, "OMVS-REPOSITORY-EXPLORER-400-029",
+                     "The repository explorer view service operation {0} reported that a historical query cannot be issued",
+                     "The system reported that the historical capability is not supported.",
+                     "Either use repositories that support historical queries or queries for the current entities."),
 
     ;
-
     private ExceptionMessageDefinition messageDefinition;
 
     /**

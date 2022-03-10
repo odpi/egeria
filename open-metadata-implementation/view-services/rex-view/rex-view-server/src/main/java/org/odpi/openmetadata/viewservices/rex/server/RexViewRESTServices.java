@@ -13,27 +13,14 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.viewservices.rex.api.ffdc.RexExceptionHandler;
 import org.odpi.openmetadata.viewservices.rex.api.ffdc.RexViewErrorCode;
 import org.odpi.openmetadata.viewservices.rex.api.ffdc.RexViewServiceException;
-import org.odpi.openmetadata.viewservices.rex.api.properties.ResourceEndpoint;
-import org.odpi.openmetadata.viewservices.rex.api.properties.RexPreTraversal;
-import org.odpi.openmetadata.viewservices.rex.api.properties.RexRelationshipAndEntitiesDigest;
-import org.odpi.openmetadata.viewservices.rex.api.properties.RexTraversal;
-import org.odpi.openmetadata.viewservices.rex.api.rest.RexEntityDetailResponse;
-import org.odpi.openmetadata.viewservices.rex.api.rest.RexEntityRequestBody;
-import org.odpi.openmetadata.viewservices.rex.api.rest.RexPreTraversalResponse;
-import org.odpi.openmetadata.viewservices.rex.api.rest.RexRelationshipRequestBody;
-import org.odpi.openmetadata.viewservices.rex.api.rest.RexRelationshipResponse;
-import org.odpi.openmetadata.viewservices.rex.api.rest.RexResourceEndpointListResponse;
-import org.odpi.openmetadata.viewservices.rex.api.rest.RexSearchBody;
-import org.odpi.openmetadata.viewservices.rex.api.rest.RexSearchResponse;
-import org.odpi.openmetadata.viewservices.rex.api.rest.RexTraversalRequestBody;
-import org.odpi.openmetadata.viewservices.rex.api.rest.RexTraversalResponse;
-import org.odpi.openmetadata.viewservices.rex.api.rest.RexTypesRequestBody;
-import org.odpi.openmetadata.viewservices.rex.api.rest.TypeExplorerResponse;
+import org.odpi.openmetadata.viewservices.rex.api.properties.*;
+import org.odpi.openmetadata.viewservices.rex.api.rest.*;
 import org.odpi.openmetadata.viewservices.rex.handlers.RexViewHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -270,15 +257,21 @@ public class RexViewRESTServices {
             /*
              * Attempt to retrieve the entity
              */
-            try
-            {
+            Date asOfTime = null;
+            if (requestBody instanceof RexHistoricalEntityRequestBody) {
+                RexHistoricalEntityRequestBody histroricalBody = (RexHistoricalEntityRequestBody) requestBody;
+                asOfTime = histroricalBody.getAsOfTime();
+            }
+            try {
 
-                response.setExpandedEntityDetail(handler.getEntity(userId,
-                                                                   requestBody.getServerName(),
-                                                                   requestBody.getPlatformName(),
-                                                                   requestBody.getEnterpriseOption(),
-                                                                   requestBody.getEntityGUID(),
-                                                                   methodName));
+                    response.setExpandedEntityDetail(handler.getEntity(userId,
+                                                                       requestBody.getServerName(),
+                                                                       requestBody.getPlatformName(),
+                                                                       requestBody.getEnterpriseOption(),
+                                                                       requestBody.getEntityGUID(),
+                                                                       asOfTime,
+                                                                       methodName));
+
             }
             catch (RexViewServiceException exception)
             {
@@ -362,7 +355,11 @@ public class RexViewRESTServices {
             {
                 restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
-
+            Date asOfTime = null;
+            if (requestBody instanceof RexHistoricalRelationshipRequestBody) {
+                RexHistoricalRelationshipRequestBody histroricalBody = (RexHistoricalRelationshipRequestBody) requestBody;
+                asOfTime = histroricalBody.getAsOfTime();
+            }
             /*
              * Attempt to retrieve the relationship
              */
@@ -374,6 +371,7 @@ public class RexViewRESTServices {
                                                                          requestBody.getPlatformName(),
                                                                          requestBody.getEnterpriseOption(),
                                                                          requestBody.getRelationshipGUID(),
+                                                                         asOfTime,
                                                                          methodName));
 
             }
@@ -459,7 +457,12 @@ public class RexViewRESTServices {
             {
                 restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
+            Date asOfTime = null;
+            if (requestBody instanceof RexHistoricalSearchBody) {
+                RexHistoricalSearchBody historicalBody = (RexHistoricalSearchBody) requestBody;
 
+                asOfTime = historicalBody.getAsOfTime();
+            }
             try
             {
 
@@ -470,6 +473,7 @@ public class RexViewRESTServices {
                                                           requestBody.getSearchText(),
                                                           requestBody.getTypeName(),
                                                           requestBody.getClassificationNames(),
+                                                          asOfTime,
                                                           methodName));
 
                 response.setSearchCategory("Entity");
@@ -561,6 +565,12 @@ public class RexViewRESTServices {
             {
                 restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
+            Date asOfTime = null;
+            if (requestBody instanceof RexHistoricalSearchBody) {
+                RexHistoricalSearchBody historicalBody = (RexHistoricalSearchBody) requestBody;
+
+                asOfTime = historicalBody.getAsOfTime();
+            }
 
             try
             {
@@ -571,6 +581,7 @@ public class RexViewRESTServices {
                                                                                                        requestBody.getEnterpriseOption(),
                                                                                                        requestBody.getSearchText(),
                                                                                                        requestBody.getTypeName(),
+                                                                                                       asOfTime,
                                                                                                        methodName);
 
                 response.setRelationships(superDigests);
