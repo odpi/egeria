@@ -172,7 +172,8 @@ public class AssetCatalogHandler {
      */
     public AssetCatalogHandler(String serverUserName, String sourceName, InvalidParameterHandler invalidParameterHandler,
                                RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper,
-                               OpenMetadataAPIGenericHandler<AssetCatalogBean> assetHandler, AssetCatalogConverter<AssetCatalogBean> assetCatalogConverter,
+                               OpenMetadataAPIGenericHandler<AssetCatalogBean> assetHandler,
+                               AssetCatalogConverter<AssetCatalogBean> assetCatalogConverter,
                                RepositoryErrorHandler errorHandler, List<String> supportedZones, List<String> supportedTypesForSearch) {
         this.serverUserName = serverUserName;
         this.sourceName = sourceName;
@@ -324,15 +325,16 @@ public class AssetCatalogHandler {
      * @param userId           user identifier that issues the call
      * @param assetGUID        the asset identifier
      * @param searchParameters additional parameters for searching and filtering
-     * @param serverName
+     * @param serverName       the server name
      * @return a list of entities from the neighborhood of the given entity
      * @throws AssetCatalogException      is thrown by the Asset Catalog OMAS when the asset passed on a request is not found in the repository
      * @throws InvalidParameterException  is thrown by the OMAG Service when a parameter is null or an invalid value.
      * @throws PropertyServerException    reporting errors when connecting to a metadata repository to retrieve properties about the connection and/or connector
      * @throws UserNotAuthorizedException is thrown by the OCF when a userId passed on a request is not authorized to perform the requested action.
      */
-    public List<AssetCatalogBean> getEntitiesFromNeighborhood(String userId, String assetGUID, SearchParameters searchParameters, String serverName)
-            throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, AssetCatalogException {
+    public List<AssetCatalogBean> getEntitiesFromNeighborhood(String userId, String assetGUID, SearchParameters searchParameters,
+                                                              String serverName) throws InvalidParameterException,
+            PropertyServerException, UserNotAuthorizedException, AssetCatalogException {
 
         String methodName = "getEntitiesFromNeighborhood";
 
