@@ -519,8 +519,12 @@ public class RexViewHandler
             String metadataCollectionId = repositoryServicesClient.getMetadataCollectionId(userId);
 
 
-            Relationship relationship = repositoryServicesClient.getRelationship(userId, relationshipGUID, asOfTime);
-
+            Relationship relationship = null;
+            if (asOfTime == null) {
+                relationship = repositoryServicesClient.getRelationship(userId, relationshipGUID);
+            } else {
+                relationship = repositoryServicesClient.getRelationship(userId, relationshipGUID, asOfTime);
+            }
             // Create digests for both ends
 
             TypeExplorer typeExplorer = getTypeExplorer(userId,

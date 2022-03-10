@@ -259,8 +259,8 @@ public class RexViewRESTServices {
              */
             Date asOfTime = null;
             if (requestBody instanceof RexHistoricalEntityRequestBody) {
-                RexHistoricalEntityRequestBody histroricalBody = (RexHistoricalEntityRequestBody) requestBody;
-                asOfTime = histroricalBody.getAsOfTime();
+                RexHistoricalEntityRequestBody historicalBody = (RexHistoricalEntityRequestBody) requestBody;
+                asOfTime = historicalBody.getAsOfTime();
             }
             try {
 
@@ -357,8 +357,8 @@ public class RexViewRESTServices {
             }
             Date asOfTime = null;
             if (requestBody instanceof RexHistoricalRelationshipRequestBody) {
-                RexHistoricalRelationshipRequestBody histroricalBody = (RexHistoricalRelationshipRequestBody) requestBody;
-                asOfTime = histroricalBody.getAsOfTime();
+                RexHistoricalRelationshipRequestBody historicalBody = (RexHistoricalRelationshipRequestBody) requestBody;
+                asOfTime = historicalBody.getAsOfTime();
             }
             /*
              * Attempt to retrieve the relationship
