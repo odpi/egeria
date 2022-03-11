@@ -80,7 +80,7 @@ public class DataEngineTopicHandler {
         String topicGUID;
         if (originalTopicEntity.isEmpty()) {
             topicHandler.verifyExternalSourceIdentity(userId, externalSourceGUID, externalSourceName,
-                    false, false, null, null);
+                    false, false, null, methodName);
             topicGUID = topicHandler.createAssetInRepository(userId, externalSourceGUID, externalSourceName, topic.getQualifiedName(),
                     topic.getDisplayName(), topic.getDescription(), topic.getZoneMembership(), topic.getOwner(), ownerTypeOrdinal,
                     topic.getOriginOrganizationGUID(), topic.getOriginBusinessCapabilityGUID(), topic.getOtherOriginValues(),
