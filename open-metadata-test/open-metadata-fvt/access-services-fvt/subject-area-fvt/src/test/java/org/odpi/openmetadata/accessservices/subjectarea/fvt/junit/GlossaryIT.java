@@ -20,7 +20,7 @@ public class GlossaryIT {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"serverinmem","servergraph"})
+    @ValueSource(strings = {"serverinmem"})
     public void testGlossary(String server) {
         assertDoesNotThrow(() -> GlossaryFVT.runIt(StringUtils.defaultIfEmpty(System.getProperty("fvt.url"),FVTConstants.SERVER_PLATFORM_URL_ROOT), server, "garygeeke"));
     }
