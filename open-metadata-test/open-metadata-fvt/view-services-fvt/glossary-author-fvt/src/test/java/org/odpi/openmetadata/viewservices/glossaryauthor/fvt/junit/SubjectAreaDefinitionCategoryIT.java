@@ -19,7 +19,6 @@ public class SubjectAreaDefinitionCategoryIT {
     }
 
     @ParameterizedTest
-    //@ValueSource(strings = {"serverinmem","servergraph"})
     @ValueSource(strings = {"serverview"})
     public void testSubjectAreaDefinitionCategory(String server) {
         assertDoesNotThrow(() -> SubjectAreaDefinitionCategoryFVT.runIt(StringUtils.defaultIfEmpty(System.getProperty("fvt.url"),FVTConstants.SERVER_PLATFORM_URL_ROOT), server, "garygeeke"));

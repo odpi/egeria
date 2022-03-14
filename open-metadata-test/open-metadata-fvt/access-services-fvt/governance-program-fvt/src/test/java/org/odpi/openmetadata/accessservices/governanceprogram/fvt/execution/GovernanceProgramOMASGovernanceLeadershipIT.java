@@ -24,7 +24,7 @@ public class GovernanceProgramOMASGovernanceLeadershipIT
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"serverinmem","servergraph"})
+    @ValueSource(strings = {"serverinmem"})
     public void testGovernanceLeadership(String server)
     {
         assertDoesNotThrow(() -> runGovernanceLeadership(server));
