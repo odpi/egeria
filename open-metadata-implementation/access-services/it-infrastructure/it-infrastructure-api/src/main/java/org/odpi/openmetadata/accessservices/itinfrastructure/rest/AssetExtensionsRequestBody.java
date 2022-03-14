@@ -13,12 +13,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * RelatedAssetsRequestBody provides the request body payload for relationships between assets.
+ * AssetExtensionsRequestBody provides the request body payload for relationships between assets.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class RelatedAssetsRequestBody extends MetadataSourceRequestBody
+public class AssetExtensionsRequestBody extends EffectiveDatesRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
@@ -27,7 +27,7 @@ public class RelatedAssetsRequestBody extends MetadataSourceRequestBody
     /**
      * Default constructor
      */
-    public RelatedAssetsRequestBody()
+    public AssetExtensionsRequestBody()
     {
     }
 
@@ -37,7 +37,7 @@ public class RelatedAssetsRequestBody extends MetadataSourceRequestBody
      *
      * @param template object to copy
      */
-    public RelatedAssetsRequestBody(RelatedAssetsRequestBody template)
+    public AssetExtensionsRequestBody(AssetExtensionsRequestBody template)
     {
         super(template);
 
@@ -78,8 +78,10 @@ public class RelatedAssetsRequestBody extends MetadataSourceRequestBody
     @Override
     public String toString()
     {
-        return "RelatedAssetsRequestBody{" +
+        return "AssetExtensionsRequestBody{" +
                        "properties=" + properties +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
                        ", externalSourceGUID='" + getExternalSourceGUID() + '\'' +
                        ", externalSourceName='" + getExternalSourceName() + '\'' +
                        '}';
@@ -107,7 +109,7 @@ public class RelatedAssetsRequestBody extends MetadataSourceRequestBody
         {
             return false;
         }
-        RelatedAssetsRequestBody that = (RelatedAssetsRequestBody) objectToCompare;
+        AssetExtensionsRequestBody that = (AssetExtensionsRequestBody) objectToCompare;
         return Objects.equals(properties, that.properties);
     }
 

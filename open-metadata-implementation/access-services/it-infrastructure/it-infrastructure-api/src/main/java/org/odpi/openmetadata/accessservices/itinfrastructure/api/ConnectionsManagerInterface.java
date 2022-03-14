@@ -100,8 +100,8 @@ public interface ConnectionsManagerInterface
      * @param userId calling user
      * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
      * @param infrastructureManagerName unique name of software server capability representing the caller
-     * @param connectionGUID unique identifier of the connection in the external asset manager
-     * @param connectorTypeGUID unique identifier of the connector type in the external asset manager
+     * @param connectionGUID unique identifier of the connection in the external infrastructure manager
+     * @param connectorTypeGUID unique identifier of the connector type in the external infrastructure manager
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -122,8 +122,8 @@ public interface ConnectionsManagerInterface
      * @param userId calling user
      * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
      * @param infrastructureManagerName unique name of software server capability representing the caller
-     * @param connectionGUID unique identifier of the connection in the external asset manager
-     * @param connectorTypeGUID unique identifier of the connector type in the external asset manager
+     * @param connectionGUID unique identifier of the connection in the external infrastructure manager
+     * @param connectorTypeGUID unique identifier of the connector type in the external infrastructure manager
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -144,8 +144,8 @@ public interface ConnectionsManagerInterface
      * @param userId calling user
      * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
      * @param infrastructureManagerName unique name of software server capability representing the caller
-     * @param connectionGUID unique identifier of the connection in the external asset manager
-     * @param endpointGUID unique identifier of the endpoint in the external asset manager
+     * @param connectionGUID unique identifier of the connection
+     * @param endpointGUID unique identifier of the endpoint
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -166,8 +166,8 @@ public interface ConnectionsManagerInterface
      * @param userId calling user
      * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
      * @param infrastructureManagerName unique name of software server capability representing the caller
-     * @param connectionGUID unique identifier of the connection in the external asset manager
-     * @param endpointGUID unique identifier of the endpoint in the external asset manager
+     * @param connectionGUID unique identifier of the connection
+     * @param endpointGUID unique identifier of the endpoint
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -188,11 +188,11 @@ public interface ConnectionsManagerInterface
      * @param userId calling user
      * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
      * @param infrastructureManagerName unique name of software server capability representing the caller
-     * @param connectionGUID unique identifier of the virtual connection in the external asset manager
+     * @param connectionGUID unique identifier of the virtual connection
      * @param position which order should this connection be processed
      * @param arguments What additional properties should be passed to the embedded connector via the configuration properties
      * @param displayName what does this connector signify?
-     * @param embeddedConnectionGUID unique identifier of the embedded connection in the external asset manager
+     * @param embeddedConnectionGUID unique identifier of the embedded connection
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -216,8 +216,8 @@ public interface ConnectionsManagerInterface
      * @param userId calling user
      * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
      * @param infrastructureManagerName unique name of software server capability representing the caller
-     * @param connectionGUID unique identifier of the virtual connection in the external asset manager
-     * @param embeddedConnectionGUID unique identifier of the embedded connection in the external asset manager
+     * @param connectionGUID unique identifier of the virtual connection
+     * @param embeddedConnectionGUID unique identifier of the embedded connection
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request

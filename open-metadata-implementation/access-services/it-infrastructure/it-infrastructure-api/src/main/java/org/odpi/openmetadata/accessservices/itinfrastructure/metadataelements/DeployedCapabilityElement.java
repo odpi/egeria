@@ -15,12 +15,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * SupportedCapabilityElement contains the properties and header for a SoftwareServerSupportedCapability relationship retrieved from the repository.
+ * DeployedCapabilityElement contains the properties and header for a SupportedSoftwareCapability relationship retrieved from the repository.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SupportedCapabilityElement implements MetadataElement, Serializable
+public class DeployedCapabilityElement implements MetadataElement, Serializable
 {
     private static final long     serialVersionUID = 1L;
 
@@ -32,7 +32,7 @@ public class SupportedCapabilityElement implements MetadataElement, Serializable
     /**
      * Default constructor
      */
-    public SupportedCapabilityElement()
+    public DeployedCapabilityElement()
     {
         super();
     }
@@ -43,7 +43,7 @@ public class SupportedCapabilityElement implements MetadataElement, Serializable
      *
      * @param template object to copy
      */
-    public SupportedCapabilityElement(SupportedCapabilityElement template)
+    public DeployedCapabilityElement(DeployedCapabilityElement template)
     {
         if (template != null)
         {
@@ -130,7 +130,7 @@ public class SupportedCapabilityElement implements MetadataElement, Serializable
     @Override
     public String toString()
     {
-        return "SupportedCapabilityElement{" +
+        return "DeployedCapabilityElement{" +
                        "elementHeader=" + elementHeader +
                        ", capabilityDeploymentProperties=" + capabilityDeploymentProperties +
                        ", capabilityElement=" + capabilityElement +
@@ -155,7 +155,7 @@ public class SupportedCapabilityElement implements MetadataElement, Serializable
         {
             return false;
         }
-        SupportedCapabilityElement that = (SupportedCapabilityElement) objectToCompare;
+        DeployedCapabilityElement that = (DeployedCapabilityElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
                        Objects.equals(capabilityDeploymentProperties, that.capabilityDeploymentProperties) &&
                        Objects.equals(capabilityElement, that.capabilityElement);

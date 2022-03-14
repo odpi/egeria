@@ -6,35 +6,43 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * SupportedCapabilityProperties describes the properties for the SoftwareServerSupportedCapabilities relationship between a Software Server
- * and a Software Server Capability.
+ * CapabilityDeploymentProperties describes the properties for the SupportedSoftwareCapability relationship between a ITInfrastructure asset
+ * and a Software Capability.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SupportedCapabilityProperties extends ConfigurationItemRelationshipProperties
+public class CapabilityDeploymentProperties extends ConfigurationItemRelationshipProperties
 {
     private static final long serialVersionUID = 1L;
 
-    private Date              deploymentTime         = null;
-    private String            deployer               = null;
-    private String            deployerTypeName       = null;
-    private String            deployerPropertyName   = null;
-    private OperationalStatus serverCapabilityStatus = null;
+    private static final String deploymentTimeProperty       = "deploymentTime";
+    private static final String deployerProperty             = "deployer";
+    private static final String deployerTypeNameProperty     = "deployerTypeName";
+    private static final String deployerPropertyNameProperty = "deployerPropertyName";
+    private static final String deploymentStatusProperty     = "serverCapabilityStatus";
+
+
+    private Date              deploymentTime           = null;
+    private String            deployer                 = null;
+    private String            deployerTypeName         = null;
+    private String            deployerPropertyName     = null;
+    private OperationalStatus softwareCapabilityStatus = null;
 
 
     /**
      * Default constructor
      */
-    public SupportedCapabilityProperties()
+    public CapabilityDeploymentProperties()
     {
         super();
     }
@@ -45,7 +53,7 @@ public class SupportedCapabilityProperties extends ConfigurationItemRelationship
      *
      * @param template object to copy
      */
-    public SupportedCapabilityProperties(SupportedCapabilityProperties template)
+    public CapabilityDeploymentProperties(CapabilityDeploymentProperties template)
     {
         super(template);
 
@@ -55,9 +63,53 @@ public class SupportedCapabilityProperties extends ConfigurationItemRelationship
             deployer = template.getDeployer();
             deployerTypeName = template.getDeployerTypeName();
             deployerPropertyName = template.getDeployerPropertyName();
-            serverCapabilityStatus = template.getServerCapabilityStatus();
+            softwareCapabilityStatus = template.getSoftwareCapabilityStatus();
         }
     }
+
+
+    /**
+     * Turn the properties into a property map.
+     *
+     * @return property map.
+     */
+    public Map<String, Object> cloneToMap()
+    {
+        Map<String, Object> propertyMap = new HashMap<>();
+
+        if (deploymentTime != null)
+        {
+            propertyMap.put(deploymentTimeProperty, deploymentTime);
+        }
+
+        if (deployer != null)
+        {
+            propertyMap.put(deployerProperty, deployer);
+        }
+
+        if (deployerTypeName != null)
+        {
+            propertyMap.put(deployerTypeNameProperty, deployerTypeName);
+        }
+
+        if (deployerPropertyName != null)
+        {
+            propertyMap.put(deployerPropertyNameProperty, deployerPropertyName);
+        }
+
+        if (softwareCapabilityStatus != null)
+        {
+            propertyMap.put(deploymentStatusProperty, softwareCapabilityStatus.getOpenTypeOrdinal());
+        }
+
+        if (! propertyMap.isEmpty())
+        {
+            propertyMap = null;
+        }
+
+        return propertyMap;
+    }
+
 
 
     /**
@@ -153,20 +205,20 @@ public class SupportedCapabilityProperties extends ConfigurationItemRelationship
      *
      * @return operational status enum
      */
-    public OperationalStatus getServerCapabilityStatus()
+    public OperationalStatus getSoftwareCapabilityStatus()
     {
-        return serverCapabilityStatus;
+        return softwareCapabilityStatus;
     }
 
 
     /**
      * Set up whether the capability is ready to use.
      *
-     * @param serverCapabilityStatus operational status enum
+     * @param softwareCapabilityStatus operational status enum
      */
-    public void setServerCapabilityStatus(OperationalStatus serverCapabilityStatus)
+    public void setSoftwareCapabilityStatus(OperationalStatus softwareCapabilityStatus)
     {
-        this.serverCapabilityStatus = serverCapabilityStatus;
+        this.softwareCapabilityStatus = softwareCapabilityStatus;
     }
 
 
@@ -178,12 +230,12 @@ public class SupportedCapabilityProperties extends ConfigurationItemRelationship
     @Override
     public String toString()
     {
-        return "SupportedCapabilityProperties{" +
+        return "CapabilityDeploymentProperties{" +
                        "deploymentTime=" + deploymentTime +
                        ", deployer='" + deployer + '\'' +
                        ", deployerTypeName='" + deployerTypeName + '\'' +
                        ", deployerPropertyName='" + deployerPropertyName + '\'' +
-                       ", serverCapabilityStatus=" + serverCapabilityStatus +
+                       ", softwareCapabilityStatus=" + softwareCapabilityStatus +
                        ", effectiveFrom=" + getEffectiveFrom() +
                        ", effectiveTo=" + getEffectiveTo() +
                        '}';
@@ -211,12 +263,12 @@ public class SupportedCapabilityProperties extends ConfigurationItemRelationship
         {
             return false;
         }
-        SupportedCapabilityProperties that = (SupportedCapabilityProperties) objectToCompare;
+        CapabilityDeploymentProperties that = (CapabilityDeploymentProperties) objectToCompare;
         return Objects.equals(deploymentTime, that.deploymentTime) &&
                        Objects.equals(deployer, that.deployer) &&
                        Objects.equals(deployerTypeName, that.deployerTypeName) &&
                        Objects.equals(deployerPropertyName, that.deployerPropertyName) &&
-                       serverCapabilityStatus == that.serverCapabilityStatus;
+                       softwareCapabilityStatus == that.softwareCapabilityStatus;
     }
 
 
@@ -228,6 +280,6 @@ public class SupportedCapabilityProperties extends ConfigurationItemRelationship
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), deploymentTime, deployer, deployerTypeName, deployerPropertyName, serverCapabilityStatus);
+        return Objects.hash(super.hashCode(), deploymentTime, deployer, deployerTypeName, deployerPropertyName, softwareCapabilityStatus);
     }
 }

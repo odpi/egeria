@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.PlatformDeploymentProperties;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.DeploymentProperties;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -15,25 +15,25 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * PlatformDeploymentElement contains the properties and header for a SoftwareServerPlatformDeployment relationship retrieved from the repository.
+ * DeploymentElement contains the properties and header for a DeployedOn relationship retrieved from the repository.
+ * The related asset element is the other end of the relationship relative to the query.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class PlatformDeploymentElement implements MetadataElement, Serializable
+public class DeploymentElement implements MetadataElement, Serializable
 {
     private static final long     serialVersionUID = 1L;
 
-    private ElementHeader                elementHeader                = null;
-    private PlatformDeploymentProperties platformDeploymentProperties = null;
-    private ElementStub                  platformElement              = null;
-    private ElementStub                  hostElement                  = null;
+    private ElementHeader        elementHeader        = null;
+    private DeploymentProperties deploymentProperties = null;
+    private AssetElement         assetElement         = null;
 
 
     /**
      * Default constructor
      */
-    public PlatformDeploymentElement()
+    public DeploymentElement()
     {
         super();
     }
@@ -44,14 +44,13 @@ public class PlatformDeploymentElement implements MetadataElement, Serializable
      *
      * @param template object to copy
      */
-    public PlatformDeploymentElement(PlatformDeploymentElement template)
+    public DeploymentElement(DeploymentElement template)
     {
         if (template != null)
         {
             elementHeader = template.getElementHeader();
-            platformDeploymentProperties = template.getPlatformDeploymentProperties();
-            platformElement = template.getPlatformElement();
-            hostElement = template.getHostElement();
+            deploymentProperties = template.getDeploymentProperties();
+            assetElement = template.getAssetElement();
         }
     }
 
@@ -81,71 +80,47 @@ public class PlatformDeploymentElement implements MetadataElement, Serializable
 
 
     /**
-     * Return the properties from the software server platform deployment relationship.
+     * Return the properties from the DeployedOn relationship.
      *
      * @return properties
      */
-    public PlatformDeploymentProperties getPlatformDeploymentProperties()
+    public DeploymentProperties getDeploymentProperties()
     {
-        return platformDeploymentProperties;
+        return deploymentProperties;
     }
 
 
     /**
-     * Set up the properties from the software server platform deployment relationship.
+     * Set up the properties from the DeployedOn relationship.
      *
-     * @param platformDeploymentProperties server asset use
+     * @param deploymentProperties properties
      */
-    public void setPlatformDeploymentProperties(PlatformDeploymentProperties platformDeploymentProperties)
+    public void setDeploymentProperties(DeploymentProperties deploymentProperties)
     {
-        this.platformDeploymentProperties = platformDeploymentProperties;
+        this.deploymentProperties = deploymentProperties;
     }
 
 
     /**
-     * Return the header of the linked software server platform.
-     *
-     * @return header
-     */
-    public ElementStub getPlatformElement()
-    {
-        return platformElement;
-    }
-
-
-    /**
-     * Set up the header of the linked software server platform.
-     *
-     * @param platformElement  header
-     */
-    public void setPlatformElement(ElementStub platformElement)
-    {
-        this.platformElement = platformElement;
-    }
-
-
-
-    /**
-     * Return the header of the linked host.
+     * Return the related asset.
      *
      * @return header
      */
-    public ElementStub getHostElement()
+    public AssetElement getAssetElement()
     {
-        return platformElement;
+        return assetElement;
     }
 
 
     /**
-     * Set up the header of the linked host.
+     * Set up the related asset.
      *
-     * @param platformElement  header
+     * @param assetElement asset
      */
-    public void setHostElement(ElementStub platformElement)
+    public void setAssetElement(AssetElement assetElement)
     {
-        this.platformElement = platformElement;
+        this.assetElement = assetElement;
     }
-
 
 
     /**
@@ -156,11 +131,10 @@ public class PlatformDeploymentElement implements MetadataElement, Serializable
     @Override
     public String toString()
     {
-        return "PlatformDeploymentElement{" +
+        return "DeploymentElement{" +
                        "elementHeader=" + elementHeader +
-                       ", platformDeploymentProperties=" + platformDeploymentProperties +
-                       ", platformElement=" + platformElement +
-                       ", hostElement=" + hostElement +
+                       ", deploymentProperties=" + deploymentProperties +
+                       ", assetElement=" + assetElement +
                        '}';
     }
 
@@ -182,10 +156,10 @@ public class PlatformDeploymentElement implements MetadataElement, Serializable
         {
             return false;
         }
-        PlatformDeploymentElement that = (PlatformDeploymentElement) objectToCompare;
+        DeploymentElement that = (DeploymentElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
-                       Objects.equals(platformDeploymentProperties, that.platformDeploymentProperties) &&
-                       Objects.equals(platformElement, that.platformElement);
+                       Objects.equals(deploymentProperties, that.deploymentProperties) &&
+                       Objects.equals(assetElement, that.assetElement);
     }
 
 
@@ -197,6 +171,6 @@ public class PlatformDeploymentElement implements MetadataElement, Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(elementHeader, platformDeploymentProperties, platformElement, hostElement);
+        return Objects.hash(elementHeader, deploymentProperties, assetElement);
     }
 }

@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.PlatformDeploymentProperties;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.DeploymentProperties;
 
 import java.util.Objects;
 
@@ -13,22 +13,22 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * PlatformDeploymentRequestBody provides the request body payload for working with the relationships between
+ * DeploymentRequestBody provides the request body payload for working with the relationships between
  * software server platforms and hosts.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class PlatformDeploymentRequestBody extends MetadataSourceRequestBody
+public class DeploymentRequestBody extends MetadataSourceRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
-    private PlatformDeploymentProperties properties = null;
+    private DeploymentProperties properties = null;
 
     /**
      * Default constructor
      */
-    public PlatformDeploymentRequestBody()
+    public DeploymentRequestBody()
     {
     }
 
@@ -38,7 +38,7 @@ public class PlatformDeploymentRequestBody extends MetadataSourceRequestBody
      *
      * @param template object to copy
      */
-    public PlatformDeploymentRequestBody(PlatformDeploymentRequestBody template)
+    public DeploymentRequestBody(DeploymentRequestBody template)
     {
         super(template);
 
@@ -50,22 +50,22 @@ public class PlatformDeploymentRequestBody extends MetadataSourceRequestBody
 
 
     /**
-     * Return the properties for this profile identity.
+     * Return the properties for this deployment.
      *
      * @return properties bean
      */
-    public PlatformDeploymentProperties getProperties()
+    public DeploymentProperties getProperties()
     {
         return properties;
     }
 
 
     /**
-     * Set up the properties for this profile identity.
+     * Set up the properties for this deployment.
      *
      * @param properties properties bean
      */
-    public void setProperties(PlatformDeploymentProperties properties)
+    public void setProperties(DeploymentProperties properties)
     {
         this.properties = properties;
     }
@@ -79,7 +79,7 @@ public class PlatformDeploymentRequestBody extends MetadataSourceRequestBody
     @Override
     public String toString()
     {
-        return "PlatformDeploymentRequestBody{" +
+        return "DeploymentRequestBody{" +
                        "properties=" + properties +
                        ", externalSourceGUID='" + getExternalSourceGUID() + '\'' +
                        ", externalSourceName='" + getExternalSourceName() + '\'' +
@@ -108,7 +108,7 @@ public class PlatformDeploymentRequestBody extends MetadataSourceRequestBody
         {
             return false;
         }
-        PlatformDeploymentRequestBody that = (PlatformDeploymentRequestBody) objectToCompare;
+        DeploymentRequestBody that = (DeploymentRequestBody) objectToCompare;
         return Objects.equals(properties, that.properties);
     }
 
