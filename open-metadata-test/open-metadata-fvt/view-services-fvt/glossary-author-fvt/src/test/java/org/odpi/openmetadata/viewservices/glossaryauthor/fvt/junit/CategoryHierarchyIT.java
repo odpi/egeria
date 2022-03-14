@@ -20,7 +20,6 @@ public class CategoryHierarchyIT {
     }
 
     @ParameterizedTest
-//    @ValueSource(strings = {"serverinmem","servergraph"})
     @ValueSource(strings = {"serverview"})
     public void testCategoryHierarchy(String server) {
         assertDoesNotThrow(() -> CategoryHierarchyFVT.runIt(StringUtils.defaultIfEmpty(System.getProperty("fvt.url"),FVTConstants.SERVER_PLATFORM_URL_ROOT), server, "garygeeke"));
