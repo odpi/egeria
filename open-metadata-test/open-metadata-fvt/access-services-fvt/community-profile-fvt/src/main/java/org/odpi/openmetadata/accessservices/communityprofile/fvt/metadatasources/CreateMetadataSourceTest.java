@@ -83,6 +83,7 @@ public class CreateMetadataSourceTest
 
         AuditLog auditLog = new AuditLog(auditLogDestination,
                                          AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceCode(),
+                                         AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceDevelopmentStatus(),
                                          AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceName(),
                                          AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceDescription(),
                                          AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceWiki());
@@ -198,7 +199,7 @@ public class CreateMetadataSourceTest
                                     MetadataSourceClient client,
                                     String               metadataSourceGUID) throws FVTUnexpectedCondition
     {
-        final String activityName = "addClassifications";
+        final String activityName = "saveClassifications";
 
         try
         {
