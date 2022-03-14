@@ -4,7 +4,6 @@ package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.
 
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
-import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.EnterpriseOMRSRepositoryConnector;
 
 /**
  * InstanceGraphAccumulator provides the accumulator for

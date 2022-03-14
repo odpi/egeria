@@ -13,12 +13,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * RelationshipAccumulator accumulates and validates relationships received from a collection of open metadata
+ * RelationshipsAccumulator accumulates and validates relationships received from a collection of open metadata
  * repositories.  It removes duplicates from the list by choosing the latest version.
  *
  * This class may be called simultaneously from many different threads so it must be thread-safe.
  */
-public class RelationshipAccumulator extends QueryInstanceAccumulatorBase
+public class RelationshipsAccumulator extends QueryInstanceAccumulatorBase
 {
     private volatile Map<String, Relationship> accumulatedRelationships   = new HashMap<>();
 
@@ -31,9 +31,9 @@ public class RelationshipAccumulator extends QueryInstanceAccumulatorBase
      * @param auditLog audit log provides destination for log messages
      * @param repositoryValidator validator provides common validation routines
      */
-    public RelationshipAccumulator(String                            localMetadataCollectionId,
-                                   AuditLog                          auditLog,
-                                   OMRSRepositoryValidator           repositoryValidator)
+    public RelationshipsAccumulator(String                            localMetadataCollectionId,
+                                    AuditLog                          auditLog,
+                                    OMRSRepositoryValidator           repositoryValidator)
     {
         super(localMetadataCollectionId, auditLog, repositoryValidator);
     }

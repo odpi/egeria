@@ -6,9 +6,9 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors.RepositoryExecutor;
-import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -35,7 +35,7 @@ public class SequentialFederationControl extends FederationControlBase
 
 
     /**
-     * Issue the federated command
+     * Issue the federated command.
      *
      * @param executor command to execute
      * @throws RepositoryErrorException problem with the state of one of the repositories.
@@ -45,6 +45,9 @@ public class SequentialFederationControl extends FederationControlBase
     {
         if (super.cohortConnectors != null)
         {
+            /*
+             * This is the first sweep of the repositories - used to gather the results.
+             */
             for (OMRSRepositoryConnector cohortConnector : cohortConnectors)
             {
                 if (cohortConnector != null)
@@ -59,16 +62,40 @@ public class SequentialFederationControl extends FederationControlBase
                         {
                             /*
                              * The executor returns true if it has all of the results it needs.
-                             * If it returns false it means it needs more info from another repository
+                             * If it returns false it means it needs more info from another repository.
                              */
-                            return;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            /*
+             * All repositories have been called.
+             * The executor may choose to augment each result element by making another sweep of the repositories.
+             */
+            List<String> resultGUIDs = executor.getResultsForAugmentation();
+
+            if (resultGUIDs != null)
+            {
+                for (String resultGUID : resultGUIDs)
+                {
+                    for (OMRSRepositoryConnector cohortConnector : cohortConnectors)
+                    {
+                        if (cohortConnector != null)
+                        {
+                            OMRSMetadataCollection metadataCollection = cohortConnector.getMetadataCollection();
+
+                            String metadataCollectionId = this.validateMetadataCollection(cohortConnector, metadataCollection, methodName);
+
+                            if (metadataCollectionId != null)
+                            {
+                                executor.augmentResultFromRepository(resultGUID, metadataCollectionId, metadataCollection);
+                            }
                         }
                     }
                 }
             }
         }
     }
-
-
-
 }

@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.SupportedCapabilityProperties;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.CapabilityDeploymentProperties;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -24,9 +24,9 @@ public class SupportedCapabilityElement implements MetadataElement, Serializable
 {
     private static final long     serialVersionUID = 1L;
 
-    private ElementHeader                 elementHeader                 = null;
-    private SupportedCapabilityProperties supportedCapabilityProperties = null;
-    private SoftwareCapabilityElement     capabilityElement             = null;
+    private ElementHeader                  elementHeader                  = null;
+    private CapabilityDeploymentProperties capabilityDeploymentProperties = null;
+    private SoftwareCapabilityElement      capabilityElement              = null;
 
 
     /**
@@ -48,7 +48,7 @@ public class SupportedCapabilityElement implements MetadataElement, Serializable
         if (template != null)
         {
             elementHeader = template.getElementHeader();
-            supportedCapabilityProperties = template.getSupportedCapabilityProperties();
+            capabilityDeploymentProperties = template.getCapabilityDeploymentProperties();
             capabilityElement = template.getCapabilityElement();
         }
     }
@@ -83,20 +83,20 @@ public class SupportedCapabilityElement implements MetadataElement, Serializable
      *
      * @return properties
      */
-    public SupportedCapabilityProperties getSupportedCapabilityProperties()
+    public CapabilityDeploymentProperties getCapabilityDeploymentProperties()
     {
-        return supportedCapabilityProperties;
+        return capabilityDeploymentProperties;
     }
 
 
     /**
      * Set up the properties from the software server supported capability relationship.
      *
-     * @param supportedCapabilityProperties server asset use
+     * @param capabilityDeploymentProperties server asset use
      */
-    public void setSupportedCapabilityProperties(SupportedCapabilityProperties supportedCapabilityProperties)
+    public void setCapabilityDeploymentProperties(CapabilityDeploymentProperties capabilityDeploymentProperties)
     {
-        this.supportedCapabilityProperties = supportedCapabilityProperties;
+        this.capabilityDeploymentProperties = capabilityDeploymentProperties;
     }
 
 
@@ -132,7 +132,7 @@ public class SupportedCapabilityElement implements MetadataElement, Serializable
     {
         return "SupportedCapabilityElement{" +
                        "elementHeader=" + elementHeader +
-                       ", supportedCapabilityProperties=" + supportedCapabilityProperties +
+                       ", capabilityDeploymentProperties=" + capabilityDeploymentProperties +
                        ", capabilityElement=" + capabilityElement +
                        '}';
     }
@@ -157,7 +157,7 @@ public class SupportedCapabilityElement implements MetadataElement, Serializable
         }
         SupportedCapabilityElement that = (SupportedCapabilityElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
-                       Objects.equals(supportedCapabilityProperties, that.supportedCapabilityProperties) &&
+                       Objects.equals(capabilityDeploymentProperties, that.capabilityDeploymentProperties) &&
                        Objects.equals(capabilityElement, that.capabilityElement);
     }
 
@@ -170,6 +170,6 @@ public class SupportedCapabilityElement implements MetadataElement, Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(elementHeader, supportedCapabilityProperties, capabilityElement);
+        return Objects.hash(elementHeader, capabilityDeploymentProperties, capabilityElement);
     }
 }

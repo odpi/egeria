@@ -16,15 +16,19 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * EntityAccumulator accumulates and validates entities received from a collection of open metadata
+ * EntitiesAccumulator accumulates and validates entities received from a collection of open metadata
  * repositories.  It removes duplicates from the list by choosing the latest entity details object.
  *
  * This class may be called simultaneously from many different threads so it must be thread-safe.
  */
-public class EntityAccumulator extends QueryInstanceAccumulatorBase
+public class EntitiesAccumulator extends QueryInstanceAccumulatorBase
 {
+    /*
+     * Map of entityGUID to entity detail retrieved from the repositories
+     */
     private volatile Map<String, EntityDetail>         accumulatedEntities        = new HashMap<>();
     private volatile Map<String, List<Classification>> accumulatedClassifications = new HashMap<>();
+    private volatile Map<String, List<String>>         accumulatedEntitySources   = new HashMap<>();
 
 
     /**
@@ -35,9 +39,9 @@ public class EntityAccumulator extends QueryInstanceAccumulatorBase
      * @param auditLog audit log provides destination for log messages
      * @param repositoryValidator validator provides common validation routines
      */
-    public EntityAccumulator(String                  localMetadataCollectionId,
-                             AuditLog                auditLog,
-                             OMRSRepositoryValidator repositoryValidator)
+    public EntitiesAccumulator(String                  localMetadataCollectionId,
+                               AuditLog                auditLog,
+                               OMRSRepositoryValidator repositoryValidator)
     {
         super(localMetadataCollectionId, auditLog, repositoryValidator);
     }
@@ -59,6 +63,20 @@ public class EntityAccumulator extends QueryInstanceAccumulatorBase
             EntityDetail  currentSavedEntity = accumulatedEntities.get(entityGUID);
 
             /*
+             * Remember that this metadata collection has already returned this entity.
+             */
+            List<String> contributingMetadataCollections = accumulatedEntitySources.get(entityGUID);
+
+            if (contributingMetadataCollections == null)
+            {
+                contributingMetadataCollections = new ArrayList<>();
+            }
+
+            contributingMetadataCollections.add(metadataCollectionId);
+
+            accumulatedEntitySources.put(entityGUID, contributingMetadataCollections);
+
+            /*
              * This incoming instance is ignored if we already have a later version.
              */
             if (! super.currentInstanceIsBest(currentSavedEntity, incomingEntity))
@@ -78,63 +96,7 @@ public class EntityAccumulator extends QueryInstanceAccumulatorBase
              * Now consider the classifications.  Each received entity may have a different set of classifications attached and
              * the enterprise connector should create an accumulated list of the best ones.
              */
-            List<Classification> currentSavedClassifications = accumulatedClassifications.get(entityGUID);
-
-            if (currentSavedClassifications == null)
-            {
-                /*
-                 * No classifications currently saved for this entity
-                 */
-                if (incomingEntity.getClassifications() != null)
-                {
-                    accumulatedClassifications.put(entityGUID, incomingEntity.getClassifications());
-                }
-            }
-            else if (incomingEntity.getClassifications() != null)
-            {
-                /*
-                 * Need to merge the two lists
-                 */
-                Map<String, Classification> entityClassificationsMap = new HashMap<>();
-
-                /*
-                 * Add the current classifications to the map.
-                 */
-                for (Classification existingClassification : currentSavedClassifications)
-                {
-                    if (existingClassification != null)
-                    {
-                        entityClassificationsMap.put(existingClassification.getName(), existingClassification);
-                    }
-                }
-
-                /*
-                 * Add the incoming classifications if they are a later version.
-                 */
-                for (Classification newClassification : incomingEntity.getClassifications())
-                {
-                    if (newClassification != null)
-                    {
-                        Classification existingClassification = entityClassificationsMap.get(newClassification.getName());
-
-                        /*
-                         * Ignore older versions of the classification
-                         */
-                        if ((existingClassification == null) || (existingClassification.getVersion() < newClassification.getVersion()))
-                        {
-                            entityClassificationsMap.put(newClassification.getName(), newClassification);
-                        }
-                    }
-                }
-
-                /*
-                 * Save the merged list.
-                 */
-                if (! entityClassificationsMap.isEmpty())
-                {
-                    accumulatedClassifications.put(entityGUID, new ArrayList<>(entityClassificationsMap.values()));
-                }
-            }
+            this.saveClassifications(entityGUID, incomingEntity.getClassifications());
         }
     }
 
@@ -168,6 +130,110 @@ public class EntityAccumulator extends QueryInstanceAccumulatorBase
              */
             super.setResultsReturned(metadataCollectionId, 0);
         }
+    }
+
+
+    /**
+     * Add a list of classifications to the accumulator. These are extracted from the retrieved entities or they are separately
+     * retrieved from metadata collections that only have an entity proxy with
+     * classifications connected to it that are uniquely stored in the metadata collection.
+     *
+     * @param entityGUID unique identifier
+     * @param incomingClassifications list of retrieved classifications
+     */
+    public synchronized void saveClassifications(String               entityGUID,
+                                                 List<Classification> incomingClassifications)
+    {
+
+        /*
+         * Each received entity may have a different set of classifications attached and
+         * the enterprise connector should create an accumulated list of the best ones.
+         */
+        List<Classification> currentSavedClassifications = accumulatedClassifications.get(entityGUID);
+
+        if (currentSavedClassifications == null)
+        {
+            /*
+             * No classifications currently saved for this entity
+             */
+            if (incomingClassifications != null)
+            {
+                accumulatedClassifications.put(entityGUID, incomingClassifications);
+            }
+        }
+        else if (incomingClassifications != null)
+        {
+            /*
+             * Need to merge the two lists
+             */
+            Map<String, Classification> entityClassificationsMap = new HashMap<>();
+
+            /*
+             * Add the current classifications to the map.
+             */
+            for (Classification existingClassification : currentSavedClassifications)
+            {
+                if (existingClassification != null)
+                {
+                    entityClassificationsMap.put(existingClassification.getName(), existingClassification);
+                }
+            }
+
+            /*
+             * Add the incoming classifications if they are a later version.
+             */
+            for (Classification newClassification : incomingClassifications)
+            {
+                if (newClassification != null)
+                {
+                    Classification existingClassification = entityClassificationsMap.get(newClassification.getName());
+
+                    /*
+                     * Ignore older versions of the classification
+                     */
+                    if ((existingClassification == null) || (existingClassification.getVersion() < newClassification.getVersion()))
+                    {
+                        entityClassificationsMap.put(newClassification.getName(), newClassification);
+                    }
+                }
+            }
+
+            /*
+             * Save the merged list.
+             */
+            if (! entityClassificationsMap.isEmpty())
+            {
+                accumulatedClassifications.put(entityGUID, new ArrayList<>(entityClassificationsMap.values()));
+            }
+        }
+    }
+
+
+    /**
+     * Return the list of metadata collection Ids for the metadata collections that retrieved this entity.
+     *
+     * @param entityGUID unique identifier for entity of interest
+     * @return null or list of metadata collection ids
+     */
+    public List<String> getContributingMetadataCollections(String entityGUID)
+    {
+        return accumulatedEntitySources.get(entityGUID);
+    }
+
+
+    /**
+     * Return the list of GUIDs for the entities returned from the query.
+     *
+     * @return null or list of GUIDs
+     */
+    public List<String> getResultsForAugmentation()
+    {
+        if (! accumulatedEntities.isEmpty())
+        {
+           return new ArrayList<>(accumulatedEntities.keySet());
+        }
+
+        return null;
     }
 
 
