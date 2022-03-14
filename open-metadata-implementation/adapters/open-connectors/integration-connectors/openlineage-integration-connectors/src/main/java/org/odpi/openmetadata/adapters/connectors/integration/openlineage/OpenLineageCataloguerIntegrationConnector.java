@@ -151,9 +151,8 @@ public class OpenLineageCataloguerIntegrationConnector extends LineageIntegrator
 
                             processProperties.setTypeName("DeployedSoftwareComponent");
                             processProperties.setQualifiedName(qualifiedName);
-                            processProperties.setProcessStatus(ProcessStatus.ACTIVE);
 
-                            processGUID = myContext.createProcess(false, processProperties);
+                            processGUID = myContext.createProcess(false, ProcessStatus.ACTIVE, processProperties);
                             myContext.publishProcess(processGUID);
                         }
                         else if (existingProcesses.size() == 1)

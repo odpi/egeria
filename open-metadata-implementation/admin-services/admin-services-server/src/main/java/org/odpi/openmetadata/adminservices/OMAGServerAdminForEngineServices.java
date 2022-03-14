@@ -102,7 +102,9 @@ public class OMAGServerAdminForEngineServices
                         if (engineServiceConfig.getEngineServiceOperationalStatus() == ServiceOperationalStatus.ENABLED)
                         {
                             RegisteredOMAGService service = new RegisteredOMAGService();
+
                             service.setServiceName(engineServiceConfig.getEngineServiceFullName());
+                            service.setServiceDevelopmentStatus(engineServiceConfig.getEngineServiceDevelopmentStatus());
                             service.setServiceDescription(engineServiceConfig.getEngineServiceDescription());
                             service.setServiceURLMarker(engineServiceConfig.getEngineServiceURLMarker());
                             service.setServiceWiki(engineServiceConfig.getEngineServiceWiki());

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name="Archive Manager OMES", description="The Archive Manager OMES provide the core subsystem for driving requests to maintain open metadata archives.",
      externalDocs=@ExternalDocumentation(description="Archive Manager Open Metadata Engine Services (OMES)",
-                                         url="https://odpi.github.io/egeria-docs/services/omes/archive-manager/overview/"))
+                                         url="https://egeria-project.org/services/omes/archive-manager/overview/"))
 
 public class ArchiveManagerResource
 {

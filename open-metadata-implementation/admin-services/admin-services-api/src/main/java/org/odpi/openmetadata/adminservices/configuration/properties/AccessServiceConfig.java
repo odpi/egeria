@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adminservices.configuration.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
@@ -25,17 +26,18 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
 {
     private static final long    serialVersionUID = 1L;
 
-    private int                            accessServiceId                = 0;
-    private String                         accessServiceAdminClass        = null;
-    private String                         accessServiceName              = null;
-    private String                         accessServiceFullName          = null;
-    private String                         accessServiceURLMarker         = null;
-    private String                         accessServiceDescription       = null;
-    private String                         accessServiceWiki              = null;
-    private ServiceOperationalStatus       accessServiceOperationalStatus = null;
-    private Connection                     accessServiceInTopic           = null;
-    private Connection                     accessServiceOutTopic          = null;
-    private Map<String, Object>            accessServiceOptions           = null;
+    private int                        accessServiceId                = 0;
+    private ComponentDevelopmentStatus accessServiceDevelopmentStatus = null;
+    private String                     accessServiceAdminClass        = null;
+    private String                     accessServiceName              = null;
+    private String                     accessServiceFullName          = null;
+    private String                     accessServiceURLMarker         = null;
+    private String                     accessServiceDescription       = null;
+    private String                     accessServiceWiki              = null;
+    private ServiceOperationalStatus   accessServiceOperationalStatus = null;
+    private Connection                 accessServiceInTopic           = null;
+    private Connection                 accessServiceOutTopic          = null;
+    private Map<String, Object>        accessServiceOptions           = null;
 
 
     /**
@@ -59,6 +61,7 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
         if (template != null)
         {
             accessServiceId = template.getAccessServiceId();
+            accessServiceDevelopmentStatus = template.getAccessServiceDevelopmentStatus();
             accessServiceAdminClass = template.getAccessServiceAdminClass();
             accessServiceName = template.getAccessServiceName();
             accessServiceFullName = template.getAccessServiceFullName();
@@ -82,6 +85,7 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
     public AccessServiceConfig(AccessServiceRegistration accessServiceRegistration)
     {
         this.accessServiceId = accessServiceRegistration.getAccessServiceCode();
+        this.accessServiceDevelopmentStatus = accessServiceRegistration.getAccessServiceDevelopmentStatus();
         this.accessServiceName = accessServiceRegistration.getAccessServiceName();
         this.accessServiceFullName = accessServiceRegistration.getAccessServiceFullName();
         this.accessServiceURLMarker = accessServiceRegistration.getAccessServiceURLMarker();
@@ -112,6 +116,29 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
     {
         this.accessServiceId = accessServiceId;
     }
+
+
+    /**
+     * Return the development status of the service.
+     *
+     * @return enum describing the status
+     */
+    public ComponentDevelopmentStatus getAccessServiceDevelopmentStatus()
+    {
+        return accessServiceDevelopmentStatus;
+    }
+
+
+    /**
+     * Set up the development status of the service.
+     *
+     * @param accessServiceDevelopmentStatus  enum describing the status
+     */
+    public void setAccessServiceDevelopmentStatus(ComponentDevelopmentStatus accessServiceDevelopmentStatus)
+    {
+        this.accessServiceDevelopmentStatus = accessServiceDevelopmentStatus;
+    }
+
 
 
     /**
@@ -378,18 +405,19 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
     public String toString()
     {
         return "AccessServiceConfig{" +
-                "accessServiceId=" + accessServiceId +
-                ", accessServiceAdminClass='" + accessServiceAdminClass + '\'' +
-                ", accessServiceName='" + accessServiceName + '\'' +
-                ", accessServiceFullName='" + accessServiceFullName + '\'' +
-                ", accessServiceURLMarker='" + accessServiceURLMarker + '\'' +
-                ", accessServiceDescription='" + accessServiceDescription + '\'' +
-                ", accessServiceWiki='" + accessServiceWiki + '\'' +
-                ", accessServiceOperationalStatus=" + accessServiceOperationalStatus +
-                ", accessServiceInTopic=" + accessServiceInTopic +
-                ", accessServiceOutTopic=" + accessServiceOutTopic +
-                ", accessServiceOptions=" + accessServiceOptions +
-                '}';
+                       "accessServiceId=" + accessServiceId +
+                       ", accessServiceDevelopmentStatus=" + accessServiceDevelopmentStatus +
+                       ", accessServiceAdminClass='" + accessServiceAdminClass + '\'' +
+                       ", accessServiceName='" + accessServiceName + '\'' +
+                       ", accessServiceFullName='" + accessServiceFullName + '\'' +
+                       ", accessServiceURLMarker='" + accessServiceURLMarker + '\'' +
+                       ", accessServiceDescription='" + accessServiceDescription + '\'' +
+                       ", accessServiceWiki='" + accessServiceWiki + '\'' +
+                       ", accessServiceOperationalStatus=" + accessServiceOperationalStatus +
+                       ", accessServiceInTopic=" + accessServiceInTopic +
+                       ", accessServiceOutTopic=" + accessServiceOutTopic +
+                       ", accessServiceOptions=" + accessServiceOptions +
+                       '}';
     }
 
 
@@ -411,16 +439,18 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
             return false;
         }
         AccessServiceConfig that = (AccessServiceConfig) objectToCompare;
-        return getAccessServiceId() == that.getAccessServiceId() &&
-                       Objects.equals(getAccessServiceAdminClass(), that.getAccessServiceAdminClass()) &&
-                       Objects.equals(getAccessServiceName(), that.getAccessServiceName()) &&
-                       Objects.equals(getAccessServiceURLMarker(), that.getAccessServiceURLMarker()) &&
-                       Objects.equals(getAccessServiceDescription(), that.getAccessServiceDescription()) &&
-                       Objects.equals(getAccessServiceWiki(), that.getAccessServiceWiki()) &&
-                       getAccessServiceOperationalStatus() == that.getAccessServiceOperationalStatus() &&
-                       Objects.equals(getAccessServiceInTopic(), that.getAccessServiceInTopic()) &&
-                       Objects.equals(getAccessServiceOutTopic(), that.getAccessServiceOutTopic()) &&
-                       Objects.equals(getAccessServiceOptions(), that.getAccessServiceOptions());
+        return accessServiceId == that.accessServiceId &&
+                       accessServiceDevelopmentStatus == that.accessServiceDevelopmentStatus &&
+                       Objects.equals(accessServiceAdminClass, that.accessServiceAdminClass) &&
+                       Objects.equals(accessServiceName, that.accessServiceName) &&
+                       Objects.equals(accessServiceFullName, that.accessServiceFullName) &&
+                       Objects.equals(accessServiceURLMarker, that.accessServiceURLMarker) &&
+                       Objects.equals(accessServiceDescription, that.accessServiceDescription) &&
+                       Objects.equals(accessServiceWiki, that.accessServiceWiki) &&
+                       accessServiceOperationalStatus == that.accessServiceOperationalStatus &&
+                       Objects.equals(accessServiceInTopic, that.accessServiceInTopic) &&
+                       Objects.equals(accessServiceOutTopic, that.accessServiceOutTopic) &&
+                       Objects.equals(accessServiceOptions, that.accessServiceOptions);
     }
 
 
@@ -432,8 +462,8 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(getAccessServiceId(), getAccessServiceAdminClass(), getAccessServiceName(), getAccessServiceURLMarker(),
-                            getAccessServiceDescription(), getAccessServiceWiki(), getAccessServiceOperationalStatus(),
-                            getAccessServiceInTopic(), getAccessServiceOutTopic(), getAccessServiceOptions());
+        return Objects.hash(accessServiceId, accessServiceDevelopmentStatus, accessServiceAdminClass, accessServiceName, accessServiceFullName,
+                            accessServiceURLMarker, accessServiceDescription, accessServiceWiki, accessServiceOperationalStatus, accessServiceInTopic,
+                            accessServiceOutTopic, accessServiceOptions);
     }
 }

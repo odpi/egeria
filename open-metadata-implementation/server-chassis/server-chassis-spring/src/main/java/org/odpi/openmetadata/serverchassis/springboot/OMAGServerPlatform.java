@@ -63,7 +63,7 @@ import java.util.*;
         ),
 
         externalDocs = @ExternalDocumentation(description = "OMAG Server Platform documentation",
-                url="https://odpi.github.io/egeria-docs/guides/admin/")
+                url="https://egeria-project.org/guides/admin/")
         )
 
 

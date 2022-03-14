@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.*;
      description="The Data Manager OMAS provides APIs for tools and applications wishing to manage metadata relating to data managers " +
                          "such as database servers, event brokers, content managers and file systems.",
      externalDocs=@ExternalDocumentation(description="Data Manager Open Metadata Access Service (OMAS)",
-                                         url="https://odpi.github.io/egeria-docs/services/omas/data-manager/overview/"))
+                                         url="https://egeria-project.org/services/omas/data-manager/overview/"))
 
 public class DatabaseManagerResource
 {
@@ -601,7 +601,7 @@ public class DatabaseManagerResource
      * @param userId calling user
      * @param databaseManagerGUID unique identifier of software server capability representing the owning DBMS
      * @param databaseManagerName unique name of software server capability representing the owning DBMS
-     * @param databaseSchemaGUID unique identifier of the database schema where the database table is located.
+     * @param databaseAssetGUID unique identifier of the database or database schema where the database table is located.
      * @param databaseTableProperties properties for the database table
      *
      * @return unique identifier of the new metadata element for the database table or
@@ -609,16 +609,16 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/schemas/{databaseSchemaGUID}/tables")
+    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/assets/{databaseAssetGUID}/tables")
 
     public GUIDResponse createDatabaseTable(@PathVariable String                  serverName,
                                             @PathVariable String                  userId,
                                             @PathVariable String                  databaseManagerGUID,
                                             @PathVariable String                  databaseManagerName,
-                                            @PathVariable String                  databaseSchemaGUID,
+                                            @PathVariable String                  databaseAssetGUID,
                                             @RequestBody  DatabaseTableProperties databaseTableProperties)
     {
-        return restAPI.createDatabaseTable(serverName, userId, databaseManagerGUID, databaseManagerName, databaseSchemaGUID, databaseTableProperties);
+        return restAPI.createDatabaseTable(serverName, userId, databaseManagerGUID, databaseManagerName, databaseAssetGUID, databaseTableProperties);
     }
 
 
@@ -630,7 +630,7 @@ public class DatabaseManagerResource
      * @param databaseManagerGUID unique identifier of software server capability representing the owning DBMS
      * @param databaseManagerName unique name of software server capability representing the owning DBMS
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param databaseSchemaGUID unique identifier of the database schema where the database table is located.
+     * @param databaseAssetGUID unique identifier of the database or database schema where the database table is located.
      * @param templateProperties properties that override the template
      *
      * @return unique identifier of the new database table or
@@ -638,17 +638,17 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/schemas/{databaseSchemaGUID}/tables/from-template/{templateGUID}")
+    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/assets/{databaseAssetGUID}/tables/from-template/{templateGUID}")
 
     public GUIDResponse createDatabaseTableFromTemplate(@PathVariable String             serverName,
                                                         @PathVariable String             userId,
                                                         @PathVariable String             databaseManagerGUID,
                                                         @PathVariable String             databaseManagerName,
                                                         @PathVariable String             templateGUID,
-                                                        @PathVariable String             databaseSchemaGUID,
+                                                        @PathVariable String             databaseAssetGUID,
                                                         @RequestBody  TemplateProperties templateProperties)
     {
-        return restAPI.createDatabaseTableFromTemplate(serverName, userId, databaseManagerGUID, databaseManagerName, templateGUID, databaseSchemaGUID, templateProperties);
+        return restAPI.createDatabaseTableFromTemplate(serverName, userId, databaseManagerGUID, databaseManagerName, templateGUID, databaseAssetGUID, templateProperties);
     }
 
 
@@ -667,7 +667,7 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/schemas/tables/{databaseTableGUID}")
+    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/tables/{databaseTableGUID}")
 
     public VoidResponse updateDatabaseTable(@PathVariable String                  serverName,
                                             @PathVariable String                  userId,
@@ -696,7 +696,7 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/schemas/tables/{databaseTableGUID}/{qualifiedName}/delete")
+    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/tables/{databaseTableGUID}/{qualifiedName}/delete")
 
     public VoidResponse removeDatabaseTable(@PathVariable                  String          serverName,
                                             @PathVariable                  String          userId,
@@ -725,7 +725,7 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/databases/schemas/tables/by-search-string")
+    @PostMapping(path = "/databases/tables/by-search-string")
 
     public DatabaseTablesResponse   findDatabaseTables(@PathVariable String                  serverName,
                                                        @PathVariable String                  userId,
@@ -738,11 +738,11 @@ public class DatabaseManagerResource
 
 
     /**
-     * Retrieve the list of database tables associated with a database schema.
+     * Retrieve the list of database tables associated with a database or database schema.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseSchemaGUID unique identifier of the database schema of interest
+     * @param databaseAssetGUID unique identifier of the database or database schema of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -751,15 +751,15 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/databases/schemas/{databaseSchemaGUID}/tables")
+    @GetMapping(path = "/databases/assets/{databaseAssetGUID}/tables")
 
-    public DatabaseTablesResponse    getTablesForDatabaseSchema(@PathVariable String serverName,
-                                                                @PathVariable String userId,
-                                                                @PathVariable String databaseSchemaGUID,
-                                                                @RequestParam int    startFrom,
-                                                                @RequestParam int    pageSize)
+    public DatabaseTablesResponse getTablesForDatabaseAsset(@PathVariable String serverName,
+                                                            @PathVariable String userId,
+                                                            @PathVariable String databaseAssetGUID,
+                                                            @RequestParam int    startFrom,
+                                                            @RequestParam int    pageSize)
     {
-        return restAPI.getTablesForDatabaseSchema(serverName, userId, databaseSchemaGUID, startFrom, pageSize);
+        return restAPI.getTablesForDatabaseAsset(serverName, userId, databaseAssetGUID, startFrom, pageSize);
     }
 
 
@@ -778,7 +778,7 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/databases/schemas/tables/by-name")
+    @PostMapping(path = "/databases/tables/by-name")
 
     public DatabaseTablesResponse   getDatabaseTablesByName(@PathVariable String          serverName,
                                                             @PathVariable String          userId,
@@ -802,7 +802,7 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/databases/schemas/tables/{guid}")
+    @GetMapping(path = "/databases/tables/{guid}")
 
     public DatabaseTableResponse getDatabaseTableByGUID(@PathVariable String serverName,
                                                         @PathVariable String userId,
@@ -819,7 +819,7 @@ public class DatabaseManagerResource
      * @param userId calling user
      * @param databaseManagerGUID unique identifier of software server capability representing the owning DBMS
      * @param databaseManagerName unique name of software server capability representing the owning DBMS
-     * @param databaseSchemaGUID unique identifier of the database schema where the database view is located.
+     * @param databaseAssetGUID unique identifier of the database or database schema where the database view is located.
      * @param databaseViewProperties properties for the new view
      *
      * @return unique identifier of the new metadata element for the database view or
@@ -827,16 +827,16 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/schemas/{databaseSchemaGUID}/tables/views")
+    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/assets/{databaseAssetGUID}/tables/views")
 
     public GUIDResponse createDatabaseView(@PathVariable String                 serverName,
                                            @PathVariable String                 userId,
                                            @PathVariable String                 databaseManagerGUID,
                                            @PathVariable String                 databaseManagerName,
-                                           @PathVariable String                 databaseSchemaGUID,
+                                           @PathVariable String                 databaseAssetGUID,
                                            @RequestBody  DatabaseViewProperties databaseViewProperties)
     {
-        return restAPI.createDatabaseView(serverName, userId, databaseManagerGUID, databaseManagerName, databaseSchemaGUID, databaseViewProperties);
+        return restAPI.createDatabaseView(serverName, userId, databaseManagerGUID, databaseManagerName, databaseAssetGUID, databaseViewProperties);
     }
 
 
@@ -848,7 +848,7 @@ public class DatabaseManagerResource
      * @param databaseManagerGUID unique identifier of software server capability representing the owning DBMS
      * @param databaseManagerName unique name of software server capability representing the owning DBMS
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param databaseSchemaGUID unique identifier of the database schema where the database view is located.
+     * @param databaseAssetGUID unique identifier of the database or database schema where the database view is located.
      * @param templateProperties properties that override the template
      *
      * @return unique identifier of the new metadata element for the database view or
@@ -856,17 +856,17 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/schemas/{databaseSchemaGUID}/tables/views/from-template/{templateGUID}")
+    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/assets/{databaseAssetGUID}/tables/views/from-template/{templateGUID}")
 
     public GUIDResponse createDatabaseViewFromTemplate(@PathVariable String             serverName,
                                                        @PathVariable String             userId,
                                                        @PathVariable String             databaseManagerGUID,
                                                        @PathVariable String             databaseManagerName,
                                                        @PathVariable String             templateGUID,
-                                                       @PathVariable String             databaseSchemaGUID,
+                                                       @PathVariable String             databaseAssetGUID,
                                                        @RequestBody  TemplateProperties templateProperties)
     {
-        return restAPI.createDatabaseViewFromTemplate(serverName, userId, databaseManagerGUID, databaseManagerName, templateGUID, databaseSchemaGUID, templateProperties);
+        return restAPI.createDatabaseViewFromTemplate(serverName, userId, databaseManagerGUID, databaseManagerName, templateGUID, databaseAssetGUID, templateProperties);
     }
 
 
@@ -885,7 +885,7 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/schemas/tables/views/{databaseViewGUID}")
+    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/tables/views/{databaseViewGUID}")
 
     public VoidResponse updateDatabaseView(@PathVariable String                 serverName,
                                            @PathVariable String                 userId,
@@ -914,7 +914,7 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/schemas/tables/views/{databaseViewGUID}/{qualifiedName}/delete")
+    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/tables/views/{databaseViewGUID}/{qualifiedName}/delete")
 
     public VoidResponse removeDatabaseView(@PathVariable                  String          serverName,
                                            @PathVariable                  String          userId,
@@ -943,7 +943,7 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/databases/schemas/tables/views/by-search-string")
+    @PostMapping(path = "/databases/tables/views/by-search-string")
 
     public DatabaseViewsResponse   findDatabaseViews(@PathVariable String                  serverName,
                                                      @PathVariable String                  userId,
@@ -956,11 +956,11 @@ public class DatabaseManagerResource
 
 
     /**
-     * Retrieve the list of database views associated with a database schema.
+     * Retrieve the list of database views associated with a database or database schema.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseSchemaGUID unique identifier of the database schema of interest
+     * @param databaseAssetGUID unique identifier of the database or database schema of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -969,15 +969,15 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/databases/schemas/{databaseSchemaGUID}/tables/views")
+    @GetMapping(path = "/databases/assets/{databaseAssetGUID}/tables/views")
 
-    public DatabaseViewsResponse    getViewsForDatabaseSchema(@PathVariable String serverName,
-                                                              @PathVariable String userId,
-                                                              @PathVariable String databaseSchemaGUID,
-                                                              @RequestParam int    startFrom,
-                                                              @RequestParam int    pageSize)
+    public DatabaseViewsResponse getViewsForDatabaseAsset(@PathVariable String serverName,
+                                                          @PathVariable String userId,
+                                                          @PathVariable String databaseAssetGUID,
+                                                          @RequestParam int    startFrom,
+                                                          @RequestParam int    pageSize)
     {
-        return restAPI.getViewsForDatabaseSchema(serverName, userId, databaseSchemaGUID, startFrom, pageSize);
+        return restAPI.getViewsForDatabaseAsset(serverName, userId, databaseAssetGUID, startFrom, pageSize);
     }
 
 
@@ -996,7 +996,7 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/databases/schemas/tables/views/by-name")
+    @PostMapping(path = "/databases/tables/views/by-name")
 
     public DatabaseViewsResponse   getDatabaseViewsByName(@PathVariable String          serverName,
                                                           @PathVariable String          userId,
@@ -1020,7 +1020,7 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/databases/schemas/tables/views/{guid}")
+    @GetMapping(path = "/databases/tables/views/{guid}")
 
     public DatabaseViewResponse getDatabaseViewByGUID(@PathVariable String serverName,
                                                       @PathVariable String userId,
@@ -1051,7 +1051,7 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/schemas/tables/{databaseTableGUID}/columns")
+    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/tables/{databaseTableGUID}/columns")
 
     public GUIDResponse createDatabaseColumn(@PathVariable String                   serverName,
                                              @PathVariable String                   userId,
@@ -1080,7 +1080,7 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/schemas/tables/{databaseTableGUID}/columns/from-template/{templateGUID}")
+    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/tables/{databaseTableGUID}/columns/from-template/{templateGUID}")
 
     public GUIDResponse createDatabaseColumnFromTemplate(@PathVariable String             serverName,
                                                          @PathVariable String             userId,
@@ -1109,7 +1109,7 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/schemas/tables/columns/{databaseColumnGUID}")
+    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/tables/columns/{databaseColumnGUID}")
 
     public VoidResponse updateDatabaseColumn(@PathVariable String                   serverName,
                                              @PathVariable String                   userId,
@@ -1138,7 +1138,7 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/schemas/tables/columns/{databaseColumnGUID}/{qualifiedName}/delete")
+    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/tables/columns/{databaseColumnGUID}/{qualifiedName}/delete")
 
     public VoidResponse removeDatabaseColumn(@PathVariable                  String          serverName,
                                              @PathVariable                  String          userId,
@@ -1167,7 +1167,7 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/databases/schemas/tables/columns/by-search-string")
+    @PostMapping(path = "/databases/tables/columns/by-search-string")
 
     public DatabaseColumnsResponse   findDatabaseColumns(@PathVariable String                  serverName,
                                                          @PathVariable String                  userId,
@@ -1193,7 +1193,7 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/databases/schemas/tables/{databaseTableGUID}/columns")
+    @GetMapping(path = "/databases/tables/{databaseTableGUID}/columns")
 
     public DatabaseColumnsResponse    getColumnsForDatabaseTable(@PathVariable String serverName,
                                                                  @PathVariable String userId,
@@ -1220,7 +1220,7 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/databases/schemas/tables/columns/by-name")
+    @PostMapping(path = "/databases/tables/columns/by-name")
 
     public DatabaseColumnsResponse   getDatabaseColumnsByName(@PathVariable String          serverName,
                                                               @PathVariable String          userId,
@@ -1244,7 +1244,7 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/databases/schemas/tables/columns/{guid}")
+    @GetMapping(path = "/databases/tables/columns/{guid}")
 
     public DatabaseColumnResponse getDatabaseColumnByGUID(@PathVariable String serverName,
                                                           @PathVariable String userId,
@@ -1274,7 +1274,7 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/schemas/tables/columns/{databaseColumnGUID}/primary-key")
+    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/tables/columns/{databaseColumnGUID}/primary-key")
 
     public VoidResponse setPrimaryKeyOnColumn(@PathVariable String                       serverName,
                                               @PathVariable String                       userId,
@@ -1302,7 +1302,7 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/schemas/tables/columns/{databaseColumnGUID}/primary-key/delete")
+    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/tables/columns/{databaseColumnGUID}/primary-key/delete")
 
     public VoidResponse removePrimaryKeyFromColumn(@PathVariable                  String          serverName,
                                                    @PathVariable                  String          userId,
@@ -1332,7 +1332,7 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/schemas/tables/columns/{foreignKeyColumnGUID}/foreign-key/{primaryKeyColumnGUID}")
+    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/tables/columns/{foreignKeyColumnGUID}/foreign-key/{primaryKeyColumnGUID}")
 
     public VoidResponse addForeignKeyRelationship(@PathVariable String                       serverName,
                                                   @PathVariable String                       userId,
@@ -1362,7 +1362,7 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/schemas/tables/columns/{foreignKeyColumnGUID}/foreign-key/{primaryKeyColumnGUID}/delete")
+    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/tables/columns/{foreignKeyColumnGUID}/foreign-key/{primaryKeyColumnGUID}/delete")
 
     public VoidResponse removeForeignKeyRelationship(@PathVariable                  String          serverName,
                                                      @PathVariable                  String          userId,

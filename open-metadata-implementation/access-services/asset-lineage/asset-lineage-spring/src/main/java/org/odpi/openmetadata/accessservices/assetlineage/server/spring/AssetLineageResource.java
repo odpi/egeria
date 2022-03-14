@@ -28,7 +28,7 @@ import java.util.List;
 @Tag(name = "Asset Lineage OMAS",
         description = "The Asset Lineage OMAS provides services to query the lineage of business terms and data assets.",
         externalDocs = @ExternalDocumentation(description = "Asset Lineage Open Metadata Access Service (OMAS)",
-                url = "https://odpi.github.io/egeria-docs/services/omas/asset-lineage/overview/"))
+                url = "https://egeria-project.org/services/omas/asset-lineage/overview/"))
 public class AssetLineageResource {
 
     private final AssetLineageRestServices restAPI = new AssetLineageRestServices();

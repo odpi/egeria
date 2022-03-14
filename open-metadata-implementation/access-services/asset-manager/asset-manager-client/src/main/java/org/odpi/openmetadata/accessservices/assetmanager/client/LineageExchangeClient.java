@@ -137,6 +137,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param processExternalIdentifierSource component that issuing this request.
      * @param processExternalIdentifierKeyPattern pattern for the external identifier within the external process manager (default is LOCAL_KEY)
      * @param mappingProperties additional properties to help with the mapping of the elements in the external process manager and open metadata
+     * @param processStatus initial status of the process
      * @param processProperties properties about the process to store
      *
      * @return unique identifier of the new process
@@ -156,6 +157,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                 String              processExternalIdentifierSource,
                                 KeyPattern          processExternalIdentifierKeyPattern,
                                 Map<String, String> mappingProperties,
+                                ProcessStatus       processStatus,
                                 ProcessProperties   processProperties) throws InvalidParameterException,
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException
@@ -170,6 +172,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
 
         ProcessRequestBody requestBody = new ProcessRequestBody();
         requestBody.setElementProperties(processProperties);
+        requestBody.setProcessStatus(processStatus);
         requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
                                                                                    assetManagerName,
                                                                                    processExternalIdentifier,

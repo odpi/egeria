@@ -539,37 +539,6 @@ public abstract class AssetManagerOMASConverter<B> extends OpenMetadataAPIGeneri
 
 
     /**
-     * Extract the instanceStatus property from the header.
-     *
-     * @param header header from entity
-     * @return ProcessStatus enum
-     */
-    ProcessStatus getProcessStatus(InstanceAuditHeader header)
-    {
-        if (header != null)
-        {
-            switch (header.getStatus())
-            {
-                case DRAFT:
-                    return ProcessStatus.DRAFT;
-
-                case PROPOSED:
-                    return ProcessStatus.PROPOSED;
-
-                case APPROVED:
-                    return ProcessStatus.APPROVED;
-
-                case ACTIVE:
-                    return ProcessStatus.ACTIVE;
-
-            }
-        }
-
-        return null;
-    }
-
-
-    /**
      * Retrieve and delete the GovernanceActionStatus enum property from the instance properties of an entity
      *
      * @param properties  entity properties
