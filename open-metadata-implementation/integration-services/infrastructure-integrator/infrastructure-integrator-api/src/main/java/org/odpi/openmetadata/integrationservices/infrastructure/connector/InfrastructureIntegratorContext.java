@@ -3,11 +3,3906 @@
 
 package org.odpi.openmetadata.integrationservices.infrastructure.connector;
 
+import org.odpi.openmetadata.accessservices.itinfrastructure.api.ITInfrastructureEventListener;
+import org.odpi.openmetadata.accessservices.itinfrastructure.client.CapabilityManagerClient;
+import org.odpi.openmetadata.accessservices.itinfrastructure.client.ConnectionManagerClient;
+import org.odpi.openmetadata.accessservices.itinfrastructure.client.ConnectorTypeManagerClient;
+import org.odpi.openmetadata.accessservices.itinfrastructure.client.DataAssetManagerClient;
+import org.odpi.openmetadata.accessservices.itinfrastructure.client.EndpointManagerClient;
+import org.odpi.openmetadata.accessservices.itinfrastructure.client.HostManagerClient;
+import org.odpi.openmetadata.accessservices.itinfrastructure.client.ITInfrastructureEventClient;
+import org.odpi.openmetadata.accessservices.itinfrastructure.client.ITProfileManagerClient;
+import org.odpi.openmetadata.accessservices.itinfrastructure.client.PlatformManagerClient;
+import org.odpi.openmetadata.accessservices.itinfrastructure.client.ProcessManagerClient;
+import org.odpi.openmetadata.accessservices.itinfrastructure.client.ServerManagerClient;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ConnectionElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ConnectorTypeElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ControlFlowElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.DataAssetElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.DataFlowElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.DeployedCapabilityElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.DeploymentElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.EndpointElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.HostElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ITProfileElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.LineageMappingElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ProcessCallElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ProcessElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.RelatedAssetElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ServerAssetUseElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareCapabilityElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareServerElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareServerPlatformElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.UserIdentityElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.*;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
 /**
  * InfrastructureIntegratorContext provides a wrapper around the IT Infrastructure OMAS client.
  * It provides the simplified interface to open metadata needed by the InfrastructureIntegratorConnector.
  */
 public class InfrastructureIntegratorContext
 {
+    private CapabilityManagerClient     capabilityManagerClient;
+    private ConnectionManagerClient     connectionManagerClient;
+    private ConnectorTypeManagerClient  connectorTypeManagerClient;
+    private DataAssetManagerClient      dataAssetManagerClient;
+    private EndpointManagerClient       endpointManagerClient;
+    private HostManagerClient           hostManagerClient;
+    private ITProfileManagerClient      itProfileManagerClient;
+    private PlatformManagerClient       platformManagerClient;
+    private ProcessManagerClient        processManagerClient;
+    private ServerManagerClient         serverManagerClient;
+    private ITInfrastructureEventClient eventClient;
+    private String                      userId;
+    private String                      infrastructureManagerGUID;
+    private String                      infrastructureManagerName;
 
+    private boolean                infrastructureManagerIsHome = true;
+
+    static final String assetTypeName         = "Asset";
+
+
+    public InfrastructureIntegratorContext(CapabilityManagerClient     capabilityManagerClient,
+                                           ConnectionManagerClient     connectionManagerClient,
+                                           ConnectorTypeManagerClient  connectorTypeManagerClient,
+                                           DataAssetManagerClient      dataAssetManagerClient,
+                                           EndpointManagerClient       endpointManagerClient,
+                                           HostManagerClient           hostManagerClient,
+                                           ITProfileManagerClient      itProfileManagerClient,
+                                           PlatformManagerClient       platformManagerClient,
+                                           ProcessManagerClient        processManagerClient,
+                                           ServerManagerClient         serverManagerClient,
+                                           ITInfrastructureEventClient eventClient,
+                                           String                      userId,
+                                           String                      infrastructureManagerGUID,
+                                           String                      infrastructureManagerName)
+    {
+        this.capabilityManagerClient = capabilityManagerClient;
+        this.connectionManagerClient = connectionManagerClient;
+        this.connectorTypeManagerClient = connectorTypeManagerClient;
+        this.dataAssetManagerClient = dataAssetManagerClient;
+        this.endpointManagerClient = endpointManagerClient;
+        this.hostManagerClient = hostManagerClient;
+        this.itProfileManagerClient = itProfileManagerClient;
+        this.platformManagerClient = platformManagerClient;
+        this.processManagerClient = processManagerClient;
+        this.serverManagerClient = serverManagerClient;
+        this.eventClient = eventClient;
+        this.userId = userId;
+        this.infrastructureManagerGUID = infrastructureManagerGUID;
+        this.infrastructureManagerName = infrastructureManagerName;
+    }
+
+
+    /* ========================================================
+     * Set up whether metadata is owned by the infrastructure manager
+     */
+
+
+    /**
+     * Set up the flag that controls the ownership of metadata created for this infrastructure manager. Default is true.
+     *
+     * @param infrastructureManagerIsHome should the metadata be marked as owned by the infrastructure manager so others can not update?
+     */
+    public void setInfrastructureManagerIsHome(boolean infrastructureManagerIsHome)
+    {
+        this.infrastructureManagerIsHome = infrastructureManagerIsHome;
+    }
+
+
+    /* ========================================================
+     * Register for inbound events from the IT Infrastructure OMAS OutTopic
+     */
+
+
+    /**
+     * Register a listener object that will be passed each of the events published by
+     * the IT Infrastructure OMAS.
+     *
+     * @param listener listener object
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
+     *                                      the creation of a connector.
+     * @throws ConnectorCheckedException there are errors in the initialization of the connector.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void registerListener(ITInfrastructureEventListener listener) throws InvalidParameterException,
+                                                                                ConnectionCheckedException,
+                                                                                ConnectorCheckedException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
+        eventClient.registerListener(userId, listener);
+    }
+
+
+    /* =====================================================================================================================
+     * The host describes the computer or container that provides the operating system for the platforms.
+     */
+
+
+    /**
+     * Create a new metadata element to represent a host.
+     *
+     * @param hostProperties properties to store
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createHost(HostProperties hostProperties) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
+    {
+        return hostManagerClient.createHost(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, hostProperties);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a host using an existing metadata element as a template.
+     *
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param templateProperties properties that override the template
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createHostFromTemplate(String             templateGUID,
+                                         TemplateProperties templateProperties) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        return hostManagerClient.createHostFromTemplate(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, templateGUID, templateProperties);
+    }
+
+
+    /**
+     * Update the metadata element representing a host.
+     *
+     * @param hostGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate are unspecified properties unchanged (true) or removed?
+     * @param hostProperties new properties for this element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateHost(String         hostGUID,
+                           boolean        isMergeUpdate,
+                           HostProperties hostProperties) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
+    {
+        hostManagerClient.updateHost(userId, infrastructureManagerGUID, infrastructureManagerName, hostGUID, isMergeUpdate, hostProperties);
+    }
+
+
+    /**
+     * Create a relationship between a host and an cluster member host.
+     *
+     * @param hostGUID unique identifier of the host
+     * @param clusterMemberGUID unique identifier of the cluster member host
+     * @param effectiveFrom time when this hosting is effective - null means immediately
+     * @param effectiveTo time when this hosting is no longer effective - null means forever
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupClusterMember(String  hostGUID,
+                                   String  clusterMemberGUID,
+                                   Date    effectiveFrom,
+                                   Date    effectiveTo) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
+    {
+        hostManagerClient.setupClusterMember(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, hostGUID, clusterMemberGUID, effectiveFrom, effectiveTo);
+    }
+
+
+    /**
+     * Remove a relationship between a host and an cluster member host.
+     *
+     * @param hostGUID unique identifier of the host
+     * @param clusterMemberGUID unique identifier of the cluster member host
+     * @param effectiveTime time when the hosting is effective
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearClusterMember(String hostGUID,
+                                   String clusterMemberGUID,
+                                   Date   effectiveTime) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException
+    {
+        hostManagerClient.clearClusterMember(userId, infrastructureManagerGUID, infrastructureManagerName, hostGUID, clusterMemberGUID, effectiveTime);
+    }
+
+
+
+    /**
+     * Update the zones for the host asset so that it becomes visible to consumers.
+     * (The zones are set to the list of zones in the publishedZones option configured for each
+     * instance of the IT Infrastructure OMAS).
+     *
+     * @param hostGUID unique identifier of the metadata element to publish
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void publishHost(String hostGUID) throws InvalidParameterException,
+                                                    UserNotAuthorizedException,
+                                                    PropertyServerException
+    {
+        hostManagerClient.publishHost(userId, hostGUID);
+    }
+
+
+    /**
+     * Update the zones for the host asset so that it is no longer visible to consumers.
+     * (The zones are set to the list of zones in the defaultZones option configured for each
+     * instance of the IT Infrastructure OMAS.  This is the setting when the host is first created).
+     *
+     * @param hostGUID unique identifier of the metadata element to withdraw
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void withdrawHost(String hostGUID) throws InvalidParameterException,
+                                                     UserNotAuthorizedException,
+                                                     PropertyServerException
+    {
+        hostManagerClient.withdrawHost(userId, hostGUID);
+    }
+
+
+    /**
+     * Remove the metadata element representing a host.
+     *
+     * @param hostGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeHost(String hostGUID) throws InvalidParameterException,
+                                                   UserNotAuthorizedException,
+                                                   PropertyServerException
+    {
+        hostManagerClient.removeHost(userId, infrastructureManagerGUID, infrastructureManagerName, hostGUID);
+    }
+
+
+
+    /**
+     * Retrieve the list of host metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param searchString string to find in the properties
+     * @param effectiveTime effective time for the query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<HostElement> findHosts(String searchString,
+                                       Date   effectiveTime,
+                                       int    startFrom,
+                                       int    pageSize) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
+    {
+        return hostManagerClient.findHosts(userId, searchString, effectiveTime, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of host metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param name name to search for
+     * @param effectiveTime effective time for the query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<HostElement> getHostsByName(String name,
+                                            Date   effectiveTime,
+                                            int    startFrom,
+                                            int    pageSize) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
+    {
+        return hostManagerClient.getHostsByName(userId, name, effectiveTime, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of hosts created by this caller.
+     *
+     * @param effectiveTime effective time for the query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<HostElement> getHostsForInfrastructureManager(Date   effectiveTime,
+                                                              int    startFrom,
+                                                              int    pageSize) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        return hostManagerClient.getHostsForInfrastructureManager(userId, infrastructureManagerGUID, infrastructureManagerName, effectiveTime, startFrom, pageSize);
+    }
+
+
+    /**
+     * Return the list of cluster members associated with a host.
+     *
+     * @param hostGUID unique identifier of the host to query
+     * @param effectiveTime effective time for the query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<HostElement> getClusterMembersForHost(String hostGUID,
+                                                      Date   effectiveTime,
+                                                      int    startFrom,
+                                                      int    pageSize) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
+    {
+        return hostManagerClient.getClusterMembersForHost(userId, hostGUID, effectiveTime, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the host metadata element with the supplied unique identifier.
+     *
+     * @param guid unique identifier of the requested metadata element
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public HostElement getHostByGUID(String guid) throws InvalidParameterException,
+                                                         UserNotAuthorizedException,
+                                                         PropertyServerException
+    {
+        return hostManagerClient.getHostByGUID(userId, guid);
+    }
+
+    
+
+    /* =====================================================================================================================
+     * The platform runs on the host.
+     */
+
+
+    /**
+     * Create a new metadata element to represent a platform.
+     *
+     * @param platformProperties properties to store
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createSoftwareServerPlatform(SoftwareServerPlatformProperties platformProperties) throws InvalidParameterException,
+                                                                                                           UserNotAuthorizedException,
+                                                                                                           PropertyServerException
+    {
+        return platformManagerClient.createSoftwareServerPlatform(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, platformProperties);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a platform using an existing metadata element as a template.
+     *
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param templateProperties properties that override the template
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createSoftwareServerPlatformFromTemplate(String             templateGUID,
+                                                           TemplateProperties templateProperties) throws InvalidParameterException,
+                                                                                                         UserNotAuthorizedException,
+                                                                                                         PropertyServerException
+    {
+        return platformManagerClient.createSoftwareServerPlatformFromTemplate(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, templateGUID, templateProperties);
+    }
+
+
+    /**
+     * Update the metadata element representing a platform.
+     *
+     * @param platformGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate are unspecified properties unchanged (true) or removed?
+     * @param platformProperties new properties for this element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateSoftwareServerPlatform(String                           platformGUID,
+                                             boolean                          isMergeUpdate,
+                                             SoftwareServerPlatformProperties platformProperties) throws InvalidParameterException,
+                                                                                                         UserNotAuthorizedException,
+                                                                                                         PropertyServerException
+
+    {
+        platformManagerClient.updateSoftwareServerPlatform(userId, infrastructureManagerGUID, infrastructureManagerName, platformGUID, isMergeUpdate, platformProperties);
+    }
+
+
+    /**
+     * Update the zones for the platform asset so that it becomes visible to consumers.
+     * (The zones are set to the list of zones in the publishedZones option configured for each
+     * instance of the IT Infrastructure OMAS).
+     *
+     * @param platformGUID unique identifier of the metadata element to publish
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void publishSoftwareServerPlatform(String platformGUID) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
+        platformManagerClient.publishSoftwareServerPlatform(userId, platformGUID);
+    }
+
+
+    /**
+     * Update the zones for the platform asset so that it is no longer visible to consumers.
+     * (The zones are set to the list of zones in the defaultZones option configured for each
+     * instance of the IT Infrastructure OMAS.  This is the setting when the platform is first created).
+     *
+     * @param platformGUID unique identifier of the metadata element to withdraw
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void withdrawSoftwareServerPlatform(String platformGUID) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+
+    {
+        platformManagerClient.withdrawSoftwareServerPlatform(userId, platformGUID);
+    }
+
+
+    /**
+     * Remove the metadata element representing a platform.
+     *
+     * @param platformGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeSoftwareServerPlatform(String platformGUID) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+
+    {
+        platformManagerClient.removeSoftwareServerPlatform(userId, infrastructureManagerGUID, infrastructureManagerName, platformGUID);
+    }
+
+
+
+    /**
+     * Retrieve the list of platform metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param searchString string to find in the properties
+     * @param effectiveTime effective time for the query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<SoftwareServerPlatformElement> findSoftwareServerPlatforms(String searchString,
+                                                                           Date   effectiveTime,
+                                                                           int    startFrom,
+                                                                           int    pageSize) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
+    {
+        return platformManagerClient.findSoftwareServerPlatforms(userId, searchString, effectiveTime, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of platform metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param name name to search for
+     * @param effectiveTime effective time for the query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<SoftwareServerPlatformElement> getSoftwareServerPlatformsByName(String name,
+                                                                                Date   effectiveTime,
+                                                                                int    startFrom,
+                                                                                int    pageSize) throws InvalidParameterException,
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        PropertyServerException
+
+    {
+        return platformManagerClient.getSoftwareServerPlatformsByName(userId, name, effectiveTime, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of platforms created by this caller.
+     *
+     * @param effectiveTime effective time for the query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<SoftwareServerPlatformElement> getSoftwareServerPlatformsForInfrastructureManager(Date   effectiveTime,
+                                                                                                  int    startFrom,
+                                                                                                  int    pageSize) throws InvalidParameterException,
+                                                                                                                          UserNotAuthorizedException,
+                                                                                                                          PropertyServerException
+
+    {
+        return platformManagerClient.getSoftwareServerPlatformsForInfrastructureManager(userId, infrastructureManagerGUID, infrastructureManagerName, effectiveTime, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the platform metadata element with the supplied unique identifier.
+     *
+     * @param guid unique identifier of the requested metadata element
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public SoftwareServerPlatformElement getSoftwareServerPlatformByGUID(String guid) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        return platformManagerClient.getSoftwareServerPlatformByGUID(userId, guid);
+    }
+
+
+
+
+    /* =====================================================================================================================
+     * The software server is an IT Infrastructure asset
+     */
+
+    /**
+     * Create a new metadata element to represent a software server.
+     *
+     * @param softwareServerProperties properties to store
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createSoftwareServer(SoftwareServerProperties softwareServerProperties) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
+    {
+        return serverManagerClient.createSoftwareServer(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, softwareServerProperties);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a software server using an existing metadata element as a template.
+     *
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param templateProperties properties that override the template
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createSoftwareServerFromTemplate(String             templateGUID,
+                                                   TemplateProperties templateProperties) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
+
+    {
+        return serverManagerClient.createSoftwareServerFromTemplate(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, templateGUID, templateProperties);
+    }
+
+
+    /**
+     * Update the metadata element representing a software server.
+     *
+     * @param softwareServerGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate are unspecified properties unchanged (true) or removed?
+     * @param softwareServerProperties new properties for this element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateSoftwareServer(String                   softwareServerGUID,
+                                     boolean                  isMergeUpdate,
+                                     SoftwareServerProperties softwareServerProperties) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
+    {
+        serverManagerClient.updateSoftwareServer(userId, infrastructureManagerGUID, infrastructureManagerName, softwareServerGUID, isMergeUpdate, softwareServerProperties);
+    }
+
+
+    /**
+     * Update the zones for the software server asset so that it becomes visible to consumers.
+     * (The zones are set to the list of zones in the publishedZones option configured for each
+     * instance of the IT Infrastructure OMAS).
+     *
+     * @param userId calling user
+     * @param softwareServerGUID unique identifier of the metadata element to publish
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void publishSoftwareServer(String userId,
+                                      String softwareServerGUID) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
+    {
+        serverManagerClient.publishSoftwareServer(userId, softwareServerGUID);
+    }
+
+
+    /**
+     * Update the zones for the software server asset so that it is no longer visible to consumers.
+     * (The zones are set to the list of zones in the defaultZones option configured for each
+     * instance of the IT Infrastructure OMAS.  This is the setting when the softwareServer is first created).
+     *
+     * @param softwareServerGUID unique identifier of the metadata element to withdraw
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void withdrawSoftwareServer(String softwareServerGUID) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        serverManagerClient.withdrawSoftwareServer(userId, softwareServerGUID);
+    }
+
+
+    /**
+     * Remove the metadata element representing a software server.
+     *
+     * @param softwareServerGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeSoftwareServer(String softwareServerGUID) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        serverManagerClient.removeSoftwareServer(userId, infrastructureManagerGUID, infrastructureManagerName, softwareServerGUID);
+    }
+
+
+    /**
+     * Retrieve the list of software server metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param searchString string to find in the properties
+     * @param effectiveTime time that the element is effective
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<SoftwareServerElement> findSoftwareServers(String searchString,
+                                                           Date   effectiveTime,
+                                                           int    startFrom,
+                                                           int    pageSize) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        return serverManagerClient.findSoftwareServers(userId, searchString, effectiveTime, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of softwareServer metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param name name to search for
+     * @param effectiveTime time that the element is effective
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<SoftwareServerElement> getSoftwareServersByName(String name,
+                                                                Date   effectiveTime,
+                                                                int    startFrom,
+                                                                int    pageSize) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+
+    {
+        return serverManagerClient.getSoftwareServersByName(userId, name, effectiveTime, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of software servers created by this caller.
+     *
+     * @param effectiveTime time that the element is effective
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<SoftwareServerElement> getSoftwareServersForInfrastructureManager(Date   effectiveTime,
+                                                                                  int    startFrom,
+                                                                                  int    pageSize) throws InvalidParameterException,
+                                                                                                          UserNotAuthorizedException,
+                                                                                                          PropertyServerException
+
+    {
+        return serverManagerClient.getSoftwareServersForInfrastructureManager(userId, infrastructureManagerGUID, infrastructureManagerName, effectiveTime, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the softwareServer metadata element with the supplied unique identifier.
+     *
+     * @param guid unique identifier of the requested metadata element
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public SoftwareServerElement getSoftwareServerByGUID(String guid) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+
+    {
+        return serverManagerClient.getSoftwareServerByGUID(userId, guid);
+    }
+
+    /*
+     * Server purposes
+     */
+
+
+    /**
+     * Add a Server Purpose classification to an IT asset.
+     *
+     * @param itAssetGUID unique identifier of the asset
+     * @param classificationName name of the classification type
+     * @param effectiveFrom when should relationship be effective - null means immediately
+     * @param effectiveTo when should relationship no longer be effective - null means never
+     * @param classificationProperties properties
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void addServerPurpose(String              itAssetGUID,
+                                 String              classificationName,
+                                 Date                effectiveFrom,
+                                 Date                effectiveTo,
+                                 Map<String, Object> classificationProperties) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        serverManagerClient.addServerPurpose(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, itAssetGUID, classificationName, effectiveFrom, effectiveTo, classificationProperties);
+    }
+
+
+    /**
+     * Update the properties of a classification for a asset.
+     *
+     * @param assetGUID unique identifier of the asset
+     * @param classificationName name of the classification type
+     * @param effectiveFrom when should relationship be effective - null means immediately
+     * @param effectiveTo when should relationship no longer be effective - null means never
+     * @param isMergeUpdate   should the supplied properties be merged with existing properties (true) by replacing the just the properties with
+     *                                  matching names, or should the entire properties of the instance be replaced?
+     * @param classificationProperties properties
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateServerPurpose(String              assetGUID,
+                                    String              classificationName,
+                                    Date                effectiveFrom,
+                                    Date                effectiveTo,
+                                    boolean             isMergeUpdate,
+                                    Map<String, Object> classificationProperties) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        serverManagerClient.updateServerPurpose(userId, infrastructureManagerGUID, infrastructureManagerName, assetTypeName, assetGUID, classificationName, effectiveFrom, effectiveTo, isMergeUpdate, classificationProperties);
+    }
+
+
+    /**
+     * Remove a server purpose classification.
+     *
+     * @param assetGUID unique identifier of the asset
+     * @param classificationName name of the classification type
+     * @param effectiveTime effective time of the classification to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearServerPurpose(String assetGUID,
+                                   String classificationName,
+                                   Date   effectiveTime) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException
+    {
+        serverManagerClient.clearServerPurpose(userId, infrastructureManagerGUID, infrastructureManagerName, assetTypeName, assetGUID, classificationName, effectiveTime);
+    }
+
+
+    /**
+     * Create a relationship that represents the deployment of an IT infrastructure asset to a specific deployment destination (another asset).
+     *
+     * @param itAssetGUID unique identifier of the IT infrastructure asset
+     * @param destinationGUID unique identifier of the destination where the asset is being deployed to
+     * @param deploymentProperties relationship properties
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void deployITAsset(String               itAssetGUID,
+                              String               destinationGUID,
+                              DeploymentProperties deploymentProperties) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        serverManagerClient.deployITAsset(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome,  itAssetGUID, destinationGUID, deploymentProperties);
+    }
+
+
+    /**
+     * Update a deployment relationship.
+     *
+     * @param deploymentGUID unique identifier of the relationship
+     * @param isMergeUpdate             should the supplied properties be merged with existing properties (true) by replacing the just the properties with
+     *                                  matching names, or should the entire properties of the instance be replaced?
+     * @param deploymentProperties properties for the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateITAssetDeployment(String               deploymentGUID,
+                                        boolean              isMergeUpdate,
+                                        DeploymentProperties deploymentProperties) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
+    {
+        serverManagerClient.updateITAssetDeployment(userId, infrastructureManagerGUID, infrastructureManagerName, deploymentGUID, isMergeUpdate, deploymentProperties);
+    }
+
+
+    /**
+     * Remove a deployment relationship.
+     *
+     * @param itAssetGUID unique identifier of the IT infrastructure asset
+     * @param destinationGUID unique identifier of the destination where the asset is being deployed to
+     * @param effectiveTime time when the deployment is effective
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearDeployment(String itAssetGUID,
+                                String destinationGUID,
+                                Date   effectiveTime) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException
+    {
+        serverManagerClient.clearDeployment(userId, infrastructureManagerGUID, infrastructureManagerName, itAssetGUID, destinationGUID, effectiveTime);
+    }
+
+
+    /**
+     * Return the list of assets deployed on a particular destination.
+     *
+     * @param destinationGUID unique identifier of the destination asset to query
+     * @param effectiveTime effective time for the query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<DeploymentElement> getDeployedITAssets(String destinationGUID,
+                                                       Date   effectiveTime,
+                                                       int    startFrom,
+                                                       int    pageSize) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        return serverManagerClient.getDeployedITAssets(userId, destinationGUID, effectiveTime, startFrom, pageSize);
+    }
+
+
+    /**
+     * Return the list of destinations that a particular IT infrastructure asset is deployed to.
+     *
+     * @param itAssetGUID unique identifier of the IT infrastructure asset to query
+     * @param effectiveTime effective time for the query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<DeploymentElement> getDeploymentDestinations(String itAssetGUID,
+                                                             Date   effectiveTime,
+                                                             int    startFrom,
+                                                             int    pageSize) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        return serverManagerClient.getDeploymentDestinations(userId, itAssetGUID, effectiveTime, startFrom, pageSize);
+    }
+
+
+    /* =====================================================================================================================
+     * The software capability describes functions of the hosting server.
+     */
+
+    /**
+     * Create a new metadata element to represent a software server capability.
+     *
+     * @param classificationName optional classification name that refines the type of the software server capability.
+     * @param capabilityProperties properties to store
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createSoftwareCapability(String                       classificationName,
+                                           SoftwareCapabilityProperties capabilityProperties) throws InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     PropertyServerException
+    {
+        return capabilityManagerClient.createSoftwareCapability(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, classificationName, capabilityProperties);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a software capability using an existing metadata element as a template.
+     *
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param templateProperties properties that override the template
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createSoftwareCapabilityFromTemplate(String             templateGUID,
+                                                       TemplateProperties templateProperties) throws InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     PropertyServerException
+    {
+        return capabilityManagerClient.createSoftwareCapabilityFromTemplate(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, templateGUID, templateProperties);
+    }
+
+
+    /**
+     * Update the metadata element representing a software capability.
+     *
+     * @param capabilityGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate are unspecified properties unchanged (true) or removed?
+     * @param capabilityProperties new properties for this element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateSoftwareCapability(String                       capabilityGUID,
+                                         boolean                      isMergeUpdate,
+                                         SoftwareCapabilityProperties capabilityProperties) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
+    {
+        capabilityManagerClient.updateSoftwareCapability(userId, infrastructureManagerGUID, infrastructureManagerName, capabilityGUID, isMergeUpdate, capabilityProperties);
+    }
+
+
+
+
+    /**
+     * Link a software capability to a software server.
+     *
+     * @param capabilityGUID unique identifier of the software server capability
+     * @param infrastructureAssetGUID unique identifier of the software server
+     * @param deploymentProperties describes the deployment of the capability onto the server
+     *
+     * @throws InvalidParameterException one of the guids is null or not known
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void deployCapability(String                         capabilityGUID,
+                                 String                         infrastructureAssetGUID,
+                                 CapabilityDeploymentProperties deploymentProperties) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        capabilityManagerClient.deployCapability(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, capabilityGUID, infrastructureAssetGUID, deploymentProperties);
+    }
+
+
+    /**
+     * Update the properties of a server capability's deployment.
+     *
+     * @param deploymentGUID unique identifier of the relationship
+     * @param deploymentProperties describes the deployment of the capability onto the server
+     * @param isMergeUpdate are unspecified properties unchanged (true) or removed?
+     *
+     * @throws InvalidParameterException one of the guids is null or not known
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void updateCapabilityDeployment(String                         deploymentGUID,
+                                           boolean                        isMergeUpdate,
+                                           CapabilityDeploymentProperties deploymentProperties) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException
+    {
+        capabilityManagerClient.updateCapabilityDeployment(userId, infrastructureManagerGUID, infrastructureManagerName, deploymentGUID, isMergeUpdate, deploymentProperties);
+    }
+
+
+    /**
+     * Remove the link between a software server capability and a software server.
+     *
+     * @param itAssetGUID unique identifier of the software server/platform/host
+     * @param capabilityGUID unique identifier of the software server capability
+     * @param effectiveTime time that the relationship is effective
+     *
+     * @throws InvalidParameterException one of the guids is null or not known
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void removeCapabilityDeployment(String itAssetGUID,
+                                           String capabilityGUID,
+                                           Date   effectiveTime) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
+    {
+        capabilityManagerClient.removeCapabilityDeployment(userId, infrastructureManagerGUID, infrastructureManagerName, itAssetGUID, capabilityGUID, effectiveTime);
+    }
+
+
+
+    /**
+     * Remove the metadata element representing a software capability.
+     *
+     * @param capabilityGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeSoftwareCapability(String capabilityGUID) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        capabilityManagerClient.removeSoftwareCapability(userId, infrastructureManagerGUID, infrastructureManagerName, capabilityGUID);
+    }
+
+
+    /**
+     * Retrieve the list of software capability metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param searchString string to find in the properties
+     * @param effectiveTime effective time for the query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<SoftwareCapabilityElement> findSoftwareCapabilities(String searchString,
+                                                                    Date   effectiveTime,
+                                                                    int    startFrom,
+                                                                    int    pageSize) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
+    {
+        return capabilityManagerClient.findSoftwareCapabilities(userId, searchString, effectiveTime, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of software capability metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param name name to search for
+     * @param effectiveTime effective time for the query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<SoftwareCapabilityElement> getSoftwareCapabilitiesByName(String name,
+                                                                         Date   effectiveTime,
+                                                                         int    startFrom,
+                                                                         int    pageSize) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
+    {
+        return capabilityManagerClient.getSoftwareCapabilitiesByName(userId, name, effectiveTime, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the IT asset metadata elements where the software with the supplied unique identifier is deployed.
+     *
+     * @param guid unique identifier of the requested metadata element
+     * @param effectiveTime effective time for the query
+     *
+     * @return list of related IT Assets
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<RelatedAssetElement> getSoftwareCapabilityDeployments(String guid,
+                                                                      Date   effectiveTime,
+                                                                      int    startFrom,
+                                                                      int    pageSize) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
+    {
+        return capabilityManagerClient.getSoftwareCapabilityDeployments(userId, guid, effectiveTime, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the software capabilities that are deployed to an IT asset.
+     *
+     * @param itAssetGUID unique identifier of the hosting metadata element
+     * @param effectiveTime effective time for the query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of related IT Assets
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<SoftwareCapabilityElement> getDeployedSoftwareCapabilities(String itAssetGUID,
+                                                                           Date   effectiveTime,
+                                                                           int    startFrom,
+                                                                           int    pageSize) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
+    {
+        return capabilityManagerClient.getDeployedSoftwareCapabilities(userId, itAssetGUID, effectiveTime, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of capabilities created by this caller.
+     *
+     * @param effectiveTime effective time for the query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<SoftwareCapabilityElement> getSoftwareCapabilitiesForInfrastructureManager(Date   effectiveTime,
+                                                                                           int    startFrom,
+                                                                                           int    pageSize) throws InvalidParameterException,
+                                                                                                                   UserNotAuthorizedException,
+                                                                                                                   PropertyServerException
+    {
+        return capabilityManagerClient.getSoftwareCapabilitiesForInfrastructureManager(userId, infrastructureManagerGUID, infrastructureManagerName, effectiveTime, startFrom, pageSize);
+    }
+
+
+
+    /**
+     * Retrieve the software capability metadata element with the supplied unique identifier.
+     *
+     * @param guid unique identifier of the requested metadata element
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public SoftwareCapabilityElement getSoftwareCapabilityByGUID(String guid) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        return capabilityManagerClient.getSoftwareCapabilityByGUID(userId, guid);
+    }
+
+
+    /*
+     * ======================================================================================
+     * A software server capability works with assets
+     */
+
+    /**
+     * Create a new metadata relationship to represent the use of an asset by a software server capability.
+     *
+     * @param capabilityGUID unique identifier of a software server capability
+     * @param assetGUID unique identifier of an asset
+     * @param properties properties about the ServerAssetUse relationship
+     *
+     * @return unique identifier of the new ServerAssetUse relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createServerAssetUse(String                   capabilityGUID,
+                                       String                   assetGUID,
+                                       ServerAssetUseProperties properties) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        return capabilityManagerClient.createServerAssetUse(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, capabilityGUID, assetGUID, properties);
+    }
+
+
+    /**
+     * Update the metadata relationship to represent the use of an asset by a software server capability.
+     *
+     * @param serverAssetUseGUID unique identifier of the relationship between a software server capability and an asset
+     * @param isMergeUpdate are unspecified properties unchanged (true) or removed?
+     * @param properties new properties for the ServerAssetUse relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateServerAssetUse(String                   serverAssetUseGUID,
+                                     boolean                  isMergeUpdate,
+                                     ServerAssetUseProperties properties) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        capabilityManagerClient.updateServerAssetUse(userId, infrastructureManagerGUID, infrastructureManagerName, serverAssetUseGUID, isMergeUpdate, properties);
+    }
+
+
+    /**
+     * Remove the metadata relationship to represent the use of an asset by a software server capability.
+     *
+     * @param serverAssetUseGUID unique identifier of the relationship between a software server capability and an asset
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeServerAssetUse(String serverAssetUseGUID) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        capabilityManagerClient.removeServerAssetUse(userId, infrastructureManagerGUID, infrastructureManagerName, serverAssetUseGUID);
+    }
+
+
+    /**
+     * Return the list of server asset use relationships associated with a software server capability.
+     *
+     * @param capabilityGUID unique identifier of the software server capability to query
+     * @param useType value to search for.  Null means all use types.
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching relationships
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ServerAssetUseElement> getServerAssetUsesForCapability(String             capabilityGUID,
+                                                                       ServerAssetUseType useType,
+                                                                       Date               effectiveTime,
+                                                                       int                startFrom,
+                                                                       int                pageSize) throws InvalidParameterException,
+                                                                                                           UserNotAuthorizedException,
+                                                                                                           PropertyServerException
+    {
+        return capabilityManagerClient.getServerAssetUsesForCapability(userId, capabilityGUID, useType, effectiveTime, startFrom, pageSize);
+    }
+
+
+    /**
+     * Return the list of software server capabilities that make use of a specific asset.
+     *
+     * @param assetGUID unique identifier of the asset to query
+     * @param useType Optionally restrict the search to a specific user type.  Null means all use types.
+     * @param effectiveTime effective time for the query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching relationships
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ServerAssetUseElement> getCapabilityUsesForAsset(String             assetGUID,
+                                                                 ServerAssetUseType useType,
+                                                                 Date               effectiveTime,
+                                                                 int                startFrom,
+                                                                 int                pageSize) throws InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     PropertyServerException
+    {
+        return capabilityManagerClient.getCapabilityUsesForAsset(userId, assetGUID, useType, effectiveTime, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of relationships between a specific software server capability and a specific asset.
+     *
+     * @param capabilityGUID unique identifier of a software server capability
+     * @param assetGUID unique identifier of an asset
+     * @param effectiveTime effective time for the query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching relationships
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ServerAssetUseElement> getServerAssetUsesForElements(String capabilityGUID,
+                                                                     String assetGUID,
+                                                                     Date   effectiveTime,
+                                                                     int    startFrom,
+                                                                     int    pageSize) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        return capabilityManagerClient.getServerAssetUsesForElements(userId, capabilityGUID, assetGUID, effectiveTime, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the server asset use type relationship with the supplied unique identifier.
+     *
+     * @param guid unique identifier of the requested metadata element
+     *
+     * @return requested relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public ServerAssetUseElement getServerAssetUseByGUID(String guid) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        return capabilityManagerClient.getServerAssetUseByGUID(userId, guid);
+    }
+
+
+
+
+
+    /*
+     * ==========================================================
+     * The Data Asset entity is the top level element to describe a data source such as a data store or data set.
+     */
+
+    /**
+     * Create a new metadata element to represent the root of an asset.
+     *
+     * @param dataAssetProperties properties to store
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createDataAsset(DataAssetProperties dataAssetProperties) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+        return dataAssetManagerClient.createDataAsset(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, dataAssetProperties);
+    }
+
+
+    /**
+     * Create a new metadata element to represent an asset using an existing metadata element as a template.
+     * The template defines additional classifications and relationships that should be added to the new asset.
+     *
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param templateProperties properties that override the template
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createDataAssetFromTemplate(String             templateGUID,
+                                              TemplateProperties templateProperties) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
+
+    {
+        return dataAssetManagerClient.createDataAssetFromTemplate(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, templateGUID, templateProperties);
+    }
+
+
+    /**
+     * Update the metadata element representing an asset.
+     *
+     * @param assetGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param dataAssetProperties new properties for this element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateDataAsset(String              assetGUID,
+                                boolean             isMergeUpdate,
+                                DataAssetProperties dataAssetProperties) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        dataAssetManagerClient.updateDataAsset(userId, infrastructureManagerGUID, infrastructureManagerName, assetGUID, isMergeUpdate, dataAssetProperties);
+    }
+
+
+
+    /**
+     * Classify the asset to indicate that it can be used as reference data.
+     *
+     * @param assetGUID unique identifier of the metadata element to update
+     * @param effectiveFrom when should classification be effective - null means immediately
+     * @param effectiveTo when should classification no longer be effective - null means never
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setDataAssetAsReferenceData(String assetGUID,
+                                            Date   effectiveFrom,
+                                            Date   effectiveTo) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        dataAssetManagerClient.setDataAssetAsReferenceData(userId, infrastructureManagerGUID, infrastructureManagerName, assetGUID, effectiveFrom, effectiveTo);
+    }
+
+
+    /**
+     * Remove the reference data designation from the asset.
+     *
+     * @param assetGUID unique identifier of the metadata element to update
+     * @param effectiveTime time when the classification is effective
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearDataAssetAsReferenceData(String assetGUID,
+                                              Date   effectiveTime) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        dataAssetManagerClient.clearDataAssetAsReferenceData(userId, infrastructureManagerGUID, infrastructureManagerName, assetGUID, effectiveTime);
+    }
+
+
+    /**
+     * Update the zones for the asset so that it becomes visible to consumers.
+     * (The zones are set to the list of zones in the publishedZones option configured for each
+     * instance of the IT Infrastructure OMAS).
+     *
+     * @param assetGUID unique identifier of the metadata element to publish
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void publishDataAsset(String assetGUID) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException
+
+    {
+        dataAssetManagerClient.publishDataAsset(userId, assetGUID);
+    }
+
+
+    /**
+     * Update the zones for the asset so that it is no longer visible to consumers.
+     * (The zones are set to the list of zones in the defaultZones option configured for each
+     * instance of the IT Infrastructure OMAS).
+     *
+     * @param assetGUID unique identifier of the metadata element to withdraw
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void withdrawDataAsset(String assetGUID) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
+
+    {
+        dataAssetManagerClient.withdrawDataAsset(userId, assetGUID);
+    }
+
+
+    /**
+     * Remove the metadata element representing an asset.  This will delete the asset and all anchored
+     * elements such as schema and comments.
+     *
+     * @param assetGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeDataAsset(String assetGUID) throws InvalidParameterException,
+                                                         UserNotAuthorizedException,
+                                                         PropertyServerException
+    {
+        dataAssetManagerClient.removeDataAsset(userId, infrastructureManagerGUID, infrastructureManagerName, assetGUID);
+    }
+
+
+    /**
+     * Retrieve the list of asset metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param searchString string to find in the properties
+     * @param effectiveTime effective time for the query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<DataAssetElement> findDataAssets(String searchString,
+                                                 Date   effectiveTime,
+                                                 int    startFrom,
+                                                 int    pageSize) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+
+    {
+        return dataAssetManagerClient.findDataAssets(userId, searchString, effectiveTime, startFrom, pageSize);
+    }
+
+
+
+    /**
+     * Retrieve the list of asset metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param name name to search for
+     * @param effectiveTime effective time for the query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<DataAssetElement> getDataAssetsByName(String name,
+                                                      Date   effectiveTime,
+                                                      int    startFrom,
+                                                      int    pageSize) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
+
+    {
+        return dataAssetManagerClient.getDataAssetsByName(userId, name, effectiveTime, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of assets created on behalf of the named infrastructure manager.
+     *
+     * @param effectiveTime effective time for the query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<DataAssetElement> getDataAssetsForInfrastructureManager(Date   effectiveTime,
+                                                                        int    startFrom,
+                                                                        int    pageSize) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException
+
+    {
+        return dataAssetManagerClient.getDataAssetsForInfrastructureManager(userId, infrastructureManagerGUID, infrastructureManagerName, effectiveTime, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the asset metadata element with the supplied unique identifier.
+     *
+     * @param guid unique identifier of the requested metadata element
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public DataAssetElement getDataAssetByGUID(String guid) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
+    {
+        return dataAssetManagerClient.getDataAssetByGUID(userId, guid);
+    }
+
+
+
+
+    /* =====================================================================================================================
+     * A process describes a well defined series of steps that gets something done.
+     */
+
+    /**
+     * Create a new metadata element to represent a process.
+     *
+     * @param userId calling user
+     * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
+     * @param infrastructureManagerName unique name of software server capability representing the caller
+     * @param infrastructureManagerIsHome ensure that only the infrastructure manager can update this process
+     * @param processStatus initial status of the process
+     * @param processProperties properties about the process to store
+     *
+     * @return unique identifier of the new process
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createProcess(String            userId,
+                                String            infrastructureManagerGUID,
+                                String            infrastructureManagerName,
+                                boolean           infrastructureManagerIsHome,
+                                ProcessStatus     processStatus,
+                                ProcessProperties processProperties) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
+    {
+        return processManagerClient.createProcess(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, processStatus, processProperties);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a process using an existing metadata element as a template.
+     *
+     * @param userId calling user
+     * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
+     * @param infrastructureManagerName unique name of software server capability representing the caller
+     * @param infrastructureManagerIsHome ensure that only the infrastructure manager can update this process
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param templateProperties properties that override the template
+     *
+     * @return unique identifier of the new process
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createProcessFromTemplate(String             userId,
+                                            String             infrastructureManagerGUID,
+                                            String             infrastructureManagerName,
+                                            boolean            infrastructureManagerIsHome,
+                                            String             templateGUID,
+                                            TemplateProperties templateProperties) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
+
+    {
+        return processManagerClient.createProcessFromTemplate(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, templateGUID, templateProperties);
+    }
+
+
+    /**
+     * Update the metadata element representing a process.
+     *
+     * @param userId calling user
+     * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
+     * @param infrastructureManagerName unique name of software server capability representing the caller
+     * @param processGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param processProperties new properties for the metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateProcess(String            userId,
+                              String            infrastructureManagerGUID,
+                              String            infrastructureManagerName,
+                              String            processGUID,
+                              boolean           isMergeUpdate,
+                              ProcessProperties processProperties) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+
+    {
+        processManagerClient.updateProcess(userId, infrastructureManagerGUID, infrastructureManagerName, processGUID, isMergeUpdate, processProperties);
+    }
+
+
+    /**
+     * Update the status of the metadata element representing a process.
+     *
+     * @param userId calling user
+     * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
+     * @param infrastructureManagerName unique name of software server capability representing the caller
+     * @param processGUID unique identifier of the process to update
+     * @param processStatus new status for the process
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateProcessStatus(String        userId,
+                                    String        infrastructureManagerGUID,
+                                    String        infrastructureManagerName,
+                                    String        processGUID,
+                                    ProcessStatus processStatus) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
+    {
+        processManagerClient.updateProcessStatus(userId, infrastructureManagerGUID, infrastructureManagerName, processGUID, processStatus);
+    }
+
+
+    /**
+     * Create a parent-child relationship between two processes.
+     *
+     * @param userId calling user
+     * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
+     * @param infrastructureManagerName unique name of software server capability representing the caller
+     * @param infrastructureManagerIsHome ensure that only the infrastructure manager can update this asset
+     * @param parentProcessGUID unique identifier of the process in the external infrastructure manager that is to be the parent process
+     * @param childProcessGUID unique identifier of the process in the external infrastructure manager that is to be the nested sub-process
+     * @param containmentType describes the ownership of the sub-process
+     * @param effectiveFrom time when this relationship is effective - null means immediately
+     * @param effectiveTo time when this relationship is no longer effective - null means forever
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupProcessParent(String                 userId,
+                                   String                 infrastructureManagerGUID,
+                                   String                 infrastructureManagerName,
+                                   boolean                infrastructureManagerIsHome,
+                                   String                 parentProcessGUID,
+                                   String                 childProcessGUID,
+                                   ProcessContainmentType containmentType,
+                                   Date                   effectiveFrom,
+                                   Date                   effectiveTo) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
+    {
+        processManagerClient.setupProcessParent(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, parentProcessGUID, childProcessGUID, containmentType, effectiveFrom, effectiveTo);
+    }
+
+
+    /**
+     * Remove a parent-child relationship between two processes.
+     *
+     * @param userId calling user
+     * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
+     * @param infrastructureManagerName unique name of software server capability representing the caller
+     * @param parentProcessGUID unique identifier of the process in the external infrastructure manager that is to be the parent process
+     * @param childProcessGUID unique identifier of the process in the external infrastructure manager that is to be the nested sub-process
+     * @param effectiveTime time when the relationship is effective
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearProcessParent(String userId,
+                                   String infrastructureManagerGUID,
+                                   String infrastructureManagerName,
+                                   String parentProcessGUID,
+                                   String childProcessGUID,
+                                   Date   effectiveTime) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException
+    {
+        processManagerClient.clearProcessParent(userId, infrastructureManagerGUID, infrastructureManagerName, parentProcessGUID, childProcessGUID, effectiveTime);
+    }
+
+
+    /**
+     * Update the zones for the asset so that it becomes visible to consumers.
+     * (The zones are set to the list of zones in the publishedZones option configured for each
+     * instance of the IT Infrastructure OMAS).
+     *
+     * @param userId calling user
+     * @param processGUID unique identifier of the metadata element to publish
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void publishProcess(String userId,
+                               String processGUID) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException
+
+    {
+        processManagerClient.publishProcess(userId, processGUID);
+    }
+
+
+    /**
+     * Update the zones for the asset so that it is no longer visible to consumers.
+     * (The zones are set to the list of zones in the defaultZones option configured for each
+     * instance of the IT Infrastructure OMAS.  This is the setting when the host is first created).
+     *
+     * @param userId calling user
+     * @param processGUID unique identifier of the metadata element to withdraw
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void withdrawProcess(String userId,
+                                String processGUID) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
+
+    {
+        processManagerClient.withdrawProcess(userId, processGUID);
+    }
+
+
+    /**
+     * Remove the metadata element representing a process.
+     *
+     * @param userId calling user
+     * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
+     * @param infrastructureManagerName unique name of software server capability representing the caller
+     * @param processGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeProcess(String userId,
+                              String infrastructureManagerGUID,
+                              String infrastructureManagerName,
+                              String processGUID) throws InvalidParameterException,
+                                                         UserNotAuthorizedException,
+                                                         PropertyServerException
+    {
+        processManagerClient.removeProcess(userId, infrastructureManagerGUID, infrastructureManagerName, processGUID);
+    }
+
+
+    /**
+     * Retrieve the list of process metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param userId calling user
+     * @param searchString string to find in the properties
+     * @param effectiveTime effective time for the query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ProcessElement> findProcesses(String userId,
+                                              String searchString,
+                                              Date   effectiveTime,
+                                              int    startFrom,
+                                              int    pageSize) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
+    {
+        return processManagerClient.findProcesses(userId, searchString, effectiveTime, startFrom, pageSize);
+    }
+
+
+
+    /**
+     * Retrieve the list of process metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param userId calling user
+     * @param name name to search for
+     * @param effectiveTime effective time for the query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ProcessElement> getProcessesByName(String userId,
+                                                   String name,
+                                                   Date   effectiveTime,
+                                                   int    startFrom,
+                                                   int    pageSize) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        return processManagerClient.getProcessesByName(userId, name, effectiveTime, startFrom, pageSize);
+    }
+
+
+    /**
+     * Return the list of processes associated with the infrastructure manager.
+     *
+     * @param userId calling user
+     * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
+     * @param infrastructureManagerName unique name of software server capability representing the caller
+     * @param effectiveTime effective time for the query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of metadata elements describing the processes associated with the requested infrastructure manager
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ProcessElement> getProcessesForInfrastructureManager(String userId,
+                                                                     String infrastructureManagerGUID,
+                                                                     String infrastructureManagerName,
+                                                                     Date   effectiveTime,
+                                                                     int    startFrom,
+                                                                     int    pageSize) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+
+    {
+        return processManagerClient.getProcessesForInfrastructureManager(userId, infrastructureManagerGUID, infrastructureManagerName, effectiveTime, startFrom, pageSize);
+    }
+
+
+
+    /**
+     * Retrieve the process metadata element with the supplied unique identifier.
+     *
+     * @param userId calling user
+     * @param processGUID unique identifier of the requested metadata element
+     *
+     * @return requested metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public ProcessElement getProcessByGUID(String userId,
+                                           String processGUID) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
+    {
+        return processManagerClient.getProcessByGUID(userId, processGUID);
+    }
+
+
+    /**
+     * Retrieve the process metadata element with the supplied unique identifier.
+     *
+     * @param userId calling user
+     * @param processGUID unique identifier of the requested metadata element
+     * @param effectiveTime effective time for the query
+     *
+     * @return parent process element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public ProcessElement getProcessParent(String userId,
+                                           String processGUID,
+                                           Date   effectiveTime) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
+    {
+        return processManagerClient.getProcessParent(userId, processGUID, effectiveTime);
+    }
+
+
+    /**
+     * Retrieve the process metadata element with the supplied unique identifier.
+     *
+     * @param userId calling user
+     * @param processGUID unique identifier of the requested metadata element
+     * @param effectiveTime effective time for the query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of process element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ProcessElement> getSubProcesses(String userId,
+                                                String processGUID,
+                                                Date   effectiveTime,
+                                                int    startFrom,
+                                                int    pageSize) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
+    {
+        return processManagerClient.getSubProcesses(userId, processGUID, effectiveTime, startFrom, pageSize);
+    }
+
+
+    /* ===============================================================================
+     * General linkage and classifications
+     */
+
+
+    /**
+     * Classify a port, process or asset as "BusinessSignificant" (this may effect the way that lineage is displayed).
+     *
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param effectiveFrom time when this hosting is effective - null means immediately
+     * @param effectiveTo time when this hosting is no longer effective - null means forever
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setBusinessSignificant(String elementGUID,
+                                       Date   effectiveFrom,
+                                       Date   effectiveTo) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
+    {
+        processManagerClient.setBusinessSignificant(userId, infrastructureManagerGUID, infrastructureManagerName, elementGUID, effectiveFrom, effectiveTo);
+    }
+
+
+    /**
+     * Remove the "BusinessSignificant" designation from the element.
+     *
+     * @param effectiveTime effective time for the query
+     * @param elementGUID unique identifier of the metadata element to update
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearBusinessSignificant(String elementGUID,
+                                         Date   effectiveTime) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
+    {
+        processManagerClient.clearBusinessSignificant(userId, infrastructureManagerGUID, infrastructureManagerName, elementGUID, effectiveTime);
+    }
+
+
+    /**
+     * Link two elements together to show that data flows from one to the other.
+     *
+     * @param dataSupplierGUID unique identifier of the data supplier
+     * @param dataConsumerGUID unique identifier of the data consumer
+     * @param qualifiedName unique identifier for this relationship
+     * @param description description and/or purpose of the data flow
+     * @param formula function that determines the subset of the data that flows
+     * @param effectiveFrom time when this hosting is effective - null means immediately
+     * @param effectiveTo time when this hosting is no longer effective - null means forever
+     *
+     * @return unique identifier of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String setupDataFlow(String  dataSupplierGUID,
+                                String  dataConsumerGUID,
+                                String  qualifiedName,
+                                String  description,
+                                String  formula,
+                                Date    effectiveFrom,
+                                Date    effectiveTo) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
+
+    {
+        return processManagerClient.setupDataFlow(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, dataSupplierGUID, dataConsumerGUID, qualifiedName, description, formula, effectiveFrom, effectiveTo);
+    }
+
+
+    /**
+     * Retrieve the data flow relationship between two elements.  The qualifiedName is optional unless there
+     * is more than one data flow relationships between these two elements since it is used to disambiguate
+     * the request. This is often used in conjunction with update.
+     *
+     * @param dataSupplierGUID unique identifier of the data supplier
+     * @param dataConsumerGUID unique identifier of the data consumer
+     * @param qualifiedName unique identifier for this relationship
+     * @param effectiveTime time when the hosting is effective
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public DataFlowElement getDataFlow(String dataSupplierGUID,
+                                       String dataConsumerGUID,
+                                       String qualifiedName,
+                                       Date   effectiveTime) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
+
+    {
+        return processManagerClient.getDataFlow(userId, dataSupplierGUID, dataConsumerGUID, qualifiedName, effectiveTime);
+    }
+
+
+    /**
+     * Update relationship between two elements that shows that data flows from one to the other.
+     *
+     * @param dataFlowGUID unique identifier of the data flow relationship
+     * @param qualifiedName unique identifier for this relationship
+     * @param description description and/or purpose of the data flow
+     * @param formula function that determines the subset of the data that flows
+     * @param effectiveFrom time when this hosting is effective - null means immediately
+     * @param effectiveTo time when this hosting is no longer effective - null means forever
+     *
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateDataFlow(String dataFlowGUID,
+                               String qualifiedName,
+                               String description,
+                               String formula,
+                               Date   effectiveFrom,
+                               Date   effectiveTo) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException
+
+    {
+        processManagerClient.updateDataFlow(userId, infrastructureManagerGUID, infrastructureManagerName, dataFlowGUID, qualifiedName, description, formula, effectiveFrom, effectiveTo);
+    }
+
+
+    /**
+     * Remove the data flow relationship between two elements.
+     *
+     * @param dataFlowGUID unique identifier of the data flow relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearDataFlow(String dataFlowGUID) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException
+
+    {
+        processManagerClient.clearDataFlow(userId, infrastructureManagerGUID, infrastructureManagerName, dataFlowGUID);
+    }
+
+
+    /**
+     * Retrieve the data flow relationships linked from an specific element to the downstream consumers.
+     *
+     * @param dataSupplierGUID unique identifier of the data supplier
+     * @param effectiveTime time when the hosting is effective
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<DataFlowElement> getDataFlowConsumers(String dataSupplierGUID,
+                                                      Date   effectiveTime) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+
+    {
+        return processManagerClient.getDataFlowConsumers(userId, dataSupplierGUID, effectiveTime);
+    }
+
+
+    /**
+     * Retrieve the data flow relationships linked from an specific element to the upstream suppliers.
+     *
+     * @param dataConsumerGUID unique identifier of the data consumer
+     * @param effectiveTime time when the hosting is effective
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<DataFlowElement> getDataFlowSuppliers(String dataConsumerGUID,
+                                                      Date   effectiveTime) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+
+    {
+        return processManagerClient.getDataFlowSuppliers(userId, dataConsumerGUID, effectiveTime);
+    }
+
+
+    /**
+     * Link two elements to show that when one completes the next is started.
+     *
+     * @param currentStepGUID unique identifier of the previous step
+     * @param nextStepGUID unique identifier of the next step
+     * @param qualifiedName unique identifier for this relationship
+     * @param description description and/or purpose of the data flow
+     * @param guard function that must be true to travel down this control flow
+     * @param effectiveFrom time when this hosting is effective - null means immediately
+     * @param effectiveTo time when this hosting is no longer effective - null means forever
+     *
+     * @return unique identifier for the control flow relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String setupControlFlow(String  currentStepGUID,
+                                   String  nextStepGUID,
+                                   String  qualifiedName,
+                                   String  description,
+                                   String  guard,
+                                   Date    effectiveFrom,
+                                   Date    effectiveTo) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
+
+    {
+        return processManagerClient.setupControlFlow(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, currentStepGUID, nextStepGUID, qualifiedName, description, guard, effectiveFrom, effectiveTo);
+    }
+
+
+    /**
+     * Retrieve the control flow relationship between two elements.  The qualifiedName is optional unless there
+     * is more than one control flow relationships between these two elements since it is used to disambiguate
+     * the request.  This is often used in conjunction with update.
+     *
+     * @param currentStepGUID unique identifier of the previous step
+     * @param nextStepGUID unique identifier of the next step
+     * @param qualifiedName unique identifier for this relationship
+     * @param effectiveTime time when the hosting is effective
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public ControlFlowElement getControlFlow(String currentStepGUID,
+                                             String nextStepGUID,
+                                             String qualifiedName,
+                                             Date   effectiveTime) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+
+    {
+        return processManagerClient.getControlFlow(userId, currentStepGUID, nextStepGUID, qualifiedName, effectiveTime);
+    }
+
+
+    /**
+     * Update the relationship between two elements that shows that when one completes the next is started.
+     *
+     * @param controlFlowGUID unique identifier of the  control flow relationship
+     * @param qualifiedName unique identifier for this relationship
+     * @param description description and/or purpose of the data flow
+     * @param guard function that must be true to travel down this control flow
+     * @param effectiveFrom time when this hosting is effective - null means immediately
+     * @param effectiveTo time when this hosting is no longer effective - null means forever
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateControlFlow(String controlFlowGUID,
+                                  String qualifiedName,
+                                  String description,
+                                  String guard,
+                                  Date   effectiveFrom,
+                                  Date   effectiveTo) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException
+
+    {
+        processManagerClient.updateControlFlow(userId, infrastructureManagerGUID, infrastructureManagerName, controlFlowGUID, qualifiedName, description, guard, effectiveFrom, effectiveTo);
+    }
+
+
+    /**
+     * Remove the control flow relationship between two elements.
+     *
+     * @param controlFlowGUID unique identifier of the  control flow relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearControlFlow(String controlFlowGUID) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException
+
+    {
+        processManagerClient.clearControlFlow(userId, infrastructureManagerGUID, infrastructureManagerName, controlFlowGUID);
+    }
+
+
+    /**
+     * Retrieve the control relationships linked from an specific element to the possible next elements in the process.
+     *
+     * @param currentStepGUID unique identifier of the current step
+     * @param effectiveTime time when the hosting is effective
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ControlFlowElement> getControlFlowNextSteps(String currentStepGUID,
+                                                            Date   effectiveTime) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+
+    {
+        return processManagerClient.getControlFlowNextSteps(userId, currentStepGUID, effectiveTime);
+    }
+
+
+    /**
+     * Retrieve the control relationships linked from an specific element to the possible previous elements in the process.
+     *
+     * @param currentStepGUID unique identifier of the current step
+     * @param effectiveTime time when the hosting is effective
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ControlFlowElement> getControlFlowPreviousSteps(String currentStepGUID,
+                                                                Date   effectiveTime) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+
+    {
+        return processManagerClient.getControlFlowPreviousSteps(userId, currentStepGUID, effectiveTime);
+    }
+
+
+    /**
+     * Link two elements together to show a request-response call between them.
+     *
+     * @param callerGUID unique identifier of the element that is making the call
+     * @param calledGUID unique identifier of the element that is processing the call
+     * @param qualifiedName unique identifier for this relationship
+     * @param description description and/or purpose of the data flow
+     * @param formula function that determines the subset of the data that flows
+     * @param effectiveFrom time when this hosting is effective - null means immediately
+     * @param effectiveTo time when this hosting is no longer effective - null means forever
+     *
+     * @return unique identifier of the new relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String setupProcessCall(String  callerGUID,
+                                   String  calledGUID,
+                                   String  qualifiedName,
+                                   String  description,
+                                   String  formula,
+                                   Date    effectiveFrom,
+                                   Date    effectiveTo) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
+
+    {
+        return processManagerClient.setupProcessCall(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, callerGUID, calledGUID, qualifiedName, description, formula, effectiveFrom, effectiveTo);
+    }
+
+
+    /**
+     * Retrieve the process call relationship between two elements.  The qualifiedName is optional unless there
+     * is more than one process call relationships between these two elements since it is used to disambiguate
+     * the request.  This is often used in conjunction with update.
+     *
+     * @param callerGUID unique identifier of the element that is making the call
+     * @param calledGUID unique identifier of the element that is processing the call
+     * @param qualifiedName unique identifier for this relationship
+     * @param effectiveTime time when the hosting is effective
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public ProcessCallElement getProcessCall(String callerGUID,
+                                             String calledGUID,
+                                             String qualifiedName,
+                                             Date   effectiveTime) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+
+    {
+        return processManagerClient.getProcessCall(userId, callerGUID, calledGUID, qualifiedName, effectiveTime);
+    }
+
+
+    /**
+     * Update the relationship between two elements that shows a request-response call between them.
+     *
+     * @param processCallGUID unique identifier of the process call relationship
+     * @param qualifiedName unique identifier for this relationship
+     * @param description description and/or purpose of the data flow
+     * @param formula function that determines the subset of the data that flows
+     * @param effectiveFrom time when this hosting is effective - null means immediately
+     * @param effectiveTo time when this hosting is no longer effective - null means forever
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateProcessCall(String processCallGUID,
+                                  String qualifiedName,
+                                  String description,
+                                  String formula,
+                                  Date   effectiveFrom,
+                                  Date   effectiveTo) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException
+    {
+        processManagerClient.updateProcessCall(userId, infrastructureManagerGUID, infrastructureManagerName, processCallGUID, qualifiedName, description, formula, effectiveFrom, effectiveTo);
+    }
+
+
+    /**
+     * Remove the process call relationship.
+     *
+     * @param processCallGUID unique identifier of the process call relationship
+
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearProcessCall(String processCallGUID) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException
+
+    {
+        processManagerClient.clearProcessCall(userId, infrastructureManagerGUID, infrastructureManagerName, processCallGUID);
+    }
+
+
+    /**
+     * Retrieve the process call relationships linked from an specific element to the elements it calls.
+     *
+     * @param callerGUID unique identifier of the element that is making the call
+     * @param effectiveTime time when the hosting is effective
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ProcessCallElement> getProcessCalled(String callerGUID,
+                                                     Date   effectiveTime) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+        return processManagerClient.getProcessCalled(userId, callerGUID, effectiveTime);
+    }
+
+
+    /**
+     * Retrieve the process call relationships linked from an specific element to its callers.
+     *
+     * @param calledGUID unique identifier of the element that is processing the call
+     * @param effectiveTime time when the hosting is effective
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ProcessCallElement> getProcessCallers(String calledGUID,
+                                                      Date   effectiveTime) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        return processManagerClient.getProcessCallers(userId, calledGUID, effectiveTime);
+    }
+
+
+    /**
+     * Link two elements together to show that they are part of the lineage of the data that is moving
+     * between the processes.  Typically the lineage relationships stitch together processes and data assets
+     * supported by different technologies.
+     *
+     * @param sourceElementGUID unique identifier of the source
+     * @param destinationElementGUID unique identifier of the destination
+     * @param effectiveFrom time when this hosting is effective - null means immediately
+     * @param effectiveTo time when this hosting is no longer effective - null means forever
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupLineageMapping(String sourceElementGUID,
+                                    String destinationElementGUID,
+                                    Date   effectiveFrom,
+                                    Date   effectiveTo) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
+    {
+        processManagerClient.setupLineageMapping(userId, sourceElementGUID, destinationElementGUID, effectiveFrom, effectiveTo);
+    }
+
+
+    /**
+     * Remove the lineage mapping between two elements.
+     *
+     * @param sourceElementGUID unique identifier of the source
+     * @param destinationElementGUID unique identifier of the destination
+
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearLineageMapping(String sourceElementGUID,
+                                    String destinationElementGUID) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
+        processManagerClient.clearLineageMapping(userId, sourceElementGUID, destinationElementGUID);
+    }
+
+
+    /**
+     * Retrieve the lineage mapping relationships linked from an specific source element to its destinations.
+     *
+     * @param sourceElementGUID unique identifier of the source
+     * @param effectiveTime time when the hosting is effective
+     *
+     * @return list of lineage mapping relationships
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<LineageMappingElement> getDestinationLineageMappings(String sourceElementGUID,
+                                                                     Date   effectiveTime) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
+    {
+        return processManagerClient.getDestinationLineageMappings(userId, sourceElementGUID, effectiveTime);
+    }
+
+
+    /**
+     * Retrieve the lineage mapping relationships linked from an specific destination element to its sources.
+     *
+     * @param destinationElementGUID unique identifier of the destination
+     * @param effectiveTime time when the hosting is effective
+     *
+     * @return list of lineage mapping relationships
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<LineageMappingElement> getSourceLineageMappings(String destinationElementGUID,
+                                                                Date   effectiveTime) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        return processManagerClient.getSourceLineageMappings(userId, destinationElementGUID, effectiveTime);
+    }
+
+
+
+    /* =====================================================================================================================
+     * A Connection is the top level object for working with connectors
+     */
+
+    /**
+     * Create a new metadata element to represent a connection.
+     *
+     * @param connectionProperties properties about the connection to store
+     *
+     * @return unique identifier of the new connection
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createConnection(ConnectionProperties connectionProperties) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        return connectionManagerClient.createConnection(userId, infrastructureManagerGUID, infrastructureManagerName, connectionProperties);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a connection using an existing metadata element as a template.
+     *
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param templateProperties properties that override the template
+     *
+     * @return unique identifier of the new connection
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createConnectionFromTemplate(String             templateGUID,
+                                               TemplateProperties templateProperties) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        return connectionManagerClient.createConnectionFromTemplate(userId, infrastructureManagerGUID, infrastructureManagerName, templateGUID, templateProperties);
+    }
+
+
+    /**
+     * Update the metadata element representing a connection.  It is possible to use the subtype property classes or
+     * set up specialized properties in extended properties.
+     *
+     * @param connectionGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param connectionProperties new properties for the metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateConnection(String               connectionGUID,
+                                 boolean              isMergeUpdate,
+                                 ConnectionProperties connectionProperties) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        connectionManagerClient.updateConnection(userId, infrastructureManagerGUID, infrastructureManagerName, connectionGUID, isMergeUpdate, connectionProperties);
+    }
+
+
+    /**
+     * Create a relationship between a connection and a connector type.
+     *
+     * @param connectionGUID unique identifier of the connection in the external data manager
+     * @param connectorTypeGUID unique identifier of the connector type in the external data manager
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupConnectorType(String  connectionGUID,
+                                   String  connectorTypeGUID) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
+    {
+        connectionManagerClient.setupConnectorType(userId, infrastructureManagerGUID, infrastructureManagerName, connectionGUID, connectorTypeGUID);
+    }
+
+
+    /**
+     * Remove a relationship between a connection and a connector type.
+     *
+     * @param connectionGUID unique identifier of the connection in the external data manager
+     * @param connectorTypeGUID unique identifier of the connector type in the external data manager
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearConnectorType(String connectionGUID,
+                                   String connectorTypeGUID) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
+    {
+        connectionManagerClient.clearConnectorType(userId, infrastructureManagerGUID, infrastructureManagerName, connectionGUID, connectorTypeGUID);
+    }
+
+
+    /**
+     * Create a relationship between a connection and an endpoint.
+     *
+     * @param connectionGUID unique identifier of the connection in the external data manager
+     * @param endpointGUID unique identifier of the endpoint in the external data manager
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupEndpoint(String  connectionGUID,
+                              String  endpointGUID) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
+    {
+        connectionManagerClient.setupEndpoint(userId, infrastructureManagerGUID, infrastructureManagerName, connectionGUID, endpointGUID);
+    }
+
+
+    /**
+     * Remove a relationship between a connection and an endpoint.
+     *
+     * @param connectionGUID unique identifier of the connection in the external data manager
+     * @param endpointGUID unique identifier of the endpoint in the external data manager
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearEndpoint(String connectionGUID,
+                              String endpointGUID) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException
+    {
+        connectionManagerClient.clearEndpoint(userId, infrastructureManagerGUID, infrastructureManagerName, connectionGUID, endpointGUID);
+    }
+
+
+    /**
+     * Create a relationship between a virtual connection and an embedded connection.
+     *
+     * @param connectionGUID unique identifier of the virtual connection in the external data manager
+     * @param position which order should this connection be processed
+     * @param arguments What additional properties should be passed to the embedded connector via the configuration properties
+     * @param displayName what does this connector signify?
+     * @param embeddedConnectionGUID unique identifier of the embedded connection in the external data manager
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupEmbeddedConnection(String              connectionGUID,
+                                        int                 position,
+                                        String              displayName,
+                                        Map<String, Object> arguments,
+                                        String              embeddedConnectionGUID) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        connectionManagerClient.setupEmbeddedConnection(userId, infrastructureManagerGUID, infrastructureManagerName, connectionGUID, position, displayName, arguments, embeddedConnectionGUID);
+    }
+
+
+    /**
+     * Remove a relationship between a virtual connection and an embedded connection.
+     *
+     * @param connectionGUID unique identifier of the virtual connection in the external data manager
+     * @param embeddedConnectionGUID unique identifier of the embedded connection in the external data manager
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearEmbeddedConnection(String connectionGUID,
+                                        String embeddedConnectionGUID) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
+    {
+        connectionManagerClient.clearEmbeddedConnection(userId, infrastructureManagerGUID, infrastructureManagerName, connectionGUID, embeddedConnectionGUID);
+    }
+
+
+    /**
+     * Create a relationship between an asset and its connection.
+     *
+     * @param assetGUID unique identifier of the asset
+     * @param assetSummary summary of the asset that is stored in the relationship between the asset and the connection.
+     * @param connectionGUID unique identifier of the  connection
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupAssetConnection(String  assetGUID,
+                                     String  assetSummary,
+                                     String  connectionGUID) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
+    {
+        connectionManagerClient.setupAssetConnection(userId, infrastructureManagerGUID, infrastructureManagerName, assetGUID, assetSummary, connectionGUID);
+    }
+
+
+    /**
+     * Remove a relationship between an asset and its connection.
+     *
+     * @param assetGUID unique identifier of the asset
+     * @param connectionGUID unique identifier of the connection
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearAssetConnection(String assetGUID,
+                                     String connectionGUID) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
+    {
+        connectionManagerClient.clearAssetConnection(userId, infrastructureManagerGUID, infrastructureManagerName, assetGUID, connectionGUID);
+    }
+
+
+    /**
+     * Remove the metadata element representing a connection.
+     *
+     * @param connectionGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeConnection(String connectionGUID) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
+    {
+        connectionManagerClient.removeConnection(userId, infrastructureManagerGUID, infrastructureManagerName, connectionGUID);
+    }
+
+
+    /**
+     * Retrieve the list of metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ConnectionElement> findConnections(String searchString,
+                                                   int    startFrom,
+                                                   int    pageSize) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        return connectionManagerClient.findConnections(userId, searchString, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ConnectionElement> getConnectionsByName(String name,
+                                                        int    startFrom,
+                                                        int    pageSize) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        return connectionManagerClient.getConnectionsByName(userId, name, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the metadata element with the supplied unique identifier.
+     *
+     * @param connectionGUID unique identifier of the requested metadata element
+     *
+     * @return requested metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public ConnectionElement getConnectionByGUID(String connectionGUID) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        return connectionManagerClient.getConnectionByGUID(userId, connectionGUID);
+    }
+
+    /*
+     * ========================================================
+     * Infrastructure Assets are connected to an endpoint
+     */
+
+
+    /**
+     * Create a new metadata element to represent an endpoint
+     *
+     * @param infrastructureGUID unique identifier of the infrastructure to connect it to (optional)
+     * @param endpointProperties properties about the endpoint to store
+     *
+     * @return unique identifier of the new endpoint
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createEndpoint(String             infrastructureGUID,
+                                 EndpointProperties endpointProperties) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        return endpointManagerClient.createEndpoint(userId, null, null, infrastructureGUID, endpointProperties);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a endpoint using an existing metadata element as a template.
+     *
+     * @param infrastructureGUID unique identifier of the infrastructure to connect it to (optional)
+     * @param networkAddress location of the endpoint
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param templateProperties descriptive properties that override the template
+     *
+     * @return unique identifier of the new endpoint
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createEndpointFromTemplate(String             infrastructureGUID,
+                                             String             networkAddress,
+                                             String             templateGUID,
+                                             TemplateProperties templateProperties) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        return endpointManagerClient.createEndpointFromTemplate(userId, null, null, infrastructureGUID, networkAddress, templateGUID, templateProperties);
+    }
+
+
+    /**
+     * Update the metadata element representing a endpoint.  It is possible to use the subtype property classes or
+     * set up specialized properties in extended properties.
+     *
+     * @param endpointGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param endpointProperties new properties for the metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateEndpoint(boolean            isMergeUpdate,
+                               String             endpointGUID,
+                               EndpointProperties endpointProperties) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        endpointManagerClient.updateEndpoint(userId, infrastructureManagerGUID, infrastructureManagerName, isMergeUpdate, endpointGUID, endpointProperties);
+    }
+
+
+
+
+    /**
+     * Remove the metadata element representing a endpoint.
+     *
+     * @param endpointGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeEndpoint(String endpointGUID) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
+    {
+        endpointManagerClient.removeEndpoint(userId, infrastructureManagerGUID, infrastructureManagerName, endpointGUID);
+    }
+
+
+    /**
+     * Retrieve the list of endpoint metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<EndpointElement> findEndpoints(String searchString,
+                                               int    startFrom,
+                                               int    pageSize) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        return endpointManagerClient.findEndpoints(userId, searchString, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of endpoint metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<EndpointElement> getEndpointsByName(String name,
+                                                    int    startFrom,
+                                                    int    pageSize) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
+    {
+        return endpointManagerClient.getEndpointsByName(userId, name, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of endpoint metadata elements that are attached to a specific infrastructure element.
+     *
+     * @param infrastructureGUID element to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<EndpointElement> getEndpointsForInfrastructure(String infrastructureGUID,
+                                                               int    startFrom,
+                                                               int    pageSize) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        return endpointManagerClient.getEndpointsForInfrastructure(userId, infrastructureGUID, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the endpoint metadata element with the supplied unique identifier.
+     *
+     * @param endpointGUID unique identifier of the requested metadata element
+     *
+     * @return requested metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public EndpointElement getEndpointByGUID(String endpointGUID) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        return endpointManagerClient.getEndpointByGUID(userId, endpointGUID);
+    }
+
+
+    /*
+     * ========================================================
+     * Connector types describe the implementation of a connector
+     */
+
+
+    /**
+     * Create a new metadata element to represent an connectorType
+     *
+     * @param connectorTypeProperties properties about the connector type to store
+     *
+     * @return unique identifier of the new connectorType
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createConnectorType(ConnectorTypeProperties connectorTypeProperties) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
+    {
+        return connectorTypeManagerClient.createConnectorType(userId, infrastructureManagerGUID, infrastructureManagerName, connectorTypeProperties);
+    }
+
+
+    /**
+     * Create a new metadata element to represent an connectorType using an existing metadata element as a template.
+     *
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param templateProperties descriptive properties that override the template
+     *
+     * @return unique identifier of the new connectorType
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createConnectorTypeFromTemplate(String             templateGUID,
+                                                  TemplateProperties templateProperties) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException
+    {
+        return connectorTypeManagerClient.createConnectorTypeFromTemplate(userId, infrastructureManagerGUID, infrastructureManagerName, templateGUID, templateProperties);
+    }
+
+
+    /**
+     * Update the metadata element representing an connectorType.  It is possible to use the subtype property classes or
+     * set up specialized properties in extended properties.
+     *
+     * @param connectorTypeGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param connectorTypeProperties new properties for the metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateConnectorType(boolean                 isMergeUpdate,
+                                    String                  connectorTypeGUID,
+                                    ConnectorTypeProperties connectorTypeProperties) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
+    {
+        connectorTypeManagerClient.updateConnectorType(userId, infrastructureManagerGUID, infrastructureManagerName, isMergeUpdate, connectorTypeGUID, connectorTypeProperties);
+    }
+
+
+    /**
+     * Remove the metadata element representing an connectorType.
+     *
+     * @param connectorTypeGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeConnectorType(String connectorTypeGUID) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
+    {
+        connectorTypeManagerClient.removeConnectorType(userId, infrastructureManagerGUID, infrastructureManagerName, connectorTypeGUID);
+    }
+
+
+    /**
+     * Retrieve the list of connector type metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ConnectorTypeElement> findConnectorTypes(String searchString,
+                                                         int    startFrom,
+                                                         int    pageSize) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        return connectorTypeManagerClient.findConnectorTypes(userId, searchString, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of connector type metadata elements with a matching qualified name, display name or
+     * connector provider class name.
+     * There are no wildcards supported on this request.
+     *
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ConnectorTypeElement> getConnectorTypesByName(String name,
+                                                              int    startFrom,
+                                                              int    pageSize) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        return connectorTypeManagerClient.getConnectorTypesByName(userId, name, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the connector type metadata element with the supplied unique identifier.
+     *
+     * @param connectorTypeGUID unique identifier of the requested metadata element
+     *
+     * @return requested metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public ConnectorTypeElement getConnectorTypeByGUID(String connectorTypeGUID) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        return connectorTypeManagerClient.getConnectorTypeByGUID(userId, connectorTypeGUID);
+    }
+
+
+    /*
+     * IT profiles for infrastructure
+     */
+
+
+    /**
+     * Create a definition of an IT profile.  If the itInfrastructureGUID is provided, it is connected to the infrastructure element that the
+     * profile describes using the ITInfrastructureProfile relationship.  If the itUserId is specified, a UserIdentity for that userId is
+     * found/created and connected to the the new IT profile.
+     *
+     * @param userId calling user
+     * @param infrastructureManagerGUID   guid of the software server capability entity that represented the external source - null for local
+     * @param infrastructureManagerName   name of the software server capability entity that represented the external source
+     * @param itInfrastructureGUID unique identifier of the piece of IT infrastructure that is described by the new IT profile.
+     * @param itUserId            user Id used by the IT Infrastructure
+     * @param properties          properties for a IT profile
+     *
+     * @return unique identifier of IT profile
+     *
+     * @throws InvalidParameterException qualifiedName or userId is null; qualifiedName is not unique
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public String createITProfile(String              userId,
+                                  String              infrastructureManagerGUID,
+                                  String              infrastructureManagerName,
+                                  String              itInfrastructureGUID,
+                                  String              itUserId,
+                                  ITProfileProperties properties) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        return itProfileManagerClient.createITProfile(userId, infrastructureManagerGUID, infrastructureManagerName, itInfrastructureGUID, itUserId, properties);
+    }
+
+
+    /**
+     * Update the definition of an IT profile.
+     *
+     * @param userId calling user
+     * @param infrastructureManagerGUID   guid of the software server capability entity that represented the external source - null for local
+     * @param infrastructureManagerName   name of the software server capability entity that represented the external source
+     * @param itProfileGUID unique identifier of IT profile
+     * @param isMergeUpdate are unspecified properties unchanged (true) or replaced with null?
+     * @param properties properties to change
+     *
+     * @throws InvalidParameterException guid, qualifiedName or userId is null; qualifiedName is not unique; guid is not known
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void updateITProfile(String              userId,
+                                String              infrastructureManagerGUID,
+                                String              infrastructureManagerName,
+                                String              itProfileGUID,
+                                boolean             isMergeUpdate,
+                                ITProfileProperties properties) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        itProfileManagerClient.updateITProfile(userId, infrastructureManagerGUID, infrastructureManagerName, itProfileGUID, isMergeUpdate, properties);
+    }
+
+
+    /**
+     * Remove the definition of an IT profile.
+     *
+     * @param userId calling user
+     * @param infrastructureManagerGUID   guid of the software server capability entity that represented the external source - null for local
+     * @param infrastructureManagerName   name of the software server capability entity that represented the external source
+     * @param itProfileGUID unique identifier of IT profile
+     *
+     * @throws InvalidParameterException guid or userId is null; guid is not known
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void deleteITProfile(String userId,
+                                String infrastructureManagerGUID,
+                                String infrastructureManagerName,
+                                String itProfileGUID) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException
+    {
+        itProfileManagerClient.deleteITProfile(userId, infrastructureManagerGUID, infrastructureManagerName, itProfileGUID);
+    }
+
+
+    /**
+     * Add a new contact method to the profile.
+     *
+     * @param userId the name of the calling user.
+     * @param infrastructureManagerGUID   guid of the software server capability entity that represented the external source - null for local
+     * @param infrastructureManagerName   name of the software server capability entity that represented the external source
+     * @param itProfileGUID identifier of the profile to update.
+     * @param properties properties of contact method.
+     *
+     * @return unique identifier (guid) for the new contact method.
+     *
+     * @throws InvalidParameterException the userId is null or invalid.  Another property is invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public String addContactMethod(String                  userId,
+                                   String                  infrastructureManagerGUID,
+                                   String                  infrastructureManagerName,
+                                   String                  itProfileGUID,
+                                   ContactMethodProperties properties) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException
+    {
+        return itProfileManagerClient.addContactMethod(userId, infrastructureManagerGUID, infrastructureManagerName, itProfileGUID, properties);
+    }
+
+
+    /**
+     * Remove an obsolete contact method from the profile.
+     *
+     * @param userId the name of the calling user.
+     * @param infrastructureManagerGUID   guid of the software server capability entity that represented the external source - null for local
+     * @param infrastructureManagerName   name of the software server capability entity that represented the external source
+     * @param contactMethodGUID unique identifier (guid) for the obsolete contact method.
+     *
+     * @throws InvalidParameterException the userId is null or invalid.  Another property is invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void deleteContactMethod(String            userId,
+                                    String            infrastructureManagerGUID,
+                                    String            infrastructureManagerName,
+                                    String            contactMethodGUID) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
+        itProfileManagerClient.deleteContactMethod(userId, infrastructureManagerGUID, infrastructureManagerName, contactMethodGUID);
+    }
+
+
+
+    /**
+     * Link a piece of infrastructure to an IT profile.
+     *
+     * @param itInfrastructureGUID unique identifier of the IT Infrastructure element
+     * @param itProfileGUID unique identifier of the IT profile
+     * @param effectiveFrom start date for the  relationship
+     * @param effectiveTo end date for the relationship
+     *
+     * @throws InvalidParameterException one of the guids is null or not known
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void linkITInfrastructureToProfile(String itInfrastructureGUID,
+                                              String itProfileGUID,
+                                              Date   effectiveFrom,
+                                              Date   effectiveTo) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        itProfileManagerClient.linkITInfrastructureToProfile(userId, infrastructureManagerGUID, infrastructureManagerName, itInfrastructureGUID, itProfileGUID, effectiveFrom, effectiveTo);
+    }
+
+
+    /**
+     * Update the effectivity dates of a link from a piece of infrastructure to an IT profile.
+     *
+     * @param itInfrastructureGUID unique identifier of the IT Infrastructure element
+     * @param itProfileGUID unique identifier of the IT profile
+     * @param effectiveFrom start date for the  relationship
+     * @param effectiveTo end date for the relationship
+     *
+     * @throws InvalidParameterException one of the guids is null or not known
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void updateITInfrastructureToProfile(String itInfrastructureGUID,
+                                                String itProfileGUID,
+                                                Date   effectiveFrom,
+                                                Date   effectiveTo) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        itProfileManagerClient.updateITInfrastructureToProfile(userId, infrastructureManagerGUID, infrastructureManagerName, itInfrastructureGUID, itProfileGUID, effectiveFrom, effectiveTo);
+    }
+
+
+    /**
+     * Remove the link between a piece of infrastructure to an IT profile.
+     *
+     * @param itInfrastructureGUID unique identifier of the IT Infrastructure element
+     * @param itProfileGUID unique identifier of the IT profile
+     * @param effectiveTime time that the relationship is active - null for any time
+     *
+     * @throws InvalidParameterException one of the guids is null or not known
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void unlinkITInfrastructureFromProfile(String itInfrastructureGUID,
+                                                  String itProfileGUID,
+                                                  Date   effectiveTime) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        itProfileManagerClient.unlinkITInfrastructureFromProfile(userId, infrastructureManagerGUID, infrastructureManagerName, itInfrastructureGUID, itProfileGUID, effectiveTime);
+    }
+
+
+    /**
+     * Return information about a specific IT profile.
+     *
+     * @param itProfileGUID unique identifier for the IT profile
+     *
+     * @return properties of the IT profile
+     *
+     * @throws InvalidParameterException itProfileGUID or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public ITProfileElement getITProfileByGUID(String itProfileGUID) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
+    {
+        return itProfileManagerClient.getITProfileByGUID(userId, itProfileGUID);
+    }
+
+
+    /**
+     * Return information about a specific IT profile.
+     *
+     * @param itProfileUserId unique identifier for the IT profile
+     *
+     * @return properties of the IT profile
+     *
+     * @throws InvalidParameterException itProfileUserId or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public ITProfileElement getITProfileByUserId(String itProfileUserId) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        return itProfileManagerClient.getITProfileByUserId(userId, itProfileUserId);
+    }
+
+
+    /**
+     * Return information about a named IT profile.
+     *
+     * @param name unique name for the IT profile
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of matching IT profiles (hopefully only one)
+     *
+     * @throws InvalidParameterException name or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public List<ITProfileElement> getITProfileByName(String name,
+                                                     int    startFrom,
+                                                     int    pageSize) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        return itProfileManagerClient.getITProfileByName(userId, name, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of matching profiles for the search string.
+     *
+     * @param searchString RegEx string to search for
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of matching IT profiles
+     *
+     * @throws InvalidParameterException guid invalid or the external references are not correctly specified, or are null.
+     * @throws PropertyServerException the server is not available.
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
+     */
+    public List<ITProfileElement> findITProfile(String searchString,
+                                                int    startFrom,
+                                                int    pageSize) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException
+    {
+        return itProfileManagerClient.findITProfile(userId, searchString, startFrom, pageSize);
+    }
+
+
+
+
+    /* ========================================================
+     * Manage user identities
+     */
+
+    /**
+     * Create a UserIdentity.  This is not connected to a profile.
+     *
+     * @param newIdentity properties for the new userIdentity.
+     *
+     * @return unique identifier of the UserIdentity
+     *
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws PropertyServerException  there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public String createUserIdentity(UserIdentityProperties newIdentity) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
+        return itProfileManagerClient.createUserIdentity(userId, infrastructureManagerGUID, infrastructureManagerName, newIdentity);
+    }
+
+
+    /**
+     * Update a UserIdentity.
+     *
+     * @param userIdentityGUID unique identifier of the UserIdentity
+     * @param isMergeUpdate should the supplied properties be overlaid on the existing properties (true) or replace them (false
+     * @param properties updated properties for the new userIdentity
+     *
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws PropertyServerException  there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void updateUserIdentity(String                 userIdentityGUID,
+                                   boolean                isMergeUpdate,
+                                   UserIdentityProperties properties) throws InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException
+    {
+        itProfileManagerClient.updateUserIdentity(userId, infrastructureManagerGUID, infrastructureManagerName, userIdentityGUID, isMergeUpdate, properties);
+    }
+
+
+    /**
+     * Remove a user identity object.  This will fail if the profile would be left without an
+     * associated user identity.
+     *
+     * @param userIdentityGUID unique identifier of the UserIdentity
+     *
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws PropertyServerException  there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void deleteUserIdentity(String userIdentityGUID) throws InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException
+    {
+        itProfileManagerClient.deleteUserIdentity(userId, infrastructureManagerGUID, infrastructureManagerName, userIdentityGUID);
+    }
+
+
+    /**
+     * Link a user identity to a profile.  This will fail if the user identity is already connected to
+     * a profile.
+     *
+     * @param profileGUID the profile to add the identity to.
+     * @param userIdentityGUID additional userId for the profile.
+     * @param properties the properties that describe how the owner of the profile uses the user identity
+     *
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws PropertyServerException  there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void addIdentityToProfile(String                    userIdentityGUID,
+                                     String                    profileGUID,
+                                     ProfileIdentityProperties properties) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
+    {
+        itProfileManagerClient.addIdentityToProfile(userId, infrastructureManagerGUID, infrastructureManagerName, userIdentityGUID, profileGUID, properties);
+    }
+
+
+    /**
+     * Update the properties of the relationship between a user identity and profile.
+     *
+     * @param userIdentityGUID additional userId for the profile
+     * @param profileGUID the profile to add the identity to
+     * @param isMergeUpdate should the supplied properties be overlaid on the existing properties (true) or replace them (false
+     * @param properties the properties that describe how the owner of the profile uses the user identity
+     *
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws PropertyServerException  there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void updateProfileIdentity(String                    userIdentityGUID,
+                                      String                    profileGUID,
+                                      boolean                   isMergeUpdate,
+                                      ProfileIdentityProperties properties) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
+    {
+        itProfileManagerClient.updateProfileIdentity(userId, infrastructureManagerGUID, infrastructureManagerName, userIdentityGUID, profileGUID, isMergeUpdate, properties);
+    }
+
+
+    /**
+     * Unlink a user identity from a profile.
+     *
+     * @param userIdentityGUID unique identifier of the UserIdentity
+     * @param profileGUID profile to remove it from.
+     *
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws PropertyServerException  there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void removeIdentityFromProfile(String userIdentityGUID,
+                                          String profileGUID) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
+    {
+        itProfileManagerClient.removeIdentityFromProfile(userId, infrastructureManagerGUID, infrastructureManagerName, userIdentityGUID, profileGUID);
+    }
+
+
+    /**
+     * Retrieve the list of user identity metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<UserIdentityElement> findUserIdentities(String searchString,
+                                                        int    startFrom,
+                                                        int    pageSize) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        return itProfileManagerClient.findUserIdentities(userId, searchString, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of user identity metadata elements with a matching qualified name.
+     * There are no wildcards supported on this request.
+     *
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<UserIdentityElement>  getUserIdentitiesByName(String name,
+                                                              int    startFrom,
+                                                              int    pageSize) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        return itProfileManagerClient.getUserIdentitiesByName(userId, name, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the userIdentity metadata element with the supplied unique identifier.
+     *
+     * @param userIdentityGUID unique identifier of the requested metadata element
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public UserIdentityElement getUserIdentityByGUID(String userIdentityGUID) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        return itProfileManagerClient.getUserIdentityByGUID(userId, userIdentityGUID);
+    }
 }
