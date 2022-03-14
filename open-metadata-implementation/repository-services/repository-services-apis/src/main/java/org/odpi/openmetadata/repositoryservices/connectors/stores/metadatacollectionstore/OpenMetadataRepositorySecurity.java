@@ -222,23 +222,6 @@ public interface OpenMetadataRepositorySecurity
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
-     * @param instance instance details
-     * @param classificationName String name for the classification.
-     * @param properties list of properties for the classification.
-     * @throws UserNotAuthorizedException the user is not authorized to maintain instances
-     */
-    void  validateUserForEntityClassificationAdd(String               userId,
-                                                 String               metadataCollectionName,
-                                                 EntityDetail         instance,
-                                                 String               classificationName,
-                                                 InstanceProperties   properties) throws UserNotAuthorizedException;
-
-    /**
-     * Tests for whether a specific user should have the right to add a classification to an entity instance
-     * within a repository.
-     *
-     * @param userId identifier of user
-     * @param metadataCollectionName configurable name of the metadata collection
      * @param instance instance proxy
      * @param classificationName String name for the classification.
      * @param properties list of properties for the classification.
@@ -254,7 +237,7 @@ public interface OpenMetadataRepositorySecurity
     }
 
     /**
-     * Tests for whether a specific user should have the right to update a classification for an entity instance
+     * Tests for whether a specific user should have the right to add a classification to an entity instance
      * within a repository.
      *
      * @param userId identifier of user
@@ -264,11 +247,11 @@ public interface OpenMetadataRepositorySecurity
      * @param properties list of properties for the classification.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
-    void  validateUserForEntityClassificationUpdate(String               userId,
-                                                    String               metadataCollectionName,
-                                                    EntityDetail         instance,
-                                                    String               classificationName,
-                                                    InstanceProperties   properties) throws UserNotAuthorizedException;
+    void  validateUserForEntityClassificationAdd(String               userId,
+                                                 String               metadataCollectionName,
+                                                 EntitySummary        instance,
+                                                 String               classificationName,
+                                                 InstanceProperties   properties) throws UserNotAuthorizedException;
 
     /**
      * Tests for whether a specific user should have the right to update a classification for an entity instance
@@ -291,19 +274,22 @@ public interface OpenMetadataRepositorySecurity
     }
 
     /**
-     * Tests for whether a specific user should have the right to delete a classification from an entity instance
+     * Tests for whether a specific user should have the right to update a classification for an entity instance
      * within a repository.
      *
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
      * @param instance instance details
      * @param classificationName String name for the classification.
+     * @param properties list of properties for the classification.
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
-    void  validateUserForEntityClassificationDelete(String               userId,
+    void  validateUserForEntityClassificationUpdate(String               userId,
                                                     String               metadataCollectionName,
-                                                    EntityDetail         instance,
-                                                    String               classificationName) throws UserNotAuthorizedException;
+                                                    EntitySummary        instance,
+                                                    String               classificationName,
+                                                    InstanceProperties   properties) throws UserNotAuthorizedException;
+
 
     /**
      * Tests for whether a specific user should have the right to delete a classification from an entity instance
@@ -322,6 +308,21 @@ public interface OpenMetadataRepositorySecurity
     {
         //
     }
+
+    /**
+     * Tests for whether a specific user should have the right to delete a classification from an entity instance
+     * within a repository.
+     *
+     * @param userId identifier of user
+     * @param metadataCollectionName configurable name of the metadata collection
+     * @param instance instance details
+     * @param classificationName String name for the classification.
+     * @throws UserNotAuthorizedException the user is not authorized to maintain instances
+     */
+    void  validateUserForEntityClassificationDelete(String               userId,
+                                                    String               metadataCollectionName,
+                                                    EntitySummary        instance,
+                                                    String               classificationName) throws UserNotAuthorizedException;
 
     /**
      * Tests for whether a specific user should have the right to delete a instance within a repository.

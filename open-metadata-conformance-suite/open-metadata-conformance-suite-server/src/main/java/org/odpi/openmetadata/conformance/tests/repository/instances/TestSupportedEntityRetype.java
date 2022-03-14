@@ -279,7 +279,7 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
                 } catch (FunctionNotSupportedException exception) {
 
                     super.addNotSupportedAssertion(assertion18,
-                                                   assertionMsg18 + testTypeName,
+                                                   testTypeName + assertionMsg18 + subTypeName,
                                                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
                                                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
 
@@ -304,7 +304,7 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
 
                 assertCondition(true,
                                 assertion18,
-                                testTypeName + assertionMsg18,
+                                testTypeName + assertionMsg18 + subTypeName,
                                 RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
                                 RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId(),
                                 "reTypeEntity",
@@ -404,7 +404,7 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
                 } catch (FunctionNotSupportedException exception) {
 
                     super.addNotSupportedAssertion(assertion18,
-                                                   assertionMsg18 + testTypeName,
+                                                   subTypeName + assertionMsg18 + testTypeName,
                                                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getProfileId(),
                                                    RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_TYPE.getRequirementId());
 

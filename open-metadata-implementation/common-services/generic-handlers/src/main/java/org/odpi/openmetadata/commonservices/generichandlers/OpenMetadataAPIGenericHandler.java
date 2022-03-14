@@ -4383,22 +4383,29 @@ public class OpenMetadataAPIGenericHandler<B>
                 /*
                  * This is not an error - it just means that the classification is not present on the anchor entity.
                  */
-                repositoryHandler.classifyEntity(localServerUserId,
-                                                 null,
-                                                 null,
-                                                 anchorEntity.getGUID(),
-                                                 anchorEntity,
-                                                 guidParameterName,
-                                                 anchorEntity.getType().getTypeDefName(),
-                                                 OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_GUID,
-                                                 OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_NAME,
-                                                 ClassificationOrigin.ASSIGNED,
-                                                 null,
-                                                 newProperties,
-                                                 false,
-                                                 false,
-                                                 null,
-                                                 methodName);
+                try
+                {
+                    repositoryHandler.classifyEntity(localServerUserId,
+                                                    null,
+                                                    null,
+                                                    anchorEntity.getGUID(),
+                                                    anchorEntity,
+                                                    guidParameterName,
+                                                    anchorEntity.getType().getTypeDefName(),
+                                                    OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_GUID,
+                                                    OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_NAME,
+                                                    ClassificationOrigin.ASSIGNED,
+                                                    null,
+                                                    newProperties,
+                                                    false,
+                                                    false,
+                                                     null,
+                                                     methodName);
+                }
+                catch (PropertyServerException e)
+                {
+                    // Ignore exception, possibly a race condition - the entity is already classified
+                }
             }
             catch (InvalidParameterException | TypeErrorException error)
             {
