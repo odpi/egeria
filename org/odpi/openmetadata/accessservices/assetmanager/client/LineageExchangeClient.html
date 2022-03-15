@@ -345,7 +345,7 @@ implements <a href="../api/LineageExchangeInterface.html" title="interface in or
 </tr>
 <tr id="i10" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createProcess(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessProperties)">createProcess</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createProcess(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessStatus,org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessProperties)">createProcess</a></span>&#8203;(java.lang.String&nbsp;userId,
              java.lang.String&nbsp;assetManagerGUID,
              java.lang.String&nbsp;assetManagerName,
              boolean&nbsp;assetManagerIsHome,
@@ -355,6 +355,7 @@ implements <a href="../api/LineageExchangeInterface.html" title="interface in or
              java.lang.String&nbsp;processExternalIdentifierSource,
              org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern&nbsp;processExternalIdentifierKeyPattern,
              java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties,
+             org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessStatus&nbsp;processStatus,
              org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessProperties&nbsp;processProperties)</code></th>
 <td class="colLast">
 <div class="block">Create a new metadata element to represent a process.</div>
@@ -1032,7 +1033,7 @@ implements <a href="../api/LineageExchangeInterface.html" title="interface in or
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a id="createProcess(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessProperties)">
+<a id="createProcess(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessStatus,org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessProperties)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1048,6 +1049,7 @@ implements <a href="../api/LineageExchangeInterface.html" title="interface in or
                                       java.lang.String&nbsp;processExternalIdentifierSource,
                                       org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern&nbsp;processExternalIdentifierKeyPattern,
                                       java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties,
+                                      org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessStatus&nbsp;processStatus,
                                       org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessProperties&nbsp;processProperties)
                                throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
                                       org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
@@ -1055,7 +1057,7 @@ implements <a href="../api/LineageExchangeInterface.html" title="interface in or
 <div class="block">Create a new metadata element to represent a process.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/LineageExchangeInterface.html#createProcess(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessProperties)">createProcess</a></code>&nbsp;in interface&nbsp;<code><a href="../api/LineageExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">LineageExchangeInterface</a></code></dd>
+<dd><code><a href="../api/LineageExchangeInterface.html#createProcess(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessStatus,org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessProperties)">createProcess</a></code>&nbsp;in interface&nbsp;<code><a href="../api/LineageExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">LineageExchangeInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
@@ -1067,6 +1069,7 @@ implements <a href="../api/LineageExchangeInterface.html" title="interface in or
 <dd><code>processExternalIdentifierSource</code> - component that issuing this request.</dd>
 <dd><code>processExternalIdentifierKeyPattern</code> - pattern for the external identifier within the external process manager (default is LOCAL_KEY)</dd>
 <dd><code>mappingProperties</code> - additional properties to help with the mapping of the elements in the external process manager and open metadata</dd>
+<dd><code>processStatus</code> - initial status of the process</dd>
 <dd><code>processProperties</code> - properties about the process to store</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new process</dd>

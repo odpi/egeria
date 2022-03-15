@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10,"i34":10,"i35":10,"i36":10,"i37":10,"i38":10,"i39":10,"i40":10,"i41":10,"i42":10,"i43":10,"i44":10,"i45":10,"i46":10,"i47":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10,"i34":10,"i35":10,"i36":10,"i37":10,"i38":10,"i39":10,"i40":10,"i41":10,"i42":10,"i43":10,"i44":10,"i45":10,"i46":10,"i47":10,"i48":10,"i49":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -303,7 +303,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDatabaseTable(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseTableProperties)">createDatabaseTable</a></span>&#8203;(java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;databaseManagerGUID,
                    java.lang.String&nbsp;databaseManagerName,
-                   java.lang.String&nbsp;databaseSchemaGUID,
+                   java.lang.String&nbsp;databaseAssetGUID,
                    org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseTableProperties&nbsp;databaseTableProperties)</code></th>
 <td class="colLast">
 <div class="block">Create a new metadata element to represent a database table.</div>
@@ -315,7 +315,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
                                java.lang.String&nbsp;databaseManagerGUID,
                                java.lang.String&nbsp;databaseManagerName,
                                java.lang.String&nbsp;templateGUID,
-                               java.lang.String&nbsp;databaseSchemaGUID,
+                               java.lang.String&nbsp;databaseAssetGUID,
                                org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties&nbsp;templateProperties)</code></th>
 <td class="colLast">
 <div class="block">Create a new metadata element to represent a database table using an existing metadata element as a template.</div>
@@ -326,7 +326,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDatabaseView(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseViewProperties)">createDatabaseView</a></span>&#8203;(java.lang.String&nbsp;userId,
                   java.lang.String&nbsp;databaseManagerGUID,
                   java.lang.String&nbsp;databaseManagerName,
-                  java.lang.String&nbsp;databaseSchemaGUID,
+                  java.lang.String&nbsp;databaseAssetGUID,
                   org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseViewProperties&nbsp;databaseViewProperties)</code></th>
 <td class="colLast">
 <div class="block">Create a new metadata element to represent a database view.</div>
@@ -338,7 +338,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
                               java.lang.String&nbsp;databaseManagerGUID,
                               java.lang.String&nbsp;databaseManagerName,
                               java.lang.String&nbsp;templateGUID,
-                              java.lang.String&nbsp;databaseSchemaGUID,
+                              java.lang.String&nbsp;databaseAssetGUID,
                               org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties&nbsp;templateProperties)</code></th>
 <td class="colLast">
 <div class="block">Create a new metadata element to represent a database view using an existing metadata element as a template.</div>
@@ -517,6 +517,16 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 </tr>
 <tr id="i29" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseTableElement&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTablesForDatabaseAsset(java.lang.String,java.lang.String,int,int)">getTablesForDatabaseAsset</a></span>&#8203;(java.lang.String&nbsp;userId,
+                         java.lang.String&nbsp;databaseAssetGUID,
+                         int&nbsp;startFrom,
+                         int&nbsp;pageSize)</code></th>
+<td class="colLast">
+<div class="block">Retrieve the list of database tables associated with a database or database schema.</div>
+</td>
+</tr>
+<tr id="i30" class="altColor">
+<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseTableElement&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTablesForDatabaseSchema(java.lang.String,java.lang.String,int,int)">getTablesForDatabaseSchema</a></span>&#8203;(java.lang.String&nbsp;userId,
                           java.lang.String&nbsp;databaseSchemaGUID,
                           int&nbsp;startFrom,
@@ -525,7 +535,17 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 <div class="block">Retrieve the list of database tables associated with a database schema.</div>
 </td>
 </tr>
-<tr id="i30" class="altColor">
+<tr id="i31" class="rowColor">
+<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseViewElement&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getViewsForDatabaseAsset(java.lang.String,java.lang.String,int,int)">getViewsForDatabaseAsset</a></span>&#8203;(java.lang.String&nbsp;userId,
+                        java.lang.String&nbsp;databaseAssetGUID,
+                        int&nbsp;startFrom,
+                        int&nbsp;pageSize)</code></th>
+<td class="colLast">
+<div class="block">Retrieve the list of database views associated with a database or database schema.</div>
+</td>
+</tr>
+<tr id="i32" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseViewElement&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getViewsForDatabaseSchema(java.lang.String,java.lang.String,int,int)">getViewsForDatabaseSchema</a></span>&#8203;(java.lang.String&nbsp;userId,
                          java.lang.String&nbsp;databaseSchemaGUID,
@@ -535,7 +555,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 <div class="block">Retrieve the list of database views associated with a database schema.</div>
 </td>
 </tr>
-<tr id="i31" class="rowColor">
+<tr id="i33" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#publishDatabase(java.lang.String,java.lang.String)">publishDatabase</a></span>&#8203;(java.lang.String&nbsp;userId,
                java.lang.String&nbsp;databaseGUID)</code></th>
@@ -543,7 +563,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 <div class="block">Update the zones for the database asset so that it becomes visible to consumers.</div>
 </td>
 </tr>
-<tr id="i32" class="altColor">
+<tr id="i34" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#publishDatabaseSchema(java.lang.String,java.lang.String)">publishDatabaseSchema</a></span>&#8203;(java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;databaseSchemaGUID)</code></th>
@@ -551,7 +571,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 <div class="block">Update the zones for the database asset so that it becomes visible to consumers.</div>
 </td>
 </tr>
-<tr id="i33" class="rowColor">
+<tr id="i35" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeDatabase(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeDatabase</a></span>&#8203;(java.lang.String&nbsp;userId,
               java.lang.String&nbsp;databaseManagerGUID,
@@ -562,7 +582,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 <div class="block">Remove the metadata element representing a database.</div>
 </td>
 </tr>
-<tr id="i34" class="altColor">
+<tr id="i36" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeDatabaseColumn(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeDatabaseColumn</a></span>&#8203;(java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;databaseManagerGUID,
@@ -573,7 +593,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 <div class="block">Remove the metadata element representing a database column.</div>
 </td>
 </tr>
-<tr id="i35" class="rowColor">
+<tr id="i37" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeDatabaseSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeDatabaseSchema</a></span>&#8203;(java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;databaseManagerGUID,
@@ -584,7 +604,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 <div class="block">Remove the metadata element representing a database schema.</div>
 </td>
 </tr>
-<tr id="i36" class="altColor">
+<tr id="i38" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeDatabaseTable(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeDatabaseTable</a></span>&#8203;(java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;databaseManagerGUID,
@@ -595,7 +615,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 <div class="block">Remove the metadata element representing a database table.</div>
 </td>
 </tr>
-<tr id="i37" class="rowColor">
+<tr id="i39" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeDatabaseView(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeDatabaseView</a></span>&#8203;(java.lang.String&nbsp;userId,
                   java.lang.String&nbsp;databaseManagerGUID,
@@ -606,7 +626,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 <div class="block">Remove the metadata element representing a database table.</div>
 </td>
 </tr>
-<tr id="i38" class="altColor">
+<tr id="i40" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeForeignKeyRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeForeignKeyRelationship</a></span>&#8203;(java.lang.String&nbsp;userId,
                             java.lang.String&nbsp;databaseManagerGUID,
@@ -617,7 +637,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 <div class="block">Remove the foreign key relationship for the requested columns.</div>
 </td>
 </tr>
-<tr id="i39" class="rowColor">
+<tr id="i41" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removePrimaryKeyFromColumn(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removePrimaryKeyFromColumn</a></span>&#8203;(java.lang.String&nbsp;userId,
                           java.lang.String&nbsp;databaseManagerGUID,
@@ -627,7 +647,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 <div class="block">Remove the classification that this column is a primary key.</div>
 </td>
 </tr>
-<tr id="i40" class="altColor">
+<tr id="i42" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setPrimaryKeyOnColumn(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabasePrimaryKeyProperties)">setPrimaryKeyOnColumn</a></span>&#8203;(java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;databaseManagerGUID,
@@ -638,7 +658,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 <div class="block">Classify a column in a database table as the primary key.</div>
 </td>
 </tr>
-<tr id="i41" class="rowColor">
+<tr id="i43" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateDatabase(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseProperties)">updateDatabase</a></span>&#8203;(java.lang.String&nbsp;userId,
               java.lang.String&nbsp;databaseManagerGUID,
@@ -649,7 +669,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 <div class="block">Update the metadata element representing a database.</div>
 </td>
 </tr>
-<tr id="i42" class="altColor">
+<tr id="i44" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateDatabaseColumn(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseColumnProperties)">updateDatabaseColumn</a></span>&#8203;(java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;databaseManagerGUID,
@@ -660,7 +680,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 <div class="block">Update the metadata element representing a database column.</div>
 </td>
 </tr>
-<tr id="i43" class="rowColor">
+<tr id="i45" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateDatabaseSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseSchemaProperties)">updateDatabaseSchema</a></span>&#8203;(java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;databaseManagerGUID,
@@ -671,7 +691,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 <div class="block">Update the metadata element representing a database schema.</div>
 </td>
 </tr>
-<tr id="i44" class="altColor">
+<tr id="i46" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateDatabaseTable(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseTableProperties)">updateDatabaseTable</a></span>&#8203;(java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;databaseManagerGUID,
@@ -682,7 +702,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 <div class="block">Update the metadata element representing a database table.</div>
 </td>
 </tr>
-<tr id="i45" class="rowColor">
+<tr id="i47" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateDatabaseView(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseViewProperties)">updateDatabaseView</a></span>&#8203;(java.lang.String&nbsp;userId,
                   java.lang.String&nbsp;databaseManagerGUID,
@@ -693,7 +713,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 <div class="block">Update the metadata element representing a database table.</div>
 </td>
 </tr>
-<tr id="i46" class="altColor">
+<tr id="i48" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#withdrawDatabase(java.lang.String,java.lang.String)">withdrawDatabase</a></span>&#8203;(java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;databaseGUID)</code></th>
@@ -701,7 +721,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 <div class="block">Update the zones for the database asset so that it is no longer visible to consumers.</div>
 </td>
 </tr>
-<tr id="i47" class="rowColor">
+<tr id="i49" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#withdrawDatabaseSchema(java.lang.String,java.lang.String)">withdrawDatabaseSchema</a></span>&#8203;(java.lang.String&nbsp;userId,
                       java.lang.String&nbsp;databaseSchemaGUID)</code></th>
@@ -1482,7 +1502,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;createDatabaseTable&#8203;(java.lang.String&nbsp;userId,
                                             java.lang.String&nbsp;databaseManagerGUID,
                                             java.lang.String&nbsp;databaseManagerName,
-                                            java.lang.String&nbsp;databaseSchemaGUID,
+                                            java.lang.String&nbsp;databaseAssetGUID,
                                             org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseTableProperties&nbsp;databaseTableProperties)
                                      throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
                                             org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
@@ -1495,7 +1515,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 <dd><code>userId</code> - calling user</dd>
 <dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the DBMS</dd>
 <dd><code>databaseManagerName</code> - unique name of software server capability representing the DBMS</dd>
-<dd><code>databaseSchemaGUID</code> - unique identifier of the database schema where the database table is located.</dd>
+<dd><code>databaseAssetGUID</code> - unique identifier of the database or database schema where the database table is located.</dd>
 <dd><code>databaseTableProperties</code> - properties for the database table</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new metadata element for the database table</dd>
@@ -1516,7 +1536,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
                                                         java.lang.String&nbsp;databaseManagerGUID,
                                                         java.lang.String&nbsp;databaseManagerName,
                                                         java.lang.String&nbsp;templateGUID,
-                                                        java.lang.String&nbsp;databaseSchemaGUID,
+                                                        java.lang.String&nbsp;databaseAssetGUID,
                                                         org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties&nbsp;templateProperties)
                                                  throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
                                                         org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
@@ -1530,7 +1550,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 <dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the DBMS</dd>
 <dd><code>databaseManagerName</code> - unique name of software server capability representing the DBMS</dd>
 <dd><code>templateGUID</code> - unique identifier of the metadata element to copy</dd>
-<dd><code>databaseSchemaGUID</code> - unique identifier of the database schema where the database table is located.</dd>
+<dd><code>databaseAssetGUID</code> - unique identifier of the database or database schema where the database table is located.</dd>
 <dd><code>templateProperties</code> - properties that override the template</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new database table</dd>
@@ -1666,6 +1686,37 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 </dl>
 </li>
 </ul>
+<a id="getTablesForDatabaseAsset(java.lang.String,java.lang.String,int,int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getTablesForDatabaseAsset</h4>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseTableElement&gt;&nbsp;getTablesForDatabaseAsset&#8203;(java.lang.String&nbsp;userId,
+                                                                                                                                        java.lang.String&nbsp;databaseAssetGUID,
+                                                                                                                                        int&nbsp;startFrom,
+                                                                                                                                        int&nbsp;pageSize)
+                                                                                                                                 throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
+                                                                                                                                        org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
+                                                                                                                                        org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<div class="block">Retrieve the list of database tables associated with a database or database schema.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../api/DatabaseManagerInterface.html#getTablesForDatabaseAsset(java.lang.String,java.lang.String,int,int)">getTablesForDatabaseAsset</a></code>&nbsp;in interface&nbsp;<code><a href="../api/DatabaseManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.datamanager.api">DatabaseManagerInterface</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>databaseAssetGUID</code> - unique identifier of the database or database schema of interest</dd>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>list of associated metadata elements</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
 <a id="getDatabaseTablesByName(java.lang.String,java.lang.String,int,int)">
 <!--   -->
 </a>
@@ -1734,7 +1785,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;createDatabaseView&#8203;(java.lang.String&nbsp;userId,
                                            java.lang.String&nbsp;databaseManagerGUID,
                                            java.lang.String&nbsp;databaseManagerName,
-                                           java.lang.String&nbsp;databaseSchemaGUID,
+                                           java.lang.String&nbsp;databaseAssetGUID,
                                            org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseViewProperties&nbsp;databaseViewProperties)
                                     throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
                                            org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
@@ -1747,7 +1798,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 <dd><code>userId</code> - calling user</dd>
 <dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the DBMS</dd>
 <dd><code>databaseManagerName</code> - unique name of software server capability representing the DBMS</dd>
-<dd><code>databaseSchemaGUID</code> - unique identifier of the database schema where the database view is located.</dd>
+<dd><code>databaseAssetGUID</code> - unique identifier of the database or database schema where the database view is located.</dd>
 <dd><code>databaseViewProperties</code> - properties for the new view</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new metadata element for the database view</dd>
@@ -1768,7 +1819,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
                                                        java.lang.String&nbsp;databaseManagerGUID,
                                                        java.lang.String&nbsp;databaseManagerName,
                                                        java.lang.String&nbsp;templateGUID,
-                                                       java.lang.String&nbsp;databaseSchemaGUID,
+                                                       java.lang.String&nbsp;databaseAssetGUID,
                                                        org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties&nbsp;templateProperties)
                                                 throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
                                                        org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
@@ -1782,7 +1833,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 <dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the DBMS</dd>
 <dd><code>databaseManagerName</code> - unique name of software server capability representing the DBMS</dd>
 <dd><code>templateGUID</code> - unique identifier of the metadata element to copy</dd>
-<dd><code>databaseSchemaGUID</code> - unique identifier of the database schema where the database view is located.</dd>
+<dd><code>databaseAssetGUID</code> - unique identifier of the database or database schema where the database view is located.</dd>
 <dd><code>templateProperties</code> - properties that override the template</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new metadata element for the database view</dd>
@@ -1907,6 +1958,37 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>databaseSchemaGUID</code> - unique identifier of the database schema of interest</dd>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>list of associated metadata elements</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="getViewsForDatabaseAsset(java.lang.String,java.lang.String,int,int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getViewsForDatabaseAsset</h4>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseViewElement&gt;&nbsp;getViewsForDatabaseAsset&#8203;(java.lang.String&nbsp;userId,
+                                                                                                                                      java.lang.String&nbsp;databaseAssetGUID,
+                                                                                                                                      int&nbsp;startFrom,
+                                                                                                                                      int&nbsp;pageSize)
+                                                                                                                               throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
+                                                                                                                                      org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
+                                                                                                                                      org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<div class="block">Retrieve the list of database views associated with a database or database schema.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../api/DatabaseManagerInterface.html#getViewsForDatabaseAsset(java.lang.String,java.lang.String,int,int)">getViewsForDatabaseAsset</a></code>&nbsp;in interface&nbsp;<code><a href="../api/DatabaseManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.datamanager.api">DatabaseManagerInterface</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>databaseAssetGUID</code> - unique identifier of the database or database schema of interest</dd>
 <dd><code>startFrom</code> - paging start point</dd>
 <dd><code>pageSize</code> - maximum results that can be returned</dd>
 <dt><span class="returnLabel">Returns:</span></dt>

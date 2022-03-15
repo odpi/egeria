@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6,"i11":6,"i12":6,"i13":6};
+var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -121,6 +121,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="description">
 <ul class="blockList">
 <li class="blockList">
+<dl>
+<dt>All Known Implementing Classes:</dt>
+<dd><code><a href="../client/ServerManagerClient.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.client">ServerManagerClient</a></code></dd>
+</dl>
 <hr>
 <pre>public interface <span class="typeNameLabel">SoftwareServerManagerInterface</span></pre>
 <div class="block">SoftwareServerManagerInterface defines the client side interface for the IT Infrastructure OMAS that is
@@ -212,30 +216,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </td>
 </tr>
 <tr id="i6" class="altColor">
-<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SupportedCapabilityElement&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSupportedCapabilities(java.lang.String,java.lang.String,java.util.Date,int,int)">getSupportedCapabilities</a></span>&#8203;(java.lang.String&nbsp;userId,
-                        java.lang.String&nbsp;softwareServerGUID,
-                        java.util.Date&nbsp;effectiveTime,
-                        int&nbsp;startFrom,
-                        int&nbsp;pageSize)</code></th>
-<td class="colLast">
-<div class="block">Retrieve the list of software servers created by this caller.</div>
-</td>
-</tr>
-<tr id="i7" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#linkCapabilityToServer(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.SupportedCapabilityProperties)">linkCapabilityToServer</a></span>&#8203;(java.lang.String&nbsp;userId,
-                      java.lang.String&nbsp;infrastructureManagerGUID,
-                      java.lang.String&nbsp;infrastructureManagerName,
-                      boolean&nbsp;infrastructureManagerIsHome,
-                      java.lang.String&nbsp;softwareServerGUID,
-                      java.lang.String&nbsp;capabilityGUID,
-                      org.odpi.openmetadata.accessservices.itinfrastructure.properties.SupportedCapabilityProperties&nbsp;properties)</code></th>
-<td class="colLast">
-<div class="block">Link a software server capability to a software server.</div>
-</td>
-</tr>
-<tr id="i8" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#publishSoftwareServer(java.lang.String,java.lang.String)">publishSoftwareServer</a></span>&#8203;(java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;softwareServerGUID)</code></th>
@@ -243,7 +223,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Update the zones for the software server asset so that it becomes visible to consumers.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeSoftwareServer(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeSoftwareServer</a></span>&#8203;(java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;infrastructureManagerGUID,
@@ -253,32 +233,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Remove the metadata element representing a software server.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#unlinkCapabilityFromServer(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">unlinkCapabilityFromServer</a></span>&#8203;(java.lang.String&nbsp;userId,
-                          java.lang.String&nbsp;infrastructureManagerGUID,
-                          java.lang.String&nbsp;infrastructureManagerName,
-                          java.lang.String&nbsp;softwareServerGUID,
-                          java.lang.String&nbsp;capabilityGUID,
-                          java.util.Date&nbsp;effectiveTime)</code></th>
-<td class="colLast">
-<div class="block">Remove the link between a software server capability and a software server.</div>
-</td>
-</tr>
-<tr id="i11" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateCapabilityOnServer(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.itinfrastructure.properties.SupportedCapabilityProperties)">updateCapabilityOnServer</a></span>&#8203;(java.lang.String&nbsp;userId,
-                        java.lang.String&nbsp;infrastructureManagerGUID,
-                        java.lang.String&nbsp;infrastructureManagerName,
-                        java.lang.String&nbsp;softwareServerGUID,
-                        java.lang.String&nbsp;capabilityGUID,
-                        boolean&nbsp;isMergeUpdate,
-                        org.odpi.openmetadata.accessservices.itinfrastructure.properties.SupportedCapabilityProperties&nbsp;properties)</code></th>
-<td class="colLast">
-<div class="block">Update the effectivity dates of a link from a piece of infrastructure to an IT profile.</div>
-</td>
-</tr>
-<tr id="i12" class="altColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateSoftwareServer(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.itinfrastructure.properties.SoftwareServerProperties)">updateSoftwareServer</a></span>&#8203;(java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;infrastructureManagerGUID,
@@ -290,7 +245,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Update the metadata element representing a software server.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#withdrawSoftwareServer(java.lang.String,java.lang.String)">withdrawSoftwareServer</a></span>&#8203;(java.lang.String&nbsp;userId,
                       java.lang.String&nbsp;softwareServerGUID)</code></th>
@@ -487,103 +442,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="linkCapabilityToServer(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.SupportedCapabilityProperties)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>linkCapabilityToServer</h4>
-<pre class="methodSignature">void&nbsp;linkCapabilityToServer&#8203;(java.lang.String&nbsp;userId,
-                            java.lang.String&nbsp;infrastructureManagerGUID,
-                            java.lang.String&nbsp;infrastructureManagerName,
-                            boolean&nbsp;infrastructureManagerIsHome,
-                            java.lang.String&nbsp;softwareServerGUID,
-                            java.lang.String&nbsp;capabilityGUID,
-                            org.odpi.openmetadata.accessservices.itinfrastructure.properties.SupportedCapabilityProperties&nbsp;properties)
-                     throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                            org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                            org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
-<div class="block">Link a software server capability to a software server.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>userId</code> - calling user</dd>
-<dd><code>infrastructureManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
-<dd><code>infrastructureManagerName</code> - unique name of software server capability representing the caller</dd>
-<dd><code>infrastructureManagerIsHome</code> - should the software server capability be marked as owned by the infrastructure manager so others can not update?</dd>
-<dd><code>capabilityGUID</code> - unique identifier of the software server capability</dd>
-<dd><code>softwareServerGUID</code> - unique identifier of the software server</dd>
-<dd><code>properties</code> - describes the deployment of the capability onto the server</dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the guids is null or not known</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing property server</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - security access problem</dd>
-</dl>
-</li>
-</ul>
-<a id="updateCapabilityOnServer(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.itinfrastructure.properties.SupportedCapabilityProperties)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>updateCapabilityOnServer</h4>
-<pre class="methodSignature">void&nbsp;updateCapabilityOnServer&#8203;(java.lang.String&nbsp;userId,
-                              java.lang.String&nbsp;infrastructureManagerGUID,
-                              java.lang.String&nbsp;infrastructureManagerName,
-                              java.lang.String&nbsp;softwareServerGUID,
-                              java.lang.String&nbsp;capabilityGUID,
-                              boolean&nbsp;isMergeUpdate,
-                              org.odpi.openmetadata.accessservices.itinfrastructure.properties.SupportedCapabilityProperties&nbsp;properties)
-                       throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                              org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                              org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
-<div class="block">Update the effectivity dates of a link from a piece of infrastructure to an IT profile.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>userId</code> - calling user</dd>
-<dd><code>infrastructureManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
-<dd><code>infrastructureManagerName</code> - unique name of software server capability representing the caller</dd>
-<dd><code>capabilityGUID</code> - unique identifier of the software server capability</dd>
-<dd><code>softwareServerGUID</code> - unique identifier of the software server</dd>
-<dd><code>isMergeUpdate</code> - are unspecified properties unchanged (true) or removed?</dd>
-<dd><code>properties</code> - describes the deployment of the capability onto the server</dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the guids is null or not known</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing property server</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - security access problem</dd>
-</dl>
-</li>
-</ul>
-<a id="unlinkCapabilityFromServer(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>unlinkCapabilityFromServer</h4>
-<pre class="methodSignature">void&nbsp;unlinkCapabilityFromServer&#8203;(java.lang.String&nbsp;userId,
-                                java.lang.String&nbsp;infrastructureManagerGUID,
-                                java.lang.String&nbsp;infrastructureManagerName,
-                                java.lang.String&nbsp;softwareServerGUID,
-                                java.lang.String&nbsp;capabilityGUID,
-                                java.util.Date&nbsp;effectiveTime)
-                         throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
-<div class="block">Remove the link between a software server capability and a software server.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>userId</code> - calling user</dd>
-<dd><code>infrastructureManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
-<dd><code>infrastructureManagerName</code> - unique name of software server capability representing the caller</dd>
-<dd><code>softwareServerGUID</code> - unique identifier of the software server</dd>
-<dd><code>capabilityGUID</code> - unique identifier of the software server capability</dd>
-<dd><code>effectiveTime</code> - time that the relationship is effective</dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the guids is null or not known</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing property server</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - security access problem</dd>
-</dl>
-</li>
-</ul>
 <a id="findSoftwareServers(java.lang.String,java.lang.String,java.util.Date,int,int)">
 <!--   -->
 </a>
@@ -669,37 +527,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>userId</code> - calling user</dd>
 <dd><code>infrastructureManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>infrastructureManagerName</code> - unique name of software server capability representing the caller</dd>
-<dd><code>effectiveTime</code> - time that the element is effective</dd>
-<dd><code>startFrom</code> - paging start point</dd>
-<dd><code>pageSize</code> - maximum results that can be returned</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>list of matching metadata elements</dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
-</dl>
-</li>
-</ul>
-<a id="getSupportedCapabilities(java.lang.String,java.lang.String,java.util.Date,int,int)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getSupportedCapabilities</h4>
-<pre class="methodSignature">java.util.List&lt;org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SupportedCapabilityElement&gt;&nbsp;getSupportedCapabilities&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                                           java.lang.String&nbsp;softwareServerGUID,
-                                                                                                                                           java.util.Date&nbsp;effectiveTime,
-                                                                                                                                           int&nbsp;startFrom,
-                                                                                                                                           int&nbsp;pageSize)
-                                                                                                                                    throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                                           org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                                           org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
-<div class="block">Retrieve the list of software servers created by this caller.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>userId</code> - calling user</dd>
-<dd><code>softwareServerGUID</code> - unique identifier of the requested metadata element</dd>
 <dd><code>effectiveTime</code> - time that the element is effective</dd>
 <dd><code>startFrom</code> - paging start point</dd>
 <dd><code>pageSize</code> - maximum results that can be returned</dd>

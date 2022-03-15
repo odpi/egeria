@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6,"i11":6,"i12":6,"i13":6,"i14":6,"i15":6};
+var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6,"i11":6,"i12":6};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -152,27 +152,17 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearClusterMember(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearClusterMember</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearClusterMember(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">clearClusterMember</a></span>&#8203;(java.lang.String&nbsp;userId,
                   java.lang.String&nbsp;infrastructureManagerGUID,
                   java.lang.String&nbsp;infrastructureManagerName,
                   java.lang.String&nbsp;hostGUID,
-                  java.lang.String&nbsp;clusterMemberGUID)</code></th>
+                  java.lang.String&nbsp;clusterMemberGUID,
+                  java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
 <div class="block">Remove a relationship between a host and an cluster member host.</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearHostedHost(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearHostedHost</a></span>&#8203;(java.lang.String&nbsp;userId,
-               java.lang.String&nbsp;infrastructureManagerGUID,
-               java.lang.String&nbsp;infrastructureManagerName,
-               java.lang.String&nbsp;hostGUID,
-               java.lang.String&nbsp;hostedHostGUID)</code></th>
-<td class="colLast">
-<div class="block">Remove a relationship between a host and a hosted host.</div>
-</td>
-</tr>
-<tr id="i2" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createHost(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.itinfrastructure.properties.HostProperties)">createHost</a></span>&#8203;(java.lang.String&nbsp;userId,
           java.lang.String&nbsp;infrastructureManagerGUID,
@@ -183,7 +173,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Create a new metadata element to represent a host.</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i2" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createHostFromTemplate(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.TemplateProperties)">createHostFromTemplate</a></span>&#8203;(java.lang.String&nbsp;userId,
                       java.lang.String&nbsp;infrastructureManagerGUID,
@@ -195,7 +185,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Create a new metadata element to represent a host using an existing metadata element as a template.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.HostElement&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findHosts(java.lang.String,java.lang.String,java.util.Date,int,int)">findHosts</a></span>&#8203;(java.lang.String&nbsp;userId,
          java.lang.String&nbsp;searchString,
@@ -206,7 +196,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Retrieve the list of host metadata elements that contain the search string.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.HostElement&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getClusterMembersForHost(java.lang.String,java.lang.String,java.util.Date,int,int)">getClusterMembersForHost</a></span>&#8203;(java.lang.String&nbsp;userId,
                         java.lang.String&nbsp;hostGUID,
@@ -217,7 +207,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Return the list of cluster members associated with a host.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.HostElement</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getHostByGUID(java.lang.String,java.lang.String)">getHostByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
              java.lang.String&nbsp;guid)</code></th>
@@ -225,18 +215,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Retrieve the host metadata element with the supplied unique identifier.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.HostElement&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getHostedHosts(java.lang.String,java.lang.String,java.util.Date,int,int)">getHostedHosts</a></span>&#8203;(java.lang.String&nbsp;userId,
-              java.lang.String&nbsp;supportingHostGUID,
-              java.util.Date&nbsp;effectiveTime,
-              int&nbsp;startFrom,
-              int&nbsp;pageSize)</code></th>
-<td class="colLast">
-<div class="block">Return the list of hosts hosted by another host.</div>
-</td>
-</tr>
-<tr id="i8" class="altColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.HostElement&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getHostsByName(java.lang.String,java.lang.String,java.util.Date,int,int)">getHostsByName</a></span>&#8203;(java.lang.String&nbsp;userId,
               java.lang.String&nbsp;name,
@@ -247,7 +226,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Retrieve the list of host metadata elements with a matching qualified or display name.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.HostElement&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getHostsForInfrastructureManager(java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">getHostsForInfrastructureManager</a></span>&#8203;(java.lang.String&nbsp;userId,
                                 java.lang.String&nbsp;infrastructureManagerGUID,
@@ -259,7 +238,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Retrieve the list of hosts created by this caller.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#publishHost(java.lang.String,java.lang.String)">publishHost</a></span>&#8203;(java.lang.String&nbsp;userId,
            java.lang.String&nbsp;hostGUID)</code></th>
@@ -267,7 +246,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Update the zones for the host asset so that it becomes visible to consumers.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeHost(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeHost</a></span>&#8203;(java.lang.String&nbsp;userId,
           java.lang.String&nbsp;infrastructureManagerGUID,
@@ -277,29 +256,21 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Remove the metadata element representing a host.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupClusterMember(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">setupClusterMember</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupClusterMember(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.util.Date,java.util.Date)">setupClusterMember</a></span>&#8203;(java.lang.String&nbsp;userId,
                   java.lang.String&nbsp;infrastructureManagerGUID,
                   java.lang.String&nbsp;infrastructureManagerName,
+                  boolean&nbsp;infrastructureManagerIsHome,
                   java.lang.String&nbsp;hostGUID,
-                  java.lang.String&nbsp;clusterMemberGUID)</code></th>
+                  java.lang.String&nbsp;clusterMemberGUID,
+                  java.util.Date&nbsp;effectiveFrom,
+                  java.util.Date&nbsp;effectiveTo)</code></th>
 <td class="colLast">
 <div class="block">Create a relationship between a host and an cluster member host.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupHostedHost(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">setupHostedHost</a></span>&#8203;(java.lang.String&nbsp;userId,
-               java.lang.String&nbsp;infrastructureManagerGUID,
-               java.lang.String&nbsp;infrastructureManagerName,
-               java.lang.String&nbsp;hostGUID,
-               java.lang.String&nbsp;hostedHostGUID)</code></th>
-<td class="colLast">
-<div class="block">Create a relationship between a host and a hosted host.</div>
-</td>
-</tr>
-<tr id="i14" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateHost(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.itinfrastructure.properties.HostProperties)">updateHost</a></span>&#8203;(java.lang.String&nbsp;userId,
           java.lang.String&nbsp;infrastructureManagerGUID,
@@ -311,7 +282,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Update the metadata element representing a host.</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#withdrawHost(java.lang.String,java.lang.String)">withdrawHost</a></span>&#8203;(java.lang.String&nbsp;userId,
             java.lang.String&nbsp;hostGUID)</code></th>
@@ -431,65 +402,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="setupHostedHost(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>setupHostedHost</h4>
-<pre class="methodSignature">void&nbsp;setupHostedHost&#8203;(java.lang.String&nbsp;userId,
-                     java.lang.String&nbsp;infrastructureManagerGUID,
-                     java.lang.String&nbsp;infrastructureManagerName,
-                     java.lang.String&nbsp;hostGUID,
-                     java.lang.String&nbsp;hostedHostGUID)
-              throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                     org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                     org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
-<div class="block">Create a relationship between a host and a hosted host.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>userId</code> - calling user</dd>
-<dd><code>infrastructureManagerGUID</code> - unique identifier of software server capability representing the infrastructure manager</dd>
-<dd><code>infrastructureManagerName</code> - unique name of software server capability representing the infrastructure manager</dd>
-<dd><code>hostGUID</code> - unique identifier of the host</dd>
-<dd><code>hostedHostGUID</code> - unique identifier of the hosted host</dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
-</dl>
-</li>
-</ul>
-<a id="clearHostedHost(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>clearHostedHost</h4>
-<pre class="methodSignature">void&nbsp;clearHostedHost&#8203;(java.lang.String&nbsp;userId,
-                     java.lang.String&nbsp;infrastructureManagerGUID,
-                     java.lang.String&nbsp;infrastructureManagerName,
-                     java.lang.String&nbsp;hostGUID,
-                     java.lang.String&nbsp;hostedHostGUID)
-              throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                     org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                     org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
-<div class="block">Remove a relationship between a host and a hosted host.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>userId</code> - calling user</dd>
-<dd><code>infrastructureManagerGUID</code> - unique identifier of software server capability representing the infrastructure manager</dd>
-<dd><code>infrastructureManagerName</code> - unique name of software server capability representing the infrastructure manager</dd>
-<dd><code>hostGUID</code> - unique identifier of the host</dd>
-<dd><code>hostedHostGUID</code> - unique identifier of the hosted host</dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
-</dl>
-</li>
-</ul>
-<a id="setupClusterMember(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="setupClusterMember(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.util.Date,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -498,8 +411,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre class="methodSignature">void&nbsp;setupClusterMember&#8203;(java.lang.String&nbsp;userId,
                         java.lang.String&nbsp;infrastructureManagerGUID,
                         java.lang.String&nbsp;infrastructureManagerName,
+                        boolean&nbsp;infrastructureManagerIsHome,
                         java.lang.String&nbsp;hostGUID,
-                        java.lang.String&nbsp;clusterMemberGUID)
+                        java.lang.String&nbsp;clusterMemberGUID,
+                        java.util.Date&nbsp;effectiveFrom,
+                        java.util.Date&nbsp;effectiveTo)
                  throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
                         org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
                         org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
@@ -509,8 +425,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>userId</code> - calling user</dd>
 <dd><code>infrastructureManagerGUID</code> - unique identifier of software server capability representing the infrastructure manager</dd>
 <dd><code>infrastructureManagerName</code> - unique name of software server capability representing the infrastructure manager</dd>
+<dd><code>infrastructureManagerIsHome</code> - ensure that only the infrastructure manager can update this asset</dd>
 <dd><code>hostGUID</code> - unique identifier of the host</dd>
 <dd><code>clusterMemberGUID</code> - unique identifier of the cluster member host</dd>
+<dd><code>effectiveFrom</code> - time when this hosting is effective - null means immediately</dd>
+<dd><code>effectiveTo</code> - time when this hosting is no longer effective - null means forever</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
 <dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
@@ -518,7 +437,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="clearClusterMember(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="clearClusterMember(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -528,7 +447,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                         java.lang.String&nbsp;infrastructureManagerGUID,
                         java.lang.String&nbsp;infrastructureManagerName,
                         java.lang.String&nbsp;hostGUID,
-                        java.lang.String&nbsp;clusterMemberGUID)
+                        java.lang.String&nbsp;clusterMemberGUID,
+                        java.util.Date&nbsp;effectiveTime)
                  throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
                         org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
                         org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
@@ -540,6 +460,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>infrastructureManagerName</code> - unique name of software server capability representing the infrastructure manager</dd>
 <dd><code>hostGUID</code> - unique identifier of the host</dd>
 <dd><code>clusterMemberGUID</code> - unique identifier of the cluster member host</dd>
+<dd><code>effectiveTime</code> - time when the deployment is effective</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
 <dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
@@ -739,37 +660,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>guid</code> - unique identifier of the requested metadata element</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>matching metadata element</dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
-</dl>
-</li>
-</ul>
-<a id="getHostedHosts(java.lang.String,java.lang.String,java.util.Date,int,int)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getHostedHosts</h4>
-<pre class="methodSignature">java.util.List&lt;org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.HostElement&gt;&nbsp;getHostedHosts&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                  java.lang.String&nbsp;supportingHostGUID,
-                                                                                                                  java.util.Date&nbsp;effectiveTime,
-                                                                                                                  int&nbsp;startFrom,
-                                                                                                                  int&nbsp;pageSize)
-                                                                                                           throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                  org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                  org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
-<div class="block">Return the list of hosts hosted by another host.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>userId</code> - calling user</dd>
-<dd><code>supportingHostGUID</code> - unique identifier of the host to query</dd>
-<dd><code>effectiveTime</code> - effective time for the query</dd>
-<dd><code>startFrom</code> - paging start point</dd>
-<dd><code>pageSize</code> - maximum results that can be returned</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>list of matching metadata elements</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
 <dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>

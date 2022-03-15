@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -89,13 +89,13 @@ loadScripts(document, 'script');</script>
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
-<li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
+<li>Constr&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
-<li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
+<li>Constr&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>
 </div>
@@ -130,12 +130,17 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <dl>
+<dt>All Implemented Interfaces:</dt>
+<dd><code><a href="../api/DeploymentManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">DeploymentManagementInterface</a></code>, <code><a href="../api/ServerPurposeManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ServerPurposeManagerInterface</a></code></dd>
+</dl>
+<dl>
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="HostManagerClient.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.client">HostManagerClient</a></code></dd>
+<dd><code><a href="CapabilityManagerClient.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.client">CapabilityManagerClient</a></code>, <code><a href="DataAssetManagerClient.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.client">DataAssetManagerClient</a></code>, <code><a href="HostManagerClient.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.client">HostManagerClient</a></code>, <code><a href="PlatformManagerClient.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.client">PlatformManagerClient</a></code>, <code><a href="ProcessManagerClient.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.client">ProcessManagerClient</a></code>, <code><a href="ServerManagerClient.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.client">ServerManagerClient</a></code></dd>
 </dl>
 <hr>
 <pre>public abstract class <span class="typeNameLabel">AssetManagerClientBase</span>
-extends java.lang.Object</pre>
+extends java.lang.Object
+implements <a href="../api/ServerPurposeManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ServerPurposeManagerInterface</a>, <a href="../api/DeploymentManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">DeploymentManagementInterface</a></pre>
 <div class="block">AssetManagerClientBase supports the APIs to maintain assets and their related objects.  It is called from the specific clients
  that manage the specializations of asset.</div>
 </li>
@@ -144,32 +149,6 @@ extends java.lang.Object</pre>
 <div class="summary">
 <ul class="blockList">
 <li class="blockList">
-<!-- ======== CONSTRUCTOR SUMMARY ======== -->
-<section role="region">
-<ul class="blockList">
-<li class="blockList"><a id="constructor.summary">
-<!--   -->
-</a>
-<h3>Constructor Summary</h3>
-<table class="memberSummary">
-<caption><span>Constructors</span><span class="tabEnd">&nbsp;</span></caption>
-<tr>
-<th class="colFirst" scope="col">Constructor</th>
-<th class="colLast" scope="col">Description</th>
-</tr>
-<tr class="altColor">
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.client.rest.ITInfrastructureRESTClient,int)">AssetManagerClientBase</a></span>&#8203;(java.lang.String&nbsp;serverName,
-                      java.lang.String&nbsp;serverPlatformURLRoot,
-                      <a href="rest/ITInfrastructureRESTClient.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.client.rest">ITInfrastructureRESTClient</a>&nbsp;restClient,
-                      int&nbsp;maxPageSize)</code></th>
-<td class="colLast">
-<div class="block">Create a new client that is going to be used in an OMAG Server.</div>
-</td>
-</tr>
-</table>
-</li>
-</ul>
-</section>
 <!-- ========== METHOD SUMMARY =========== -->
 <section role="region">
 <ul class="blockList">
@@ -186,147 +165,105 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearRelatedAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearRelatedAsset</a></span>&#8203;(java.lang.String&nbsp;userId,
-                 java.lang.String&nbsp;infrastructureManagerGUID,
-                 java.lang.String&nbsp;infrastructureManagerName,
-                 java.lang.String&nbsp;assetGUID,
-                 java.lang.String&nbsp;relationshipTypeName,
-                 java.lang.String&nbsp;relatedAssetGUID)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addServerPurpose(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.util.Date,java.util.Date,java.util.Map)">addServerPurpose</a></span>&#8203;(java.lang.String&nbsp;userId,
+                java.lang.String&nbsp;infrastructureManagerGUID,
+                java.lang.String&nbsp;infrastructureManagerName,
+                boolean&nbsp;infrastructureManagerIsHome,
+                java.lang.String&nbsp;itAssetGUID,
+                java.lang.String&nbsp;classificationName,
+                java.util.Date&nbsp;effectiveFrom,
+                java.util.Date&nbsp;effectiveTo,
+                java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;classificationProperties)</code></th>
 <td class="colLast">
-<div class="block">Remove a relationship between a asset and a related asset.</div>
+<div class="block">Add a Server Purpose classification to an IT asset.</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createAsset(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.itinfrastructure.properties.AssetProperties)">createAsset</a></span>&#8203;(java.lang.String&nbsp;userId,
-           java.lang.String&nbsp;infrastructureManagerGUID,
-           java.lang.String&nbsp;infrastructureManagerName,
-           boolean&nbsp;infrastructureManagerIsHome,
-           org.odpi.openmetadata.accessservices.itinfrastructure.properties.AssetProperties&nbsp;assetProperties)</code></th>
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearDeployment(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">clearDeployment</a></span>&#8203;(java.lang.String&nbsp;userId,
+               java.lang.String&nbsp;infrastructureManagerGUID,
+               java.lang.String&nbsp;infrastructureManagerName,
+               java.lang.String&nbsp;itAssetGUID,
+               java.lang.String&nbsp;destinationGUID,
+               java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
-<div class="block">Create a new metadata element to represent a asset.</div>
+<div class="block">Remove a deployment relationship.</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
-<td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createAssetFromTemplate(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.TemplateProperties)">createAssetFromTemplate</a></span>&#8203;(java.lang.String&nbsp;userId,
-                       java.lang.String&nbsp;infrastructureManagerGUID,
-                       java.lang.String&nbsp;infrastructureManagerName,
-                       boolean&nbsp;infrastructureManagerIsHome,
-                       java.lang.String&nbsp;templateGUID,
-                       org.odpi.openmetadata.accessservices.itinfrastructure.properties.TemplateProperties&nbsp;templateProperties)</code></th>
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearServerPurpose(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">clearServerPurpose</a></span>&#8203;(java.lang.String&nbsp;userId,
+                  java.lang.String&nbsp;infrastructureManagerGUID,
+                  java.lang.String&nbsp;infrastructureManagerName,
+                  java.lang.String&nbsp;assetTypeName,
+                  java.lang.String&nbsp;assetGUID,
+                  java.lang.String&nbsp;classificationName,
+                  java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
-<div class="block">Create a new metadata element to represent a asset using an existing metadata element as a template.</div>
+<div class="block">Remove a server purpose classification.</div>
 </td>
 </tr>
 <tr id="i3" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.AssetElement&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findAssets(java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">findAssets</a></span>&#8203;(java.lang.String&nbsp;userId,
-          java.lang.String&nbsp;searchString,
-          java.lang.String&nbsp;assetTypeName,
-          java.util.Date&nbsp;effectiveTime,
-          int&nbsp;startFrom,
-          int&nbsp;pageSize)</code></th>
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#deployITAsset(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.DeploymentProperties)">deployITAsset</a></span>&#8203;(java.lang.String&nbsp;userId,
+             java.lang.String&nbsp;infrastructureManagerGUID,
+             java.lang.String&nbsp;infrastructureManagerName,
+             boolean&nbsp;infrastructureManagerIsHome,
+             java.lang.String&nbsp;itAssetGUID,
+             java.lang.String&nbsp;destinationGUID,
+             org.odpi.openmetadata.accessservices.itinfrastructure.properties.DeploymentProperties&nbsp;deploymentProperties)</code></th>
 <td class="colLast">
-<div class="block">Retrieve the list of asset metadata elements that contain the search string.</div>
+<div class="block">Create a relationship that represents the deployment of an IT infrastructure asset to a specific deployment destination (another asset).</div>
 </td>
 </tr>
 <tr id="i4" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.AssetElement</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAssetByGUID(java.lang.String,java.lang.String,java.lang.String)">getAssetByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
-              java.lang.String&nbsp;assetTypeName,
-              java.lang.String&nbsp;guid)</code></th>
+<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.DeploymentElement&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDeployedITAssets(java.lang.String,java.lang.String,java.util.Date,int,int)">getDeployedITAssets</a></span>&#8203;(java.lang.String&nbsp;userId,
+                   java.lang.String&nbsp;destinationGUID,
+                   java.util.Date&nbsp;effectiveTime,
+                   int&nbsp;startFrom,
+                   int&nbsp;pageSize)</code></th>
 <td class="colLast">
-<div class="block">Retrieve the asset metadata element with the supplied unique identifier.</div>
+<div class="block">Return the list of assets deployed on a particular destination.</div>
 </td>
 </tr>
 <tr id="i5" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.AssetElement&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAssetsByName(java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">getAssetsByName</a></span>&#8203;(java.lang.String&nbsp;userId,
-               java.lang.String&nbsp;name,
-               java.lang.String&nbsp;assetTypeName,
-               java.util.Date&nbsp;effectiveTime,
-               int&nbsp;startFrom,
-               int&nbsp;pageSize)</code></th>
+<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.DeploymentElement&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDeploymentDestinations(java.lang.String,java.lang.String,java.util.Date,int,int)">getDeploymentDestinations</a></span>&#8203;(java.lang.String&nbsp;userId,
+                         java.lang.String&nbsp;itAssetGUID,
+                         java.util.Date&nbsp;effectiveTime,
+                         int&nbsp;startFrom,
+                         int&nbsp;pageSize)</code></th>
 <td class="colLast">
-<div class="block">Retrieve the list of asset metadata elements with a matching qualified or display name.</div>
+<div class="block">Return the list of destinations that a particular IT infrastructure asset is deployed to.</div>
 </td>
 </tr>
 <tr id="i6" class="altColor">
-<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.AssetElement&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAssetsForInfrastructureManager(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">getAssetsForInfrastructureManager</a></span>&#8203;(java.lang.String&nbsp;userId,
-                                 java.lang.String&nbsp;infrastructureManagerGUID,
-                                 java.lang.String&nbsp;infrastructureManagerName,
-                                 java.lang.String&nbsp;assetTypeName,
-                                 java.util.Date&nbsp;effectiveTime,
-                                 int&nbsp;startFrom,
-                                 int&nbsp;pageSize)</code></th>
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateITAssetDeployment(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.itinfrastructure.properties.DeploymentProperties)">updateITAssetDeployment</a></span>&#8203;(java.lang.String&nbsp;userId,
+                       java.lang.String&nbsp;infrastructureManagerGUID,
+                       java.lang.String&nbsp;infrastructureManagerName,
+                       java.lang.String&nbsp;deploymentGUID,
+                       boolean&nbsp;isMergeUpdate,
+                       org.odpi.openmetadata.accessservices.itinfrastructure.properties.DeploymentProperties&nbsp;deploymentProperties)</code></th>
 <td class="colLast">
-<div class="block">Retrieve the list of assets created by this caller.</div>
+<div class="block">Update a deployment relationship.</div>
 </td>
 </tr>
 <tr id="i7" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.AssetElement&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRelatedAssets(java.lang.String,java.lang.String,int,java.lang.String,java.util.Date,int,int)">getRelatedAssets</a></span>&#8203;(java.lang.String&nbsp;userId,
-                java.lang.String&nbsp;assetGUID,
-                int&nbsp;startingEnd,
-                java.lang.String&nbsp;relationshipTypeName,
-                java.util.Date&nbsp;effectiveTime,
-                int&nbsp;startFrom,
-                int&nbsp;pageSize)</code></th>
-<td class="colLast">
-<div class="block">Return the list of assets linked by another asset.</div>
-</td>
-</tr>
-<tr id="i8" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#publishAsset(java.lang.String,java.lang.String)">publishAsset</a></span>&#8203;(java.lang.String&nbsp;userId,
-            java.lang.String&nbsp;assetGUID)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateServerPurpose(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date,boolean,java.util.Map)">updateServerPurpose</a></span>&#8203;(java.lang.String&nbsp;userId,
+                   java.lang.String&nbsp;infrastructureManagerGUID,
+                   java.lang.String&nbsp;infrastructureManagerName,
+                   java.lang.String&nbsp;assetTypeName,
+                   java.lang.String&nbsp;assetGUID,
+                   java.lang.String&nbsp;classificationName,
+                   java.util.Date&nbsp;effectiveFrom,
+                   java.util.Date&nbsp;effectiveTo,
+                   boolean&nbsp;isMergeUpdate,
+                   java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;classificationProperties)</code></th>
 <td class="colLast">
-<div class="block">Update the zones for the asset asset so that it becomes visible to consumers.</div>
-</td>
-</tr>
-<tr id="i9" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeAsset</a></span>&#8203;(java.lang.String&nbsp;userId,
-           java.lang.String&nbsp;infrastructureManagerGUID,
-           java.lang.String&nbsp;infrastructureManagerName,
-           java.lang.String&nbsp;assetGUID)</code></th>
-<td class="colLast">
-<div class="block">Remove the metadata element representing a asset.</div>
-</td>
-</tr>
-<tr id="i10" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupRelatedAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map)">setupRelatedAsset</a></span>&#8203;(java.lang.String&nbsp;userId,
-                 java.lang.String&nbsp;infrastructureManagerGUID,
-                 java.lang.String&nbsp;infrastructureManagerName,
-                 java.lang.String&nbsp;assetGUID,
-                 java.lang.String&nbsp;relationshipTypeName,
-                 java.lang.String&nbsp;relatedAssetGUID,
-                 java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;relationshipProperties)</code></th>
-<td class="colLast">
-<div class="block">Create a relationship between a asset and a asseted asset.</div>
-</td>
-</tr>
-<tr id="i11" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.itinfrastructure.properties.AssetProperties)">updateAsset</a></span>&#8203;(java.lang.String&nbsp;userId,
-           java.lang.String&nbsp;infrastructureManagerGUID,
-           java.lang.String&nbsp;infrastructureManagerName,
-           java.lang.String&nbsp;assetGUID,
-           boolean&nbsp;isMergeUpdate,
-           org.odpi.openmetadata.accessservices.itinfrastructure.properties.AssetProperties&nbsp;assetProperties)</code></th>
-<td class="colLast">
-<div class="block">Update the metadata element representing a asset.</div>
-</td>
-</tr>
-<tr id="i12" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#withdrawAsset(java.lang.String,java.lang.String)">withdrawAsset</a></span>&#8203;(java.lang.String&nbsp;userId,
-             java.lang.String&nbsp;assetGUID)</code></th>
-<td class="colLast">
-<div class="block">Update the zones for the asset asset so that it is no longer visible to consumers.</div>
+<div class="block">Update the properties of a classification for a asset.</div>
 </td>
 </tr>
 </table>
@@ -346,40 +283,6 @@ extends java.lang.Object</pre>
 <div class="details">
 <ul class="blockList">
 <li class="blockList">
-<!-- ========= CONSTRUCTOR DETAIL ======== -->
-<section role="region">
-<ul class="blockList">
-<li class="blockList"><a id="constructor.detail">
-<!--   -->
-</a>
-<h3>Constructor Detail</h3>
-<a id="&lt;init&gt;(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.client.rest.ITInfrastructureRESTClient,int)">
-<!--   -->
-</a>
-<ul class="blockListLast">
-<li class="blockList">
-<h4>AssetManagerClientBase</h4>
-<pre>public&nbsp;AssetManagerClientBase&#8203;(java.lang.String&nbsp;serverName,
-                              java.lang.String&nbsp;serverPlatformURLRoot,
-                              <a href="rest/ITInfrastructureRESTClient.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.client.rest">ITInfrastructureRESTClient</a>&nbsp;restClient,
-                              int&nbsp;maxPageSize)
-                       throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
-<div class="block">Create a new client that is going to be used in an OMAG Server.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>serverName</code> - name of the server to connect to</dd>
-<dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST servers</dd>
-<dd><code>restClient</code> - client that issues the REST API calls</dd>
-<dd><code>maxPageSize</code> - maximum number of results supported by this server</dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem creating the client-side components to issue any
- REST API calls.</dd>
-</dl>
-</li>
-</ul>
-</li>
-</ul>
-</section>
 <!-- ============ METHOD DETAIL ========== -->
 <section role="region">
 <ul class="blockList">
@@ -387,30 +290,38 @@ extends java.lang.Object</pre>
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a id="createAsset(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.itinfrastructure.properties.AssetProperties)">
+<a id="addServerPurpose(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.util.Date,java.util.Date,java.util.Map)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>createAsset</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;createAsset&#8203;(java.lang.String&nbsp;userId,
-                                    java.lang.String&nbsp;infrastructureManagerGUID,
-                                    java.lang.String&nbsp;infrastructureManagerName,
-                                    boolean&nbsp;infrastructureManagerIsHome,
-                                    org.odpi.openmetadata.accessservices.itinfrastructure.properties.AssetProperties&nbsp;assetProperties)
-                             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                    org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                    org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
-<div class="block">Create a new metadata element to represent a asset.</div>
+<h4>addServerPurpose</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;addServerPurpose&#8203;(java.lang.String&nbsp;userId,
+                             java.lang.String&nbsp;infrastructureManagerGUID,
+                             java.lang.String&nbsp;infrastructureManagerName,
+                             boolean&nbsp;infrastructureManagerIsHome,
+                             java.lang.String&nbsp;itAssetGUID,
+                             java.lang.String&nbsp;classificationName,
+                             java.util.Date&nbsp;effectiveFrom,
+                             java.util.Date&nbsp;effectiveTo,
+                             java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;classificationProperties)
+                      throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
+                             org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
+                             org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<div class="block">Add a Server Purpose classification to an IT asset.</div>
 <dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../api/ServerPurposeManagerInterface.html#addServerPurpose(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.util.Date,java.util.Date,java.util.Map)">addServerPurpose</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ServerPurposeManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ServerPurposeManagerInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>infrastructureManagerGUID</code> - unique identifier of software server capability representing the infrastructure manager</dd>
 <dd><code>infrastructureManagerName</code> - unique name of software server capability representing the infrastructure manager</dd>
-<dd><code>infrastructureManagerIsHome</code> - should the asset be marked as owned by the infrastructure manager so others can not update?</dd>
-<dd><code>assetProperties</code> - properties to store</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>unique identifier of the new metadata element</dd>
+<dd><code>infrastructureManagerIsHome</code> - ensure that only the infrastructure manager can update this asset</dd>
+<dd><code>itAssetGUID</code> - unique identifier of the asset</dd>
+<dd><code>classificationName</code> - name of the classification type</dd>
+<dd><code>effectiveFrom</code> - when should relationship be effective - null means immediately</dd>
+<dd><code>effectiveTo</code> - when should relationship no longer be effective - null means never</dd>
+<dd><code>classificationProperties</code> - properties</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
 <dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
@@ -418,96 +329,41 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="createAssetFromTemplate(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.TemplateProperties)">
+<a id="updateServerPurpose(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date,boolean,java.util.Map)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>createAssetFromTemplate</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;createAssetFromTemplate&#8203;(java.lang.String&nbsp;userId,
-                                                java.lang.String&nbsp;infrastructureManagerGUID,
-                                                java.lang.String&nbsp;infrastructureManagerName,
-                                                boolean&nbsp;infrastructureManagerIsHome,
-                                                java.lang.String&nbsp;templateGUID,
-                                                org.odpi.openmetadata.accessservices.itinfrastructure.properties.TemplateProperties&nbsp;templateProperties)
-                                         throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
-<div class="block">Create a new metadata element to represent a asset using an existing metadata element as a template.</div>
+<h4>updateServerPurpose</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;updateServerPurpose&#8203;(java.lang.String&nbsp;userId,
+                                java.lang.String&nbsp;infrastructureManagerGUID,
+                                java.lang.String&nbsp;infrastructureManagerName,
+                                java.lang.String&nbsp;assetTypeName,
+                                java.lang.String&nbsp;assetGUID,
+                                java.lang.String&nbsp;classificationName,
+                                java.util.Date&nbsp;effectiveFrom,
+                                java.util.Date&nbsp;effectiveTo,
+                                boolean&nbsp;isMergeUpdate,
+                                java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;classificationProperties)
+                         throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
+                                org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
+                                org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<div class="block">Update the properties of a classification for a asset.</div>
 <dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../api/ServerPurposeManagerInterface.html#updateServerPurpose(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date,boolean,java.util.Map)">updateServerPurpose</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ServerPurposeManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ServerPurposeManagerInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>infrastructureManagerGUID</code> - unique identifier of software server capability representing the infrastructure manager</dd>
 <dd><code>infrastructureManagerName</code> - unique name of software server capability representing the infrastructure manager</dd>
-<dd><code>infrastructureManagerIsHome</code> - should the asset be marked as owned by the infrastructure manager so others can not update?</dd>
-<dd><code>templateGUID</code> - unique identifier of the metadata element to copy</dd>
-<dd><code>templateProperties</code> - properties that override the template</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>unique identifier of the new metadata element</dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
-</dl>
-</li>
-</ul>
-<a id="updateAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.itinfrastructure.properties.AssetProperties)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>updateAsset</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;updateAsset&#8203;(java.lang.String&nbsp;userId,
-                        java.lang.String&nbsp;infrastructureManagerGUID,
-                        java.lang.String&nbsp;infrastructureManagerName,
-                        java.lang.String&nbsp;assetGUID,
-                        boolean&nbsp;isMergeUpdate,
-                        org.odpi.openmetadata.accessservices.itinfrastructure.properties.AssetProperties&nbsp;assetProperties)
-                 throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                        org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                        org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
-<div class="block">Update the metadata element representing a asset.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>userId</code> - calling user</dd>
-<dd><code>infrastructureManagerGUID</code> - unique identifier of software server capability representing the infrastructure manager</dd>
-<dd><code>infrastructureManagerName</code> - unique name of software server capability representing the infrastructure manager</dd>
-<dd><code>assetGUID</code> - unique identifier of the metadata element to update</dd>
-<dd><code>isMergeUpdate</code> - are unspecified properties unchanged (true) or removed?</dd>
-<dd><code>assetProperties</code> - new properties for this element</dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
-</dl>
-</li>
-</ul>
-<a id="setupRelatedAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>setupRelatedAsset</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setupRelatedAsset&#8203;(java.lang.String&nbsp;userId,
-                              java.lang.String&nbsp;infrastructureManagerGUID,
-                              java.lang.String&nbsp;infrastructureManagerName,
-                              java.lang.String&nbsp;assetGUID,
-                              java.lang.String&nbsp;relationshipTypeName,
-                              java.lang.String&nbsp;relatedAssetGUID,
-                              java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;relationshipProperties)
-                       throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                              org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                              org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
-<div class="block">Create a relationship between a asset and a asseted asset.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>userId</code> - calling user</dd>
-<dd><code>infrastructureManagerGUID</code> - unique identifier of software server capability representing the infrastructure manager</dd>
-<dd><code>infrastructureManagerName</code> - unique name of software server capability representing the infrastructure manager</dd>
+<dd><code>assetTypeName</code> - name of type for the asset</dd>
 <dd><code>assetGUID</code> - unique identifier of the asset</dd>
-<dd><code>relationshipTypeName</code> - name of the relationship type</dd>
-<dd><code>relatedAssetGUID</code> - unique identifier of the related asset</dd>
-<dd><code>relationshipProperties</code> - properties</dd>
+<dd><code>classificationName</code> - name of the classification type</dd>
+<dd><code>effectiveFrom</code> - when should relationship be effective - null means immediately</dd>
+<dd><code>effectiveTo</code> - when should relationship no longer be effective - null means never</dd>
+<dd><code>isMergeUpdate</code> - should the supplied properties be merged with existing properties (true) by replacing the just the properties with
+                                  matching names, or should the entire properties of the instance be replaced?</dd>
+<dd><code>classificationProperties</code> - properties</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
 <dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
@@ -515,30 +371,34 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="clearRelatedAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="clearServerPurpose(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>clearRelatedAsset</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;clearRelatedAsset&#8203;(java.lang.String&nbsp;userId,
-                              java.lang.String&nbsp;infrastructureManagerGUID,
-                              java.lang.String&nbsp;infrastructureManagerName,
-                              java.lang.String&nbsp;assetGUID,
-                              java.lang.String&nbsp;relationshipTypeName,
-                              java.lang.String&nbsp;relatedAssetGUID)
-                       throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                              org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                              org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
-<div class="block">Remove a relationship between a asset and a related asset.</div>
+<h4>clearServerPurpose</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;clearServerPurpose&#8203;(java.lang.String&nbsp;userId,
+                               java.lang.String&nbsp;infrastructureManagerGUID,
+                               java.lang.String&nbsp;infrastructureManagerName,
+                               java.lang.String&nbsp;assetTypeName,
+                               java.lang.String&nbsp;assetGUID,
+                               java.lang.String&nbsp;classificationName,
+                               java.util.Date&nbsp;effectiveTime)
+                        throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
+                               org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
+                               org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<div class="block">Remove a server purpose classification.</div>
 <dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../api/ServerPurposeManagerInterface.html#clearServerPurpose(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">clearServerPurpose</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ServerPurposeManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ServerPurposeManagerInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>infrastructureManagerGUID</code> - unique identifier of software server capability representing the infrastructure manager</dd>
 <dd><code>infrastructureManagerName</code> - unique name of software server capability representing the infrastructure manager</dd>
+<dd><code>assetTypeName</code> - name of type for the asset</dd>
 <dd><code>assetGUID</code> - unique identifier of the asset</dd>
-<dd><code>relationshipTypeName</code> - name of the relationship type</dd>
-<dd><code>relatedAssetGUID</code> - unique identifier of the related asset</dd>
+<dd><code>classificationName</code> - name of the classification type</dd>
+<dd><code>effectiveTime</code> - effective time of the classification to remove</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
 <dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
@@ -546,76 +406,34 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="publishAsset(java.lang.String,java.lang.String)">
+<a id="deployITAsset(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.DeploymentProperties)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>publishAsset</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;publishAsset&#8203;(java.lang.String&nbsp;userId,
-                         java.lang.String&nbsp;assetGUID)
-                  throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                         org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                         org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
-<div class="block">Update the zones for the asset asset so that it becomes visible to consumers.
- (The zones are set to the list of zones in the publishedZones option configured for each
- instance of the IT Infrastructure OMAS).</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>userId</code> - calling user</dd>
-<dd><code>assetGUID</code> - unique identifier of the metadata element to publish</dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
-</dl>
-</li>
-</ul>
-<a id="withdrawAsset(java.lang.String,java.lang.String)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>withdrawAsset</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;withdrawAsset&#8203;(java.lang.String&nbsp;userId,
-                          java.lang.String&nbsp;assetGUID)
+<h4>deployITAsset</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;deployITAsset&#8203;(java.lang.String&nbsp;userId,
+                          java.lang.String&nbsp;infrastructureManagerGUID,
+                          java.lang.String&nbsp;infrastructureManagerName,
+                          boolean&nbsp;infrastructureManagerIsHome,
+                          java.lang.String&nbsp;itAssetGUID,
+                          java.lang.String&nbsp;destinationGUID,
+                          org.odpi.openmetadata.accessservices.itinfrastructure.properties.DeploymentProperties&nbsp;deploymentProperties)
                    throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
                           org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
                           org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
-<div class="block">Update the zones for the asset asset so that it is no longer visible to consumers.
- (The zones are set to the list of zones in the defaultZones option configured for each
- instance of the IT Infrastructure OMAS.  This is the setting when the asset is first created).</div>
+<div class="block">Create a relationship that represents the deployment of an IT infrastructure asset to a specific deployment destination (another asset).</div>
 <dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>userId</code> - calling user</dd>
-<dd><code>assetGUID</code> - unique identifier of the metadata element to withdraw</dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
-</dl>
-</li>
-</ul>
-<a id="removeAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>removeAsset</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;removeAsset&#8203;(java.lang.String&nbsp;userId,
-                        java.lang.String&nbsp;infrastructureManagerGUID,
-                        java.lang.String&nbsp;infrastructureManagerName,
-                        java.lang.String&nbsp;assetGUID)
-                 throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                        org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                        org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
-<div class="block">Remove the metadata element representing a asset.</div>
-<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../api/DeploymentManagementInterface.html#deployITAsset(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.DeploymentProperties)">deployITAsset</a></code>&nbsp;in interface&nbsp;<code><a href="../api/DeploymentManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">DeploymentManagementInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>infrastructureManagerGUID</code> - unique identifier of software server capability representing the infrastructure manager</dd>
 <dd><code>infrastructureManagerName</code> - unique name of software server capability representing the infrastructure manager</dd>
-<dd><code>assetGUID</code> - unique identifier of the metadata element to remove</dd>
+<dd><code>infrastructureManagerIsHome</code> - should the relationship be marked as owned by the infrastructure manager so others can not update?</dd>
+<dd><code>itAssetGUID</code> - unique identifier of the IT infrastructure asset</dd>
+<dd><code>destinationGUID</code> - unique identifier of the destination where the asset is being deployed to</dd>
+<dd><code>deploymentProperties</code> - relationship properties</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
 <dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
@@ -623,97 +441,94 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="findAssets(java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">
+<a id="updateITAssetDeployment(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.itinfrastructure.properties.DeploymentProperties)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>findAssets</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.AssetElement&gt;&nbsp;findAssets&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                      java.lang.String&nbsp;searchString,
-                                                                                                                      java.lang.String&nbsp;assetTypeName,
-                                                                                                                      java.util.Date&nbsp;effectiveTime,
-                                                                                                                      int&nbsp;startFrom,
-                                                                                                                      int&nbsp;pageSize)
-                                                                                                               throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                      org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                      org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
-<div class="block">Retrieve the list of asset metadata elements that contain the search string.
- The search string is treated as a regular expression.</div>
+<h4>updateITAssetDeployment</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;updateITAssetDeployment&#8203;(java.lang.String&nbsp;userId,
+                                    java.lang.String&nbsp;infrastructureManagerGUID,
+                                    java.lang.String&nbsp;infrastructureManagerName,
+                                    java.lang.String&nbsp;deploymentGUID,
+                                    boolean&nbsp;isMergeUpdate,
+                                    org.odpi.openmetadata.accessservices.itinfrastructure.properties.DeploymentProperties&nbsp;deploymentProperties)
+                             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
+                                    org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
+                                    org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<div class="block">Update a deployment relationship.</div>
 <dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>userId</code> - calling user</dd>
-<dd><code>searchString</code> - string to find in the properties</dd>
-<dd><code>assetTypeName</code> - name of type for the asset</dd>
-<dd><code>effectiveTime</code> - effective time for the query</dd>
-<dd><code>startFrom</code> - paging start point</dd>
-<dd><code>pageSize</code> - maximum results that can be returned</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>list of matching metadata elements</dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
-</dl>
-</li>
-</ul>
-<a id="getAssetsByName(java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getAssetsByName</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.AssetElement&gt;&nbsp;getAssetsByName&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                           java.lang.String&nbsp;name,
-                                                                                                                           java.lang.String&nbsp;assetTypeName,
-                                                                                                                           java.util.Date&nbsp;effectiveTime,
-                                                                                                                           int&nbsp;startFrom,
-                                                                                                                           int&nbsp;pageSize)
-                                                                                                                    throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                           org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                           org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
-<div class="block">Retrieve the list of asset metadata elements with a matching qualified or display name.
- There are no wildcards supported on this request.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>userId</code> - calling user</dd>
-<dd><code>name</code> - name to search for</dd>
-<dd><code>assetTypeName</code> - name of type for the asset</dd>
-<dd><code>effectiveTime</code> - effective time for the query</dd>
-<dd><code>startFrom</code> - paging start point</dd>
-<dd><code>pageSize</code> - maximum results that can be returned</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>list of matching metadata elements</dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
-</dl>
-</li>
-</ul>
-<a id="getAssetsForInfrastructureManager(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getAssetsForInfrastructureManager</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.AssetElement&gt;&nbsp;getAssetsForInfrastructureManager&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                                             java.lang.String&nbsp;infrastructureManagerGUID,
-                                                                                                                                             java.lang.String&nbsp;infrastructureManagerName,
-                                                                                                                                             java.lang.String&nbsp;assetTypeName,
-                                                                                                                                             java.util.Date&nbsp;effectiveTime,
-                                                                                                                                             int&nbsp;startFrom,
-                                                                                                                                             int&nbsp;pageSize)
-                                                                                                                                      throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                                             org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                                             org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
-<div class="block">Retrieve the list of assets created by this caller.</div>
-<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../api/DeploymentManagementInterface.html#updateITAssetDeployment(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.itinfrastructure.properties.DeploymentProperties)">updateITAssetDeployment</a></code>&nbsp;in interface&nbsp;<code><a href="../api/DeploymentManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">DeploymentManagementInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>infrastructureManagerGUID</code> - unique identifier of software server capability representing the infrastructure manager</dd>
 <dd><code>infrastructureManagerName</code> - unique name of software server capability representing the infrastructure manager</dd>
-<dd><code>assetTypeName</code> - name of type for the asset</dd>
+<dd><code>deploymentGUID</code> - unique identifier of the relationship</dd>
+<dd><code>isMergeUpdate</code> - should the supplied properties be merged with existing properties (true) by replacing the just the properties with
+                                  matching names, or should the entire properties of the instance be replaced?</dd>
+<dd><code>deploymentProperties</code> - properties for the relationship</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="clearDeployment(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>clearDeployment</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;clearDeployment&#8203;(java.lang.String&nbsp;userId,
+                            java.lang.String&nbsp;infrastructureManagerGUID,
+                            java.lang.String&nbsp;infrastructureManagerName,
+                            java.lang.String&nbsp;itAssetGUID,
+                            java.lang.String&nbsp;destinationGUID,
+                            java.util.Date&nbsp;effectiveTime)
+                     throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
+                            org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
+                            org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<div class="block">Remove a deployment relationship.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../api/DeploymentManagementInterface.html#clearDeployment(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">clearDeployment</a></code>&nbsp;in interface&nbsp;<code><a href="../api/DeploymentManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">DeploymentManagementInterface</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>infrastructureManagerGUID</code> - unique identifier of software server capability representing the infrastructure manager</dd>
+<dd><code>infrastructureManagerName</code> - unique name of software server capability representing the infrastructure manager</dd>
+<dd><code>itAssetGUID</code> - unique identifier of the IT infrastructure asset</dd>
+<dd><code>destinationGUID</code> - unique identifier of the destination where the asset is being deployed to</dd>
+<dd><code>effectiveTime</code> - time when the deployment is effective</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="getDeployedITAssets(java.lang.String,java.lang.String,java.util.Date,int,int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getDeployedITAssets</h4>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.DeploymentElement&gt;&nbsp;getDeployedITAssets&#8203;(java.lang.String&nbsp;userId,
+                                                                                                                                    java.lang.String&nbsp;destinationGUID,
+                                                                                                                                    java.util.Date&nbsp;effectiveTime,
+                                                                                                                                    int&nbsp;startFrom,
+                                                                                                                                    int&nbsp;pageSize)
+                                                                                                                             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
+                                                                                                                                    org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
+                                                                                                                                    org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<div class="block">Return the list of assets deployed on a particular destination.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../api/DeploymentManagementInterface.html#getDeployedITAssets(java.lang.String,java.lang.String,java.util.Date,int,int)">getDeployedITAssets</a></code>&nbsp;in interface&nbsp;<code><a href="../api/DeploymentManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">DeploymentManagementInterface</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>destinationGUID</code> - unique identifier of the destination asset to query</dd>
 <dd><code>effectiveTime</code> - effective time for the query</dd>
 <dd><code>startFrom</code> - paging start point</dd>
 <dd><code>pageSize</code> - maximum results that can be returned</dd>
@@ -726,56 +541,27 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="getAssetByGUID(java.lang.String,java.lang.String,java.lang.String)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getAssetByGUID</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.AssetElement&nbsp;getAssetByGUID&#8203;(java.lang.String&nbsp;userId,
-                                                                                                          java.lang.String&nbsp;assetTypeName,
-                                                                                                          java.lang.String&nbsp;guid)
-                                                                                                   throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                          org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                          org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
-<div class="block">Retrieve the asset metadata element with the supplied unique identifier.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>userId</code> - calling user</dd>
-<dd><code>assetTypeName</code> - name of type for the asset</dd>
-<dd><code>guid</code> - unique identifier of the requested metadata element</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>matching metadata element</dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
-</dl>
-</li>
-</ul>
-<a id="getRelatedAssets(java.lang.String,java.lang.String,int,java.lang.String,java.util.Date,int,int)">
+<a id="getDeploymentDestinations(java.lang.String,java.lang.String,java.util.Date,int,int)">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
-<h4>getRelatedAssets</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.AssetElement&gt;&nbsp;getRelatedAssets&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                            java.lang.String&nbsp;assetGUID,
-                                                                                                                            int&nbsp;startingEnd,
-                                                                                                                            java.lang.String&nbsp;relationshipTypeName,
-                                                                                                                            java.util.Date&nbsp;effectiveTime,
-                                                                                                                            int&nbsp;startFrom,
-                                                                                                                            int&nbsp;pageSize)
-                                                                                                                     throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                            org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                            org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
-<div class="block">Return the list of assets linked by another asset.</div>
+<h4>getDeploymentDestinations</h4>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.DeploymentElement&gt;&nbsp;getDeploymentDestinations&#8203;(java.lang.String&nbsp;userId,
+                                                                                                                                          java.lang.String&nbsp;itAssetGUID,
+                                                                                                                                          java.util.Date&nbsp;effectiveTime,
+                                                                                                                                          int&nbsp;startFrom,
+                                                                                                                                          int&nbsp;pageSize)
+                                                                                                                                   throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
+                                                                                                                                          org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
+                                                                                                                                          org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<div class="block">Return the list of destinations that a particular IT infrastructure asset is deployed to.</div>
 <dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../api/DeploymentManagementInterface.html#getDeploymentDestinations(java.lang.String,java.lang.String,java.util.Date,int,int)">getDeploymentDestinations</a></code>&nbsp;in interface&nbsp;<code><a href="../api/DeploymentManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">DeploymentManagementInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>assetGUID</code> - unique identifier of the asset to start with</dd>
-<dd><code>startingEnd</code> - which end of the relationship to start at 0=either end; 1=end1 and 2=end 2</dd>
-<dd><code>relationshipTypeName</code> - name of type for the relationship</dd>
+<dd><code>itAssetGUID</code> - unique identifier of the IT infrastructure asset to query</dd>
 <dd><code>effectiveTime</code> - effective time for the query</dd>
 <dd><code>startFrom</code> - paging start point</dd>
 <dd><code>pageSize</code> - maximum results that can be returned</dd>
@@ -841,13 +627,13 @@ extends java.lang.Object</pre>
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
-<li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
+<li>Constr&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
-<li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
+<li>Constr&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>
 </div>

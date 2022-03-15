@@ -184,11 +184,10 @@ implements <a href="../api/EndpointManagerInterface.html" title="interface in or
 </td>
 </tr>
 <tr class="rowColor">
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.client.rest.ITInfrastructureRESTClient,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">EndpointManagerClient</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.client.rest.ITInfrastructureRESTClient,int)">EndpointManagerClient</a></span>&#8203;(java.lang.String&nbsp;serverName,
                      java.lang.String&nbsp;serverPlatformURLRoot,
                      <a href="rest/ITInfrastructureRESTClient.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.client.rest">ITInfrastructureRESTClient</a>&nbsp;restClient,
-                     int&nbsp;maxPageSize,
-                     org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)</code></th>
+                     int&nbsp;maxPageSize)</code></th>
 <td class="colLast">
 <div class="block">Create a new client that is going to be used in an OMAG Server.</div>
 </td>
@@ -421,7 +420,7 @@ implements <a href="../api/EndpointManagerInterface.html" title="interface in or
 </dl>
 </li>
 </ul>
-<a id="&lt;init&gt;(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.client.rest.ITInfrastructureRESTClient,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
+<a id="&lt;init&gt;(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.client.rest.ITInfrastructureRESTClient,int)">
 <!--   -->
 </a>
 <ul class="blockListLast">
@@ -430,8 +429,7 @@ implements <a href="../api/EndpointManagerInterface.html" title="interface in or
 <pre>public&nbsp;EndpointManagerClient&#8203;(java.lang.String&nbsp;serverName,
                              java.lang.String&nbsp;serverPlatformURLRoot,
                              <a href="rest/ITInfrastructureRESTClient.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.client.rest">ITInfrastructureRESTClient</a>&nbsp;restClient,
-                             int&nbsp;maxPageSize,
-                             org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)
+                             int&nbsp;maxPageSize)
                       throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
 <div class="block">Create a new client that is going to be used in an OMAG Server.</div>
 <dl>
@@ -440,7 +438,6 @@ implements <a href="../api/EndpointManagerInterface.html" title="interface in or
 <dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST servers</dd>
 <dd><code>restClient</code> - client that issues the REST API calls</dd>
 <dd><code>maxPageSize</code> - maximum number of results supported by this server</dd>
-<dd><code>auditLog</code> - logging destination</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem creating the client-side components to issue any
  REST API calls.</dd>

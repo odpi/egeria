@@ -22,6 +22,7 @@ org.odpi.openmetadata.accessservices.dataengine.rest
 org.odpi.openmetadata.accessservices.datamanager.api
 org.odpi.openmetadata.accessservices.datamanager.client
 org.odpi.openmetadata.accessservices.datamanager.client.rest
+org.odpi.openmetadata.accessservices.devops.api
 org.odpi.openmetadata.accessservices.digitalarchitecture.api
 org.odpi.openmetadata.accessservices.digitalarchitecture.client
 org.odpi.openmetadata.accessservices.digitalarchitecture.client.rest
