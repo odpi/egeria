@@ -19,7 +19,6 @@ import java.security.cert.X509Certificate
 user=(properties["user"] ?: System.properties["user"]) ?: "admin"
 baseURL=(properties["baseURL"] ?: System.properties["baseURL"]) ?: "https://localhost:9999"
 serverMem=(properties["serverInMemory"] ?: System.properties["serverInMemory"]) ?: "serverinmem"
-serverGraph=(properties["serverLocalGraph"] ?: System.properties["serverLocalGraph"]) ?: "servergraph"
 maxRetries=Integer.parseInt((properties["retries"] ?: System.properties["retries"]) ?: 12 as String)
 delay=Integer.parseInt((properties["delay"] ?: System.properties["delay"]) ?: 10 as String)
 File connectorTypeArchive = new File(properties["connectorTypeArchivePath"] ?: System.properties["connectorTypeArchivePath"] ?: "src/test/resources/DataStoreConnectorTypes.json")
@@ -123,56 +122,6 @@ launchInMemoryServerResponse = launchInMemoryServerRequest.getResponseCode()
 println(launchInMemoryServerResponse)
 if(launchInMemoryServerResponse.equals(200)) {
     println(launchInMemoryServerRequest.getInputStream().getText())
-}
-
-// -- Graph
-// --- Configure the platform - any errors here and we exit
-System.out.println("=== Configuring server: " + serverGraph + " ===")
-localGraphRepositoryRequest = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverGraph + "/local-repository/mode/local-graph-repository" ).openConnection()
-localGraphRepositoryRequest.setRequestMethod("POST")
-localGraphRepositoryRequest.setRequestProperty("Content-Type", "application/json")
-localGraphRepositoryResponse = localGraphRepositoryRequest.getResponseCode()
-println(localGraphRepositoryResponse)
-if(localGraphRepositoryResponse.equals(200)) {
-    println(localGraphRepositoryRequest.getInputStream().getText())
-}
-
-// --- Enable Data Engine OMAS - any errors here and we exit
-System.out.println("=== Enabling Data Engine OMAS: " + serverGraph + " ===")
-addDataEngineToLocalGraphServerRequest = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverGraph + "/access-services/data-engine/no-topics" ).openConnection()
-addDataEngineToLocalGraphServerRequest.setRequestMethod("POST")
-addDataEngineToLocalGraphServerRequest.setRequestProperty("Content-Type", "application/json")
-addDataEngineToLocalGraphServerResponse = addDataEngineToLocalGraphServerRequest.getResponseCode()
-println(addDataEngineToLocalGraphServerResponse)
-if(addDataEngineToLocalGraphServerResponse.equals(200)) {
-    println(addDataEngineToLocalGraphServerRequest.getInputStream().getText())
-}
-
-// --- Adding connector types archive for OMAS startup - any errors here and we exit
-System.out.println("=== Adding the connector types archive for: " + serverGraph + " ===")
-addConnectorTypeArchiveToLocalGraphServerRequest = (HttpURLConnection) new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverGraph + "/open-metadata-archives/file" ).openConnection()
-addConnectorTypeArchiveToLocalGraphServerRequest.setRequestMethod("POST")
-addConnectorTypeArchiveToLocalGraphServerRequest.setRequestProperty("Content-Type", "application/json")
-addConnectorTypeArchiveToLocalGraphServerRequest.setDoOutput(true)
-try(OutputStreamWriter writerToLocalGraphRequest = new OutputStreamWriter(addConnectorTypeArchiveToLocalGraphServerRequest.getOutputStream())) {
-    writerToLocalGraphRequest.write(connectorTypeArchive.getAbsolutePath())
-}
-println("Absolute path to ConnectorTypes archive for " +  serverGraph + ":" + connectorTypeArchive.getAbsolutePath())
-addConnectorTypeArchiveToLocalGraphServerResponse = addConnectorTypeArchiveToLocalGraphServerRequest.getResponseCode()
-println(addConnectorTypeArchiveToLocalGraphServerResponse)
-if(addConnectorTypeArchiveToLocalGraphServerResponse.equals(200)) {
-    println(addConnectorTypeArchiveToLocalGraphServerRequest.getInputStream().getText())
-}
-
-// --- Launch the server - any errors here and we exit
-System.out.println("=== Starting server: " + serverGraph + " ===")
-launchLocalGraphServerRequest = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverGraph + "/instance" ).openConnection()
-launchLocalGraphServerRequest.setRequestMethod("POST")
-launchLocalGraphServerRequest.setRequestProperty("Content-Type", "application/json")
-launchLocalGraphServerResponse = launchLocalGraphServerRequest.getResponseCode()
-println(launchLocalGraphServerResponse)
-if(launchLocalGraphServerResponse.equals(200)) {
-    println(launchLocalGraphServerRequest.getInputStream().getText())
 }
 
 // --- We're done

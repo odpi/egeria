@@ -24,7 +24,7 @@ public class AssetOwnerOMASCreateAssetIT
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {FVTConstants.IN_MEMORY_SERVER, FVTConstants.GRAPH_SERVER})
+        @ValueSource(strings = {FVTConstants.IN_MEMORY_SERVER})
     public void testCreateAsset(String serverName)
     {
         FVTResults results = CreateAssetTest.performFVT(serverName, StringUtils.defaultIfEmpty(System.getProperty("fvt.url"),FVTConstants.SERVER_PLATFORM_URL_ROOT), FVTConstants.USERID);
