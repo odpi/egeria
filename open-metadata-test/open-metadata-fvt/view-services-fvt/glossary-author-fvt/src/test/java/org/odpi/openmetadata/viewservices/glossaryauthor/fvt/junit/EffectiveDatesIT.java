@@ -20,7 +20,6 @@ public class EffectiveDatesIT {
     }
 
     @ParameterizedTest
-//    @ValueSource(strings = {"serverinmem","servergraph"})
     @ValueSource(strings = {"serverview"})
     public void testEffectiveDates(String server) {
         assertDoesNotThrow(() -> EffectiveDatesFVT.runIt(StringUtils.defaultIfEmpty(System.getProperty("fvt.url"),FVTConstants.SERVER_PLATFORM_URL_ROOT), server, "garygeeke"));

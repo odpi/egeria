@@ -17,6 +17,14 @@ public interface ComponentDescription
 
 
     /**
+     * Return the development status of the component.
+     *
+     * @return enum describing the status
+     */
+    ComponentDevelopmentStatus getComponentDevelopmentStatus();
+
+
+    /**
      * Return the name of the component.  This is the name used in the audit log records.
      *
      * @return String component name

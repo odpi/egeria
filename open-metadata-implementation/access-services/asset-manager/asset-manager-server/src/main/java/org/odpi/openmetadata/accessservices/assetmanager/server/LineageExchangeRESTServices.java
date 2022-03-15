@@ -75,6 +75,7 @@ public class LineageExchangeRESTServices
                                                        requestBody.getMetadataCorrelationProperties(),
                                                        assetManagerIsHome,
                                                        requestBody.getElementProperties(),
+                                                       requestBody.getProcessStatus(),
                                                        methodName));
             }
             else

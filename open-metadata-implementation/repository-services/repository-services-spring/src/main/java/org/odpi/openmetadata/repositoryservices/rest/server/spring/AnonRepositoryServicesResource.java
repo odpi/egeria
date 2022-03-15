@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
                 "services do not take a user id in the URL.  These may be disabled if server " +
                 "security is turned on.",
         externalDocs=@ExternalDocumentation(description="Further information",
-                url="https://odpi.github.io/egeria-docs/services/omrs/"))
+                url="https://egeria-project.org/services/omrs/"))
 
 public class AnonRepositoryServicesResource
 {

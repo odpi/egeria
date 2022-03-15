@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name="Topic Integrator OMIS", description="Supports the detection and creation of metadata for topics and event brokers.",
         externalDocs=@ExternalDocumentation(description="Topic Integrator Open Metadata Integration Service (OMIS)",
-                url="https://odpi.github.io/egeria-docs/services/omis/topic-integrator/overview/"))
+                url="https://egeria-project.org/services/omis/topic-integrator/overview/"))
 
 public class TopicIntegratorResource
 {

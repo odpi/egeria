@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name="Asset Manager OMAS",
      description="The Asset Manager OMAS provides APIs and events for managing metadata exchange with third party asset managers, such as data catalogs.",
      externalDocs=@ExternalDocumentation(description="Asset Manager Open Metadata Access Service (OMAS)",
-                                         url="https://odpi.github.io/egeria-docs/services/omas/asset-manager/overview/"))
+                                         url="https://egeria-project.org/services/omas/asset-manager/overview/"))
 
 public class DataAssetExchangeResource
 {

@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name="Asset Consumer OMAS", description="The Asset Consumer OMAS provides services to an individual who wants to work with assets such as: data stores, data sets and data feeds, reports, APIs, functions such as analytical services",
      externalDocs=@ExternalDocumentation(description="Asset Consumer Open Metadata Access Service (OMAS)",
-                                         url="https://odpi.github.io/egeria-docs/services/omas/asset-consumer/overview/"))
+                                         url="https://egeria-project.org/services/omas/asset-consumer/overview/"))
 
 public class AssetConsumerResource
 {

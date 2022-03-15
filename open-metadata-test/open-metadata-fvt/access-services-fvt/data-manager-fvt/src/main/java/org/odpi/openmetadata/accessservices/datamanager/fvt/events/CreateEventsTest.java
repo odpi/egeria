@@ -109,6 +109,7 @@ public class CreateEventsTest
 
         AuditLog auditLog = new AuditLog(auditLogDestination,
                                          AccessServiceDescription.DATA_MANAGER_OMAS.getAccessServiceCode(),
+                                         AccessServiceDescription.DATA_MANAGER_OMAS.getAccessServiceDevelopmentStatus(),
                                          AccessServiceDescription.DATA_MANAGER_OMAS.getAccessServiceName(),
                                          AccessServiceDescription.DATA_MANAGER_OMAS.getAccessServiceDescription(),
                                          AccessServiceDescription.DATA_MANAGER_OMAS.getAccessServiceWiki());

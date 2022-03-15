@@ -22,10 +22,11 @@ public class AuditLogReportingComponent implements Serializable, ComponentDescri
 {
     private static final long    serialVersionUID = 1L;
 
-    private  int      componentId;
-    private  String   componentName;
-    private  String   componentDescription;
-    private  String   componentWikiURL;
+    private  int                        componentId;
+    private  ComponentDevelopmentStatus componentDevelopmentStatus = ComponentDevelopmentStatus.IN_DEVELOPMENT;
+    private  String                     componentName;
+    private  String                     componentDescription;
+    private  String                     componentWikiURL;
 
 
     /**
@@ -46,26 +47,31 @@ public class AuditLogReportingComponent implements Serializable, ComponentDescri
         if (template != null)
         {
             this.componentId = template.getComponentId();
+            this.componentDevelopmentStatus = template.getComponentDevelopmentStatus();
             this.componentName = template.getComponentName();
             this.componentDescription = template.getComponentType();
             this.componentWikiURL = template.getComponentWikiURL();
         }
     }
 
+
     /**
      * Construct the description of the reporting component.
      *
-     * @param componentId  numerical identifier for the component.
-     * @param componentName  display name for the component.
-     * @param componentDescription  description of the component.
-     * @param componentWikiURL  link to more information.
+     * @param componentId  numerical identifier for the component
+     * @param componentDevelopmentStatus development status
+     * @param componentName  display name for the component
+     * @param componentDescription  description of the component
+     * @param componentWikiURL  link to more information
      */
-    public AuditLogReportingComponent(int    componentId,
-                                      String componentName,
-                                      String componentDescription,
-                                      String componentWikiURL)
+    public AuditLogReportingComponent(int                        componentId,
+                                      ComponentDevelopmentStatus componentDevelopmentStatus,
+                                      String                     componentName,
+                                      String                     componentDescription,
+                                      String                     componentWikiURL)
     {
         this.componentId = componentId;
+        this.componentDevelopmentStatus = componentDevelopmentStatus;
         this.componentName = componentName;
         this.componentDescription = componentDescription;
         this.componentWikiURL = componentWikiURL;
@@ -91,6 +97,29 @@ public class AuditLogReportingComponent implements Serializable, ComponentDescri
     public void setComponentId(int componentId)
     {
         this.componentId = componentId;
+    }
+
+
+
+    /**
+     * Return the development status of the component.
+     *
+     * @return enum describing the status
+     */
+    public ComponentDevelopmentStatus getComponentDevelopmentStatus()
+    {
+        return componentDevelopmentStatus;
+    }
+
+
+    /**
+     * Set up the development status of the component.
+     *
+     * @param componentDevelopmentStatus enum describing the status
+     */
+    public void setComponentDevelopmentStatus(ComponentDevelopmentStatus componentDevelopmentStatus)
+    {
+        this.componentDevelopmentStatus = componentDevelopmentStatus;
     }
 
 

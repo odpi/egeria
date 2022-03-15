@@ -2767,16 +2767,6 @@ public class OpenMetadataTypesArchive2_4
         property.setReplacedByAttribute(attribute3ReplacedBy);
         properties.add(property);
 
-        final String attribute4Name            = "capabilityVersion";
-        final String attribute4Description     = "Version number of the software server capability.";
-        final String attribute4DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
-                                                           attribute4Description,
-                                                           attribute4DescriptionGUID);
-
-        properties.add(property);
-
 
         typeDefPatch.setPropertyDefinitions(properties);
         return typeDefPatch;

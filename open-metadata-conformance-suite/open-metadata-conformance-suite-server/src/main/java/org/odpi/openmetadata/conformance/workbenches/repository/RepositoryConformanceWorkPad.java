@@ -48,6 +48,7 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
 
 
     private Map<String, List<String>>              entitySubTypes          = new HashMap<>();
+    private Map<String, List<String>>              relationshipSubTypes    = new HashMap<>();
     private Map<String, List<String>>              relationshipEndTypes    = new HashMap<>();
     private Map<String, List<List<String>>>        entityRelationshipTypes = new HashMap<>();
     private Map<String, List<List<EntityDetail>>>  entityInstances         = new HashMap<>();
@@ -685,6 +686,37 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
     public List<String> getEntitySubTypes(String entityTypeName)
     {
         List<String> subTypeList = this.entitySubTypes.get(entityTypeName);
+        return subTypeList;
+    }
+
+    /**
+     * Add the specified subtype to the list for the named relationship type
+     * @param relationshipTypeName - the name of the relationship type
+     * @param subTypeName          - name of the relationship subtype
+     */
+    void addRelationshipSubType(String relationshipTypeName, String subTypeName)
+    {
+        List<String> subTypeList = this.relationshipSubTypes.get(relationshipTypeName);
+        if (subTypeList == null)
+        {
+            List<String> newList = new ArrayList<>();
+            newList.add(subTypeName);
+            this.relationshipSubTypes.put(relationshipTypeName,newList);
+        }
+        else
+        {
+            subTypeList.add(subTypeName);
+        }
+    }
+
+    /**
+     * Return the list of subtypes of the named relationship type
+     * @param relationshipTypeName - the name of the relationship type
+     * @return - the list of subtypes of the relationship type
+     */
+    public List<String> getRelationshipSubTypes(String relationshipTypeName)
+    {
+        List<String> subTypeList = this.relationshipSubTypes.get(relationshipTypeName);
         return subTypeList;
     }
 

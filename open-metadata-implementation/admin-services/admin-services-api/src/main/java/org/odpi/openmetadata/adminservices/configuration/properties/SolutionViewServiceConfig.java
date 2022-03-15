@@ -52,16 +52,19 @@ public class SolutionViewServiceConfig extends ViewServiceConfig {
     public String toString()
     {
         return "SolutionViewServiceConfig{" +
-                "viewServiceId=" + getViewServiceId() +
-                ", viewServiceAdminClass='" + getViewServiceAdminClass() + '\'' +
-                ", viewServiceName='" + getViewServiceName() + '\'' +
-                ", viewServiceFullName='" + getViewServiceFullName() + '\'' +
-                ", viewServiceURLMarker='" + getViewServiceURLMarker() + '\'' +
-                ", viewServiceDescription='" + getViewServiceDescription() + '\'' +
-                ", viewServiceWiki='" + getViewServiceWiki() + '\'' +
-                ", viewServiceOperationalStatus=" + getViewServiceOperationalStatus() +
-                ", viewServiceOptions=" + getViewServiceOptions() +
-                '}';
+                       "viewServiceId=" + getViewServiceId() +
+                       ", viewServiceDevelopmentStatus=" + getViewServiceDevelopmentStatus() +
+                       ", viewServiceAdminClass='" + getViewServiceAdminClass() + '\'' +
+                       ", viewServiceFullName='" + getViewServiceFullName() + '\'' +
+                       ", viewServiceName='" + getViewServiceName() + '\'' +
+                       ", viewServiceURLMarker='" + getViewServiceURLMarker() + '\'' +
+                       ", viewServiceDescription='" + getViewServiceDescription() + '\'' +
+                       ", viewServiceWiki='" + getViewServiceWiki() + '\'' +
+                       ", viewServiceOperationalStatus=" + getViewServiceOperationalStatus() +
+                       ", viewServiceOptions=" + getViewServiceOptions() +
+                       ", OMAGServerPlatformRootURL='" + getOMAGServerPlatformRootURL() + '\'' +
+                       ", OMAGServerName='" + getOMAGServerName() + '\'' +
+                       '}';
     }
 
 

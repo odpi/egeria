@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/discovery-engine/users/{userId}")
 
-@Tag(name="Discovery Engine OMAS", description="The Discovery Engine OMAS provides APIs and events for metadata discovery tools that are surveying the data landscape and recording information in metadata repositories.", externalDocs=@ExternalDocumentation(description="Discovery Engine Open Metadata Access Service (OMAS)",url="https://odpi.github.io/egeria-docs/services/omas/discovery-engine/overview/"))
+@Tag(name="Discovery Engine OMAS", description="The Discovery Engine OMAS provides APIs and events for metadata discovery tools that are surveying the data landscape and recording information in metadata repositories.", externalDocs=@ExternalDocumentation(description="Discovery Engine Open Metadata Access Service (OMAS)",url="https://egeria-project.org/services/omas/discovery-engine/overview/"))
 
 public class DiscoveryMetadataStoreResource
 {

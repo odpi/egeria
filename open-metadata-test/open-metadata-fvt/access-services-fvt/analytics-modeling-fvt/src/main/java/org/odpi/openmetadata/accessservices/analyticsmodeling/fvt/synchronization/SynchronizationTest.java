@@ -85,10 +85,11 @@ public class SynchronizationTest extends AnalyticsModelingTestBase
         SynchronizationTest thisTest = new SynchronizationTest();
 
         AuditLog auditLog = new AuditLog(auditLogDestination,
-                                         AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceCode(),
-                                         AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceName(),
-                                         AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceDescription(),
-                                         AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceWiki());
+                                         AccessServiceDescription.ANALYTICS_MODELING_OMAS.getAccessServiceCode(),
+                                         AccessServiceDescription.ANALYTICS_MODELING_OMAS.getAccessServiceDevelopmentStatus(),
+                                         AccessServiceDescription.ANALYTICS_MODELING_OMAS.getAccessServiceName(),
+                                         AccessServiceDescription.ANALYTICS_MODELING_OMAS.getAccessServiceDescription(),
+                                         AccessServiceDescription.ANALYTICS_MODELING_OMAS.getAccessServiceWiki());
 
         SynchronizationClient client = thisTest.getSynchronizationClient(serverName, serverPlatformRootURL, auditLog, TESTCASENAME);
 

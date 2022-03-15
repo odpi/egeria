@@ -32,6 +32,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>it-infrastructure-api</module>
+        <module>it-infrastructure-topic-connectors</module>
         <module>it-infrastructure-client</module>
         <module>it-infrastructure-server</module>
         <module>it-infrastructure-spring</module>

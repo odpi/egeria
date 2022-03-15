@@ -5,6 +5,8 @@ package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 
+import java.util.List;
+
 public interface RepositoryExecutor
 {
     /**
@@ -16,4 +18,29 @@ public interface RepositoryExecutor
      */
     boolean issueRequestToRepository(String                 metadataCollectionId,
                                      OMRSMetadataCollection metadataCollection);
+
+
+    /**
+     * Return the results that need further augmentation.
+     *
+     * @return null (if no augmentation of results is required) or a list containing the guids of the results.
+     */
+    default List<String> getResultsForAugmentation()
+    {
+        return null;
+    }
+
+
+    /**
+     * Perform the required action to augment a result.
+     *
+     * @param resultGUID unique identifier of result.
+     * @param metadataCollectionId identifier for the metadata collection
+     * @param metadataCollection metadata collection object for the repository
+     */
+    default void augmentResultFromRepository(String                 resultGUID,
+                                             String                 metadataCollectionId,
+                                             OMRSMetadataCollection metadataCollection)
+    {
+    }
 }

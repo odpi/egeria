@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices.configuration.registration;
 
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
+
 import java.io.Serializable;
 
 /**
@@ -12,6 +14,7 @@ public class ViewServiceRegistration implements Serializable
     private static final long     serialVersionUID    = 1L;
 
     private int                            viewServiceCode;
+    private ComponentDevelopmentStatus     viewServiceDevelopmentStatus;
     private String                         viewServiceName;
     private String                         viewServiceFullName;
     private String                         viewServiceURLMarker;
@@ -24,6 +27,7 @@ public class ViewServiceRegistration implements Serializable
      * Complete Constructor
      *
      * @param viewServiceCode ordinal for this view service
+     * @param viewServiceDevelopmentStatus development status
      * @param viewServiceName symbolic name for this view service
      * @param viewServiceFullName full name for this view service
      * @param viewServiceURLMarker name of the part of the URL that is the name of the view service
@@ -33,6 +37,7 @@ public class ViewServiceRegistration implements Serializable
      * @param viewServiceAdminClassName  name of ViewServiceAdmin implementation class for the view service
      */
     public ViewServiceRegistration(int                            viewServiceCode,
+                                   ComponentDevelopmentStatus     viewServiceDevelopmentStatus,
                                    String                         viewServiceName,
                                    String                         viewServiceFullName,
                                    String                         viewServiceURLMarker,
@@ -42,6 +47,7 @@ public class ViewServiceRegistration implements Serializable
                                    String                         viewServiceAdminClassName)
     {
         this.viewServiceCode = viewServiceCode;
+        this.viewServiceDevelopmentStatus = viewServiceDevelopmentStatus;
         this.viewServiceName = viewServiceName;
         this.viewServiceFullName = viewServiceFullName;
         this.viewServiceURLMarker = viewServiceURLMarker;
@@ -64,6 +70,7 @@ public class ViewServiceRegistration implements Serializable
                                    String                   viewServiceAdminClassName)
     {
         this(viewServiceDescription.getViewServiceCode(),
+             viewServiceDescription.getViewServiceDevelopmentStatus(),
              viewServiceDescription.getViewServiceName(),
              viewServiceDescription.getViewServiceFullName(),
              viewServiceDescription.getViewServiceURLMarker(),
@@ -101,6 +108,28 @@ public class ViewServiceRegistration implements Serializable
     public void setViewServiceCode(int viewServiceCode)
     {
         this.viewServiceCode = viewServiceCode;
+    }
+
+
+    /**
+     * Return the development status of the component.
+     *
+     * @return enum describing the status
+     */
+    public ComponentDevelopmentStatus getViewServiceDevelopmentStatus()
+    {
+        return viewServiceDevelopmentStatus;
+    }
+
+
+    /**
+     * Set up the development status of the component.
+     *
+     * @param viewServiceDevelopmentStatus  enum describing the status
+     */
+    public void setViewServiceDevelopmentStatus(ComponentDevelopmentStatus viewServiceDevelopmentStatus)
+    {
+        this.viewServiceDevelopmentStatus = viewServiceDevelopmentStatus;
     }
 
 

@@ -5,6 +5,7 @@ package org.odpi.openmetadata.commonservices.ffdc.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -23,10 +24,11 @@ public class RegisteredOMAGService implements Serializable
 {
     private static final long     serialVersionUID    = 1L;
 
-    private String serviceName;
-    private String serviceURLMarker;
-    private String serviceDescription;
-    private String serviceWiki;
+    private String                     serviceName              = null;
+    private ComponentDevelopmentStatus serviceDevelopmentStatus = null;
+    private String                     serviceURLMarker         = null;
+    private String                     serviceDescription       = null;
+    private String                     serviceWiki              = null;
 
 
     /**
@@ -47,6 +49,7 @@ public class RegisteredOMAGService implements Serializable
         if (template != null)
         {
             this.serviceName = template.getServiceName();
+            this.serviceDevelopmentStatus = template.getServiceDevelopmentStatus();
             this.serviceURLMarker = template.getServiceURLMarker();
             this.serviceDescription = template.getServiceDescription();
             this.serviceWiki = template.getServiceWiki();
@@ -67,13 +70,35 @@ public class RegisteredOMAGService implements Serializable
 
 
     /**
-     * Set up the default name for this service
+     * Set up the default name for this service.
      *
      * @param serviceName name
      */
     public void setServiceName(String serviceName)
     {
         this.serviceName = serviceName;
+    }
+
+
+    /**
+     * Return the development status of the service.
+     *
+     * @return development status enum
+     */
+    public ComponentDevelopmentStatus getServiceDevelopmentStatus()
+    {
+        return serviceDevelopmentStatus;
+    }
+
+
+    /**
+     * Set up the development status of the service.
+     *
+     * @param serviceDevelopmentStatus development status
+     */
+    public void setServiceDevelopmentStatus(ComponentDevelopmentStatus serviceDevelopmentStatus)
+    {
+        this.serviceDevelopmentStatus = serviceDevelopmentStatus;
     }
 
 
@@ -156,7 +181,8 @@ public class RegisteredOMAGService implements Serializable
     public String toString()
     {
         return "RegisteredOMAGService{" +
-                       ", serviceName='" + serviceName + '\'' +
+                       "serviceName='" + serviceName + '\'' +
+                       ", serviceDevelopmentStatus=" + serviceDevelopmentStatus +
                        ", serviceURLMarker='" + serviceURLMarker + '\'' +
                        ", serviceDescription='" + serviceDescription + '\'' +
                        ", serviceWiki='" + serviceWiki + '\'' +
@@ -182,10 +208,11 @@ public class RegisteredOMAGService implements Serializable
             return false;
         }
         RegisteredOMAGService that = (RegisteredOMAGService) objectToCompare;
-        return Objects.equals(getServiceName(), that.getServiceName()) &&
-                       Objects.equals(getServiceURLMarker(), that.getServiceURLMarker()) &&
-                       Objects.equals(getServiceDescription(), that.getServiceDescription()) &&
-                       Objects.equals(getServiceWiki(), that.getServiceWiki());
+        return Objects.equals(serviceName, that.serviceName) &&
+                       serviceDevelopmentStatus == that.serviceDevelopmentStatus &&
+                       Objects.equals(serviceURLMarker, that.serviceURLMarker) &&
+                       Objects.equals(serviceDescription, that.serviceDescription) &&
+                       Objects.equals(serviceWiki, that.serviceWiki);
     }
 
 
@@ -197,8 +224,7 @@ public class RegisteredOMAGService implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(getServiceName(), getServiceURLMarker(), getServiceDescription(),
-                            getServiceWiki());
+        return Objects.hash(serviceName, serviceDevelopmentStatus, serviceURLMarker, serviceDescription, serviceWiki);
     }
 }
 

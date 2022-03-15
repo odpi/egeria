@@ -268,6 +268,7 @@ public abstract class ConnectorProviderBase extends ConnectorProvider implements
                     else
                     {
                         ((AuditLoggingComponent) connector).setAuditLog(auditLog.createNewAuditLog(connectorComponentDescription.getComponentId(),
+                                                                                                   connectorComponentDescription.getComponentDevelopmentStatus(),
                                                                                                    connectorComponentDescription.getComponentName() + ":" + guid,
                                                                                                    connectorComponentDescription.getComponentType(),
                                                                                                    connectorComponentDescription.getComponentWikiURL()));

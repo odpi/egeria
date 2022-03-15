@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.accumulators;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceAuditHeader;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
@@ -98,9 +99,6 @@ public class ExceptionAccumulatorBase
         {
             throw entityProxyOnlyException;
         }
-
-        // todo add audit log call as this exception may indicate one of the repositories in the
-        // todo may be in trouble.
     }
 
 
@@ -317,5 +315,24 @@ public class ExceptionAccumulatorBase
         {
             throw userNotAuthorizedException;
         }
+    }
+
+
+    /**
+     * Return a flag indicating whether the incoming element should be preferred over the current saved element.
+     *
+     * @param currentSavedElement element returned from previous request
+     * @param incomingElement element just returned
+     * @return boolean flag - true means the incoming element should be discarded
+     */
+    boolean currentInstanceIsBest(InstanceAuditHeader currentSavedElement,
+                                  InstanceAuditHeader incomingElement)
+    {
+        if (currentSavedElement != null)
+        {
+            return (incomingElement.getVersion() <= currentSavedElement.getVersion());
+        }
+
+        return false;
     }
 }
