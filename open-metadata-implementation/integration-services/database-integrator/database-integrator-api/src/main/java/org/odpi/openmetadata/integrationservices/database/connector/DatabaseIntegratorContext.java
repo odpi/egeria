@@ -512,7 +512,7 @@ public class DatabaseIntegratorContext
     /**
      * Create a new metadata element to represent a database table.
      *
-     * @param databaseSchemaGUID unique identifier of the database schema where the database table is located.
+     * @param databaseAssetGUID unique identifier of the database or database schema where the database table is located.
      * @param databaseTableProperties properties for the database table
      *
      * @return unique identifier of the new metadata element for the database table
@@ -521,12 +521,12 @@ public class DatabaseIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createDatabaseTable(String                  databaseSchemaGUID,
+    public String createDatabaseTable(String                  databaseAssetGUID,
                                       DatabaseTableProperties databaseTableProperties) throws InvalidParameterException,
                                                                                               UserNotAuthorizedException,
                                                                                               PropertyServerException
     {
-        return databaseManagerClient.createDatabaseTable(userId, databaseManagerGUID, databaseManagerName, databaseSchemaGUID, databaseTableProperties);
+        return databaseManagerClient.createDatabaseTable(userId, databaseManagerGUID, databaseManagerName, databaseAssetGUID, databaseTableProperties);
     }
 
 
@@ -534,7 +534,7 @@ public class DatabaseIntegratorContext
      * Create a new metadata element to represent a database table using an existing metadata element as a template.
      *
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param databaseSchemaGUID unique identifier of the database schema where the database table is located.
+     * @param databaseAssetGUID unique identifier of the database or database schema where the database table is located.
      * @param templateProperties properties that override the template
      *
      * @return unique identifier of the new database table
@@ -544,12 +544,12 @@ public class DatabaseIntegratorContext
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public String createDatabaseTableFromTemplate(String             templateGUID,
-                                                  String             databaseSchemaGUID,
+                                                  String             databaseAssetGUID,
                                                   TemplateProperties templateProperties) throws InvalidParameterException,
                                                                                                 UserNotAuthorizedException,
                                                                                                 PropertyServerException
     {
-        return databaseManagerClient.createDatabaseTableFromTemplate(userId, databaseManagerGUID, databaseManagerName, templateGUID, databaseSchemaGUID, templateProperties);
+        return databaseManagerClient.createDatabaseTableFromTemplate(userId, databaseManagerGUID, databaseManagerName, templateGUID, databaseAssetGUID, templateProperties);
     }
 
 
@@ -628,6 +628,7 @@ public class DatabaseIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Deprecated
     public List<DatabaseTableElement>    getTablesForDatabaseSchema(String databaseSchemaGUID,
                                                                     int    startFrom,
                                                                     int    pageSize) throws InvalidParameterException,
@@ -635,6 +636,29 @@ public class DatabaseIntegratorContext
                                                                                             PropertyServerException
     {
         return databaseManagerClient.getTablesForDatabaseSchema(userId, databaseSchemaGUID, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of database tables associated with a database or database schema.
+     *
+     * @param databaseSchemaGUID unique identifier of the database or database schema of interest
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of associated metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<DatabaseTableElement>    getTablesForDatabaseAsset(String databaseSchemaGUID,
+                                                                   int    startFrom,
+                                                                   int    pageSize) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        return databaseManagerClient.getTablesForDatabaseAsset(userId, databaseSchemaGUID, startFrom, pageSize);
     }
 
 
@@ -684,7 +708,7 @@ public class DatabaseIntegratorContext
     /**
      * Create a new metadata element to represent a database view.
      *
-     * @param databaseSchemaGUID unique identifier of the database schema where the database view is located.
+     * @param databaseAssetGUID unique identifier of the database or database schema where the database view is located.
      * @param databaseViewProperties properties for the new view
      *
      * @return unique identifier of the new metadata element for the database view
@@ -693,12 +717,12 @@ public class DatabaseIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createDatabaseView(String                 databaseSchemaGUID,
+    public String createDatabaseView(String                 databaseAssetGUID,
                                      DatabaseViewProperties databaseViewProperties) throws InvalidParameterException,
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        return databaseManagerClient.createDatabaseView(userId, databaseManagerGUID, databaseManagerName, databaseSchemaGUID, databaseViewProperties);
+        return databaseManagerClient.createDatabaseView(userId, databaseManagerGUID, databaseManagerName, databaseAssetGUID, databaseViewProperties);
     }
 
 
@@ -706,7 +730,7 @@ public class DatabaseIntegratorContext
      * Create a new metadata element to represent a database view using an existing metadata element as a template.
      *
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param databaseSchemaGUID unique identifier of the database schema where the database view is located.
+     * @param databaseAssetGUID unique identifier of the database or database schema where the database view is located.
      * @param templateProperties properties that override the template
      *
      * @return unique identifier of the new metadata element for the database view
@@ -716,12 +740,12 @@ public class DatabaseIntegratorContext
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public String createDatabaseViewFromTemplate(String             templateGUID,
-                                                 String             databaseSchemaGUID,
+                                                 String             databaseAssetGUID,
                                                  TemplateProperties templateProperties) throws InvalidParameterException,
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
-        return databaseManagerClient.createDatabaseViewFromTemplate(userId, databaseManagerGUID, databaseManagerName, templateGUID, databaseSchemaGUID, templateProperties);
+        return databaseManagerClient.createDatabaseViewFromTemplate(userId, databaseManagerGUID, databaseManagerName, templateGUID, databaseAssetGUID, templateProperties);
     }
 
 
@@ -800,6 +824,7 @@ public class DatabaseIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Deprecated
     public List<DatabaseViewElement>    getViewsForDatabaseSchema(String databaseSchemaGUID,
                                                                   int    startFrom,
                                                                   int    pageSize) throws InvalidParameterException,
@@ -807,6 +832,30 @@ public class DatabaseIntegratorContext
                                                                                           PropertyServerException
     {
         return databaseManagerClient.getViewsForDatabaseSchema(userId, databaseSchemaGUID, startFrom, pageSize);
+    }
+
+
+
+    /**
+     * Retrieve the list of database views associated with a database schema.
+     *
+     * @param databaseAssetGUID unique identifier of the database or database schema of interest
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of associated metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<DatabaseViewElement>    getViewsForDatabaseAsset(String databaseAssetGUID,
+                                                                 int    startFrom,
+                                                                 int    pageSize) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        return databaseManagerClient.getViewsForDatabaseAsset(userId, databaseAssetGUID, startFrom, pageSize);
     }
 
 

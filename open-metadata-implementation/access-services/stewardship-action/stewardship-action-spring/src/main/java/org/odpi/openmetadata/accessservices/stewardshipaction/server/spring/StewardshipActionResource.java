@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name="Stewardship Action OMAS", description="The Stewardship Action OMAS provides APIs and events for tools and applications focused on resolving issues detected in the data landscape.",
      externalDocs=@ExternalDocumentation(description="Stewardship Action Open Metadata Access Service (OMAS)",
-                                         url="https://odpi.github.io/egeria-docs/services/omas/stewardship-action/overview/"))
+                                         url="https://egeria-project.org/services/omas/stewardship-action/overview/"))
 
 public class StewardshipActionResource
 {

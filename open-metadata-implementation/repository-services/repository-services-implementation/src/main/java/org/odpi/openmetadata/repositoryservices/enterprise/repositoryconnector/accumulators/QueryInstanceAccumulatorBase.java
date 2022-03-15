@@ -4,8 +4,6 @@ package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.
 
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceAuditHeader;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
 
 import java.util.ArrayList;
@@ -32,25 +30,6 @@ public class QueryInstanceAccumulatorBase extends QueryAccumulatorBase
                                  OMRSRepositoryValidator repositoryValidator)
     {
         super(localMetadataCollectionId, auditLog, repositoryValidator);
-    }
-
-
-    /**
-     * Return a flag indicating whether the incoming element should be preferred over the current saved element.
-     *
-     * @param currentSavedElement element returned from previous request
-     * @param incomingElement element just returned
-     * @return boolean flag - true means the incoming element should be discarded
-     */
-    boolean currentInstanceIsBest(InstanceAuditHeader currentSavedElement,
-                                  InstanceAuditHeader incomingElement)
-    {
-        if (currentSavedElement != null)
-        {
-            return (incomingElement.getVersion() <= currentSavedElement.getVersion());
-        }
-
-        return false;
     }
 
 

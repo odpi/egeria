@@ -104,6 +104,7 @@ public class CreateDatabaseTest
 
         AuditLog auditLog = new AuditLog(auditLogDestination,
                                          AccessServiceDescription.DATA_MANAGER_OMAS.getAccessServiceCode(),
+                                         AccessServiceDescription.DATA_MANAGER_OMAS.getAccessServiceDevelopmentStatus(),
                                          AccessServiceDescription.DATA_MANAGER_OMAS.getAccessServiceName(),
                                          AccessServiceDescription.DATA_MANAGER_OMAS.getAccessServiceDescription(),
                                          AccessServiceDescription.DATA_MANAGER_OMAS.getAccessServiceWiki());
@@ -762,7 +763,7 @@ public class CreateDatabaseTest
 
                 if (databaseTableList != null)
                 {
-                    throw new FVTUnexpectedCondition(testCaseName, activityName + "(DatabaseTable returned for getTablesForDatabaseSchema)");
+                    throw new FVTUnexpectedCondition(testCaseName, activityName + "(DatabaseTable returned for getTablesForDatabaseAsset)");
                 }
             }
             catch(FVTUnexpectedCondition testCaseError)
@@ -858,20 +859,20 @@ public class CreateDatabaseTest
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName)");
             }
 
-            databaseTableList = client.getTablesForDatabaseSchema(userId, databaseSchemaGUID, 0, maxPageSize);
+            databaseTableList = client.getTablesForDatabaseAsset(userId, databaseSchemaGUID, 0, maxPageSize);
 
             if (databaseTableList == null)
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no DatabaseTable for getTablesForDatabaseSchema)");
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no DatabaseTable for getTablesForDatabaseAsset)");
             }
             else if (databaseTableList.isEmpty())
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Empty DatabaseTable list for getTablesForDatabaseSchema)");
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Empty DatabaseTable list for getTablesForDatabaseAsset)");
             }
             else if (databaseTableList.size() != 1)
             {
                 throw new FVTUnexpectedCondition(testCaseName,
-                                                 activityName + "(DatabaseColumn list for getTablesForDatabaseSchema contains" + databaseTableList.size() +
+                                                 activityName + "(DatabaseColumn list for getTablesForDatabaseAsset contains" + databaseTableList.size() +
                                                          " elements)");
             }
         }

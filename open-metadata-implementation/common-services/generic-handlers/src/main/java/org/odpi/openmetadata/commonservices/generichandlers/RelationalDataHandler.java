@@ -1983,7 +1983,7 @@ public class RelationalDataHandler<DATABASE,
      * @param userId calling user
      * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
      * @param databaseManagerName unique name of software server capability representing the DBMS
-     * @param databaseSchemaGUID unique identifier of the database schema where the database table is located
+     * @param databaseAssetGUID unique identifier of the database or database schema where the database table is located
      * @param qualifiedName unique name for the database table
      * @param displayName the stored display name property for the database table
      * @param description the stored description property associated with the database table
@@ -2005,7 +2005,7 @@ public class RelationalDataHandler<DATABASE,
     public String createDatabaseTable(String               userId,
                                       String               databaseManagerGUID,
                                       String               databaseManagerName,
-                                      String               databaseSchemaGUID,
+                                      String               databaseAssetGUID,
                                       String               qualifiedName,
                                       String               displayName,
                                       String               description,
@@ -2022,7 +2022,7 @@ public class RelationalDataHandler<DATABASE,
         return this.createDatabaseTable(userId,
                                         databaseManagerGUID,
                                         databaseManagerName,
-                                        databaseSchemaGUID,
+                                        databaseAssetGUID,
                                         qualifiedName,
                                         displayName,
                                         description,
@@ -2043,7 +2043,7 @@ public class RelationalDataHandler<DATABASE,
      * @param userId calling user
      * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
      * @param databaseManagerName unique name of software server capability representing the DBMS
-     * @param databaseSchemaGUID unique identifier of the database schema where the database table is located
+     * @param databaseAssetGUID unique identifier of the database or database schema where the database table is located
      * @param qualifiedName unique name for the database table
      * @param displayName the stored display name property for the database table
      * @param description the stored description property associated with the database table
@@ -2065,7 +2065,7 @@ public class RelationalDataHandler<DATABASE,
     public String createDatabaseTable(String               userId,
                                       String               databaseManagerGUID,
                                       String               databaseManagerName,
-                                      String               databaseSchemaGUID,
+                                      String               databaseAssetGUID,
                                       String               qualifiedName,
                                       String               displayName,
                                       String               description,
@@ -2080,16 +2080,16 @@ public class RelationalDataHandler<DATABASE,
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException
     {
-        final String parentElementGUIDParameterName = "databaseSchemaGUID";
+        final String parentElementGUIDParameterName = "databaseAssetGUID";
         final String schemaTypeGUIDParameterName = "databaseSchemaTypeGUID";
         final String qualifiedNameParameterName     = "qualifiedName";
 
         String databaseSchemaTypeGUID = databaseTableHandler.getAssetSchemaTypeGUID(userId,
                                                                                     databaseManagerGUID,
                                                                                     databaseManagerName,
-                                                                                    databaseSchemaGUID,
+                                                                                    databaseAssetGUID,
                                                                                     parentElementGUIDParameterName,
-                                                                                    OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                                     OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID,
                                                                                     OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
                                                                                     effectiveTime,
@@ -2154,7 +2154,7 @@ public class RelationalDataHandler<DATABASE,
                                                                                        serviceName,
                                                                                        serverName);
 
-            schemaAttributeBuilder.setAnchors(userId, databaseSchemaGUID, methodName);
+            schemaAttributeBuilder.setAnchors(userId, databaseAssetGUID, methodName);
 
             SchemaTypeBuilder schemaTypeBuilder = new SchemaTypeBuilder(qualifiedName + ":tableType",
                                                                         OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_TYPE_GUID,
@@ -2200,7 +2200,7 @@ public class RelationalDataHandler<DATABASE,
      * @param databaseManagerGUID unique identifier of software server capability representing the DBMS - if null a local element is created
      * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param databaseSchemaGUID unique identifier of the database schema where the database table is located.
+     * @param databaseAssetGUID unique identifier of the database or database schema where the database table is located.
      * @param qualifiedName unique name for the database schema
      * @param displayName the stored display name property for the database table
      * @param description the stored description property associated with the database table
@@ -2216,7 +2216,7 @@ public class RelationalDataHandler<DATABASE,
                                                   String databaseManagerGUID,
                                                   String databaseManagerName,
                                                   String templateGUID,
-                                                  String databaseSchemaGUID,
+                                                  String databaseAssetGUID,
                                                   String qualifiedName,
                                                   String displayName,
                                                   String description,
@@ -2225,12 +2225,12 @@ public class RelationalDataHandler<DATABASE,
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        final String guidParameterName = "databaseSchemaGUID";
-        final String parentElementGUIDParameterName = "databaseSchemaGUID";
+        final String guidParameterName = "databaseAssetGUID";
+        final String parentElementGUIDParameterName = "databaseAssetGUID";
         final String templateParameterName = "templateGUID";
         final String qualifiedNameParameterName = "qualifiedName";
 
-        invalidParameterHandler.validateGUID(databaseSchemaGUID, guidParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseAssetGUID, guidParameterName, methodName);
         invalidParameterHandler.validateGUID(templateGUID, templateParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
@@ -2241,9 +2241,9 @@ public class RelationalDataHandler<DATABASE,
         String databaseSchemaTypeGUID = databaseTableHandler.getAssetSchemaTypeGUID(userId,
                                                                                     databaseManagerGUID,
                                                                                     databaseManagerName,
-                                                                                    databaseSchemaGUID,
+                                                                                    databaseAssetGUID,
                                                                                     parentElementGUIDParameterName,
-                                                                                    OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                                     OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID,
                                                                                     OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
                                                                                     effectiveTime,
@@ -2258,7 +2258,7 @@ public class RelationalDataHandler<DATABASE,
                                                                         serviceName,
                                                                         serverName);
 
-            builder.setAnchors(userId, databaseSchemaGUID, methodName);
+            builder.setAnchors(userId, databaseAssetGUID, methodName);
 
             String databaseTableGUID = databaseTableHandler.createBeanFromTemplate(userId,
                                                                                    databaseManagerGUID,
@@ -2537,7 +2537,7 @@ public class RelationalDataHandler<DATABASE,
      * Retrieve the list of database tables associated with a database schema.
      *
      * @param userId calling user
-     * @param databaseSchemaGUID unique identifier of the database schema of interest
+     * @param databaseAssetGUID unique identifier of the database or database schema of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -2549,16 +2549,16 @@ public class RelationalDataHandler<DATABASE,
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<DATABASE_TABLE> getTablesForDatabaseSchema(String userId,
-                                                           String databaseSchemaGUID,
-                                                           int    startFrom,
-                                                           int    pageSize,
-                                                           Date   effectiveTime,
-                                                           String methodName) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+    public List<DATABASE_TABLE> getTablesForDatabaseAsset(String userId,
+                                                          String databaseAssetGUID,
+                                                          int    startFrom,
+                                                          int    pageSize,
+                                                          Date   effectiveTime,
+                                                          String methodName) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
     {
-        final String parentElementGUIDParameterName = "databaseSchemaGUID";
+        final String parentElementGUIDParameterName = "databaseAssetGUID";
 
         /*
          * If the deployed database schema (which is an asset) is new, it will not have a schema type attached.
@@ -2567,9 +2567,9 @@ public class RelationalDataHandler<DATABASE,
         String databaseSchemaTypeGUID = databaseTableHandler.getAssetSchemaTypeGUID(userId,
                                                                                     null,
                                                                                     null,
-                                                                                    databaseSchemaGUID,
+                                                                                    databaseAssetGUID,
                                                                                     parentElementGUIDParameterName,
-                                                                                    OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                                     OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID,
                                                                                     OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
                                                                                     effectiveTime,
@@ -2673,7 +2673,7 @@ public class RelationalDataHandler<DATABASE,
      * @param userId calling user
      * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
      * @param databaseManagerName unique name of software server capability representing the DBMS
-     * @param databaseSchemaGUID unique identifier of the database schema where the database view is located.
+     * @param databaseAssetGUID unique identifier of the database or database schema where the database view is located.
      * @param qualifiedName unique name for the database schema
      * @param displayName the stored display name property for the database table
      * @param description the stored description property associated with the database table
@@ -2696,7 +2696,7 @@ public class RelationalDataHandler<DATABASE,
     public String createDatabaseView(String               userId,
                                      String               databaseManagerGUID,
                                      String               databaseManagerName,
-                                     String               databaseSchemaGUID,
+                                     String               databaseAssetGUID,
                                      String               qualifiedName,
                                      String               displayName,
                                      String               description,
@@ -2712,15 +2712,15 @@ public class RelationalDataHandler<DATABASE,
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
     {
-        final String parentElementGUIDParameterName = "databaseSchemaGUID";
+        final String parentElementGUIDParameterName = "databaseAssetGUID";
         final String qualifiedNameParameterName     = "qualifiedName";
 
         String databaseSchemaTypeGUID = databaseViewHandler.getAssetSchemaTypeGUID(userId,
                                                                                    databaseManagerGUID,
                                                                                    databaseManagerName,
-                                                                                   databaseSchemaGUID,
+                                                                                   databaseAssetGUID,
                                                                                    parentElementGUIDParameterName,
-                                                                                   OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                                                   OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                                    OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID,
                                                                                    OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
                                                                                    effectiveTime,
@@ -2785,7 +2785,7 @@ public class RelationalDataHandler<DATABASE,
                                                                                        serviceName,
                                                                                        serverName);
 
-            schemaAttributeBuilder.setAnchors(userId, databaseSchemaGUID, methodName);
+            schemaAttributeBuilder.setAnchors(userId, databaseAssetGUID, methodName);
 
             SchemaTypeBuilder schemaTypeBuilder = new SchemaTypeBuilder(qualifiedName + ":viewType",
                                                                         OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_TYPE_GUID,
@@ -2837,7 +2837,7 @@ public class RelationalDataHandler<DATABASE,
      * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
      * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param databaseSchemaGUID unique identifier of the database schema where the database view is located.
+     * @param databaseAssetGUID unique identifier of the database or database schema where the database view is located.
      * @param qualifiedName unique name for the database schema
      * @param displayName the stored display name property for the database table
      * @param description the stored description property associated with the database table
@@ -2854,7 +2854,7 @@ public class RelationalDataHandler<DATABASE,
                                                  String databaseManagerGUID,
                                                  String databaseManagerName,
                                                  String templateGUID,
-                                                 String databaseSchemaGUID,
+                                                 String databaseAssetGUID,
                                                  String qualifiedName,
                                                  String displayName,
                                                  String description,
@@ -2867,7 +2867,7 @@ public class RelationalDataHandler<DATABASE,
                                                     databaseManagerGUID,
                                                     databaseManagerName,
                                                     templateGUID,
-                                                    databaseSchemaGUID,
+                                                    databaseAssetGUID,
                                                     qualifiedName,
                                                     displayName,
                                                     description,
@@ -3018,10 +3018,10 @@ public class RelationalDataHandler<DATABASE,
 
 
     /**
-     * Retrieve the list of database views associated with a database schema.
+     * Retrieve the list of database views associated with a database or database schema.
      *
      * @param userId calling user
-     * @param databaseSchemaGUID unique identifier of the database schema of interest
+     * @param databaseAssetGUID unique identifier of the database or database schema of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -3033,27 +3033,27 @@ public class RelationalDataHandler<DATABASE,
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<DATABASE_VIEW>    getViewsForDatabaseSchema(String userId,
-                                                            String databaseSchemaGUID,
-                                                            int    startFrom,
-                                                            int    pageSize,
-                                                            Date   effectiveTime,
-                                                            String methodName) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+    public List<DATABASE_VIEW> getViewsForDatabaseAsset(String userId,
+                                                        String databaseAssetGUID,
+                                                        int    startFrom,
+                                                        int    pageSize,
+                                                        Date   effectiveTime,
+                                                        String methodName) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
     {
-        final String parentElementGUIDParameterName = "databaseSchemaGUID";
+        final String parentElementGUIDParameterName = "databaseAssetGUID";
 
         /*
-         * If the deployed database schema (which is an asset) is new, it will not have a schema type attached.
+         * If the deployed database/schema (which is an asset) is new, it will not have a schema type attached.
          * However, if there are other tables already attached, the schema type will be there too.
          */
         String databaseSchemaTypeGUID = databaseViewHandler.getAssetSchemaTypeGUID(userId,
                                                                                    null,
                                                                                    null,
-                                                                                   databaseSchemaGUID,
+                                                                                   databaseAssetGUID,
                                                                                    parentElementGUIDParameterName,
-                                                                                   OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                                                   OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                                    OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID,
                                                                                    OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
                                                                                    effectiveTime,

@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
                 "the connected Open Metadata Repository Cohorts.  They also consolidate events from these cohorts and " +
                 "distribute them to the access services running on the server.",
         externalDocs=@ExternalDocumentation(description="Further information",
-                url="https://odpi.github.io/egeria-docs/services/omrs/"))
+                url="https://egeria-project.org/services/omrs/"))
 
 
 public class EnterpriseRepositoryServicesResource

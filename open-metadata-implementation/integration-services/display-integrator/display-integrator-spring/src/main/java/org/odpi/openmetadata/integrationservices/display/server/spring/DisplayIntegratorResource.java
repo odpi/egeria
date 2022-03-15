@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name="Display Integrator OMIS", description="Supports the detection and creation of metadata for applications that display data to users.",
         externalDocs=@ExternalDocumentation(description="Display Integrator Open Metadata Integration Service (OMIS)",
-                url="https://odpi.github.io/egeria-docs/services/omis/display-integrator/overview/"))
+                url="https://egeria-project.org/services/omis/display-integrator/overview/"))
 
 public class DisplayIntegratorResource
 {

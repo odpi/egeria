@@ -34,19 +34,22 @@ public class AuditLog extends MessageFormatter
      * will push log records to it.
      *
      * @param destination destination for the log records
-     * @param componentId numerical identifier for the component.
-     * @param componentName display name for the component.
-     * @param componentDescription description of the component.
-     * @param componentWikiURL link to more information.
+     * @param componentId numerical identifier for the component
+     * @param componentDevelopmentStatus  development status
+     * @param componentName display name for the component
+     * @param componentDescription description of the component
+     * @param componentWikiURL link to more information
      */
-    public AuditLog(AuditLogDestination destination,
-                    int                 componentId,
-                    String              componentName,
-                    String              componentDescription,
-                    String              componentWikiURL)
+    public AuditLog(AuditLogDestination        destination,
+                    int                        componentId,
+                    ComponentDevelopmentStatus componentDevelopmentStatus,
+                    String                     componentName,
+                    String                     componentDescription,
+                    String                     componentWikiURL)
     {
         this.destination = destination;
         this.reportingComponent = new AuditLogReportingComponent(componentId,
+                                                                 componentDevelopmentStatus,
                                                                  componentName,
                                                                  componentDescription,
                                                                  componentWikiURL);
@@ -64,6 +67,7 @@ public class AuditLog extends MessageFormatter
     {
         this.destination = destination;
         this.reportingComponent = new AuditLogReportingComponent(reportingComponent.getComponentId(),
+                                                                 reportingComponent.getComponentDevelopmentStatus(),
                                                                  reportingComponent.getComponentName(),
                                                                  reportingComponent.getComponentType(),
                                                                  reportingComponent.getComponentWikiURL());
@@ -79,13 +83,15 @@ public class AuditLog extends MessageFormatter
      * @param componentWikiURL link to more information.
      * @return new logging destination
      */
-    public AuditLog  createNewAuditLog(int    componentId,
-                                       String componentName,
-                                       String componentDescription,
-                                       String componentWikiURL)
+    public AuditLog  createNewAuditLog(int                        componentId,
+                                       ComponentDevelopmentStatus componentDevelopmentStatus,
+                                       String                     componentName,
+                                       String                     componentDescription,
+                                       String                     componentWikiURL)
     {
         AuditLog childAuditLog = new AuditLog(destination,
                                               componentId,
+                                              componentDevelopmentStatus,
                                               componentName,
                                               componentDescription,
                                               componentWikiURL);
@@ -108,6 +114,7 @@ public class AuditLog extends MessageFormatter
     public AuditLog  createNewAuditLog(ComponentDescription childComponent)
     {
         return createNewAuditLog(childComponent.getComponentId(),
+                                 childComponent.getComponentDevelopmentStatus(),
                                  childComponent.getComponentName(),
                                  childComponent.getComponentType(),
                                  childComponent.getComponentWikiURL());

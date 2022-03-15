@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.PermittedSynchronization;
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 
 import java.io.Serializable;
 
@@ -12,157 +13,193 @@ import java.io.Serializable;
 public enum IntegrationServiceDescription implements Serializable
 {
     CATALOG_INTEGRATOR_OMIS(600,
+                            ComponentDevelopmentStatus.IN_DEVELOPMENT,
                             "Catalog Integrator",
                             "Catalog Integrator OMIS",
                             "catalog-integrator",
                             "Exchange metadata with third party data catalogs.",
-                            "https://odpi.github.io/egeria-docs/services/omis/catalog-integrator/overview/",
+                            "https://egeria-project.org/services/omis/catalog-integrator/overview/",
                             "Asset Manager OMAS",
                             PermittedSynchronization.BOTH_DIRECTIONS),
 
     API_INTEGRATOR_OMIS(601,
+                        ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                         "API Integrator",
                         "API Integrator OMIS",
                         "api-integrator",
-                            "Exchange metadata with third party API Gateways.",
-                            "https://odpi.github.io/egeria-docs/services/omis/api-integrator/overview/",
-                            "Data Manager OMAS",
-                            PermittedSynchronization.FROM_THIRD_PARTY),
+                        "Exchange metadata with third party API Gateways.",
+                        "https://egeria-project.org/services/omis/api-integrator/overview/",
+                        "Data Manager OMAS",
+                        PermittedSynchronization.FROM_THIRD_PARTY),
 
     TOPIC_INTEGRATOR_OMIS(602,
-                            "Topic Integrator",
-                            "Topic Integrator OMIS",
-                            "topic-integrator",
-                            "Exchange metadata with third party event-based brokers.",
-                            "https://odpi.github.io/egeria-docs/services/omis/topic-integrator/overview/",
-                            "Data Manager OMAS",
-                            PermittedSynchronization.FROM_THIRD_PARTY),
-
-    DISPLAY_INTEGRATOR_OMIS(603,
-                          "Display Integrator",
-                          "Display Integrator OMIS",
-                          "display-integrator",
-                          "Exchange metadata with applications that display data to users.",
-                          "https://odpi.github.io/egeria-docs/services/omis/display-integrator/overview/",
+                          ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                          "Topic Integrator",
+                          "Topic Integrator OMIS",
+                          "topic-integrator",
+                          "Exchange metadata with third party event-based brokers.",
+                          "https://egeria-project.org/services/omis/topic-integrator/overview/",
                           "Data Manager OMAS",
                           PermittedSynchronization.FROM_THIRD_PARTY),
 
+    DISPLAY_INTEGRATOR_OMIS(603,
+                            ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                            "Display Integrator",
+                            "Display Integrator OMIS",
+                            "display-integrator",
+                            "Exchange metadata with applications that display data to users.",
+                            "https://egeria-project.org/services/omis/display-integrator/overview/",
+                            "Data Manager OMAS",
+                            PermittedSynchronization.FROM_THIRD_PARTY),
+
     DATABASE_INTEGRATOR_OMIS     (604,
+                                  ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                                   "Database Integrator",
                                   "Database Integrator OMIS",
                                   "database-integrator",
                                   "Extract metadata such as schema, tables and columns from database managers.",
-                                  "https://odpi.github.io/egeria-docs/services/omis/database-integrator/overview/",
+                                  "https://egeria-project.org/services/omis/database-integrator/overview/",
                                   "Data Manager OMAS",
                                   PermittedSynchronization.FROM_THIRD_PARTY),
 
     FILES_INTEGRATOR_OMIS(605,
+                          ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                           "Files Integrator",
                           "Files Integrator OMIS",
                           "files-integrator",
                           "Extract metadata about files stored in a file system or file manager.",
-                          "https://odpi.github.io/egeria-docs/services/omis/files-integrator/overview/",
+                          "https://egeria-project.org/services/omis/files-integrator/overview/",
                           "Data Manager OMAS",
                           PermittedSynchronization.FROM_THIRD_PARTY),
 
     LINEAGE_INTEGRATOR_OMIS(606,
-                          "Lineage Integrator",
-                          "Lineage Integrator OMIS",
-                          "lineage-integrator",
-                          "Manage capture of lineage from a third party tool.",
-                          "https://odpi.github.io/egeria-docs/services/omis/lineage-integrator/overview/",
-                          "Asset Manager OMAS",
-                          PermittedSynchronization.FROM_THIRD_PARTY),
+                            ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                            "Lineage Integrator",
+                            "Lineage Integrator OMIS",
+                            "lineage-integrator",
+                            "Manage capture of lineage from a third party tool.",
+                            "https://egeria-project.org/services/omis/lineage-integrator/overview/",
+                            "Asset Manager OMAS",
+                            PermittedSynchronization.FROM_THIRD_PARTY),
 
     ORGANIZATION_INTEGRATOR_OMIS     (607,
+                                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
                                       "Organization Integrator",
                                       "Organization Integrator OMIS",
                                       "organization-integrator",
                                       "Load information about the teams and people in an organization and return collaboration activity.",
-                                      "https://odpi.github.io/egeria-docs/services/omis/organization-integrator/overview/",
+                                      "https://egeria-project.org/services/omis/organization-integrator/overview/",
                                       "Community Profile OMAS",
                                       PermittedSynchronization.FROM_THIRD_PARTY),
 
     SECURITY_INTEGRATOR_OMIS(608,
-                                      "Security Integrator",
-                                      "Security Integrator OMIS",
-                                      "security-integrator",
-                                      "Distribute security properties to security enforcement points.",
-                                      "https://odpi.github.io/egeria-docs/services/omis/security-integrator/overview/",
-                                      "Security Manager OMAS",
-                                      PermittedSynchronization.TO_THIRD_PARTY),
+                             ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                             "Security Integrator",
+                             "Security Integrator OMIS",
+                             "security-integrator",
+                             "Distribute security properties to security enforcement points.",
+                             "https://egeria-project.org/services/omis/security-integrator/overview/",
+                             "Security Manager OMAS",
+                             PermittedSynchronization.TO_THIRD_PARTY),
 
     ANALYTICS_INTEGRATOR_OMIS(609,
-                            "Analytics Integrator",
-                            "Analytics Integrator OMIS",
-                            "analytics-integrator",
-                            "Exchange metadata with third party analytics tools.",
-                            "https://odpi.github.io/egeria-docs/services/omis/analytics-integrator/overview/",
-                            "Analytics Modeling OMAS",
-                            PermittedSynchronization.BOTH_DIRECTIONS),
+                              ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                              "Analytics Integrator",
+                              "Analytics Integrator OMIS",
+                              "analytics-integrator",
+                              "Exchange metadata with third party analytics tools.",
+                              "https://egeria-project.org/services/omis/analytics-integrator/overview/",
+                              "Analytics Modeling OMAS",
+                              PermittedSynchronization.BOTH_DIRECTIONS),
 
     SEARCH_INTEGRATOR_OMIS(610,
-            "Search Integrator",
-            "Search Integrator OMIS",
-            "search-integrator",
-            "Store metadata with a third party technology that is focused on search efficiency.",
-            "https://odpi.github.io/egeria-docs/services/omis/search-integrator/overview/",
-            "Asset Catalog OMAS",
-            PermittedSynchronization.BOTH_DIRECTIONS),
+                           ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                           "Search Integrator",
+                           "Search Integrator OMIS",
+                           "search-integrator",
+                           "Store metadata with a third party technology that is focused on search efficiency.",
+                           "https://egeria-project.org/services/omis/search-integrator/overview/",
+                           "Asset Catalog OMAS",
+                           PermittedSynchronization.BOTH_DIRECTIONS),
 
     INFRASTRUCTURE_INTEGRATOR_OMIS(611,
-                           "Infrastructure Integrator",
-                           "Infrastructure Integrator OMIS",
-                           "infrastructure-integrator",
-                           "Exchange information relating to IT infrastructure such as hosts, platforms, servers, server capabilities and services.",
-                           "https://odpi.github.io/egeria-docs/services/omis/infrastructure-integrator/overview/",
-                           "IT infrastructure OMAS",
-                           PermittedSynchronization.BOTH_DIRECTIONS)
+                                   ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                                   "Infrastructure Integrator",
+                                   "Infrastructure Integrator OMIS",
+                                   "infrastructure-integrator",
+                                   "Exchange information relating to IT infrastructure such as hosts, platforms, servers, server capabilities and services.",
+                                   "https://egeria-project.org/services/omis/infrastructure-integrator/overview/",
+                                   "IT infrastructure OMAS",
+                                   PermittedSynchronization.BOTH_DIRECTIONS)
     ;
 
     private static final long     serialVersionUID    = 1L;
 
-    private int                      integrationServiceCode;
-    private String                   integrationServiceName;
-    private String                   integrationServiceFullName;
-    private String                   integrationServiceURLMarker;
-    private String                   integrationServiceDescription;
-    private String                   integrationServiceWiki;
-    private String                   integrationServicePartnerOMAS;
-    private PermittedSynchronization defaultPermittedSynchronization;
+    private int                        integrationServiceCode;
+    private ComponentDevelopmentStatus integrationServiceDevelopmentStatus   = null;
+    private String                     integrationServiceName;
+    private String                     integrationServiceFullName;
+    private String                     integrationServiceURLMarker;
+    private String                     integrationServiceDescription;
+    private String                     integrationServiceWiki;
+    private String                     integrationServicePartnerOMAS;
+    private PermittedSynchronization   defaultPermittedSynchronization;
 
 
     /**
      * Default Constructor
      *
      * @param integrationServiceCode ordinal for this integration service
+     * @param integrationServiceDevelopmentStatus development status
      * @param integrationServiceName symbolic name for this integration service
      * @param integrationServiceFullName full name for this integration service
      * @param integrationServiceURLMarker string used in URLs
      * @param integrationServiceDescription short description for this integration service
      * @param integrationServiceWiki wiki page for the integration service for this integration service
      * @param integrationServicePartnerOMAS name of the OMAS that is partnered with this integration service
+     * @param defaultPermittedSynchronization synchronization pattern
      */
-    IntegrationServiceDescription(int                      integrationServiceCode,
-                                  String                   integrationServiceName,
-                                  String                   integrationServiceFullName,
-                                  String                   integrationServiceURLMarker,
-                                  String                   integrationServiceDescription,
-                                  String                   integrationServiceWiki,
-                                  String                   integrationServicePartnerOMAS,
-                                  PermittedSynchronization defaultPermittedSynchronization)
+    IntegrationServiceDescription(int                        integrationServiceCode,
+                                  ComponentDevelopmentStatus integrationServiceDevelopmentStatus,
+                                  String                     integrationServiceName,
+                                  String                     integrationServiceFullName,
+                                  String                     integrationServiceURLMarker,
+                                  String                     integrationServiceDescription,
+                                  String                     integrationServiceWiki,
+                                  String                     integrationServicePartnerOMAS,
+                                  PermittedSynchronization   defaultPermittedSynchronization)
     {
         /*
          * Save the values supplied
          */
-        this.integrationServiceCode          = integrationServiceCode;
-        this.integrationServiceName          = integrationServiceName;
-        this.integrationServiceFullName      = integrationServiceFullName;
-        this.integrationServiceURLMarker     = integrationServiceURLMarker;
-        this.integrationServiceDescription   = integrationServiceDescription;
-        this.integrationServiceWiki          = integrationServiceWiki;
-        this.integrationServicePartnerOMAS   = integrationServicePartnerOMAS;
-        this.defaultPermittedSynchronization = defaultPermittedSynchronization;
+        this.integrationServiceCode              = integrationServiceCode;
+        this.integrationServiceDevelopmentStatus = integrationServiceDevelopmentStatus;
+        this.integrationServiceName              = integrationServiceName;
+        this.integrationServiceFullName          = integrationServiceFullName;
+        this.integrationServiceURLMarker         = integrationServiceURLMarker;
+        this.integrationServiceDescription       = integrationServiceDescription;
+        this.integrationServiceWiki              = integrationServiceWiki;
+        this.integrationServicePartnerOMAS       = integrationServicePartnerOMAS;
+        this.defaultPermittedSynchronization     = defaultPermittedSynchronization;
+    }
+
+
+    /**
+     * Return the enum that corresponds with the supplied code.
+     *
+     * @param integrationServiceCode requested code
+     * @return enum
+     */
+    public static IntegrationServiceDescription getIntegrationServiceDefinition(int integrationServiceCode)
+    {
+        for (IntegrationServiceDescription description : IntegrationServiceDescription.values())
+        {
+            if (integrationServiceCode == description.getIntegrationServiceCode())
+            {
+                return description;
+            }
+        }
+        return null;
     }
 
 
@@ -174,6 +211,17 @@ public enum IntegrationServiceDescription implements Serializable
     public int getIntegrationServiceCode()
     {
         return integrationServiceCode;
+    }
+
+
+    /**
+     * Return the development status of the service.
+     *
+     * @return enum describing the status
+     */
+    public ComponentDevelopmentStatus getIntegrationServiceDevelopmentStatus()
+    {
+        return integrationServiceDevelopmentStatus;
     }
 
 

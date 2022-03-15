@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices.configuration.registration;
 
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -14,21 +16,23 @@ public class EngineServiceRegistration implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    private int                      engineServiceId                = 0;
-    private String                   engineServiceName              = null;
-    private String                   engineServiceFullName          = null;
-    private String                   engineServiceURLMarker         = null;
-    private String                   engineServiceDescription       = null;
-    private String                   engineServiceWiki              = null;
-    private String                   engineServicePartnerOMAS       = null;
-    private ServiceOperationalStatus engineServiceOperationalStatus = null;
-    private String                   engineServiceAdminClass        = null;
+    private int                        engineServiceId                = 0;
+    private ComponentDevelopmentStatus engineServiceDevelopmentStatus = null;
+    private String                     engineServiceName              = null;
+    private String                     engineServiceFullName          = null;
+    private String                     engineServiceURLMarker         = null;
+    private String                     engineServiceDescription       = null;
+    private String                     engineServiceWiki              = null;
+    private String                     engineServicePartnerOMAS       = null;
+    private ServiceOperationalStatus   engineServiceOperationalStatus = null;
+    private String                     engineServiceAdminClass        = null;
 
 
     /**
      * Complete Constructor
      *
      * @param engineServiceCode ordinal for this engine service
+     * @param engineServiceDevelopmentStatus development status
      * @param engineServiceName symbolic name for this engine service
      * @param engineServiceFullName full name for this engine service
      * @param engineServiceURLMarker name of the part of the URL that is the name of the engine service
@@ -38,17 +42,19 @@ public class EngineServiceRegistration implements Serializable
      * @param engineServiceOperationalStatus default initial operational status for the engine service
      * @param engineServiceAdminClassName  name of EngineServiceAdmin implementation class for the engine service
      */
-    public EngineServiceRegistration(int                      engineServiceCode,
-                                     String                   engineServiceName,
-                                     String                   engineServiceFullName,
-                                     String                   engineServiceURLMarker,
-                                     String                   engineServiceDescription,
-                                     String                   engineServiceWiki,
-                                     String                   engineServicePartnerOMAS,
-                                     ServiceOperationalStatus engineServiceOperationalStatus,
-                                     String                   engineServiceAdminClassName)
+    public EngineServiceRegistration(int                        engineServiceCode,
+                                     ComponentDevelopmentStatus engineServiceDevelopmentStatus,
+                                     String                     engineServiceName,
+                                     String                     engineServiceFullName,
+                                     String                     engineServiceURLMarker,
+                                     String                     engineServiceDescription,
+                                     String                     engineServiceWiki,
+                                     String                     engineServicePartnerOMAS,
+                                     ServiceOperationalStatus   engineServiceOperationalStatus,
+                                     String                     engineServiceAdminClassName)
     {
         this.engineServiceId = engineServiceCode;
+        this.engineServiceDevelopmentStatus = engineServiceDevelopmentStatus;
         this.engineServiceName = engineServiceName;
         this.engineServiceFullName = engineServiceFullName;
         this.engineServiceURLMarker = engineServiceURLMarker;
@@ -72,6 +78,7 @@ public class EngineServiceRegistration implements Serializable
                                      String                   engineServiceAdminClassName)
     {
         this(engineServiceDescription.getEngineServiceCode(),
+             engineServiceDescription.getEngineServiceDevelopmentStatus(),
              engineServiceDescription.getEngineServiceName(),
              engineServiceDescription.getEngineServiceFullName(),
              engineServiceDescription.getEngineServiceURLMarker(),
@@ -102,6 +109,7 @@ public class EngineServiceRegistration implements Serializable
         if (template != null)
         {
             engineServiceId                 = template.getEngineServiceId();
+            engineServiceDevelopmentStatus  = template.getEngineServiceDevelopmentStatus();
             engineServiceName               = template.getEngineServiceName();
             engineServiceFullName           = template.getEngineServiceFullName();
             engineServiceURLMarker          = template.getEngineServiceURLMarker();
@@ -133,6 +141,28 @@ public class EngineServiceRegistration implements Serializable
     public void setEngineServiceId(int engineServiceId)
     {
         this.engineServiceId = engineServiceId;
+    }
+
+
+    /**
+     * Return the development status of the service.
+     *
+     * @return enum describing the status
+     */
+    public ComponentDevelopmentStatus getEngineServiceDevelopmentStatus()
+    {
+        return engineServiceDevelopmentStatus;
+    }
+
+
+    /**
+     * Set up the development status of the service.
+     *
+     * @param  engineServiceDevelopmentStatus enum describing the status
+     */
+    public void setEngineServiceDevelopmentStatus(ComponentDevelopmentStatus engineServiceDevelopmentStatus)
+    {
+        this.engineServiceDevelopmentStatus = engineServiceDevelopmentStatus;
     }
 
 

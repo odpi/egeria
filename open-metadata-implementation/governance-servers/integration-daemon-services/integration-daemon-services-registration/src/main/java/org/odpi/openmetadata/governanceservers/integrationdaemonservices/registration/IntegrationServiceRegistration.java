@@ -4,6 +4,7 @@ package org.odpi.openmetadata.governanceservers.integrationdaemonservices.regist
 
 import org.odpi.openmetadata.adminservices.configuration.properties.PermittedSynchronization;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -15,16 +16,17 @@ public class IntegrationServiceRegistration implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    private int                      integrationServiceId                  = 0;
-    private String                   integrationServiceName                = null;
-    private String                   integrationServiceFullName            = null;
-    private String                   integrationServiceURLMarker           = null;
-    private String                   integrationServiceDescription         = null;
-    private String                   integrationServiceWiki                = null;
-    private String                   integrationServicePartnerOMAS         = null;
-    private ServiceOperationalStatus integrationServiceOperationalStatus   = null;
-    private String                   integrationServiceContextManagerClass = null;
-    private PermittedSynchronization defaultPermittedSynchronization;
+    private int                        integrationServiceId                  = 0;
+    private ComponentDevelopmentStatus integrationServiceDevelopmentStatus   = null;
+    private String                     integrationServiceName                = null;
+    private String                     integrationServiceFullName            = null;
+    private String                     integrationServiceURLMarker           = null;
+    private String                     integrationServiceDescription         = null;
+    private String                     integrationServiceWiki                = null;
+    private String                     integrationServicePartnerOMAS         = null;
+    private ServiceOperationalStatus   integrationServiceOperationalStatus   = null;
+    private String                     integrationServiceContextManagerClass = null;
+    private PermittedSynchronization   defaultPermittedSynchronization;
 
 
     /**
@@ -46,6 +48,7 @@ public class IntegrationServiceRegistration implements Serializable
         if (template != null)
         {
             integrationServiceId                  = template.getIntegrationServiceId();
+            integrationServiceDevelopmentStatus   = template.getIntegrationServiceDevelopmentStatus();
             integrationServiceName                = template.getIntegrationServiceName();
             integrationServiceFullName            = template.getIntegrationServiceFullName();
             integrationServiceURLMarker           = template.getIntegrationServiceURLMarker();
@@ -78,6 +81,28 @@ public class IntegrationServiceRegistration implements Serializable
     public void setIntegrationServiceId(int integrationServiceId)
     {
         this.integrationServiceId = integrationServiceId;
+    }
+
+
+    /**
+     * Return the development status of the service.
+     *
+     * @return enum describing the status
+     */
+    public ComponentDevelopmentStatus getIntegrationServiceDevelopmentStatus()
+    {
+        return integrationServiceDevelopmentStatus;
+    }
+
+
+    /**
+     * Set up the development status of the service.
+     *
+     * @param  integrationServiceDevelopmentStatus enum describing the status
+     */
+    public void setEngineServiceDevelopmentStatus(ComponentDevelopmentStatus integrationServiceDevelopmentStatus)
+    {
+        this.integrationServiceDevelopmentStatus = integrationServiceDevelopmentStatus;
     }
 
 
@@ -306,15 +331,19 @@ public class IntegrationServiceRegistration implements Serializable
     @Override
     public String toString()
     {
-        return "IntegrationServiceConfig{" +
-                "integrationServiceId=" + integrationServiceId +
-                ", integrationServiceAdminClass='" + integrationServiceContextManagerClass + '\'' +
-                ", integrationServiceName='" + integrationServiceName + '\'' +
-                ", integrationServiceFullName='" + integrationServiceFullName + '\'' +
-                ", integrationServiceDescription='" + integrationServiceDescription + '\'' +
-                ", integrationServiceWiki='" + integrationServiceWiki + '\'' +
-                ", integrationServiceOperationalStatus=" + integrationServiceOperationalStatus +
-                '}';
+        return "IntegrationServiceRegistration{" +
+                       "integrationServiceId=" + integrationServiceId +
+                       ", integrationServiceDevelopmentStatus=" + integrationServiceDevelopmentStatus +
+                       ", integrationServiceName='" + integrationServiceName + '\'' +
+                       ", integrationServiceFullName='" + integrationServiceFullName + '\'' +
+                       ", integrationServiceURLMarker='" + integrationServiceURLMarker + '\'' +
+                       ", integrationServiceDescription='" + integrationServiceDescription + '\'' +
+                       ", integrationServiceWiki='" + integrationServiceWiki + '\'' +
+                       ", integrationServicePartnerOMAS='" + integrationServicePartnerOMAS + '\'' +
+                       ", integrationServiceOperationalStatus=" + integrationServiceOperationalStatus +
+                       ", integrationServiceContextManagerClass='" + integrationServiceContextManagerClass + '\'' +
+                       ", defaultPermittedSynchronization=" + defaultPermittedSynchronization +
+                       '}';
     }
 
 
@@ -336,13 +365,17 @@ public class IntegrationServiceRegistration implements Serializable
             return false;
         }
         IntegrationServiceRegistration that = (IntegrationServiceRegistration) objectToCompare;
-        return getIntegrationServiceId() == that.getIntegrationServiceId() &&
-                Objects.equals(getIntegrationServiceContextManagerClass(), that.getIntegrationServiceContextManagerClass()) &&
-                Objects.equals(getIntegrationServiceName(), that.getIntegrationServiceName()) &&
-                Objects.equals(getIntegrationServiceFullName(), that.getIntegrationServiceFullName()) &&
-                Objects.equals(getIntegrationServiceDescription(), that.getIntegrationServiceDescription()) &&
-                Objects.equals(getIntegrationServiceWiki(), that.getIntegrationServiceWiki()) &&
-                getIntegrationServiceOperationalStatus() == that.getIntegrationServiceOperationalStatus();
+        return integrationServiceId == that.integrationServiceId &&
+                       integrationServiceDevelopmentStatus == that.integrationServiceDevelopmentStatus &&
+                       Objects.equals(integrationServiceName, that.integrationServiceName) &&
+                       Objects.equals(integrationServiceFullName, that.integrationServiceFullName) &&
+                       Objects.equals(integrationServiceURLMarker, that.integrationServiceURLMarker) &&
+                       Objects.equals(integrationServiceDescription, that.integrationServiceDescription) &&
+                       Objects.equals(integrationServiceWiki, that.integrationServiceWiki) &&
+                       Objects.equals(integrationServicePartnerOMAS, that.integrationServicePartnerOMAS) &&
+                       integrationServiceOperationalStatus == that.integrationServiceOperationalStatus &&
+                       Objects.equals(integrationServiceContextManagerClass, that.integrationServiceContextManagerClass) &&
+                       defaultPermittedSynchronization == that.defaultPermittedSynchronization;
     }
 
 
@@ -354,7 +387,8 @@ public class IntegrationServiceRegistration implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(getIntegrationServiceId(), getIntegrationServiceContextManagerClass(), getIntegrationServiceName(), getIntegrationServiceFullName(),
-                            getIntegrationServiceDescription(), getIntegrationServiceWiki(), getIntegrationServiceOperationalStatus());
+        return Objects.hash(integrationServiceId, integrationServiceDevelopmentStatus, integrationServiceName, integrationServiceFullName,
+                            integrationServiceURLMarker, integrationServiceDescription, integrationServiceWiki, integrationServicePartnerOMAS,
+                            integrationServiceOperationalStatus, integrationServiceContextManagerClass, defaultPermittedSynchronization);
     }
 }
