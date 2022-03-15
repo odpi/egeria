@@ -99,6 +99,7 @@ public class OMAGServerAdminForAccessServices
                             RegisteredOMAGService service = new RegisteredOMAGService();
 
                             service.setServiceName(accessServiceConfig.getAccessServiceFullName());
+                            service.setServiceDevelopmentStatus(accessServiceConfig.getAccessServiceDevelopmentStatus());
                             service.setServiceDescription(accessServiceConfig.getAccessServiceDescription());
                             service.setServiceURLMarker(accessServiceConfig.getAccessServiceURLMarker());
                             service.setServiceWiki(accessServiceConfig.getAccessServiceWiki());

@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @Tag(name="Digital Service OMAS", description="The Digital Service OMAS provides services to aid the integration of tools involved in tracking the life cycle of an Egeria Digital Service",
      externalDocs=@ExternalDocumentation(description="Digital Service Open Metadata Access Service (OMAS)",
-                                         url="https://odpi.github.io/egeria-docs/services/omas/digital-service/overview/"))
+                                         url="https://egeria-project.org/services/omas/digital-service/overview/"))
 
 public class DigitalServiceResource
 {

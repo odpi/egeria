@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name="Security Integrator OMIS", description="Supports the detection and creation of metadata for file systems and file servers.",
         externalDocs=@ExternalDocumentation(description="Security Integrator Open Metadata Integration Service (OMIS)",
-                url="https://odpi.github.io/egeria-docs/services/omis/security-integrator/overview/"))
+                url="https://egeria-project.org/services/omis/security-integrator/overview/"))
 
 public class SecurityIntegratorResource
 {

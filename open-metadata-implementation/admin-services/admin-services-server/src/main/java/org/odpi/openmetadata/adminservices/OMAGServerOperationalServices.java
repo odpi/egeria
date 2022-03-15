@@ -282,6 +282,7 @@ public class OMAGServerOperationalServices
              */
             OMRSAuditLog auditLog = operationalRepositoryServices.getAuditLog(
                     CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceCode(),
+                    CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceDevelopmentStatus(),
                     CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName(),
                     CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceDescription(),
                     CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceWiki());
@@ -325,6 +326,7 @@ public class OMAGServerOperationalServices
                         platformInstanceMap.startUpServerInstance(configuration.getLocalServerUserId(),
                                                                   serverName,
                                                                   operationalRepositoryServices.getAuditLog(CommonServicesDescription.OPEN_METADATA_SECURITY.getServiceCode(),
+                                                                                                            CommonServicesDescription.OPEN_METADATA_SECURITY.getServiceDevelopmentStatus(),
                                                                                                             CommonServicesDescription.OPEN_METADATA_SECURITY.getServiceName(),
                                                                                                             CommonServicesDescription.OPEN_METADATA_SECURITY.getServiceDescription(),
                                                                                                             CommonServicesDescription.OPEN_METADATA_SECURITY.getServiceWiki()),
@@ -357,6 +359,7 @@ public class OMAGServerOperationalServices
                                                                                         enterpriseRepositoryConnector,
                                                                                         operationalRepositoryServices.getAuditLog(
                                                                                                 CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceCode(),
+                                                                                                CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceDevelopmentStatus(),
                                                                                                 CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceName(),
                                                                                                 CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceDescription(),
                                                                                                 CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceWiki()),
@@ -405,6 +408,7 @@ public class OMAGServerOperationalServices
                                                                    operationalRepositoryServices.getEnterpriseConnectorManager(),
                                                                    operationalRepositoryServices.getAuditLog(
                                                                            GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceCode(),
+                                                                           GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceDevelopmentStatus(),
                                                                            GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName(),
                                                                            GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceDescription(),
                                                                            GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceWiki()));
@@ -450,6 +454,7 @@ public class OMAGServerOperationalServices
                                                           serverName,
                                                           operationalRepositoryServices.getAuditLog(
                                                                   CommonServicesDescription.OPEN_METADATA_SECURITY.getServiceCode(),
+                                                                  CommonServicesDescription.OPEN_METADATA_SECURITY.getServiceDevelopmentStatus(),
                                                                   CommonServicesDescription.OPEN_METADATA_SECURITY.getServiceName(),
                                                                   CommonServicesDescription.OPEN_METADATA_SECURITY.getServiceDescription(),
                                                                   CommonServicesDescription.OPEN_METADATA_SECURITY.getServiceWiki()),
@@ -488,6 +493,7 @@ public class OMAGServerOperationalServices
                                                           serverName,
                                                           operationalRepositoryServices.getAuditLog(
                                                                   CommonServicesDescription.OPEN_METADATA_SECURITY.getServiceCode(),
+                                                                  CommonServicesDescription.OPEN_METADATA_SECURITY.getServiceDevelopmentStatus(),
                                                                   CommonServicesDescription.OPEN_METADATA_SECURITY.getServiceName(),
                                                                   CommonServicesDescription.OPEN_METADATA_SECURITY.getServiceDescription(),
                                                                   CommonServicesDescription.OPEN_METADATA_SECURITY.getServiceWiki()),
@@ -691,6 +697,7 @@ public class OMAGServerOperationalServices
                              */
                             OMRSAuditLog accessServicesAuditLog
                                     = operationalRepositoryServices.getAuditLog(accessServiceConfig.getAccessServiceId(),
+                                                                                accessServiceConfig.getAccessServiceDevelopmentStatus(),
                                                                                 accessServiceConfig.getAccessServiceFullName(),
                                                                                 accessServiceConfig.getAccessServiceDescription(),
                                                                                 accessServiceConfig.getAccessServiceWiki());
@@ -811,6 +818,7 @@ public class OMAGServerOperationalServices
                          */
                         OMRSAuditLog viewServicesAuditLog
                                 = operationalRepositoryServices.getAuditLog(viewServiceConfig.getViewServiceId(),
+                                                                            viewServiceConfig.getViewServiceDevelopmentStatus(),
                                                                             viewServiceConfig.getViewServiceFullName(),
                                                                             viewServiceConfig.getViewServiceDescription(),
                                                                             viewServiceConfig.getViewServiceWiki());
@@ -1017,6 +1025,7 @@ public class OMAGServerOperationalServices
             operationalDataEngineProxyServices.initialize(configuration.getDataEngineProxyConfig(),
                                                           operationalRepositoryServices.getAuditLog(
                                                                   GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceCode(),
+                                                                  GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceDevelopmentStatus(),
                                                                   GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName(),
                                                                   GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceDescription(),
                                                                   GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceWiki()));
@@ -1043,6 +1052,7 @@ public class OMAGServerOperationalServices
             List<String> engineServices = engineHostOperationalServices.initialize(configuration.getEngineHostServicesConfig(),
                                                             operationalRepositoryServices.getAuditLog(
                                                                     GovernanceServicesDescription.ENGINE_HOST_SERVICES.getServiceCode(),
+                                                                    GovernanceServicesDescription.ENGINE_HOST_SERVICES.getServiceDevelopmentStatus(),
                                                                     GovernanceServicesDescription.ENGINE_HOST_SERVICES.getServiceName(),
                                                                     GovernanceServicesDescription.ENGINE_HOST_SERVICES.getServiceDescription(),
                                                                     GovernanceServicesDescription.ENGINE_HOST_SERVICES.getServiceWiki()));
@@ -1070,6 +1080,7 @@ public class OMAGServerOperationalServices
             List<String> integrationServices = integrationDaemonOperationalServices.initialize(configuration.getIntegrationServicesConfig(),
                                                             operationalRepositoryServices.getAuditLog(
                                                                GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceCode(),
+                                                               GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceDevelopmentStatus(),
                                                                GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceName(),
                                                                GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceDescription(),
                                                                GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceWiki()));
@@ -1096,6 +1107,7 @@ public class OMAGServerOperationalServices
             operationalOpenLineageServer.initialize(configuration.getOpenLineageServerConfig(),
                                                     operationalRepositoryServices.getAuditLog(
                                                             GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceCode(),
+                                                            GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceDevelopmentStatus(),
                                                             GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
                                                             GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceDescription(),
                                                             GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceWiki()));

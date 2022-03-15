@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 
 import java.util.List;
 import java.util.Map;
@@ -28,17 +29,18 @@ public class EngineServiceConfig extends OMAGServerClientConfig
 {
     private static final long    serialVersionUID = 1L;
 
-    private int                      engineServiceId                = 0;
-    private String                   engineServiceName              = null;
-    private String                   engineServiceFullName          = null;
-    private String                   engineServiceURLMarker         = null;
-    private String                   engineServiceDescription       = null;
-    private String                   engineServiceWiki              = null;
-    private String                   engineServicePartnerOMAS       = null;
-    private Map<String, Object>      engineServiceOptions           = null;
-    private List<EngineConfig>       engines                        = null;
-    private ServiceOperationalStatus engineServiceOperationalStatus = null;
-    private String                   engineServiceAdminClass        = null;
+    private int                        engineServiceId                  = 0;
+    private ComponentDevelopmentStatus engineServiceDevelopmentStatus   = null;
+    private String                     engineServiceName                = null;
+    private String                     engineServiceFullName            = null;
+    private String                     engineServiceURLMarker           = null;
+    private String                     engineServiceDescription         = null;
+    private String                     engineServiceWiki                = null;
+    private String                     engineServicePartnerOMAS         = null;
+    private Map<String, Object>        engineServiceOptions             = null;
+    private List<EngineConfig>         engines                          = null;
+    private ServiceOperationalStatus   engineServiceOperationalStatus   = null;
+    private String                     engineServiceAdminClass          = null;
 
 
     /**
@@ -62,6 +64,7 @@ public class EngineServiceConfig extends OMAGServerClientConfig
         if (template != null)
         {
             engineServiceId                  = template.getEngineServiceId();
+            engineServiceDevelopmentStatus   = template.getEngineServiceDevelopmentStatus();
             engineServiceAdminClass          = template.getEngineServiceAdminClass();
             engineServiceName                = template.getEngineServiceName();
             engineServiceFullName            = template.getEngineServiceFullName();
@@ -88,6 +91,7 @@ public class EngineServiceConfig extends OMAGServerClientConfig
         if (template != null)
         {
             engineServiceId                  = template.getEngineServiceId();
+            engineServiceDevelopmentStatus   = template.getEngineServiceDevelopmentStatus();
             engineServiceAdminClass          = template.getEngineServiceAdminClass();
             engineServiceName                = template.getEngineServiceName();
             engineServiceFullName            = template.getEngineServiceFullName();
@@ -120,6 +124,28 @@ public class EngineServiceConfig extends OMAGServerClientConfig
     public void setEngineServiceId(int engineServiceId)
     {
         this.engineServiceId = engineServiceId;
+    }
+
+
+    /**
+     * Return the development status of the service.
+     *
+     * @return enum describing the status
+     */
+    public ComponentDevelopmentStatus getEngineServiceDevelopmentStatus()
+    {
+        return engineServiceDevelopmentStatus;
+    }
+
+
+    /**
+     * Set up the development status of the service.
+     *
+     * @param  engineServiceDevelopmentStatus enum describing the status
+     */
+    public void setEngineServiceDevelopmentStatus(ComponentDevelopmentStatus engineServiceDevelopmentStatus)
+    {
+        this.engineServiceDevelopmentStatus = engineServiceDevelopmentStatus;
     }
 
 
@@ -369,16 +395,17 @@ public class EngineServiceConfig extends OMAGServerClientConfig
     {
         return "EngineServiceConfig{" +
                        "engineServiceId=" + engineServiceId +
-                       ", engineServiceAdminClass='" + engineServiceAdminClass + '\'' +
+                       ", engineServiceDevelopmentStatus=" + engineServiceDevelopmentStatus +
                        ", engineServiceName='" + engineServiceName + '\'' +
                        ", engineServiceFullName='" + engineServiceFullName + '\'' +
                        ", engineServiceURLMarker='" + engineServiceURLMarker + '\'' +
                        ", engineServiceDescription='" + engineServiceDescription + '\'' +
                        ", engineServiceWiki='" + engineServiceWiki + '\'' +
                        ", engineServicePartnerOMAS='" + engineServicePartnerOMAS + '\'' +
-                       ", engineServiceOperationalStatus=" + engineServiceOperationalStatus +
                        ", engineServiceOptions=" + engineServiceOptions +
                        ", engines=" + engines +
+                       ", engineServiceOperationalStatus=" + engineServiceOperationalStatus +
+                       ", engineServiceAdminClass='" + engineServiceAdminClass + '\'' +
                        ", OMAGServerPlatformRootURL='" + getOMAGServerPlatformRootURL() + '\'' +
                        ", OMAGServerName='" + getOMAGServerName() + '\'' +
                        '}';
@@ -402,24 +429,24 @@ public class EngineServiceConfig extends OMAGServerClientConfig
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
         EngineServiceConfig that = (EngineServiceConfig) objectToCompare;
-        return getEngineServiceId() == that.getEngineServiceId() &&
-                       Objects.equals(getEngineServiceAdminClass(), that.getEngineServiceAdminClass()) &&
-                       Objects.equals(getEngineServiceName(), that.getEngineServiceName()) &&
-                       Objects.equals(getEngineServiceFullName(), that.getEngineServiceFullName()) &&
-                       Objects.equals(getEngineServiceURLMarker(), that.getEngineServiceURLMarker()) &&
-                       Objects.equals(getEngineServiceDescription(), that.getEngineServiceDescription()) &&
-                       Objects.equals(getEngineServiceWiki(), that.getEngineServiceWiki()) &&
-                       Objects.equals(getEngineServicePartnerOMAS(), that.getEngineServicePartnerOMAS()) &&
-                       getEngineServiceOperationalStatus() == that.getEngineServiceOperationalStatus() &&
-                       Objects.equals(getEngineServiceOptions(), that.getEngineServiceOptions()) &&
-                       Objects.equals(getEngines(), that.getEngines());
+        return engineServiceId == that.engineServiceId &&
+                       engineServiceDevelopmentStatus == that.engineServiceDevelopmentStatus &&
+                       Objects.equals(engineServiceName, that.engineServiceName) &&
+                       Objects.equals(engineServiceFullName, that.engineServiceFullName) &&
+                       Objects.equals(engineServiceURLMarker, that.engineServiceURLMarker) &&
+                       Objects.equals(engineServiceDescription, that.engineServiceDescription) &&
+                       Objects.equals(engineServiceWiki, that.engineServiceWiki) &&
+                       Objects.equals(engineServicePartnerOMAS, that.engineServicePartnerOMAS) &&
+                       Objects.equals(engineServiceOptions, that.engineServiceOptions) &&
+                       Objects.equals(engines, that.engines) &&
+                       engineServiceOperationalStatus == that.engineServiceOperationalStatus &&
+                       Objects.equals(engineServiceAdminClass, that.engineServiceAdminClass);
     }
-
 
 
     /**
@@ -430,8 +457,8 @@ public class EngineServiceConfig extends OMAGServerClientConfig
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getEngineServiceId(), getEngineServiceAdminClass(), getEngineServiceName(),
-                            getEngineServiceFullName(), getEngineServiceURLMarker(), getEngineServiceDescription(), getEngineServiceWiki(),
-                            getEngineServicePartnerOMAS(), getEngineServiceOperationalStatus(), getEngineServiceOptions(), getEngines());
+        return Objects.hash(super.hashCode(), engineServiceId, engineServiceDevelopmentStatus, engineServiceName, engineServiceFullName,
+                            engineServiceURLMarker, engineServiceDescription, engineServiceWiki, engineServicePartnerOMAS, engineServiceOptions,
+                            engines, engineServiceOperationalStatus, engineServiceAdminClass);
     }
 }

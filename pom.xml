@@ -1875,6 +1875,13 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>it-infrastructure-topic-connectors</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>it-infrastructure-server</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>

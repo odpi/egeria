@@ -3,6 +3,8 @@
 
 package org.odpi.openmetadata.adapters.connectors.integration.basicfiles;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 
@@ -22,27 +24,38 @@ class BasicFilesMonitorIntegrationProviderBase extends ConnectorProviderBase
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
      * store implementation.
      *
-     * @param connectorTypeGUID the unique identifier for this connector
-     * @param connectorTypeQualifiedName the unique name for this connector type
-     * @param connectorTypeDisplayName the printable name for this connector type
-     * @param connectorTypeDescription the description of this connector type
+     * @param connectorTypeGUID the unique identifier for the connector type
+     * @param connectorComponentId the component id used by the connector in logging
+     * @param connectorQualifiedName the unique name for this connector
+     * @param connectorDisplayName the printable name for this connector
+     * @param connectorDescription the description of this connector
+     * @param connectorWikiPage the URL of the connector page in the connector catalog
+     * @param connectorClass the name of the connector class that the connector provider creates
      */
     BasicFilesMonitorIntegrationProviderBase(String   connectorTypeGUID,
-                                             String   connectorTypeQualifiedName,
-                                             String   connectorTypeDisplayName,
-                                             String   connectorTypeDescription,
+                                             int      connectorComponentId,
+                                             String   connectorQualifiedName,
+                                             String   connectorDisplayName,
+                                             String   connectorDescription,
+                                             String   connectorWikiPage,
                                              Class<?> connectorClass)
     {
         super();
 
+        /*
+         * Set up the class name of the connector that this provider creates.
+         */
         super.setConnectorClassName(connectorClass.getName());
 
+        /*
+         * Set up the connector type that should be included in a connection used to configure this connector.
+         */
         ConnectorType connectorType = new ConnectorType();
         connectorType.setType(ConnectorType.getConnectorTypeType());
         connectorType.setGUID(connectorTypeGUID);
-        connectorType.setQualifiedName(connectorTypeQualifiedName);
-        connectorType.setDisplayName(connectorTypeDisplayName);
-        connectorType.setDescription(connectorTypeDescription);
+        connectorType.setQualifiedName(connectorQualifiedName);
+        connectorType.setDisplayName(connectorDisplayName);
+        connectorType.setDescription(connectorDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
 
         List<String> recognizedConfigurationProperties = new ArrayList<>();
@@ -52,5 +65,18 @@ class BasicFilesMonitorIntegrationProviderBase extends ConnectorProviderBase
         connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);
 
         super.connectorTypeBean = connectorType;
+
+        /*
+         * Set up the component description used in the connector's audit log messages.
+         */
+        AuditLogReportingComponent componentDescription = new AuditLogReportingComponent();
+
+        componentDescription.setComponentId(connectorComponentId);
+        componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.TECHNICAL_PREVIEW);
+        componentDescription.setComponentName(connectorQualifiedName);
+        componentDescription.setComponentDescription(connectorDescription);
+        componentDescription.setComponentWikiURL(connectorWikiPage);
+
+        super.setConnectorComponentDescription(componentDescription);
     }
 }

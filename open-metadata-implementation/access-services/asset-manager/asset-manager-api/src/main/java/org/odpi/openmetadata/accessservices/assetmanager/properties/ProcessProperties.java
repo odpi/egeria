@@ -21,7 +21,6 @@ public class ProcessProperties extends AssetProperties
 {
     private static final long     serialVersionUID = 1L;
 
-    private ProcessStatus processStatus          = null;
     private String        formula                = null;
     private String        implementationLanguage = null;
 
@@ -45,32 +44,9 @@ public class ProcessProperties extends AssetProperties
 
         if (template != null)
         {
-            processStatus = template.getProcessStatus();
             formula = template.getFormula();
             implementationLanguage = template.getImplementationLanguage();
         }
-    }
-
-
-    /**
-     * Return the process status.
-     *
-     * @return enum describing lifecycle state
-     */
-    public ProcessStatus getProcessStatus()
-    {
-        return processStatus;
-    }
-
-
-    /**
-     * Set up the process status.
-     *
-     * @param processStatus enum describing lifecycle state
-     */
-    public void setProcessStatus(ProcessStatus processStatus)
-    {
-        this.processStatus = processStatus;
     }
 
 
@@ -124,7 +100,6 @@ public class ProcessProperties extends AssetProperties
     public String toString()
     {
         return "ProcessProperties{" +
-                       "processStatus=" + processStatus +
                        ", formula='" + formula + '\'' +
                        ", implementationLanguage='" + implementationLanguage + '\'' +
                        ", technicalName='" + getTechnicalName() + '\'' +
@@ -165,8 +140,7 @@ public class ProcessProperties extends AssetProperties
             return false;
         }
         ProcessProperties that = (ProcessProperties) objectToCompare;
-        return processStatus == that.processStatus &&
-                       Objects.equals(formula, that.formula) &&
+        return Objects.equals(formula, that.formula) &&
                        Objects.equals(implementationLanguage, that.implementationLanguage);
     }
 
@@ -179,6 +153,6 @@ public class ProcessProperties extends AssetProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getProcessStatus(), getFormula(), getImplementationLanguage());
+        return Objects.hash(super.hashCode(), getFormula(), getImplementationLanguage());
     }
 }

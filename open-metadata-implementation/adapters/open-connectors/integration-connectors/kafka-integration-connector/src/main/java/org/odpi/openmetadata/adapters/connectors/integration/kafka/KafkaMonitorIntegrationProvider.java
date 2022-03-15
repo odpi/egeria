@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.integration.kafka;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 
@@ -15,10 +16,29 @@ import java.util.List;
  */
 public class KafkaMonitorIntegrationProvider extends ConnectorProviderBase
 {
-    private static final String connectorTypeGUID          = "431ba4e6-5479-4de5-bf9a-7f822bda7fc6";
-    private static final String connectorTypeQualifiedName = "Egeria:IntegrationConnector:Topics:KafkaMonitor";
-    private static final String connectorTypeDisplayName   = "Kafka Monitor Integration Connector";
-    private static final String connectorTypeDescription   = "Connector maintains a list of KafkaTopic assets associated with an event broker.";
+    /*
+     * Unique identifier of the connector for the audit log.
+     */
+    private static final int    connectorComponentId   = 652;
+
+    /*
+     * Unique identifier for the connector type.
+     */
+    private static final String connectorTypeGUID      = "431ba4e6-5479-4de5-bf9a-7f822bda7fc6";
+
+    /*
+     * Descriptive information about the connector for the connector type and audit log.
+     */
+    private static final String connectorQualifiedName = "Egeria:IntegrationConnector:Topics:KafkaMonitor";
+    private static final String connectorDisplayName   = "Kafka Monitor Integration Connector";
+    private static final String connectorDescription   = "Connector maintains a list of KafkaTopic assets associated with an Apache Kafka event broker.";
+    private static final String connectorWikiPage      = "https://egeria-project.org/connectors/integration/kafka-monitor-integration-connector/";
+
+    /*
+     * Class of the connector.
+     */
+    private static final Class<?> connectorClass       = KafkaMonitorIntegrationConnector.class;
+
 
     static final String TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY = "templateQualifiedName";
 
@@ -30,21 +50,37 @@ public class KafkaMonitorIntegrationProvider extends ConnectorProviderBase
     {
         super();
 
-        super.setConnectorClassName(KafkaMonitorIntegrationConnector.class.getName());
+        /*
+         * Set up the class name of the connector that this provider creates.
+         */
+        super.setConnectorClassName(connectorClass.getName());
 
+        /*
+         * Set up the connector type that should be included in a connection used to configure this connector.
+         */
         ConnectorType connectorType = new ConnectorType();
         connectorType.setType(ConnectorType.getConnectorTypeType());
         connectorType.setGUID(connectorTypeGUID);
-        connectorType.setQualifiedName(connectorTypeQualifiedName);
-        connectorType.setDisplayName(connectorTypeDisplayName);
-        connectorType.setDescription(connectorTypeDescription);
+        connectorType.setQualifiedName(connectorQualifiedName);
+        connectorType.setDisplayName(connectorDisplayName);
+        connectorType.setDescription(connectorDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
-
         List<String> recognizedConfigurationProperties = new ArrayList<>();
         recognizedConfigurationProperties.add(TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY);
-
         connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);
 
         super.connectorTypeBean = connectorType;
+
+        /*
+         * Set up the component description used in the connector's audit log messages.
+         */
+        AuditLogReportingComponent componentDescription = new AuditLogReportingComponent();
+
+        componentDescription.setComponentId(connectorComponentId);
+        componentDescription.setComponentName(connectorQualifiedName);
+        componentDescription.setComponentDescription(connectorDescription);
+        componentDescription.setComponentWikiURL(connectorWikiPage);
+
+        super.setConnectorComponentDescription(componentDescription);
     }
 }

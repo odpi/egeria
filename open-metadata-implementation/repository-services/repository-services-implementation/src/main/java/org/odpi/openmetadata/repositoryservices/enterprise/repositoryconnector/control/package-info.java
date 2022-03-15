@@ -3,5 +3,6 @@
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.control;
 
 /**
- * The federation control classes manage the process of interacting with a collection of metadata repositories.
+ * The federation control classes manage the process of interacting with a collection of metadata repositories.  They work with the
+ * executors.
  */

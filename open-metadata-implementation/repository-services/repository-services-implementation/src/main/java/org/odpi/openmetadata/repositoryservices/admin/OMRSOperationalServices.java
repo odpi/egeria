@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.admin;
 
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogDestination;
 import org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventPublisher;
@@ -210,18 +211,20 @@ public class OMRSOperationalServices
     /**
      * Create an audit log for an external component.
      *
-     * @param componentId numerical identifier for the component.
-     * @param componentName display name for the component.
-     * @param componentDescription description of the component.
-     * @param componentWikiURL link to more information.
+     * @param componentId numerical identifier for the component
+     * @param componentDevelopmentStatus development status
+     * @param componentName display name for the component
+     * @param componentDescription description of the component
+     * @param componentWikiURL link to more information
      * @return new audit log object
      */
-    public OMRSAuditLog  getAuditLog(int    componentId,
-                                     String componentName,
-                                     String componentDescription,
-                                     String componentWikiURL)
+    public OMRSAuditLog  getAuditLog(int                        componentId,
+                                     ComponentDevelopmentStatus componentDevelopmentStatus,
+                                     String                     componentName,
+                                     String                     componentDescription,
+                                     String                     componentWikiURL)
     {
-        return auditLog.createNewAuditLog(componentId, componentName, componentDescription, componentWikiURL);
+        return auditLog.createNewAuditLog(componentId, componentDevelopmentStatus, componentName, componentDescription, componentWikiURL);
     }
 
 

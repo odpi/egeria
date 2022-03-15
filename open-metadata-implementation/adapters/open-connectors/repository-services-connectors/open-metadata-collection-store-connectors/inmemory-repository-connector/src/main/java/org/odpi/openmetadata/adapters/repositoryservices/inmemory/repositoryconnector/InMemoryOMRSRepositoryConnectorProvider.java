@@ -37,7 +37,7 @@ public class InMemoryOMRSRepositoryConnectorProvider extends OMRSRepositoryConne
     private static final String connectorQualifiedName = "Egeria:OMRSRepositoryConnector:InMemory";
     private static final String connectorDisplayName   = "In Memory OMRS Repository Connector";
     private static final String connectorDescription   = "Native open metadata repository connector that maps open metadata calls to a set of in memory hash maps - demo use only.";
-    private static final String connectorWikiPage      = "https://odpi.github.io/egeria-docs/connectors/repository/in-memory/";
+    private static final String connectorWikiPage      = "https://egeria-project.org/connectors/repository/in-memory/";
 
     /*
      * Class of the connector.

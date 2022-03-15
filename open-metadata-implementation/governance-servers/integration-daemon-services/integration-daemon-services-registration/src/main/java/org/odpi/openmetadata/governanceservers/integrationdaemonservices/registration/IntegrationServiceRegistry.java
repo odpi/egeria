@@ -48,6 +48,7 @@ public class IntegrationServiceRegistry
             IntegrationServiceConfig config = new IntegrationServiceConfig();
 
             config.setIntegrationServiceId(serviceDescription.getIntegrationServiceCode());
+            config.setIntegrationServiceDevelopmentStatus(serviceDescription.getIntegrationServiceDevelopmentStatus());
             config.setIntegrationServiceName(serviceDescription.getIntegrationServiceName());
             config.setIntegrationServiceFullName(serviceDescription.getIntegrationServiceFullName());
             config.setIntegrationServiceURLMarker(serviceDescription.getIntegrationServiceURLMarker());
@@ -95,6 +96,7 @@ public class IntegrationServiceRegistry
                     RegisteredOMAGService service = new RegisteredOMAGService();
 
                     service.setServiceName(serviceDescription.getIntegrationServiceFullName());
+                    service.setServiceDevelopmentStatus(serviceDescription.getIntegrationServiceDevelopmentStatus());
                     service.setServiceURLMarker(serviceDescription.getIntegrationServiceURLMarker());
                     service.setServiceDescription(serviceDescription.getIntegrationServiceDescription());
                     service.setServiceWiki(serviceDescription.getIntegrationServiceWiki());

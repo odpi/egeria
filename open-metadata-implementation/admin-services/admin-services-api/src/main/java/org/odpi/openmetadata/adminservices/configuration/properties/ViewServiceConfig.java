@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceRegistration;
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 
 import java.util.Map;
 import java.util.Objects;
@@ -35,6 +36,7 @@ public class ViewServiceConfig extends OMAGServerClientConfig
     private static final long    serialVersionUID = 1L;
 
     private int                            viewServiceId                = 0;
+    private ComponentDevelopmentStatus     viewServiceDevelopmentStatus = null;
     private String                         viewServiceAdminClass        = null;
     private String                         viewServiceName              = null;
     private String                         viewServiceFullName          = null;
@@ -66,6 +68,7 @@ public class ViewServiceConfig extends OMAGServerClientConfig
         if (template != null)
         {
             viewServiceId = template.getViewServiceId();
+            viewServiceDevelopmentStatus = template.getViewServiceDevelopmentStatus();
             viewServiceAdminClass = template.getViewServiceAdminClass();
             viewServiceFullName = template.getViewServiceFullName();
             viewServiceName = template.getViewServiceName();
@@ -87,6 +90,7 @@ public class ViewServiceConfig extends OMAGServerClientConfig
     public ViewServiceConfig(ViewServiceRegistration viewRegistration)
     {
         this.viewServiceId = viewRegistration.getViewServiceCode();
+        this.viewServiceDevelopmentStatus = viewRegistration.getViewServiceDevelopmentStatus();
         this.viewServiceName = viewRegistration.getViewServiceName();
         this.viewServiceFullName = viewRegistration.getViewServiceFullName();
         this.viewServiceURLMarker = viewRegistration.getViewServiceURLMarker();
@@ -116,6 +120,28 @@ public class ViewServiceConfig extends OMAGServerClientConfig
     public void setViewServiceId(int viewId)
     {
         this.viewServiceId = viewId;
+    }
+
+
+    /**
+     * Return the development status of the service.
+     *
+     * @return enum describing the status
+     */
+    public ComponentDevelopmentStatus getViewServiceDevelopmentStatus()
+    {
+        return viewServiceDevelopmentStatus;
+    }
+
+
+    /**
+     * Set up the development status of the service.
+     *
+     * @param viewServiceDevelopmentStatus  enum describing the status
+     */
+    public void setViewServiceDevelopmentStatus(ComponentDevelopmentStatus viewServiceDevelopmentStatus)
+    {
+        this.viewServiceDevelopmentStatus = viewServiceDevelopmentStatus;
     }
 
 
@@ -318,16 +344,19 @@ public class ViewServiceConfig extends OMAGServerClientConfig
     public String toString()
     {
         return "ViewServiceConfig{" +
-                "viewServiceId=" + viewServiceId +
-                ", viewServiceAdminClass='" + viewServiceAdminClass + '\'' +
-                ", viewServiceName='" + viewServiceName + '\'' +
-                ", viewServiceFullName='" + viewServiceFullName + '\'' +
-                ", viewServiceURLMarker='" + viewServiceURLMarker + '\'' +
-                ", viewServiceDescription='" + viewServiceDescription + '\'' +
-                ", viewServiceWiki='" + viewServiceWiki + '\'' +
-                ", viewServiceOperationalStatus=" + viewServiceOperationalStatus +
-                ", viewServiceOptions=" + viewServiceOptions +
-                '}';
+                       "viewServiceId=" + viewServiceId +
+                       ", viewServiceDevelopmentStatus=" + viewServiceDevelopmentStatus +
+                       ", viewServiceAdminClass='" + viewServiceAdminClass + '\'' +
+                       ", viewServiceName='" + viewServiceName + '\'' +
+                       ", viewServiceFullName='" + viewServiceFullName + '\'' +
+                       ", viewServiceURLMarker='" + viewServiceURLMarker + '\'' +
+                       ", viewServiceDescription='" + viewServiceDescription + '\'' +
+                       ", viewServiceWiki='" + viewServiceWiki + '\'' +
+                       ", viewServiceOperationalStatus=" + viewServiceOperationalStatus +
+                       ", viewServiceOptions=" + viewServiceOptions +
+                       ", OMAGServerPlatformRootURL='" + getOMAGServerPlatformRootURL() + '\'' +
+                       ", OMAGServerName='" + getOMAGServerName() + '\'' +
+                       '}';
     }
 
 
@@ -348,16 +377,21 @@ public class ViewServiceConfig extends OMAGServerClientConfig
         {
             return false;
         }
+        if (! super.equals(objectToCompare))
+        {
+            return false;
+        }
         ViewServiceConfig that = (ViewServiceConfig) objectToCompare;
-        return getViewServiceId() == that.getViewServiceId() &&
-                       Objects.equals(getViewServiceAdminClass(), that.getViewServiceAdminClass()) &&
-                       Objects.equals(getViewServiceName(), that.getViewServiceName()) &&
-                       Objects.equals(getViewServiceFullName(), that.getViewServiceFullName()) &&
-                       Objects.equals(getViewServiceURLMarker(), that.getViewServiceURLMarker()) &&
-                       Objects.equals(getViewServiceDescription(), that.getViewServiceDescription()) &&
-                       Objects.equals(getViewServiceWiki(), that.getViewServiceWiki()) &&
-                       getViewServiceOperationalStatus() == that.getViewServiceOperationalStatus() &&
-                       Objects.equals(getViewServiceOptions(), that.getViewServiceOptions());
+        return viewServiceId == that.viewServiceId &&
+                       viewServiceDevelopmentStatus == that.viewServiceDevelopmentStatus &&
+                       Objects.equals(viewServiceAdminClass, that.viewServiceAdminClass) &&
+                       Objects.equals(viewServiceName, that.viewServiceName) &&
+                       Objects.equals(viewServiceFullName, that.viewServiceFullName) &&
+                       Objects.equals(viewServiceURLMarker, that.viewServiceURLMarker) &&
+                       Objects.equals(viewServiceDescription, that.viewServiceDescription) &&
+                       Objects.equals(viewServiceWiki, that.viewServiceWiki) &&
+                       viewServiceOperationalStatus == that.viewServiceOperationalStatus &&
+                       Objects.equals(viewServiceOptions, that.viewServiceOptions);
     }
 
 
@@ -369,7 +403,8 @@ public class ViewServiceConfig extends OMAGServerClientConfig
     @Override
     public int hashCode()
     {
-        return Objects.hash(getViewServiceId(), getViewServiceAdminClass(), getViewServiceName(), getViewServiceFullName(), getViewServiceURLMarker(),
-                            getViewServiceDescription(), getViewServiceWiki(), getViewServiceOperationalStatus(), getViewServiceOptions());
+        return Objects.hash(super.hashCode(), viewServiceId, viewServiceDevelopmentStatus, viewServiceAdminClass, viewServiceName,
+                            viewServiceFullName,
+                            viewServiceURLMarker, viewServiceDescription, viewServiceWiki, viewServiceOperationalStatus, viewServiceOptions);
     }
 }

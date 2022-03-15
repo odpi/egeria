@@ -70,6 +70,7 @@ public class InvalidParameterTest
 
         AuditLog auditLog = new AuditLog(auditLogDestination,
                                          AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS.getAccessServiceCode(),
+                                         AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS.getAccessServiceDevelopmentStatus(),
                                          AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS.getAccessServiceName(),
                                          AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS.getAccessServiceDescription(),
                                          AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS.getAccessServiceWiki());
