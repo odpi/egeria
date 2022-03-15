@@ -19,8 +19,8 @@ import java.security.cert.X509Certificate
 user=(properties["user"] ?: System.properties["user"]) ?: "garygeeke";
 baseURL=(properties["baseURL"] ?: System.properties["baseURL"]) ?: "https://localhost:9443";
 serverMem=(properties["servermem"] ?: System.properties["servermem"]) ?: "serverinmem";
-retries=(properties["retries"] ?: System.properties["retries"]) ?: 12;
-delay=(properties["delay"] ?: System.properties["delay"]) ?: 10;
+retries=(properties["retries"] ?: System.properties["retries"]) ?: 50;
+delay=(properties["delay"] ?: System.properties["delay"]) ?: 2;
 
 // SSL setup to avoid self-signed errors for testing
 def trustAllCerts = [

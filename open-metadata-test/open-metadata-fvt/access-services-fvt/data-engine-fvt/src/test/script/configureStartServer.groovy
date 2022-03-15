@@ -19,7 +19,7 @@ import java.security.cert.X509Certificate
 user=(properties["user"] ?: System.properties["user"]) ?: "admin"
 baseURL=(properties["baseURL"] ?: System.properties["baseURL"]) ?: "https://localhost:9999"
 serverMem=(properties["serverInMemory"] ?: System.properties["serverInMemory"]) ?: "serverinmem"
-maxRetries=Integer.parseInt((properties["retries"] ?: System.properties["retries"]) ?: 12 as String)
+maxRetries=Integer.parseInt((properties["retries"] ?: System.properties["retries"]) ?: 50 as String)
 delay=Integer.parseInt((properties["delay"] ?: System.properties["delay"]) ?: 10 as String)
 File connectorTypeArchive = new File(properties["connectorTypeArchivePath"] ?: System.properties["connectorTypeArchivePath"] ?: "src/test/resources/DataStoreConnectorTypes.json")
 
