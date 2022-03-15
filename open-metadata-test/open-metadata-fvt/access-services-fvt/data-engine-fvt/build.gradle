@@ -44,7 +44,6 @@ def applicationProperties = new Properties()
 file("src/test/resources/application.properties").withInputStream { applicationProperties.load(it) }
 def baseURL = applicationProperties.getProperty('base.url') + ":" + applicationProperties.getProperty('server.port')
 def serverInMemory = applicationProperties.getProperty('server.in-memory-graph.name')
-def serverLocalGraph = applicationProperties.getProperty('server.local-graph.name')
 def delay = applicationProperties.getProperty('delay')
 def user = applicationProperties.getProperty('user')
 def port = applicationProperties.getProperty('server.port')
@@ -95,7 +94,6 @@ task configServer(dependsOn: ['startServer','classes'], type: JavaExec) {
             'name': 'Egeria chassis',
             'baseURL': baseURL,
             'servermem': serverInMemory,
-            'servergraph': serverLocalGraph,
             'delay': delay,
             'user': user,
             'connectorTypeArchive': 'src/test/resources/DataStoreConnectorTypes.json'
