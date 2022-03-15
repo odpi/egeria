@@ -67,6 +67,7 @@ public class ClientConstructorTest
 
         AuditLog auditLog = new AuditLog(auditLogDestination,
                                          AccessServiceDescription.ASSET_OWNER_OMAS.getAccessServiceCode(),
+                                         AccessServiceDescription.ASSET_OWNER_OMAS.getAccessServiceDevelopmentStatus(),
                                          AccessServiceDescription.ASSET_OWNER_OMAS.getAccessServiceName(),
                                          AccessServiceDescription.ASSET_OWNER_OMAS.getAccessServiceDescription(),
                                          AccessServiceDescription.ASSET_OWNER_OMAS.getAccessServiceWiki());

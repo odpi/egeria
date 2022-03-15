@@ -29,6 +29,13 @@ public enum ITInfrastructureAuditCode implements AuditLogMessageSet
                                  "supports the documentation of the IT infrastructure.",
              "No action is needed if this service is required.  This is part of the configured operation of the server."),
 
+    SERVICE_PUBLISHING("OMAS-IT-INFRASTRUCTURE-0002",
+                       OMRSAuditLogRecordSeverity.STARTUP,
+                       "The IT Infrastructure Open Metadata Access Service (OMAS) is ready to publish notifications to topic {0}",
+                       "The local server has started up the event publisher for the IT Infrastructure OMAS.  " +
+                               "It will begin publishing events about metadata changes to its out topic.",
+                       "This is part of the normal start up of the service. Check that there are no errors from the event bus."),
+    
     SERVICE_INITIALIZED("OMAS-IT-INFRASTRUCTURE-0003",
              OMRSAuditLogRecordSeverity.STARTUP,
              "The IT Infrastructure Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
@@ -46,6 +53,43 @@ public enum ITInfrastructureAuditCode implements AuditLogMessageSet
              "The IT Infrastructure Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
              "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
              "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
+
+    PUBLISHING_SHUTDOWN("OMAS-IT-INFRASTRUCTURE-0007",
+                        OMRSAuditLogRecordSeverity.SHUTDOWN,
+                        "The IT Infrastructure Open Metadata Access Service (OMAS) is no longer publishing events to topic {0}",
+                        "The local administrator has requested shut down of an IT Infrastructure OMAS instance.  " +
+                                "No more events will be published to the named topic.",
+                        "This is part of the normal shutdown of the service.   No action is required if this is service" +
+                                "shutdown was intentional."),
+
+    PUBLISHING_SHUTDOWN_ERROR("OMAS-IT-INFRASTRUCTURE-0008",
+                              OMRSAuditLogRecordSeverity.SHUTDOWN,
+                              "The IT Infrastructure Open Metadata Access Service (OMAS) caught an unexpected {0} exception whilst shutting down the out " +
+                                      "topic {1}. The error message was: {2}",
+                              "The local administrator has requested shut down of an IT Infrastructure OMAS instance.  " +
+                                      "No more events will be published to the named topic, although the connection to the event bus may " +
+                                      "not be released properly.",
+                              "This is part of the normal shutdown of the service. However, an exception is not expected at this point unless it " +
+                                      "is the consequence of a previous error. Review the error message and any other reported failures to " +
+                                      "determine if this exception needs special attention."),
+
+    OUT_TOPIC_EVENT("OMAS-IT-INFRASTRUCTURE-0013",
+                    OMRSAuditLogRecordSeverity.EVENT,
+                    "The IT Infrastructure Open Metadata Access Service (OMAS) has sent event of type: {0}",
+                    "The access service sends out notifications about changes to metadata.  This message is to create a record of the events that are being published.",
+                    "This event indicates that relevant metadata has changed."),
+
+    PROCESS_EVENT_EXCEPTION("OMAS-IT-INFRASTRUCTURE-0014",
+                            OMRSAuditLogRecordSeverity.EXCEPTION,
+                            "Event {0} could not be published due to {1} exception with message: {2}",
+                            "The system is unable to publish the event to the IT Infrastructure OMAS's OutTopic.",
+                            "Verify the topic configuration and that the event broker is running."),
+
+    PARSE_EVENT_EXCEPTION("OMAS-IT-INFRASTRUCTURE-0015",
+                          OMRSAuditLogRecordSeverity.EXCEPTION,
+                          "Inbound event {0} could not be parsed. IOException included the following message: {1}",
+                          "The system is unable to process the event received on the IT Infrastructure OMAS in topic.",
+                          "Verify the content and structure of the in topic event.  Check that it includes the correct class name key"),
 
 
     ;

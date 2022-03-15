@@ -149,15 +149,13 @@ public class EndpointManagerClient implements EndpointManagerInterface
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param restClient client that issues the REST API calls
      * @param maxPageSize maximum number of results supported by this server
-     * @param auditLog logging destination
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public EndpointManagerClient(String                serverName,
                                  String                serverPlatformURLRoot,
                                  ITInfrastructureRESTClient restClient,
-                                 int                   maxPageSize,
-                                 AuditLog              auditLog) throws InvalidParameterException
+                                 int                   maxPageSize) throws InvalidParameterException
     {
         final String methodName = "Client Constructor";
 

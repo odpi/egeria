@@ -3,7 +3,22 @@
 
 package org.odpi.openmetadata.integrationservices.infrastructure.contextmanager;
 
+import org.odpi.openmetadata.accessservices.itinfrastructure.client.CapabilityManagerClient;
+import org.odpi.openmetadata.accessservices.itinfrastructure.client.ConnectionManagerClient;
+import org.odpi.openmetadata.accessservices.itinfrastructure.client.ConnectorTypeManagerClient;
+import org.odpi.openmetadata.accessservices.itinfrastructure.client.DataAssetManagerClient;
+import org.odpi.openmetadata.accessservices.itinfrastructure.client.EndpointManagerClient;
+import org.odpi.openmetadata.accessservices.itinfrastructure.client.HostManagerClient;
+import org.odpi.openmetadata.accessservices.itinfrastructure.client.ITInfrastructureEventClient;
+import org.odpi.openmetadata.accessservices.itinfrastructure.client.ITProfileManagerClient;
+import org.odpi.openmetadata.accessservices.itinfrastructure.client.PlatformManagerClient;
+import org.odpi.openmetadata.accessservices.itinfrastructure.client.ProcessManagerClient;
+import org.odpi.openmetadata.accessservices.itinfrastructure.client.ServerManagerClient;
+import org.odpi.openmetadata.accessservices.itinfrastructure.client.rest.ITInfrastructureRESTClient;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareCapabilityElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.SoftwareCapabilityProperties;
 import org.odpi.openmetadata.adminservices.configuration.properties.PermittedSynchronization;
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -16,6 +31,7 @@ import org.odpi.openmetadata.integrationservices.infrastructure.connector.Infras
 import org.odpi.openmetadata.integrationservices.infrastructure.ffdc.InfrastructureIntegratorAuditCode;
 import org.odpi.openmetadata.integrationservices.infrastructure.ffdc.InfrastructureIntegratorErrorCode;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -25,7 +41,17 @@ import java.util.Map;
  */
 public class InfrastructureIntegratorContextManager extends IntegrationContextManager
 {
-    private InfrastructureIntegratorContext context = null;
+    private CapabilityManagerClient    capabilityManagerClient    = null;
+    private ConnectionManagerClient    connectionManagerClient    = null;
+    private ConnectorTypeManagerClient connectorTypeManagerClient = null;
+    private DataAssetManagerClient     dataAssetManagerClient     = null;
+    private EndpointManagerClient      endpointManagerClient      = null;
+    private HostManagerClient          hostManagerClient          = null;
+    private ITProfileManagerClient     itProfileManagerClient     = null;
+    private PlatformManagerClient      platformManagerClient      = null;
+    private ProcessManagerClient       processManagerClient       = null;
+    private ServerManagerClient        serverManagerClient        = null;
+    private ITInfrastructureRESTClient restClient                 = null;
 
     /**
      * Default constructor
@@ -71,9 +97,79 @@ public class InfrastructureIntegratorContextManager extends IntegrationContextMa
     @Override
     public  void createClients() throws InvalidParameterException
     {
+        if (localServerPassword == null)
+        {
+            restClient = new ITInfrastructureRESTClient(partnerOMASServerName,
+                                                   partnerOMASPlatformRootURL,
+                                                   auditLog);
+        }
+        else
+        {
+            restClient = new ITInfrastructureRESTClient(partnerOMASServerName,
+                                                   partnerOMASPlatformRootURL,
+                                                   localServerUserId,
+                                                   localServerPassword,
+                                                   auditLog);
+        }
 
+        connectionManagerClient = new ConnectionManagerClient(partnerOMASServerName, partnerOMASPlatformRootURL, restClient, maxPageSize);
+        capabilityManagerClient  = new CapabilityManagerClient(partnerOMASServerName, partnerOMASPlatformRootURL, restClient, maxPageSize);
+        connectorTypeManagerClient  = new ConnectorTypeManagerClient(partnerOMASServerName, partnerOMASPlatformRootURL, restClient, maxPageSize);
+        dataAssetManagerClient = new DataAssetManagerClient(partnerOMASServerName, partnerOMASPlatformRootURL, restClient, maxPageSize);
+        endpointManagerClient = new EndpointManagerClient(partnerOMASServerName, partnerOMASPlatformRootURL, restClient, maxPageSize);
+        hostManagerClient = new HostManagerClient(partnerOMASServerName, partnerOMASPlatformRootURL, restClient, maxPageSize);
+        itProfileManagerClient = new ITProfileManagerClient(partnerOMASServerName, partnerOMASPlatformRootURL, restClient, maxPageSize);
+        platformManagerClient = new PlatformManagerClient(partnerOMASServerName, partnerOMASPlatformRootURL, restClient, maxPageSize);
+        processManagerClient = new ProcessManagerClient(partnerOMASServerName, partnerOMASPlatformRootURL, restClient, maxPageSize);
+        serverManagerClient = new ServerManagerClient(partnerOMASServerName, partnerOMASPlatformRootURL, restClient, maxPageSize);
     }
 
+
+    /**
+     * Retrieve the metadata source's unique identifier (GUID) or if it is not defined, create the software server capability
+     * for this API manager.
+     *
+     * @param metadataSourceQualifiedName unique name of the software server capability that represents this integration service
+     *
+     * @return unique identifier of the metadata source
+     *
+     * @throws InvalidParameterException one of the parameters passed (probably on initialize) is invalid
+     * @throws UserNotAuthorizedException the integration daemon's userId does not have access to the partner OMAS
+     * @throws PropertyServerException there is a problem in the remote server running the partner OMAS
+     */
+    private String setUpMetadataSource(String   metadataSourceQualifiedName) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        final String metadataSourceQualifiedNameParameterName = "metadataSourceQualifiedName";
+        final String methodName = "setUpMetadataSource";
+
+        InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+
+        invalidParameterHandler.validateName(metadataSourceQualifiedName,
+                                             metadataSourceQualifiedNameParameterName,
+                                             methodName);
+
+        String metadataSourceGUID = null;
+
+        List<SoftwareCapabilityElement> softwareCapabilityElements = capabilityManagerClient.getSoftwareCapabilitiesByName(localServerUserId, metadataSourceQualifiedName, null, 0 , 0);
+
+        if ((softwareCapabilityElements != null) && (! softwareCapabilityElements.isEmpty()))
+        {
+            metadataSourceGUID = softwareCapabilityElements.get(0).getElementHeader().getGUID();
+        }
+
+        if (metadataSourceGUID == null)
+        {
+            SoftwareCapabilityProperties properties = new SoftwareCapabilityProperties();
+
+            properties.setQualifiedName(metadataSourceQualifiedName);
+
+            metadataSourceGUID = capabilityManagerClient.createSoftwareCapability(localServerUserId, null, null, false, null, properties);
+        }
+
+        return metadataSourceGUID;
+    }
 
     /**
      * Set up the context in the supplied connector. This is called between initialize() and start() on the connector.
@@ -123,11 +219,28 @@ public class InfrastructureIntegratorContextManager extends IntegrationContextMa
 
             InfrastructureIntegratorConnector serviceSpecificConnector = (InfrastructureIntegratorConnector)integrationConnector;
 
-            if (context == null)
-            {
-                context = new InfrastructureIntegratorContext();
-            }
+            String metadataSourceGUID = this.setUpMetadataSource(metadataSourceQualifiedName);
+            ITInfrastructureEventClient eventClient = new ITInfrastructureEventClient(partnerOMASServerName,
+                                                                                      partnerOMASPlatformRootURL,
+                                                                                      restClient,
+                                                                                      maxPageSize,
+                                                                                      auditLog,
+                                                                                      connectorId);
 
+            serviceSpecificConnector.setContext(new InfrastructureIntegratorContext(capabilityManagerClient,
+                                                                                    connectionManagerClient,
+                                                                                    connectorTypeManagerClient,
+                                                                                    dataAssetManagerClient,
+                                                                                    endpointManagerClient,
+                                                                                    hostManagerClient,
+                                                                                    itProfileManagerClient,
+                                                                                    platformManagerClient,
+                                                                                    processManagerClient,
+                                                                                    serverManagerClient,
+                                                                                    eventClient,
+                                                                                    localServerUserId,
+                                                                                    metadataSourceGUID,
+                                                                                    metadataSourceQualifiedName));
         }
         else
         {

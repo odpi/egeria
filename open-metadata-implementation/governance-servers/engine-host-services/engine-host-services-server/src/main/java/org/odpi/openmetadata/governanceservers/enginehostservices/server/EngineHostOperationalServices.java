@@ -321,6 +321,7 @@ public class EngineHostOperationalServices
                          */
                         AuditLog engineServicesAuditLog
                                 = auditLog.createNewAuditLog(engineServiceConfig.getEngineServiceId(),
+                                                             engineServiceConfig.getEngineServiceDevelopmentStatus(),
                                                              engineServiceConfig.getEngineServiceFullName(),
                                                              engineServiceConfig.getEngineServiceDescription(),
                                                              engineServiceConfig.getEngineServiceWiki());

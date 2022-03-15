@@ -139,8 +139,11 @@ public class IntegrationServiceHandler
                 {
                     IntegrationConnectorReport connectorReport = new IntegrationConnectorReport();
 
+                    connectorReport.setConnectorId(connectorHandler.getIntegrationConnectorId());
                     connectorReport.setConnectorName(connectorHandler.getIntegrationConnectorName());
                     connectorReport.setConnectorStatus(connectorHandler.getIntegrationConnectorStatus());
+                    connectorReport.setConnection(connectorHandler.getConnection());
+                    connectorReport.setConnectorInstanceId(connectorHandler.getIntegrationConnectorInstanceId());
                     connectorReport.setFailingExceptionMessage(connectorHandler.getFailingExceptionMessage());
                     connectorReport.setStatistics(connectorHandler.getStatistics());
                     connectorReport.setLastStatusChange(connectorHandler.getLastStatusChange());

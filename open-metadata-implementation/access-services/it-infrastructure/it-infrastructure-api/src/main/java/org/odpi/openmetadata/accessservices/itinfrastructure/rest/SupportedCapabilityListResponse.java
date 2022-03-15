@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SupportedCapabilityElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.DeployedCapabilityElement;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,7 +25,7 @@ public class SupportedCapabilityListResponse extends ITInfrastructureOMASAPIResp
 {
     private static final long    serialVersionUID = 1L;
 
-    private List<SupportedCapabilityElement> elements = null;
+    private List<DeployedCapabilityElement> elements = null;
 
 
     /**
@@ -58,7 +58,7 @@ public class SupportedCapabilityListResponse extends ITInfrastructureOMASAPIResp
      *
      * @return list of assets
      */
-    public List<SupportedCapabilityElement> getElements()
+    public List<DeployedCapabilityElement> getElements()
     {
         if (elements == null)
         {
@@ -80,7 +80,7 @@ public class SupportedCapabilityListResponse extends ITInfrastructureOMASAPIResp
      *
      * @param elements list of assets
      */
-    public void setElements(List<SupportedCapabilityElement> elements)
+    public void setElements(List<DeployedCapabilityElement> elements)
     {
         this.elements = elements;
     }

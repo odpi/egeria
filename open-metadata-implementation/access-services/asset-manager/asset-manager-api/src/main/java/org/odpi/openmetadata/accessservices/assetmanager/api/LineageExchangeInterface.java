@@ -34,6 +34,7 @@ public interface LineageExchangeInterface extends SchemaExchangeInterface
      * @param processExternalIdentifierSource component that issuing this request.
      * @param processExternalIdentifierKeyPattern pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
      * @param mappingProperties additional properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param processStatus initial status of the process
      * @param processProperties properties about the process to store
      *
      * @return unique identifier of the new process
@@ -52,6 +53,7 @@ public interface LineageExchangeInterface extends SchemaExchangeInterface
                          String              processExternalIdentifierSource,
                          KeyPattern          processExternalIdentifierKeyPattern,
                          Map<String, String> mappingProperties,
+                         ProcessStatus       processStatus,
                          ProcessProperties   processProperties) throws InvalidParameterException,
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException;

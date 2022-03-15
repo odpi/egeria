@@ -33,7 +33,7 @@ public class KafkaOpenMetadataTopicProvider extends OpenMetadataTopicProvider
     private static final String connectorQualifiedName = "Egeria:OpenMetadataTopicConnector:Kafka";
     private static final String connectorDisplayName   = "Apache Kafka Open Metadata Topic Connector";
     private static final String connectorDescription   = "Apache Kafka Open Metadata Topic Connector supports string based events over an Apache Kafka event bus.";
-    private static final String connectorWikiPage      = "https://odpi.github.io/egeria-docs/connectors/resource/kafka-open-metadata-topic-connector/";
+    private static final String connectorWikiPage      = "https://egeria-project.org/connectors/resource/kafka-open-metadata-topic-connector/";
 
     /*
      * Class of the connector.

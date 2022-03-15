@@ -97,6 +97,7 @@ public class CreateDiscoveryReportTest
 
         AuditLog auditLog = new AuditLog(auditLogDestination,
                                          AccessServiceDescription.DISCOVERY_ENGINE_OMAS.getAccessServiceCode(),
+                                         AccessServiceDescription.DISCOVERY_ENGINE_OMAS.getAccessServiceDevelopmentStatus(),
                                          AccessServiceDescription.DISCOVERY_ENGINE_OMAS.getAccessServiceName(),
                                          AccessServiceDescription.DISCOVERY_ENGINE_OMAS.getAccessServiceDescription(),
                                          AccessServiceDescription.DISCOVERY_ENGINE_OMAS.getAccessServiceWiki());

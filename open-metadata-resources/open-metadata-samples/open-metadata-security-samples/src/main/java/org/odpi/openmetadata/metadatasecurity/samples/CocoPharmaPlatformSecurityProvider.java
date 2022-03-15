@@ -28,7 +28,7 @@ public class CocoPharmaPlatformSecurityProvider extends OpenMetadataPlatformSecu
     private static final String connectorQualifiedName = "Egeria:Sample:PlatformSecurity:CocoPharmaceuticals";
     private static final String connectorDisplayName   = "Coco Pharmaceuticals Platform Security Connector";
     private static final String connectorDescription   = "Connector supports a hard-coded user registry and authorization rules for Coco Pharmaceuticals.";
-    private static final String connectorWikiPage      = "https://odpi.github.io/egeria-docs/connectors/runtime/coco-pharma-platform-metadata-security-connector";
+    private static final String connectorWikiPage      = "https://egeria-project.org/connectors/runtime/coco-pharma-platform-metadata-security-connector";
 
     /*
      * Class of the connector.

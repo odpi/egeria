@@ -56,7 +56,7 @@ public class EventBrokerRESTServices
     /**
      * Create a new metadata element to represent a topic.
      *
-     * @param serverName name of the service to route the request to.
+     * @param serverName name of the server to route the request to.
      * @param userId calling user
      * @param eventBrokerIsHome should the topic be marked as owned by the event broker so others can not update?
      * @param requestBody properties to store

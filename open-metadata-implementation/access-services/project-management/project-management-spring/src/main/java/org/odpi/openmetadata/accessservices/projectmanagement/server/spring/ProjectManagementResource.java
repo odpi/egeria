@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/project-management/users/{userId}")
 
 @Tag(name="Project Managemen OMASt", description="The Project Management OMAS provides APIs and events for tools and applications that support project leaders - particularly those who are leading governance projects." +
-        "\n", externalDocs=@ExternalDocumentation(description="Project Management Open Metadata Access Service (OMAS)",url="https://odpi.github.io/egeria-docs/services/omas/project-management/overview/"))
+        "\n", externalDocs=@ExternalDocumentation(description="Project Management Open Metadata Access Service (OMAS)",url="https://egeria-project.org/services/omas/project-management/overview/"))
 
 public class ProjectManagementResource
 {

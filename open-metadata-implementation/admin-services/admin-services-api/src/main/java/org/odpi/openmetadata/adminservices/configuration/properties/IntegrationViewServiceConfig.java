@@ -95,17 +95,20 @@ public class IntegrationViewServiceConfig extends ViewServiceConfig {
     public String toString()
     {
         return "IntegrationViewServiceConfig{" +
-                "viewServiceId=" + getViewServiceId() +
-                ", viewServiceAdminClass='" + getViewServiceAdminClass() + '\'' +
-                ", viewServiceName='" + getViewServiceName() + '\'' +
-                ", viewServiceFullName='" + getViewServiceFullName() + '\'' +
-                ", viewServiceURLMarker='" + getViewServiceURLMarker() + '\'' +
-                ", viewServiceDescription='" + getViewServiceDescription() + '\'' +
-                ", viewServiceWiki='" + getViewServiceWiki() + '\'' +
-                ", viewServiceOperationalStatus=" + getViewServiceOperationalStatus() +
-                ", viewServiceOptions=" + getViewServiceOptions() +
-                ", resourceEndpoints=" + getResourceEndpoints() +
-                '}';
+                       "resourceEndpoints=" + resourceEndpoints +
+                       ", viewServiceId=" + getViewServiceId() +
+                       ", viewServiceDevelopmentStatus=" + getViewServiceDevelopmentStatus() +
+                       ", viewServiceAdminClass='" + getViewServiceAdminClass() + '\'' +
+                       ", viewServiceFullName='" + getViewServiceFullName() + '\'' +
+                       ", viewServiceName='" + getViewServiceName() + '\'' +
+                       ", viewServiceURLMarker='" + getViewServiceURLMarker() + '\'' +
+                       ", viewServiceDescription='" + getViewServiceDescription() + '\'' +
+                       ", viewServiceWiki='" + getViewServiceWiki() + '\'' +
+                       ", viewServiceOperationalStatus=" + getViewServiceOperationalStatus() +
+                       ", viewServiceOptions=" + getViewServiceOptions() +
+                       ", OMAGServerPlatformRootURL='" + getOMAGServerPlatformRootURL() + '\'' +
+                       ", OMAGServerName='" + getOMAGServerName() + '\'' +
+                       '}';
     }
 
 
@@ -126,17 +129,12 @@ public class IntegrationViewServiceConfig extends ViewServiceConfig {
         {
             return false;
         }
+        if (! super.equals(objectToCompare))
+        {
+            return false;
+        }
         IntegrationViewServiceConfig that = (IntegrationViewServiceConfig) objectToCompare;
-        return getViewServiceId() == that.getViewServiceId() &&
-                Objects.equals(getViewServiceAdminClass(), that.getViewServiceAdminClass()) &&
-                Objects.equals(getViewServiceName(), that.getViewServiceName()) &&
-                Objects.equals(getViewServiceFullName(), that.getViewServiceFullName()) &&
-                Objects.equals(getViewServiceURLMarker(), that.getViewServiceURLMarker()) &&
-                Objects.equals(getViewServiceDescription(), that.getViewServiceDescription()) &&
-                Objects.equals(getViewServiceWiki(), that.getViewServiceWiki()) &&
-                getViewServiceOperationalStatus() == that.getViewServiceOperationalStatus() &&
-                Objects.equals(getViewServiceOptions(), that.getViewServiceOptions()) &&
-                Objects.equals(getResourceEndpoints(), that.getResourceEndpoints()) ;
+        return Objects.equals(resourceEndpoints, that.resourceEndpoints);
     }
 
 

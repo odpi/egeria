@@ -32,7 +32,7 @@ public class InMemoryOpenMetadataTopicProvider extends OpenMetadataTopicProvider
     private static final String connectorQualifiedName = "Egeria:OpenMetadataTopicConnector:InMemory";
     private static final String connectorDisplayName   = "In Memory Open Metadata Topic Connector";
     private static final String connectorDescription   = "In Memory Open Metadata Topic Connector supports string based events over an in memory event bus.";
-    private static final String connectorWikiPage      = "https://odpi.github.io/egeria-docs/connectors/resource/in-mem-open-metadata-topic-connector/";
+    private static final String connectorWikiPage      = "https://egeria-project.org/connectors/resource/in-mem-open-metadata-topic-connector/";
 
     /*
      * Class of the connector.

@@ -32,7 +32,7 @@ public class DirectoryBasedOpenMetadataArchiveStoreProvider extends OpenMetadata
     private static final String connectorQualifiedName = "Egeria:OpenMetadataArchiveStoreConnector:Directory";
     private static final String connectorDisplayName   = "Directory-based Open Metadata Archive Store Connector";
     private static final String connectorDescription   = "Connector supports storing of an open metadata archive in a directory where each metadata element is in its own file stored using JSON format.";
-    private static final String connectorWikiPage      = "https://odpi.github.io/egeria-docs/connectors/runtime/directory-based-open-metadata-archive-store-connector";
+    private static final String connectorWikiPage      = "https://egeria-project.org/connectors/runtime/directory-based-open-metadata-archive-store-connector";
 
     /*
      * Class of the connector.
