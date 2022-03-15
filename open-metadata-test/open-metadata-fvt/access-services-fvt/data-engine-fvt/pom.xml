@@ -171,7 +171,6 @@
                                 <baseURL>https://localhost:${serverPort}</baseURL>
                                 <serverPort>${server.port}</serverPort>
                                 <serverInMemory>${server.in-memory-graph.name}</serverInMemory>
-                                <serverLocalGraph>${server.local-graph.name}</serverLocalGraph>
                                 <user>${user}</user>
                                 <retries>${retries}</retries>
                                 <delay>${delay}</delay>
