@@ -234,6 +234,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
      * @param correlationProperties  properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param assetManagerIsHome ensure that only the process manager can update this process
      * @param processProperties properties about the process to store
+     * @param processStatus initial status of the process
      * @param methodName calling method
      *
      * @return unique identifier of the new process
@@ -246,6 +247,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                 MetadataCorrelationProperties correlationProperties,
                                 boolean                       assetManagerIsHome,
                                 ProcessProperties             processProperties,
+                                ProcessStatus                 processStatus,
                                 String                        methodName) throws InvalidParameterException,
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
@@ -275,7 +277,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                                           processProperties.getAdditionalProperties(),
                                                           typeName,
                                                           processProperties.getExtendedProperties(),
-                                                          this.getInstanceStatus(processProperties.getProcessStatus()),
+                                                          this.getInstanceStatus(processStatus),
                                                           methodName);
 
         if (processGUID != null)

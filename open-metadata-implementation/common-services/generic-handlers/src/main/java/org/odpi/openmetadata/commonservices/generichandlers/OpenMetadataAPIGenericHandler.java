@@ -253,17 +253,17 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                     PropertyServerException,
                                                                                     UserNotAuthorizedException
     {
-        setClassificationInRepository(userId,
-                                      null,
-                                      null,
-                                      beanGUID,
-                                      beanGUIDParameterName,
-                                      beanGUIDTypeName,
-                                      classificationTypeGUID,
-                                      classificationTypeName,
-                                      classificationProperties,
-                                      false,
-                                      methodName);
+        this.setClassificationInRepository(userId,
+                                           null,
+                                           null,
+                                           beanGUID,
+                                           beanGUIDParameterName,
+                                           beanGUIDTypeName,
+                                           classificationTypeGUID,
+                                           classificationTypeName,
+                                           classificationProperties,
+                                           false,
+                                           methodName);
     }
 
 
@@ -300,20 +300,90 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                     PropertyServerException,
                                                                                     UserNotAuthorizedException
     {
-        setClassificationInRepository(userId,
-                                      externalSourceGUID,
-                                      externalSourceName,
-                                      beanGUID,
-                                      beanGUIDParameterName,
-                                      beanGUIDTypeName,
-                                      classificationTypeGUID,
-                                      classificationTypeName,
-                                      classificationProperties,
-                                      isMergeUpdate,
-                                      false,
-                                      false,
-                                      null,
-                                      methodName);
+        this.setClassificationInRepository(userId,
+                                           externalSourceGUID,
+                                           externalSourceName,
+                                           beanGUID,
+                                           beanGUIDParameterName,
+                                           beanGUIDTypeName,
+                                           classificationTypeGUID,
+                                           classificationTypeName,
+                                           classificationProperties,
+                                           isMergeUpdate,
+                                           false,
+                                           false,
+                                           null,
+                                           methodName);
+    }
+
+
+    /**
+     * Add the requested classification to the matching entity in the repository.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param beanGUID unique identifier of the entity in the repositories
+     * @param beanGUIDParameterName parameter name that passed the beanGUID
+     * @param beanGUIDTypeName type of bean
+     * @param classificationTypeGUID unique identifier of classification type
+     * @param classificationTypeName unique name of classification type
+     * @param effectiveFrom when should relationship be effective - null means immediately
+     * @param effectiveTo when should relationship no longer be effective - null means never
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param isMergeUpdate should the properties be merged with the existing properties or completely over-write them
+     * @param classificationProperties properties to save in the classification
+     * @param methodName calling method
+     * @throws InvalidParameterException the classification name is null
+     * @throws PropertyServerException there is a problem with the repositories
+     * @throws UserNotAuthorizedException the user is not allowed to update the security tags
+     */
+    public void setClassificationInRepository(String              userId,
+                                              String              externalSourceGUID,
+                                              String              externalSourceName,
+                                              String              beanGUID,
+                                              String              beanGUIDParameterName,
+                                              String              beanGUIDTypeName,
+                                              String              classificationTypeGUID,
+                                              String              classificationTypeName,
+                                              Date                effectiveFrom,
+                                              Date                effectiveTo,
+                                              boolean             forLineage,
+                                              boolean             forDuplicateProcessing,
+                                              boolean             isMergeUpdate,
+                                              Map<String, Object> classificationProperties,
+                                              String              methodName) throws InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException
+    {
+        Date effectiveTime = getEffectiveTime(effectiveFrom, effectiveTo);
+
+        InstanceProperties instanceProperties = null;
+
+        try
+        {
+            instanceProperties = repositoryHelper.addPropertyMapToInstance(serviceName, null, classificationProperties, methodName);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException error)
+        {
+            final String  propertyName = "relationshipProperties";
+
+            errorHandler.handleUnsupportedProperty(error, methodName, propertyName);
+        }
+
+        if ((effectiveFrom != null) || (effectiveTo != null))
+        {
+            if (instanceProperties == null)
+            {
+                instanceProperties = new InstanceProperties();
+            }
+
+            instanceProperties.setEffectiveFromTime(effectiveFrom);
+            instanceProperties.setEffectiveToTime(effectiveTo);
+        }
+
+        this.setClassificationInRepository(userId, externalSourceGUID, externalSourceName, beanGUID, beanGUIDParameterName, beanGUIDTypeName, classificationTypeGUID, classificationTypeName, instanceProperties, isMergeUpdate, forLineage, forDuplicateProcessing, effectiveTime, methodName);
     }
 
 
@@ -402,6 +472,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param classificationProperties properties to save in the classification
      * @param isMergeUpdate should the properties be merged with the existing properties or completely over-write them
      * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param forLineage the query is for lineage so ignore Memento classifications
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @throws InvalidParameterException the classification name is null
@@ -943,6 +1014,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param relationshipGUIDTypeName type of relationship
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param effectiveTime what is the effective time for related queries needed to do the update
      * @param methodName calling method
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
@@ -2493,114 +2565,6 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                                           error.getClass().getName(),
                                                                                                           error.getMessage()),
                                       error);
-            }
-
-            /*
-             * Now need to ensure that the anchor's classification is pushed down to the dependent elements.  This is done by retrieving the
-             * relationships.
-             */
-            RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
-                                                                                           localServerUserId,
-                                                                                           targetGUID,
-                                                                                           targetEntity.getType().getTypeDefName(),
-                                                                                           null,
-                                                                                           null,
-                                                                                           false,
-                                                                                           0,
-                                                                                           invalidParameterHandler.getMaxPagingSize(),
-                                                                                           effectiveTime,
-                                                                                           methodName);
-
-            while (iterator.moreToReceive())
-            {
-                Relationship relationship = iterator.getNext();
-
-                /*
-                 * This if statement should always be true.
-                 */
-                if ((relationship != null) && (relationship.getType() != null) &&
-                    (relationship.getEntityOneProxy() != null) && (relationship.getEntityTwoProxy() != null))
-                {
-                    String entityOneGUID = relationship.getEntityOneProxy().getGUID();
-                    String entityTwoGUID = relationship.getEntityTwoProxy().getGUID();
-
-                    switch (relationship.getType().getTypeDefGUID())
-                    {
-                        /*
-                         * These relationships all have the parent at end one.  We then need to push the anchor guid down to the entity at end two.
-                         */
-                        case OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_GUID:
-                        case OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID:
-                        case OpenMetadataAPIMapper.REFERENCEABLE_TO_COMMENT_TYPE_GUID:
-                        case OpenMetadataAPIMapper.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_GUID:
-                        case OpenMetadataAPIMapper.REFERENCEABLE_TO_LIKE_TYPE_GUID:
-                        case OpenMetadataAPIMapper.REFERENCEABLE_TO_RATING_TYPE_GUID:
-                        case OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID:
-                        case OpenMetadataAPIMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID:
-                        case OpenMetadataAPIMapper.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_GUID:
-                        case OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID:
-                        case OpenMetadataAPIMapper.API_OPERATIONS_RELATIONSHIP_TYPE_GUID:
-                        case OpenMetadataAPIMapper.API_HEADER_RELATIONSHIP_TYPE_GUID:
-                        case OpenMetadataAPIMapper.API_REQUEST_RELATIONSHIP_TYPE_GUID:
-                        case OpenMetadataAPIMapper.API_RESPONSE_RELATIONSHIP_TYPE_GUID:
-                        case OpenMetadataAPIMapper.MAP_TO_RELATIONSHIP_TYPE_GUID:
-                        case OpenMetadataAPIMapper.MAP_FROM_RELATIONSHIP_TYPE_GUID:
-                        case OpenMetadataAPIMapper.PERSONAL_CONTRIBUTION_RELATIONSHIP_TYPE_GUID:
-                            if (entityOneGUID.equals(targetGUID))
-                            {
-                                final String proxyTwoGUIDParameterName = "proxyTwoGUID";
-
-                                this.maintainAnchorGUIDInClassification(entityTwoGUID,
-                                                                        proxyTwoGUIDParameterName,
-                                                                        relationship.getEntityTwoProxy().getType().getTypeDefName(),
-                                                                        relationship.getEntityTwoProxy(),
-                                                                        anchorGUID,
-                                                                        forLineage,
-                                                                        forDuplicateProcessing,
-                                                                        effectiveTime,
-                                                                        methodName);
-                            }
-                            break;
-
-                        /*
-                         * These relationships point to entities of types that may or may not be anchored to the parent.
-                         * It is necessary to retrieve the entity and only update its Anchors classification if it is anchored.
-                         * It is only allowed to be connected to one entity if it is anchored.  If it could be anchored to one entity and then
-                         * connected to another then this logic does not work.
-                         */
-                        case OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_GUID:
-                        case OpenMetadataAPIMapper.REFERENCEABLE_TO_REFERENCE_VALUE_TYPE_GUID:
-                        case OpenMetadataAPIMapper.REFERENCEABLE_TO_NOTE_LOG_TYPE_GUID:
-                            if (entityOneGUID.equals(targetGUID))
-                            {
-                                final String proxyTwoGUIDParameterName = "proxyTwoGUID";
-                                EntityDetail proxyTwoAnchor = this.validateAnchorEntity(localServerUserId,
-                                                                                        entityTwoGUID,
-                                                                                        proxyTwoGUIDParameterName,
-                                                                                        relationship.getEntityTwoProxy().getType().getTypeDefName(),
-                                                                                        true,
-                                                                                        forLineage,
-                                                                                        forDuplicateProcessing,
-                                                                                        supportedZones,
-                                                                                        effectiveTime,
-                                                                                        methodName);
-                                if (proxyTwoAnchor != null)
-                                {
-                                    this.maintainAnchorGUIDInClassification(entityTwoGUID,
-                                                                            proxyTwoGUIDParameterName,
-                                                                            relationship.getEntityTwoProxy().getType().getTypeDefName(),
-                                                                            relationship.getEntityTwoProxy(),
-                                                                            anchorGUID,
-                                                                            forLineage,
-                                                                            forDuplicateProcessing,
-                                                                            effectiveTime,
-                                                                            methodName);
-                                }
-                            }
-
-                            break;
-                    }
-                }
             }
         }
     }
@@ -4262,67 +4226,83 @@ public class OpenMetadataAPIGenericHandler<B>
 
         InstanceProperties newProperties = null;
 
-        try
+        String anchorTypeName = anchorEntity.getType().getTypeDefName();
+
+        /*
+         * Only adding latest change classification to anchors that are Assets or Glossaries.
+         */
+        if ((repositoryHelper.isTypeOf(serviceName, anchorTypeName, OpenMetadataAPIMapper.ASSET_TYPE_NAME)) ||
+            (repositoryHelper.isTypeOf(serviceName, anchorTypeName, OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME)))
         {
-            invalidParameterHandler.validateObject(anchorEntity, guidParameterName, methodName);
-
-            newProperties = this.getLatestChangeClassificationProperties(latestChangeTargetOrdinal,
-                                                                         latestChangeActionOrdinal,
-                                                                         classificationName,
-                                                                         attachmentGUID,
-                                                                         attachmentTypeName,
-                                                                         relationshipTypeName,
-                                                                         userId,
-                                                                         actionDescription,
-                                                                         methodName);
-
-            Classification classification = repositoryHelper.getClassificationFromEntity(serviceName,
-                                                                                         anchorEntity,
-                                                                                         OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_NAME,
-                                                                                         methodName);
-            if (classification != null)
+            try
             {
-                repositoryHandler.reclassifyEntity(localServerUserId,
-                                                   null,
-                                                   null,
-                                                   anchorEntity.getGUID(),
-                                                   guidParameterName,
-                                                   anchorEntity.getType().getTypeDefName(),
-                                                   OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_GUID,
-                                                   OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_NAME,
-                                                   classification,
-                                                   newProperties,
-                                                   false,
-                                                   false,
-                                                   new Date(),
-                                                   methodName);
+                invalidParameterHandler.validateObject(anchorEntity, guidParameterName, methodName);
+
+                newProperties = this.getLatestChangeClassificationProperties(latestChangeTargetOrdinal,
+                                                                             latestChangeActionOrdinal,
+                                                                             classificationName,
+                                                                             attachmentGUID,
+                                                                             attachmentTypeName,
+                                                                             relationshipTypeName,
+                                                                             userId,
+                                                                             actionDescription,
+                                                                             methodName);
+
+                Classification classification = repositoryHelper.getClassificationFromEntity(serviceName,
+                                                                                             anchorEntity,
+                                                                                             OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_NAME,
+                                                                                             methodName);
+                if (classification != null)
+                {
+                    repositoryHandler.reclassifyEntity(localServerUserId,
+                                                       null,
+                                                       null,
+                                                       anchorEntity.getGUID(),
+                                                       guidParameterName,
+                                                       anchorEntity.getType().getTypeDefName(),
+                                                       OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_GUID,
+                                                       OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_NAME,
+                                                       classification,
+                                                       newProperties,
+                                                       false,
+                                                       false,
+                                                       null,
+                                                       methodName);
+                }
             }
-        }
-        catch (ClassificationErrorException newClassificationNeeded)
-        {
-            /*
-             * This is not an error - it just means that the classification is not present on the anchor entity.
-             */
-            repositoryHandler.classifyEntity(localServerUserId,
-                                             null,
-                                             null,
-                                             anchorEntity.getGUID(),
-                                             anchorEntity,
-                                             guidParameterName,
-                                             anchorEntity.getType().getTypeDefName(),
-                                             OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_GUID,
-                                             OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_NAME,
-                                             ClassificationOrigin.ASSIGNED,
-                                             null,
-                                             newProperties,
-                                             false,
-                                             false,
-                                             new Date(),
-                                             methodName);
-        }
-        catch (InvalidParameterException | TypeErrorException error)
-        {
-            throw new PropertyServerException(error);
+            catch (ClassificationErrorException newClassificationNeeded)
+            {
+                /*
+                 * This is not an error - it just means that the classification is not present on the anchor entity.
+                 */
+                try
+                {
+                    repositoryHandler.classifyEntity(localServerUserId,
+                                                    null,
+                                                    null,
+                                                    anchorEntity.getGUID(),
+                                                    anchorEntity,
+                                                    guidParameterName,
+                                                    anchorEntity.getType().getTypeDefName(),
+                                                    OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_GUID,
+                                                    OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_NAME,
+                                                    ClassificationOrigin.ASSIGNED,
+                                                    null,
+                                                    newProperties,
+                                                    false,
+                                                    false,
+                                                     null,
+                                                     methodName);
+                }
+                catch (PropertyServerException e)
+                {
+                    // Ignore exception, possibly a race condition - the entity is already classified
+                }
+            }
+            catch (InvalidParameterException | TypeErrorException error)
+            {
+                throw new PropertyServerException(error);
+            }
         }
     }
 
@@ -7759,6 +7739,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param entityGUID unique identifier of object to update
      * @param entityTypeName unique name of the entity's type
      * @param methodName calling method
+     * @return test results
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem removing the properties from the repository.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -8420,6 +8401,8 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param requiredClassificationName  String the name of the classification that must be on the attached entity.
      * @param omittedClassificationName   String the name of a classification that must not be on the attached entity.
      * @param selectionEnd 0 means either end, 1 means only take from end 1, 2 means only take from end 2
+     * @param forDuplicateProcessing this request os for duplicate processing so do not deduplicate
+     * @param forLineage this request is for lineage so ignore Memento classifications
      * @param startingFrom start position for results
      * @param pageSize     maximum number of results
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -10249,6 +10232,8 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param serviceSupportedZones list of supported zones for this service.
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique value of the type that the results should match with
+     * @param forDuplicateProcessing this request os for duplicate processing so do not deduplicate
+     * @param forLineage this request is for lineage so ignore Memento classifications
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
@@ -11910,6 +11895,8 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param resultTypeGUID unique identifier of the type that the results should match with
      * @param resultTypeName unique name of the type that the results should match with
      * @param serviceSupportedZones list of supported zones for this service
+     * @param forDuplicateProcessing this request os for duplicate processing so do not deduplicate
+     * @param forLineage this request is for lineage so ignore Memento classifications
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
@@ -12306,6 +12293,95 @@ public class OpenMetadataAPIGenericHandler<B>
                                          relationshipTypeGUID,
                                          relationshipTypeName,
                                          relationshipProperties,
+                                         methodName);
+    }
+
+
+    /**
+     * Creates a relationship between two elements and updates the LatestChange in each one's anchor entity (if they have one).
+     * Both elements must be visible to the user to allow the link.
+     *
+     * @param userId                    userId of user making request
+     * @param externalSourceGUID        guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName        name of the software server capability entity that represented the external source
+     * @param startingGUID              unique id for the starting element's entity
+     * @param startingGUIDParameterName name of the parameter supplying the startingGUID
+     * @param startingElementTypeName   type name of the starting element's entity
+     * @param attachingGUID             unique id of the entity for the element that is being attached
+     * @param attachingGUIDParameterName name of the parameter supplying the attachingGUID
+     * @param attachingElementTypeName  type name of the attaching element's entity
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param relationshipTypeGUID      unique identifier of type of the relationship to create
+     * @param relationshipTypeName      unique name of type of the relationship to create
+     * @param effectiveFrom             the date when this element is active - null for active now
+     * @param effectiveTo               the date when this element becomes inactive - null for active until deleted
+     * @param relationshipProperties    properties to add to the relationship or null if no properties to add
+     * @param methodName                calling method
+     *
+     * @return unique identifier of the new relationship
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem updating the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public String linkElementToElement(String              userId,
+                                       String              externalSourceGUID,
+                                       String              externalSourceName,
+                                       String              startingGUID,
+                                       String              startingGUIDParameterName,
+                                       String              startingElementTypeName,
+                                       String              attachingGUID,
+                                       String              attachingGUIDParameterName,
+                                       String              attachingElementTypeName,
+                                       boolean             forLineage,
+                                       boolean             forDuplicateProcessing,
+                                       String              relationshipTypeGUID,
+                                       String              relationshipTypeName,
+                                       Date                effectiveFrom,
+                                       Date                effectiveTo,
+                                       Map<String, Object> relationshipProperties,
+                                       String              methodName) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException
+    {
+        InstanceProperties instanceProperties = null;
+
+        try
+        {
+            instanceProperties = repositoryHelper.addPropertyMapToInstance(serviceName, null, relationshipProperties, methodName);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException error)
+        {
+            final String  propertyName = "relationshipProperties";
+
+            errorHandler.handleUnsupportedProperty(error, methodName, propertyName);
+        }
+
+        if ((effectiveFrom != null) || (effectiveTo != null))
+        {
+            if (instanceProperties == null)
+            {
+                instanceProperties = new InstanceProperties();
+            }
+
+            instanceProperties.setEffectiveFromTime(effectiveFrom);
+            instanceProperties.setEffectiveToTime(effectiveTo);
+        }
+
+        return this.linkElementToElement(userId,
+                                         externalSourceGUID,
+                                         externalSourceName,
+                                         startingGUID,
+                                         startingGUIDParameterName,
+                                         startingElementTypeName,
+                                         attachingGUID,
+                                         attachingGUIDParameterName,
+                                         attachingElementTypeName,
+                                         forLineage,
+                                         forDuplicateProcessing,
+                                         relationshipTypeGUID,
+                                         relationshipTypeName,
+                                         instanceProperties,
                                          methodName);
     }
 
@@ -13049,6 +13125,317 @@ public class OpenMetadataAPIGenericHandler<B>
                                                  startingGUID,
                                                  startingElementTypeName,
                                                  attachmentTypeName,
+                                                 userId,
+                                                 actionDescription,
+                                                 methodName);
+                }
+
+                /*
+                 * Now that this relationship is in place, the anchorGUID may now be set up
+                 */
+                this.reEvaluateAnchorGUID(attachingGUID,
+                                          attachingGUIDParameterName,
+                                          attachingElementTypeName,
+                                          attachingElementEntity,
+                                          null,
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          effectiveTime,
+                                          methodName);
+            }
+        }
+    }
+
+
+    /**
+     * Updates a relationship between two elements and updates the LatestChange in each one's anchor entity (if they have one).
+     * Both elements must be visible to the user to allow the update.
+     *
+     * @param userId                    userId of user making request
+     * @param externalSourceGUID        guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName        name of the software server capability entity that represented the external source
+     * @param relationshipGUID          unique identifier of the relationship
+     * @param relationshipGUIDParameterName name of the parameter supplying the relationshipGUID
+     * @param relationshipTypeName      name of the relationship type
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param isMergeUpdate             should the supplied properties be merged with existing properties (true) by replacing the just the properties with
+     *                                  matching names, or should the entire properties of the instance be replaced?
+     * @param relationshipProperties    properties to add to the relationship or null if no properties to add
+     * @param methodName                calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem adding the relationship to the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void updateElementToElementLink(String              userId,
+                                           String              externalSourceGUID,
+                                           String              externalSourceName,
+                                           String              relationshipGUID,
+                                           String              relationshipGUIDParameterName,
+                                           String              relationshipTypeName,
+                                           boolean             forLineage,
+                                           boolean             forDuplicateProcessing,
+                                           boolean             isMergeUpdate,
+                                           Date                effectiveFrom,
+                                           Date                effectiveTo,
+                                           Map<String, Object> relationshipProperties,
+                                           String              methodName) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
+    {
+        InstanceProperties instanceProperties = null;
+
+        try
+        {
+            instanceProperties = repositoryHelper.addPropertyMapToInstance(serviceName, null, relationshipProperties, methodName);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException error)
+        {
+            final String  propertyName = "relationshipProperties";
+
+            errorHandler.handleUnsupportedProperty(error, methodName, propertyName);
+        }
+
+        if ((effectiveFrom != null) || (effectiveTo != null))
+        {
+            if (instanceProperties == null)
+            {
+                instanceProperties = new InstanceProperties();
+            }
+
+            instanceProperties.setEffectiveFromTime(effectiveFrom);
+            instanceProperties.setEffectiveToTime(effectiveTo);
+        }
+
+
+        this.updateElementToElementLink(userId,
+                                        externalSourceGUID,
+                                        externalSourceName,
+                                        relationshipGUID,
+                                        relationshipGUIDParameterName,
+                                        relationshipTypeName,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        supportedZones,
+                                        isMergeUpdate,
+                                        instanceProperties,
+                                        methodName);
+    }
+
+
+    /**
+     * Updates a relationship between two elements and updates the LatestChange in each one's anchor entity (if they have one).
+     * Both elements must be visible to the user to allow the update.
+     *
+     * @param userId                    userId of user making request
+     * @param externalSourceGUID        guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName        name of the software server capability entity that represented the external source
+     * @param relationshipGUID          unique identifier of the relationship
+     * @param relationshipGUIDParameterName name of the parameter supplying the relationshipGUID
+     * @param relationshipTypeName      name of the relationship type
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param suppliedSupportedZones    list of zones that any asset must be a member of at least one to be visible
+     * @param isMergeUpdate             should the supplied properties be merged with existing properties (true) by replacing the just the properties with
+     *                                  matching names, or should the entire properties of the instance be replaced?
+     * @param relationshipProperties    properties to add to the relationship or null if no properties to add
+     * @param methodName                calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem adding the relationship to the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void updateElementToElementLink(String             userId,
+                                           String             externalSourceGUID,
+                                           String             externalSourceName,
+                                           String             relationshipGUID,
+                                           String             relationshipGUIDParameterName,
+                                           String             relationshipTypeName,
+                                           boolean            forLineage,
+                                           boolean            forDuplicateProcessing,
+                                           List<String>       suppliedSupportedZones,
+                                           boolean            isMergeUpdate,
+                                           InstanceProperties relationshipProperties,
+                                           String             methodName) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(relationshipGUID, relationshipGUIDParameterName, methodName);
+
+        Date effectiveTime = getEffectiveTime(relationshipProperties);
+
+        Relationship relationship = repositoryHandler.getRelationshipByGUID(userId,
+                                                                            relationshipGUID,
+                                                                            relationshipGUIDParameterName,
+                                                                            relationshipTypeName,
+                                                                            null,
+                                                                            methodName);
+
+        if (relationship != null)
+        {
+            final String startingGUIDParameterName = "relationship.getEntityOneProxy().getGUID()";
+            final String attachingGUIDParameterName = "relationship.getEntityTwoProxy().getGUID()";
+
+            String startingGUID = relationship.getEntityOneProxy().getGUID();
+            String attachingGUID = relationship.getEntityTwoProxy().getGUID();
+
+            String startingElementTypeName = relationship.getEntityOneProxy().getType().getTypeDefName();
+            String attachingElementTypeName = relationship.getEntityTwoProxy().getType().getTypeDefName();
+
+            EntityDetail startingElementEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                                   startingGUID,
+                                                                                   startingGUIDParameterName,
+                                                                                   startingElementTypeName,
+                                                                                   forLineage,
+                                                                                   forDuplicateProcessing,
+                                                                                   effectiveTime,
+                                                                                   methodName);
+
+            EntityDetail startingElementAnchorEntity = this.validateAnchorEntity(userId,
+                                                                                 startingGUID,
+                                                                                 startingElementTypeName,
+                                                                                 startingElementEntity,
+                                                                                 startingGUIDParameterName,
+                                                                                 false,
+                                                                                 forLineage,
+                                                                                 forDuplicateProcessing,
+                                                                                 suppliedSupportedZones,
+                                                                                 effectiveTime,
+                                                                                 methodName);
+
+            String startingElementAnchorGUID = startingGUID;
+
+            if (startingElementAnchorEntity != null)
+            {
+                startingElementAnchorGUID = startingElementAnchorEntity.getGUID();
+            }
+
+            EntityDetail  attachingElementEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                                     attachingGUID,
+                                                                                     attachingGUIDParameterName,
+                                                                                     attachingElementTypeName,
+                                                                                     forLineage,
+                                                                                     forDuplicateProcessing,
+                                                                                     effectiveTime,
+                                                                                     methodName);
+
+            EntityDetail attachingElementAnchorEntity = this.validateAnchorEntity(userId,
+                                                                                  attachingGUID,
+                                                                                  attachingElementTypeName,
+                                                                                  attachingElementEntity,
+                                                                                  attachingGUIDParameterName,
+                                                                                  false,
+                                                                                  forLineage,
+                                                                                  forDuplicateProcessing,
+                                                                                  suppliedSupportedZones,
+                                                                                  effectiveTime,
+                                                                                  methodName);
+
+            /*
+             * The calls above validate the existence of the two entities and that they are visible to the user.
+             * An exception is thrown if there are any problems.
+             * The anchor entities are returned if there are anchor entities associated with a specific end.
+             * Now ready to update the relationship
+             */
+
+            InstanceProperties newProperties = setUpNewProperties(isMergeUpdate,
+                                                                  relationshipProperties,
+                                                                  relationship.getProperties());
+
+            repositoryHandler.updateRelationshipProperties(userId,
+                                                           externalSourceGUID,
+                                                           externalSourceName,
+                                                           relationship,
+                                                           newProperties,
+                                                           methodName);
+
+
+            /*
+             * Set up LatestChange classification if there are any anchor entities returned from the initial validation.
+             */
+            final String actionDescriptionTemplate = "Updating link from %s %s to %s %s";
+
+            String actionDescription = String.format(actionDescriptionTemplate,
+                                                     startingElementTypeName,
+                                                     startingGUID,
+                                                     attachingElementTypeName,
+                                                     attachingGUID);
+
+            if (startingElementAnchorEntity != null)
+            {
+                this.addLatestChangeToAnchor(startingElementAnchorEntity,
+                                             OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                             OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             null,
+                                             attachingGUID,
+                                             attachingElementTypeName,
+                                             relationshipTypeName,
+                                             userId,
+                                             actionDescription,
+                                             methodName);
+            }
+            else
+            {
+                if (repositoryHelper.isTypeOf(serviceName, startingElementEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
+                {
+                    this.addLatestChangeToAnchor(startingElementEntity,
+                                                 OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                                 OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                                 null,
+                                                 attachingGUID,
+                                                 attachingElementTypeName,
+                                                 relationshipTypeName,
+                                                 userId,
+                                                 actionDescription,
+                                                 methodName);
+                }
+
+                /*
+                 * Now that this relationship is in place, the anchorGUID might be set up
+                 */
+                this.reEvaluateAnchorGUID(startingGUID,
+                                          startingGUIDParameterName,
+                                          startingElementTypeName,
+                                          startingElementEntity,
+                                          null,
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          effectiveTime,
+                                          methodName);
+            }
+
+            if (attachingElementAnchorEntity != null)
+            {
+                /*
+                 * Only need to add latestChange if the anchor of the attached element is different
+                 */
+                if (! attachingElementAnchorEntity.getGUID().equals(startingElementAnchorGUID))
+                {
+                    this.addLatestChangeToAnchor(attachingElementAnchorEntity,
+                                                 OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                                 OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                                 null,
+                                                 startingGUID,
+                                                 startingElementTypeName,
+                                                 relationshipTypeName,
+                                                 userId,
+                                                 actionDescription,
+                                                 methodName);
+                }
+            }
+            else
+            {
+                if (repositoryHelper.isTypeOf(serviceName, startingElementEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
+                {
+                    this.addLatestChangeToAnchor(attachingElementEntity,
+                                                 OpenMetadataAPIMapper.ENTITY_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL,
+                                                 OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL,
+                                                 null,
+                                                 startingGUID,
+                                                 startingElementTypeName,
+                                                 relationshipTypeName,
                                                  userId,
                                                  actionDescription,
                                                  methodName);
@@ -14344,4 +14731,129 @@ public class OpenMetadataAPIGenericHandler<B>
                                                 externalSourceGUID);
         }
     }
+
+    /**
+     * Test whether an entity is of a particular type or not. Internally it delegates to {@link RepositoryHandler#isEntityATypeOf}
+     *
+     * @param userId calling user
+     * @param guid unique identifier of the entity.
+     * @param guidParameterName name of the parameter containing the guid.
+     * @param entityTypeName name of the type to test for
+     * @param methodName calling method
+     *
+     * @return boolean flag
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the entity.
+     */
+    public boolean isEntityATypeOf(String userId,
+                                   String guid,
+                                   String guidParameterName,
+                                   String entityTypeName,
+                                   String methodName) throws InvalidParameterException,
+                                                             PropertyServerException,
+                                                             UserNotAuthorizedException {
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(guid, "GUID", methodName);
+        invalidParameterHandler.validateObject(entityTypeName, "entityTypeName", methodName);
+
+        EntityDetail entityDetail = this.getEntityFromRepository(userId, guid, guidParameterName, entityTypeName,
+                null, null, false, false,
+                null, methodName);
+
+        return entityDetail != null && entityDetail.getType().getTypeDefName().equals(entityTypeName);
+    }
+
+    /**
+     * Return a list of entities that match the supplied criteria.  The results can be returned over many pages.
+     * Internally it delegates to {@link RepositoryHandler#findEntities}
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
+     * @param entitySubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the entityTypeGUID to
+     *                           include in the search results. Null means all subtypes.
+     * @param searchProperties Optional list of entity property conditions to match.
+     * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values.
+     * @param searchClassifications Optional list of entity classifications to match.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the entity property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param startingFrom the starting element number of the entities to return.
+     *                                This is used when retrieving elements
+     *                                beyond the first page of results. Zero means start from the first element.
+     * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
+     *                 unrestricted return results size.
+     * @param methodName calling method
+     * @return a list of entities matching the supplied criteria; null means no matching entities in the metadata
+     * collection; list (even if empty) means more to receive
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the entity.
+     */
+    public List<EntityDetail> findEntities(String                userId,
+                                           String                entityTypeGUID,
+                                           List<String>          entitySubtypeGUIDs,
+                                           SearchProperties      searchProperties,
+                                           List<InstanceStatus>  limitResultsByStatus,
+                                           SearchClassifications searchClassifications,
+                                           Date                  asOfTime,
+                                           String                sequencingProperty,
+                                           SequencingOrder       sequencingOrder,
+                                           boolean               forLineage,
+                                           boolean               forDuplicateProcessing,
+                                           int                   startingFrom,
+                                           int                   pageSize,
+                                           String                methodName) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException {
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
+
+
+        /*
+         * Now need to ensure that the anchor's classification is pushed down to the dependent elements.  This is done by retrieving the
+         * relationships.
+         */
+        RepositoryFindEntitiesIterator iterator = new RepositoryFindEntitiesIterator(repositoryHandler,
+                                                                                     userId,
+                                                                                     entityTypeGUID,
+                                                                                     entitySubtypeGUIDs,
+                                                                                     searchProperties,
+                                                                                     limitResultsByStatus,
+                                                                                     searchClassifications,
+                                                                                     asOfTime,
+                                                                                     sequencingProperty,
+                                                                                     sequencingOrder,
+                                                                                     forLineage,
+                                                                                     forDuplicateProcessing,
+                                                                                     startingFrom,
+                                                                                     queryPageSize,
+                                                                                     null,
+                                                                                     methodName);
+
+        List<EntityDetail> results = new ArrayList<>();
+
+        while ((iterator.moreToReceive()) && ((queryPageSize == 0) || (results.size() < queryPageSize)))
+        {
+            EntityDetail entity = iterator.getNext();
+
+            if (entity != null)
+            {
+                results.add(entity);
+            }
+        }
+
+        if (! results.isEmpty())
+        {
+            return results;
+        }
+
+        return null;
+    }
+
 }

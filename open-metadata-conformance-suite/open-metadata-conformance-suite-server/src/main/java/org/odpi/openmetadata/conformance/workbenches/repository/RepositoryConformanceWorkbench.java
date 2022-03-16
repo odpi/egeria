@@ -261,6 +261,37 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
                     workPad.addRelationshipEndTypes(relationshipTypeName, entityOneTypeName, entityTwoTypeName);
                     workPad.addEntityRelationshipType(entityOneTypeName, relationshipTypeName, 1);
                     workPad.addEntityRelationshipType(entityTwoTypeName, relationshipTypeName, 2);
+
+                    /*
+                     * For this relationship type - find ALL its supertypes and add the relationship type name to their subtype map entries.
+                     */
+                    OMRSRepositoryConnector cohortRepositoryConnector = null;
+                    OMRSRepositoryHelper repositoryHelper = null;
+                    if (workPad != null)
+                    {
+                        cohortRepositoryConnector = workPad.getTutRepositoryConnector();
+                        repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
+                    }
+
+                    /*
+                     * All relationship defs are read from the known types (using the repository helper), not from the gallery returned by
+                     * the repository
+                     */
+                    RelationshipDef knownDef = (RelationshipDef) repositoryHelper.getTypeDefByName(workPad.getLocalServerUserId(), relationshipTypeName);
+
+                    TypeDefLink superType = knownDef.getSuperType();
+
+                    while (superType != null)
+                    {
+
+                        String superTypeName = superType.getName();
+                        // Add current type (name) to subtype map for superType
+                        workPad.addRelationshipSubType(superTypeName, relationshipTypeName);
+                        knownDef = (RelationshipDef) repositoryHelper.getTypeDefByName(workPad.getLocalServerUserId(), superTypeName);
+                        superType = knownDef.getSuperType();
+
+                    }
+
                 }
 
             }

@@ -12,10 +12,6 @@ buildscript {
     repositories {
         mavenCentral()
     }
-
-    dependencies {
-        classpath 'com.netflix.nebula:gradle-aggregate-javadocs-plugin:3.0.1'
-    }
 }
 
 /*
@@ -23,16 +19,9 @@ buildscript {
  */
 
 plugins {
-        //id "nebula.lint" version "16.9.0"
-        //id "nebula-aggregate-javadocs"
-        id "io.freefair.lombok" version "6.3.0"
+        id "io.freefair.aggregate-javadoc" version "6.4.1"
+        id "io.freefair.lombok" version "6.4.1"
     }
-
-/* run './gradlew aggregateJavadocs' at top level to build all docs & output to build/docs/javadoc */
-apply plugin: 'nebula-aggregate-javadocs'
-
-
-
 
 /*
  * Configuration for all projects - INCLUDING this one
@@ -41,31 +30,22 @@ apply plugin: 'nebula-aggregate-javadocs'
 allprojects {
 
     group = 'org.odpi.egeria'
-    version = '3.5-SNAPSHOT'
-
-    // This enforces version checking but is slow to process
-    //apply plugin: 'nebula.lint'
-    //gradleLint {
-    //    rules = ['all-dependency'] // TODO: Change to criticalRules when ready to enforce
-    //
-    //}
-
-
-    //apply plugin: "io.spring.dependency-management"
+    version = '3.7-SNAPSHOT'
 
     // Mostly java, so default to this for now
     apply plugin: 'java'
     apply plugin: 'jacoco'
+    //apply plugin: 'io.freefair.lombok'
 
     // As we've migrated from maven - we'll assume all submodules publish directly to maven
     apply plugin: 'maven-publish'
 
     repositories {
-        jcenter()
-            maven {
-                url "https://maven.atlassian.com/3rdparty"
-            }
+        mavenCentral()
+        maven {
+            url "https://maven.atlassian.com/3rdparty"
         }
+    }
 
     /*
      * Dependency Management - to fix versions. Pick up maven build settings for now
@@ -76,7 +56,7 @@ allprojects {
     ext {
         antlrVersion = '3.5.2'
         avroVersion = '1.11.0'
-        classgraphVersion = '4.8.138'
+        classgraphVersion = '4.8.141'
         classmateVersion = '1.5.1'
         collections4Version='4.4'
         commonscodecVersion = '1.15'
@@ -85,12 +65,12 @@ allprojects {
         commonsioVersion = '2.11.0'
         commonsloggingVersion = '1.2'
         commonstextVersion = '1.9'
-        elasticsearchVersion = '7.15.2'
+        elasticsearchVersion = '7.17.1'
         findbugsVersion = '3.0.2'
         glassfishVersion = '1.1.4'
         gremlinVersion = '3.5.1'
         groovyVersion = '3.0.9'
-        guavaVersion = '31.0.1-jre'
+        guavaVersion = '31.1-jre'
         hamcrestVersion = '2.2'
         hdrhistogramVersion = '2.1.12'
         hibernatevalidatorVersion = '6.2.0.Final'
@@ -100,8 +80,8 @@ allprojects {
         jacksonaslVersion = '1.9.14-atlassian-6'
         jakartaannotationVersion = '1.3.5'
         jakartapersistenceVersion = '2.2.3'
-	jakartavalidationVersion = '3.0.0'
-        janusVersion = '0.6.0'
+        janusVersion = '0.6.1'
+	    jakartavalidationVersion = '3.0.1'
         javassistVersion = '3.28.0-GA'
         jaxbVersion = '2.3.1'
         jenaVersion = '4.2.0'
@@ -111,37 +91,37 @@ allprojects {
         junitjupiterVersion = '5.8.2'
         junitplatformVersion = '1.8.2'
         jwtVersion = '0.9.1'
-        kafkaVersion = '3.0.0'
+        kafkaVersion = '3.1.0'
         lang3Version='3.8.1'
-        lettuceVersion = '6.1.5.RELEASE'
+        lettuceVersion = '6.1.6.RELEASE'
         logbackVersion = '1.2.10'
         luceneVersion = '8.11.1'
-        mockitoVersion = '4.2.0'
-        nettyVersion = '4.1.72.Final'
-        openlineageVersion = '0.4.0'
-        ossVersion = '4.13.0'
+        nettyVersion = '4.1.74.Final'
+        openlineageVersion = '0.5.2'
+        mockitoVersion = '4.3.1'
+        ossVersion = '4.14.0'
         plexusVersion = '3.4.1'
-        prometheusVersion = '1.8.1'
+        prometheusVersion = '1.8.3'
         quartzVersion = '2.3.2'
         reflectionsVersion = '0.10.2'
         sanitizerVersion = '1.2.3'
         servletVersion = '4.0.1'
         sleepycatVersion = '18.3.12'
-        slf4jVersion = '1.7.32'
+        slf4jVersion = '1.7.36'
         snakeyamlVersion = '1.30'
         snappyVersion = '1.1.8.4'
-        spotbugsVersion = '4.5.2'
-        springbootVersion = '2.6.2'
-        springdataVersion = '2.6.0'
-        springdocVersion = '1.6.3'
+        springdataVersion = '2.6.2'
+        springbootVersion = '2.6.4'
+        spotbugsVersion = '4.5.3'
+        springdocVersion = '1.6.6'
         springldapVersion = '2.3.5.RELEASE'
-        springsecurityVersion = '5.6.1'
-        springwebVersion = '5.3.14'
-        swaggerVersion = '2.1.12'
-        testngVersion = '7.4.0'
-        thriftVersion = '0.15.0'
+        springsecurityVersion = '5.6.2'
+        swaggerVersion = '2.1.13'
+        springwebVersion = '5.3.16'
+        testngVersion = '7.5'
+        thriftVersion = '0.16.0'
         tinkVersion = '1.6.1'
-        tomcatVersion = '9.0.56'
+        tomcatVersion = '9.0.59'
         validationVersion = '2.0.1.Final'
     }
 
@@ -213,8 +193,8 @@ allprojects {
             implementation("org.codehaus.groovy:groovy-templates:${groovyVersion}")
             implementation("org.codehaus.groovy:groovysh:${groovyVersion}")
             compileOnly("org.elasticsearch:elasticsearch:${elasticsearchVersion}")
-            compileOnly("org.elasticsearch.client:elasticsearch-rest-high-level-client:${elasticsearchVersion}")
             implementation("org.elasticsearch.client:elasticsearch-rest-client:${elasticsearchVersion}")
+            implementation("co.elastic.clients:elasticsearch-java:${elasticsearchVersion}")
             implementation("org.codehaus.plexus:plexus-utils:${plexusVersion}")
             implementation("org.hdrhistogram:HdrHistogram:${hdrhistogramVersion}")
             implementation("org.janusgraph:janusgraph-core:${janusVersion}")
@@ -313,7 +293,19 @@ allprojects {
     task printSubDependencies(type: DependencyReportTask) {}
     task findDependency(type: DependencyInsightReportTask) {}
 
-
+    // Whilst all modules have their own javadoc, we only build
+    // an aggregate for the client and API modules
+    javadoc {
+        include ( "**/*api/**/*.java" )
+        include ( "**/*client/**/*.java" )
+        include ( "**/*framework/**/*.java" )
+        // See 6148 - additional refinements
+        include ( "**/accessservices/dataengine/**/*.java" )
+        exclude ( "**/accessservices/dataengine/server/**/*.java" )
+        exclude ( "**/accessservices/**/connectors/**/*.java" )
+        exclude ( "**/fvt/client/**/*.java" )
+        exclude ( "**/userinterface/**/*.java" )
+    }
 
 }
 
@@ -340,12 +332,12 @@ task codeCoverageReport(type: JacocoReport) {
     reports {
         // xml is usually used to integrate code coverage with
         // other tools like SonarQube, Coveralls or Codecov
-        xml.enabled true
+        xml.required = true
 
         // HTML reports can be used to see code coverage
         // without any external tools
-        html.enabled true
-        csv.enabled true
+        html.required = true
+        csv.required = true
     }
 
 }

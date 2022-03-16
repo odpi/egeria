@@ -35,7 +35,7 @@ task fatJar(type: Jar) {
     manifest {
         attributes 'Main-Class': ''
     }
-    baseName = project.name + '-jar-with-dependencies'
+    archiveBaseName = project.name + '-jar-with-dependencies'
 
     duplicatesStrategy = 'include'
     from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }

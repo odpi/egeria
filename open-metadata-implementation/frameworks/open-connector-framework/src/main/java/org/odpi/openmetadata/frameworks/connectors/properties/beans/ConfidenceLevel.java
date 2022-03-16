@@ -64,6 +64,8 @@ public enum ConfidenceLevel implements Serializable
         this.name            = name;
         this.description     = description;
     }
+
+
     /**
      * Return the code for this enum used for indexing based on the enum value.
      *

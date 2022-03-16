@@ -10,7 +10,7 @@
     <parent>
         <artifactId>it-infrastructure</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.5-SNAPSHOT</version>
+        <version>3.7-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -63,6 +63,11 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>it-infrastructure-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>it-infrastructure-topic-connectors</artifactId>
         </dependency>
 
         <dependency>

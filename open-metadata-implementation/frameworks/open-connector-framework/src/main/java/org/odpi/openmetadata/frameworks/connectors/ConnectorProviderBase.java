@@ -80,6 +80,17 @@ public abstract class ConnectorProviderBase extends ConnectorProvider implements
 
 
     /**
+     * Return the component description that is used by this connector in the audit log.
+     *
+     * @return id, name, description, wiki page URL.
+     */
+    public ComponentDescription getConnectorComponentDescription()
+    {
+        return connectorComponentDescription;
+    }
+
+
+    /**
      * Update the class name for this connector provider.
      *
      * @param newConnectorClassName   this must be a valid Java class name for a class that implements the
@@ -112,6 +123,7 @@ public abstract class ConnectorProviderBase extends ConnectorProvider implements
      *
      * @param auditLog audit log object
      */
+    @Override
     public void setAuditLog(AuditLog auditLog)
     {
         this.auditLog = auditLog;
@@ -124,6 +136,7 @@ public abstract class ConnectorProviderBase extends ConnectorProvider implements
      * @return properties including the name of the connector type, the connector provider class
      * and any specific connection properties that are recognized by this connector.
      */
+    @Override
     public ConnectorTypeProperties getConnectorTypeProperties()
     {
         if (connectorTypeBean == null)
@@ -255,6 +268,7 @@ public abstract class ConnectorProviderBase extends ConnectorProvider implements
                     else
                     {
                         ((AuditLoggingComponent) connector).setAuditLog(auditLog.createNewAuditLog(connectorComponentDescription.getComponentId(),
+                                                                                                   connectorComponentDescription.getComponentDevelopmentStatus(),
                                                                                                    connectorComponentDescription.getComponentName() + ":" + guid,
                                                                                                    connectorComponentDescription.getComponentType(),
                                                                                                    connectorComponentDescription.getComponentWikiURL()));

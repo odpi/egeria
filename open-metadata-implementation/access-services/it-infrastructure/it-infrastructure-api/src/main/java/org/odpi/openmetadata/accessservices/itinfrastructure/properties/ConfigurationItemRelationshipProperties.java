@@ -28,7 +28,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = ServerAssetUseProperties.class, name = "ServerAssetUseProperties"),
-                @JsonSubTypes.Type(value = SupportedCapabilityProperties.class, name = "SupportedCapabilityProperties"),
+                @JsonSubTypes.Type(value = CapabilityDeploymentProperties.class, name = "CapabilityDeploymentProperties"),
         })
 public class ConfigurationItemRelationshipProperties implements Serializable
 {

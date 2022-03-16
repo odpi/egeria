@@ -98,28 +98,6 @@ public class DataManagerOutTopicPublisher
         event.setEventType(eventType);
         event.setPrincipleElement(elementStub);
         event.setClassificationName(classificationName);
-
-        if (outTopicAuditLog != null)
-        {
-            if (classificationName == null)
-            {
-                outTopicAuditLog.logMessage(actionDescription,
-                                            DataManagerAuditCode.OUTBOUND_ENTITY_EVENT.getMessageDefinition(eventType.getEventTypeName(),
-                                                                                                            elementGUID,
-                                                                                                            elementTypeName),
-                                            elementStub.toString());
-            }
-            else
-            {
-                outTopicAuditLog.logMessage(actionDescription,
-                                            DataManagerAuditCode.OUTBOUND_CLASSIFICATION_EVENT.getMessageDefinition(eventType.getEventTypeName(),
-                                                                                                                    elementGUID,
-                                                                                                                    elementTypeName,
-                                                                                                                    classificationName),
-                                            elementStub.toString());
-            }
-        }
-
         sendEvent(event, elementGUID, elementTypeName);
     }
 
@@ -147,20 +125,6 @@ public class DataManagerOutTopicPublisher
         event.setPrincipleElement(relationshipElementStub);
         event.setEndOneElement(endOneElementStub);
         event.setEndTwoElement(endTwoElementStub);
-
-        if (outTopicAuditLog != null)
-        {
-            outTopicAuditLog.logMessage(actionDescription,
-                                        DataManagerAuditCode.OUTBOUND_RELATIONSHIP_EVENT.getMessageDefinition(eventType.getEventTypeName(),
-                                                                                                              relationshipGUID,
-                                                                                                              relationshipTypeName,
-                                                                                                              endOneElementStub.getType().getTypeName(),
-                                                                                                              endOneElementStub.getGUID(),
-                                                                                                              endTwoElementStub.getType().getTypeName(),
-                                                                                                              endTwoElementStub.getGUID()),
-                                        relationshipElementStub.toString());
-        }
-
         sendEvent(event, relationshipGUID, relationshipTypeName);
     }
 

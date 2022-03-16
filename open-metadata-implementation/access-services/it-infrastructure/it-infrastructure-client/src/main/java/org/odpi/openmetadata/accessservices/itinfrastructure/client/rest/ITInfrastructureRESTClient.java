@@ -597,6 +597,33 @@ public class ITInfrastructureRESTClient extends OCFRESTClient
 
 
     /**
+     * Issue a POST REST call that returns an asset in a response object.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param requestBody request body for the request
+     * @param params  a list of parameters that are slotted into the url template
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public AssetResponse callAssetPostRESTCall(String    methodName,
+                                               String    urlTemplate,
+                                               Object    requestBody,
+                                               Object... params)  throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        AssetResponse restResult = this.callPostRESTCall(methodName, AssetResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
      * Issue a GET REST call that returns a list of AssetElements in a response object.
      *
      * @param methodName  name of the method being called
@@ -622,7 +649,7 @@ public class ITInfrastructureRESTClient extends OCFRESTClient
 
 
     /**
-     * Issue a POST REST call that returns a list of SoftwareServerPlatformElements in a response object.
+     * Issue a POST REST call that returns a list of AssetElements in a response object.
      *
      * @param methodName  name of the method being called
      * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
@@ -641,6 +668,60 @@ public class ITInfrastructureRESTClient extends OCFRESTClient
                                                                                  PropertyServerException
     {
         AssetListResponse restResult = this.callPostRESTCall(methodName, AssetListResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a POST REST call that returns a list of AssetRelationshipListResponse in a response object.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param requestBody request body for the request
+     * @param params  a list of parameters that are slotted into the url template
+     * @return response objects
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public AssetRelationshipListResponse callAssetRelationshipListPostRESTCall(String    methodName,
+                                                                               String    urlTemplate,
+                                                                               Object    requestBody,
+                                                                               Object... params)  throws InvalidParameterException,
+                                                                                                         UserNotAuthorizedException,
+                                                                                                         PropertyServerException
+    {
+        AssetRelationshipListResponse restResult = this.callPostRESTCall(methodName, AssetRelationshipListResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a POST REST call that returns a list of RelatedAssetElements in a response object.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param requestBody request body for the request
+     * @param params  a list of parameters that are slotted into the url template
+     * @return response objects
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public RelatedAssetListResponse callRelatedAssetListPostRESTCall(String    methodName,
+                                                                     String    urlTemplate,
+                                                                     Object    requestBody,
+                                                                     Object... params)  throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
+    {
+        RelatedAssetListResponse restResult = this.callPostRESTCall(methodName, RelatedAssetListResponse.class, urlTemplate, requestBody, params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 
@@ -751,33 +832,4 @@ public class ITInfrastructureRESTClient extends OCFRESTClient
 
         return restResult;
     }
-
-
-
-    /**
-     * Issue a POST REST call that returns a list of SupportedCapabilityElements in a response object.
-     *
-     * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
-     * @param requestBody request body for the request
-     * @param params  a list of parameters that are slotted into the url template
-     * @return response objects
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     */
-    public PlatformDeploymentListResponse callPlatformDeploymentListPostRESTCall(String    methodName,
-                                                                                 String    urlTemplate,
-                                                                                 Object    requestBody,
-                                                                                 Object... params)  throws InvalidParameterException,
-                                                                                                           UserNotAuthorizedException,
-                                                                                                           PropertyServerException
-    {
-        PlatformDeploymentListResponse restResult = this.callPostRESTCall(methodName, PlatformDeploymentListResponse.class, urlTemplate, requestBody, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
 }

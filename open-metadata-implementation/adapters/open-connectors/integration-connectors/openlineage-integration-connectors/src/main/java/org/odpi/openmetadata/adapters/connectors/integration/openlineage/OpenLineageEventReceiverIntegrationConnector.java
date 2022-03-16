@@ -23,8 +23,7 @@ import java.util.Map;
  * OpenLineageEventReceiverIntegrationConnector receives open lineage events from an event broker such as an Apache Kafka topic.
  * It publishes them to other listening lineage integration connectors.
  */
-public class OpenLineageEventReceiverIntegrationConnector extends LineageIntegratorConnector implements OpenMetadataTopicListener,
-                                                                                                        VirtualConnectorExtension
+public class OpenLineageEventReceiverIntegrationConnector extends LineageIntegratorConnector implements OpenMetadataTopicListener
 {
     private LineageIntegratorContext                myContext       = null;
     private Map<String, OpenMetadataTopicConnector> topicConnectors = new HashMap<>();
@@ -52,45 +51,6 @@ public class OpenLineageEventReceiverIntegrationConnector extends LineageIntegra
 
 
     /**
-     * Set up the list of connectors that this virtual connector will use to support its interface.
-     * The connectors are initialized waiting to start.  When start() is called on the
-     * virtual connector, it needs to pass start() to each of the embedded connectors. Similarly for
-     * disconnect().
-     *
-     * @param embeddedConnectors  list of connectors
-     */
-    public void initializeEmbeddedConnectors(List<Connector> embeddedConnectors)
-    {
-        if (embeddedConnectors != null)
-        {
-            for (Connector embeddedConnector : embeddedConnectors)
-            {
-                if (embeddedConnector instanceof OpenMetadataTopicConnector)
-                {
-                    /*
-                     * Register this connector as a listener of the event bus connector.
-                     */
-                    OpenMetadataTopicConnector topicConnector = (OpenMetadataTopicConnector)embeddedConnector;
-                    topicConnector.registerListener(this);
-
-                    ConnectionProperties connectionProperties = topicConnector.getConnection();
-
-                    if (connectionProperties != null)
-                    {
-                        EndpointProperties endpoint = connectionProperties.getEndpoint();
-
-                        if (endpoint != null)
-                        {
-                            topicConnectors.put(endpoint.getAddress(), topicConnector);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-
-    /**
      * Indicates that the connector is completely configured and can begin processing.
      * This call can be used to register with non-blocking services.
      *
@@ -107,6 +67,33 @@ public class OpenLineageEventReceiverIntegrationConnector extends LineageIntegra
 
         if (myContext != null)
         {
+            if (embeddedConnectors != null)
+            {
+                for (Connector embeddedConnector : embeddedConnectors)
+                {
+                    if (embeddedConnector instanceof OpenMetadataTopicConnector)
+                    {
+                        /*
+                         * Register this connector as a listener of the event bus connector.
+                         */
+                        OpenMetadataTopicConnector topicConnector = (OpenMetadataTopicConnector)embeddedConnector;
+                        topicConnector.registerListener(this);
+
+                        ConnectionProperties connectionProperties = topicConnector.getConnection();
+
+                        if (connectionProperties != null)
+                        {
+                            EndpointProperties endpoint = connectionProperties.getEndpoint();
+
+                            if (endpoint != null)
+                            {
+                                topicConnectors.put(endpoint.getAddress(), topicConnector);
+                            }
+                        }
+                    }
+                }
+            }
+
             for (String topicName : topicConnectors.keySet())
             {
                 OpenMetadataTopicConnector topicConnector = topicConnectors.get(topicName);

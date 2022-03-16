@@ -40,15 +40,6 @@ public enum KafkaIntegrationConnectorAuditCode implements AuditLogMessageSet
                                   "Use the messages that where subsequently logged during the error handling to discover how to restart the " +
                                   "connector in the integration daemon once the original cause of the error has been corrected."),
 
-    BAD_FOLDER_ELEMENT("KAFKA-INTEGRATION-CONNECTOR-0003",
-                       OMRSAuditLogRecordSeverity.ERROR,
-                       "The {0} integration connector retrieved an incomplete FileFolder asset for event broker {1}: {2}",
-                       "The metadata element for the event broker that was retrieved from the open metadata repositories has missing " +
-                               "information.  This is likely to be a logic error in the Topic Integrator OMIS or Data Manager OMAS.",
-                       "Look for errors in the audit logs for the integration daemon where the connector and Topic Integrator OMIS are " +
-                               "running and the metadata server where the Data Manager OMAS is running.  Collect these diagnostics and " +
-                               "ask the Egeria community for help to determine why the FileFolder asset is incomplete."),
-
     UNABLE_TO_RETRIEVE_TOPICS("KAFKA-INTEGRATION-CONNECTOR-0004",
                             OMRSAuditLogRecordSeverity.EXCEPTION,
                             "The {0} integration connector received an unexpected {2} exception when retrieving topics from event broker at {1}.  The error message was {3}",
@@ -67,15 +58,6 @@ public enum KafkaIntegrationConnectorAuditCode implements AuditLogMessageSet
                                   "The {0} integration connector has stopped its topic monitoring and is shutting down",
                                   "The connector is disconnecting.",
                                   "No action is required unless there are errors that follow indicating that there were problems shutting down."),
-
-    BAD_TOPIC_ELEMENT("KAFKA-INTEGRATION-CONNECTOR-0013",
-                       OMRSAuditLogRecordSeverity.ERROR,
-                       "The {0} integration connector retrieved an incomplete Topic asset: {1}",
-                       "The metadata element for the topic that was retrieved from the open metadata repositories has missing " +
-                               "information.  This is likely to be a logic error in the Topic Integrator OMIS or Data Manager OMAS.",
-                       "Look for errors in the audit logs for the integration daemon where the connector and Topic Integrator OMIS are " +
-                               "running and the metadata server where the Data Manager OMAS is running.  Collect these diagnostics and " +
-                               "ask the Egeria community for help to determine why the Topic element is incomplete."),
 
     UNEXPECTED_EXC_TOPIC_UPDATE("KAFKA-INTEGRATION-CONNECTOR-0014",
                                  OMRSAuditLogRecordSeverity.EXCEPTION,

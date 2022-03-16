@@ -16,5 +16,4 @@ public class FVTConstants
      */
     public final static String SERVER_PLATFORM_URL_ROOT = "https://localhost:10443";
     public final static String IN_MEMORY_SERVER         = "serverinmem";
-    public final static String GRAPH_SERVER             = "servergraph";
 }

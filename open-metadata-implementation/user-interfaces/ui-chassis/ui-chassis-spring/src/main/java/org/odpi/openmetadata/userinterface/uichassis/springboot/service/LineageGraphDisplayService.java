@@ -49,56 +49,6 @@ public class LineageGraphDisplayService {
         }
     }
 
-    /**
-     * sets the level field for the nodes, in order to be displayed on levels
-     * Stars from a start list of nodes and sets a the level+1 for the nodes on the ends of "to" edges and
-     * legel -1 for the nodes from the "from" end of it's edges
-     * once an edge or node is processed is removed from the list.
-     *
-     * @param startNodes the starting nodes
-     * @param listNodes  the list of nodes
-     * @param listEdges  the list of edges
-     */
-    public void setNodesLevel(List<Node> startNodes, List<Node> listNodes, List<Edge> listEdges) {
-
-        ArrayList<Node> newStartNodes = new ArrayList<>();
-
-        ListIterator<Edge> edgeListIterator = listEdges.listIterator();
-
-        while (edgeListIterator.hasNext()) {
-            Edge e = edgeListIterator.next();
-            for (Node node : startNodes) {
-                if (node.getId().equals(e.getFrom())) {
-
-                    listNodes.stream()
-                            .filter(n -> n.getLevel() == 0 && n.getId().equals(e.getTo()))
-                            .forEach(item -> {
-                                item.setLevel(node.getLevel() + 1);
-                                newStartNodes.add(item);
-                                edgeListIterator.remove();
-                            });
-
-                } else if (node.getId().equals(e.getTo())) {
-
-                    listNodes.stream()
-                            .filter(n -> n.getLevel() == 0 && n.getId().equals(e.getFrom()))
-                            .forEach(item -> {
-                                item.setLevel(node.getLevel() - 1);
-                                newStartNodes.add(item);
-                                edgeListIterator.remove();
-                            });
-
-                }
-                listNodes.removeAll(newStartNodes);
-            }
-
-        }
-
-        if (!newStartNodes.isEmpty() && !listEdges.isEmpty()) {
-            setNodesLevel(newStartNodes, listNodes, listEdges);
-        }
-    }
-
     @Override
     public String toString() {
         return "LineageGraphDisplayRulesService{" +

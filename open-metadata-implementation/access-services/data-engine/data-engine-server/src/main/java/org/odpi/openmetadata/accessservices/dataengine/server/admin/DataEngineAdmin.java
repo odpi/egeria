@@ -121,7 +121,7 @@ public class DataEngineAdmin extends AccessServiceAdmin {
     private OpenMetadataTopicConnector getTopicConnector(Connection topicConnection) throws
                                                                                      OMAGConfigurationErrorException {
         try {
-            ConnectorBroker connectorBroker = new ConnectorBroker();
+            ConnectorBroker connectorBroker = new ConnectorBroker(auditLog);
 
             OpenMetadataTopicConnector topicConnector = (OpenMetadataTopicConnector) connectorBroker.getConnector(topicConnection);
 

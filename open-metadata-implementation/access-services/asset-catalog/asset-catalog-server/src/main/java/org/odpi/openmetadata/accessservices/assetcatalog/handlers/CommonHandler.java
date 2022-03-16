@@ -58,7 +58,7 @@ public class CommonHandler {
      * @param repositoryHelper  provides utilities for manipulating the repository services objects
      * @param errorHandler      provides common validation routines for the other handler classes
      */
-    CommonHandler(String sourceName, RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper, RepositoryErrorHandler errorHandler) {
+    public CommonHandler(String sourceName, RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper, RepositoryErrorHandler errorHandler) {
         this.sourceName = sourceName;
         this.repositoryHandler = repositoryHandler;
         this.repositoryHelper = repositoryHelper;

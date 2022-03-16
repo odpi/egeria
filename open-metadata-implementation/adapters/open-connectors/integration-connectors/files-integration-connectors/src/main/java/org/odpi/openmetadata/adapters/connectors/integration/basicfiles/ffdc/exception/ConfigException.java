@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * The FileException is thrown by the connector when it is not possible to retrieve details about the requested file.
+ * The ConfigException is thrown by the connector when its configuration is inadequate.
  */
 public class ConfigException extends ConnectorCheckedException
 {
@@ -123,7 +123,7 @@ public class ConfigException extends ConnectorCheckedException
     @Override
     public String toString()
     {
-        return "FileException{" +
+        return "ConfigException{" +
                 "fileName='" + fileName + '\'' +
                 ", reportedHTTPCode=" + getReportedHTTPCode() +
                 ", reportingClassName='" + getReportingClassName() + '\'' +

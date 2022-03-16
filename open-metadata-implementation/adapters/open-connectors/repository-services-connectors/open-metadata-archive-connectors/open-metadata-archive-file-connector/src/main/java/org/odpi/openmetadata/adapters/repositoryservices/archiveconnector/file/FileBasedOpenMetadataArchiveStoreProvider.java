@@ -3,36 +3,74 @@
 package org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.file;
 
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveStoreProviderBase;
+
 
 /**
  * FileBasedOpenMetadataArchiveStoreProvider is the OCF connector provider for the file based server configuration store.
  */
 public class FileBasedOpenMetadataArchiveStoreProvider extends OpenMetadataArchiveStoreProviderBase
 {
-    static final String  connectorTypeGUID = "f4b49aa8-4f8f-4e0d-a725-fef8fa6ae722";
-    static final String  connectorTypeName = "File Based Open Metadata Archive Store Connector";
-    static final String  connectorTypeDescription = "Connector supports storing of an open metadata archive in a file.";
+    /*
+     * Unique identifier of the connector for the audit log.
+     */
+    private static final int    connectorComponentId   = 82;
+
+    /*
+     * Unique identifier for the connector type.
+     */
+    private static final String connectorTypeGUID      = "f4b49aa8-4f8f-4e0d-a725-fef8fa6ae722";
+
+    /*
+     * Descriptive information about the connector for the connector type and audit log.
+     */
+    private static final String connectorQualifiedName = "Egeria:OpenMetadataArchiveStoreConnector:File";
+    private static final String connectorDisplayName   = "File-based Open Metadata Archive Store Connector";
+    private static final String connectorDescription   = "Connector supports storing of an open metadata archive as a single file stored using JSON format.";
+    private static final String connectorWikiPage      = "https://egeria-project.org/connectors/runtime/file-based-open-metadata-archive-store-connector";
+
+    /*
+     * Class of the connector.
+     */
+    private static final Class<?> connectorClass       = FileBasedOpenMetadataArchiveStoreConnector.class;
 
     /**
-     * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
-     * configuration store implementation.
+     * Constructor to initialize the ConnectorProviderBase class.
      */
     public FileBasedOpenMetadataArchiveStoreProvider()
     {
-        Class<FileBasedOpenMetadataArchiveStoreConnector> connectorClass = FileBasedOpenMetadataArchiveStoreConnector.class;
+        super();
 
+        /*
+         * Set up the class name of the connector that this provider creates.
+         */
         super.setConnectorClassName(connectorClass.getName());
 
+        /*
+         * Set up the connector type that should be included in a connection used to configure this connector.
+         */
         ConnectorType connectorType = new ConnectorType();
         connectorType.setType(ConnectorType.getConnectorTypeType());
         connectorType.setGUID(connectorTypeGUID);
-        connectorType.setQualifiedName(connectorTypeName);
-        connectorType.setDisplayName(connectorTypeName);
-        connectorType.setDescription(connectorTypeDescription);
+        connectorType.setQualifiedName(connectorQualifiedName);
+        connectorType.setDisplayName(connectorDisplayName);
+        connectorType.setDescription(connectorDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
 
         super.connectorTypeBean = connectorType;
+
+        /*
+         * Set up the component description used in the connector's audit log messages.
+         */
+        AuditLogReportingComponent componentDescription = new AuditLogReportingComponent();
+
+        componentDescription.setComponentId(connectorComponentId);
+        componentDescription.setComponentName(connectorQualifiedName);
+        componentDescription.setComponentDescription(connectorDescription);
+        componentDescription.setComponentWikiURL(connectorWikiPage);
+
+        super.setConnectorComponentDescription(componentDescription);
     }
 }

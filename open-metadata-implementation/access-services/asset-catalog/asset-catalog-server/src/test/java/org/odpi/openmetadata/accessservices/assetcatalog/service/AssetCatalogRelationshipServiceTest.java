@@ -73,7 +73,7 @@ public class AssetCatalogRelationshipServiceTest {
 
 
         when(relationshipHandler
-                .getRelationshipBetweenEntities(USER, FIRST_GUID, SECOND_GUID, RELATIONSHIP_TYPE))
+                .getRelationshipBetweenEntities(USER, SERVER_NAME, FIRST_GUID, SECOND_GUID, RELATIONSHIP_TYPE))
                 .thenReturn(response);
 
         RelationshipResponse relationshipBetweenEntities = assetCatalogRelationshipService.getRelationshipBetweenEntities(SERVER_NAME,

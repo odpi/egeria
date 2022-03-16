@@ -430,7 +430,10 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
 
         super.disconnect();
 
-        auditLog.logMessage(actionDescription, KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(topicName));
+        if (auditLog != null)
+        {
+            auditLog.logMessage(actionDescription, KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(topicName));
+        }
     }
     
     /**
@@ -496,7 +499,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
                 int minSleepTime = Integer.parseInt( connectionProperties.getProperty("bring.up.minSleepTime")) ;
 
                 while (count < napCount) {
-                   if (auditLog != null )
+                   if (auditLog != null)
                    {
                        auditLog.logMessage("waitForBrokers", KafkaOpenMetadataTopicConnectorAuditCode.KAFKA_CONNECTION_RETRY.getMessageDefinition(String.valueOf(count + 1)));
                    }

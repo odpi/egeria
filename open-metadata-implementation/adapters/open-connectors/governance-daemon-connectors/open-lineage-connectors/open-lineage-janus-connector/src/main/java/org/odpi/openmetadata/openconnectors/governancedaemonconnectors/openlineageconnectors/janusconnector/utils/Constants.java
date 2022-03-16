@@ -3,6 +3,10 @@ package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openline
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ADDITIONAL_PROPERTIES;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_EXTENDED_PROPERTIES;
 
 public final class Constants {
 
@@ -37,12 +41,16 @@ public final class Constants {
     public static final String PROCESS = "Process";
     public static final String ENDPOINT = "Endpoint";
     public static final String COLLECTION = "Collection";
+    public static final String TOPIC = "Topic";
+    public static final String EVENT_SCHEMA_ATTRIBUTE = "EventSchemaAttribute";
+    public static final String EVENT_TYPE_LIST = "EventTypeList";
+    public static final String EVENT_TYPE = "EventType";
 
     public static final Collection<String> DATA_FILE_AND_SUBTYPES = Arrays.asList(DATA_FILE, AVRO_FILE, CSV_FILE, JSON_FILE,
             KEYSTORE_FILE, LOG_FILE, MEDIA_FILE, DOCUMENT);
 
     public static final Collection<String> ASSETS = Arrays.asList(RELATIONAL_TABLE, DATA_FILE, AVRO_FILE, CSV_FILE, JSON_FILE,
-            KEYSTORE_FILE, LOG_FILE, MEDIA_FILE, DOCUMENT);
+            KEYSTORE_FILE, LOG_FILE, MEDIA_FILE, DOCUMENT, TOPIC);
 
     public static final String RELATIONAL_TABLE_KEY = "relationalTable";
     public static final String TRANSFORMATION_PROJECT_KEY = "transformationProject";
@@ -52,6 +60,9 @@ public final class Constants {
     public static final String FILE_FOLDER_KEY = "fileFolder";
     public static final String CONNECTION_KEY = "connection";
     public static final String GLOSSARY_KEY = "glossary";
+    public static final String EVENT_TYPE_LIST_KEY = "eventTypeList";
+    public static final String EVENT_TYPE_KEY = "eventType";
+    public static final String TOPIC_KEY = "topic";
 
     //Relationships Type
     public static final String SCHEMA_ATTRIBUTE_TYPE = "SchemaAttributeType";
@@ -74,5 +85,24 @@ public final class Constants {
     public static final String NESTED_FILE = "NestedFile";
     public static final String NESTED_SCHEMA_ATTRIBUTE = "NestedSchemaAttribute";
     public static final String FOLDER_HIERARCHY = "FolderHierarchy";
+    public static final String SCHEMA_TYPE_OPTION = "SchemaTypeOption";
+    public static final String EMPTY_STRING = "";
+    public static final String COMMA_SPACE_DELIMITER = ", ";
+    public static final String COLUMN_SPACE_DELIMITER = ": ";
+    public static final List<String> EMBEDDED_PROPERTIES = Arrays.asList(PROPERTY_KEY_ADDITIONAL_PROPERTIES, PROPERTY_KEY_EXTENDED_PROPERTIES);
+    public static final String SUB_GRAPH = "subGraph";
+    public static final String GENERIC_QUERY_EXCEPTION = "Exception while querying {} of guid {}: {}. Executed rollback.";
+    public static final String ULTIMATE_DESTINATION_HORIZONTAL_LINEAGE = "ultimate destination horizontal lineage";
+    public static final String TABULAR_COLUMN_VERTICAL_LINEAGE = "tabular column vertical lineage";
+    public static final String RELATIONAL_COLUMN_VERTICAL_LINEAGE = "relational column vertical lineage";
+    public static final String GLOSSARY_TERM_VERTICAL_LINEAGE = "glossary term vertical lineage";
+    public static final String END_TO_END_HORIZONTAL_LINEAGE = "end to end horizontal lineage";
+    public static final String ULTIMATE_SOURCE_HORIZONTAL_LINEAGE = "ultimate source horizontal lineage";
+    public static final String S = "s";
+    public static final String INCOMPLETE = "Incomplete";
+    public static final String CLASSIFICATION_GRAPH = "classificationGraph";
+
+
+    public static final String[] RELATIONAL_TABLE_CONTEXT_IN_EDGES = new String[]{ATTRIBUTE_FOR_SCHEMA, ASSET_SCHEMA_TYPE, DATA_CONTENT_FOR_DATA_SET, CONNECTION_TO_ASSET};
 
 }

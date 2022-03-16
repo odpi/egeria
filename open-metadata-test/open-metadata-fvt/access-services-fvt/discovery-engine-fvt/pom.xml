@@ -9,7 +9,7 @@
     <parent>
         <artifactId>access-services-fvt</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.5-SNAPSHOT</version>
+        <version>3.7-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -203,15 +203,6 @@
                     <systemPropertyVariables>
                         <fvt.url>https://localhost:${fvt.serverport}</fvt.url>
                     </systemPropertyVariables>
-                </configuration>
-            </plugin>
-
-            <!-- Javadoc  -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <configuration>
-                    <skip>false</skip>
                 </configuration>
             </plugin>
 

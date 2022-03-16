@@ -10,7 +10,7 @@
     <parent>
         <artifactId>access-services</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.5-SNAPSHOT</version>
+        <version>3.7-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -32,6 +32,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>it-infrastructure-api</module>
+        <module>it-infrastructure-topic-connectors</module>
         <module>it-infrastructure-client</module>
         <module>it-infrastructure-server</module>
         <module>it-infrastructure-spring</module>

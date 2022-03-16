@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.archiveutilities;
 
 
+import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.utilities.OMRSRepositoryPropertiesUtilities;
@@ -14,15 +15,15 @@ import java.util.*;
  */
 public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
 {
-    private OMRSArchiveBuilder     archiveBuilder;
-    private String                 archiveGUID;
-    private String                 archiveName;
-    private String                 originatorName;
-    private Date                   creationDate;
-    private long                   versionNumber;
-    private String                 versionName;
-    private InstanceProvenanceType instanceProvenanceType = InstanceProvenanceType.CONTENT_PACK;
-    private String                 license = null;
+    private OpenMetadataArchiveBuilder archiveBuilder;
+    private String                     archiveGUID;
+    private String                     archiveName;
+    private String                     originatorName;
+    private Date                       creationDate;
+    private long                       versionNumber;
+    private String                     versionName;
+    private InstanceProvenanceType     instanceProvenanceType = InstanceProvenanceType.CONTENT_PACK;
+    private String                     license = null;
 
 
     /**
@@ -36,12 +37,12 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
      * @param versionNumber version number of the archive.
      * @param versionName version name for the archive.
      */
-    public OMRSArchiveHelper(OMRSArchiveBuilder     archiveBuilder,
-                             String                 archiveGUID,
-                             String                 originatorName,
-                             Date                   creationDate,
-                             long                   versionNumber,
-                             String                 versionName)
+    public OMRSArchiveHelper(OpenMetadataArchiveBuilder archiveBuilder,
+                             String                     archiveGUID,
+                             String                     originatorName,
+                             Date                       creationDate,
+                             long                       versionNumber,
+                             String                     versionName)
     {
         this.archiveBuilder = archiveBuilder;
         this.archiveGUID = archiveGUID;
@@ -66,15 +67,15 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
      * @param instanceProvenanceType type of archive.
      * @param license license for the archive contents.
      */
-    public OMRSArchiveHelper(OMRSArchiveBuilder     archiveBuilder,
-                             String                 archiveGUID,
-                             String                 archiveName,
-                             String                 originatorName,
-                             Date                   creationDate,
-                             long                   versionNumber,
-                             String                 versionName,
-                             InstanceProvenanceType instanceProvenanceType,
-                             String                 license)
+    public OMRSArchiveHelper(OpenMetadataArchiveBuilder archiveBuilder,
+                             String                     archiveGUID,
+                             String                     archiveName,
+                             String                     originatorName,
+                             Date                       creationDate,
+                             long                       versionNumber,
+                             String                     versionName,
+                             InstanceProvenanceType     instanceProvenanceType,
+                             String                     license)
     {
         this.archiveBuilder = archiveBuilder;
         this.archiveGUID = archiveGUID;
@@ -1353,6 +1354,7 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
     {
         Classification  classification = new Classification();
         InstanceType    type = this.getInstanceType(typeName);
+
         classification.setName(typeName);
         this.setInstanceAuditHeader(classification, type, status);
         classification.setProperties(properties);

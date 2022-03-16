@@ -23,7 +23,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name="Tex OMVS", description="Explore type information in a repository or cohort for visualization of graphs of related types.",
      externalDocs=@ExternalDocumentation(description="Tex View Service (OMVS)",
-                                         url="https://odpi.github.io/egeria-docs/services/omvs/tex/overview/"))
+                                         url="https://egeria-project.org/services/omvs/tex/overview/"))
 
 public class TexViewRESTResource {
 

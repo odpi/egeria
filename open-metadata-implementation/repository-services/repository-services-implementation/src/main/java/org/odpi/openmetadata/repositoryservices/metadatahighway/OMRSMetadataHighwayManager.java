@@ -495,7 +495,7 @@ public class OMRSMetadataHighwayManager
 
         try
         {
-            ConnectorBroker         connectorBroker = new ConnectorBroker();
+            ConnectorBroker         connectorBroker = new ConnectorBroker(auditLog);
             Connector               connector       = connectorBroker.getConnector(cohortRegistryConnection);
 
             return (OMRSCohortRegistryStore)connector;
@@ -534,12 +534,10 @@ public class OMRSMetadataHighwayManager
     {
         try
         {
-            ConnectorBroker    connectorBroker = new ConnectorBroker();
+            ConnectorBroker    connectorBroker = new ConnectorBroker(auditLog);
             Connector          connector       = connectorBroker.getConnector(topicConnection);
 
             OMRSTopicConnector topicConnector  = (OMRSTopicConnector)connector;
-
-            topicConnector.setAuditLog(auditLog.createNewAuditLog(OMRSAuditingComponent.OMRS_TOPIC_CONNECTOR));
 
             if (protocolVersion == OpenMetadataEventProtocolVersion.V1)
             {

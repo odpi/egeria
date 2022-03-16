@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.properties;
 
 import com.fasterxml.jackson.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -112,7 +113,42 @@ public class SoftwareServerProperties extends ITInfrastructureProperties
      */
     public AssetProperties cloneToAsset()
     {
-        return this.cloneToAsset("SoftwareServer");
+        AssetProperties assetProperties = super.cloneToAsset("SoftwareServer");
+
+        Map<String, Object> extendedProperties = assetProperties.getExtendedProperties();
+
+        if (extendedProperties == null)
+        {
+            extendedProperties = new HashMap<>();
+        }
+
+        if (softwareServerType != null)
+        {
+            extendedProperties.put(deployedImplementationTypeProperty, softwareServerType);
+        }
+
+        if (softwareServerVersion != null)
+        {
+            extendedProperties.put(versionProperty, softwareServerVersion);
+        }
+
+        if (softwareServerSource != null)
+        {
+            extendedProperties.put(sourceProperty, softwareServerSource);
+        }
+
+        if (softwareServerUserId != null)
+        {
+            extendedProperties.put(userIdProperty, softwareServerUserId);
+        }
+
+
+        if (! extendedProperties.isEmpty())
+        {
+            assetProperties.setExtendedProperties(extendedProperties);
+        }
+
+        return assetProperties;
     }
 
 

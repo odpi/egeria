@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.userinterface.uichassis.springboot.beans;
 
+import org.odpi.openmetadata.userinterface.uichassis.springboot.service.graphrules.IncompleteRule;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.service.graphrules.InvertEdgeRule;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.service.graphrules.PrimaryCategoryRule;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.service.graphrules.RemoveNodesRule;
@@ -14,9 +15,18 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Rules {
+    private List<IncompleteRule> incomplete;
     private List<InvertEdgeRule> invertEdge;
     private List<PrimaryCategoryRule> primaryCategory;
     private List<RemoveNodesRule> removeNodes;
+
+    public List<IncompleteRule> getIncomplete() {
+        return incomplete;
+    }
+
+    public void setIncomplete(List<IncompleteRule> incomplete) {
+        this.incomplete = incomplete;
+    }
 
     public List<InvertEdgeRule> getInvertEdge() {
         return invertEdge;
@@ -43,7 +53,7 @@ public class Rules {
     }
 
     public List<Rule> getAllRules() {
-        return Stream.of(invertEdge, primaryCategory, removeNodes)
+        return Stream.of(incomplete, invertEdge, primaryCategory, removeNodes)
                 .filter(Objects::nonNull)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());

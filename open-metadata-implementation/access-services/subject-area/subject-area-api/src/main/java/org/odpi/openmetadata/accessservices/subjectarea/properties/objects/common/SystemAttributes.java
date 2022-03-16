@@ -95,6 +95,7 @@ public class SystemAttributes implements Serializable {
     }
     /**
      * Update the time at which this object was last updated in milliseconds since epoch
+     * @param updateTime date/time as long
      */
     public void setUpdateTime(Long updateTime) {
         this.updateTime = updateTime;

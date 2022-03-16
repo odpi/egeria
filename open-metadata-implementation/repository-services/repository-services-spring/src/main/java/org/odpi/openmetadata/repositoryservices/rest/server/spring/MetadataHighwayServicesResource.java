@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
                 "They provide information about the status and membership of Open Metadata Repository Cohorts" +
                 "that the local server is connected to.",
         externalDocs=@ExternalDocumentation(description="Further information",
-                url="https://odpi.github.io/egeria-docs/services/omrs/"))
+                url="https://egeria-project.org/services/omrs/"))
 
 
 public class MetadataHighwayServicesResource

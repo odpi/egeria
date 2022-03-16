@@ -30,6 +30,7 @@ public abstract class InfrastructureIntegratorConnector extends IntegrationConne
     /**
      * Return the context for this connector.  It is called by the connector.
      *
+     * @throws ConnectorCheckedException internal issue setting up context
      * @return context for this connector's private use.
      */
     public synchronized InfrastructureIntegratorContext getContext() throws ConnectorCheckedException

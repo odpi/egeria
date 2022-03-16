@@ -2365,6 +2365,10 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
                  */
                 String relationshipTypeName = relationshipDef.getName();
                 List<String> countableTypeNames = new ArrayList<>();
+                List<String> countableSubTypeNames = repositoryConformanceWorkPad.getRelationshipSubTypes(relationshipTypeName);
+                if (countableSubTypeNames != null) {
+                    countableTypeNames.addAll(countableSubTypeNames);
+                }
                 countableTypeNames.add(relationshipTypeName);
 
                 expectedGUIDs = new ArrayList<>();

@@ -55,7 +55,7 @@ are setup as follows:
 
 ```text
 listeners=PLAINTEXT://localhost:9092
-advertised.listeners=PLAINTEXT://localhost:5092
+advertised.listeners=PLAINTEXT://localhost:9092
 ```
 
 To restart Kafka after making this update, change into Kafka's `bin` directory and issue the following commands:

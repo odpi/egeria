@@ -7,7 +7,7 @@
 pluginManagement {
     plugins {
         //id 'io.spring.dependency-management' version '1.0.10.RELEASE'
-        id 'org.springframework.boot' version '2.6.2'
+        id 'org.springframework.boot' version '2.6.4'
         id 'gradle-aggregate-javadocs-plugin' version '3.0.1'
         id 'org.siouan.frontend-jdk11' version '6.0.0'
         id 'com.github.johnrengelman.shadow' version '7.1.2'
@@ -57,6 +57,7 @@ include(':open-metadata-implementation:adapters:open-connectors:integration-conn
 include(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openlineage-integration-connectors')
 include(':open-metadata-implementation:adapters:open-connectors:integration-connectors:elasticsearch-integration-connector')
 include(':open-metadata-implementation:adapters:open-connectors:integration-connectors')
+include(':open-metadata-test:open-metadata-fvt:view-services-fvt:glossary-author-fvt')
 // todo - convert to integration connectors and governance action connectors
 //include(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:view-generator-connectors')
 //include(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:security-officer-connectors:security-officer-tag-connector')
@@ -65,6 +66,7 @@ include(':open-metadata-implementation:adapters:open-connectors:governance-daemo
 include(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:open-lineage-connectors')
 include(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors')
 include(':open-metadata-implementation:adapters:open-connectors:discovery-service-connectors')
+include(':open-metadata-implementation:adapters:open-connectors:dynamic-archiver-connectors')
 include(':open-metadata-implementation:adapters:open-connectors:governance-action-connectors')
 include(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-file-store-connector')
 include(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-encrypted-file-store-connector')
@@ -200,6 +202,7 @@ include(':open-metadata-implementation:access-services:governance-program:govern
 include(':open-metadata-implementation:access-services:governance-program')
 include(':open-metadata-implementation:access-services:it-infrastructure:it-infrastructure-api')
 include(':open-metadata-implementation:access-services:it-infrastructure:it-infrastructure-client')
+include(':open-metadata-implementation:access-services:it-infrastructure:it-infrastructure-topic-connectors')
 include(':open-metadata-implementation:access-services:it-infrastructure:it-infrastructure-server')
 include(':open-metadata-implementation:access-services:it-infrastructure:it-infrastructure-spring')
 include(':open-metadata-implementation:access-services:it-infrastructure')
@@ -402,6 +405,7 @@ include(':open-metadata-resources:open-metadata-samples:access-services-samples:
 include(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples')
 include(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-zone-create-sample')
 include(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-leadership-sample')
+include(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-subject-area-sample')
 include(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples')
 include(':open-metadata-resources:open-metadata-samples:access-services-samples:subject-area-client-samples:subject-area-definition-sample')
 include(':open-metadata-resources:open-metadata-samples:access-services-samples:subject-area-client-samples')
@@ -415,7 +419,6 @@ include(':open-metadata-resources:open-metadata-samples')
 include(':open-metadata-resources:open-metadata-tutorials')
 include(':open-metadata-resources:open-metadata-labs')
 include(':open-metadata-resources:open-metadata-deployment')
-include(':open-metadata-resources:open-metadata-deployment:compose')
 include(':open-metadata-resources')
 include(':open-metadata-test:open-metadata-ut')
 include(':open-metadata-test:open-metadata-fvt:access-services-fvt:analytics-modeling-fvt')
@@ -427,6 +430,7 @@ include(':open-metadata-test:open-metadata-fvt:access-services-fvt:data-manager-
 include(':open-metadata-test:open-metadata-fvt:access-services-fvt:digital-architecture-fvt')
 include(':open-metadata-test:open-metadata-fvt:access-services-fvt:stewardship-action-fvt')
 include(':open-metadata-test:open-metadata-fvt:access-services-fvt:subject-area-fvt')
+include(':open-metadata-test:open-metadata-fvt:access-services-fvt:glossary-author-fvt')
 include(':open-metadata-test:open-metadata-fvt:access-services-fvt')
 include(':open-metadata-test:open-metadata-fvt:fvt-utilities')
 //TODO: restore tests once ready
@@ -479,6 +483,7 @@ project(':open-metadata-implementation:adapters:open-connectors:governance-daemo
 project(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:open-lineage-connectors').projectDir = file('open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors/open-lineage-connectors')
 project(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors').projectDir = file('open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors')
 project(':open-metadata-implementation:adapters:open-connectors:discovery-service-connectors').projectDir = file('open-metadata-implementation/adapters/open-connectors/discovery-service-connectors')
+project(':open-metadata-implementation:adapters:open-connectors:dynamic-archiver-connectors').projectDir = file('open-metadata-implementation/adapters/open-connectors/dynamic-archiver-connectors')
 project(':open-metadata-implementation:adapters:open-connectors:governance-action-connectors').projectDir = file('open-metadata-implementation/adapters/open-connectors/governance-action-connectors')
 project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-file-store-connector').projectDir = file('open-metadata-implementation/adapters/open-connectors/configuration-store-connectors/configuration-file-store-connector')
 project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-encrypted-file-store-connector').projectDir = file('open-metadata-implementation/adapters/open-connectors/configuration-store-connectors/configuration-encrypted-file-store-connector')
@@ -601,6 +606,7 @@ project(':open-metadata-implementation:access-services:governance-program:govern
 project(':open-metadata-implementation:access-services:governance-program').projectDir = file('open-metadata-implementation/access-services/governance-program')
 project(':open-metadata-implementation:access-services:it-infrastructure:it-infrastructure-api').projectDir = file('open-metadata-implementation/access-services/it-infrastructure/it-infrastructure-api')
 project(':open-metadata-implementation:access-services:it-infrastructure:it-infrastructure-client').projectDir = file('open-metadata-implementation/access-services/it-infrastructure/it-infrastructure-client')
+project(':open-metadata-implementation:access-services:it-infrastructure:it-infrastructure-topic-connectors').projectDir = file('open-metadata-implementation/access-services/it-infrastructure/it-infrastructure-topic-connectors')
 project(':open-metadata-implementation:access-services:it-infrastructure:it-infrastructure-server').projectDir = file('open-metadata-implementation/access-services/it-infrastructure/it-infrastructure-server')
 project(':open-metadata-implementation:access-services:it-infrastructure:it-infrastructure-spring').projectDir = file('open-metadata-implementation/access-services/it-infrastructure/it-infrastructure-spring')
 project(':open-metadata-implementation:access-services:it-infrastructure').projectDir = file('open-metadata-implementation/access-services/it-infrastructure')
@@ -814,6 +820,7 @@ project(':open-metadata-resources:open-metadata-samples:access-services-samples:
 project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples').projectDir = file('open-metadata-resources/open-metadata-samples/access-services-samples/asset-management-samples')
 project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-zone-create-sample').projectDir = file('open-metadata-resources/open-metadata-samples/access-services-samples/governance-program-client-samples/governance-zone-create-sample')
 project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-leadership-sample').projectDir = file('open-metadata-resources/open-metadata-samples/access-services-samples/governance-program-client-samples/governance-leadership-sample')
+project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-subject-area-sample').projectDir = file('open-metadata-resources/open-metadata-samples/access-services-samples/governance-program-client-samples/governance-subject-area-sample')
 project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples').projectDir = file('open-metadata-resources/open-metadata-samples/access-services-samples/governance-program-client-samples')
 project(':open-metadata-resources:open-metadata-samples:access-services-samples:subject-area-client-samples:subject-area-definition-sample').projectDir = file('open-metadata-resources/open-metadata-samples/access-services-samples/subject-area-client-samples/subject-area-definition-sample')
 project(':open-metadata-resources:open-metadata-samples:access-services-samples:subject-area-client-samples').projectDir = file('open-metadata-resources/open-metadata-samples/access-services-samples/subject-area-client-samples')
@@ -827,7 +834,6 @@ project(':open-metadata-resources:open-metadata-samples').projectDir = file('ope
 project(':open-metadata-resources:open-metadata-tutorials').projectDir = file('open-metadata-resources/open-metadata-tutorials')
 project(':open-metadata-resources:open-metadata-labs').projectDir = file('open-metadata-resources/open-metadata-labs')
 project(':open-metadata-resources:open-metadata-deployment').projectDir = file('open-metadata-resources/open-metadata-deployment')
-project(':open-metadata-resources:open-metadata-deployment:compose').projectDir = file('open-metadata-resources/open-metadata-deployment/compose')
 project(':open-metadata-test:open-metadata-ut').projectDir = file('open-metadata-test/open-metadata-ut')
 project(':open-metadata-test:open-metadata-fvt:access-services-fvt:analytics-modeling-fvt').projectDir = file('open-metadata-test/open-metadata-fvt/access-services-fvt/analytics-modeling-fvt')
 project(':open-metadata-test:open-metadata-fvt:access-services-fvt:asset-consumer-fvt').projectDir = file('open-metadata-test/open-metadata-fvt/access-services-fvt/asset-consumer-fvt')
@@ -838,6 +844,7 @@ project(':open-metadata-test:open-metadata-fvt:access-services-fvt:data-manager-
 project(':open-metadata-test:open-metadata-fvt:access-services-fvt:digital-architecture-fvt').projectDir = file('open-metadata-test/open-metadata-fvt/access-services-fvt/digital-architecture-fvt')
 project(':open-metadata-test:open-metadata-fvt:access-services-fvt:stewardship-action-fvt').projectDir = file('open-metadata-test/open-metadata-fvt/access-services-fvt/stewardship-action-fvt')
 project(':open-metadata-test:open-metadata-fvt:access-services-fvt:subject-area-fvt').projectDir = file('open-metadata-test/open-metadata-fvt/access-services-fvt/subject-area-fvt')
+project(':open-metadata-test:open-metadata-fvt:access-services-fvt:glossary-author-fvt').projectDir = file('open-metadata-test/open-metadata-fvt/access-services-fvt/glossary-author-fvt')
 project(':open-metadata-test:open-metadata-fvt:access-services-fvt').projectDir = file('open-metadata-test/open-metadata-fvt/access-services-fvt')
 project(':open-metadata-test:open-metadata-fvt:fvt-utilities').projectDir = file('open-metadata-test/open-metadata-fvt/fvt-utilities')
 project(':open-metadata-distribution:open-metadata-assemblies').projectDir = file('open-metadata-distribution/open-metadata-assemblies')

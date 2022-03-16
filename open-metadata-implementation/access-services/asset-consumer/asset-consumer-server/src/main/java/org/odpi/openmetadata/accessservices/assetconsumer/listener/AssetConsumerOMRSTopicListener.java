@@ -2,9 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.listener;
 
+import org.odpi.openmetadata.accessservices.assetconsumer.elements.AssetElement;
+import org.odpi.openmetadata.accessservices.assetconsumer.events.AssetConsumerEventType;
 import org.odpi.openmetadata.accessservices.assetconsumer.events.NewAssetEvent;
 import org.odpi.openmetadata.accessservices.assetconsumer.events.UpdatedAssetEvent;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
+import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters.AssetConverter;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
@@ -14,7 +17,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.accessservices.assetconsumer.outtopic.AssetConsumerPublisher;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
 import org.odpi.openmetadata.repositoryservices.events.*;
@@ -28,38 +30,43 @@ import java.util.List;
  */
 public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
 {
-    private static final String assetTypeName                         = "Asset";
+    private static final String assetTypeName = "Asset";
 
     private static final Logger log = LoggerFactory.getLogger(AssetConsumerOMRSTopicListener.class);
 
-    private OMRSRepositoryHelper    repositoryHelper;
-    private OMRSRepositoryValidator repositoryValidator;
-    private String                  componentName;
-    private String                  serverName;
-    private List<String>            supportedZones;
-    private AssetConsumerPublisher  publisher;
+    private OMRSRepositoryHelper       repositoryHelper;
+    private OMRSRepositoryValidator    repositoryValidator;
+    private String                     componentName;
+    private String                     serverName;
+    private String                     serverUserId;
+    private List<String>               supportedZones;
+    private AssetHandler<AssetElement> assetHandler;
+    private AssetConsumerPublisher     publisher;
 
 
     /**
      * The constructor is given the connection to the out topic for Asset Consumer OMAS
      * along with classes for testing and manipulating instances.
      *
-     * @param assetConsumerOutTopic  connection to the out topic
+     * @param assetHandler provides access to assets
+     * @param eventPublisher  publisher for the out topic
      * @param repositoryHelper  provides methods for working with metadata instances
      * @param repositoryValidator  provides validation of metadata instance
      * @param componentName  name of component
      * @param serverName local server name
+     * @param serverUserId userId for this server
      * @param supportedZones list of zones covered by this instance of the access service.
      * @param auditLog log for errors and information messages
-     * @throws OMAGConfigurationErrorException problems creating the connector for the outTopic
      */
-    public AssetConsumerOMRSTopicListener(Connection              assetConsumerOutTopic,
-                                          OMRSRepositoryHelper    repositoryHelper,
-                                          OMRSRepositoryValidator repositoryValidator,
-                                          String                  componentName,
-                                          String                  serverName,
-                                          List<String>            supportedZones,
-                                          AuditLog                auditLog) throws OMAGConfigurationErrorException
+    public AssetConsumerOMRSTopicListener(AssetHandler<AssetElement> assetHandler,
+                                          AssetConsumerPublisher     eventPublisher,
+                                          OMRSRepositoryHelper       repositoryHelper,
+                                          OMRSRepositoryValidator    repositoryValidator,
+                                          String                     componentName,
+                                          String                     serverName,
+                                          String                     serverUserId,
+                                          List<String>               supportedZones,
+                                          AuditLog                   auditLog)
     {
         super(componentName, auditLog);
 
@@ -67,9 +74,10 @@ public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
         this.repositoryValidator = repositoryValidator;
         this.componentName = componentName;
         this.serverName = serverName;
+        this.serverUserId = serverUserId;
         this.supportedZones = supportedZones;
-
-        publisher = new AssetConsumerPublisher(assetConsumerOutTopic, auditLog);
+        this.assetHandler = assetHandler;
+        this.publisher = eventPublisher;
     }
 
     /**
@@ -80,6 +88,8 @@ public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
     @Override
     public void processInstanceEvent(OMRSInstanceEvent  instanceEvent)
     {
+        final String methodName = "processInstanceEvent";
+
         log.debug("Processing instance event: " + instanceEvent);
 
         if (instanceEvent == null)
@@ -101,6 +111,48 @@ public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
                 {
                     this.processUpdatedEntity(instanceEvent.getEntity(),
                                               instanceEvent.getOriginalEntity());
+                }
+                else if ((instanceEventType == OMRSInstanceEventType.CLASSIFIED_ENTITY_EVENT) ||
+                         (instanceEventType == OMRSInstanceEventType.RECLASSIFIED_ENTITY_EVENT))
+                {
+                    if (instanceEvent.getEntity() != null)
+                    {
+                        this.processUpdatedEntity(instanceEvent.getEntity(), null);
+                    }
+                    else if (instanceEvent.getEntityProxy() != null)
+                    {
+                        final String parameterName = "entityProxy.getGUID";
+
+                        /*
+                         * Do no work if the entity is not an asset.
+                         */
+                        if (repositoryHelper.isTypeOf(serviceName, instanceEvent.getEntityProxy().getType().getTypeDefName(), OpenMetadataAPIMapper.ASSET_TYPE_NAME))
+                        {
+                            try
+                            {
+                                EntityDetail entity = assetHandler.getEntityFromRepository(serverUserId,
+                                                                                           instanceEvent.getEntityProxy().getGUID(),
+                                                                                           parameterName,
+                                                                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                                           null,
+                                                                                           null,
+                                                                                           false,
+                                                                                           false,
+                                                                                           supportedZones,
+                                                                                           null,
+                                                                                           methodName);
+
+                                if (entity != null)
+                                {
+                                    this.processUpdatedEntity(entity, null);
+                                }
+                            }
+                            catch (Exception error)
+                            {
+                                log.debug("No access to asset - probably belongs to another cohort");
+                            }
+                        }
+                    }
                 }
             }
             else
@@ -130,6 +182,7 @@ public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
             {
                 NewAssetEvent event = new NewAssetEvent();
 
+                event.setEventType(AssetConsumerEventType.NEW_ASSET_EVENT);
                 event.setAsset(assetConverter.getAssetBean());
                 event.setCreationTime(entity.getCreateTime());
 
@@ -169,9 +222,20 @@ public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
                                                                                  serverName);
                 UpdatedAssetEvent event                     = new UpdatedAssetEvent();
 
+                event.setEventType(AssetConsumerEventType.UPDATED_ASSET_EVENT);
                 event.setAsset(assetBean);
                 event.setOriginalAsset(assetConverterForOriginal.getAssetBean());
-                event.setUpdateTime(entity.getUpdateTime());
+                if (entity.getUpdateTime() != null)
+                {
+                    event.setUpdateTime(entity.getUpdateTime());
+                }
+                else
+                {
+                    /*
+                     * A classification was updated - need a dedicated classification message
+                     */
+                    event.setUpdateTime(entity.getCreateTime());
+                }
 
                 publisher.publishUpdatedAssetEvent(event);
             }

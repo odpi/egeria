@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.LocalRepositoryMode;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
@@ -38,6 +39,7 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
     private LocalOMRSRepositoryConnector       localRepositoryConnector        = null;
     private ConnectorTypeProperties            connectorTypeProperties         = null;
     private ConnectorType                      connectorType                   = null;
+    private AuditLog                           auditLog                        = null;
 
 
     /**
@@ -65,7 +67,8 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
              realEventMapper,
              outboundRepositoryEventManager,
              repositoryContentManager,
-             saveExchangeRule);
+             saveExchangeRule,
+             null);
     }
 
 
@@ -81,6 +84,7 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
      * @param outboundRepositoryEventManager event manager to call for outbound events.
      * @param repositoryContentManager repositoryContentManager for supporting OMRS in managing TypeDefs.
      * @param saveExchangeRule rule to determine what events to save to the local repository.
+     * @param auditLog logging destination
      */
     public LocalOMRSConnectorProvider(String                             localMetadataCollectionId,
                                       LocalRepositoryMode                localRepositoryMode,
@@ -88,7 +92,8 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
                                       OMRSRepositoryEventMapperConnector realEventMapper,
                                       OMRSRepositoryEventManager         outboundRepositoryEventManager,
                                       OMRSRepositoryContentManager       repositoryContentManager,
-                                      OMRSRepositoryEventExchangeRule    saveExchangeRule)
+                                      OMRSRepositoryEventExchangeRule    saveExchangeRule,
+                                      AuditLog                           auditLog)
     {
         this.localMetadataCollectionId = localMetadataCollectionId;
         this.localRepositoryMode = localRepositoryMode;
@@ -97,6 +102,7 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
         this.outboundRepositoryEventManager = outboundRepositoryEventManager;
         this.repositoryContentManager = repositoryContentManager;
         this.saveExchangeRule = saveExchangeRule;
+        this.auditLog = auditLog;
     }
 
 
@@ -186,7 +192,7 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
             /*
              * Any problems creating the connector to the local repository are passed to the caller as exceptions.
              */
-            ConnectorBroker connectorBroker = new ConnectorBroker();
+            ConnectorBroker connectorBroker = new ConnectorBroker(auditLog);
             Connector       connector       = connectorBroker.getConnector(realLocalConnection);
 
             /*

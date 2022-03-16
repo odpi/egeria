@@ -103,7 +103,6 @@ public class EntityListResponse extends OMRSAPIPagedResponse
     {
         return "EntityListResponse{" +
                 "entities=" + entities +
-                ", nextPageURL='" + nextPageURL + '\'' +
                 ", offset=" + offset +
                 ", pageSize=" + pageSize +
                 ", relatedHTTPCode=" + relatedHTTPCode +

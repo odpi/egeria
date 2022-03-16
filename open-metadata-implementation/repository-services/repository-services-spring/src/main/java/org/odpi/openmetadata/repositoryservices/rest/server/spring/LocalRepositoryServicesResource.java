@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.*;
         description="The Local Repository Services are part of the Open Metadata Repository Services (OMRS). They provide the " +
                 "interface to the local repository that is used by remote servers to query locally stored metadata.",
         externalDocs=@ExternalDocumentation(description="Further information",
-                url="https://odpi.github.io/egeria-docs/services/omrs/"))
+                url="https://egeria-project.org/services/omrs/"))
 
 
 public class LocalRepositoryServicesResource

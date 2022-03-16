@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.assetmanager.fvt.clientconstructors
 
 import org.odpi.openmetadata.accessservices.assetmanager.client.AssetManagerEventClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.GlossaryExchangeClient;
-import org.odpi.openmetadata.accessservices.assetmanager.client.AssetManagerClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.ExternalAssetManagerClient;
 import org.odpi.openmetadata.accessservices.assetmanager.fvt.common.AssetManagerTestBase;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -70,6 +70,7 @@ public class ClientConstructorTest extends AssetManagerTestBase
 
         AuditLog auditLog = new AuditLog(auditLogDestination,
                                          AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceCode(),
+                                         AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceDevelopmentStatus(),
                                          AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceName(),
                                          AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceDescription(),
                                          AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceWiki());
@@ -94,14 +95,14 @@ public class ClientConstructorTest extends AssetManagerTestBase
                                           String   serverPlatformRootURL,
                                           AuditLog auditLog) throws InvalidParameterException
     {
-        new AssetManagerClient(serverName, serverPlatformRootURL, auditLog);
-        new AssetManagerClient(serverName, serverPlatformRootURL);
-        new AssetManagerClient(serverName, serverPlatformRootURL, serverUserId, serverPassword, auditLog);
-        new AssetManagerClient(serverName, serverPlatformRootURL, serverUserId, serverPassword);
+        new ExternalAssetManagerClient(serverName, serverPlatformRootURL, auditLog);
+        new ExternalAssetManagerClient(serverName, serverPlatformRootURL);
+        new ExternalAssetManagerClient(serverName, serverPlatformRootURL, serverUserId, serverPassword, auditLog);
+        new ExternalAssetManagerClient(serverName, serverPlatformRootURL, serverUserId, serverPassword);
 
         AssetManagerRESTClient restClient = new AssetManagerRESTClient(serverName, serverPlatformRootURL);
 
-        new AssetManagerClient(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
+        new ExternalAssetManagerClient(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
     }
 
 

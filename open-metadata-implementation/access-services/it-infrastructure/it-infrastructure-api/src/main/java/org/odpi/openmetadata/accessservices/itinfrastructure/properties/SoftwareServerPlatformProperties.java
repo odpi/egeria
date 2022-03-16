@@ -150,7 +150,10 @@ public class SoftwareServerPlatformProperties extends ITInfrastructureProperties
             assetExtendedProperties.put(userIdProperty, platformUserId);
         }
 
-        assetProperties.setExtendedProperties(assetExtendedProperties);
+        if (! assetExtendedProperties.isEmpty())
+        {
+            assetProperties.setExtendedProperties(assetExtendedProperties);
+        }
 
         return assetProperties;
     }

@@ -15,4 +15,12 @@ public interface AuditLoggingComponent
      * @param auditLog audit log object
      */
     void setAuditLog(AuditLog auditLog);
+
+
+    /**
+     * Return the component description that is used by this connector in the audit log.
+     *
+     * @return id, name, description, wiki page URL.
+     */
+    ComponentDescription getConnectorComponentDescription();
 }

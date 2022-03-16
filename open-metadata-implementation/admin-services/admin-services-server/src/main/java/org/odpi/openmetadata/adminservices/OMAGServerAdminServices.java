@@ -1045,7 +1045,18 @@ public class OMAGServerAdminServices
 
             ConnectorConfigurationFactory configurationFactory = new ConnectorConfigurationFactory();
 
-            this.addAuditLogDestination(userId, serverName, configurationFactory.getConsoleAuditLogConnection(supportedSeverities));
+            String qualifier;
+
+            if ((supportedSeverities == null) || (supportedSeverities.isEmpty()))
+            {
+                qualifier = "- no output";
+            }
+            else
+            {
+                qualifier = "- " + supportedSeverities.toString();
+            }
+
+            this.addAuditLogDestination(userId, serverName, configurationFactory.getConsoleAuditLogConnection(qualifier, supportedSeverities));
         }
         catch (OMAGInvalidParameterException error)
         {
@@ -1093,7 +1104,18 @@ public class OMAGServerAdminServices
 
             ConnectorConfigurationFactory configurationFactory = new ConnectorConfigurationFactory();
 
-            this.addAuditLogDestination(userId, serverName, configurationFactory.getSLF4JAuditLogConnection(supportedSeverities));
+            String qualifier;
+
+            if ((supportedSeverities == null) || (supportedSeverities.isEmpty()))
+            {
+                qualifier = "- no output";
+            }
+            else
+            {
+                qualifier = "- " + supportedSeverities.toString();
+            }
+
+            this.addAuditLogDestination(userId, serverName, configurationFactory.getSLF4JAuditLogConnection(qualifier, supportedSeverities));
         }
         catch (OMAGInvalidParameterException error)
         {
@@ -2781,10 +2803,12 @@ public class OMAGServerAdminServices
 
         return response;
     }
+
+
     /**
      * Update an audit log destination connection that is identified with the supplied destination connection name with
      * the supplied connection object.
-     * It is possible to supply a suppliedConnectionName that matches an existing connection and the new connection specifies a different displayName.
+     * It is possible to supply a suppliedConnectionName that matches an existing connection and the new connection specifies a different qualifiedName.
      * in this way it is possible to rename Connections.
      *
      * @param userId  user that is issuing the request.
@@ -2795,9 +2819,13 @@ public class OMAGServerAdminServices
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or suppliedConnectionName parameter.
      */
-    public VoidResponse updateAuditLogDestination(String userId, String serverName, String suppliedConnectionName, Connection suppliedConnection)
+    public VoidResponse updateAuditLogDestination(String     userId,
+                                                  String     serverName,
+                                                  String     suppliedConnectionName,
+                                                  Connection suppliedConnection)
     {
         final String methodName = "updateAuditLogDestination";
+        final String functionName = "update";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -2830,41 +2858,78 @@ public class OMAGServerAdminServices
 
                 List<Connection>  auditLogDestinations = repositoryServicesConfig.getAuditLogConnections();
 
-                // it is possible to supply a suppliedConnectionName that matches an existing connection and the new connection specifies a different displayName.
-                // in this way it is possible to rename Connections.
-
                 if (auditLogDestinations == null)
                 {
-                    // no audit logs so cannot delete a requested one.
-                    throw new OMAGInvalidParameterException(OMAGAdminErrorCode.AUDIT_LOG_DESTINATION_NOT_FOUND.getMessageDefinition(suppliedConnectionName, "update"),
+                    /*
+                     * no audit logs so cannot delete a requested one.
+                     */
+                    throw new OMAGInvalidParameterException(OMAGAdminErrorCode.AUDIT_LOG_DESTINATION_NOT_FOUND.getMessageDefinition(suppliedConnectionName,
+                                                                                                                                    functionName),
                                                             this.getClass().getName(),
                                                             methodName);
 
                 }
                 else
                 {
-                    int existingIndex = -1;
-                    for (int i=0; i< auditLogDestinations.size(); i++)
+                    List<Connection> newAuditLogConnections = new ArrayList<>();
+                    boolean          found = false;
+
+                    for (Connection existingConnection : auditLogDestinations)
                     {
-                        if (suppliedConnectionName.equals (auditLogDestinations.get(i).getDisplayName()))
+                        if (existingConnection != null)
                         {
-                         existingIndex = i;
-                         configAuditTrail.add(new Date().toString() + " " + userId + " updated in the list of audit log destinations.");
-                         break;
+                            if (existingConnection.getQualifiedName().equals(suppliedConnectionName))
+                            {
+                                newAuditLogConnections.add(suppliedConnection);
+                                found = true;
+                                configAuditTrail.add(new Date().toString() + " " + userId + " updated " + existingConnection.getQualifiedName() + " in the list of audit log destinations.");
+                            }
+                            else
+                            {
+                                newAuditLogConnections.add(existingConnection);
+                            }
                         }
                     }
-                    if (existingIndex == -1 )
+
+                    if (! found)
                     {
-                        // error cannot find the audit log to update
-                        throw new OMAGInvalidParameterException(OMAGAdminErrorCode.AUDIT_LOG_DESTINATION_NOT_FOUND.getMessageDefinition(suppliedConnectionName, "update"),
+                        /*
+                         * Try the display name
+                         */
+                        for (Connection existingConnection : auditLogDestinations)
+                        {
+                            if (existingConnection != null)
+                            {
+                                if (existingConnection.getDisplayName().equals(suppliedConnectionName))
+                                {
+                                    newAuditLogConnections.add(suppliedConnection);
+                                    found = true;
+                                    configAuditTrail.add(new Date().toString() + " " + userId + " updated " + existingConnection.getQualifiedName() + " in the list of audit log destinations.");
+                                }
+                                else
+                                {
+                                    newAuditLogConnections.add(existingConnection);
+                                }
+                            }
+                        }
+                    }
+
+                    if (! found)
+                    {
+                        /*
+                         * error cannot find the audit log to update
+                         */
+                        throw new OMAGInvalidParameterException(OMAGAdminErrorCode.AUDIT_LOG_DESTINATION_NOT_FOUND.getMessageDefinition(suppliedConnectionName,
+                                                                                                                                        functionName),
                                                                 this.getClass().getName(),
                                                                 methodName);
-                    } else
+                    }
+                    else
                     {
-                        auditLogDestinations.set(existingIndex, suppliedConnection);
-                        repositoryServicesConfig.setAuditLogConnections(auditLogDestinations);
+                        repositoryServicesConfig.setAuditLogConnections(newAuditLogConnections);
 
                         serverConfig.setAuditTrail(configAuditTrail);
+
                         /*
                          * Save the open metadata repository services config in the server's config
                          */
@@ -2891,6 +2956,8 @@ public class OMAGServerAdminServices
 
         return response;
     }
+
+
     /**
      * Delete an audit log destination connection, that is identified with the supplied destination connection name.
      *
@@ -2901,9 +2968,12 @@ public class OMAGServerAdminServices
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or suppliedConnectionName parameter.
      */
-    public VoidResponse deleteAuditLogDestination(String userId, String serverName, String suppliedConnectionName)
+    public VoidResponse clearAuditLogDestination(String userId,
+                                                 String serverName,
+                                                 String suppliedConnectionName)
     {
-        final String methodName = "deleteAuditLogDestination";
+        final String methodName   = "clearAuditLogDestination";
+        final String functionName = "delete";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -2935,34 +3005,73 @@ public class OMAGServerAdminServices
 
             if (auditLogDestinations == null)
             {
-                // error nothing to delete
-                throw new OMAGInvalidParameterException(OMAGAdminErrorCode.AUDIT_LOG_DESTINATION_NOT_FOUND.getMessageDefinition(suppliedConnectionName, "delete"),
+                /*
+                 * error nothing to delete
+                 */
+                throw new OMAGInvalidParameterException(OMAGAdminErrorCode.AUDIT_LOG_DESTINATION_NOT_FOUND.getMessageDefinition(suppliedConnectionName,
+                                                                                                                                functionName),
                                                         this.getClass().getName(),
                                                         methodName);
             }
             else
             {
-                int existingIndex = -1;
-                for (int i=0; i< auditLogDestinations.size(); i++)
+                List<Connection> newAuditLogConnections = new ArrayList<>();
+                boolean          found = false;
+
+                for (Connection existingConnection : auditLogDestinations)
                 {
-                    if (suppliedConnectionName.equals (auditLogDestinations.get(i).getDisplayName()))
+                    if (existingConnection != null)
                     {
-                        existingIndex = i;
-                        configAuditTrail.add(new Date().toString() + " " + userId + " removed in the list of audit log destinations.");
-                        break;
+                        if (existingConnection.getQualifiedName().equals(suppliedConnectionName))
+                        {
+                            found = true;
+                            configAuditTrail.add(new Date().toString() + " " + userId + " removed " + existingConnection.getQualifiedName() + " from the list of audit log destinations.");
+                        }
+                        else
+                        {
+                            newAuditLogConnections.add(existingConnection);
+                        }
                     }
                 }
-                if (existingIndex == -1 )
+
+                if (! found)
                 {
-                    // Error did not find a audit log to remove
-                    throw new OMAGInvalidParameterException(OMAGAdminErrorCode.AUDIT_LOG_DESTINATION_NOT_FOUND.getMessageDefinition(suppliedConnectionName, "delete"),
+                    /*
+                     * Try searching with the display name
+                     */
+                    for (Connection existingConnection : auditLogDestinations)
+                    {
+                        if (existingConnection != null)
+                        {
+                            if (existingConnection.getDisplayName().equals(suppliedConnectionName))
+                            {
+                                found = true;
+                                configAuditTrail.add(new Date().toString() + " " + userId + " removed " + existingConnection.getQualifiedName() + " from the list of audit log destinations.");
+                            }
+                            else
+                            {
+                                newAuditLogConnections.add(existingConnection);
+                            }
+                        }
+                    }
+                }
+
+                if (! found)
+                {
+                    /*
+                     * Error did not find a audit log to remove
+                     */
+                    throw new OMAGInvalidParameterException(OMAGAdminErrorCode.AUDIT_LOG_DESTINATION_NOT_FOUND.getMessageDefinition(suppliedConnectionName,
+                                                                                                                                    functionName),
                                                             this.getClass().getName(),
                                                             methodName);
-                } else
+                }
+                else
                 {
-                    auditLogDestinations.remove(existingIndex);
-                    repositoryServicesConfig.setAuditLogConnections(auditLogDestinations);
+                    repositoryServicesConfig.setAuditLogConnections(newAuditLogConnections);
+
                     serverConfig.setAuditTrail(configAuditTrail);
+
                     /*
                      * Save the open metadata repository services config in the server's config
                      */
@@ -2970,7 +3079,6 @@ public class OMAGServerAdminServices
                     configStore.saveServerConfig(serverName, methodName, serverConfig);
                 }
             }
-
         }
         catch (OMAGInvalidParameterException error)
         {
@@ -3842,10 +3950,10 @@ public class OMAGServerAdminServices
                 serverURLRoot = destinationPlatform.getUrlRoot();
             }
 
-            ConfigurationManagementClient client = new ConfigurationManagementClient(serverName,
+            ConfigurationManagementClient client = new ConfigurationManagementClient(userId,
                                                                                      serverURLRoot);
 
-            client.setOMAGServerConfig(userId, serverConfig);
+            client.setOMAGServerConfig(serverConfig);
         }
         catch (OMAGInvalidParameterException error)
         {
@@ -3953,7 +4061,7 @@ public class OMAGServerAdminServices
      *
      * @param userId  user that is issuing the request
      * @param serverName  local server name
-     * @return OMAGServerConfig properties or
+     * @return void or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName parameter.
      */

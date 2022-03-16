@@ -33,7 +33,7 @@ import javax.validation.constraints.PositiveOrZero;
 
 @Tag(name="Asset Catalog OMAS", description="The Asset Catalog OMAS provides services to search for data assets including data stores, event feeds, APIs, data sets.",
      externalDocs=@ExternalDocumentation(description="Asset Catalog Open Metadata Access Service (OMAS)",
-                                         url="https://odpi.github.io/egeria-docs/services/omas/asset-catalog/overview/"))
+                                         url="https://egeria-project.org/services/omas/asset-catalog/overview/"))
 
 public class AssetCatalogEntityResource {
 

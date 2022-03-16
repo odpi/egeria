@@ -25,7 +25,7 @@ public class AssetConsumerOMASInvalidParameterIT
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"serverinmem","servergraph"})
+    @ValueSource(strings = {"serverinmem"})
     public void testInvalidParameters(String server)
     {
         assertDoesNotThrow(() -> runInvalidParameters(server));

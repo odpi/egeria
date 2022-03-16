@@ -48,7 +48,7 @@ public class ServiceDetails {
 
     /**
      * Copy constructor
-     * @param template
+     * @param template object to copy
      */
     public ServiceDetails(ServiceDetails template) {
 

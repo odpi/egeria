@@ -4,7 +4,7 @@ package org.odpi.openmetadata.engineservices.governanceaction.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.engineservices.governanceaction.rest.ProviderReportResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
 import org.odpi.openmetadata.engineservices.governanceaction.server.GovernanceActionRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/engine-services/governance-action/users/{userId}")
 
-@Tag(name="Governance Action OMES", description="The Governance Action OMES provide the core subsystem for driving requests for automated governance action services.", externalDocs=@ExternalDocumentation(description="Governance Action Open Metadata Engine Services (OMES)",url="https://odpi.github.io/egeria-docs/services/omes/governance-action/overview/"))
+@Tag(name="Governance Action OMES", description="The Governance Action OMES provide the core subsystem for driving requests for automated governance action services.", externalDocs=@ExternalDocumentation(description="Governance Action Open Metadata Engine Services (OMES)",url="https://egeria-project.org/services/omes/governance-action/overview/"))
 
 public class GovernanceActionEngineResource
 {
@@ -41,9 +41,9 @@ public class GovernanceActionEngineResource
      */
     @GetMapping(path = "/validate-connector/{connectorProviderClassName}")
 
-    public ProviderReportResponse validateConnector(@PathVariable String serverName,
-                                                    @PathVariable String userId,
-                                                    @PathVariable String connectorProviderClassName)
+    public ConnectorTypeResponse validateConnector(@PathVariable String serverName,
+                                                   @PathVariable String userId,
+                                                   @PathVariable String connectorProviderClassName)
     {
         return restAPI.validateConnector(serverName, userId, connectorProviderClassName);
     }

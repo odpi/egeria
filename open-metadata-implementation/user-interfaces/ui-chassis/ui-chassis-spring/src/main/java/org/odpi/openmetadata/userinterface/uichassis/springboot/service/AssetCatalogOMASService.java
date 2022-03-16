@@ -11,6 +11,8 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.api.UserInterfaceErrorCodes;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -145,10 +147,13 @@ public class AssetCatalogOMASService {
             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException {
         try {
             return assetCatalog.searchByType(user, searchCriteria, searchParameters).getElementsList();
-        } catch (PropertyServerException | org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
+        } catch (PropertyServerException e){
             LOG.error(String.format("Error searching the assets by criteria %s", searchCriteria));
             throw e;
+        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
+            throw new BadRequestException(UserInterfaceErrorCodes.INVALID_SEARCH_REQUEST, e.getMessage());
         }
+
     }
 
     /**
@@ -186,7 +191,7 @@ public class AssetCatalogOMASService {
         try {
             return assetCatalog.getSupportedTypes(userId, null).getTypes();
         } catch (PropertyServerException | org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
-            LOG.error("Error retrieving supported types'");
+            LOG.error("Error retrieving supported types");
             throw e;
         }
     }

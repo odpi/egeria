@@ -9,7 +9,7 @@
     <parent>
         <artifactId>access-services-fvt</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.5-SNAPSHOT</version>
+        <version>3.7-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -171,7 +171,6 @@
                                 <baseURL>https://localhost:${serverPort}</baseURL>
                                 <serverPort>${server.port}</serverPort>
                                 <serverInMemory>${server.in-memory-graph.name}</serverInMemory>
-                                <serverLocalGraph>${server.local-graph.name}</serverLocalGraph>
                                 <user>${user}</user>
                                 <retries>${retries}</retries>
                                 <delay>${delay}</delay>

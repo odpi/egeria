@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.admin;
 
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogDestination;
 import org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventPublisher;
@@ -210,18 +211,20 @@ public class OMRSOperationalServices
     /**
      * Create an audit log for an external component.
      *
-     * @param componentId numerical identifier for the component.
-     * @param componentName display name for the component.
-     * @param componentDescription description of the component.
-     * @param componentWikiURL link to more information.
+     * @param componentId numerical identifier for the component
+     * @param componentDevelopmentStatus development status
+     * @param componentName display name for the component
+     * @param componentDescription description of the component
+     * @param componentWikiURL link to more information
      * @return new audit log object
      */
-    public OMRSAuditLog  getAuditLog(int    componentId,
-                                     String componentName,
-                                     String componentDescription,
-                                     String componentWikiURL)
+    public OMRSAuditLog  getAuditLog(int                        componentId,
+                                     ComponentDevelopmentStatus componentDevelopmentStatus,
+                                     String                     componentName,
+                                     String                     componentDescription,
+                                     String                     componentWikiURL)
     {
-        return auditLog.createNewAuditLog(componentId, componentName, componentDescription, componentWikiURL);
+        return auditLog.createNewAuditLog(componentId, componentDevelopmentStatus, componentName, componentDescription, componentWikiURL);
     }
 
 
@@ -618,12 +621,15 @@ public class OMRSOperationalServices
 
         if (enterpriseAccessConfig != null)
         {
-            Connection        enterpriseOMRSTopicConnection = enterpriseAccessConfig.getEnterpriseOMRSTopicConnection();
+            Connection enterpriseOMRSTopicConnection = enterpriseAccessConfig.getEnterpriseOMRSTopicConnection();
 
             if (enterpriseOMRSTopicConnection != null)
             {
-                enterpriseOMRSTopicConnector = getTopicConnector("Enterprise Access",
-                                                                 enterpriseOMRSTopicConnection);
+                enterpriseOMRSTopicConnector = getTopicConnector("Enterprise Access", enterpriseOMRSTopicConnection);
+
+                /*
+                 * This connector is started by admin services when all of the Access Services have been started and have registered their listeners.
+                 */
             }
         }
 
@@ -640,16 +646,29 @@ public class OMRSOperationalServices
      */
     private OMRSTopicConnector  initializeRemoteEnterpriseOMRSTopicConnector(EnterpriseAccessConfig  enterpriseAccessConfig)
     {
+        final String methodName = "initializeRemoteEnterpriseOMRSTopicConnector";
+
         OMRSTopicConnector    enterpriseOMRSTopicConnector = null;
 
         if (enterpriseAccessConfig != null)
         {
-            Connection        enterpriseOMRSTopicConnection = enterpriseAccessConfig.getRemoteEnterpriseOMRSTopicConnection();
-
-            if (enterpriseOMRSTopicConnection != null)
+            try
             {
-                enterpriseOMRSTopicConnector = getTopicConnector("Remote Enterprise Access",
-                                                                  enterpriseOMRSTopicConnection);
+                Connection enterpriseOMRSTopicConnection = enterpriseAccessConfig.getRemoteEnterpriseOMRSTopicConnection();
+
+                if (enterpriseOMRSTopicConnection != null)
+                {
+                    enterpriseOMRSTopicConnector = getTopicConnector("Remote Enterprise Access", enterpriseOMRSTopicConnection);
+                    enterpriseOMRSTopicConnector.start();
+                }
+            }
+            catch (Exception error)
+            {
+                throw new OMRSLogicErrorException(OMRSErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                          methodName,
+                                                                                                          error.getMessage()),
+                                                  this.getClass().getName(),
+                                                  methodName);
             }
         }
 
@@ -765,7 +784,8 @@ public class OMRSOperationalServices
                                                    localRepositoryEventManager,
                                                    localRepositoryContentManager,
                                                    new OMRSRepositoryEventExchangeRule(localRepositoryConfig.getEventsToSaveRule(),
-                                                                                       localRepositoryConfig.getSelectedTypesToSave()));
+                                                                                       localRepositoryConfig.getSelectedTypesToSave()),
+                                                   auditLog);
 
 
             /*
@@ -1070,12 +1090,10 @@ public class OMRSOperationalServices
     {
         try
         {
-            ConnectorBroker    connectorBroker = new ConnectorBroker();
+            ConnectorBroker    connectorBroker = new ConnectorBroker(auditLog);
             Connector          connector       = connectorBroker.getConnector(topicConnection);
 
             OMRSTopicConnector topicConnector  = (OMRSTopicConnector)connector;
-
-            topicConnector.setAuditLog(auditLog.createNewAuditLog(OMRSAuditingComponent.OMRS_TOPIC_CONNECTOR));
 
             return topicConnector;
         }
@@ -1085,7 +1103,7 @@ public class OMRSOperationalServices
 
             log.debug("Unable to create topic connector: " + error.toString());
 
-           auditLog.logMessage(methodName,
+            auditLog.logMessage(methodName,
                                 OMRSAuditCode.BAD_TOPIC_CONNECTION.getMessageDefinition(sourceName, error.getClass().getName(), error.getMessage()));
 
             throw new OMRSConfigErrorException(OMRSErrorCode.NULL_TOPIC_CONNECTOR.getMessageDefinition(sourceName),
@@ -1109,12 +1127,10 @@ public class OMRSOperationalServices
     {
         try
         {
-            ConnectorBroker          connectorBroker = new ConnectorBroker();
+            ConnectorBroker          connectorBroker = new ConnectorBroker(auditLog);
             Connector                connector       = connectorBroker.getConnector(openMetadataArchiveStoreConnection);
 
             OpenMetadataArchiveStoreConnector archiveStoreConnector = (OpenMetadataArchiveStoreConnector)connector;
-
-            archiveStoreConnector.setAuditLog(auditLog.createNewAuditLog(OMRSAuditingComponent.ARCHIVE_STORE_CONNECTOR));
 
             return archiveStoreConnector;
         }
@@ -1165,12 +1181,10 @@ public class OMRSOperationalServices
          */
         try
         {
-            ConnectorBroker           connectorBroker = new ConnectorBroker();
+            ConnectorBroker           connectorBroker = new ConnectorBroker(auditLog);
             Connector                 connector       = connectorBroker.getConnector(localRepositoryEventMapperConnection);
 
             OMRSRepositoryEventMapperConnector eventMapperConnector = (OMRSRepositoryEventMapperConnector)connector;
-
-            eventMapperConnector.setAuditLog(auditLog.createNewAuditLog(OMRSAuditingComponent.LOCAL_REPOSITORY_EVENT_MAPPER));
 
             return eventMapperConnector;
         }

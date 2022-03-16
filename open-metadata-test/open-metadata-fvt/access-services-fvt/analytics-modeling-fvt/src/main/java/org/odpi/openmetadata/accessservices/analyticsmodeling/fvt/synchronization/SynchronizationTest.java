@@ -85,10 +85,11 @@ public class SynchronizationTest extends AnalyticsModelingTestBase
         SynchronizationTest thisTest = new SynchronizationTest();
 
         AuditLog auditLog = new AuditLog(auditLogDestination,
-                                         AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceCode(),
-                                         AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceName(),
-                                         AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceDescription(),
-                                         AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceWiki());
+                                         AccessServiceDescription.ANALYTICS_MODELING_OMAS.getAccessServiceCode(),
+                                         AccessServiceDescription.ANALYTICS_MODELING_OMAS.getAccessServiceDevelopmentStatus(),
+                                         AccessServiceDescription.ANALYTICS_MODELING_OMAS.getAccessServiceName(),
+                                         AccessServiceDescription.ANALYTICS_MODELING_OMAS.getAccessServiceDescription(),
+                                         AccessServiceDescription.ANALYTICS_MODELING_OMAS.getAccessServiceWiki());
 
         SynchronizationClient client = thisTest.getSynchronizationClient(serverName, serverPlatformRootURL, auditLog, TESTCASENAME);
 
@@ -121,7 +122,7 @@ public class SynchronizationTest extends AnalyticsModelingTestBase
             }
 
         }
-        catch (Throwable unexpectedError) {
+        catch (Exception unexpectedError) {
             throw new FVTUnexpectedCondition(TESTCASENAME, activityName, unexpectedError);
         }
     }
@@ -145,7 +146,7 @@ public class SynchronizationTest extends AnalyticsModelingTestBase
                 throw new FVTUnexpectedCondition(TESTCASENAME, activityName + RESPONSE_DOES_NOT_CONTAIN_GUID_OF_THE_AFFECTED_ARTIFACT);
             }
         }
-        catch (Throwable unexpectedError) {
+        catch (Exception unexpectedError) {
             throw new FVTUnexpectedCondition(TESTCASENAME, activityName, unexpectedError);
         }
     }
@@ -168,7 +169,7 @@ public class SynchronizationTest extends AnalyticsModelingTestBase
                 throw new FVTUnexpectedCondition(TESTCASENAME, activityName + RESPONSE_DOES_NOT_CONTAIN_GUID_OF_THE_AFFECTED_ARTIFACT);
             }
         } 
-        catch (Throwable unexpectedError) {
+        catch (Exception unexpectedError) {
             throw new FVTUnexpectedCondition(TESTCASENAME, activityName, unexpectedError);
         }
     }

@@ -893,8 +893,8 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl federationControl = new SequentialFederationControl(userId, cohortConnectors, auditLog, methodName);
-        GetEntityExecutor executor          = new GetEntityExecutor(userId, guid, false, auditLog, methodName);
+        FederationControl       federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
+        GetEntityDetailExecutor executor          = new GetEntityDetailExecutor(userId, guid, false, auditLog, methodName);
 
         /*
          * Ready to process the request.  Create requests occur in the first repository that accepts the call.
@@ -942,8 +942,8 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        SequentialFederationControl federationControl = new SequentialFederationControl(userId, cohortConnectors, auditLog, methodName);
-        GetEntitySummaryExecutor    executor          = new GetEntitySummaryExecutor(userId, guid, auditLog, methodName);
+        FederationControl        federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
+        GetEntitySummaryExecutor executor          = new GetEntitySummaryExecutor(userId, guid, auditLog, methodName);
 
         /*
          * Ready to process the request.  Get requests occur in the first repository that accepts the call.
@@ -992,8 +992,8 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl federationControl = new SequentialFederationControl(userId, cohortConnectors, auditLog, methodName);
-        GetEntityExecutor executor          = new GetEntityExecutor(userId, guid, true, auditLog, methodName);
+        FederationControl       federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
+        GetEntityDetailExecutor executor          = new GetEntityDetailExecutor(userId, guid, true, auditLog, methodName);
 
         /*
          * Ready to process the request.  Callers to the enterprise repository are typically well defined and only request entities that
@@ -1014,8 +1014,8 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
             {
                 cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-                federationControl = new SequentialFederationControl(userId, cohortConnectors, auditLog, methodName);
-                executor          = new GetEntityExecutor(userId, guid, true, auditLog, methodName);
+                federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
+                executor          = new GetEntityDetailExecutor(userId, guid, true, auditLog, methodName);
 
                 retryCount ++;
                 auditLog.logMessage(methodName, OMRSAuditCode.RETRY_FOR_PROXY.getMessageDefinition(guid, userId, Integer.toString(retryCount)));
@@ -1068,8 +1068,8 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl federationControl = new SequentialFederationControl(userId, cohortConnectors, auditLog, methodName);
-        GetEntityExecutor executor          = new GetEntityExecutor(userId, guid, asOfTime, auditLog, methodName);
+        FederationControl       federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
+        GetEntityDetailExecutor executor          = new GetEntityDetailExecutor(userId, guid, asOfTime, auditLog, methodName);
 
         /*
          * Ready to process the request.  Create requests occur in the first repository that accepts the call.
@@ -1154,7 +1154,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
+        FederationControl                 federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
         GetRelationshipsForEntityExecutor executor          = new GetRelationshipsForEntityExecutor(userId,
                                                                                                     entityGUID,
                                                                                                     relationshipTypeGUID,
@@ -1273,7 +1273,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
+        FederationControl              federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
         FindEntitiesByPropertyExecutor executor          = new FindEntitiesByPropertyExecutor(userId,
                                                                                               entityTypeGUID,
                                                                                               matchProperties,
@@ -1379,22 +1379,22 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
-        FindEntitiesExecutor executor       = new FindEntitiesExecutor(userId,
-                                                                       entityTypeGUID,
-                                                                       entitySubtypeGUIDs,
-                                                                       matchProperties,
-                                                                       fromEntityElement,
-                                                                       limitResultsByStatus,
-                                                                       matchClassifications,
-                                                                       asOfTime,
-                                                                       sequencingProperty,
-                                                                       sequencingOrder,
-                                                                       pageSize,
-                                                                       localMetadataCollectionId,
-                                                                       auditLog,
-                                                                       repositoryValidator,
-                                                                       methodName);
+        FederationControl    federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
+        FindEntitiesExecutor executor          = new FindEntitiesExecutor(userId,
+                                                                          entityTypeGUID,
+                                                                          entitySubtypeGUIDs,
+                                                                          matchProperties,
+                                                                          fromEntityElement,
+                                                                          limitResultsByStatus,
+                                                                          matchClassifications,
+                                                                          asOfTime,
+                                                                          sequencingProperty,
+                                                                          sequencingOrder,
+                                                                          pageSize,
+                                                                          localMetadataCollectionId,
+                                                                          auditLog,
+                                                                          repositoryValidator,
+                                                                          methodName);
 
         /*
          * Ready to process the request.  Create requests occur in the first repository that accepts the call.
@@ -1491,7 +1491,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
+        FederationControl                    federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
         FindEntitiesByClassificationExecutor executor          = new FindEntitiesByClassificationExecutor(userId,
                                                                                                           entityTypeGUID,
                                                                                                           classificationName,
@@ -1599,7 +1599,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
+        FederationControl                   federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
         FindEntitiesByPropertyValueExecutor executor          = new FindEntitiesByPropertyValueExecutor(userId,
                                                                                                         entityTypeGUID,
                                                                                                         searchCriteria,
@@ -1852,7 +1852,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
+        FederationControl         federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
         FindRelationshipsExecutor executor          = new FindRelationshipsExecutor(userId,
                                                                                     relationshipTypeGUID,
                                                                                     relationshipSubtypeGUIDs,
@@ -1957,7 +1957,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
+        FederationControl                   federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
         FindRelationshipsByPropertyExecutor executor          = new FindRelationshipsByPropertyExecutor(userId,
                                                                                                         relationshipTypeGUID,
                                                                                                         matchProperties,
@@ -2061,7 +2061,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
+        FederationControl                        federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
         FindRelationshipsByPropertyValueExecutor executor          = new FindRelationshipsByPropertyValueExecutor(userId,
                                                                                                                   relationshipTypeGUID,
                                                                                                                   searchCriteria,
@@ -3172,6 +3172,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         FederationControl federationControl = new SequentialFederationControl(userId, cohortConnectors, auditLog, methodName);
         ClassifyEntityExecutor executor = new ClassifyEntityExecutor(userId,
                                                                      entityGUID,
+                                                                     null,
                                                                      classificationName,
                                                                      null,
                                                                      null,
@@ -3189,6 +3190,86 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         federationControl.executeCommand(executor);
 
         return executor.getUpdatedEntity();
+    }
+
+
+    /**
+     * Add the requested classification to a specific entity.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityProxy identifier (proxy) for the entity.
+     * @param classificationName String name for the classification.
+     * @param classificationProperties list of properties to set in the classification.
+     * @return Classification showing the resulting entity header, properties and classifications.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws ClassificationErrorException the requested classification is either not known or not valid
+     *                                         for the entity.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public Classification classifyEntity(String             userId,
+                                         EntityProxy        entityProxy,
+                                         String             classificationName,
+                                         InstanceProperties classificationProperties) throws InvalidParameterException,
+                                                                                             RepositoryErrorException,
+                                                                                             EntityNotKnownException,
+                                                                                             ClassificationErrorException,
+                                                                                             PropertyErrorException,
+                                                                                             FunctionNotSupportedException,
+                                                                                             UserNotAuthorizedException
+    {
+        final String  methodName = "classifyEntity";
+
+        /*
+         * Validate parameters
+         */
+        this.classifyEntityParameterValidation(userId,
+                entityProxy.getGUID(),
+                classificationName,
+                classificationProperties,
+                methodName);
+
+        /*
+         * Locate entity and check classification is not already present.
+         */
+        EntitySummary entity = this.getEntitySummary(userId, entityProxy.getGUID());
+        repositoryHelper.checkEntityNotClassifiedEntity(repositoryName, entity, classificationName, methodName);
+
+        /*
+         * Validation complete, ok to continue with request
+         *
+         * The list of cohort connectors are retrieved for each request to ensure that any changes in
+         * the shape of the cohort are reflected immediately.
+         */
+        List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getHomeLocalRemoteConnectors(entity, methodName);
+
+        FederationControl federationControl = new SequentialFederationControl(userId, cohortConnectors, auditLog, methodName);
+        ClassifyEntityExecutor executor = new ClassifyEntityExecutor(userId,
+                                                                     entityProxy.getGUID(),
+                                                                     entityProxy,
+                                                                     classificationName,
+                                                                     null,
+                                                                     null,
+                                                                     null,
+                                                                     null,
+                                                                     classificationProperties,
+                                                                     auditLog,
+                                                                     methodName);
+
+        /*
+         * Ready to process the request.  Create requests occur in the first repository that accepts the call.
+         * Some repositories may produce exceptions.  These exceptions are saved and will be returned if
+         * there are no positive results from any repository.
+         */
+        federationControl.executeCommand(executor);
+
+        return executor.getAddedClassification();
     }
 
 
@@ -3259,6 +3340,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         FederationControl federationControl = new SequentialFederationControl(userId, cohortConnectors, auditLog, methodName);
         ClassifyEntityExecutor executor = new ClassifyEntityExecutor(userId,
                                                                      entityGUID,
+                                                                     null,
                                                                      classificationName,
                                                                      externalSourceGUID,
                                                                      externalSourceName,
@@ -3276,6 +3358,90 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         federationControl.executeCommand(executor);
 
         return executor.getUpdatedEntity();
+    }
+
+
+    /**
+     * Add the requested classification to a specific entity.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityProxy entity as a proxy.
+     * @param classificationName String name for the classification.
+     * @param externalSourceGUID unique identifier (guid) for the external source.
+     * @param externalSourceName unique name for the external source.
+     * @param classificationOrigin source of the classification
+     * @param classificationOriginGUID if the classification is propagated, this is the unique identifier of the entity where
+     * @param classificationProperties list of properties to set in the classification.
+     * @return EntityDetail showing the resulting entity header, properties and classifications.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws ClassificationErrorException the requested classification is either not known or not valid
+     *                                         for the entity.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     */
+    @Override
+    public Classification classifyEntity(String               userId,
+                                         EntityProxy          entityProxy,
+                                         String               classificationName,
+                                         String               externalSourceGUID,
+                                         String               externalSourceName,
+                                         ClassificationOrigin classificationOrigin,
+                                         String               classificationOriginGUID,
+                                         InstanceProperties   classificationProperties) throws InvalidParameterException,
+                                                                                               RepositoryErrorException,
+                                                                                               EntityNotKnownException,
+                                                                                               ClassificationErrorException,
+                                                                                               PropertyErrorException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               FunctionNotSupportedException
+    {
+        final String  methodName = "classifyEntity (Detailed)";
+
+        /*
+         * Validate parameters
+         */
+        this.classifyEntityParameterValidation(userId, entityProxy.getGUID(), classificationName, classificationProperties, methodName);
+
+        /*
+         * Locate entity and check classification is not already present.
+         */
+        EntitySummary entity = this.getEntitySummary(userId, entityProxy.getGUID());
+        repositoryHelper.checkEntityNotClassifiedEntity(repositoryName, entity, classificationName, methodName);
+
+        /*
+         * Validation complete, ok to continue with request
+         *
+         * The list of cohort connectors are retrieved for each request to ensure that any changes in
+         * the shape of the cohort are reflected immediately.
+         */
+        List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getHomeLocalRemoteConnectors(entity, methodName);
+
+        FederationControl federationControl = new SequentialFederationControl(userId, cohortConnectors, auditLog, methodName);
+        ClassifyEntityExecutor executor = new ClassifyEntityExecutor(userId,
+                                                                     entityProxy.getGUID(),
+                                                                     entityProxy,
+                                                                     classificationName,
+                                                                     externalSourceGUID,
+                                                                     externalSourceName,
+                                                                     classificationOrigin,
+                                                                     classificationOriginGUID,
+                                                                     classificationProperties,
+                                                                     auditLog,
+                                                                     methodName);
+
+        /*
+         * Ready to process the request.  Create requests occur in the first repository that accepts the call.
+         * Some repositories may produce exceptions.  These exceptions are saved and will be returned if
+         * there are no positive results from any repository.
+         */
+        federationControl.executeCommand(executor);
+
+        return executor.getAddedClassification();
     }
 
 
@@ -3329,6 +3495,56 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         return null;
     }
 
+    /**
+     * Remove a specific classification from an entity.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityProxy identifier (proxy) for the entity.
+     * @param classificationName String name for the classification.
+     * @return Classification showing the resulting entity header, properties and classifications.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws ClassificationErrorException the requested classification is not set on the entity.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public Classification declassifyEntity(String      userId,
+                                           EntityProxy entityProxy,
+                                           String      classificationName) throws InvalidParameterException,
+                                                                                  RepositoryErrorException,
+                                                                                  EntityNotKnownException,
+                                                                                  ClassificationErrorException,
+                                                                                  FunctionNotSupportedException,
+                                                                                  UserNotAuthorizedException
+    {
+        final String  methodName = "declassifyEntity (EntityProxy)";
+
+        /*
+         * Validate parameters
+         */
+        String entityGUID = entityProxy.getGUID();
+        super.declassifyEntityParameterValidation(userId, entityGUID, classificationName, methodName);
+
+        /*
+         * Locate entity and retrieve classification.
+         */
+        EntitySummary  entity         = this.getEntitySummary(userId, entityGUID);
+        Classification classification = repositoryHelper.getClassificationFromEntity(repositoryName, entity, classificationName, methodName);
+
+        /*
+         * Validation complete, ok to make changes
+         */
+        OMRSMetadataCollection metadataCollection = enterpriseParentConnector.getHomeMetadataCollection(classification, methodName);
+        if (metadataCollection != null)
+        {
+            return metadataCollection.declassifyEntity(userId, entityProxy, classificationName);
+        }
+
+        return null;
+    }
 
     /**
      * Update one or more properties in one of an entity's classifications.
@@ -3388,6 +3604,64 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         return null;
     }
 
+
+    /**
+     * Update one or more properties in one of an entity's classifications.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityProxy identifier (proxy) for the entity.
+     * @param classificationName String name for the classification.
+     * @param properties list of properties for the classification.
+     * @return Classification showing the resulting entity header, properties and classifications.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws ClassificationErrorException the requested classification is not attached to the classification.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public Classification updateEntityClassification(String             userId,
+                                                     EntityProxy        entityProxy,
+                                                     String             classificationName,
+                                                     InstanceProperties properties) throws InvalidParameterException,
+                                                                                           RepositoryErrorException,
+                                                                                           EntityNotKnownException,
+                                                                                           ClassificationErrorException,
+                                                                                           PropertyErrorException,
+                                                                                           FunctionNotSupportedException,
+                                                                                           UserNotAuthorizedException
+    {
+        final String  methodName = "updateEntityClassification (EntityProxy)";
+
+        /*
+         * Validate parameters
+         */
+        classifyEntityParameterValidation(userId, entityProxy.getGUID(), classificationName, properties, methodName);
+
+        /*
+         * Locate entity and retrieve classification.
+         */
+        EntitySummary  entity         = this.getEntitySummary(userId, entityProxy.getGUID());
+        Classification classification = repositoryHelper.getClassificationFromEntity(repositoryName, entity, classificationName, methodName);
+
+        /*
+         * Validation complete, ok to make changes
+         */
+        OMRSMetadataCollection metadataCollection = enterpriseParentConnector.getHomeMetadataCollection(classification, methodName);
+        if (metadataCollection != null)
+        {
+            return metadataCollection.updateEntityClassification(userId,
+                                                                 entityProxy,
+                                                                 classificationName,
+                                                                 properties);
+        }
+
+        return null;
+    }
 
     /**
      * Add a new relationship between two entities to the metadata collection.

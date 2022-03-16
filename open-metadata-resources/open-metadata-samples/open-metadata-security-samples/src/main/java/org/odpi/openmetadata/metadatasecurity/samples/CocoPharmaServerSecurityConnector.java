@@ -277,7 +277,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         zoneAccess.put(trashCanZoneName, npaAccounts);
         zoneAccess.put(personalFilesZoneName, allEmployees);
         zoneAccess.put(quarantineZoneName, assetOnboarding);
-        zoneAccess.put(dataLakeZoneName, allEmployees);
+        zoneAccess.put(dataLakeZoneName, allUsers);
         zoneAccess.put(externalAccessZoneName, externalUsers);
 
         zoneSetUp.add(callieQuartileUserId);
@@ -1682,14 +1682,14 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
     @Override
     public void  validateUserForEntityClassificationAdd(String               userId,
                                                         String               metadataCollectionName,
-                                                        EntityDetail         instance,
+                                                        EntitySummary        instance,
                                                         String               classificationName,
                                                         InstanceProperties   properties) throws UserNotAuthorizedException
     {
     }
 
 
-    /**
+     /**
      * Tests for whether a specific user should have the right to update the classification for an entity instance
      * within a repository.
      *
@@ -1703,7 +1703,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
     @Override
     public void  validateUserForEntityClassificationUpdate(String               userId,
                                                            String               metadataCollectionName,
-                                                           EntityDetail         instance,
+                                                           EntitySummary        instance,
                                                            String               classificationName,
                                                            InstanceProperties   properties) throws UserNotAuthorizedException
     {
@@ -1723,7 +1723,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
     @Override
     public void  validateUserForEntityClassificationDelete(String               userId,
                                                            String               metadataCollectionName,
-                                                           EntityDetail         instance,
+                                                           EntitySummary        instance,
                                                            String               classificationName) throws UserNotAuthorizedException
     {
     }

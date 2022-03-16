@@ -88,6 +88,33 @@ public class RESTExceptionHandler
 
 
     /**
+     * Manage a bad type name
+     *
+     * @param subTypeName name of null parameter - use to help locate where the problem is
+     * @param methodName method that caught the exception
+     * @throws InvalidParameterException exception to report error
+     */
+    public void handleBadType(String subTypeName,
+                              String superTypeName,
+                              String serviceName,
+                              String methodName) throws InvalidParameterException
+    {
+        InvalidParameterException error =
+                new InvalidParameterException(OMAGCommonErrorCode.BAD_SUB_TYPE_NAME.getMessageDefinition(subTypeName,
+                                                                                                         methodName,
+                                                                                                         serviceName,
+                                                                                                         superTypeName),
+                                              this.getClass().getName(),
+                                              methodName,
+                                              subTypeName);
+
+        log.error("Missing parameter", error);
+        throw error;
+    }
+
+
+
+    /**
      * Throw an exception if it is encoded in the REST response.
      *
      * @param methodName  name of the method called
