@@ -5,11 +5,10 @@ package org.odpi.openmetadata.adminservices;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServerTypeClassification;
-import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceAdmin;
 import org.odpi.openmetadata.adminservices.properties.OMAGServerServiceStatus;
 import org.odpi.openmetadata.adminservices.properties.ServerActiveStatus;
-import org.odpi.openmetadata.adminservices.properties.ServerStatus;
+import org.odpi.openmetadata.adminservices.properties.ServerServicesStatus;
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerServiceInstance;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.admin.OCFMetadataOperationalServices;
 import org.odpi.openmetadata.conformance.server.ConformanceSuiteOperationalServices;
@@ -21,11 +20,8 @@ import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 
 /**
@@ -96,13 +92,13 @@ class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
      *
      * @return server status
      */
-    public synchronized ServerStatus getServerStatus()
+    public synchronized ServerServicesStatus getServerStatus()
     {
-        ServerStatus serverStatus = new ServerStatus();
+        ServerServicesStatus serverServicesStatus = new ServerServicesStatus();
 
-        serverStatus.setServerName(serverName);
-        serverStatus.setServerType(serverTypeClassification.getServerTypeName());
-        serverStatus.setServerActiveStatus(serverActiveStatus);
+        serverServicesStatus.setServerName(serverName);
+        serverServicesStatus.setServerType(serverTypeClassification.getServerTypeName());
+        serverServicesStatus.setServerActiveStatus(serverActiveStatus);
 
         List<OMAGServerServiceStatus>   serviceStatuses = new ArrayList<>();
 
@@ -136,9 +132,9 @@ class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
             }
         }
 
-        serverStatus.setServices(serviceStatuses);
+        serverServicesStatus.setServices(serviceStatuses);
 
-        return serverStatus;
+        return serverServicesStatus;
     }
 
 
