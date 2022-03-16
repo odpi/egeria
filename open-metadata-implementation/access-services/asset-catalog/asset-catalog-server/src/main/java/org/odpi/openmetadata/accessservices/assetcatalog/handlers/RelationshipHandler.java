@@ -21,6 +21,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 public class RelationshipHandler {
 
+    public static final String ENTITY_1_GUID_PARAMETER = "entity1GUID";
+    public static final String ENTITY_2_GUID_PARAMETER = "entity2GUID";
     private final OMRSRepositoryHelper repositoryHelper;
     private final InvalidParameterHandler invalidParameterHandler;
     private final OpenMetadataAPIGenericHandler<AssetCatalogBean> assetHandler;
@@ -52,6 +54,7 @@ public class RelationshipHandler {
      * Fetch relationship between entities details based on its unique identifier of the ends
      *
      * @param userId           String unique identifier for the user
+     * @param serverName       server name
      * @param entity1GUID      Entity guid of the first end of the relationship
      * @param entity2GUID      Entity guid of the second end of the relationship
      * @param relationshipType Type of the relationship
@@ -61,6 +64,7 @@ public class RelationshipHandler {
      * @throws UserNotAuthorizedException security access problem
      */
     public org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship getRelationshipBetweenEntities(String userId,
+                                                                                                               String serverName,
                                                                                                                String entity1GUID,
                                                                                                                String entity2GUID,
                                                                                                                String relationshipType)
@@ -68,8 +72,8 @@ public class RelationshipHandler {
         final String methodName = "getRelationshipBetweenEntities";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(entity1GUID, "entity1GUID", methodName);
-        invalidParameterHandler.validateGUID(entity2GUID, "entity2GUID", methodName);
+        invalidParameterHandler.validateGUID(entity1GUID, ENTITY_1_GUID_PARAMETER, methodName);
+        invalidParameterHandler.validateGUID(entity2GUID, ENTITY_2_GUID_PARAMETER, methodName);
 
         String relationshipTypeGUID = null;
         if (relationshipType != null) {
@@ -81,7 +85,8 @@ public class RelationshipHandler {
                 "", null, methodName);
 
         if (relationshipBetweenEntities != null) {
-            AssetCatalogConverter<AssetCatalogBean> converter = new AssetCatalogConverter<>(repositoryHelper, sourceName, assetHandler.getServerName());
+            AssetCatalogConverter<AssetCatalogBean> converter = new AssetCatalogConverter<>(repositoryHelper, serverName,
+                    assetHandler.getServerName());
             return converter.convertRelationship(relationshipBetweenEntities);
         }
 

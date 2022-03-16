@@ -38,6 +38,7 @@ public class RelationshipHandlerTest {
     private static final String FIRST_GUID = "ababa-123-acbd";
     private static final String SECOND_GUID = "ababc-2134-2341f";
     private static final String RELATIONSHIP_TYPE_GUID = "adadad-bcba-123";
+    public static final String SERVER_NAME = "server-name";
     private final String USER = "test-user";
     private final String RELATIONSHIP_TYPE = "SemanticAssigment";
     @Mock
@@ -74,9 +75,7 @@ public class RelationshipHandlerTest {
                 "", null, methodName)).thenReturn(mock);
 
         org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship
-                result = relationshipHandler.getRelationshipBetweenEntities(USER,
-                FIRST_GUID,
-                SECOND_GUID,
+                result = relationshipHandler.getRelationshipBetweenEntities(USER, SERVER_NAME, FIRST_GUID, SECOND_GUID,
                 RELATIONSHIP_TYPE);
 
         assertNotNull(result);
@@ -99,10 +98,7 @@ public class RelationshipHandlerTest {
                 "", null, methodName);
 
         assertThrows(UserNotAuthorizedException.class, () ->
-                relationshipHandler.getRelationshipBetweenEntities(USER,
-                        FIRST_GUID,
-                        SECOND_GUID,
-                        RELATIONSHIP_TYPE));
+                relationshipHandler.getRelationshipBetweenEntities(USER, SERVER_NAME, FIRST_GUID, SECOND_GUID, RELATIONSHIP_TYPE));
 
     }
 
@@ -118,10 +114,7 @@ public class RelationshipHandlerTest {
         doThrow(mockedException).when(invalidParameterHandler).validateGUID(FIRST_GUID, "entity1GUID", methodName);
 
         assertThrows(InvalidParameterException.class, () ->
-                relationshipHandler.getRelationshipBetweenEntities(USER,
-                        FIRST_GUID,
-                        SECOND_GUID,
-                        RELATIONSHIP_TYPE));
+                relationshipHandler.getRelationshipBetweenEntities(USER, SERVER_NAME, FIRST_GUID, SECOND_GUID, RELATIONSHIP_TYPE));
 
     }
 
