@@ -1246,7 +1246,7 @@ public class DatabaseManagerRESTServices
      * @param userId calling user
      * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
      * @param databaseManagerName unique name of software server capability representing the DBMS
-     * @param databaseSchemaGUID unique identifier of the database schema ASSET where the database table is located.
+     * @param databaseAssetGUID unique identifier of the database or database schema ASSET where the database table is located.
      * @param databaseTableProperties properties for the database table
      *
      * @return unique identifier of the new metadata element for the database table or
@@ -1258,7 +1258,7 @@ public class DatabaseManagerRESTServices
                                             String                  userId,
                                             String                  databaseManagerGUID,
                                             String                  databaseManagerName,
-                                            String                  databaseSchemaGUID,
+                                            String                  databaseAssetGUID,
                                             DatabaseTableProperties databaseTableProperties)
     {
         final String methodName = "createDatabaseTable";
@@ -1282,7 +1282,7 @@ public class DatabaseManagerRESTServices
             String databaseTableGUID = handler.createDatabaseTable(userId,
                                                                    databaseManagerGUID,
                                                                    databaseManagerName,
-                                                                   databaseSchemaGUID,
+                                                                   databaseAssetGUID,
                                                                    databaseTableProperties.getQualifiedName(),
                                                                    databaseTableProperties.getDisplayName(),
                                                                    databaseTableProperties.getDescription(),
@@ -1316,7 +1316,7 @@ public class DatabaseManagerRESTServices
      * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
      * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param databaseSchemaGUID unique identifier of the database schema where the database table is located.
+     * @param databaseAssetGUID unique identifier of the database or database schema where the database table is located.
      * @param templateProperties properties that override the template
      *
      * @return unique identifier of the new database table or
@@ -1329,7 +1329,7 @@ public class DatabaseManagerRESTServices
                                                         String             databaseManagerGUID,
                                                         String             databaseManagerName,
                                                         String             templateGUID,
-                                                        String             databaseSchemaGUID,
+                                                        String             databaseAssetGUID,
                                                         TemplateProperties templateProperties)
     {
         final String methodName = "createDatabaseTableFromTemplate";
@@ -1354,7 +1354,7 @@ public class DatabaseManagerRESTServices
                                                                      databaseManagerGUID,
                                                                      databaseManagerName,
                                                                      templateGUID,
-                                                                     databaseSchemaGUID,
+                                                                     databaseAssetGUID,
                                                                      templateProperties.getQualifiedName(),
                                                                      templateProperties.getDisplayName(),
                                                                      templateProperties.getDescription(),
@@ -1568,11 +1568,11 @@ public class DatabaseManagerRESTServices
 
 
     /**
-     * Retrieve the list of database tables associated with a database schema.
+     * Retrieve the list of database tables associated with a database or database schema.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseSchemaGUID unique identifier of the database schema of interest
+     * @param databaseAssetGUID unique identifier of the database schema of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -1581,13 +1581,13 @@ public class DatabaseManagerRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DatabaseTablesResponse    getTablesForDatabaseSchema(String serverName,
-                                                                String userId,
-                                                                String databaseSchemaGUID,
-                                                                int    startFrom,
-                                                                int    pageSize)
+    public DatabaseTablesResponse getTablesForDatabaseAsset(String serverName,
+                                                            String userId,
+                                                            String databaseAssetGUID,
+                                                            int    startFrom,
+                                                            int    pageSize)
     {
-        final String methodName = "getTablesForDatabaseSchema";
+        final String methodName = "getTablesForDatabaseAsset";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1605,12 +1605,12 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            List<DatabaseTableElement> databaseTableAttributes = handler.getTablesForDatabaseSchema(userId,
-                                                                                                    databaseSchemaGUID,
-                                                                                                    startFrom,
-                                                                                                    pageSize,
-                                                                                                    new Date(),
-                                                                                                    methodName);
+            List<DatabaseTableElement> databaseTableAttributes = handler.getTablesForDatabaseAsset(userId,
+                                                                                                   databaseAssetGUID,
+                                                                                                   startFrom,
+                                                                                                   pageSize,
+                                                                                                   new Date(),
+                                                                                                   methodName);
 
             response.setElementList(databaseTableAttributes);
         }
@@ -2071,11 +2071,11 @@ public class DatabaseManagerRESTServices
 
 
     /**
-     * Retrieve the list of database views associated with a database schema.
+     * Retrieve the list of database views associated with a database or database schema.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseSchemaGUID unique identifier of the database schema of interest
+     * @param databaseAssetGUID unique identifier of the database or database schema of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -2084,13 +2084,13 @@ public class DatabaseManagerRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DatabaseViewsResponse    getViewsForDatabaseSchema(String serverName,
-                                                              String userId,
-                                                              String databaseSchemaGUID,
-                                                              int    startFrom,
-                                                              int    pageSize)
+    public DatabaseViewsResponse getViewsForDatabaseAsset(String serverName,
+                                                          String userId,
+                                                          String databaseAssetGUID,
+                                                          int    startFrom,
+                                                          int    pageSize)
     {
-        final String methodName = "getViewsForDatabaseSchema";
+        final String methodName = "getViewsForDatabaseAsset";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -2108,7 +2108,7 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            List<DatabaseViewElement> databaseViewAttributes = handler.getViewsForDatabaseSchema(userId, databaseSchemaGUID, startFrom, pageSize, new Date(), methodName);
+            List<DatabaseViewElement> databaseViewAttributes = handler.getViewsForDatabaseAsset(userId, databaseAssetGUID, startFrom, pageSize, new Date(), methodName);
 
             response.setElementList(databaseViewAttributes);
         }

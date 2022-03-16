@@ -24,7 +24,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import java.util.List;
 
 /**
- * ConnectionManagerClient supports the APIs to maintain connections and their related objects.
+ * ConnectorTypeManagerClient supports the APIs to maintain connector types .
  */
 public class ConnectorTypeManagerClient implements ConnectorTypeManagerInterface
 {
@@ -149,15 +149,13 @@ public class ConnectorTypeManagerClient implements ConnectorTypeManagerInterface
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param restClient client that issues the REST API calls
      * @param maxPageSize maximum number of results supported by this server
-     * @param auditLog logging destination
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public ConnectorTypeManagerClient(String                serverName,
-                                      String                serverPlatformURLRoot,
+    public ConnectorTypeManagerClient(String                     serverName,
+                                      String                     serverPlatformURLRoot,
                                       ITInfrastructureRESTClient restClient,
-                                      int                   maxPageSize,
-                                      AuditLog              auditLog) throws InvalidParameterException
+                                      int                        maxPageSize) throws InvalidParameterException
     {
         final String methodName = "Client Constructor";
 

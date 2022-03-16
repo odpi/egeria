@@ -29,37 +29,9 @@ public class KafkaMonitorIntegrationConnector extends TopicIntegratorConnector
 {
     private String templateQualifiedName = null;
     private String templateGUID = null;
-    private String targetRootURL = null;
+    private String targetRootURL = "localhost:9092";
 
     private TopicIntegratorContext myContext = null;
-
-
-    /**
-     * Initialize the connector.
-     *
-     * @param connectorInstanceId - unique id for the connector instance - useful for messages etc
-     * @param connectionProperties - POJO for the configuration used to create the connector.
-     */
-    @Override
-    public void initialize(String connectorInstanceId, ConnectionProperties connectionProperties)
-    {
-        super.initialize(connectorInstanceId, connectionProperties);
-
-        EndpointProperties  endpoint = connectionProperties.getEndpoint();
-
-        if (endpoint != null)
-        {
-            targetRootURL = endpoint.getAddress();
-        }
-
-        Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
-
-        if (configurationProperties != null)
-        {
-            templateQualifiedName = configurationProperties.get(KafkaMonitorIntegrationProvider.TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY).toString();
-        }
-    }
-
 
     /**
      * Indicates that the connector is completely configured and can begin processing.
@@ -75,6 +47,23 @@ public class KafkaMonitorIntegrationConnector extends TopicIntegratorConnector
         final String methodName = "start";
 
         myContext = super.getContext();
+
+        /*
+         * Retrieve the configuration
+         */
+        EndpointProperties  endpoint = connectionProperties.getEndpoint();
+
+        if (endpoint != null)
+        {
+            targetRootURL = endpoint.getAddress();
+        }
+
+        Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
+
+        if (configurationProperties != null)
+        {
+            templateQualifiedName = configurationProperties.get(KafkaMonitorIntegrationProvider.TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY).toString();
+        }
 
         /*
          * Record the configuration

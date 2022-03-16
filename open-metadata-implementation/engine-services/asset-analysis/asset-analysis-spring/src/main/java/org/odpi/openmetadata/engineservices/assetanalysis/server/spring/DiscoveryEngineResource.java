@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name="Asset Analysis OMES", description="The Asset Analysis OMES provide the core subsystem for driving requests for automated metadata discovery services.",
      externalDocs=@ExternalDocumentation(description="Asset Analysis Open Metadata Engine Services (OMES)",
-                                         url="https://odpi.github.io/egeria-docs/services/omes/asset-analysis/overview/"))
+                                         url="https://egeria-project.org/services/omes/asset-analysis/overview/"))
 
 public class DiscoveryEngineResource
 {

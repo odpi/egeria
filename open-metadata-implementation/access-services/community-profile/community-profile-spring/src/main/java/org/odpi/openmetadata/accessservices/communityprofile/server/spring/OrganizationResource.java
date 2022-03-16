@@ -42,7 +42,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name="Community Profile OMAS", description="The Community Profile OMAS provides APIs and events for tools and applications that are managing information about people and the way they work together.",
      externalDocs=@ExternalDocumentation(description="Community Profile Open Metadata Access Service (OMAS)",
-                                         url="https://odpi.github.io/egeria-docs/services/omas/community-profile/overview/"))
+                                         url="https://egeria-project.org/services/omas/community-profile/overview/"))
 
 public class OrganizationResource
 {

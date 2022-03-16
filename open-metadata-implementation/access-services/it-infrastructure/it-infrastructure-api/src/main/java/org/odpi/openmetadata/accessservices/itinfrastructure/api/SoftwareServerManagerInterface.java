@@ -3,9 +3,9 @@
 package org.odpi.openmetadata.accessservices.itinfrastructure.api;
 
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareServerElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SupportedCapabilityElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.DeployedCapabilityElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.DeploymentProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.SoftwareServerProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.SupportedCapabilityProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.TemplateProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -157,84 +157,6 @@ public interface SoftwareServerManagerInterface
 
 
     /**
-     * Link a software server capability to a software server.
-     *
-     * @param userId calling user
-     * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
-     * @param infrastructureManagerName unique name of software server capability representing the caller
-     * @param infrastructureManagerIsHome should the software server capability be marked as owned by the infrastructure manager so others can not update?
-     * @param capabilityGUID unique identifier of the software server capability
-     * @param softwareServerGUID unique identifier of the software server
-     * @param properties describes the deployment of the capability onto the server
-     *
-     * @throws InvalidParameterException one of the guids is null or not known
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    void linkCapabilityToServer(String                        userId,
-                                String                        infrastructureManagerGUID,
-                                String                        infrastructureManagerName,
-                                boolean                       infrastructureManagerIsHome,
-                                String                        softwareServerGUID,
-                                String                        capabilityGUID,
-                                SupportedCapabilityProperties properties) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException;
-
-
-    /**
-     * Update the effectivity dates of a link from a piece of infrastructure to an IT profile.
-     *
-     * @param userId calling user
-     * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
-     * @param infrastructureManagerName unique name of software server capability representing the caller
-     * @param capabilityGUID unique identifier of the software server capability
-     * @param softwareServerGUID unique identifier of the software server
-     * @param isMergeUpdate are unspecified properties unchanged (true) or removed?
-     * @param properties describes the deployment of the capability onto the server
-
-     *
-     * @throws InvalidParameterException one of the guids is null or not known
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    void updateCapabilityOnServer(String                        userId,
-                                  String                        infrastructureManagerGUID,
-                                  String                        infrastructureManagerName,
-                                  String                        softwareServerGUID,
-                                  String                        capabilityGUID,
-                                  boolean                       isMergeUpdate,
-                                  SupportedCapabilityProperties properties) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   PropertyServerException;
-
-
-    /**
-     * Remove the link between a software server capability and a software server.
-     *
-     * @param userId calling user
-     * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
-     * @param infrastructureManagerName unique name of software server capability representing the caller
-     * @param softwareServerGUID unique identifier of the software server
-     * @param capabilityGUID unique identifier of the software server capability
-     * @param effectiveTime time that the relationship is effective
-     *
-     * @throws InvalidParameterException one of the guids is null or not known
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    void unlinkCapabilityFromServer(String userId,
-                                    String infrastructureManagerGUID,
-                                    String infrastructureManagerName,
-                                    String softwareServerGUID,
-                                    String capabilityGUID,
-                                    Date   effectiveTime) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException;
-
-
-
-    /**
      * Retrieve the list of software server metadata elements that contain the search string.
      * The search string is treated as a regular expression.
      *
@@ -308,31 +230,6 @@ public interface SoftwareServerManagerInterface
                                                                            int    pageSize) throws InvalidParameterException,
                                                                                                    UserNotAuthorizedException,
                                                                                                    PropertyServerException;
-
-
-
-    /**
-     * Retrieve the list of software servers created by this caller.
-     *
-     * @param userId calling user
-     * @param softwareServerGUID unique identifier of the requested metadata element
-     * @param effectiveTime time that the element is effective
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     *
-     * @return list of matching metadata elements
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    List<SupportedCapabilityElement> getSupportedCapabilities(String userId,
-                                                              String softwareServerGUID,
-                                                              Date   effectiveTime,
-                                                              int    startFrom,
-                                                              int    pageSize) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException;
 
 
     /**

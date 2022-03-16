@@ -168,7 +168,7 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                                                     externalSourceName,
                                                                                     parentGUID,
                                                                                     parentElementGUIDParameterName,
-                                                                                    OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                                     OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID,
                                                                                     OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
                                                                                     effectiveTime,
@@ -311,9 +311,9 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                                                     externalSourceName,
                                                                                     parentGUID,
                                                                                     parentElementGUIDParameterName,
-                                                                                    OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
-                                                                                    OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID,
-                                                                                    OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
+                                                                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                                    OpenMetadataAPIMapper.DISPLAY_DATA_SCHEMA_TYPE_TYPE_GUID,
+                                                                                    OpenMetadataAPIMapper.DISPLAY_DATA_SCHEMA_TYPE_TYPE_NAME,
                                                                                     effectiveTime,
                                                                                     methodName);
 
@@ -342,15 +342,15 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
 
             if (dataContainerGUID != null)
             {
-                final String databaseSchemaTypeGUIDParameterName = "databaseSchemaTypeGUID";
+                final String displaySchemaTypeGUIDParameterName = "displaySchemaTypeGUID";
                 final String dataContainerGUIDParameterName = "dataContainerGUID";
 
                 dataContainerHandler.linkElementToElement(userId,
                                                           externalSourceGUID,
                                                           externalSourceName,
                                                           databaseSchemaTypeGUID,
-                                                          databaseSchemaTypeGUIDParameterName,
-                                                          OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
+                                                          displaySchemaTypeGUIDParameterName,
+                                                          OpenMetadataAPIMapper.DISPLAY_DATA_SCHEMA_TYPE_TYPE_NAME,
                                                           dataContainerGUID,
                                                           dataContainerGUIDParameterName,
                                                           OpenMetadataAPIMapper.DISPLAY_DATA_CONTAINER_TYPE_NAME,
@@ -633,19 +633,19 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                                                     null,
                                                                                     parentGUID,
                                                                                     parentElementGUIDParameterName,
-                                                                                    OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
-                                                                                    OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID,
-                                                                                    OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
+                                                                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                                    OpenMetadataAPIMapper.DISPLAY_DATA_SCHEMA_TYPE_TYPE_GUID,
+                                                                                    OpenMetadataAPIMapper.DISPLAY_DATA_SCHEMA_TYPE_TYPE_NAME,
                                                                                     effectiveTime,
                                                                                     methodName);
 
         if (databaseSchemaTypeGUID != null)
         {
-            final String databaseSchemaTypeGUIDParameterName = "databaseSchemaTypeGUID";
+            final String displaySchemaTypeGUIDParameterName = "displaySchemaTypeGUID";
 
             return dataContainerHandler.getSchemaAttributesForComplexSchemaType(userId,
                                                                                 databaseSchemaTypeGUID,
-                                                                                databaseSchemaTypeGUIDParameterName,
+                                                                                displaySchemaTypeGUIDParameterName,
                                                                                 null,
                                                                                 OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
                                                                                 startFrom,

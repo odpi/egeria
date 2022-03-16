@@ -75,6 +75,18 @@
             <artifactId>ffdc-services</artifactId>
         </dependency>
 
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>it-infrastructure-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>it-infrastructure-client</artifactId>
+        </dependency>
+
+
     </dependencies>
 
 </project>

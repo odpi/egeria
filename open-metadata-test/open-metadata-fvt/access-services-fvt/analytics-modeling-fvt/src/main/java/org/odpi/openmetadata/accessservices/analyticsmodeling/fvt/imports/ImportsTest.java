@@ -104,6 +104,7 @@ public class ImportsTest extends AnalyticsModelingTestBase
 
         AuditLog auditLog = new AuditLog(auditLogDestination,
                                          AccessServiceDescription.ANALYTICS_MODELING_OMAS.getAccessServiceCode(),
+                                         AccessServiceDescription.ANALYTICS_MODELING_OMAS.getAccessServiceDevelopmentStatus(),
                                          AccessServiceDescription.ANALYTICS_MODELING_OMAS.getAccessServiceName(),
                                          AccessServiceDescription.ANALYTICS_MODELING_OMAS.getAccessServiceDescription(),
                                          AccessServiceDescription.ANALYTICS_MODELING_OMAS.getAccessServiceWiki());

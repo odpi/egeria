@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
         "the server's configured audit log destinations.  This service retrieves information about the audit log and its " +
         "contents for a particular server.",
         externalDocs= @ExternalDocumentation(description="Further information",
-                url="https://odpi.github.io/egeria-docs/services/omrs/"))
+                url="https://egeria-project.org/services/omrs/"))
 
 
 public class AuditLogServicesResource

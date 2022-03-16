@@ -5,30 +5,18 @@ package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary;
-import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.accumulators.MaintenanceAccumulator;
+import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.accumulators.EntitySummaryAccumulator;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 /**
  * GetEntitySummaryExecutor provides the executor for the getEntitySummary method.
  */
-public class GetEntitySummaryExecutor extends RepositoryExecutorBase
+public class GetEntitySummaryExecutor extends GetEntityExecutor
 {
-    protected MaintenanceAccumulator      accumulator;
-    protected String                      entityGUID;
-    protected Map<String, Classification> allClassifications = new HashMap<>();
-
-    protected boolean                     inPhaseOne         = true;
-
-
-    private EntitySummary latestEntity = null;
+    private EntitySummaryAccumulator  accumulator;
 
 
     /**
@@ -44,60 +32,27 @@ public class GetEntitySummaryExecutor extends RepositoryExecutorBase
                                     AuditLog auditLog,
                                     String   methodName)
     {
-        super(userId, methodName);
-
-        this.accumulator = new MaintenanceAccumulator(auditLog);
-
-        this.entityGUID = entityGUID;
+        this(userId, entityGUID, new EntitySummaryAccumulator(auditLog), methodName);
     }
 
 
-    /**
-     * Save the best classifications from all of the repositories.
-     *
-     * @param retrievedClassifications classifications from a repository
-     */
-    protected void saveClassifications(List<Classification> retrievedClassifications)
-    {
-        if (retrievedClassifications != null)
-        {
-            for (Classification entityClassification : retrievedClassifications)
-            {
-                if (entityClassification != null)
-                {
-                    Classification existingClassification = allClassifications.get(entityClassification.getName());
-
-                    /*
-                     * Ignore older versions of the classification
-                     */
-                    if ((existingClassification == null) ||
-                                (existingClassification.getVersion() < entityClassification.getVersion()))
-                    {
-                        allClassifications.put(entityClassification.getName(), entityClassification);
-                    }
-                }
-            }
-        }
-    }
-
 
     /**
-     * Retrieve the home classifications from the repository.
+     * Constructor takes the parameters for the request.
      *
-     * @param metadataCollection repository to issue request to
+     * @param userId unique identifier for requesting user
+     * @param entityGUID unique identifier (guid) for the entity
+     * @param accumulator to use
+     * @param methodName calling method
      */
-    protected void getHomeClassifications(OMRSMetadataCollection metadataCollection)
+    private GetEntitySummaryExecutor(String                   userId,
+                                     String                   entityGUID,
+                                     EntitySummaryAccumulator accumulator,
+                                     String                   methodName)
     {
-        try
-        {
-            List<Classification> homeClassifications = metadataCollection.getHomeClassifications(userId, entityGUID);
+        super(userId, entityGUID, accumulator, methodName);
 
-            saveClassifications(homeClassifications);
-        }
-        catch (Exception error)
-        {
-            // ignore exceptions because the returned exceptions come from the retrieval of the entity.
-        }
+        this.accumulator = accumulator;
     }
 
 
@@ -120,41 +75,14 @@ public class GetEntitySummaryExecutor extends RepositoryExecutorBase
             /*
              * Issue the request and return if it succeeds
              */
-            if (inPhaseOne) /* retrieving entity */
+            EntitySummary retrievedEntity = metadataCollection.getEntitySummary(userId, entityGUID);
+
+            if (retrievedEntity != null)
             {
-                EntitySummary retrievedEntity = metadataCollection.getEntitySummary(userId, entityGUID);
-
-                if (retrievedEntity != null)
-                {
-                    /*
-                     * The classifications from every retrieved entity are harvested.
-                     */
-                    saveClassifications(retrievedEntity.getClassifications());
-
-                    if (metadataCollectionId.equals(retrievedEntity.getMetadataCollectionId()))
-                    {
-                        /*
-                         * The home repository is found - assume it is the latest version - moving to phase two
-                         */
-                        latestEntity = retrievedEntity;
-                        inPhaseOne = false;
-                    }
-                    else if (latestEntity == null)
-                    {
-                        latestEntity = retrievedEntity;
-                    }
-                    else
-                    {
-                        if (retrievedEntity.getVersion() > latestEntity.getVersion())
-                        {
-                            latestEntity = retrievedEntity;
-                        }
-                    }
-                }
-                else /* retrieving additional classifications */
-                {
-                    getHomeClassifications(metadataCollection);
-                }
+                /*
+                 * The classifications from every retrieved entity are harvested.
+                 */
+                accumulator.addEntity(retrievedEntity, metadataCollectionId);
             }
             else /* retrieving additional classifications */
             {
@@ -179,9 +107,7 @@ public class GetEntitySummaryExecutor extends RepositoryExecutorBase
         }
         catch (Exception error)
         {
-            accumulator.captureGenericException(methodName,
-                                                metadataCollectionId,
-                                                error);
+            accumulator.captureGenericException(methodName, metadataCollectionId, error);
         }
 
         return false;
@@ -189,11 +115,10 @@ public class GetEntitySummaryExecutor extends RepositoryExecutorBase
 
 
     /**
-     * Return the header and classifications for a specific entity.  The returned entity summary may be from
-     * a full entity object or an entity proxy.
+     * Return the entity and accumulated classifications.  The returned entity summary may be from a full entity object or an entity proxy.
      *
      * @return EntitySummary structure
-     * @throws InvalidParameterException the guid is null.
+     * @throws InvalidParameterException the guid is null
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws EntityNotKnownException the requested entity instance is not known in the metadata collection.
@@ -204,17 +129,10 @@ public class GetEntitySummaryExecutor extends RepositoryExecutorBase
                                                    EntityNotKnownException,
                                                    UserNotAuthorizedException
     {
+        EntitySummary latestEntity = accumulator.getResult();
+
         if (latestEntity != null)
         {
-            if (allClassifications.isEmpty())
-            {
-                latestEntity.setClassifications(null);
-            }
-            else
-            {
-                latestEntity.setClassifications(new ArrayList<>(allClassifications.values()));
-            }
-
             return latestEntity;
         }
 

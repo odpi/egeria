@@ -37,7 +37,7 @@ public class GraphOMRSRepositoryConnectorProvider extends OMRSRepositoryConnecto
     private static final String connectorQualifiedName = "Egeria:OMRSRepositoryConnector:JanusGraph";
     private static final String connectorDisplayName   = "JanusGraph-based OMRS Repository Connector";
     private static final String connectorDescription   = "Native open metadata repository connector that maps open metadata calls to a JanusGraph based metadata repository.";
-    private static final String connectorWikiPage      = "https://odpi.github.io/egeria-docs/connectors/repository/janus-graph/";
+    private static final String connectorWikiPage      = "https://egeria-project.org/connectors/repository/janus-graph/";
 
     /*
      * Class of the connector.

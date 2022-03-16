@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name="IT Infrastructure OMAS",
      description="The IT Infrastructure OMAS provides APIs for tools and applications managing the IT infrastructure that supports the data assets.\n",
      externalDocs=@ExternalDocumentation(description="IT Infrastructure Open Metadata Access Service (OMAS)",
-                                         url="https://odpi.github.io/egeria-docs/services/omas/it-infrastructure/overview/"))
+                                         url="https://egeria-project.org/services/omas/it-infrastructure/overview/"))
 
 public class ITInfrastructureResource
 {
@@ -41,6 +41,29 @@ public class ITInfrastructureResource
     public ITInfrastructureResource()
     {
     }
+
+
+    /**
+     * Return the connection object for the IT Infrastructure OMAS's out topic.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId identifier of calling user
+     * @param callerId unique identifier for the caller
+     *
+     * @return connection object for the out topic or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem retrieving the discovery engine definition.
+     */
+    @GetMapping(path = "/topics/out-topic-connection/{callerId}")
+
+    public org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse getOutTopicConnection(@PathVariable String serverName,
+                                                                                                   @PathVariable String userId,
+                                                                                                   @PathVariable String callerId)
+    {
+        return restAPI.getOutTopicConnection(serverName, userId, callerId);
+    }
+
 
 
     /**

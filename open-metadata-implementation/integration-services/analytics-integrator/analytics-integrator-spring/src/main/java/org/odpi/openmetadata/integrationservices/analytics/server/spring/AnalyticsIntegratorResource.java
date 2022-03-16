@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name="Analytics Integrator OMIS", description="Supports the detection and creation of metadata for analytics tools.",
         externalDocs=@ExternalDocumentation(description="Analytics Integrator Open Metadata Integration Service (OMIS)",
-                url="https://odpi.github.io/egeria-docs/services/omis/analytics-integrator/overview"))
+                url="https://egeria-project.org/services/omis/analytics-integrator/overview"))
 
 public class AnalyticsIntegratorResource
 {

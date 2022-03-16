@@ -29,7 +29,7 @@ public class DataManagerOMASIT
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {FVTConstants.IN_MEMORY_SERVER, FVTConstants.GRAPH_SERVER})
+        @ValueSource(strings = {FVTConstants.IN_MEMORY_SERVER})
     public void testClientConstructors(String serverName)
     {
         FVTResults results = ClientConstructorTest.performFVT(serverName, StringUtils.defaultIfEmpty(System.getProperty("fvt.url"),FVTConstants.SERVER_PLATFORM_URL_ROOT));
@@ -40,7 +40,7 @@ public class DataManagerOMASIT
 
 
     @ParameterizedTest
-    @ValueSource(strings = {FVTConstants.IN_MEMORY_SERVER, FVTConstants.GRAPH_SERVER})
+        @ValueSource(strings = {FVTConstants.IN_MEMORY_SERVER})
     public void testCreateDB(String serverName)
     {
         FVTResults results = CreateDatabaseTest.performFVT(serverName, StringUtils.defaultIfEmpty(System.getProperty("fvt.url"), FVTConstants.SERVER_PLATFORM_URL_ROOT), FVTConstants.USERID);
@@ -51,7 +51,7 @@ public class DataManagerOMASIT
 
 
     @ParameterizedTest
-    @ValueSource(strings = {FVTConstants.IN_MEMORY_SERVER, FVTConstants.GRAPH_SERVER})
+        @ValueSource(strings = {FVTConstants.IN_MEMORY_SERVER})
     public void testCreateEvents(String serverName)
     {
         FVTResults results = CreateEventsTest.performFVT(serverName, StringUtils.defaultIfEmpty(System.getProperty("fvt.url"), FVTConstants.SERVER_PLATFORM_URL_ROOT), FVTConstants.USERID);
@@ -62,7 +62,7 @@ public class DataManagerOMASIT
 
 
     @ParameterizedTest
-    @ValueSource(strings = {FVTConstants.IN_MEMORY_SERVER, FVTConstants.GRAPH_SERVER})
+        @ValueSource(strings = {FVTConstants.IN_MEMORY_SERVER})
     public void testInvalidParameters(String server)
     {
         assertDoesNotThrow(() -> runInvalidParameters(server));

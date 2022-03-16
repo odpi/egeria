@@ -29,7 +29,7 @@ public class FileBasedOpenMetadataArchiveStoreProvider extends OpenMetadataArchi
     private static final String connectorQualifiedName = "Egeria:OpenMetadataArchiveStoreConnector:File";
     private static final String connectorDisplayName   = "File-based Open Metadata Archive Store Connector";
     private static final String connectorDescription   = "Connector supports storing of an open metadata archive as a single file stored using JSON format.";
-    private static final String connectorWikiPage      = "https://odpi.github.io/egeria-docs/connectors/runtime/file-based-open-metadata-archive-store-connector";
+    private static final String connectorWikiPage      = "https://egeria-project.org/connectors/runtime/file-based-open-metadata-archive-store-connector";
 
     /*
      * Class of the connector.

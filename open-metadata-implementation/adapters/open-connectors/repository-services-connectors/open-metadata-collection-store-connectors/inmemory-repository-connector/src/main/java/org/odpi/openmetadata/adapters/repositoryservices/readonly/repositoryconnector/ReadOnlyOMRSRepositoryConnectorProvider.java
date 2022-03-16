@@ -37,7 +37,7 @@ public class ReadOnlyOMRSRepositoryConnectorProvider extends OMRSRepositoryConne
     private static final String connectorQualifiedName = "Egeria:OMRSRepositoryConnector:ReadOnly";
     private static final String connectorDisplayName   = "Read-only OMRS Repository Connector";
     private static final String connectorDescription   = "Native open metadata repository connector that that uses an archive for content and stores nothing else.";
-    private static final String connectorWikiPage      = "https://odpi.github.io/egeria-docs/connectors/repository/read-only/";
+    private static final String connectorWikiPage      = "https://egeria-project.org/connectors/repository/read-only/";
 
     /*
      * Class of the connector.

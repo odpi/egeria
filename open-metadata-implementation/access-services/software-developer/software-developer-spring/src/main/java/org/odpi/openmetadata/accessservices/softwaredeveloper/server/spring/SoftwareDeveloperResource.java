@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name="Software Developer OMAS", description="The Software Developer OMAS provides APIs and events for software developer tools and applications that help developers make good use of the standards and best practices defined for the data landscape." +
         "\n", externalDocs=@ExternalDocumentation(description="Software Developer Open Metadata Access Service (OMAS)",
-                                                  url="https://odpi.github.io/egeria-docs/services/omas/software-developer/overview/"))
+                                                  url="https://egeria-project.org/services/omas/software-developer/overview/"))
 
 public class SoftwareDeveloperResource
 {

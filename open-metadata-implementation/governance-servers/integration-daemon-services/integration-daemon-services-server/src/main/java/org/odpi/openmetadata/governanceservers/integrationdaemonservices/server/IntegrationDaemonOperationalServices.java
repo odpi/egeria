@@ -126,13 +126,22 @@ public class IntegrationDaemonOperationalServices
                                                                   methodName);
                     }
 
+                    /*
+                     * Each integration service has its own audit log instance.
+                     */
+                    AuditLog integrationServicesAuditLog
+                            = auditLog.createNewAuditLog(integrationServiceConfig.getIntegrationServiceId(),
+                                                         integrationServiceConfig.getIntegrationServiceDevelopmentStatus(),
+                                                         integrationServiceConfig.getIntegrationServiceFullName(),
+                                                         integrationServiceConfig.getIntegrationServiceDescription(),
+                                                         integrationServiceConfig.getIntegrationServiceWiki());
                     contextManager.initializeContextManager(partnerOMASServerName,
                                                             partnerOMASRootURL,
                                                             localServerUserId,
                                                             localServerPassword,
                                                             integrationServiceConfig.getIntegrationServiceOptions(),
                                                             maxPageSize,
-                                                            auditLog);
+                                                            integrationServicesAuditLog);
 
                     contextManager.createClients();
 

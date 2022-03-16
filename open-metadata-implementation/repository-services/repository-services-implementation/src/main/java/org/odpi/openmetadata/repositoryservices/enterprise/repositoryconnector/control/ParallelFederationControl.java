@@ -15,9 +15,8 @@ import java.util.List;
  */
 public class ParallelFederationControl extends FederationControlBase
 {
-    // todo at this point the parallel federation control uses a sequential since the
-    // todo worker threads are not implemented.
-
+    // todo at this point the parallel federation control uses the sequential federation control since the worker threads are not implemented.
+    private SequentialFederationControl sequentialFederationControl;
 
     /**
      * Constructor for a federated query
@@ -34,11 +33,12 @@ public class ParallelFederationControl extends FederationControlBase
     {
         super(userId, cohortConnectors, auditLog, methodName);
 
+        sequentialFederationControl = new SequentialFederationControl(userId, cohortConnectors, auditLog, methodName);
     }
 
 
     /**
-     * Issue the federated command
+     * Issue the federated command.
      *
      * @param executor command to execute
      * @throws RepositoryErrorException problem with the state of one of the repositories.
@@ -46,22 +46,6 @@ public class ParallelFederationControl extends FederationControlBase
      */
     public void executeCommand(RepositoryExecutor executor) throws RepositoryErrorException
     {
-        if (super.cohortConnectors != null)
-        {
-            for (OMRSRepositoryConnector cohortConnector : cohortConnectors)
-            {
-                if (cohortConnector != null)
-                {
-                    OMRSMetadataCollection metadataCollection = cohortConnector.getMetadataCollection();
-
-                    String metadataCollectionId = this.validateMetadataCollection(cohortConnector, metadataCollection, methodName);
-
-                    if (metadataCollectionId != null)
-                    {
-                        executor.issueRequestToRepository(metadataCollectionId, metadataCollection);
-                    }
-                }
-            }
-        }
+        sequentialFederationControl.executeCommand(executor);
     }
 }

@@ -6,6 +6,7 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ElementStatus;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.AssetProperties;
 
 import java.util.Objects;
@@ -24,8 +25,9 @@ public class AssetRequestBody extends AssetProperties
 {
     private static final long    serialVersionUID = 1L;
 
-    private String externalSourceGUID = null;
-    private String externalSourceName = null;
+    private String        externalSourceGUID = null;
+    private String        externalSourceName = null;
+    private ElementStatus initialStatus      = null;
 
 
     /**
@@ -110,6 +112,28 @@ public class AssetRequestBody extends AssetProperties
 
 
     /**
+     * Return the initial status ti use (if different from the default value).
+     *
+     * @return enum or null for default value
+     */
+    public ElementStatus getInitialStatus()
+    {
+        return initialStatus;
+    }
+
+
+    /**
+     * Set up the initial status ti use (if different from the default value).
+     *
+     * @param initialStatus enum or null for default value
+     */
+    public void setInitialStatus(ElementStatus initialStatus)
+    {
+        this.initialStatus = initialStatus;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -120,6 +144,7 @@ public class AssetRequestBody extends AssetProperties
         return "AssetRequestBody{" +
                        "externalSourceGUID='" + externalSourceGUID + '\'' +
                        ", externalSourceName='" + externalSourceName + '\'' +
+                       ", initialStatus=" + initialStatus +
                        ", displayName='" + getDisplayName() + '\'' +
                        ", description='" + getDescription() + '\'' +
                        ", effectiveFrom=" + getEffectiveFrom() +
@@ -150,13 +175,14 @@ public class AssetRequestBody extends AssetProperties
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
         AssetRequestBody that = (AssetRequestBody) objectToCompare;
         return Objects.equals(externalSourceGUID, that.externalSourceGUID) &&
-                Objects.equals(externalSourceName, that.externalSourceName);
+                       Objects.equals(externalSourceName, that.externalSourceName) &&
+                       initialStatus == that.initialStatus;
     }
 
 
@@ -168,6 +194,6 @@ public class AssetRequestBody extends AssetProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), externalSourceGUID, externalSourceName);
+        return Objects.hash(super.hashCode(), externalSourceGUID, externalSourceName, initialStatus);
     }
 }

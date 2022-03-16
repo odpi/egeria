@@ -19,9 +19,8 @@ import java.security.cert.X509Certificate
 user=(properties["user"] ?: System.properties["user"]) ?: "garygeeke";
 baseURL=(properties["baseURL"] ?: System.properties["baseURL"]) ?: "https://localhost:9443";
 serverMem=(properties["servermem"] ?: System.properties["servermem"]) ?: "serverinmem";
-serverGraph=(properties["servergraph"] ?: System.properties["servergraph"]) ?: "servergraph";
-retries=(properties["retries"] ?: System.properties["retries"]) ?: 12;
-delay=(properties["delay"] ?: System.properties["delay"]) ?: 10;
+retries=(properties["retries"] ?: System.properties["retries"]) ?: 50;
+delay=(properties["delay"] ?: System.properties["delay"]) ?: 2;
 
 // SSL setup to avoid self-signed errors for testing
 def trustAllCerts = [
@@ -100,7 +99,6 @@ if(postRC2.equals(200)) {
     println(post2.getInputStream().getText());
 }
 
-
 // --- Launch the server - any errors here and we exit
 System.out.println("=== Starting server: " + serverMem + " ===");
 post3 = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverMem + "/instance" ).openConnection()
@@ -110,41 +108,6 @@ postRC3 = post3.getResponseCode();
 println(postRC3);
 if(postRC3.equals(200)) {
     println(post3.getInputStream().getText());
-}
-
-// -- Graph
-// --- Configure the platform - any errors here and we exit
-System.out.println("=== Configuring server: " + serverGraph + " ===");
-post1g = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverGraph + "/local-repository/mode/local-graph-repository" ).openConnection()
-post1g.setRequestMethod("POST")
-post1g.setRequestProperty("Content-Type", "application/json")
-postRC1g = post1g.getResponseCode();
-println(postRC1g);
-if(postRC1g.equals(200)) {
-    println(post1g.getInputStream().getText());
-}
-
-// --- Enable OMAS - any errors here and we exit
-System.out.println("=== Enabling Data Manager OMAS: " + serverGraph + " ===");
-post2g = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverGraph + "/access-services/data-manager/no-topics" ).openConnection()
-post2g.setRequestMethod("POST")
-post2g.setRequestProperty("Content-Type", "application/json")
-postRC2g = post2.getResponseCode();
-println(postRC2g);
-if(postRC2g.equals(200)) {
-    println(post2g.getInputStream().getText());
-}
-
-
-// --- Launch the server - any errors here and we exit
-System.out.println("=== Starting server: " + serverGraph + " ===");
-post3g = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverGraph + "/instance" ).openConnection()
-post3g.setRequestMethod("POST")
-post3g.setRequestProperty("Content-Type", "application/json")
-postRC3g = post3.getResponseCode();
-println(postRC3g);
-if(postRC3g.equals(200)) {
-    println(post3g.getInputStream().getText());
 }
 
 // --- We're done

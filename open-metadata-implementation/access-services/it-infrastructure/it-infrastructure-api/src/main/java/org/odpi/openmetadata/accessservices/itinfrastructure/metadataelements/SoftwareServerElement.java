@@ -6,6 +6,7 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.AssetProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.SoftwareServerProperties;
 
 import java.io.Serializable;
@@ -48,6 +49,27 @@ public class SoftwareServerElement implements MetadataElement, Serializable
         {
             elementHeader = template.getElementHeader();
             properties = template.getProperties();
+        }
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public SoftwareServerElement(AssetElement template)
+    {
+        if (template != null)
+        {
+            elementHeader = template.getElementHeader();
+
+            AssetProperties assetProperties = template.getProperties();
+
+            if (assetProperties != null)
+            {
+                properties = new SoftwareServerProperties(assetProperties);
+            }
         }
     }
 
