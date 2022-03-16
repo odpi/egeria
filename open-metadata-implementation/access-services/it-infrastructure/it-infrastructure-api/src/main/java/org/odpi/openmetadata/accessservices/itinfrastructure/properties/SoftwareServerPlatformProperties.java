@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -132,6 +133,11 @@ public class SoftwareServerPlatformProperties extends ITInfrastructureProperties
         AssetProperties assetProperties = super.cloneToAsset(subTypeName);
 
         Map<String, Object> assetExtendedProperties = assetProperties.getExtendedProperties();
+
+        if (assetExtendedProperties == null)
+        {
+            assetExtendedProperties = new HashMap<>();
+        }
 
         if (platformType != null)
         {

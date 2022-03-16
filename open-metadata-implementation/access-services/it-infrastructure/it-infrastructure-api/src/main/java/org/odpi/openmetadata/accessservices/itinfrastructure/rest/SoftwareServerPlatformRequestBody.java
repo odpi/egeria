@@ -120,7 +120,6 @@ public class SoftwareServerPlatformRequestBody extends SoftwareServerPlatformPro
         return "SoftwareServerPlatformRequestBody{" +
                        "externalSourceGUID='" + externalSourceGUID + '\'' +
                        ", externalSourceName='" + externalSourceName + '\'' +
-                       ", cloneToAsset=" + cloneToAsset() +
                        ", softwareServerPlatformType='" + getSoftwareServerPlatformType() + '\'' +
                        ", softwareServerPlatformVersion='" + getSoftwareServerPlatformVersion() + '\'' +
                        ", softwareServerPlatformSource='" + getSoftwareServerPlatformSource() + '\'' +

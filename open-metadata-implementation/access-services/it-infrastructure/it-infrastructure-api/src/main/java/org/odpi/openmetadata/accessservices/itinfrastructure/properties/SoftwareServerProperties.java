@@ -165,6 +165,11 @@ public class SoftwareServerProperties extends ITInfrastructureProperties
 
         Map<String, Object> assetExtendedProperties = assetProperties.getExtendedProperties();
 
+        if (assetExtendedProperties == null)
+        {
+            assetExtendedProperties = new HashMap<>();
+        }
+
         if (softwareServerType != null)
         {
             assetExtendedProperties.put(deployedImplementationTypeProperty, softwareServerType);
