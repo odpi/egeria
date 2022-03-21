@@ -228,7 +228,7 @@ public class FindRelationshipsExecutor extends PageableRepositoryExecutorBase
             accumulator.captureGenericException(methodName, metadataCollectionId, error);
         }
 
-        return true;
+        return false;
     }
 
 

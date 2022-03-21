@@ -14,7 +14,6 @@ import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.exc
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.exception.FileException;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.odpi.openmetadata.integrationservices.files.connector.FilesIntegratorConnector;
 
@@ -43,16 +42,21 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
 
 
     /**
-     * Initialize the connector.
+     * Indicates that the connector is completely configured and can begin processing.
+     * This call can be used to register with non-blocking services.
      *
-     * @param connectorInstanceId - unique id for the connector instance - useful for messages etc
-     * @param connectionProperties - POJO for the configuration used to create the connector.
+     * @throws ConnectorCheckedException there is a problem within the connector.
      */
     @Override
-    public void initialize(String connectorInstanceId, ConnectionProperties connectionProperties)
+    public void start() throws ConnectorCheckedException
     {
-        super.initialize(connectorInstanceId, connectionProperties);
+        super.start();
 
+        final String methodName = "start";
+
+        /*
+         * Extract the configuration
+         */
         EndpointProperties  endpoint = connectionProperties.getEndpoint();
 
         if (endpoint != null)
@@ -71,21 +75,6 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
 
             templateQualifiedName = configurationProperties.get(BasicFilesMonitorIntegrationProviderBase.TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY).toString();
         }
-    }
-
-
-    /**
-     * Indicates that the connector is completely configured and can begin processing.
-     * This call can be used to register with non-blocking services.
-     *
-     * @throws ConnectorCheckedException there is a problem within the connector.
-     */
-    @Override
-    public void start() throws ConnectorCheckedException
-    {
-        super.start();
-
-        final String methodName = "start";
 
         /*
          * Record the configuration

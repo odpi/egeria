@@ -99,7 +99,7 @@ public class GetAllTypesExecutor extends CloneableRepositoryExecutorBase
             accumulator.captureGenericException(methodName, metadataCollectionId, error);
         }
 
-        return true;
+        return false;
     }
 
 

@@ -2,17 +2,41 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.integration.openlineage;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.connectors.IntegrationConnectorProvider;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * APIBasedOpenLineageLogStoreProvider is the OCF connector provider for the API based open lineage log store.
  */
-public class APIBasedOpenLineageLogStoreProvider extends OpenLineageLogStoreProviderBase
+public class APIBasedOpenLineageLogStoreProvider extends IntegrationConnectorProvider
 {
-    private static final String connectorTypeGUID          = "88fc3777-19a3-4b17-b8fc-09c29e04f7d1";
-    private static final String connectorTypeQualifiedName = "Egeria:IntegrationConnector:Lineage:APIBasedOpenLineageLogStore";
-    private static final String connectorTypeDisplayName   = "API-based Open Lineage Log Store Integration Connector";
-    private static final String connectorTypeDescription   = "Connector that calls an API to store open lineage events.";
+    /*
+     * Unique identifier of the connector for the audit log.
+     */
+    private static final int    connectorComponentId   = 654;
+
+    /*
+     * Unique identifier for the connector type.
+     */
+    private static final String connectorTypeGUID      = "88fc3777-19a3-4b17-b8fc-09c29e04f7d1";
+
+    /*
+     * Descriptive information about the connector for the connector type and audit log.
+     */
+    private static final String connectorQualifiedName = "Egeria:IntegrationConnector:Lineage:APIBasedOpenLineageLogStore";
+    private static final String connectorDisplayName   = "API-based Open Lineage Log Store Integration Connector";
+    private static final String connectorDescription   = "Connector that calls an API to store open lineage events.";
+    private static final String connectorWikiPage      = "https://egeria-project.org/connectors/integration/api-based-open-lineage-log-store-integration-connector/";
+
+    /*
+     * Class of the connector.
+     */
+    private static final Class<?> connectorClass       = APIBasedOpenLineageLogStoreConnector.class;
+
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
@@ -20,18 +44,36 @@ public class APIBasedOpenLineageLogStoreProvider extends OpenLineageLogStoreProv
      */
     public APIBasedOpenLineageLogStoreProvider()
     {
-        Class<?>    connectorClass = APIBasedOpenLineageLogStoreConnector.class;
+        super();
 
+        /*
+         * Set up the class name of the connector that this provider creates.
+         */
         super.setConnectorClassName(connectorClass.getName());
 
+        /*
+         * Set up the connector type that should be included in a connection used to configure this connector.
+         */
         ConnectorType connectorType = new ConnectorType();
         connectorType.setType(ConnectorType.getConnectorTypeType());
         connectorType.setGUID(connectorTypeGUID);
-        connectorType.setQualifiedName(connectorTypeQualifiedName);
-        connectorType.setDisplayName(connectorTypeDisplayName);
-        connectorType.setDescription(connectorTypeDescription);
+        connectorType.setQualifiedName(connectorQualifiedName);
+        connectorType.setDisplayName(connectorDisplayName);
+        connectorType.setDescription(connectorDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
 
         super.connectorTypeBean = connectorType;
+
+        /*
+         * Set up the component description used in the connector's audit log messages.
+         */
+        AuditLogReportingComponent componentDescription = new AuditLogReportingComponent();
+
+        componentDescription.setComponentId(connectorComponentId);
+        componentDescription.setComponentName(connectorQualifiedName);
+        componentDescription.setComponentDescription(connectorDescription);
+        componentDescription.setComponentWikiURL(connectorWikiPage);
+
+        super.setConnectorComponentDescription(componentDescription);
     }
 }
