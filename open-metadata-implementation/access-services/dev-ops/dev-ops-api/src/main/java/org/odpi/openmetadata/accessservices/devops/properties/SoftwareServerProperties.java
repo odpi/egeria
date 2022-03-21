@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -131,6 +132,11 @@ public class SoftwareServerProperties extends ITInfrastructureProperties
 
         Map<String, Object> assetExtendedProperties = assetProperties.getExtendedProperties();
 
+        if (assetExtendedProperties == null)
+        {
+            assetExtendedProperties = new HashMap<>();
+        }
+
         if (softwareServerType != null)
         {
             assetExtendedProperties.put(deployedImplementationTypeProperty, softwareServerType);
@@ -148,7 +154,10 @@ public class SoftwareServerProperties extends ITInfrastructureProperties
             assetExtendedProperties.put(userIdProperty, softwareServerUserId);
         }
 
-        assetProperties.setExtendedProperties(assetExtendedProperties);
+        if (! assetExtendedProperties.isEmpty())
+        {
+            assetProperties.setExtendedProperties(assetExtendedProperties);
+        }
 
         return assetProperties;
     }

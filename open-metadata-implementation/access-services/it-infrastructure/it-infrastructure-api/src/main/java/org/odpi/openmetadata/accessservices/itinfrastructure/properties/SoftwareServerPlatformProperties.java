@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -54,10 +55,10 @@ public class SoftwareServerPlatformProperties extends ITInfrastructureProperties
 
         if (template != null)
         {
-            platformType    = template.getSoftwareServerType();
-            platformVersion = template.getSoftwareServerVersion();
-            platformSource  = template.getSoftwareServerSource();
-            platformUserId  = template.getSoftwareServerUserId();
+            platformType    = template.getSoftwareServerPlatformType();
+            platformVersion = template.getSoftwareServerPlatformVersion();
+            platformSource  = template.getSoftwareServerPlatformSource();
+            platformUserId  = template.getSoftwareServerPlatformUserId();
         }
     }
 
@@ -133,6 +134,11 @@ public class SoftwareServerPlatformProperties extends ITInfrastructureProperties
 
         Map<String, Object> assetExtendedProperties = assetProperties.getExtendedProperties();
 
+        if (assetExtendedProperties == null)
+        {
+            assetExtendedProperties = new HashMap<>();
+        }
+
         if (platformType != null)
         {
             assetExtendedProperties.put(deployedImplementationTypeProperty, platformType);
@@ -164,7 +170,7 @@ public class SoftwareServerPlatformProperties extends ITInfrastructureProperties
      *
      * @return type description string
      */
-    public String getSoftwareServerType()
+    public String getSoftwareServerPlatformType()
     {
         return platformType;
     }
@@ -175,73 +181,73 @@ public class SoftwareServerPlatformProperties extends ITInfrastructureProperties
      *
      * @param platformType type description string
      */
-    public void setSoftwareServerType(String platformType)
+    public void setSoftwareServerPlatformType(String platformType)
     {
         this.platformType = platformType;
     }
 
 
     /**
-     * Return the version of the server.
+     * Return the version of the platform.
      *
      * @return version string
      */
-    public String getSoftwareServerVersion()
+    public String getSoftwareServerPlatformVersion()
     {
         return platformVersion;
     }
 
 
     /**
-     * Set up the version of the server.
+     * Set up the version of the platform.
      *
      * @param platformVersion version string
      */
-    public void setSoftwareServerVersion(String platformVersion)
+    public void setSoftwareServerPlatformVersion(String platformVersion)
     {
         this.platformVersion = platformVersion;
     }
 
 
     /**
-     * Return the source (such as vendor or operator) of the server.
+     * Return the source (such as vendor or operator) of the platform.
      *
      * @return string name
      */
-    public String getSoftwareServerSource()
+    public String getSoftwareServerPlatformSource()
     {
         return platformSource;
     }
 
 
     /**
-     * Set up the source (such as vendor or operator) of the server.
+     * Set up the source (such as vendor or operator) of the platform.
      *
      * @param platformSource string name
      */
-    public void setSoftwareServerSource(String platformSource)
+    public void setSoftwareServerPlatformSource(String platformSource)
     {
         this.platformSource = platformSource;
     }
 
 
     /**
-     * Return the user identity of the server.
+     * Return the user identity of the platform.
      *
      * @return string user identity
      */
-    public String getSoftwareServerUserId()
+    public String getSoftwareServerPlatformUserId()
     {
         return platformUserId;
     }
 
 
     /**
-     * Set up the user identity of the server.
+     * Set up the user identity of the platform.
      *
      * @param platformUserId string user identity
      */
-    public void setSoftwareServerUserId(String platformUserId)
+    public void setSoftwareServerPlatformUserId(String platformUserId)
     {
         this.platformUserId = platformUserId;
     }
@@ -260,10 +266,6 @@ public class SoftwareServerPlatformProperties extends ITInfrastructureProperties
                        ", platformVersion='" + platformVersion + '\'' +
                        ", platformSource='" + platformSource + '\'' +
                        ", platformUserId='" + platformUserId + '\'' +
-                       ", softwareServerType='" + getSoftwareServerType() + '\'' +
-                       ", softwareServerVersion='" + getSoftwareServerVersion() + '\'' +
-                       ", softwareServerSource='" + getSoftwareServerSource() + '\'' +
-                       ", softwareServerUserId='" + getSoftwareServerUserId() + '\'' +
                        ", displayName='" + getDisplayName() + '\'' +
                        ", description='" + getDescription() + '\'' +
                        ", effectiveFrom=" + getEffectiveFrom() +

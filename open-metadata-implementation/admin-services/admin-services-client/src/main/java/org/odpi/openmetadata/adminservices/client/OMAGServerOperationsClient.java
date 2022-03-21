@@ -4,26 +4,17 @@
 package org.odpi.openmetadata.adminservices.client;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
-import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
-import org.odpi.openmetadata.adminservices.properties.ServerStatus;
-import org.odpi.openmetadata.adminservices.rest.ConnectionResponse;
+import org.odpi.openmetadata.adminservices.properties.ServerServicesStatus;
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
 import org.odpi.openmetadata.adminservices.rest.OMAGServerStatusResponse;
-import org.odpi.openmetadata.adminservices.rest.ServerTypeClassificationResponse;
-import org.odpi.openmetadata.adminservices.rest.ServerTypeClassificationSummary;
 import org.odpi.openmetadata.adminservices.rest.SuccessMessageResponse;
-import org.odpi.openmetadata.adminservices.rest.URLRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * OMAGServerOperationsClient provides services to start and stop an OMAG Server.
@@ -260,9 +251,9 @@ public class OMAGServerOperationsClient
      * @throws OMAGInvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public ServerStatus getServerStatus() throws OMAGNotAuthorizedException,
-                                                 OMAGInvalidParameterException,
-                                                 OMAGConfigurationErrorException
+    public ServerServicesStatus getServerStatus() throws OMAGNotAuthorizedException,
+                                                         OMAGInvalidParameterException,
+                                                         OMAGConfigurationErrorException
     {
         final String methodName  = "getServerStatus";
         final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/instance/status";

@@ -5,7 +5,7 @@ package org.odpi.openmetadata.adminservices.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.adminservices.properties.ServerStatus;
+import org.odpi.openmetadata.adminservices.properties.ServerServicesStatus;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -23,7 +23,7 @@ public class OMAGServerStatusResponse extends AdminServicesAPIResponse
 {
     private static final long    serialVersionUID = 1L;
 
-    private ServerStatus serverStatus = null;
+    private ServerServicesStatus serverServicesStatus = null;
 
 
     /**
@@ -46,7 +46,7 @@ public class OMAGServerStatusResponse extends AdminServicesAPIResponse
 
         if (template != null)
         {
-            serverStatus = template.getServerStatus();
+            serverServicesStatus = template.getServerStatus();
         }
     }
 
@@ -56,20 +56,20 @@ public class OMAGServerStatusResponse extends AdminServicesAPIResponse
      *
      * @return server status
      */
-    public ServerStatus getServerStatus()
+    public ServerServicesStatus getServerStatus()
     {
-        return serverStatus;
+        return serverServicesStatus;
     }
 
 
     /**
      * Set up the server status structure.
      *
-     * @param serverStatus server status
+     * @param serverServicesStatus server status
      */
-    public void setServerStatus(ServerStatus serverStatus)
+    public void setServerStatus(ServerServicesStatus serverServicesStatus)
     {
-        this.serverStatus = serverStatus;
+        this.serverServicesStatus = serverServicesStatus;
     }
 
 
@@ -82,7 +82,7 @@ public class OMAGServerStatusResponse extends AdminServicesAPIResponse
     public String toString()
     {
         return "OMAGServerStatusResponse{" +
-                       "serverStatus=" + serverStatus +
+                       "serverServicesStatus=" + serverServicesStatus +
                        ", exceptionClassName='" + getExceptionClassName() + '\'' +
                        ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
                        ", actionDescription='" + getActionDescription() + '\'' +
@@ -119,7 +119,7 @@ public class OMAGServerStatusResponse extends AdminServicesAPIResponse
             return false;
         }
         OMAGServerStatusResponse that = (OMAGServerStatusResponse) objectToCompare;
-        return Objects.equals(serverStatus, that.serverStatus);
+        return Objects.equals(serverServicesStatus, that.serverServicesStatus);
     }
 
 
@@ -131,6 +131,6 @@ public class OMAGServerStatusResponse extends AdminServicesAPIResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), serverStatus);
+        return Objects.hash(super.hashCode(), serverServicesStatus);
     }
 }

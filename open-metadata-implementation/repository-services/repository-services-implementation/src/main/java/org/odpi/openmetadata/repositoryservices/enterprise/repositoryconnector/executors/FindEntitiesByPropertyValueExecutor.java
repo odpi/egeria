@@ -220,6 +220,6 @@ public class FindEntitiesByPropertyValueExecutor extends PageableEntityRepositor
             accumulator.captureGenericException(methodName, metadataCollectionId, error);
         }
 
-        return true;
+        return false;
     }
 }
