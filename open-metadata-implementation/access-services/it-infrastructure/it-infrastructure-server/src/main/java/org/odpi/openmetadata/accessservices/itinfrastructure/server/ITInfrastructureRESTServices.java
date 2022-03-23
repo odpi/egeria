@@ -72,6 +72,60 @@ public class ITInfrastructureRESTServices
     }
 
 
+
+
+    /**
+     * Return the client side connection object for the IT Infrastructure OMAS's out topic.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param userId identifier of calling user.
+     * @param callerId unique identifier of the caller
+     *
+     * @return connection object for the out topic or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem retrieving the discovery engine definition.
+     */
+    public org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse getOutTopicConnection(String serverName,
+                                                                                                   String userId,
+                                                                                                   String callerId)
+    {
+        final String methodName = "getOutTopicConnection";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse
+                response = new org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse();
+        AuditLog auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            response.setConnection(instanceHandler.getOutTopicConnection(userId, serverName, methodName, callerId));
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
     /* ========================================================
      * The connection carries the information to create a connector
      */

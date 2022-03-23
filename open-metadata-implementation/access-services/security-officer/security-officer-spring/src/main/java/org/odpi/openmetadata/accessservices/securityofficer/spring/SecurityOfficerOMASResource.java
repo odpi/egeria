@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name="Security Officer OMAS", description="The Security Officer Open Metadata Access Service (OMAS) provides access to metadata for policy enforcement frameworks such as Apache Ranger.",
      externalDocs=@ExternalDocumentation(description="Security Officer Open Metadata Access Service (OMAS)",
-                                         url="https://odpi.github.io/egeria-docs/services/omas/security-officer/overview/"))
+                                         url="https://egeria-project.org/services/omas/security-officer/overview/"))
 
 public class SecurityOfficerOMASResource {
 

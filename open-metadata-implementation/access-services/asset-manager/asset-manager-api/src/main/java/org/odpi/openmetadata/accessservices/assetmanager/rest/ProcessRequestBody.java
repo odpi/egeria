@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessStatus;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -27,7 +28,8 @@ public class ProcessRequestBody implements Serializable
     private static final long    serialVersionUID = 1L;
 
     private MetadataCorrelationProperties metadataCorrelationProperties = null;
-    private ProcessProperties             elementProperties = null;
+    private ProcessStatus                 processStatus                 = null;
+    private ProcessProperties             elementProperties             = null;
 
 
     /**
@@ -49,6 +51,7 @@ public class ProcessRequestBody implements Serializable
         if (template != null)
         {
             metadataCorrelationProperties = template.getMetadataCorrelationProperties();
+            processStatus = template.getProcessStatus();
             elementProperties = template.getElementProperties();
         }
     }
@@ -73,6 +76,28 @@ public class ProcessRequestBody implements Serializable
     public void setMetadataCorrelationProperties(MetadataCorrelationProperties metadataCorrelationProperties)
     {
         this.metadataCorrelationProperties = metadataCorrelationProperties;
+    }
+
+
+    /**
+     * Return the process status.
+     *
+     * @return enum describing lifecycle state
+     */
+    public ProcessStatus getProcessStatus()
+    {
+        return processStatus;
+    }
+
+
+    /**
+     * Set up the process status.
+     *
+     * @param processStatus enum describing lifecycle state
+     */
+    public void setProcessStatus(ProcessStatus processStatus)
+    {
+        this.processStatus = processStatus;
     }
 
 
@@ -108,6 +133,7 @@ public class ProcessRequestBody implements Serializable
     {
         return "ProcessRequestBody{" +
                        "metadataCorrelationProperties=" + metadataCorrelationProperties +
+                       ", processStatus=" + processStatus +
                        ", elementProperties=" + elementProperties +
                        '}';
     }
@@ -131,7 +157,8 @@ public class ProcessRequestBody implements Serializable
             return false;
         }
         ProcessRequestBody that = (ProcessRequestBody) objectToCompare;
-        return Objects.equals(getMetadataCorrelationProperties(), that.getMetadataCorrelationProperties()) &&
+        return processStatus == that.processStatus &&
+                       Objects.equals(getMetadataCorrelationProperties(), that.getMetadataCorrelationProperties()) &&
                        Objects.equals(getElementProperties(), that.getElementProperties());
     }
 
@@ -144,6 +171,6 @@ public class ProcessRequestBody implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), metadataCorrelationProperties, elementProperties);
+        return Objects.hash(super.hashCode(), metadataCorrelationProperties, processStatus, elementProperties);
     }
 }

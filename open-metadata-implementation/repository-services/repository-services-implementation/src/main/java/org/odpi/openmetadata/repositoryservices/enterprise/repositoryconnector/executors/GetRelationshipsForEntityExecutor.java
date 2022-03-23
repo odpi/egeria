@@ -9,7 +9,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
 import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.EnterpriseOMRSRepositoryConnector;
-import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.accumulators.RelationshipAccumulator;
+import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.accumulators.RelationshipsAccumulator;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
 import java.util.Date;
@@ -22,8 +22,8 @@ import java.util.List;
  */
 public class GetRelationshipsForEntityExecutor extends PageableRepositoryExecutorBase
 {
-    private String                  entityGUID;
-    private RelationshipAccumulator accumulator;
+    private String                   entityGUID;
+    private RelationshipsAccumulator accumulator;
 
 
     /**
@@ -74,7 +74,7 @@ public class GetRelationshipsForEntityExecutor extends PageableRepositoryExecuto
              sequencingProperty,
              sequencingOrder,
              pageSize,
-             new RelationshipAccumulator(localMetadataCollectionId, auditLog, repositoryValidator),
+             new RelationshipsAccumulator(localMetadataCollectionId, auditLog, repositoryValidator),
              methodName);
     }
 
@@ -111,7 +111,7 @@ public class GetRelationshipsForEntityExecutor extends PageableRepositoryExecuto
                                               String                  sequencingProperty,
                                               SequencingOrder sequencingOrder,
                                               int                     pageSize,
-                                              RelationshipAccumulator accumulator,
+                                              RelationshipsAccumulator accumulator,
                                               String                  methodName)
     {
         super(userId,
@@ -220,7 +220,7 @@ public class GetRelationshipsForEntityExecutor extends PageableRepositoryExecuto
             accumulator.captureGenericException(methodName, metadataCollectionId, error);
         }
 
-        return true;
+        return false;
     }
 
 

@@ -37,7 +37,7 @@ public class OMRSRESTRepositoryConnectorProvider extends OMRSRepositoryConnector
     private static final String connectorQualifiedName = "Egeria:OMRSRepositoryConnector:CohortMemberClient:REST";
     private static final String connectorDisplayName   = "REST Cohort Member Client Connector";
     private static final String connectorDescription   = "Cohort member client connector that provides access to open metadata located in a remote repository via REST calls.";
-    private static final String connectorWikiPage      = "https://odpi.github.io/egeria-docs/connectors/runtime/rest-cohort-member-client-connector/";
+    private static final String connectorWikiPage      = "https://egeria-project.org/connectors/runtime/rest-cohort-member-client-connector/";
 
     /*
      * Class of the connector.

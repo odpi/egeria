@@ -24,8 +24,8 @@ user=(properties["user"] ?: System.properties["user"]) ?: "garygeeke";
 baseURL=(properties["baseURL"] ?: System.properties["baseURL"]) ?: "https://localhost:9443";
 serverMem=(properties["servermem"] ?: System.properties["servermem"]) ?: "serverinmem";
 serverView=(properties["serverview"] ?: System.properties["serverview"]) ?: "serverview";
-retries=(properties["retries"] ?: System.properties["retries"]) ?: 12;
-delay=(properties["delay"] ?: System.properties["delay"]) ?: 10;
+retries=(properties["retries"] ?: System.properties["retries"]) ?: 50;
+delay=(properties["delay"] ?: System.properties["delay"]) ?: 2;
 
 // SSL setup to avoid self-signed errors for testing
 def trustAllCerts = [
@@ -129,7 +129,6 @@ if(postRC3.equals(200)) {
 // -- View Server
 // --- Configure the platform - any errors here and we exit
 System.out.println("=== Configuring server: " + serverView + " ===");
-//post1g = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverView + "/local-repository/mode/local-graph-repository" ).openConnection()
 post1g = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverView + "/configuration" ).openConnection()
 post1g.setRequestMethod("GET")
 post1g.setRequestProperty("Content-Type", "application/json")
@@ -140,8 +139,6 @@ if(postRC1g.equals(200)) {
 }
 
 System.out.println("=== Configuring server: " + serverView + " to set localUrl===");
-//post1g = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverView + "/local-repository/mode/local-graph-repository" ).openConnection()
-//post1g = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverView + "/configuration" ).openConnection()
 post11g = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverView + "/server-url-root?url=" + baseURL).openConnection()
 post11g.setRequestMethod("POST")
 post11g.setRequestProperty("Content-Type", "application/json")
@@ -154,7 +151,6 @@ if(postRC11g.equals(200)) {
 
 //    /open-metadata/admin-services/users/" + user+ "/servers/" + serverName + "audit-log-destinations/default
 System.out.println("=== Configuring server: " + serverView + " Add audit ===");
-//post1g = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverView + "/local-repository/mode/local-graph-repository" ).openConnection()
 post1g = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverView + "/audit-log-destinations/default" ).openConnection()
 post1g.setRequestMethod("POST")
 post1g.setRequestProperty("Content-Type", "application/json")
@@ -166,7 +162,6 @@ if(postRC1g.equals(200)) {
 
 
 System.out.println("=== Configuring server: " + serverView + " ===");
-//post1g = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverView + "/local-repository/mode/local-graph-repository" ).openConnection()
 post1g = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverView + "/configuration" ).openConnection()
 post1g.setRequestMethod("GET")
 post1g.setRequestProperty("Content-Type", "application/json")

@@ -69,6 +69,7 @@ public class InvalidParameterTest
 
         AuditLog auditLog = new AuditLog(auditLogDestination,
                                          AccessServiceDescription.GOVERNANCE_PROGRAM_OMAS.getAccessServiceCode(),
+                                         AccessServiceDescription.GOVERNANCE_PROGRAM_OMAS.getAccessServiceDevelopmentStatus(),
                                          AccessServiceDescription.GOVERNANCE_PROGRAM_OMAS.getAccessServiceName(),
                                          AccessServiceDescription.GOVERNANCE_PROGRAM_OMAS.getAccessServiceDescription(),
                                          AccessServiceDescription.GOVERNANCE_PROGRAM_OMAS.getAccessServiceWiki());

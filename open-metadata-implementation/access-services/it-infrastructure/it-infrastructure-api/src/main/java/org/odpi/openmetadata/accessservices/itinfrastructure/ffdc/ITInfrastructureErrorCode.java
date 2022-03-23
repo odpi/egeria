@@ -30,8 +30,34 @@ public enum ITInfrastructureErrorCode implements ExceptionMessageSet
     OMRS_NOT_INITIALIZED(404, "OMAS-IT-INFRASTRUCTURE-404-001",
             "The open metadata repository services are not initialized for the {0} operation",
             "The system is unable to connect to an open metadata repository.",
-            "Check that the server where the Asset Consumer OMAS is running initialized correctly.  " +
+            "Check that the server where the IT Infrastructure OMAS is running initialized correctly.  " +
                     "Correct any errors discovered and retry the request when the open metadata services are available."),
+
+    NULL_LISTENER(500, "OMAS-IT-INFRASTRUCTURE-500-001",
+                  "A null topic listener has been passed by user {0} on method {1}",
+                  "There is a coding error in the caller to the IT Infrastructure OMAS.",
+                  "Correct the caller logic and retry the request."),
+
+    UNABLE_TO_SEND_EVENT(500, "OMAS-IT-INFRASTRUCTURE-500-004",
+                         "An unexpected exception occurred when sending an event through connector {0} to the IT Infrastructure OMAS out topic.  The failing " +
+                                 "event was {1}, the exception was {2} with message {2}",
+                         "The system has issued a call to an open metadata access service REST API in a remote server and has received a null response.",
+                         "Look for errors in the remote server's audit log and console to understand and correct the source of the error."),
+
+    NULL_CONNECTOR_RETURNED(500, "OMAS-IT-INFRASTRUCTURE-500-006",
+                            "The requested connector for connection named {0} has not been created.  The connection was provided by the {1} service" +
+                                    " running in OMAG Server {2} at {3}",
+                            "The system is unable to create a connector which means some of its services will not work.",
+                            "This problem is likely to be caused by an incorrect connection object.  Check the settings on the Connection" +
+                                    "and correct if necessary.  If the connection is correct, contact the Egeria community for help."),
+
+    WRONG_TYPE_OF_CONNECTOR(500, "OMAS-IT-INFRASTRUCTURE-500-007",
+                            "The connector generated from the connection named {0} return by the {1} service running in OMAG Server {2} at {3} is " +
+                                    "not of the required type. It should be an instance of {4}",
+                            "The system is unable to create the required connector which means some of its services will not work.",
+                            "Verify that the OMAG server is running and the OMAS service is correctly configured."),
+
+
     ;
 
 

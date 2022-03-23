@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices.configuration.registration;
 
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
+
 import java.io.Serializable;
 
 /**
@@ -10,75 +12,103 @@ import java.io.Serializable;
 public enum ViewServiceDescription implements Serializable
 {
     GLOSSARY_AUTHOR(800,
+                    ComponentDevelopmentStatus.IN_DEVELOPMENT,
                     "Glossary Author",
                     "Glossary Author OMVS",
                     "glossary-author",
                     "View Service for glossary authoring.",
-                    "https://odpi.github.io/egeria-docs/services/omvs/glossary-author/overview"),
+                    "https://egeria-project.org/services/omvs/glossary-author/overview"),
 
     REPOSITORY_EXPLORER(801,
+                  ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                   "Repository Explorer",
                   "Repository Explorer OMVS",
                   "rex",
                   "Explore open metadata instances.",
-                  "https://odpi.github.io/egeria-docs/services/omvs/rex/overview"),
+                  "https://egeria-project.org/services/omvs/rex/overview"),
 
     TYPE_EXPLORER(802,
+                  ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                   "Type Explorer",
                   "Type Explorer OMVS",
                   "tex",
                   "Explore the open metadata types in a repository or cohort.",
-                  "https://odpi.github.io/egeria-docs/services/omvs/tex/overview"),
+                  "https://egeria-project.org/services/omvs/tex/overview"),
 
     DINO(803,
+                  ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                   "Dynamic Infrastructure and Operations",
                   "Dynamic Infrastructure and Operations OMVS",
                   "dino",
                   "Explore and operate an open metadata ecosystem.",
-                  "https://odpi.github.io/egeria-docs/services/omvs/dino/overview"),
+                  "https://egeria-project.org/services/omvs/dino/overview"),
 
     SERVER_AUTHOR(804,
+                 ComponentDevelopmentStatus.IN_DEVELOPMENT,
                  "Server Author",
                  "Server Author OMVS",
                  "server-author",
                  "Author servers.",
-                 "https://odpi.github.io/egeria-docs/services/omvs/server-author/overview/");
+                 "https://egeria-project.org/services/omvs/server-author/overview/");
 
     private static final long serialVersionUID = 1L;
 
-    private int    viewServiceCode;
-    private String viewServiceName;
-    private String viewServiceFullName;
-    private String viewServiceURLMarker;
-    private String viewServiceDescription;
-    private String viewServiceWiki;
+    private int                        viewServiceCode;
+    private ComponentDevelopmentStatus viewServiceDevelopmentStatus;
+    private String                     viewServiceName;
+    private String                     viewServiceFullName;
+    private String                     viewServiceURLMarker;
+    private String                     viewServiceDescription;
+    private String                     viewServiceWiki;
 
 
     /**
      * Default Constructor
      *
      * @param viewServiceCode        ordinal for this UI view
+     * @param viewServiceDevelopmentStatus development status
      * @param viewServiceURLMarker   string used in URLs
      * @param viewServiceName        symbolic name for this UI view
      * @param viewServiceDescription short description for this UI view
      * @param viewServiceWiki        wiki page for the UI view for this UI view
      */
-    ViewServiceDescription(int    viewServiceCode,
-                           String viewServiceName,
-                           String viewServiceFullName,
-                           String viewServiceURLMarker,
-                           String viewServiceDescription,
-                           String viewServiceWiki)
+    ViewServiceDescription(int                        viewServiceCode,
+                           ComponentDevelopmentStatus viewServiceDevelopmentStatus,
+                           String                     viewServiceName,
+                           String                     viewServiceFullName,
+                           String                     viewServiceURLMarker,
+                           String                     viewServiceDescription,
+                           String                     viewServiceWiki)
     {
         /*
          * Save the values supplied
          */
         this.viewServiceCode = viewServiceCode;
+        this.viewServiceDevelopmentStatus = viewServiceDevelopmentStatus;
         this.viewServiceName = viewServiceName;
         this.viewServiceFullName = viewServiceFullName;
         this.viewServiceURLMarker = viewServiceURLMarker;
         this.viewServiceDescription = viewServiceDescription;
         this.viewServiceWiki = viewServiceWiki;
+    }
+
+
+    /**
+     * Return the enum that corresponds with the supplied code.
+     *
+     * @param viewServiceCode requested code
+     * @return enum
+     */
+    public static ViewServiceDescription getViewServiceDefinition(int viewServiceCode)
+    {
+        for (ViewServiceDescription description : ViewServiceDescription.values())
+        {
+            if (viewServiceCode == description.getViewServiceCode())
+            {
+                return description;
+            }
+        }
+        return null;
     }
 
 
@@ -89,6 +119,17 @@ public enum ViewServiceDescription implements Serializable
      */
     public int getViewServiceCode() {
         return viewServiceCode;
+    }
+
+
+    /**
+     * Return the development status of the component.
+     *
+     * @return enum describing the status
+     */
+    public ComponentDevelopmentStatus getViewServiceDevelopmentStatus()
+    {
+        return viewServiceDevelopmentStatus;
     }
 
 

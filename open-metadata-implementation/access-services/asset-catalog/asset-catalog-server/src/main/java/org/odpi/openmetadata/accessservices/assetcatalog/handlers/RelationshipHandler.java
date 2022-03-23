@@ -9,6 +9,7 @@ import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -36,19 +37,20 @@ public class RelationshipHandler {
      * @param errorHandler            provides common validation routines for the other handler classes
      */
     public RelationshipHandler(String sourceName, InvalidParameterHandler invalidParameterHandler, RepositoryHandler repositoryHandler,
-                               OMRSRepositoryHelper repositoryHelper, RepositoryErrorHandler errorHandler) {
+                               OMRSRepositoryHelper repositoryHelper, RepositoryErrorHandler errorHandler, CommonHandler commonHandler) {
         this.sourceName = sourceName;
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
         this.repositoryHandler = repositoryHandler;
         this.errorHandler = errorHandler;
-        this.commonHandler = new CommonHandler(sourceName, repositoryHandler, repositoryHelper, this.errorHandler);
+        this.commonHandler = commonHandler;
     }
 
     /**
      * Fetch relationship between entities details based on its unique identifier of the ends
      *
      * @param userId           String unique identifier for the user
+     * @param serverName       String server name
      * @param entity1GUID      Entity guid of the first end of the relationship
      * @param entity2GUID      Entity guid of the second end of the relationship
      * @param relationshipType Type of the relationship
@@ -58,6 +60,7 @@ public class RelationshipHandler {
      * @throws UserNotAuthorizedException security access problem
      */
     public org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship getRelationshipBetweenEntities(String userId,
+                                                                                                               String serverName,
                                                                                                                String entity1GUID,
                                                                                                                String entity2GUID,
                                                                                                                String relationshipType)
@@ -73,9 +76,15 @@ public class RelationshipHandler {
             relationshipTypeGUID = commonHandler.getTypeDefGUID(userId, relationshipType);
         }
 
+        EntityDetail entityDetail1 = commonHandler.getEntityByGUID(userId, entity1GUID, null);
+        if(entityDetail1 == null){
+            invalidParameterHandler.throwUnknownElement(userId, entity1GUID, "-unknown-", sourceName, serverName, methodName);
+        }
+        String entity1TypeName = entityDetail1.getType().getTypeDefName();
+
         Relationship relationshipBetweenEntities = repositoryHandler.getRelationshipBetweenEntities(userId,
                 entity1GUID,
-                "",
+                entity1TypeName,
                 entity2GUID,
                 relationshipTypeGUID,
                 relationshipType,

@@ -28,7 +28,7 @@ public class FileBasedRegistryStoreProvider extends OMRSCohortRegistryStoreProvi
     private static final String connectorQualifiedName = "Egeria:CohortRegistryConnector:File";
     private static final String connectorDisplayName   = "File-based Cohort Registry Store Connector";
     private static final String connectorDescription   = "Connector supports storing of the open metadata cohort registry in a file using JSON format.";
-    private static final String connectorWikiPage      = "https://odpi.github.io/egeria-docs/connectors/runtime/file-based-cohort-registry-store-connector";
+    private static final String connectorWikiPage      = "https://egeria-project.org/connectors/runtime/file-based-cohort-registry-store-connector";
 
     /*
      * Class of the connector.

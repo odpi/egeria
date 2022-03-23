@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,7 @@ public class IntegrationServiceConfig extends OMAGServerClientConfig
     private static final long    serialVersionUID = 1L;
 
     private int                              integrationServiceId                  = 0;
+    private ComponentDevelopmentStatus       integrationServiceDevelopmentStatus   = null;
     private String                           integrationServiceContextManagerClass = null;
     private String                           integrationServiceName                = null;
     private String                           integrationServiceFullName            = null;
@@ -61,6 +63,7 @@ public class IntegrationServiceConfig extends OMAGServerClientConfig
         if (template != null)
         {
             integrationServiceId                  = template.getIntegrationServiceId();
+            integrationServiceDevelopmentStatus   = template.getIntegrationServiceDevelopmentStatus();
             integrationServiceContextManagerClass = template.getIntegrationServiceContextManagerClass();
             integrationServiceName                = template.getIntegrationServiceName();
             integrationServiceFullName            = template.getIntegrationServiceFullName();
@@ -94,6 +97,29 @@ public class IntegrationServiceConfig extends OMAGServerClientConfig
     public void setIntegrationServiceId(int integrationServiceId)
     {
         this.integrationServiceId = integrationServiceId;
+    }
+
+
+
+    /**
+     * Return the development status of the service.
+     *
+     * @return enum describing the status
+     */
+    public ComponentDevelopmentStatus getIntegrationServiceDevelopmentStatus()
+    {
+        return integrationServiceDevelopmentStatus;
+    }
+
+
+    /**
+     * Set up the development status of the service.
+     *
+     * @param  integrationServiceDevelopmentStatus enum describing the status
+     */
+    public void setIntegrationServiceDevelopmentStatus(ComponentDevelopmentStatus integrationServiceDevelopmentStatus)
+    {
+        this.integrationServiceDevelopmentStatus = integrationServiceDevelopmentStatus;
     }
 
 
@@ -370,20 +396,22 @@ public class IntegrationServiceConfig extends OMAGServerClientConfig
     public String toString()
     {
         return "IntegrationServiceConfig{" +
-                "integrationServiceId=" + integrationServiceId +
-                ", integrationServiceContextManagerClass='" + integrationServiceContextManagerClass + '\'' +
-                ", integrationServiceName='" + integrationServiceName + '\'' +
-                ", integrationServiceFullName='" + integrationServiceFullName + '\'' +
-                ", integrationServiceURLMarker='" + integrationServiceURLMarker + '\'' +
-                ", integrationServiceDescription='" + integrationServiceDescription + '\'' +
-                ", integrationServiceWiki='" + integrationServiceWiki + '\'' +
-                ", integrationServicePartnerOMAS='" + integrationServicePartnerOMAS + '\'' +
-                ", integrationServiceOperationalStatus=" + integrationServiceOperationalStatus +
-                ", integrationServiceOptions=" + integrationServiceOptions +
-                ", integrationConnectorConfigs=" + integrationConnectorConfigs +
-                ", OMAGServerPlatformRootURL='" + getOMAGServerPlatformRootURL() + '\'' +
-                ", OMAGServerName='" + getOMAGServerName() + '\'' +
-                '}';
+                       "integrationServiceId=" + integrationServiceId +
+                       ", integrationServiceDevelopmentStatus=" + integrationServiceDevelopmentStatus +
+                       ", integrationServiceContextManagerClass='" + integrationServiceContextManagerClass + '\'' +
+                       ", integrationServiceName='" + integrationServiceName + '\'' +
+                       ", integrationServiceFullName='" + integrationServiceFullName + '\'' +
+                       ", integrationServiceURLMarker='" + integrationServiceURLMarker + '\'' +
+                       ", integrationServiceDescription='" + integrationServiceDescription + '\'' +
+                       ", integrationServiceWiki='" + integrationServiceWiki + '\'' +
+                       ", integrationServicePartnerOMAS='" + integrationServicePartnerOMAS + '\'' +
+                       ", defaultPermittedSynchronization=" + defaultPermittedSynchronization +
+                       ", integrationServiceOperationalStatus=" + integrationServiceOperationalStatus +
+                       ", integrationServiceOptions=" + integrationServiceOptions +
+                       ", integrationConnectorConfigs=" + integrationConnectorConfigs +
+                       ", OMAGServerPlatformRootURL='" + getOMAGServerPlatformRootURL() + '\'' +
+                       ", OMAGServerName='" + getOMAGServerName() + '\'' +
+                       '}';
     }
 
 
@@ -404,22 +432,24 @@ public class IntegrationServiceConfig extends OMAGServerClientConfig
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
         IntegrationServiceConfig that = (IntegrationServiceConfig) objectToCompare;
         return integrationServiceId == that.integrationServiceId &&
-                Objects.equals(integrationServiceContextManagerClass, that.integrationServiceContextManagerClass) &&
-                Objects.equals(integrationServiceName, that.integrationServiceName) &&
-                Objects.equals(integrationServiceFullName, that.integrationServiceFullName) &&
-                Objects.equals(integrationServiceURLMarker, that.integrationServiceURLMarker) &&
-                Objects.equals(integrationServiceDescription, that.integrationServiceDescription) &&
-                Objects.equals(integrationServiceWiki, that.integrationServiceWiki) &&
-                Objects.equals(integrationServicePartnerOMAS, that.integrationServicePartnerOMAS) &&
-                integrationServiceOperationalStatus == that.integrationServiceOperationalStatus &&
-                Objects.equals(integrationServiceOptions, that.integrationServiceOptions) &&
-                Objects.equals(integrationConnectorConfigs, that.integrationConnectorConfigs);
+                       integrationServiceDevelopmentStatus == that.integrationServiceDevelopmentStatus &&
+                       Objects.equals(integrationServiceContextManagerClass, that.integrationServiceContextManagerClass) &&
+                       Objects.equals(integrationServiceName, that.integrationServiceName) &&
+                       Objects.equals(integrationServiceFullName, that.integrationServiceFullName) &&
+                       Objects.equals(integrationServiceURLMarker, that.integrationServiceURLMarker) &&
+                       Objects.equals(integrationServiceDescription, that.integrationServiceDescription) &&
+                       Objects.equals(integrationServiceWiki, that.integrationServiceWiki) &&
+                       Objects.equals(integrationServicePartnerOMAS, that.integrationServicePartnerOMAS) &&
+                       defaultPermittedSynchronization == that.defaultPermittedSynchronization &&
+                       integrationServiceOperationalStatus == that.integrationServiceOperationalStatus &&
+                       Objects.equals(integrationServiceOptions, that.integrationServiceOptions) &&
+                       Objects.equals(integrationConnectorConfigs, that.integrationConnectorConfigs);
     }
 
 
@@ -431,9 +461,10 @@ public class IntegrationServiceConfig extends OMAGServerClientConfig
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), integrationServiceId, integrationServiceContextManagerClass, integrationServiceName,
-                            integrationServiceFullName, integrationServiceURLMarker, integrationServiceDescription, integrationServiceWiki,
-                            integrationServicePartnerOMAS, integrationServiceOperationalStatus, integrationServiceOptions,
-                            integrationConnectorConfigs);
+        return Objects.hash(super.hashCode(), integrationServiceId, integrationServiceDevelopmentStatus, integrationServiceContextManagerClass,
+                            integrationServiceName, integrationServiceFullName, integrationServiceURLMarker, integrationServiceDescription,
+                            integrationServiceWiki, integrationServicePartnerOMAS, defaultPermittedSynchronization,
+                            integrationServiceOperationalStatus,
+                            integrationServiceOptions, integrationConnectorConfigs);
     }
 }

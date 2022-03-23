@@ -24,7 +24,7 @@ import java.util.Date;
 
 @Tag(name = "Glossary Author OMVS", description = "Develop a definition of a subject area by authoring glossaries, including terms for use by a user interface.",
      externalDocs = @ExternalDocumentation(description = "Glossary Author View Services (OMVS)",
-                                           url = "https://odpi.github.io/egeria-docs/services/omvs/glossary-author/overview/"))
+                                           url = "https://egeria-project.org/services/omvs/glossary-author/overview/"))
 
 public class GlossaryAuthorViewProjectRESTResource {
 

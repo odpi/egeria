@@ -57,6 +57,11 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>integration-daemon-services-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>rest-client-connectors-api</artifactId>
         </dependency>
 

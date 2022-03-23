@@ -90,7 +90,9 @@ public class OMAGServerAdminForIntegrationServices
                         if (integrationServiceConfig.getIntegrationServiceOperationalStatus() == ServiceOperationalStatus.ENABLED)
                         {
                             RegisteredOMAGService service = new RegisteredOMAGService();
+
                             service.setServiceName(integrationServiceConfig.getIntegrationServiceFullName());
+                            service.setServiceDevelopmentStatus(integrationServiceConfig.getIntegrationServiceDevelopmentStatus());
                             service.setServiceDescription(integrationServiceConfig.getIntegrationServiceDescription());
                             service.setServiceURLMarker(integrationServiceConfig.getIntegrationServiceURLMarker());
                             service.setServiceWiki(integrationServiceConfig.getIntegrationServiceWiki());

@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -22,6 +24,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class PlatformDeploymentProperties extends ConfigurationItemRelationshipProperties
 {
     private static final long serialVersionUID = 1L;
+
+    private static final String deploymentTimePropertyName           = "deploymentTime";
+    private static final String deployerPropertyName                 = "deployer";
+    private static final String platformDeploymentStatusPropertyName = "platformStatus";
 
     private Date              deploymentTime           = null;
     private String            deployer                 = null;
@@ -52,6 +58,39 @@ public class PlatformDeploymentProperties extends ConfigurationItemRelationshipP
             deployer = template.getDeployer();
             platformDeploymentStatus = template.getPlatformDeploymentStatus();
         }
+    }
+
+
+    /**
+     * Turn the properties into a property map.
+     *
+     * @return property map.
+     */
+    public Map<String, Object> cloneToMap()
+    {
+        Map<String, Object> propertyMap = new HashMap<>();
+
+        if (deploymentTime != null)
+        {
+            propertyMap.put(deploymentTimePropertyName, deploymentTime);
+        }
+
+        if (deployer != null)
+        {
+            propertyMap.put(deployerPropertyName, deployer);
+        }
+
+        if (platformDeploymentStatus != null)
+        {
+            propertyMap.put(platformDeploymentStatusPropertyName, platformDeploymentStatus.getOpenTypeOrdinal());
+        }
+
+        if (! propertyMap.isEmpty())
+        {
+            propertyMap = null;
+        }
+
+        return propertyMap;
     }
 
 

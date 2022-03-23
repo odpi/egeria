@@ -123,28 +123,34 @@ public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
                     {
                         final String parameterName = "entityProxy.getGUID";
 
-                        try
+                        /*
+                         * Do no work if the entity is not an asset.
+                         */
+                        if (repositoryHelper.isTypeOf(serviceName, instanceEvent.getEntityProxy().getType().getTypeDefName(), OpenMetadataAPIMapper.ASSET_TYPE_NAME))
                         {
-                            EntityDetail entity = assetHandler.getEntityFromRepository(serverUserId,
-                                                                                       instanceEvent.getEntityProxy().getGUID(),
-                                                                                       parameterName,
-                                                                                       OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                                                                       null,
-                                                                                       null,
-                                                                                       false,
-                                                                                       false,
-                                                                                       supportedZones,
-                                                                                       null,
-                                                                                       methodName);
-
-                            if (entity != null)
+                            try
                             {
-                                this.processUpdatedEntity(entity, null);
+                                EntityDetail entity = assetHandler.getEntityFromRepository(serverUserId,
+                                                                                           instanceEvent.getEntityProxy().getGUID(),
+                                                                                           parameterName,
+                                                                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                                           null,
+                                                                                           null,
+                                                                                           false,
+                                                                                           false,
+                                                                                           supportedZones,
+                                                                                           null,
+                                                                                           methodName);
+
+                                if (entity != null)
+                                {
+                                    this.processUpdatedEntity(entity, null);
+                                }
                             }
-                        }
-                        catch (Exception error)
-                        {
-                            log.debug("No access to asset - probably belongs to another cohort");
+                            catch (Exception error)
+                            {
+                                log.debug("No access to asset - probably belongs to another cohort");
+                            }
                         }
                     }
                 }

@@ -893,8 +893,8 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl federationControl = new SequentialFederationControl(userId, cohortConnectors, auditLog, methodName);
-        GetEntityExecutor executor          = new GetEntityExecutor(userId, guid, false, auditLog, methodName);
+        FederationControl       federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
+        GetEntityDetailExecutor executor          = new GetEntityDetailExecutor(userId, guid, false, auditLog, methodName);
 
         /*
          * Ready to process the request.  Create requests occur in the first repository that accepts the call.
@@ -942,8 +942,8 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        SequentialFederationControl federationControl = new SequentialFederationControl(userId, cohortConnectors, auditLog, methodName);
-        GetEntitySummaryExecutor    executor          = new GetEntitySummaryExecutor(userId, guid, auditLog, methodName);
+        FederationControl        federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
+        GetEntitySummaryExecutor executor          = new GetEntitySummaryExecutor(userId, guid, auditLog, methodName);
 
         /*
          * Ready to process the request.  Get requests occur in the first repository that accepts the call.
@@ -992,8 +992,8 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl federationControl = new SequentialFederationControl(userId, cohortConnectors, auditLog, methodName);
-        GetEntityExecutor executor          = new GetEntityExecutor(userId, guid, true, auditLog, methodName);
+        FederationControl       federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
+        GetEntityDetailExecutor executor          = new GetEntityDetailExecutor(userId, guid, true, auditLog, methodName);
 
         /*
          * Ready to process the request.  Callers to the enterprise repository are typically well defined and only request entities that
@@ -1014,8 +1014,8 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
             {
                 cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-                federationControl = new SequentialFederationControl(userId, cohortConnectors, auditLog, methodName);
-                executor          = new GetEntityExecutor(userId, guid, true, auditLog, methodName);
+                federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
+                executor          = new GetEntityDetailExecutor(userId, guid, true, auditLog, methodName);
 
                 retryCount ++;
                 auditLog.logMessage(methodName, OMRSAuditCode.RETRY_FOR_PROXY.getMessageDefinition(guid, userId, Integer.toString(retryCount)));
@@ -1068,8 +1068,8 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl federationControl = new SequentialFederationControl(userId, cohortConnectors, auditLog, methodName);
-        GetEntityExecutor executor          = new GetEntityExecutor(userId, guid, asOfTime, auditLog, methodName);
+        FederationControl       federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
+        GetEntityDetailExecutor executor          = new GetEntityDetailExecutor(userId, guid, asOfTime, auditLog, methodName);
 
         /*
          * Ready to process the request.  Create requests occur in the first repository that accepts the call.
@@ -1154,7 +1154,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
+        FederationControl                 federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
         GetRelationshipsForEntityExecutor executor          = new GetRelationshipsForEntityExecutor(userId,
                                                                                                     entityGUID,
                                                                                                     relationshipTypeGUID,
@@ -1273,7 +1273,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
+        FederationControl              federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
         FindEntitiesByPropertyExecutor executor          = new FindEntitiesByPropertyExecutor(userId,
                                                                                               entityTypeGUID,
                                                                                               matchProperties,
@@ -1379,22 +1379,22 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
-        FindEntitiesExecutor executor       = new FindEntitiesExecutor(userId,
-                                                                       entityTypeGUID,
-                                                                       entitySubtypeGUIDs,
-                                                                       matchProperties,
-                                                                       fromEntityElement,
-                                                                       limitResultsByStatus,
-                                                                       matchClassifications,
-                                                                       asOfTime,
-                                                                       sequencingProperty,
-                                                                       sequencingOrder,
-                                                                       pageSize,
-                                                                       localMetadataCollectionId,
-                                                                       auditLog,
-                                                                       repositoryValidator,
-                                                                       methodName);
+        FederationControl    federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
+        FindEntitiesExecutor executor          = new FindEntitiesExecutor(userId,
+                                                                          entityTypeGUID,
+                                                                          entitySubtypeGUIDs,
+                                                                          matchProperties,
+                                                                          fromEntityElement,
+                                                                          limitResultsByStatus,
+                                                                          matchClassifications,
+                                                                          asOfTime,
+                                                                          sequencingProperty,
+                                                                          sequencingOrder,
+                                                                          pageSize,
+                                                                          localMetadataCollectionId,
+                                                                          auditLog,
+                                                                          repositoryValidator,
+                                                                          methodName);
 
         /*
          * Ready to process the request.  Create requests occur in the first repository that accepts the call.
@@ -1491,7 +1491,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
+        FederationControl                    federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
         FindEntitiesByClassificationExecutor executor          = new FindEntitiesByClassificationExecutor(userId,
                                                                                                           entityTypeGUID,
                                                                                                           classificationName,
@@ -1599,7 +1599,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
+        FederationControl                   federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
         FindEntitiesByPropertyValueExecutor executor          = new FindEntitiesByPropertyValueExecutor(userId,
                                                                                                         entityTypeGUID,
                                                                                                         searchCriteria,
@@ -1852,7 +1852,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
+        FederationControl         federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
         FindRelationshipsExecutor executor          = new FindRelationshipsExecutor(userId,
                                                                                     relationshipTypeGUID,
                                                                                     relationshipSubtypeGUIDs,
@@ -1957,7 +1957,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
+        FederationControl                   federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
         FindRelationshipsByPropertyExecutor executor          = new FindRelationshipsByPropertyExecutor(userId,
                                                                                                         relationshipTypeGUID,
                                                                                                         matchProperties,
@@ -2061,7 +2061,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
+        FederationControl                        federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
         FindRelationshipsByPropertyValueExecutor executor          = new FindRelationshipsByPropertyValueExecutor(userId,
                                                                                                                   relationshipTypeGUID,
                                                                                                                   searchCriteria,

@@ -12,8 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * QueryAccumulatorBase acts as a base class to the accumulators that need to visit each repository and
- * combine results.
+ * QueryAccumulatorBase acts as a base class to the accumulators that need to visit each repository and combine results.
  */
 public class QueryAccumulatorBase extends ExceptionAccumulatorBase
 {
@@ -114,7 +113,7 @@ public class QueryAccumulatorBase extends ExceptionAccumulatorBase
      * @param metadataCollectionId unique identifier for metadata collection this issued this exception
      * @param exception  exception from remote call
      */
-    public synchronized void captureException(String                          metadataCollectionId,
+    public synchronized void captureException(String                       metadataCollectionId,
                                               ClassificationErrorException exception)
     {
         setRequestReturned(metadataCollectionId, 0);
@@ -128,7 +127,7 @@ public class QueryAccumulatorBase extends ExceptionAccumulatorBase
      * @param metadataCollectionId unique identifier for metadata collection this issued this exception
      * @param exception  exception from remote call
      */
-    public synchronized void captureException(String                     metadataCollectionId,
+    public synchronized void captureException(String                  metadataCollectionId,
                                               EntityNotKnownException exception)
     {
         setRequestReturned(metadataCollectionId, 0);
@@ -143,7 +142,7 @@ public class QueryAccumulatorBase extends ExceptionAccumulatorBase
      * @param metadataCollectionId unique identifier for metadata collection this issued this exception
      * @param exception  exception from remote call
      */
-    public synchronized void captureException(String                           metadataCollectionId,
+    public synchronized void captureException(String                        metadataCollectionId,
                                               FunctionNotSupportedException exception)
     {
         setRequestReturned(metadataCollectionId, 0);
@@ -157,7 +156,7 @@ public class QueryAccumulatorBase extends ExceptionAccumulatorBase
      * @param metadataCollectionId unique identifier for metadata collection this issued this exception
      * @param exception  exception from remote call
      */
-    public synchronized void captureException(String                     metadataCollectionId,
+    public synchronized void captureException(String                    metadataCollectionId,
                                               InvalidParameterException exception)
     {
         setRequestReturned(metadataCollectionId, 0);
@@ -171,7 +170,7 @@ public class QueryAccumulatorBase extends ExceptionAccumulatorBase
      * @param metadataCollectionId unique identifier for metadata collection this issued this exception
      * @param exception  exception from remote call
      */
-    public synchronized void captureException(String                     metadataCollectionId,
+    public synchronized void captureException(String               metadataCollectionId,
                                               PagingErrorException exception)
     {
         setRequestReturned(metadataCollectionId, 0);
@@ -185,7 +184,7 @@ public class QueryAccumulatorBase extends ExceptionAccumulatorBase
      * @param metadataCollectionId unique identifier for metadata collection this issued this exception
      * @param exception  exception from remote call
      */
-    public synchronized void captureException(String                     metadataCollectionId,
+    public synchronized void captureException(String                 metadataCollectionId,
                                               PropertyErrorException exception)
     {
         setRequestReturned(metadataCollectionId, 0);
@@ -213,7 +212,7 @@ public class QueryAccumulatorBase extends ExceptionAccumulatorBase
      * @param metadataCollectionId unique identifier for metadata collection this issued this exception
      * @param exception  exception from remote call
      */
-    public synchronized void captureException(String                     metadataCollectionId,
+    public synchronized void captureException(String                   metadataCollectionId,
                                               RepositoryErrorException exception)
     {
         setRequestReturned(metadataCollectionId, 0);
@@ -227,7 +226,7 @@ public class QueryAccumulatorBase extends ExceptionAccumulatorBase
      * @param metadataCollectionId unique identifier for metadata collection this issued this exception
      * @param exception  exception from remote call
      */
-    public synchronized void captureException(String               metadataCollectionId,
+    public synchronized void captureException(String             metadataCollectionId,
                                               TypeErrorException exception)
     {
         setRequestReturned(metadataCollectionId, 0);

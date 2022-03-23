@@ -6,6 +6,7 @@ import lombok.Getter;
 import org.odpi.openmetadata.accessservices.assetcatalog.connectors.outtopic.AssetCatalogOutTopicClientProvider;
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogErrorCode;
 import org.odpi.openmetadata.accessservices.assetcatalog.handlers.AssetCatalogHandler;
+import org.odpi.openmetadata.accessservices.assetcatalog.handlers.CommonHandler;
 import org.odpi.openmetadata.accessservices.assetcatalog.handlers.RelationshipHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
@@ -71,7 +72,9 @@ class AssetCatalogServicesInstance extends OMASServiceInstance {
 
             assetCatalogHandler = new AssetCatalogHandler(serverName, sourceName, invalidParameterHandler, repositoryHandler, repositoryHelper,
                     errorHandler, supportedZones, supportedTypesForSearch);
-            relationshipHandler = new RelationshipHandler(sourceName, invalidParameterHandler, repositoryHandler, repositoryHelper, errorHandler);
+            CommonHandler commonHandler = new CommonHandler(sourceName, repositoryHandler, repositoryHelper, errorHandler);
+            relationshipHandler = new RelationshipHandler(sourceName, invalidParameterHandler, repositoryHandler, repositoryHelper, errorHandler,
+                    commonHandler);
         } else {
             final String methodName = "new ServiceInstance";
             throw new NewInstanceException(AssetCatalogErrorCode.OMRS_NOT_INITIALIZED.getMessageDefinition(serverName),

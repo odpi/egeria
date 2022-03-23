@@ -106,7 +106,9 @@ public class RelatedAssetHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                        elementTypeName,
                                                        relationshipTypeGUID,
                                                        relationshipTypeName,
+                                                       OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                        serviceSupportedZones,
+                                                       0,
                                                        0,
                                                        invalidParameterHandler.getMaxPagingSize(),
                                                        effectiveTime,
@@ -133,7 +135,9 @@ public class RelatedAssetHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param elementTypeName name of the type of the starting element
      * @param relationshipTypeGUID unique identifier for relationship type
      * @param relationshipTypeName unique name for relationship type
-     * @param serviceSupportedZones override the default supported zones.
+     * @param serviceSupportedZones override the default supported zones
+     * @param relatedAssetsTypeName expected type of asset at the end of the relationship
+     * @param startingEnd which end of the relationship to start at 0=either end; 1=end1 and 2=end 2
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
      * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -151,7 +155,9 @@ public class RelatedAssetHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                      String       elementTypeName,
                                      String       relationshipTypeGUID,
                                      String       relationshipTypeName,
+                                     String       relatedAssetsTypeName,
                                      List<String> serviceSupportedZones,
+                                     int          startingEnd,
                                      int          startFrom,
                                      int          pageSize,
                                      Date         effectiveTime,
@@ -174,43 +180,51 @@ public class RelatedAssetHandler<B> extends OpenMetadataAPIGenericHandler<B>
         List<B> results = new ArrayList<>();
 
         final String entityGUIDParameterName = "entityProxy.getGUID()";
+
         if (relationships != null)
         {
             for (Relationship relationship : relationships)
             {
                 if (relationship != null)
                 {
-                    EntityProxy otherEnd = repositoryHandler.getOtherEnd(elementGUID, elementTypeName, relationship, methodName);
-
-                    if ((otherEnd != null) && (otherEnd.getType() != null))
+                    if ((startingEnd == 0)
+                                || ((startingEnd == 1) && (elementGUID.equals(relationship.getEntityOneProxy().getGUID())))
+                                || ((startingEnd == 2) && (elementGUID.equals(relationship.getEntityTwoProxy().getGUID()))))
                     {
-                        try
+                        EntityProxy otherEnd = repositoryHandler.getOtherEnd(elementGUID, elementTypeName, relationship, methodName);
+
+                        if ((otherEnd != null) && (otherEnd.getType() != null) && (repositoryHelper.isTypeOf(serviceName,
+                                                                                                             otherEnd.getType().getTypeDefName(),
+                                                                                                             relatedAssetsTypeName)))
                         {
-                            EntityDetail entity = this.getEntityFromRepository(userId,
-                                                                               otherEnd.getGUID(),
-                                                                               entityGUIDParameterName,
-                                                                               otherEnd.getType().getTypeDefName(),
-                                                                               null,
-                                                                               null,
-                                                                               false,
-                                                                               false,
-                                                                               serviceSupportedZones,
-                                                                               new Date(),
-                                                                               methodName);
-
-                            if (entity != null)
+                            try
                             {
-                                B bean = converter.getNewBean(beanClass, entity, relationship, methodName);
+                                EntityDetail entity = this.getEntityFromRepository(userId,
+                                                                                   otherEnd.getGUID(),
+                                                                                   entityGUIDParameterName,
+                                                                                   otherEnd.getType().getTypeDefName(),
+                                                                                   null,
+                                                                                   null,
+                                                                                   false,
+                                                                                   false,
+                                                                                   serviceSupportedZones,
+                                                                                   effectiveTime,
+                                                                                   methodName);
 
-                                if (bean != null)
+                                if (entity != null)
                                 {
-                                    results.add(bean);
+                                    B bean = converter.getNewBean(beanClass, entity, relationship, methodName);
+
+                                    if (bean != null)
+                                    {
+                                        results.add(bean);
+                                    }
                                 }
                             }
-                        }
-                        catch (UserNotAuthorizedException notVisible)
-                        {
-                            // skip this one
+                            catch (UserNotAuthorizedException notVisible)
+                            {
+                                // skip this one
+                            }
                         }
                     }
                 }
