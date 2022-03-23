@@ -218,7 +218,7 @@ public class FindRelationshipsByPropertyValueExecutor extends PageableRepository
             accumulator.captureGenericException(methodName, metadataCollectionId, error);
         }
 
-        return true;
+        return false;
     }
 
 

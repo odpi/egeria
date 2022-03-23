@@ -14,12 +14,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ServerStatus documents the status of a server and the services within it.
+ * ServerServicesStatus documents the status of a server and the services within it.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ServerStatus implements Serializable
+public class ServerServicesStatus implements Serializable
 {
     private static final long    serialVersionUID = 1L;
 
@@ -31,7 +31,7 @@ public class ServerStatus implements Serializable
     /**
      * Default constructor for Jackson
      */
-    public ServerStatus()
+    public ServerServicesStatus()
     {
     }
 
@@ -40,7 +40,7 @@ public class ServerStatus implements Serializable
      *
      * @param template object to copy
      */
-    public ServerStatus(ServerStatus template)
+    public ServerServicesStatus(ServerServicesStatus template)
     {
 
         if (template != null)
@@ -149,7 +149,7 @@ public class ServerStatus implements Serializable
     @Override
     public String toString()
     {
-        return "ServerStatus{" +
+        return "ServerServicesStatus{" +
                        "serverName='" + serverName + '\'' +
                        ", serverType='" + serverType + '\'' +
                        ", serverActiveStatus=" + serverActiveStatus +
@@ -175,7 +175,7 @@ public class ServerStatus implements Serializable
         {
             return false;
         }
-        ServerStatus that = (ServerStatus) objectToCompare;
+        ServerServicesStatus that = (ServerServicesStatus) objectToCompare;
         return Objects.equals(serverName, that.serverName) &&
                        Objects.equals(serverType, that.serverType) &&
                        serverActiveStatus == that.serverActiveStatus &&

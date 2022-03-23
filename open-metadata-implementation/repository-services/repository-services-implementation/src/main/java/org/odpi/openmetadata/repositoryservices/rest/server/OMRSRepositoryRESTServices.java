@@ -8822,6 +8822,7 @@ public class OMRSRepositoryRESTServices
         response.setExceptionErrorMessage(messageFormatter.getFormattedMessage(messageDefinition));
         response.setExceptionSystemAction(messageDefinition.getSystemAction());
         response.setExceptionUserAction(messageDefinition.getUserAction());
+        response.setExceptionErrorMessageId(messageDefinition.getMessageId());
         response.setExceptionProperties(null);
 
         try

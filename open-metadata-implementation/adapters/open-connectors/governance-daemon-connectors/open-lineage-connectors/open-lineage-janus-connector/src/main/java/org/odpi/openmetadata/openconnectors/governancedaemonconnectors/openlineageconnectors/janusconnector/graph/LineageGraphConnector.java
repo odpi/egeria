@@ -819,7 +819,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
     /**
      * {@inheritDoc}
      */
-    public LineageResponse lineage(Scope scope, String guid, String displayNameMustContain, boolean includeProcesses) {
+    public LineageResponse lineage(Scope scope, String guid, boolean includeProcesses) {
         GraphTraversalSource g = graphFactory.getGraphTraversalSource();
         GraphTraversal<Vertex, Vertex> vertexGraphTraversal = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid);
         commitTransaction(g);
@@ -860,9 +860,6 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
             lineageResponse.setExceptionErrorMessageId(ERROR_LINEAGE_NOT_FOUND.getErrorMessageId());
             lineageResponse.setExceptionClassName(InvalidParameterException.class.getName());
             return lineageResponse;
-        }
-        if (!displayNameMustContain.isEmpty()) {
-            helper.filterDisplayName(lineageVerticesAndEdges.get(), displayNameMustContain);
         }
         return new LineageResponse(lineageVerticesAndEdges.orElse(null));
     }
