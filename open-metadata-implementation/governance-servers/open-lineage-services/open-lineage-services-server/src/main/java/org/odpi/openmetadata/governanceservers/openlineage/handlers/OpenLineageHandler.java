@@ -2,17 +2,17 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.handlers;
 
+import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageQueryService;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
-import org.odpi.openmetadata.governanceservers.openlineage.graph.LineageGraph;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageVertexResponse;
 
 public class OpenLineageHandler {
 
-    private LineageGraph lineageGraph;
+    private OpenLineageQueryService lineageGraph;
 
-    public OpenLineageHandler(LineageGraph lineageGraph) {
+    public OpenLineageHandler(OpenLineageQueryService lineageGraph) {
         this.lineageGraph = lineageGraph;
     }
 

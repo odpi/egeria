@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.factory.GraphFactory;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph.LineageGraphConnectorHelper;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.factory.GraphHelper;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph.LineageGraphQueryService;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.ffdc.JanusConnectorException;
 
 import java.util.Collections;
@@ -36,19 +36,19 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE;
 
-public class LineageGraphConnectorHelperTest {
+public class LineageGraphQueryServiceTest {
 
-    static LineageGraphConnectorHelper lineageGraphConnectorHelper;
+    static LineageGraphQueryService lineageGraphQueryService;
     private static final String CONNECTOR_PROVIDER_NAME = "org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph.LineageGraphConnectorProvider";
 
     @BeforeAll
     public static void beforeClass() throws JanusConnectorException, OpenLineageException {
-        GraphFactory graphFactory = new GraphFactory();
-        graphFactory.openGraph(CONNECTOR_PROVIDER_NAME, Collections.singletonMap("storage.backend", "inmemory"), null);
-        lineageGraphConnectorHelper = new LineageGraphConnectorHelper(graphFactory, true);
-        addColumnLineageData(graphFactory.getGraphTraversalSource());
-        addGlossaryLineageData(graphFactory.getGraphTraversalSource());
-        addTableLineageData(graphFactory.getGraphTraversalSource());
+        GraphHelper graphHelper = new GraphHelper();
+        graphHelper.openGraph(CONNECTOR_PROVIDER_NAME, Collections.singletonMap("storage.backend", "inmemory"), null);
+        lineageGraphQueryService = new LineageGraphQueryService(graphHelper);
+        addColumnLineageData(graphHelper.getGraphTraversalSource());
+        addGlossaryLineageData(graphHelper.getGraphTraversalSource());
+        addTableLineageData(graphHelper.getGraphTraversalSource());
     }
 
 
@@ -61,7 +61,7 @@ public class LineageGraphConnectorHelperTest {
         expectedNodeIDs.add(queriedNodeID);
         expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE);
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphConnectorHelper.ultimateSource(queriedNodeID).get();
+        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphQueryService.ultimateSource(queriedNodeID).get();
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
         validateResponse(expectedNodeIDs, lineageVertices);
     }
@@ -75,7 +75,7 @@ public class LineageGraphConnectorHelperTest {
         expectedNodeIDs.add(queriedNodeID);
         expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION);
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphConnectorHelper.ultimateDestination(queriedNodeID).get();
+        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphQueryService.ultimateDestination(queriedNodeID).get();
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
 
         validateResponse(expectedNodeIDs, lineageVertices);
@@ -98,7 +98,7 @@ public class LineageGraphConnectorHelperTest {
         expectedNodeIDs.add("sp3");
         expectedNodeIDs.add("sp4");
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphConnectorHelper.endToEnd(queriedNodeID, true).get();
+        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphQueryService.endToEnd(queriedNodeID, true).get();
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
 
         validateResponse(expectedNodeIDs, lineageVertices);
@@ -113,7 +113,7 @@ public class LineageGraphConnectorHelperTest {
         expectedNodeIDs.add("g3");
         expectedNodeIDs.add("c2");
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphConnectorHelper.verticalLineage(queriedNodeID).get();
+        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphQueryService.verticalLineage(queriedNodeID).get();
 
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
 
@@ -130,7 +130,8 @@ public class LineageGraphConnectorHelperTest {
         expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE);
         expectedNodeIDs.add(queriedNodeID);
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphConnectorHelper.ultimateSource(queriedNodeID).get();
+        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphQueryService.ultimateSource(queriedNodeID).get();
+        System.out.println(lineageVerticesAndEdges);
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
         validateResponse(expectedNodeIDs, lineageVertices);
     }
@@ -143,7 +144,9 @@ public class LineageGraphConnectorHelperTest {
         expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION);
         expectedNodeIDs.add(queriedNodeID);
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphConnectorHelper.ultimateDestination(queriedNodeID).get();
+        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphQueryService.ultimateDestination(queriedNodeID).get();
+
+        System.out.println(lineageVerticesAndEdges);
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
 
         validateResponse(expectedNodeIDs, lineageVertices);
@@ -159,7 +162,7 @@ public class LineageGraphConnectorHelperTest {
         expectedNodeIDs.add("t2");
         expectedNodeIDs.add(queriedNodeID);
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphConnectorHelper.endToEnd(queriedNodeID, true).get();
+        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphQueryService.endToEnd(queriedNodeID, true).get();
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
 
         validateResponse(expectedNodeIDs, lineageVertices);
@@ -173,7 +176,7 @@ public class LineageGraphConnectorHelperTest {
         expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE);
         expectedNodeIDs.add(queriedNodeID);
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphConnectorHelper.ultimateSource(queriedNodeID).get();
+        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphQueryService.ultimateSource(queriedNodeID).get();
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
         validateResponse(expectedNodeIDs, lineageVertices);
     }
@@ -186,7 +189,7 @@ public class LineageGraphConnectorHelperTest {
         expectedNodeIDs.add("t20");
         expectedNodeIDs.add(queriedNodeID);
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphConnectorHelper.ultimateDestination(queriedNodeID).get();
+        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphQueryService.ultimateDestination(queriedNodeID).get();
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
 
         validateResponse(expectedNodeIDs, lineageVertices);
@@ -202,7 +205,7 @@ public class LineageGraphConnectorHelperTest {
         expectedNodeIDs.add("p20");
         expectedNodeIDs.add(queriedNodeID);
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphConnectorHelper.endToEnd(queriedNodeID, true).get();
+        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphQueryService.endToEnd(queriedNodeID, true).get();
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
 
         validateResponse(expectedNodeIDs, lineageVertices);

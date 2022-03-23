@@ -1,5 +1,5 @@
 {
-  "graphConfigFile": "GREMLIN_CONFIG_PATH_PLACEHOLDER",
+  "graphConfigFile": "/Users/uv43kv/work/janusgraph-full-0.5.3/conf/gremlin-server/fuck_this_shit.properties",
   "processes": [
   ],
   "inTables": [

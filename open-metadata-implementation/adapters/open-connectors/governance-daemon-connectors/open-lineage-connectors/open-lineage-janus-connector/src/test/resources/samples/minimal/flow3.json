@@ -1,5 +1,5 @@
 {
-  "graphConfigFile": "GREMLIN_CONFIG_PATH_PLACEHOLDER",
+  "graphConfigFile": "/Users/uv43kv/work/janusgraph-full-0.5.3/conf/gremlin-server/fuck_this_shit.properties",
   "processes": [
       "(host_(engine))=IS115.OPENMETADATA.IBMCLOUD.COM::(transformation_project)=minimal::(dsjob)=flow3"
   ],

@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.governanceservers.openlineage.graph;
 
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
+import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraphConnector;
 
-public abstract class LineageGraphConnectorBase extends ConnectorBase implements LineageGraph {
+public abstract class LineageGraphConnectorBase extends ConnectorBase implements OpenLineageGraphConnector {
 }
