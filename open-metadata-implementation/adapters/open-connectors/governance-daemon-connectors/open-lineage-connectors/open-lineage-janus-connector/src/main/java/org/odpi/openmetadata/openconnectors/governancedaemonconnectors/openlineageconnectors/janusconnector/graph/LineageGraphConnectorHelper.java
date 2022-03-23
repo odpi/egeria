@@ -385,34 +385,6 @@ public class LineageGraphConnectorHelper {
     }
 
     /**
-     * Remove all nodes which displayname does not include the provided String. Any connected edges will also be removed.
-     *
-     * @param lineageVerticesAndEdges The list of vertices and edges which should be filtered on displayname.
-     * @param displayNameMustContain  The substring that must be part of a node's displayname in order for that node to be returned.
-     */
-    void filterDisplayName(LineageVerticesAndEdges lineageVerticesAndEdges, String displayNameMustContain) {
-        Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
-        Set<LineageEdge> lineageEdges = lineageVerticesAndEdges.getLineageEdges();
-        Set<LineageVertex> verticesToBeRemoved = new HashSet<>();
-        Set<LineageEdge> edgesToBeRemoved = new HashSet<>();
-
-        for (LineageVertex vertex : lineageVertices) {
-            String nodeID = vertex.getNodeID();
-            if (!vertex.getDisplayName().contains(displayNameMustContain)) {
-                verticesToBeRemoved.add(vertex);
-                for (LineageEdge edge : lineageEdges) {
-                    if (edge.getSourceNodeID().equals(nodeID) || edge.getDestinationNodeID().equals(nodeID))
-                        edgesToBeRemoved.add(edge);
-                }
-            }
-        }
-        lineageVertices.removeAll(verticesToBeRemoved);
-        lineageEdges.removeAll(edgesToBeRemoved);
-        lineageVerticesAndEdges.setLineageVertices(lineageVertices);
-        lineageVerticesAndEdges.setLineageEdges(lineageEdges);
-    }
-
-    /**
      * * Returns a subgraph containing all root and leaf nodes of the full graph that are connected with the queried node.
      * * The queried node can be a column or table.
      *
