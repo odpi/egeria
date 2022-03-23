@@ -21,7 +21,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '11'
-          distribution: 'adopt'
+          distribution: 'temurin'
       # Build first - lombok & other pre-processing may be needed. safer...
       - name: build
         if: ${{ github.repository == 'odpi/egeria' && github.ref == 'refs/heads/master'}}
