@@ -20,7 +20,7 @@ public final class GraphRelationship {
 
     public GraphRelationship(LineageRelationship lineageRelationship) {
         this.fromEntity = lineageRelationship.getSourceEntity();
-        this.toEntity = lineageRelationship.getSourceEntity();
+        this.toEntity = lineageRelationship.getTargetEntity();
         this.relationshipLabel = lineageRelationship.getTypeDefName();
         this.relationshipGuid = lineageRelationship.getGuid();
     }

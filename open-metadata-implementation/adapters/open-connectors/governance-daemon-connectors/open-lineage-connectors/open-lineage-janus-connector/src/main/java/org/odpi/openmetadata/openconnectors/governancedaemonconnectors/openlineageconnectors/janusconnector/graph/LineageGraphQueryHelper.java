@@ -491,7 +491,7 @@ public class LineageGraphQueryHelper {
         return properties;
     }
 
-    private void handlePropertiesNotFound(Exception e) {
-        log.error("Could not retrieve properties ", e);
+    private void handlePropertiesNotFound(Exception e, Object vertexId) {
+        log.error("Could not retrieve properties {}", vertexId, e);
     }
 }

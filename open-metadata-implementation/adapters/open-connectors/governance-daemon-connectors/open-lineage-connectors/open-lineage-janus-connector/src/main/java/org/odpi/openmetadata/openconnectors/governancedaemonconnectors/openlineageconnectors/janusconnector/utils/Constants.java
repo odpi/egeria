@@ -100,7 +100,7 @@ public final class Constants {
     public static final String COLUMN_SPACE_DELIMITER = ": ";
     public static final List<String> EMBEDDED_PROPERTIES = Arrays.asList(PROPERTY_KEY_ADDITIONAL_PROPERTIES, PROPERTY_KEY_EXTENDED_PROPERTIES);
     public static final String SUB_GRAPH = "subGraph";
-    public static final String GENERIC_QUERY_EXCEPTION = "Exception while querying {} of guid {}: {}. Executed rollback.";
+    public static final String GENERIC_QUERY_EXCEPTION = "Exception while querying for guid {}. Executed rollback.";
     public static final String ULTIMATE_DESTINATION_HORIZONTAL_LINEAGE = "ultimate destination horizontal lineage";
     public static final String TABULAR_COLUMN_VERTICAL_LINEAGE = "tabular column vertical lineage";
     public static final String RELATIONAL_COLUMN_VERTICAL_LINEAGE = "relational column vertical lineage";

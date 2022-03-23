@@ -153,7 +153,7 @@ public enum JanusConnectorErrorCode implements AuditLogMessageSet {
     }
 
 
-    public String getFormattedErrorMessage(String... params) {//TODO this should be moved to common code base
+    public String getFormattedErrorMessage(String... params) {
 
         log.debug(String.format("<== JanusConnectorErrorCode.getMessage(%s)", Arrays.toString(params)));
 

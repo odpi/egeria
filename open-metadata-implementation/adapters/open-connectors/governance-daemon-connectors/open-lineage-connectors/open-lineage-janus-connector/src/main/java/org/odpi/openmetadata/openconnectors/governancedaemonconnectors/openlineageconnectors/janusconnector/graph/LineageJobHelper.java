@@ -75,7 +75,7 @@ public class LineageJobHelper {
     public void performLineageGraphJob() {
         try {
             //TODO investigate possibility of adding the PROPERTY_KEY_PROCESS_LINEAGE_COMPLETED_FLAG again
-            List<String> guidList = this.graphHelper.getResult(this::getProcessGuids, this::handleRetrieveResultError);
+            List<String> guidList = this.graphHelper.getResult(this::getProcessGuids, this::handleRetrieveProcessGuids);
             for (String guid : guidList) {
                 findInputColumns(guid);
             }
@@ -259,7 +259,7 @@ public class LineageJobHelper {
         subProcessDetails.setProcess(process);
 
 
-        Iterator<Vertex> existingSubProcess = this.graphHelper.getResult(this::findExistingConnection, subProcessDetails, this::handleRetrieveResultError);
+        Iterator<Vertex> existingSubProcess = this.graphHelper.getResult(this::findExistingConnection, subProcessDetails, this::handleFindExistingSubprocess);
 
         if (!existingSubProcess.hasNext()) {
             this.graphHelper.commit(this::connectNodes, subProcessDetails, this::handleCouldNotAddEdge);
@@ -385,8 +385,23 @@ public class LineageJobHelper {
 
     }
 
-    private void handleRetrieveResultError(Exception e) {
-        log.error("Could not retrieve object from database", e);
+    private void handleRetrieveProcessGuids(Exception e) {
+        log.error("Could not retrieve guids from the database", e);
     }
 
+    private void handleRetrieveResultError(Exception e, Vertex vertex) {
+        log.error("Could not retrieve object from database {}", vertex, e);
+    }
+
+    private void handleRetrieveResultError(Exception e, String guid) {
+        log.error("Could not retrieve object from database {}", guid, e);
+    }
+
+    private void handleRetrieveResultError(Exception e, Vertex vertex1, Vertex vertex2) {
+        log.error("Could not retrieve object from database {}, {}", vertex1, vertex2, e);
+    }
+
+    private void handleFindExistingSubprocess(Exception e, SubProcessDetails subProcessDetails) {
+        log.error("Could not find connection {}", subProcessDetails, e);
+    }
 }

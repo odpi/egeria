@@ -43,7 +43,6 @@ public class GraphHelper {
     }
 
     public GraphTraversalSource getGraphTraversalSource() {
-        // TODO will this clone thing help?
         return graphDetails.getGraphTraversalSource();
     }
 
@@ -82,7 +81,7 @@ public class GraphHelper {
         return result;
     }
 
-    public <U, V> U getResult(BiFunction<GraphTraversalSource, V, U> function, V argument, Consumer<Exception> errorHandler) {
+    public <U, V> U getResult(BiFunction<GraphTraversalSource, V, U> function, V argument, BiConsumer<Exception, V> errorHandler) {
         GraphTraversalSource g = this.getGraphTraversalSource();
         U result = function.apply(g, argument);
         try {
@@ -91,7 +90,7 @@ public class GraphHelper {
             }
         } catch (Exception e) {
             g.tx().rollback();
-            errorHandler.accept(e);
+            errorHandler.accept(e, argument);
         }
         return result;
     }
@@ -109,7 +108,7 @@ public class GraphHelper {
         }
     }
 
-    public <U, V, T> U getResult(TriFunction<GraphTraversalSource, V, T, U> function, V argument1, T argument2, Consumer<Exception> errorHandler) {
+    public <U, V, T> U getResult(TriFunction<GraphTraversalSource, V, T, U> function, V argument1, T argument2, TriConsumer<Exception, V, T> errorHandler) {
         GraphTraversalSource g = this.getGraphTraversalSource();
         U result = function.apply(g, argument1, argument2);
         try {
@@ -118,7 +117,7 @@ public class GraphHelper {
             }
         } catch (Exception e) {
             g.tx().rollback();
-            errorHandler.accept(e);
+            errorHandler.accept(e, argument1, argument2);
         }
         return result;
     }

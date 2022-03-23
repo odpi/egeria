@@ -47,7 +47,6 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.VERTICES_AND_RELATIONSHIP_CREATION_EXCEPTION;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ASSET_LINEAGE_VARIABLES;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.CLASSIFICATION_WITH_GUID_NOT_FOUND;
-
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.EDGE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.EDGE_GUID_NOT_FOUND_WHEN_UPDATE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.EDGE_WITH_GUID_DELETED;
@@ -186,8 +185,8 @@ public class LineageGraphStorageService implements LineageGraph {
         return existingGUIDs;
     }
 
-    private void handleErrorGetAllNeighbours(Exception e) {
-        log.error(GET_ALL_NEIGHBOURS.getErrorMessage() + " " + e.getMessage(), e);
+    private void handleErrorGetAllNeighbours(Exception e, String entityGuid) {
+        log.error(GET_ALL_NEIGHBOURS.getErrorMessage() + " " + entityGuid, e);
         throw new JanusConnectorException(this.getClass().getName(), "getAllNeighbours", GET_ALL_NEIGHBOURS);
     }
 
@@ -520,6 +519,10 @@ public class LineageGraphStorageService implements LineageGraph {
     }
 
     private void handleRetrievingError(Exception e) {
-        log.error("Could not retrieve result from the database", e);
+        log.error("Could not retrieve last update time ", e);
+    }
+
+    private void handleRetrievingError(Exception e, String guid) {
+        log.error("Could not retrieve result from the database for guid {}", guid, e);
     }
 }

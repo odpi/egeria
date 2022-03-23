@@ -188,7 +188,7 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
     /**
      * Queries graph for end to end
      *
-     * @param guid      queried entity
+     * @param guid       queried entity
      * @param edgeLabels edge type to traverse
      * @return graph
      */
@@ -202,8 +202,8 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
                 ).cap(SUB_GRAPH).next();
     }
 
-    private void handleLineageNotFoundException(Exception e) {
-        log.error("Could not find lineage", e);
+    private void handleLineageNotFoundException(Exception e, String guid, List<String> edgeLabels) {
+        log.error("Could not find lineage for guid {} with edge labels {}", guid, edgeLabels, e);
     }
 
     /**
@@ -234,7 +234,7 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
     /**
      * Query graph for sources
      *
-     * @param guid      entity
+     * @param guid       entity
      * @param edgeLabels edge type to traverse
      * @return sources
      */
@@ -273,7 +273,7 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
     /**
      * Query graph for destinations
      *
-     * @param guid      entity
+     * @param guid       entity
      * @param edgeLabels edge type to traverse
      * @return sources
      */
@@ -326,8 +326,8 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
         return null;
     }
 
-    private void handleGetQueriedVertexException(Exception e) {
-        log.error(COULD_NOT_RETRIEVE_VERTEX.getErrorMessage(), e);
+    private void handleGetQueriedVertexException(Exception e, String guid) {
+        log.error(COULD_NOT_RETRIEVE_VERTEX.getErrorMessage() + " " + guid, e);
         throw new JanusConnectorException(this.getClass().getName(), "getQueriedVertex", COULD_NOT_RETRIEVE_VERTEX);
     }
 
@@ -368,8 +368,8 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
                 .subgraph("s").bothV().inE(ASSET_SCHEMA_TYPE).subgraph("s").cap("s").next();
     }
 
-    private void handleVerticalLineageNotFoundException(Exception e) {
-        log.error(GENERIC_QUERY_EXCEPTION ,e);
+    private void handleVerticalLineageNotFoundException(Exception e, String guid) {
+        log.error(GENERIC_QUERY_EXCEPTION, guid, e);
 
     }
 
@@ -484,8 +484,8 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
                 .next();
     }
 
-    private void handleIncompleteClassificationException(Exception e) {
-        log.error("Could not find classification ", e);
+    private void handleIncompleteClassificationException(Exception e, List<Object> vertexIds) {
+        log.error("Could not find classification, vertexIds {}", vertexIds, e);
     }
 
     private String getCondensedNodeId(String condensationType) {
