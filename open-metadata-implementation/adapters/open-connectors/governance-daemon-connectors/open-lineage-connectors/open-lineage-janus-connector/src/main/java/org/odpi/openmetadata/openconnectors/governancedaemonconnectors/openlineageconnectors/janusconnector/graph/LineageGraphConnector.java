@@ -73,7 +73,6 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         LineageJobHelper lineageJobHelper = new LineageJobHelper(graphHelper, auditLog);
         lineageJobHelper.performLineageGraphJob();
     }
-
     @Override
     public OpenLineageQueryService getLineageQueryService(){
         return lineageGraphQueryService;

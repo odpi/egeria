@@ -101,7 +101,7 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
      * {@inheritDoc}
      */
     @Override
-    public LineageResponse lineage(Scope scope, String guid, String displayNameMustContain, boolean includeProcesses) {
+    public LineageResponse lineage(Scope scope, String guid, boolean includeProcesses) {
 
         LineageResponse response = graphHelper.getResult(this::checkEntityExists, guid, this::handleGetQueriedVertexException);
         if (response != null) {
@@ -126,9 +126,6 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
         }
         if (lineageVerticesAndEdges.isEmpty()) {
             return getLineageResponse(guid, ERROR_LINEAGE_NOT_FOUND);
-        }
-        if (!displayNameMustContain.isEmpty()) {
-            this.filterDisplayName(lineageVerticesAndEdges.get(), displayNameMustContain);
         }
         return new LineageResponse(lineageVerticesAndEdges.orElse(null));
     }
@@ -371,34 +368,6 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
     private void handleVerticalLineageNotFoundException(Exception e, String guid) {
         log.error(GENERIC_QUERY_EXCEPTION, guid, e);
 
-    }
-
-    /**
-     * Remove all nodes which displayname does not include the provided String. Any connected edges will also be removed.
-     *
-     * @param lineageVerticesAndEdges The list of vertices and edges which should be filtered on displayname.
-     * @param displayNameMustContain  The substring that must be part of a node's displayname in order for that node to be returned.
-     */
-    void filterDisplayName(LineageVerticesAndEdges lineageVerticesAndEdges, String displayNameMustContain) {
-        Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
-        Set<LineageEdge> lineageEdges = lineageVerticesAndEdges.getLineageEdges();
-        Set<LineageVertex> verticesToBeRemoved = new HashSet<>();
-        Set<LineageEdge> edgesToBeRemoved = new HashSet<>();
-
-        for (LineageVertex vertex : lineageVertices) {
-            String nodeID = vertex.getNodeID();
-            if (!vertex.getDisplayName().contains(displayNameMustContain)) {
-                verticesToBeRemoved.add(vertex);
-                for (LineageEdge edge : lineageEdges) {
-                    if (edge.getSourceNodeID().equals(nodeID) || edge.getDestinationNodeID().equals(nodeID))
-                        edgesToBeRemoved.add(edge);
-                }
-            }
-        }
-        lineageVertices.removeAll(verticesToBeRemoved);
-        lineageEdges.removeAll(edgesToBeRemoved);
-        lineageVerticesAndEdges.setLineageVertices(lineageVertices);
-        lineageVerticesAndEdges.setLineageEdges(lineageEdges);
     }
 
     /**

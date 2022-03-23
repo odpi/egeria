@@ -9,7 +9,7 @@ import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageVert
 
 public interface OpenLineageQueryService {
 
-    LineageResponse lineage(Scope scope, String guid, String displayNameMustContain, boolean includeProcesses) throws OpenLineageException;
+    LineageResponse lineage(Scope scope, String guid, boolean includeProcesses) throws OpenLineageException;
 
     /**
      * Gets entity details.
