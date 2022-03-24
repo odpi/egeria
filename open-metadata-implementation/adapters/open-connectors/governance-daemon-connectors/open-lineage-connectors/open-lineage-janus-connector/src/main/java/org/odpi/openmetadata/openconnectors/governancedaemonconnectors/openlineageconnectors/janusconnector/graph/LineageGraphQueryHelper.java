@@ -15,7 +15,6 @@ import org.apache.tinkerpop.gremlin.structure.VertexProperty;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageEdge;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.factory.GraphHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -83,6 +82,13 @@ public class LineageGraphQueryHelper {
         return lineageVertices;
     }
 
+
+    /**
+     * Convert a list of vertices from the janusgraph model to the list of vertices model used by egeria
+     *
+     * @param vertexList vertices to transform
+     * @return list of lineage vertices converted
+     */
     public Set<LineageVertex> getLineageVertices(List<Vertex> vertexList) {
         if (CollectionUtils.isNotEmpty(vertexList)) {
             return vertexList.stream().map(this::abstractVertex).collect(Collectors.toSet());

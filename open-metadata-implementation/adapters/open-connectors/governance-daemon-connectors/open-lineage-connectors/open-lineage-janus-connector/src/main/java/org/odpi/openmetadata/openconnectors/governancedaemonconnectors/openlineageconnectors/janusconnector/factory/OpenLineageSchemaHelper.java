@@ -256,7 +256,10 @@ public class OpenLineageSchemaHelper<C extends Element> {
         }
     }
 
-
+    /**
+     * Create the labels for vertices and edges
+     * @param client - instance of the client for remote cluster
+     */
     public void createLabels(Client client) {
         String createLabels = createLabelsCommand();
         log.debug("Checking labels...");
@@ -282,6 +285,11 @@ public class OpenLineageSchemaHelper<C extends Element> {
     }
 
 
+    /**
+     * Create index commands for the graph
+     *
+     * @param client - instance of the client for remote cluster
+     */
     public void createIndexes(Client client) {
         String indexCommandGuid = createIndexCommand("vertexIndexCompositevertex--guid", PROPERTY_KEY_ENTITY_GUID, true, VERTEX);
         String indexCommandLabel = createIndexCommand("vertexIndexCompositevertex--label", PROPERTY_KEY_LABEL, false, VERTEX);

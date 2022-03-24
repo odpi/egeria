@@ -101,12 +101,6 @@ public final class Constants {
     public static final List<String> EMBEDDED_PROPERTIES = Arrays.asList(PROPERTY_KEY_ADDITIONAL_PROPERTIES, PROPERTY_KEY_EXTENDED_PROPERTIES);
     public static final String SUB_GRAPH = "subGraph";
     public static final String GENERIC_QUERY_EXCEPTION = "Exception while querying for guid {}. Executed rollback.";
-    public static final String ULTIMATE_DESTINATION_HORIZONTAL_LINEAGE = "ultimate destination horizontal lineage";
-    public static final String TABULAR_COLUMN_VERTICAL_LINEAGE = "tabular column vertical lineage";
-    public static final String RELATIONAL_COLUMN_VERTICAL_LINEAGE = "relational column vertical lineage";
-    public static final String GLOSSARY_TERM_VERTICAL_LINEAGE = "glossary term vertical lineage";
-    public static final String END_TO_END_HORIZONTAL_LINEAGE = "end to end horizontal lineage";
-    public static final String ULTIMATE_SOURCE_HORIZONTAL_LINEAGE = "ultimate source horizontal lineage";
     public static final String S = "s";
     public static final String INCOMPLETE = "Incomplete";
     public static final String CLASSIFICATION_GRAPH = "classificationGraph";
@@ -114,17 +108,10 @@ public final class Constants {
     public static final String KV = "kv";
     public static final String CLOSE_LINEAGE_GRAPH_EXCEPTION = "Exception while closing lineage graph";
     public static final String EXCEPTION_WHILE_CLOSING_LINEAGE_GRAPH_MESSAGE = CLOSE_LINEAGE_GRAPH_EXCEPTION + ": ";
-    public static final String CLOSE_LINEAGE_GRAPH_EXCEPTION_MESSAGE = EXCEPTION_WHILE_CLOSING_LINEAGE_GRAPH_MESSAGE;
-    public static final String UNABLE_TO_ADD_PROPERTIES = "Unable to add properties on vertex from entity with type ";
-    public static final String AND_GUID = " and guid ";
-    public static final String UNABLE_TO_CREATE_EDGE_WITH_LABEL = "Unable to create edge with label ";
     public static final String FROM = "from";
-    public static final String UNABLE_TO_CREATE_VERTEX_WITH_TYPE = "Unable to create vertex with type ";
 
     public static final String ASSET_LINEAGE_VARIABLES = "ASSET_LINEAGE_VARIABLES";
     public static final String INPUT_PORT = "INPUT_PORT";
-    public static final String OLS_HAS_CORRESPONDING_ELEMENTS = "OLS has added the corresponding subProcess node and edges for input column {}, output column {} and process {} ";
-    public static final String COULD_NOT_DROP_EDGE = "Could not drop edge ";
     public static final String PROPERTIES = "properties";
     public static final String V = "v";
     public static final String VERTEX_GUID_NOT_FOUND_WHEN_UPDATE = "When trying to update, vertex with guid {} was not found  ";
@@ -137,12 +124,6 @@ public final class Constants {
     public static final String EDGE_WITH_GUID_DID_NOT_DELETE = "Edge with guid did not delete {}";
     public static final String EDGE_WITH_GUID_DELETED = "Edge with guid {} deleted";
     public static final String EDGE = "edge";
-    public static final String VERTEX_NOT_FOUND = "Vertex does not exist with guid {} and display name {}";
-    public static final String THE_LINEAGE_GRAPH_COULD_NOT_BE_INITIALIZED_DUE_TO_AN_ERROR = "The Lineage graph could not be initialized due to an error";
-    public static final String SOMETHING_WENT_WRONG_WHEN_TRYING_TO_MAP_A_PROCESS = "Something went wrong when trying to map a process.";
-    public static final String SOMETHING_WENT_WRONG_WHEN_TRYING_TO_MAP_A_PROCESS_THE_ERROR_IS = SOMETHING_WENT_WRONG_WHEN_TRYING_TO_MAP_A_PROCESS + " The error is: ";
-
-
 
     public static final String[] RELATIONAL_TABLE_CONTEXT_IN_EDGES = new String[]{ATTRIBUTE_FOR_SCHEMA, ASSET_SCHEMA_TYPE, DATA_CONTENT_FOR_DATA_SET, CONNECTION_TO_ASSET};
 

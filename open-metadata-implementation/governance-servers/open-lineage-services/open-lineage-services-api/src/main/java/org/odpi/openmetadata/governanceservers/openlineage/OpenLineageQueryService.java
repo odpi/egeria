@@ -9,6 +9,16 @@ import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageVert
 
 public interface OpenLineageQueryService {
 
+
+    /**
+     * Retrieve lineage starting from the entity identified by the guid
+     *
+     * @param scope            the type of lineage to retrieve
+     * @param guid             the guid of the entity from which to start
+     * @param includeProcesses
+     * @return the lineage vertices and edges that compose the graph
+     * @throws OpenLineageException
+     */
     LineageResponse lineage(Scope scope, String guid, boolean includeProcesses) throws OpenLineageException;
 
     /**
