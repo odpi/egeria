@@ -3,6 +3,8 @@
 
 package org.odpi.openmetadata.commonservices.repositoryhandler;
 
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
@@ -23,6 +25,7 @@ public class RepositoryEntitiesIterator extends RepositoryIteratorForEntities
      * Constructor takes the parameters used to call the repository handler.
      *
      * @param repositoryHandler interface to the open metadata repositories.
+     * @param invalidParameterHandler invalid parameter handler
      * @param userId  user making the request
      * @param entityTypeGUID  identifier for the relationship to follow
      * @param entityTypeName  type name for the relationship to follow
@@ -33,20 +36,22 @@ public class RepositoryEntitiesIterator extends RepositoryIteratorForEntities
      * @param pageSize maximum number of definitions to return on this call.
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName  name of calling method
+     * @throws InvalidParameterException when page size or start from parameters do not meet criteria
      */
-    public RepositoryEntitiesIterator(RepositoryHandler repositoryHandler,
-                                      String            userId,
-                                      String            entityTypeGUID,
-                                      String            entityTypeName,
-                                      String            sequencingPropertyName,
-                                      boolean           forLineage,
-                                      boolean           forDuplicateProcessing,
-                                      int               startingFrom,
-                                      int               pageSize,
-                                      Date              effectiveTime,
-                                      String            methodName)
-    {
+    public RepositoryEntitiesIterator(RepositoryHandler       repositoryHandler,
+                                      InvalidParameterHandler invalidParameterHandler,
+                                      String                  userId,
+                                      String                  entityTypeGUID,
+                                      String                  entityTypeName,
+                                      String                  sequencingPropertyName,
+                                      boolean                 forLineage,
+                                      boolean                 forDuplicateProcessing,
+                                      int                     startingFrom,
+                                      int                     pageSize,
+                                      Date                    effectiveTime,
+                                      String                  methodName) throws InvalidParameterException {
         super(repositoryHandler,
+              invalidParameterHandler,
               userId,
               entityTypeGUID,
               entityTypeName,

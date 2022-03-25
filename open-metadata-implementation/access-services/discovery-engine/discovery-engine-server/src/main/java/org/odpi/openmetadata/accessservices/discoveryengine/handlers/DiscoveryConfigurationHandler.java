@@ -854,6 +854,7 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
          * First check if this request type has already been registered.
          */
         RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
+                                                                                       invalidParameterHandler,
                                                                                        userId,
                                                                                        discoveryEngineGUID,
                                                                                        OpenMetadataAPIMapper.DISCOVERY_ENGINE_TYPE_NAME,

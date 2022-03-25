@@ -4624,6 +4624,7 @@ public class OpenMetadataAPIGenericHandler<B>
         int count = 0;
 
         RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
+                                                                                       invalidParameterHandler,
                                                                                        userId,
                                                                                        elementGUID,
                                                                                        elementTypeName,
@@ -4896,6 +4897,7 @@ public class OpenMetadataAPIGenericHandler<B>
         final String localMethodName = "getAttachedEntityFromUser";
 
         RepositoryRelatedEntitiesIterator iterator = new RepositoryRelatedEntitiesIterator(repositoryHandler,
+                                                                                           invalidParameterHandler,
                                                                                            userId,
                                                                                            startingEntityGUID,
                                                                                            startingEntityTypeName,
@@ -4968,6 +4970,7 @@ public class OpenMetadataAPIGenericHandler<B>
         List<EntityDetail> results = new ArrayList<>();
 
         RepositoryRelatedEntitiesIterator iterator = new RepositoryRelatedEntitiesIterator(repositoryHandler,
+                                                                                           invalidParameterHandler,
                                                                                            userId,
                                                                                            startingEntityGUID,
                                                                                            startingEntityTypeName,
@@ -5548,6 +5551,7 @@ public class OpenMetadataAPIGenericHandler<B>
         int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
 
         RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
+                                                                                       invalidParameterHandler,
                                                                                        userId,
                                                                                        startingGUID,
                                                                                        startingTypeName,
@@ -5689,6 +5693,7 @@ public class OpenMetadataAPIGenericHandler<B>
 
 
         RepositoryFindRelationshipsIterator iterator = new RepositoryFindRelationshipsIterator(repositoryHandler,
+                                                                                               invalidParameterHandler,
                                                                                                userId,
                                                                                                relationshipTypeGUID,
                                                                                                null,
@@ -6174,6 +6179,7 @@ public class OpenMetadataAPIGenericHandler<B>
          * Begin by retrieving all of the relationships attached to the template.
          */
         RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
+                                                                                       invalidParameterHandler,
                                                                                        userId,
                                                                                        templateGUID,
                                                                                        expectedTypeName,
@@ -7226,6 +7232,7 @@ public class OpenMetadataAPIGenericHandler<B>
              * Retrieve the entities attached to this element.  Any entity that is anchored, directly or indirectly, to the anchor entity is archived.
              */
             RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
+                                                                                           invalidParameterHandler,
                                                                                            userId,
                                                                                            entityGUID,
                                                                                            entityTypeName,
@@ -7659,6 +7666,7 @@ public class OpenMetadataAPIGenericHandler<B>
          * (This is why we explicitly delete the relationship to the parent element before calling this method).
          */
         RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
+                                                                                       invalidParameterHandler,
                                                                                        userId,
                                                                                        entityGUID,
                                                                                        entityTypeName,
@@ -7755,6 +7763,7 @@ public class OpenMetadataAPIGenericHandler<B>
          * Retrieve the first relationship, if there is one then we have relationships.
          */
         RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
+                                                                                       invalidParameterHandler,
                                                                                        userId,
                                                                                        entityGUID,
                                                                                        entityTypeName,
@@ -8968,6 +8977,7 @@ public class OpenMetadataAPIGenericHandler<B>
         int localStartFrom = 0;
 
         RepositoryRelatedEntitiesIterator relatedEntityIterator = new RepositoryRelatedEntitiesIterator(repositoryHandler,
+                                                                                                        invalidParameterHandler,
                                                                                                         userId,
                                                                                                         startingGUID,
                                                                                                         startingTypeName,
@@ -9636,8 +9646,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                           int          startFrom,
                                                           int          queryPageSize,
                                                           Date         effectiveTime,
-                                                          String       methodName)
-    {
+                                                          String       methodName) throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
         RepositoryIteratorForEntities iterator;
 
         if (searchString != null)
@@ -9655,6 +9664,7 @@ public class OpenMetadataAPIGenericHandler<B>
                  * Search for value in any string property
                  */
                 iterator = new RepositorySelectedEntitiesIterator(repositoryHandler,
+                                                                  invalidParameterHandler,
                                                                   userId,
                                                                   resultTypeGUID,
                                                                   searchValue,
@@ -9672,6 +9682,7 @@ public class OpenMetadataAPIGenericHandler<B>
                  * Search for value in specific properties
                  */
                 iterator = new RepositorySelectedEntitiesIterator(repositoryHandler,
+                                                                  invalidParameterHandler,
                                                                   userId,
                                                                   resultTypeGUID,
                                                                   this.getSearchInstanceProperties(searchValue, specificMatchPropertyNames, methodName),
@@ -9691,6 +9702,7 @@ public class OpenMetadataAPIGenericHandler<B>
              * Get all values of a specific type
              */
             iterator = new RepositoryEntitiesIterator(repositoryHandler,
+                                                      invalidParameterHandler,
                                                       userId,
                                                       resultTypeGUID,
                                                       resultTypeName,
@@ -10336,6 +10348,7 @@ public class OpenMetadataAPIGenericHandler<B>
          * relationships.
          */
         RepositoryFindEntitiesIterator iterator = new RepositoryFindEntitiesIterator(repositoryHandler,
+                                                                                     invalidParameterHandler,
                                                                                      userId,
                                                                                      metadataElementTypeName,
                                                                                      metadataElementSubtypeName,
@@ -11080,6 +11093,7 @@ public class OpenMetadataAPIGenericHandler<B>
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         RepositoryIteratorForEntities iterator = new RepositorySelectedEntitiesIterator(repositoryHandler,
+                                                                                        invalidParameterHandler,
                                                                                         userId,
                                                                                         resultTypeGUID,
                                                                                         repositoryHelper.addIntPropertyToInstance(serviceName, null, propertyName, value, methodName),
@@ -14409,6 +14423,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                   methodName);
 
         RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
+                                                                                       invalidParameterHandler,
                                                                                        userId,
                                                                                        startingGUID,
                                                                                        startingElementTypeName,
@@ -14820,6 +14835,7 @@ public class OpenMetadataAPIGenericHandler<B>
          * relationships.
          */
         RepositoryFindEntitiesIterator iterator = new RepositoryFindEntitiesIterator(repositoryHandler,
+                                                                                     invalidParameterHandler,
                                                                                      userId,
                                                                                      entityTypeGUID,
                                                                                      entitySubtypeGUIDs,

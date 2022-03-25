@@ -1324,6 +1324,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
         int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
 
         RepositoryRelatedEntitiesIterator externalIdIterator = new RepositoryRelatedEntitiesIterator(repositoryHandler,
+                                                                                                     invalidParameterHandler,
                                                                                                      userId,
                                                                                                      scopeGUID,
                                                                                                      scopeTypeName,
@@ -1347,6 +1348,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
             if (externalIdEntity != null)
             {
                 RepositoryRelatedEntitiesIterator elementIterator = new RepositoryRelatedEntitiesIterator(repositoryHandler,
+                                                                                                          invalidParameterHandler,
                                                                                                           userId,
                                                                                                           externalIdEntity.getGUID(),
                                                                                                           OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_NAME,

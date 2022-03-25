@@ -683,6 +683,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
             List<EntityDetail> supplementaryEntities = new ArrayList<>();
 
             RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
+                                                                                           invalidParameterHandler,
                                                                                            userId,
                                                                                            governanceActionGUID,
                                                                                            OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME,
@@ -1824,6 +1825,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
         invalidParameterHandler.validateUserId(userId, methodName);
 
         RepositoryEntitiesIterator iterator = new RepositoryEntitiesIterator(repositoryHandler,
+                                                                             invalidParameterHandler,
                                                                              userId,
                                                                              OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_GUID,
                                                                              OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME,
@@ -1888,6 +1890,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
         invalidParameterHandler.validateUserId(userId, methodName);
 
         RepositoryEntitiesIterator iterator = new RepositoryEntitiesIterator(repositoryHandler,
+                                                                             invalidParameterHandler,
                                                                              userId,
                                                                              OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_GUID,
                                                                              OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME,
@@ -1973,6 +1976,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                      methodName);
 
         RepositorySelectedEntitiesIterator iterator = new RepositorySelectedEntitiesIterator(repositoryHandler,
+                                                                                             invalidParameterHandler,
                                                                                              userId,
                                                                                              OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_GUID,
                                                                                              properties,

@@ -3,6 +3,8 @@
 
 package org.odpi.openmetadata.commonservices.repositoryhandler;
 
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
@@ -36,6 +38,7 @@ public class RepositoryFindEntitiesIterator extends RepositoryIteratorForEntitie
      * Constructor takes the parameters used to call the repository handler.
      *
      * @param repositoryHandler interface to the open metadata repositories.
+     * @param invalidParameterHandler invalid parameter handler
      * @param userId  user making the request
      * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
      * @param entitySubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the entityTypeGUID to
@@ -55,25 +58,27 @@ public class RepositoryFindEntitiesIterator extends RepositoryIteratorForEntitie
      * @param requesterPageSize maximum number of definitions to return on this call.
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName  name of calling method
+     * @throws InvalidParameterException when page size or start from parameters do not meet criteria
      */
-    public RepositoryFindEntitiesIterator(RepositoryHandler     repositoryHandler,
-                                          String                userId,
-                                          String                entityTypeGUID,
-                                          List<String>          entitySubtypeGUIDs,
-                                          SearchProperties      searchProperties,
-                                          List<InstanceStatus>  limitResultsByStatus,
-                                          SearchClassifications searchClassifications,
-                                          Date                  asOfTime,
-                                          String                sequencingProperty,
-                                          SequencingOrder       sequencingOrder,
-                                          boolean               forLineage,
-                                          boolean               forDuplicateProcessing,
-                                          int                   startingFrom,
-                                          int                   requesterPageSize,
-                                          Date                  effectiveTime,
-                                          String                methodName)
-    {
+    public RepositoryFindEntitiesIterator(RepositoryHandler       repositoryHandler,
+                                          InvalidParameterHandler invalidParameterHandler,
+                                          String                  userId,
+                                          String                  entityTypeGUID,
+                                          List<String>            entitySubtypeGUIDs,
+                                          SearchProperties        searchProperties,
+                                          List<InstanceStatus>    limitResultsByStatus,
+                                          SearchClassifications   searchClassifications,
+                                          Date                    asOfTime,
+                                          String                  sequencingProperty,
+                                          SequencingOrder         sequencingOrder,
+                                          boolean                 forLineage,
+                                          boolean                 forDuplicateProcessing,
+                                          int                     startingFrom,
+                                          int                     requesterPageSize,
+                                          Date                    effectiveTime,
+                                          String                  methodName) throws InvalidParameterException {
         super(repositoryHandler,
+              invalidParameterHandler,
               userId,
               entityTypeGUID,
               null,

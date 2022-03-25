@@ -968,6 +968,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
         int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
 
         RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
+                                                                                       invalidParameterHandler,
                                                                                        userId,
                                                                                        startingElementGUID,
                                                                                        startingElementTypeName,
