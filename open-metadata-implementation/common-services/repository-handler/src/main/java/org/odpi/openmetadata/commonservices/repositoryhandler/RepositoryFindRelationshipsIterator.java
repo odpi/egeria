@@ -73,7 +73,8 @@ public class RepositoryFindRelationshipsIterator extends RepositoryIterator
                                                int                     pageSize,
                                                boolean                 forDuplicateProcessing,
                                                Date                    effectiveTime,
-                                               String                  methodName) throws InvalidParameterException {
+                                               String                  methodName) throws InvalidParameterException
+    {
         super(repositoryHandler,
               invalidParameterHandler,
               userId,

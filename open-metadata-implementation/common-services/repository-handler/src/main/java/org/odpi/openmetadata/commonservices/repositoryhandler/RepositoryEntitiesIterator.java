@@ -49,7 +49,8 @@ public class RepositoryEntitiesIterator extends RepositoryIteratorForEntities
                                       int                     startingFrom,
                                       int                     pageSize,
                                       Date                    effectiveTime,
-                                      String                  methodName) throws InvalidParameterException {
+                                      String                  methodName) throws InvalidParameterException
+    {
         super(repositoryHandler,
               invalidParameterHandler,
               userId,

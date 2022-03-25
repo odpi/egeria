@@ -2061,7 +2061,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                         EntitySummary connectionEntity,
                                                         Date          effectiveTime,
                                                         String        methodName) throws PropertyServerException,
-            UserNotAuthorizedException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
+                                                                                         UserNotAuthorizedException,
+                                                                                         org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
         List<Relationship> supplementaryRelationships = new ArrayList<>();
 
         if ((connectionEntity != null) && (connectionEntity.getType() != null))

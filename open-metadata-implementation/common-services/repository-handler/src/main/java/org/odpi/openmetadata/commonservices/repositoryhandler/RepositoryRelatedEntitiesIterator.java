@@ -29,7 +29,6 @@ public class RepositoryRelatedEntitiesIterator extends RepositoryIteratorForEnti
     private String             relationshipTypeGUID;
     private String             relationshipTypeName;
     private int                selectionEnd = 0;
-    private boolean            entitiesAlreadyReceived;
 
     private static final Logger log = LoggerFactory.getLogger(RepositoryRelatedEntitiesIterator.class);
 
@@ -125,7 +124,8 @@ public class RepositoryRelatedEntitiesIterator extends RepositoryIteratorForEnti
                                              int                     pageSize,
                                              int                     selectionEnd,
                                              Date                    effectiveTime,
-                                             String                  methodName) throws InvalidParameterException {
+                                             String                  methodName) throws InvalidParameterException
+    {
         this(repositoryHandler,
              invalidParameterHandler,
              userId,
@@ -156,7 +156,7 @@ public class RepositoryRelatedEntitiesIterator extends RepositoryIteratorForEnti
     public boolean  moreToReceive() throws UserNotAuthorizedException,
                                            PropertyServerException
     {
-        if ((!entitiesAlreadyReceived) && ((entitiesCache == null) || (entitiesCache.isEmpty())))
+        if ((entitiesCache == null) || (entitiesCache.isEmpty()))
         {
             entitiesCache = new ArrayList<>();
 
@@ -243,10 +243,8 @@ public class RepositoryRelatedEntitiesIterator extends RepositoryIteratorForEnti
                     log.debug("StartingFrom=" + startingFrom);
                 }
             }
-
-            entitiesAlreadyReceived = true;
         }
 
-        return (entitiesCache != null && !entitiesCache.isEmpty());
+        return (entitiesCache != null);
     }
 }
