@@ -19,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 
-public class RexHistoricalTraversalRequestBody {
+public class RexHistoricalTraversalRequestBody extends RexTraversalRequestBody{
 
 
     /*
