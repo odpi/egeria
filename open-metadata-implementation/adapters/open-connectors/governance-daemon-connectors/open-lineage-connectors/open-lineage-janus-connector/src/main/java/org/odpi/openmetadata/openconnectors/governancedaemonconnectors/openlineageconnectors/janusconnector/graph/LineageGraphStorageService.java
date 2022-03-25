@@ -76,8 +76,6 @@ public class LineageGraphStorageService implements LineageGraph {
 
     private static final Logger log = LoggerFactory.getLogger(LineageGraphStorageService.class);
 
-    /*TODO START*/
-
     private LineageGraphQueryService helper;
     private GraphHelper graphHelper;
     private AuditLog auditLog;
@@ -87,8 +85,6 @@ public class LineageGraphStorageService implements LineageGraph {
         this.helper = new LineageGraphQueryService(graphHelper);
         this.auditLog = auditLog;
     }
-
-    /*TODO END*/
 
     /**
      * Creates vertices and the relationships between them
