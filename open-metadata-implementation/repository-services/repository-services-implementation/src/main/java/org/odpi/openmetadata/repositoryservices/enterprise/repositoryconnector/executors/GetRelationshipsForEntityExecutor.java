@@ -220,7 +220,7 @@ public class GetRelationshipsForEntityExecutor extends PageableRepositoryExecuto
             accumulator.captureGenericException(methodName, metadataCollectionId, error);
         }
 
-        return true;
+        return false;
     }
 
 

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -54,10 +55,10 @@ public class SoftwareServerPlatformProperties extends ITInfrastructureProperties
 
         if (template != null)
         {
-            platformType    = template.getSoftwareServerType();
-            platformVersion = template.getSoftwareServerVersion();
-            platformSource  = template.getSoftwareServerSource();
-            platformUserId  = template.getSoftwareServerUserId();
+            platformType    = template.getSoftwareServerPlatformType();
+            platformVersion = template.getSoftwareServerPlatformVersion();
+            platformSource  = template.getSoftwareServerPlatformSource();
+            platformUserId  = template.getSoftwareServerPlatformUserId();
         }
     }
 
@@ -133,6 +134,11 @@ public class SoftwareServerPlatformProperties extends ITInfrastructureProperties
 
         Map<String, Object> assetExtendedProperties = assetProperties.getExtendedProperties();
 
+        if (assetExtendedProperties == null)
+        {
+            assetExtendedProperties = new HashMap<>();
+        }
+
         if (platformType != null)
         {
             assetExtendedProperties.put(deployedImplementationTypeProperty, platformType);
@@ -150,7 +156,10 @@ public class SoftwareServerPlatformProperties extends ITInfrastructureProperties
             assetExtendedProperties.put(userIdProperty, platformUserId);
         }
 
-        assetProperties.setExtendedProperties(assetExtendedProperties);
+        if (! assetExtendedProperties.isEmpty())
+        {
+            assetProperties.setExtendedProperties(assetExtendedProperties);
+        }
 
         return assetProperties;
     }
@@ -161,7 +170,7 @@ public class SoftwareServerPlatformProperties extends ITInfrastructureProperties
      *
      * @return type description string
      */
-    public String getSoftwareServerType()
+    public String getSoftwareServerPlatformType()
     {
         return platformType;
     }
@@ -183,7 +192,7 @@ public class SoftwareServerPlatformProperties extends ITInfrastructureProperties
      *
      * @return version string
      */
-    public String getSoftwareServerVersion()
+    public String getSoftwareServerPlatformVersion()
     {
         return platformVersion;
     }
@@ -205,7 +214,7 @@ public class SoftwareServerPlatformProperties extends ITInfrastructureProperties
      *
      * @return string name
      */
-    public String getSoftwareServerSource()
+    public String getSoftwareServerPlatformSource()
     {
         return platformSource;
     }
@@ -227,7 +236,7 @@ public class SoftwareServerPlatformProperties extends ITInfrastructureProperties
      *
      * @return string user identity
      */
-    public String getSoftwareServerUserId()
+    public String getSoftwareServerPlatformUserId()
     {
         return platformUserId;
     }
@@ -257,10 +266,10 @@ public class SoftwareServerPlatformProperties extends ITInfrastructureProperties
                        ", platformVersion='" + platformVersion + '\'' +
                        ", platformSource='" + platformSource + '\'' +
                        ", platformUserId='" + platformUserId + '\'' +
-                       ", softwareServerType='" + getSoftwareServerType() + '\'' +
-                       ", softwareServerVersion='" + getSoftwareServerVersion() + '\'' +
-                       ", softwareServerSource='" + getSoftwareServerSource() + '\'' +
-                       ", softwareServerUserId='" + getSoftwareServerUserId() + '\'' +
+                       ", softwareServerType='" + getSoftwareServerPlatformType() + '\'' +
+                       ", softwareServerVersion='" + getSoftwareServerPlatformVersion() + '\'' +
+                       ", softwareServerSource='" + getSoftwareServerPlatformSource() + '\'' +
+                       ", softwareServerUserId='" + getSoftwareServerPlatformUserId() + '\'' +
                        ", displayName='" + getDisplayName() + '\'' +
                        ", description='" + getDescription() + '\'' +
                        ", effectiveFrom=" + getEffectiveFrom() +

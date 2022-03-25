@@ -61,7 +61,7 @@ public class OpenLineageService {
                                    String guid,
                                    boolean includeProcesses) throws InvalidParameterException, PropertyServerException, OpenLineageException {
         try {
-            LineageVerticesAndEdges response = openLineageClient.lineage(userId, Scope.ULTIMATE_SOURCE, guid, "", includeProcesses);
+            LineageVerticesAndEdges response = openLineageClient.lineage(userId, Scope.ULTIMATE_SOURCE, guid, includeProcesses);
             return processResponse(response, guid);
         } catch (PropertyServerException e) {
             LOG.error("Cannot get ultimate source lineage for guid {}", guid);
@@ -87,7 +87,7 @@ public class OpenLineageService {
                                     String guid,
                                     boolean includeProcesses) throws InvalidParameterException, PropertyServerException, OpenLineageException {
         try {
-            LineageVerticesAndEdges response = openLineageClient.lineage(userId, Scope.END_TO_END, guid, "", includeProcesses);
+            LineageVerticesAndEdges response = openLineageClient.lineage(userId, Scope.END_TO_END, guid, includeProcesses);
             return processResponse(response, guid);
         } catch (PropertyServerException e) {
             LOG.error("Cannot get end2end lineage for guid {}", guid);
@@ -111,8 +111,7 @@ public class OpenLineageService {
                                         String guid,
                                         boolean includeProcesses) throws InvalidParameterException, PropertyServerException, OpenLineageException {
         try {
-            LineageVerticesAndEdges response = openLineageClient.lineage(userId, Scope.ULTIMATE_DESTINATION, guid, "",
-                    includeProcesses);
+            LineageVerticesAndEdges response = openLineageClient.lineage(userId, Scope.ULTIMATE_DESTINATION, guid, includeProcesses);
             return processResponse(response, guid);
         } catch (PropertyServerException e) {
             LOG.error("Cannot get ultimate destination lineage for guid {}", guid);
@@ -138,7 +137,7 @@ public class OpenLineageService {
                                     String guid,
                                     boolean includeProcesses) throws InvalidParameterException, PropertyServerException, OpenLineageException {
         try {
-            LineageVerticesAndEdges response = openLineageClient.lineage(userId, Scope.VERTICAL, guid, "", includeProcesses);
+            LineageVerticesAndEdges response = openLineageClient.lineage(userId, Scope.VERTICAL, guid, includeProcesses);
             return processResponse(response, guid);
         } catch (PropertyServerException e) {
             LOG.error("Error while trying to retrieve verical lineage {}", e.getMessage());
