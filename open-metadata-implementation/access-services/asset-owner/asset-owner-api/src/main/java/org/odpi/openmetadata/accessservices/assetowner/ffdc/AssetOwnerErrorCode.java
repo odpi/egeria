@@ -101,7 +101,7 @@ public enum AssetOwnerErrorCode implements ExceptionMessageSet
             "The access service has not been passed valid configuration for its out topic connection.",
              "Correct the server configuration and restart the server."),
 
-    NULL_LISTENER(400, "OMAS-ASSET-ASSET-400-019",
+    NULL_LISTENER(400, "OMAS-ASSET-OWNER-400-019",
                   "A null topic listener has been passed by user {0} on method {1}",
                   "There is a coding error in the caller to the Asset Owner OMAS.",
                   "Correct the caller logic and retry the request."),
