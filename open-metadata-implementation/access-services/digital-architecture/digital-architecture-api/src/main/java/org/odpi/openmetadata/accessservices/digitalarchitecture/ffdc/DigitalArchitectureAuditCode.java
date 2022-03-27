@@ -45,13 +45,13 @@ public enum DigitalArchitectureAuditCode implements AuditLogMessageSet
              "Verify that the service has initialized its topics, it has successfully registered with the repository services and there were no " +
                                 "errors reported as the service started."),
 
-    SERVICE_SHUTDOWN("OMAS-DIGITAL-ARCHITECTURE-0003",
+    SERVICE_SHUTDOWN("OMAS-DIGITAL-ARCHITECTURE-0004",
              OMRSAuditLogRecordSeverity.SHUTDOWN,
              "The Digital Architecture Open Metadata Access Service (OMAS) is shutting down its instance for server {0}",
              "The local administrator has requested shut down of an Digital Architecture OMAS instance.",
              "Verify that all resources have been released."),
 
-    SERVICE_INSTANCE_FAILURE("OMAS-DIGITAL-ARCHITECTURE-0004",
+    SERVICE_INSTANCE_FAILURE("OMAS-DIGITAL-ARCHITECTURE-0005",
              OMRSAuditLogRecordSeverity.EXCEPTION,
              "The Digital Architecture Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
              "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
