@@ -1,12 +1,11 @@
-/* SPDX-License-Identifier: Apache 2.0 */
+/* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-
 package org.odpi.openmetadata.accessservices.assetmanager.metadataelements;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ConnectorTypeProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceProperties;
 
 import java.io.Serializable;
 import java.util.List;
@@ -15,42 +14,41 @@ import java.util.Objects;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
+
 /**
- * ConnectorTypeElement contains the properties and header for a connector type retrieved from the metadata repository.
+ * ExternalReferenceElement stores information about an link to an external resource that is relevant to this element.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ConnectorTypeElement implements MetadataElement, Serializable
+public class ExternalReferenceElement implements MetadataElement, Serializable
 {
-    private static final long serialVersionUID = 1L;
+    private static final long    serialVersionUID = 1L;
 
-    private ConnectorTypeProperties         connectorTypeProperties = null;
-    private List<MetadataCorrelationHeader> correlationHeaders  = null;
     private ElementHeader                   elementHeader       = null;
-
+    private List<MetadataCorrelationHeader> correlationHeaders = null;
+    private ExternalReferenceProperties     properties         = null;
 
     /**
-     * Default constructor
+     * Default Constructor
      */
-    public ConnectorTypeElement()
+    public ExternalReferenceElement()
     {
-        super();
     }
 
 
     /**
-     * Copy/clone constructor
+     * Copy/clone Constructor - the resulting object.
      *
-     * @param template object to copy
+     * @param template object being copied
      */
-    public ConnectorTypeElement(ConnectorTypeElement template)
+    public ExternalReferenceElement(ExternalReferenceElement template)
     {
         if (template != null)
         {
-            elementHeader = template.getElementHeader();
-            correlationHeaders = template.getCorrelationHeaders();
-            connectorTypeProperties = template.getConnectorTypeProperties();
+            this.elementHeader = template.getElementHeader();
+            this.correlationHeaders = template.getCorrelationHeaders();
+            this.properties = template.getProperties();
         }
     }
 
@@ -60,7 +58,6 @@ public class ConnectorTypeElement implements MetadataElement, Serializable
      *
      * @return element header object
      */
-    @Override
     public ElementHeader getElementHeader()
     {
         return elementHeader;
@@ -72,7 +69,6 @@ public class ConnectorTypeElement implements MetadataElement, Serializable
      *
      * @param elementHeader element header object
      */
-    @Override
     public void setElementHeader(ElementHeader elementHeader)
     {
         this.elementHeader = elementHeader;
@@ -116,49 +112,49 @@ public class ConnectorTypeElement implements MetadataElement, Serializable
     }
 
 
+
     /**
-     * Return the properties for the connector type.
+     * Return the link to external documentation that are relevant to this element.
      *
-     * @return asset properties (using appropriate subclass)
+     * @return list of external references
      */
-    public ConnectorTypeProperties getConnectorTypeProperties()
+    public ExternalReferenceProperties getProperties()
     {
-        return connectorTypeProperties;
+        return properties;
     }
 
 
     /**
-     * Set up the properties for the connector type.
+     * Set up the list of links to external documentation that are relevant to this element.
      *
-     * @param connectorTypeProperties asset properties
+     * @param properties of external references
      */
-    public void setConnectorTypeProperties(ConnectorTypeProperties connectorTypeProperties)
+    public void setProperties(ExternalReferenceProperties properties)
     {
-        this.connectorTypeProperties = connectorTypeProperties;
+        this.properties = properties;
     }
 
 
     /**
-     * JSON-style toString
+     * JSON-style toString.
      *
-     * @return return string containing the property names and values
+     * @return list of properties and their values.
      */
     @Override
     public String toString()
     {
-        return "ConnectorTypeElement{" +
-                       "connectorTypeProperties=" + connectorTypeProperties +
-                       ", correlationHeaders=" + correlationHeaders +
-                       ", elementHeader=" + elementHeader +
+        return "ExternalReferenceElement{" +
+                       "elementHeader=" + elementHeader +
+                       ", properties=" + properties +
                        '}';
     }
 
 
     /**
-     * Return comparison result based on the content of the properties.
+     * Equals method that returns true if containing properties are the same.
      *
-     * @param objectToCompare test object
-     * @return result of comparison
+     * @param objectToCompare object to compare
+     * @return boolean result of comparison
      */
     @Override
     public boolean equals(Object objectToCompare)
@@ -171,21 +167,20 @@ public class ConnectorTypeElement implements MetadataElement, Serializable
         {
             return false;
         }
-        ConnectorTypeElement that = (ConnectorTypeElement) objectToCompare;
-        return Objects.equals(getConnectorTypeProperties(), that.getConnectorTypeProperties()) &&
-                       Objects.equals(getCorrelationHeaders(), that.getCorrelationHeaders()) &&
-                       Objects.equals(getElementHeader(), that.getElementHeader());
+        ExternalReferenceElement that = (ExternalReferenceElement) objectToCompare;
+        return Objects.equals(elementHeader, that.elementHeader) &&
+                       Objects.equals(properties, that.properties);
     }
 
 
     /**
-     * Return hash code for this object
+     * Hash of properties
      *
-     * @return int hash code
+     * @return int
      */
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, correlationHeaders, connectorTypeProperties);
+        return Objects.hash(super.hashCode(), properties, elementHeader);
     }
 }
