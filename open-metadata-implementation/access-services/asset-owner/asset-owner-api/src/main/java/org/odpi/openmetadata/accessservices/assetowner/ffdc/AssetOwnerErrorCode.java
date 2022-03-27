@@ -97,9 +97,9 @@ public enum AssetOwnerErrorCode implements ExceptionMessageSet
             "The system is unable to process the request because it does not understand it.",
             "Correct the types and property names of the properties passed on the request."),
     BAD_OUT_TOPIC_CONNECTION(400, "OMAS-ASSET-OWNER-400-018",
-                             "The Asset Owner Open Metadata Access Service (OMAS) has been passed an invalid connection for publishing events.  The connection was {0}.  The resulting exception of {1} included the following message: {2}",
-                             "The access service has not been passed valid configuration for its out topic connection.",
-                             "Correct the configuration and restart the service."),
+            "The Asset Owner Open Metadata Access Service (OMAS) has been passed an invalid connection for publishing events.  The connection was {0}.  The resulting exception of {1} included the following message: {2}",
+            "The access service has not been passed valid configuration for its out topic connection.",
+             "Correct the server configuration and restart the server."),
 
     NULL_LISTENER(400, "OMAS-ASSET-ASSET-400-019",
                   "A null topic listener has been passed by user {0} on method {1}",
