@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.accessservices.assetmanager.api;
 
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ExternalReferenceElement;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ExternalReferenceLinkElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceLinkProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern;
@@ -291,12 +292,12 @@ public interface ExternalReferencesInterface
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    List<ExternalReferenceElement> retrieveAttachedExternalReferences(String userId,
-                                                                      String assetManagerGUID,
-                                                                      String assetManagerName,
-                                                                      String attachedToGUID,
-                                                                      int    startFrom,
-                                                                      int    pageSize) throws InvalidParameterException,
-                                                                                              PropertyServerException,
-                                                                                              UserNotAuthorizedException;
+    List<ExternalReferenceLinkElement> retrieveAttachedExternalReferences(String userId,
+                                                                          String assetManagerGUID,
+                                                                          String assetManagerName,
+                                                                          String attachedToGUID,
+                                                                          int    startFrom,
+                                                                          int    pageSize) throws InvalidParameterException,
+                                                                                                  PropertyServerException,
+                                                                                                  UserNotAuthorizedException;
 }

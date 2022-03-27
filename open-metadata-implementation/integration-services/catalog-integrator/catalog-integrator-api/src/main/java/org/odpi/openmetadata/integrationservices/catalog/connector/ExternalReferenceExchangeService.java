@@ -5,6 +5,7 @@ package org.odpi.openmetadata.integrationservices.catalog.connector;
 
 import org.odpi.openmetadata.accessservices.assetmanager.client.ExternalReferenceExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ExternalReferenceElement;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ExternalReferenceLinkElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceLinkProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern;
@@ -414,11 +415,11 @@ public class ExternalReferenceExchangeService
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public List<ExternalReferenceElement> retrieveAttachedExternalReferences(String attachedToGUID,
-                                                                             int    startFrom,
-                                                                             int    pageSize) throws InvalidParameterException,
-                                                                                                     PropertyServerException,
-                                                                                                     UserNotAuthorizedException
+    public List<ExternalReferenceLinkElement> retrieveAttachedExternalReferences(String attachedToGUID,
+                                                                                 int    startFrom,
+                                                                                 int    pageSize) throws InvalidParameterException,
+                                                                                                         PropertyServerException,
+                                                                                                         UserNotAuthorizedException
     {
         return externalReferenceClient.retrieveAttachedExternalReferences(userId, assetManagerGUID, assetManagerName, attachedToGUID, startFrom, pageSize);
     }

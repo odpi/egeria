@@ -4,28 +4,18 @@
 package org.odpi.openmetadata.accessservices.assetmanager.client;
 
 import org.odpi.openmetadata.accessservices.assetmanager.api.ExternalReferencesInterface;
-import org.odpi.openmetadata.accessservices.assetmanager.api.GlossaryExchangeInterface;
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ExternalGlossaryLinkElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ExternalReferenceElement;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryCategoryElement;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryElement;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryTermElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalGlossaryElementLinkProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalGlossaryLinkProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ExternalReferenceLinkElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceLinkProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryCategoryProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermActivityType;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermCategorization;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermContextDefinition;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermRelationship;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermStatus;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.ExternalReferenceElementResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.ExternalReferenceElementsResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.ExternalReferenceLinkElementsResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.ExternalReferenceRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.NameRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -175,7 +165,35 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
-        return null;
+        final String methodName                  = "createExternalReference";
+        final String propertiesParameterName     = "properties";
+        final String qualifiedNameParameterName  = "properties.qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        ExternalReferenceRequestBody requestBody = new ExternalReferenceRequestBody();
+        requestBody.setElementProperties(properties);
+        requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
+                                                                                   assetManagerName,
+                                                                                   referenceExternalIdentifier,
+                                                                                   referenceExternalIdentifierName,
+                                                                                   referenceExternalIdentifierUsage,
+                                                                                   referenceExternalIdentifierSource,
+                                                                                   referenceExternalIdentifierKeyPattern,
+                                                                                   mappingProperties,
+                                                                                   methodName));
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/external-references";
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId);
+
+        return restResult.getGUID();
     }
 
 
@@ -205,7 +223,36 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
+        final String methodName                         = "updateExternalReference";
+        final String externalReferenceGUIDParameterName = "externalReferenceGUID";
+        final String propertiesParameterName            = "properties";
+        final String qualifiedNameParameterName         = "properties.qualifiedName";
 
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(externalReferenceGUID, externalReferenceGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
+        
+        if (!isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        }
+
+        ExternalReferenceRequestBody requestBody = new ExternalReferenceRequestBody();
+        requestBody.setElementProperties(properties);
+        requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
+                                                                                   assetManagerName,
+                                                                                   referenceExternalIdentifier,
+                                                                                   methodName));
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/external-references/{2}?isMergeUpdate={3}";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        externalReferenceGUID,
+                                        isMergeUpdate);
     }
 
 
@@ -231,7 +278,23 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
+        final String methodName                  = "deleteExternalReference";
+        final String externalReferenceGUIDParameterName   = "externalReferenceGUID";
 
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(externalReferenceGUID, externalReferenceGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/external-references/{2}/remove";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        this.getCorrelationProperties(assetManagerGUID,
+                                                                      assetManagerName,
+                                                                      referenceExternalIdentifier,
+                                                                      methodName),
+                                        serverName,
+                                        userId,
+                                        externalReferenceGUID);
     }
 
 
@@ -259,7 +322,24 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
                                                                                                       PropertyServerException,
                                                                                                       UserNotAuthorizedException
     {
+        final String methodName                          = "linkExternalReferenceToElement";
+        final String attachedToGUIDParameterName         = "attachedToGUID";
+        final String externalReferenceGUIDParameterName  = "externalReferenceGUID";
 
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(attachedToGUID, attachedToGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(externalReferenceGUID, externalReferenceGUIDParameterName, methodName);
+
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/external-references/{2}/link/{3}";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        serverName,
+                                        userId,
+                                        externalReferenceGUID,
+                                        attachedToGUID);
     }
 
 
@@ -285,6 +365,24 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
                                                                                         PropertyServerException,
                                                                                         UserNotAuthorizedException
     {
+        final String methodName                          = "linkExternalReferenceToElement";
+        final String attachedToGUIDParameterName         = "attachedToGUID";
+        final String externalReferenceGUIDParameterName  = "externalReferenceGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(attachedToGUID, attachedToGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(externalReferenceGUID, externalReferenceGUIDParameterName, methodName);
+
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/external-references/{2}/unlink/{3}";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        serverName,
+                                        userId,
+                                        externalReferenceGUID,
+                                        attachedToGUID);
     }
 
 
@@ -310,7 +408,23 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
                                                                                                     UserNotAuthorizedException,
                                                                                                     PropertyServerException
     {
-        return null;
+        final String methodName = "getExternalReferenceByGUID";
+        final String guidParameterName = "externalReferenceGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(externalReferenceGUID, guidParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/external-references/{2}/retrieve";
+
+        ExternalReferenceElementResponse restResult = restClient.callExternalReferencePostRESTCall(methodName,
+                                                                                                   urlTemplate,
+                                                                                                   getAssetManagerIdentifiersRequestBody(assetManagerGUID, 
+                                                                                                                                         assetManagerName),
+                                                                                                   serverName,
+                                                                                                   userId,
+                                                                                                   externalReferenceGUID);
+
+        return restResult.getElement();
     }
 
 
@@ -340,7 +454,31 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
                                                                                             PropertyServerException,
                                                                                             UserNotAuthorizedException
     {
-        return null;
+        final String methodName        = "getExternalReferencesById";
+        final String nameParameterName = "resourceId";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(resourceId, nameParameterName, methodName);
+
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        NameRequestBody requestBody = new NameRequestBody();
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setName(resourceId);
+        requestBody.setNameParameterName(nameParameterName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/external-references/by-resource-id?startFrom={2}&pageSize={3}";
+
+        ExternalReferenceElementsResponse restResult = restClient.callExternalReferencesPostRESTCall(methodName,
+                                                                                             urlTemplate,
+                                                                                             requestBody,
+                                                                                             serverName,
+                                                                                             userId,
+                                                                                             startFrom,
+                                                                                             validatedPageSize);
+
+        return restResult.getElementList();
     }
 
 
@@ -370,7 +508,31 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
                                                                                              PropertyServerException,
                                                                                              UserNotAuthorizedException
     {
-        return null;
+        final String methodName        = "getExternalReferencesByURL";
+        final String nameParameterName = "url";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(url, nameParameterName, methodName);
+
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        NameRequestBody requestBody = new NameRequestBody();
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setName(url);
+        requestBody.setNameParameterName(nameParameterName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/external-references/by-url?startFrom={2}&pageSize={3}";
+
+        ExternalReferenceElementsResponse restResult = restClient.callExternalReferencesPostRESTCall(methodName,
+                                                                                                     urlTemplate,
+                                                                                                     requestBody,
+                                                                                                     serverName,
+                                                                                                     userId,
+                                                                                                     startFrom,
+                                                                                                     validatedPageSize);
+
+        return restResult.getElementList();
     }
 
 
@@ -398,7 +560,23 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
                                                                                                        UserNotAuthorizedException,
                                                                                                        PropertyServerException
     {
-        return null;
+        final String methodName = "getExternalReferencesForAssetManager";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/external-references/by-asset-manager?startFrom={2}&pageSize={3}";
+
+        ExternalReferenceElementsResponse restResult = restClient.callExternalReferencesPostRESTCall(methodName,
+                                                                                    urlTemplate,
+                                                                                    getAssetManagerIdentifiersRequestBody(assetManagerGUID,
+                                                                                                                          assetManagerName),
+                                                                                    serverName,
+                                                                                    userId,
+                                                                                    startFrom,
+                                                                                    validatedPageSize);
+
+        return restResult.getElementList();
     }
 
 
@@ -428,7 +606,30 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
                                                                                          PropertyServerException,
                                                                                          UserNotAuthorizedException
     {
-        return null;
+        final String methodName                = "findExternalReferences";
+        final String searchStringParameterName = "searchString";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(searchStringParameterName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/external-references/by-search-string?startFrom={2}&pageSize={3}";
+
+        ExternalReferenceElementsResponse restResult = restClient.callExternalReferencesPostRESTCall(methodName,
+                                                                                    urlTemplate,
+                                                                                    requestBody,
+                                                                                    serverName,
+                                                                                    userId,
+                                                                                    startFrom,
+                                                                                    validatedPageSize);
+
+        return restResult.getElementList();
     }
 
 
@@ -449,15 +650,34 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     @Override
-    public List<ExternalReferenceElement> retrieveAttachedExternalReferences(String userId,
-                                                                             String assetManagerGUID,
-                                                                             String assetManagerName,
-                                                                             String attachedToGUID,
-                                                                             int    startFrom,
-                                                                             int    pageSize) throws InvalidParameterException,
-                                                                                                     PropertyServerException,
-                                                                                                     UserNotAuthorizedException
+    public List<ExternalReferenceLinkElement> retrieveAttachedExternalReferences(String userId,
+                                                                                 String assetManagerGUID,
+                                                                                 String assetManagerName,
+                                                                                 String attachedToGUID,
+                                                                                 int    startFrom,
+                                                                                 int    pageSize) throws InvalidParameterException,
+                                                                                                         PropertyServerException,
+                                                                                                         UserNotAuthorizedException
     {
-        return null;
+        final String methodName        = "retrieveAttachedExternalReferences";
+        final String guidParameterName = "attachedToGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(attachedToGUID, guidParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/external-references/attached-to/{2}?startFrom={3}&pageSize={4}";
+
+        ExternalReferenceLinkElementsResponse restResult = restClient.callExternalReferenceLinksPostRESTCall(methodName,
+                                                                                                             urlTemplate,
+                                                                                                             getAssetManagerIdentifiersRequestBody(assetManagerGUID,
+                                                                                                                                                   assetManagerName),
+                                                                                                             serverName,
+                                                                                                             userId,
+                                                                                                             attachedToGUID,
+                                                                                                             startFrom,
+                                                                                                             validatedPageSize);
+
+        return restResult.getElementList();
     }
 }
