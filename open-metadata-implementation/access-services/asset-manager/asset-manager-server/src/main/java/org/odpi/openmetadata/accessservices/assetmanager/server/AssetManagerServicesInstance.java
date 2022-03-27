@@ -246,7 +246,7 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
      * @return  handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    public DataAssetExchangeHandler getDataAssetExchangeHandler() throws PropertyServerException
+    DataAssetExchangeHandler getDataAssetExchangeHandler() throws PropertyServerException
     {
         final String methodName = "getDataAssetExchangeHandler";
 
@@ -310,7 +310,7 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
      *
      * @return handler object
      */
-    AssetHandler<GovernanceActionProcessElement> getGovernanceActionProcessHandler()
+    public AssetHandler<GovernanceActionProcessElement> getGovernanceActionProcessHandler()
     {
         return governanceActionProcessHandler;
     }

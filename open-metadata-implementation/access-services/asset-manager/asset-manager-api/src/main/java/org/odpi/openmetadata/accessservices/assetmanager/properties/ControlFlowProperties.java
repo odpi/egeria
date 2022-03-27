@@ -127,7 +127,7 @@ public class ControlFlowProperties implements Serializable
     @Override
     public String toString()
     {
-        return "DataFlowProperties{" +
+        return "ControlFlowProperties{" +
                        "qualifiedName='" + qualifiedName + '\'' +
                        ", description='" + description + '\'' +
                        ", guard='" + guard + '\'' +

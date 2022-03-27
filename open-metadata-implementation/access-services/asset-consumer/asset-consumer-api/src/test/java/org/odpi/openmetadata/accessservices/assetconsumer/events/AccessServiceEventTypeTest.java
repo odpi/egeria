@@ -58,9 +58,10 @@ public class AccessServiceEventTypeTest
      */
     @Test public void testAllErrorCodeValues()
     {
-        testSingleErrorCodeValues(AssetConsumerEventType.UNKNOWN_ASSET_CONSUMER_EVENT);
-        testSingleErrorCodeValues(AssetConsumerEventType.NEW_ASSET_EVENT);
-        testSingleErrorCodeValues(AssetConsumerEventType.UPDATED_ASSET_EVENT);
+        for (AssetConsumerEventType eventType : AssetConsumerEventType.values())
+        {
+            testSingleErrorCodeValues(eventType);
+        }
     }
 
 
@@ -76,7 +77,7 @@ public class AccessServiceEventTypeTest
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(AssetConsumerEventType.NEW_ASSET_EVENT);
+            jsonString = objectMapper.writeValueAsString(AssetConsumerEventType.NEW_ELEMENT_CREATED);
         }
         catch (Exception  exc)
         {
@@ -85,7 +86,7 @@ public class AccessServiceEventTypeTest
 
         try
         {
-            assertTrue(objectMapper.readValue(jsonString, AssetConsumerEventType.class) == AssetConsumerEventType.NEW_ASSET_EVENT);
+            assertTrue(objectMapper.readValue(jsonString, AssetConsumerEventType.class) == AssetConsumerEventType.NEW_ELEMENT_CREATED);
         }
         catch (Exception  exc)
         {
@@ -99,7 +100,7 @@ public class AccessServiceEventTypeTest
      */
     @Test public void testToString()
     {
-        assertTrue(AssetConsumerEventType.UPDATED_ASSET_EVENT.toString().contains("AssetConsumerEventType"));
+        assertTrue(AssetConsumerEventType.ELEMENT_UPDATED.toString().contains("AssetConsumerEventType"));
     }
 
 
@@ -108,8 +109,8 @@ public class AccessServiceEventTypeTest
      */
     @Test public void testEquals()
     {
-        assertTrue(AssetConsumerEventType.NEW_ASSET_EVENT.equals(AssetConsumerEventType.NEW_ASSET_EVENT));
-        assertFalse(AssetConsumerEventType.NEW_ASSET_EVENT.equals(AssetConsumerEventType.UPDATED_ASSET_EVENT));
+        assertTrue(AssetConsumerEventType.NEW_ELEMENT_CREATED.equals(AssetConsumerEventType.NEW_ELEMENT_CREATED));
+        assertFalse(AssetConsumerEventType.NEW_ELEMENT_CREATED.equals(AssetConsumerEventType.ELEMENT_UPDATED));
     }
 
 
@@ -118,7 +119,7 @@ public class AccessServiceEventTypeTest
      */
     @Test public void testHashcode()
     {
-        assertTrue(AssetConsumerEventType.UPDATED_ASSET_EVENT.hashCode() == AssetConsumerEventType.UPDATED_ASSET_EVENT.hashCode());
-        assertFalse(AssetConsumerEventType.UPDATED_ASSET_EVENT.hashCode() == AssetConsumerEventType.UNKNOWN_ASSET_CONSUMER_EVENT.hashCode());
+        assertTrue(AssetConsumerEventType.ELEMENT_UPDATED.hashCode() == AssetConsumerEventType.ELEMENT_UPDATED.hashCode());
+        assertFalse(AssetConsumerEventType.ELEMENT_UPDATED.hashCode() == AssetConsumerEventType.UNKNOWN_EVENT.hashCode());
     }
 }

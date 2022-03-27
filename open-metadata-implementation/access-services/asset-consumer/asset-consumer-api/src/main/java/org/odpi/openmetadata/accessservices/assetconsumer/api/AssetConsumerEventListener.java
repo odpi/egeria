@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.accessservices.assetconsumer.api;
 
-import org.odpi.openmetadata.accessservices.assetconsumer.events.AssetConsumerEvent;
+import org.odpi.openmetadata.accessservices.assetconsumer.events.AssetConsumerOutTopicEvent;
 
 /**
  * AssetConsumerEventListener is the interface that a client implements to
@@ -16,5 +16,5 @@ public abstract class AssetConsumerEventListener
      *
      * @param event event object - call getEventType to find out what type of event.
      */
-    public abstract void processEvent(AssetConsumerEvent event);
+    public abstract void processEvent(AssetConsumerOutTopicEvent event);
 }

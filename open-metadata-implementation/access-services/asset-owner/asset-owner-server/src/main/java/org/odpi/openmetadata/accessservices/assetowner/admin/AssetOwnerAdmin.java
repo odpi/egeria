@@ -3,13 +3,20 @@
 package org.odpi.openmetadata.accessservices.assetowner.admin;
 
 
+import org.odpi.openmetadata.accessservices.assetowner.connectors.outtopic.AssetOwnerOutTopicServerConnector;
+import org.odpi.openmetadata.accessservices.assetowner.connectors.outtopic.AssetOwnerOutTopicServerProvider;
 import org.odpi.openmetadata.accessservices.assetowner.ffdc.AssetOwnerAuditCode;
+import org.odpi.openmetadata.accessservices.assetowner.outtopic.AssetOwnerOMRSTopicListener;
+import org.odpi.openmetadata.accessservices.assetowner.outtopic.AssetOwnerOutTopicPublisher;
 import org.odpi.openmetadata.accessservices.assetowner.server.AssetOwnerServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
@@ -21,9 +28,10 @@ import java.util.List;
  */
 public class AssetOwnerAdmin extends AccessServiceAdmin
 {
-    private AuditLog                   auditLog   = null;
-    private AssetOwnerServicesInstance instance   = null;
-    private String                     serverName = null;
+    private AuditLog                    auditLog       = null;
+    private AssetOwnerServicesInstance  instance       = null;
+    private String                      serverName     = null;
+    private AssetOwnerOutTopicPublisher eventPublisher = null;
 
     /**
      * Default constructor
@@ -78,6 +86,47 @@ public class AssetOwnerAdmin extends AccessServiceAdmin
                                                            repositoryConnector.getMaxPageSize());
             this.serverName = instance.getServerName();
 
+            /*
+             * This piece is setting up the server-side mechanism for the out topic.
+             */
+            Connection outTopicEventBusConnection = accessServiceConfig.getAccessServiceOutTopic();
+
+            if (outTopicEventBusConnection != null)
+            {
+                /*
+                 * Only set up the listening and event publishing if requested in the config.
+                 */
+                Endpoint endpoint = outTopicEventBusConnection.getEndpoint();
+
+                AuditLog outTopicAuditLog = auditLog.createNewAuditLog(OMRSAuditingComponent.OMAS_OUT_TOPIC);
+                Connection serverSideOutTopicConnection = this.getOutTopicConnection(accessServiceConfig.getAccessServiceOutTopic(),
+                                                                                     AccessServiceDescription.ASSET_OWNER_OMAS.getAccessServiceFullName(),
+                                                                                     AssetOwnerOutTopicServerProvider.class.getName(),
+                                                                                     auditLog);
+                AssetOwnerOutTopicServerConnector outTopicServerConnector = super.getTopicConnector(serverSideOutTopicConnection,
+                                                                                                    AssetOwnerOutTopicServerConnector.class,
+                                                                                                    outTopicAuditLog,
+                                                                                                    AccessServiceDescription.ASSET_OWNER_OMAS.getAccessServiceFullName(),
+                                                                                                    actionDescription);
+                eventPublisher = new AssetOwnerOutTopicPublisher(outTopicServerConnector,
+                                                                 endpoint.getAddress(),
+                                                                 outTopicAuditLog,
+                                                                 repositoryConnector.getRepositoryHelper(),
+                                                                 AccessServiceDescription.ASSET_OWNER_OMAS.getAccessServiceName(),
+                                                                 serverName);
+
+                this.registerWithEnterpriseTopic(AccessServiceDescription.ASSET_OWNER_OMAS.getAccessServiceFullName(),
+                                                 serverName,
+                                                 omrsTopicConnector,
+                                                 new AssetOwnerOMRSTopicListener(AccessServiceDescription.ASSET_OWNER_OMAS.getAccessServiceFullName(),
+                                                                                 serverUserName,
+                                                                                 eventPublisher,
+                                                                                 instance.getAssetHandler(),
+                                                                                 supportedZones,
+                                                                                 outTopicAuditLog),
+                                                 auditLog);
+            }
+
             auditLog.logMessage(actionDescription,
                                 AssetOwnerAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName),
                                 accessServiceConfig.toString());
@@ -106,7 +155,12 @@ public class AssetOwnerAdmin extends AccessServiceAdmin
     @Override
     public void shutdown()
     {
-        final String         actionDescription = "shutdown";
+        final String actionDescription = "shutdown";
+
+        if (this.eventPublisher != null)
+        {
+            this.eventPublisher.disconnect();
+        }
 
         if (instance != null)
         {

@@ -33,6 +33,7 @@
     <modules>
         <module>asset-owner-api</module>
         <module>asset-owner-client</module>
+        <module>asset-owner-topic-connectors</module>
         <module>asset-owner-server</module>
         <module>asset-owner-spring</module>
     </modules>

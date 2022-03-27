@@ -71,6 +71,7 @@ public class IntegrationServiceConfig extends OMAGServerClientConfig
             integrationServiceDescription         = template.getIntegrationServiceDescription();
             integrationServiceWiki                = template.getIntegrationServiceWiki();
             integrationServicePartnerOMAS         = template.getIntegrationServicePartnerOMAS();
+            defaultPermittedSynchronization       = template.getDefaultPermittedSynchronization();
             integrationServiceOperationalStatus   = template.getIntegrationServiceOperationalStatus();
             integrationServiceOptions             = template.getIntegrationServiceOptions();
             integrationConnectorConfigs           = template.getIntegrationConnectorConfigs();

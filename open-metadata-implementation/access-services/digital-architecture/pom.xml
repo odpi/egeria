@@ -35,6 +35,7 @@
         <module>digital-architecture-client</module>
         <module>digital-architecture-server</module>
         <module>digital-architecture-spring</module>
+        <module>digital-architecture-topic-connectors</module>
     </modules>
 
 </project>

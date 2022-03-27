@@ -59,7 +59,7 @@ public enum AssetConsumerErrorCode implements ExceptionMessageSet
             "The system is unable to update information associated with the asset because none of the connected open metadata repositories recognize the asset's unique identifier.",
             "The unique identifier of the asset is supplied by the caller.  Verify that the caller's logic is correct, and that there are no errors being reported by the open metadata repository. Once all errors have been resolved, retry the request."),
 
-    NULL_LISTENER(500, "OMAS-ASSET-CONSUMER-400-017",
+    NULL_LISTENER(400, "OMAS-ASSET-CONSUMER-400-017",
                   "A null topic listener has been passed by user {0} on method {1}",
                   "There is a coding error in the caller to the Asset Consumer OMAS.",
                   "Correct the caller logic and retry the request."),
