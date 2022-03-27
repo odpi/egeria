@@ -33,16 +33,17 @@ public class CatalogIntegratorContextManager extends IntegrationContextManager
 {
     private static String disabledExchangeServicesOption = "disabledExchangeServices";
 
-    private ExternalAssetManagerClient   assetManagerClient;
-    private CollaborationExchangeClient  collaborationExchangeClient;
-    private ConnectionExchangeClient     connectionExchangeClient;
-    private DataAssetExchangeClient      dataAssetExchangeClient;
-    private GlossaryExchangeClient       glossaryExchangeClient;
-    private GovernanceExchangeClient     governanceExchangeClient;
-    private InfrastructureExchangeClient infrastructureExchangeClient;
-    private LineageExchangeClient        lineageExchangeClient;
-    private StewardshipExchangeClient    stewardshipExchangeClient;
-    private ValidValuesExchangeClient    validValuesExchangeClient;
+    private ExternalAssetManagerClient      assetManagerClient;
+    private CollaborationExchangeClient     collaborationExchangeClient;
+    private ConnectionExchangeClient        connectionExchangeClient;
+    private DataAssetExchangeClient         dataAssetExchangeClient;
+    private ExternalReferenceExchangeClient externalReferenceExchangeClient;
+    private GlossaryExchangeClient          glossaryExchangeClient;
+    private GovernanceExchangeClient        governanceExchangeClient;
+    private InfrastructureExchangeClient    infrastructureExchangeClient;
+    private LineageExchangeClient           lineageExchangeClient;
+    private StewardshipExchangeClient       stewardshipExchangeClient;
+    private ValidValuesExchangeClient       validValuesExchangeClient;
 
 
     /**
@@ -130,6 +131,12 @@ public class CatalogIntegratorContextManager extends IntegrationContextManager
                                                               restClient,
                                                               maxPageSize,
                                                               auditLog);
+
+        externalReferenceExchangeClient = new ExternalReferenceExchangeClient(partnerOMASServerName,
+                                                                              partnerOMASPlatformRootURL,
+                                                                              restClient,
+                                                                              maxPageSize,
+                                                                              auditLog);
 
         glossaryExchangeClient = new GlossaryExchangeClient(partnerOMASServerName,
                                                             partnerOMASPlatformRootURL,
@@ -273,6 +280,7 @@ public class CatalogIntegratorContextManager extends IntegrationContextManager
                                                                              collaborationExchangeClient,
                                                                              connectionExchangeClient,
                                                                              dataAssetExchangeClient,
+                                                                             externalReferenceExchangeClient,
                                                                              glossaryExchangeClient,
                                                                              governanceExchangeClient,
                                                                              infrastructureExchangeClient,
