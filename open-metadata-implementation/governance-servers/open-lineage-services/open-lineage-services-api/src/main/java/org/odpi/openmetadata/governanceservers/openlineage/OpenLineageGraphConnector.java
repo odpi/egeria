@@ -32,7 +32,7 @@ public interface OpenLineageGraphConnector {
      */
     void initializeGraphDB(AuditLog auditLog) throws OpenLineageException;
 
-    LineageResponse lineage(Scope scope, String guid, String displayNameMustContain, boolean includeProcesses) throws OpenLineageException;
+    LineageResponse lineage(Scope scope, String guid, boolean includeProcesses) throws OpenLineageException;
 
     /**
      * Gets entity details.

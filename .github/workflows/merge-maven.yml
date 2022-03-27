@@ -23,7 +23,7 @@ jobs:
         with:
           # Java 11 is used for merge builds (PRs do check Java latest)
           java-version: '11'
-          distribution: 'adopt'
+          distribution: 'temurin'
           # Publishing attributes for maven central (this step adds to setting.xml)
           server-id: ossrh
           server-username: MAVEN_USERNAME

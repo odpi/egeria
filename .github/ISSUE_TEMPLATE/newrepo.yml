@@ -148,15 +148,18 @@ body:
             - [ ] Add initial build script for merge
           
             Further Refinement
-            - [ ] Add link in egeria docs to new repo describing purpose etc       
+            - [ ] Add link in egeria docs to new repo describing purpose ( https://github.com/odpi/egeria-docs/blob/main/site/docs/education/tutorials/git-and-git-hub-tutorial/egeria-git-repositories.md ) 
+            - [ ] Add to connector catalog, if new repo is for connector ( https://github.com/odpi/egeria-docs/blob/main/site/docs/connectors/index.md )
+            - [ ] Add to release process docs ( https://github.com/odpi/egeria-docs/blob/main/site/docs/guides/contributor/release-process/index.md )
             - [ ] Add required credentials for publishing to container repos, maven central etc
             - [ ] Add artifact signing if needed
             - [ ] Add dependabot config        
             - [ ] Add CodeQL 
-            - [ ] Add to LFXSecurity
-            - [ ] Add to LFAnalytics
+            - [ ] Add to LFX ( https://projectadmin.lfx.linuxfoundation.org/project/a092M00001IV4JtQAL  ) for
+              - [ ] LFXSecurity
+              - [ ] LFAnalytics
             - [ ] Add check for stale defects
-            - [ ] Add standard issue tags
+            - [ ] Add any required issue tags
           
             Release
             - [ ] Add release pipeline
