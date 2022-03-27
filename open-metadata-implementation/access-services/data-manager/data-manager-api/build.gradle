@@ -11,6 +11,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     testImplementation 'org.testng:testng'
+    testImplementation 'com.fasterxml.jackson.core:jackson-databind'
     testImplementation project(':open-metadata-test:open-metadata-ut')
     implementation 'org.slf4j:slf4j-api'
     implementation 'org.springframework:spring-core'
