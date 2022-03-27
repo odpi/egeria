@@ -2548,6 +2548,10 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                         {
                             relationshipDef.setEndDef2(typeDefPatch.getEndDef2());
                         }
+                        if (typeDefPatch.getUpdateMultiLink())
+                        {
+                            relationshipDef.setMultiLink(typeDefPatch.getMultiLink());
+                        }
                         break;
 
                     case CLASSIFICATION_DEF:

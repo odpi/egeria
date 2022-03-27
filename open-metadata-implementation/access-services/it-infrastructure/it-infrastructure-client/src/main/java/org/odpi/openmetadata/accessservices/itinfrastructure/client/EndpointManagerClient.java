@@ -508,6 +508,55 @@ public class EndpointManagerClient implements EndpointManagerInterface
 
 
     /**
+     * Retrieve the list of endpoint metadata elements with a matching networkAddress.
+     * There are no wildcards supported on this request.
+     *
+     * @param userId calling user
+     * @param networkAddress networkAddress to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<EndpointElement> getEndpointsByNetworkAddress(String userId,
+                                                              String networkAddress,
+                                                              int    startFrom,
+                                                              int    pageSize) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        final String methodName = "getEndpointsByName";
+        final String nameParameter = "networkAddress";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(networkAddress, nameParameter, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String   urlTemplate = serverPlatformURLRoot + endpointURLTemplatePrefix + "/by-network-address?startFrom={2}&pageSize={3}";
+
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(networkAddress);
+        requestBody.setNamePropertyName(nameParameter);
+
+        EndpointsResponse restResult = restClient.callEndpointsPostRESTCall(methodName,
+                                                                            serverPlatformURLRoot + urlTemplate,
+                                                                            requestBody,
+                                                                            serverName,
+                                                                            userId,
+                                                                            startFrom,
+                                                                            validatedPageSize);
+
+        return restResult.getElementList();
+    }
+
+
+    /**
      * Retrieve the list of endpoint metadata elements that are attached to a specific infrastructure element.
      *
      * @param userId calling user

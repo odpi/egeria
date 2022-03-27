@@ -670,6 +670,43 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
 
 
     /**
+     * Return the list of endpoints exactly matching the supplied network address.
+     *
+     * @param userId the the calling user
+     * @param networkAddress network address of endpoint
+     * @param networkAddressParameterName parameter providing endpoint
+     * @param startFrom  index of the list ot start from (0 for start)
+     * @param pageSize   maximum number of elements to return
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return endpoint list
+     * @throws InvalidParameterException the userId is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<B> getEndpointsByNetworkAddress(String       userId,
+                                                String       networkAddress,
+                                                String       networkAddressParameterName,
+                                                int          startFrom,
+                                                int          pageSize,
+                                                Date         effectiveTime,
+                                                String       methodName) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
+        return this.getEndpointsByNetworkAddress(userId,
+                                                 networkAddress,
+                                                 networkAddressParameterName,
+                                                 supportedZones,
+                                                 startFrom,
+                                                 pageSize,
+                                                 effectiveTime,
+                                                 methodName);
+    }
+
+
+    /**
      * Retrieve the list of metadata elements that contain the search string.
      * The search string is treated as a regular expression.
      *

@@ -317,7 +317,7 @@ public class AssetOwnerServicesInstance extends OMASServiceInstance
      * @return  handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    AssetHandler<AssetElement> getAssetHandler() throws PropertyServerException
+    public AssetHandler<AssetElement> getAssetHandler() throws PropertyServerException
     {
         final String methodName = "getAssetHandler";
 
