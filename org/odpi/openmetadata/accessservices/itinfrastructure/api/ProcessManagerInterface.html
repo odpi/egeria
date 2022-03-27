@@ -161,39 +161,43 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearControlFlow(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearControlFlow</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearControlFlow(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">clearControlFlow</a></span>&#8203;(java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;infrastructureManagerGUID,
                 java.lang.String&nbsp;infrastructureManagerName,
-                java.lang.String&nbsp;controlFlowGUID)</code></th>
+                java.lang.String&nbsp;controlFlowGUID,
+                java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
 <div class="block">Remove the control flow relationship between two elements.</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearDataFlow(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearDataFlow</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearDataFlow(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">clearDataFlow</a></span>&#8203;(java.lang.String&nbsp;userId,
              java.lang.String&nbsp;infrastructureManagerGUID,
              java.lang.String&nbsp;infrastructureManagerName,
-             java.lang.String&nbsp;dataFlowGUID)</code></th>
+             java.lang.String&nbsp;dataFlowGUID,
+             java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
 <div class="block">Remove the data flow relationship between two elements.</div>
 </td>
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearLineageMapping(java.lang.String,java.lang.String,java.lang.String)">clearLineageMapping</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearLineageMapping(java.lang.String,java.lang.String,java.lang.String,java.util.Date)">clearLineageMapping</a></span>&#8203;(java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;sourceElementGUID,
-                   java.lang.String&nbsp;destinationElementGUID)</code></th>
+                   java.lang.String&nbsp;destinationElementGUID,
+                   java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
 <div class="block">Remove the lineage mapping between two elements.</div>
 </td>
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearProcessCall(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearProcessCall</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearProcessCall(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">clearProcessCall</a></span>&#8203;(java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;infrastructureManagerGUID,
                 java.lang.String&nbsp;infrastructureManagerName,
-                java.lang.String&nbsp;processCallGUID)</code></th>
+                java.lang.String&nbsp;processCallGUID,
+                java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
 <div class="block">Remove the process call relationship.</div>
 </td>
@@ -466,7 +470,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </td>
 </tr>
 <tr id="i30" class="altColor">
-<td class="colFirst"><code>void</code></td>
+<td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupLineageMapping(java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date)">setupLineageMapping</a></span>&#8203;(java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;sourceElementGUID,
                    java.lang.String&nbsp;destinationElementGUID,
@@ -1226,7 +1230,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="clearDataFlow(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="clearDataFlow(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1235,7 +1239,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre class="methodSignature">void&nbsp;clearDataFlow&#8203;(java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;infrastructureManagerGUID,
                    java.lang.String&nbsp;infrastructureManagerName,
-                   java.lang.String&nbsp;dataFlowGUID)
+                   java.lang.String&nbsp;dataFlowGUID,
+                   java.util.Date&nbsp;effectiveTime)
             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
                    org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
                    org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
@@ -1246,6 +1251,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>infrastructureManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>infrastructureManagerName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>dataFlowGUID</code> - unique identifier of the data flow relationship</dd>
+<dd><code>effectiveTime</code> - time when the relationship is effective</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
 <dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
@@ -1420,7 +1426,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="clearControlFlow(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="clearControlFlow(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1429,7 +1435,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre class="methodSignature">void&nbsp;clearControlFlow&#8203;(java.lang.String&nbsp;userId,
                       java.lang.String&nbsp;infrastructureManagerGUID,
                       java.lang.String&nbsp;infrastructureManagerName,
-                      java.lang.String&nbsp;controlFlowGUID)
+                      java.lang.String&nbsp;controlFlowGUID,
+                      java.util.Date&nbsp;effectiveTime)
                throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
                       org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
                       org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
@@ -1440,6 +1447,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>infrastructureManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>infrastructureManagerName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>controlFlowGUID</code> - unique identifier of the  control flow relationship</dd>
+<dd><code>effectiveTime</code> - time when the relationship is effective</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
 <dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
@@ -1614,7 +1622,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="clearProcessCall(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="clearProcessCall(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1623,7 +1631,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre class="methodSignature">void&nbsp;clearProcessCall&#8203;(java.lang.String&nbsp;userId,
                       java.lang.String&nbsp;infrastructureManagerGUID,
                       java.lang.String&nbsp;infrastructureManagerName,
-                      java.lang.String&nbsp;processCallGUID)
+                      java.lang.String&nbsp;processCallGUID,
+                      java.util.Date&nbsp;effectiveTime)
                throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
                       org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
                       org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
@@ -1634,6 +1643,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>infrastructureManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>infrastructureManagerName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>processCallGUID</code> - unique identifier of the process call relationship</dd>
+<dd><code>effectiveTime</code> - time when the relationship is effective</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
 <dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
@@ -1701,14 +1711,14 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <h4>setupLineageMapping</h4>
-<pre class="methodSignature">void&nbsp;setupLineageMapping&#8203;(java.lang.String&nbsp;userId,
-                         java.lang.String&nbsp;sourceElementGUID,
-                         java.lang.String&nbsp;destinationElementGUID,
-                         java.util.Date&nbsp;effectiveFrom,
-                         java.util.Date&nbsp;effectiveTo)
-                  throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                         org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                         org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">java.lang.String&nbsp;setupLineageMapping&#8203;(java.lang.String&nbsp;userId,
+                                     java.lang.String&nbsp;sourceElementGUID,
+                                     java.lang.String&nbsp;destinationElementGUID,
+                                     java.util.Date&nbsp;effectiveFrom,
+                                     java.util.Date&nbsp;effectiveTo)
+                              throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
+                                     org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
+                                     org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
 <div class="block">Link two elements together to show that they are part of the lineage of the data that is moving
  between the processes.  Typically the lineage relationships stitch together processes and data assets
  supported by different technologies.</div>
@@ -1719,6 +1729,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>destinationElementGUID</code> - unique identifier of the destination</dd>
 <dd><code>effectiveFrom</code> - time when this hosting is effective - null means immediately</dd>
 <dd><code>effectiveTo</code> - time when this hosting is no longer effective - null means forever</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>unique identifier of the new relationship</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
 <dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
@@ -1726,7 +1738,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="clearLineageMapping(java.lang.String,java.lang.String,java.lang.String)">
+<a id="clearLineageMapping(java.lang.String,java.lang.String,java.lang.String,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1734,7 +1746,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h4>clearLineageMapping</h4>
 <pre class="methodSignature">void&nbsp;clearLineageMapping&#8203;(java.lang.String&nbsp;userId,
                          java.lang.String&nbsp;sourceElementGUID,
-                         java.lang.String&nbsp;destinationElementGUID)
+                         java.lang.String&nbsp;destinationElementGUID,
+                         java.util.Date&nbsp;effectiveTime)
                   throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
                          org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
                          org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
@@ -1744,6 +1757,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>userId</code> - calling user</dd>
 <dd><code>sourceElementGUID</code> - unique identifier of the source</dd>
 <dd><code>destinationElementGUID</code> - unique identifier of the destination</dd>
+<dd><code>effectiveTime</code> - time when the relationship is effective</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
 <dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>

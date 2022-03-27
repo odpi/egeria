@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10,"i34":10,"i35":10,"i36":10,"i37":10,"i38":10,"i39":10,"i40":10,"i41":10,"i42":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10,"i34":10,"i35":10,"i36":10,"i37":10,"i38":10,"i39":10,"i40":10,"i41":10,"i42":10,"i43":10,"i44":10,"i45":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -399,6 +399,36 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 </td>
 </tr>
 <tr id="i17" class="rowColor">
+<td class="colFirst"><code>org.odpi.openmetadata.accessservices.assetmanager.rest.ExternalReferenceLinkElementsResponse</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callExternalReferenceLinksPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callExternalReferenceLinksPostRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
+                                      java.lang.String&nbsp;urlTemplate,
+                                      java.lang.Object&nbsp;requestBody,
+                                      java.lang.Object...&nbsp;params)</code></th>
+<td class="colLast">
+<div class="block">Issue a POST REST call that returns a ExternalReferenceLinkElementsResponse object.</div>
+</td>
+</tr>
+<tr id="i18" class="altColor">
+<td class="colFirst"><code>org.odpi.openmetadata.accessservices.assetmanager.rest.ExternalReferenceElementResponse</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callExternalReferencePostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callExternalReferencePostRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
+                                 java.lang.String&nbsp;urlTemplate,
+                                 java.lang.Object&nbsp;requestBody,
+                                 java.lang.Object...&nbsp;params)</code></th>
+<td class="colLast">
+<div class="block">Issue a POST REST call that returns a ExternalReferenceElementResponse object.</div>
+</td>
+</tr>
+<tr id="i19" class="rowColor">
+<td class="colFirst"><code>org.odpi.openmetadata.accessservices.assetmanager.rest.ExternalReferenceElementsResponse</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callExternalReferencesPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callExternalReferencesPostRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
+                                  java.lang.String&nbsp;urlTemplate,
+                                  java.lang.Object&nbsp;requestBody,
+                                  java.lang.Object...&nbsp;params)</code></th>
+<td class="colLast">
+<div class="block">Issue a POST REST call that returns a ExternalReferenceElementsResponse object.</div>
+</td>
+</tr>
+<tr id="i20" class="altColor">
 <td class="colFirst"><code>org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryElementsResponse</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callGlossariesPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callGlossariesPostRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
                           java.lang.String&nbsp;urlTemplate,
@@ -408,7 +438,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <div class="block">Issue a POST REST call that returns a GlossaryElementsResponse object.</div>
 </td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i21" class="rowColor">
 <td class="colFirst"><code>org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryCategoryElementsResponse</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callGlossaryCategoriesPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callGlossaryCategoriesPostRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
                                   java.lang.String&nbsp;urlTemplate,
@@ -418,7 +448,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <div class="block">Issue a POST REST call that returns a GlossaryCategoryElementsResponse object.</div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i22" class="altColor">
 <td class="colFirst"><code>org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryCategoryElementResponse</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callGlossaryCategoryPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callGlossaryCategoryPostRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
                                 java.lang.String&nbsp;urlTemplate,
@@ -428,7 +458,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <div class="block">Issue a POST REST call that returns a GlossaryCategoryElementResponse object.</div>
 </td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i23" class="rowColor">
 <td class="colFirst"><code>org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryElementResponse</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callGlossaryPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callGlossaryPostRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
                         java.lang.String&nbsp;urlTemplate,
@@ -438,7 +468,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <div class="block">Issue a POST REST call that returns a GlossaryElementResponse object.</div>
 </td>
 </tr>
-<tr id="i21" class="rowColor">
+<tr id="i24" class="altColor">
 <td class="colFirst"><code>org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermElementResponse</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callGlossaryTermPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callGlossaryTermPostRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
                             java.lang.String&nbsp;urlTemplate,
@@ -448,7 +478,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <div class="block">Issue a POST REST call that returns a GlossaryTermElementResponse object.</div>
 </td>
 </tr>
-<tr id="i22" class="altColor">
+<tr id="i25" class="rowColor">
 <td class="colFirst"><code>org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermElementsResponse</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callGlossaryTermsPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callGlossaryTermsPostRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
                              java.lang.String&nbsp;urlTemplate,
@@ -458,7 +488,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <div class="block">Issue a POST REST call that returns a GlossaryTermElementsResponse object.</div>
 </td>
 </tr>
-<tr id="i23" class="rowColor">
+<tr id="i26" class="altColor">
 <td class="colFirst"><code>org.odpi.openmetadata.accessservices.assetmanager.rest.GovernanceActionElementResponse</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callGovernanceActionGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callGovernanceActionGetRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
                                java.lang.String&nbsp;urlTemplate,
@@ -467,7 +497,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <div class="block">Issue a GET REST call that returns a GovernanceActionElementResponse object.</div>
 </td>
 </tr>
-<tr id="i24" class="altColor">
+<tr id="i27" class="rowColor">
 <td class="colFirst"><code>org.odpi.openmetadata.accessservices.assetmanager.rest.GovernanceActionProcessElementsResponse</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callGovernanceActionProcessElementsPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callGovernanceActionProcessElementsPostRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
                                                java.lang.String&nbsp;urlTemplate,
@@ -477,7 +507,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <div class="block">Issue a POST REST call that returns a GovernanceActionProcessElementsResponse object.</div>
 </td>
 </tr>
-<tr id="i25" class="rowColor">
+<tr id="i28" class="altColor">
 <td class="colFirst"><code>org.odpi.openmetadata.accessservices.assetmanager.rest.GovernanceActionProcessElementsResponse</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callGovernanceActionProcessesGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callGovernanceActionProcessesGetRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
                                         java.lang.String&nbsp;urlTemplate,
@@ -486,7 +516,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <div class="block">Issue a GET REST call that returns a GovernanceActionProcessElementsResponse object.</div>
 </td>
 </tr>
-<tr id="i26" class="altColor">
+<tr id="i29" class="rowColor">
 <td class="colFirst"><code>org.odpi.openmetadata.accessservices.assetmanager.rest.GovernanceActionProcessElementResponse</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callGovernanceActionProcessGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callGovernanceActionProcessGetRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
                                       java.lang.String&nbsp;urlTemplate,
@@ -495,7 +525,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <div class="block">Issue a GET REST call that returns a GovernanceActionProcessElementResponse object.</div>
 </td>
 </tr>
-<tr id="i27" class="rowColor">
+<tr id="i30" class="altColor">
 <td class="colFirst"><code>org.odpi.openmetadata.accessservices.assetmanager.rest.GovernanceActionElementsResponse</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callGovernanceActionsGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callGovernanceActionsGetRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
                                 java.lang.String&nbsp;urlTemplate,
@@ -504,7 +534,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <div class="block">Issue a GET REST call that returns a GovernanceActionElementsResponse object.</div>
 </td>
 </tr>
-<tr id="i28" class="altColor">
+<tr id="i31" class="rowColor">
 <td class="colFirst"><code>org.odpi.openmetadata.accessservices.assetmanager.rest.GovernanceActionTypeElementsResponse</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callGovernanceActionTypeElementsPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callGovernanceActionTypeElementsPostRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
                                             java.lang.String&nbsp;urlTemplate,
@@ -514,7 +544,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <div class="block">Issue a POST REST call that returns a GovernanceActionTypeElementsResponse object.</div>
 </td>
 </tr>
-<tr id="i29" class="rowColor">
+<tr id="i32" class="altColor">
 <td class="colFirst"><code>org.odpi.openmetadata.accessservices.assetmanager.rest.GovernanceActionTypeElementResponse</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callGovernanceActionTypeGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callGovernanceActionTypeGetRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
                                    java.lang.String&nbsp;urlTemplate,
@@ -523,7 +553,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <div class="block">Issue a GET REST call that returns a GovernanceActionTypeElementResponse object.</div>
 </td>
 </tr>
-<tr id="i30" class="altColor">
+<tr id="i33" class="rowColor">
 <td class="colFirst"><code>org.odpi.openmetadata.accessservices.assetmanager.rest.GovernanceActionTypeElementsResponse</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callGovernanceActionTypesGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callGovernanceActionTypesGetRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
                                     java.lang.String&nbsp;urlTemplate,
@@ -532,7 +562,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <div class="block">Issue a GET REST call that returns a GovernanceActionTypeElementsResponse object.</div>
 </td>
 </tr>
-<tr id="i31" class="rowColor">
+<tr id="i34" class="altColor">
 <td class="colFirst"><code>org.odpi.openmetadata.accessservices.assetmanager.rest.LineageMappingElementsResponse</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callLineageMappingsPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callLineageMappingsPostRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
                                java.lang.String&nbsp;urlTemplate,
@@ -542,7 +572,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <div class="block">Issue a POST REST call that returns a LineageMappingElementsResponse object.</div>
 </td>
 </tr>
-<tr id="i32" class="altColor">
+<tr id="i35" class="rowColor">
 <td class="colFirst"><code>org.odpi.openmetadata.accessservices.assetmanager.rest.NextGovernanceActionTypeElementsResponse</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callNextGovernanceActionTypesGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callNextGovernanceActionTypesGetRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
                                         java.lang.String&nbsp;urlTemplate,
@@ -551,7 +581,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <div class="block">Issue a GET REST call that returns a NextGovernanceActionTypeElementsResponse object.</div>
 </td>
 </tr>
-<tr id="i33" class="rowColor">
+<tr id="i36" class="altColor">
 <td class="colFirst"><code>org.odpi.openmetadata.accessservices.assetmanager.rest.PortElementResponse</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callPortPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callPortPostRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
                     java.lang.String&nbsp;urlTemplate,
@@ -561,7 +591,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <div class="block">Issue a POST REST call that returns a PortElementResponse object.</div>
 </td>
 </tr>
-<tr id="i34" class="altColor">
+<tr id="i37" class="rowColor">
 <td class="colFirst"><code>org.odpi.openmetadata.accessservices.assetmanager.rest.PortElementsResponse</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callPortsPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callPortsPostRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
                      java.lang.String&nbsp;urlTemplate,
@@ -571,7 +601,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <div class="block">Issue a POST REST call that returns a PortElementsResponse object.</div>
 </td>
 </tr>
-<tr id="i35" class="rowColor">
+<tr id="i38" class="altColor">
 <td class="colFirst"><code>org.odpi.openmetadata.accessservices.assetmanager.rest.ProcessCallElementResponse</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callProcessCallPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callProcessCallPostRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
                            java.lang.String&nbsp;urlTemplate,
@@ -581,7 +611,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <div class="block">Issue a POST REST call that returns a ProcessCallElementResponse object.</div>
 </td>
 </tr>
-<tr id="i36" class="altColor">
+<tr id="i39" class="rowColor">
 <td class="colFirst"><code>org.odpi.openmetadata.accessservices.assetmanager.rest.ProcessCallElementsResponse</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callProcessCallsPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callProcessCallsPostRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
                             java.lang.String&nbsp;urlTemplate,
@@ -591,7 +621,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <div class="block">Issue a POST REST call that returns a ProcessCallElementsResponse object.</div>
 </td>
 </tr>
-<tr id="i37" class="rowColor">
+<tr id="i40" class="altColor">
 <td class="colFirst"><code>org.odpi.openmetadata.accessservices.assetmanager.rest.ProcessElementsResponse</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callProcessesPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callProcessesPostRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
                          java.lang.String&nbsp;urlTemplate,
@@ -601,7 +631,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <div class="block">Issue a POST REST call that returns a ProcessElementsResponse object.</div>
 </td>
 </tr>
-<tr id="i38" class="altColor">
+<tr id="i41" class="rowColor">
 <td class="colFirst"><code>org.odpi.openmetadata.accessservices.assetmanager.rest.ProcessElementResponse</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callProcessPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callProcessPostRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
                        java.lang.String&nbsp;urlTemplate,
@@ -611,7 +641,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <div class="block">Issue a POST REST call that returns a ProcessElementResponse object.</div>
 </td>
 </tr>
-<tr id="i39" class="rowColor">
+<tr id="i42" class="altColor">
 <td class="colFirst"><code>org.odpi.openmetadata.accessservices.assetmanager.rest.SchemaAttributeElementResponse</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callSchemaAttributePostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callSchemaAttributePostRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
                                java.lang.String&nbsp;urlTemplate,
@@ -621,7 +651,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <div class="block">Issue a POST REST call that returns a SchemaAttributeElementResponse object.</div>
 </td>
 </tr>
-<tr id="i40" class="altColor">
+<tr id="i43" class="rowColor">
 <td class="colFirst"><code>org.odpi.openmetadata.accessservices.assetmanager.rest.SchemaAttributeElementsResponse</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callSchemaAttributesPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callSchemaAttributesPostRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
                                 java.lang.String&nbsp;urlTemplate,
@@ -631,7 +661,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <div class="block">Issue a POST REST call that returns a SchemaAttributeElementsResponse object.</div>
 </td>
 </tr>
-<tr id="i41" class="rowColor">
+<tr id="i44" class="altColor">
 <td class="colFirst"><code>org.odpi.openmetadata.accessservices.assetmanager.rest.SchemaTypeElementResponse</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callSchemaTypePostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callSchemaTypePostRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
                           java.lang.String&nbsp;urlTemplate,
@@ -641,7 +671,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <div class="block">Issue a POST REST call that returns a SchemaTypeElementResponse object.</div>
 </td>
 </tr>
-<tr id="i42" class="altColor">
+<tr id="i45" class="rowColor">
 <td class="colFirst"><code>org.odpi.openmetadata.accessservices.assetmanager.rest.SchemaTypeElementsResponse</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callSchemaTypesPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callSchemaTypesPostRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
                            java.lang.String&nbsp;urlTemplate,
@@ -791,6 +821,93 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <!--   -->
 </a>
 <h3>Method Detail</h3>
+<a id="callExternalReferencePostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>callExternalReferencePostRESTCall</h4>
+<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.accessservices.assetmanager.rest.ExternalReferenceElementResponse&nbsp;callExternalReferencePostRESTCall&#8203;(java.lang.String&nbsp;methodName,
+                                                                                                                                 java.lang.String&nbsp;urlTemplate,
+                                                                                                                                 java.lang.Object&nbsp;requestBody,
+                                                                                                                                 java.lang.Object...&nbsp;params)
+                                                                                                                          throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
+                                                                                                                                 org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
+                                                                                                                                 org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<div class="block">Issue a POST REST call that returns a ExternalReferenceElementResponse object.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>methodName</code> - name of the method being called.</dd>
+<dd><code>urlTemplate</code> - template of the URL for the REST API call with place-holders for the parameters.</dd>
+<dd><code>requestBody</code> - object that passes additional parameters</dd>
+<dd><code>params</code> - a list of parameters that are slotted into the url template.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>response object</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid.</dd>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to make this request.</dd>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - the repository is not available or not working properly.</dd>
+</dl>
+</li>
+</ul>
+<a id="callExternalReferencesPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>callExternalReferencesPostRESTCall</h4>
+<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.accessservices.assetmanager.rest.ExternalReferenceElementsResponse&nbsp;callExternalReferencesPostRESTCall&#8203;(java.lang.String&nbsp;methodName,
+                                                                                                                                   java.lang.String&nbsp;urlTemplate,
+                                                                                                                                   java.lang.Object&nbsp;requestBody,
+                                                                                                                                   java.lang.Object...&nbsp;params)
+                                                                                                                            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
+                                                                                                                                   org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
+                                                                                                                                   org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<div class="block">Issue a POST REST call that returns a ExternalReferenceElementsResponse object.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>methodName</code> - name of the method being called.</dd>
+<dd><code>urlTemplate</code> - template of the URL for the REST API call with place-holders for the parameters.</dd>
+<dd><code>requestBody</code> - object that passes additional parameters</dd>
+<dd><code>params</code> - a list of parameters that are slotted into the url template.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>response object</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid.</dd>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to make this request.</dd>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - the repository is not available or not working properly.</dd>
+</dl>
+</li>
+</ul>
+<a id="callExternalReferenceLinksPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>callExternalReferenceLinksPostRESTCall</h4>
+<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.accessservices.assetmanager.rest.ExternalReferenceLinkElementsResponse&nbsp;callExternalReferenceLinksPostRESTCall&#8203;(java.lang.String&nbsp;methodName,
+                                                                                                                                           java.lang.String&nbsp;urlTemplate,
+                                                                                                                                           java.lang.Object&nbsp;requestBody,
+                                                                                                                                           java.lang.Object...&nbsp;params)
+                                                                                                                                    throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
+                                                                                                                                           org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
+                                                                                                                                           org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<div class="block">Issue a POST REST call that returns a ExternalReferenceLinkElementsResponse object.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>methodName</code> - name of the method being called.</dd>
+<dd><code>urlTemplate</code> - template of the URL for the REST API call with place-holders for the parameters.</dd>
+<dd><code>requestBody</code> - object that passes additional parameters</dd>
+<dd><code>params</code> - a list of parameters that are slotted into the url template.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>response object</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid.</dd>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to make this request.</dd>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - the repository is not available or not working properly.</dd>
+</dl>
+</li>
+</ul>
 <a id="callGlossaryPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">
 <!--   -->
 </a>
