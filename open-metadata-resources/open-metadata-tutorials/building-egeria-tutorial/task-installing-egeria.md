@@ -11,16 +11,16 @@ The assemblies are located from the egeria build directory as follows:
 $ cd open-metadata-distribution/open-metadata-assemblies/target
 $ ls
 ls
-archive-tmp					egeria-3.7-SNAPSHOT-sources.tar.gz
-egeria-3.7-SNAPSHOT-distribution		maven-archiver
-egeria-3.7-SNAPSHOT-distribution.tar.gz		open-metadata-assemblies-3.7-SNAPSHOT.jar
-egeria-3.7-SNAPSHOT-omag-server			rat.txt
-egeria-3.7-SNAPSHOT-omag-server.tar.gz
+archive-tmp					egeria-3.7-sources.tar.gz
+egeria-3.7-distribution		maven-archiver
+egeria-3.7-distribution.tar.gz		open-metadata-assemblies-3.7.jar
+egeria-3.7-omag-server			rat.txt
+egeria-3.7-omag-server.tar.gz
 ```
 
 The name of the files is determined by the release level of the code that you
 [downloaded from GitHub](task-downloading-egeria-source.md).  In this example,
-the release is **egeria-3.7-SNAPSHOT**.
+the release is **egeria-3.7**.
 
 Create a directory for the install and copy the tar file into it.
 The two commands shown below create an install directory at the same level in the
@@ -36,22 +36,22 @@ These next commands change to the new directory and lists its contents.
 ```bash
 $ cd ../../../../egeria-install
 $ ls
-egeria-3.7-SNAPSHOT-distribution.tar.gz
+egeria-3.7-distribution.tar.gz
 ```
 
 It is now possible to unpack the tar file.
 
 ```bash
-$ tar -xf egeria-3.7-SNAPSHOT-distribution.tar.gz
+$ tar -xf egeria-3.7-distribution.tar.gz
 $ ls
-egeria-3.7-SNAPSHOT-distribution.tar.gz	egeria-omag-3.7-SNAPSHOT
+egeria-3.7-distribution.tar.gz	egeria-omag-3.7
 ```
 
-A new directory is created called **egeria-omag-3.7-SNAPSHOT**.  Change to this
+A new directory is created called **egeria-omag-3.7**.  Change to this
 new directory and list its contents as shown below.
 
 ```bash
-$ cd egeria-omag-3.7-SNAPSHOT
+$ cd egeria-omag-3.7
 $ ls
 LICENSE			clients			server
 NOTICE			conformance-suite	user-interface
@@ -66,7 +66,7 @@ Change to the OMAG server platform's directory.
 ```bash
 $ cd server
 $ ls
-$ resources				server-chassis-spring-3.7-SNAPSHOT.jar
+$ resources				server-chassis-spring-3.7.jar
 ```
 
 This is the end of the [Downloading and Building ODPi Egeria Tutorial](.).    You are now
