@@ -29,14 +29,13 @@ import java.util.stream.Stream;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.INDEX_ALREADY_EXISTS;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.INDEX_NOT_CREATED;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.INDEX_NOT_ENABLED;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ASSET_LINEAGE_LAST_UPDATE_TIMESTAMP;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ASSET_LINEAGE_VARIABLES;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_GUID;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_VERSION;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_LABEL;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_METADATA_ID;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_RELATIONSHIP_GUID;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_RELATIONSHIP_LABEL;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_NAME_ASSET_LINEAGE_LAST_UPDATE_TIMESTAMP;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_NAME_GUID;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_NAME_LABEL;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_NAME_METADATA_ID;
@@ -123,8 +122,7 @@ public class OpenLineageSchemaHelper<C extends Element> {
     public void createIndexes(JanusGraph janusGraph) {
         createCompositeIndexForProperty(janusGraph, new IndexProperties(PROPERTY_NAME_GUID, PROPERTY_KEY_ENTITY_GUID, true, Vertex.class));
         createCompositeIndexForProperty(janusGraph, new IndexProperties(PROPERTY_NAME_LABEL, PROPERTY_KEY_LABEL, false, Vertex.class));
-        createCompositeIndexForProperty(janusGraph, new IndexProperties(PROPERTY_NAME_ASSET_LINEAGE_LAST_UPDATE_TIMESTAMP,
-                PROPERTY_KEY_ASSET_LINEAGE_LAST_UPDATE_TIMESTAMP, false, Vertex.class));
+        createCompositeIndexForProperty(janusGraph, new IndexProperties(ASSET_LINEAGE_VARIABLES, ASSET_LINEAGE_VARIABLES, false, Vertex.class));
         createCompositeIndexForProperty(janusGraph, new IndexProperties(PROPERTY_NAME_VERSION, PROPERTY_KEY_ENTITY_VERSION, false, Vertex.class));
         createCompositeIndexForProperty(janusGraph, new IndexProperties(PROPERTY_NAME_METADATA_ID, PROPERTY_KEY_METADATA_ID, false, Vertex.class));
         createCompositeIndexForProperty(janusGraph, new IndexProperties(PROPERTY_NAME_LABEL, PROPERTY_KEY_RELATIONSHIP_LABEL, false, Edge.class));
@@ -294,14 +292,17 @@ public class OpenLineageSchemaHelper<C extends Element> {
         String indexCommandGuid = createIndexCommand("vertexIndexCompositevertex--guid", PROPERTY_KEY_ENTITY_GUID, true, VERTEX);
         String indexCommandLabel = createIndexCommand("vertexIndexCompositevertex--label", PROPERTY_KEY_LABEL, false, VERTEX);
         String indexCommandVersion = createIndexCommand("vertexIndexCompositevertex--version", PROPERTY_KEY_ENTITY_VERSION, false, VERTEX);
+        String indexCommandAssetLineageVariables = createIndexCommand("vertexIndexCompositevertex--assetLineageVariables", ASSET_LINEAGE_VARIABLES, false, VERTEX);
         String indexCommandMetadataCollectionId = createIndexCommand("vertexIndexCompositevertex--metadataCollectionId", PROPERTY_KEY_METADATA_ID, false, VERTEX);
         String indexCommandEdgeGuid = createIndexCommand("edgeIndexCompositeedge--guid", PROPERTY_KEY_RELATIONSHIP_GUID, false, EDGE);
         String indexCommandEdgeLabel = createIndexCommand("edgeIndexCompositeedge--label", PROPERTY_KEY_RELATIONSHIP_LABEL, false, EDGE);
+
 
         log.debug("Checking indices...");
         client.submit(indexCommandGuid);
         client.submit(indexCommandLabel);
         client.submit(indexCommandVersion);
+        client.submit(indexCommandAssetLineageVariables);
         client.submit(indexCommandMetadataCollectionId);
         client.submit(indexCommandEdgeGuid);
         client.submit(indexCommandEdgeLabel);

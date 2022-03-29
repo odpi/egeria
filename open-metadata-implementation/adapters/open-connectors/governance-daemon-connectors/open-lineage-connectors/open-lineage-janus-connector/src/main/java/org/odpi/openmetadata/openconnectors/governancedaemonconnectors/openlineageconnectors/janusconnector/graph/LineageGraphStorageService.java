@@ -477,7 +477,7 @@ public class LineageGraphStorageService implements LineageGraph {
     }
 
     private void saveUpdateTime(GraphTraversalSource g, Long updateTime) {
-        GraphTraversal<Vertex, Vertex> lineageVariables = g.V().hasLabel(ASSET_LINEAGE_VARIABLES);
+        GraphTraversal<Vertex, Vertex> lineageVariables = g.V().has("vertex--label", ASSET_LINEAGE_VARIABLES);
         if (!lineageVariables.hasNext()) {
             g.addV(ASSET_LINEAGE_VARIABLES).property(VARIABLE_NAME_ASSET_LINEAGE_LAST_UPDATE_TIME, updateTime).next();
         } else {
@@ -492,7 +492,7 @@ public class LineageGraphStorageService implements LineageGraph {
     }
 
     private Optional<Long> getUpdateTime(GraphTraversalSource g) {
-        GraphTraversal<Vertex, Map<Object, List<Long>>> lineageVariables = g.V().hasLabel(ASSET_LINEAGE_VARIABLES).valueMap();
+        GraphTraversal<Vertex, Map<Object, List<Long>>> lineageVariables = g.V().has("vertex--label", ASSET_LINEAGE_VARIABLES).valueMap();
         if (lineageVariables.hasNext()) {
 
             Map<Object, List<Long>> next = lineageVariables.next();
