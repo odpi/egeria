@@ -57,7 +57,7 @@ public abstract class AssetManagerClientBase implements ServerPurposeManagerInte
     String   serverPlatformURLRoot;    /* Initialized in constructor */
 
     ITInfrastructureRESTClient  restClient;               /* Initialized in constructor */
-    private NullRequestBody             nullRequestBody = new NullRequestBody();
+    private NullRequestBody     nullRequestBody         = new NullRequestBody();
 
     InvalidParameterHandler     invalidParameterHandler = new InvalidParameterHandler();
 
@@ -339,7 +339,10 @@ public abstract class AssetManagerClientBase implements ServerPurposeManagerInte
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(assetProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(assetProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(assetProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        }
 
         final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/{2}?isMergeUpdate={3}";
 

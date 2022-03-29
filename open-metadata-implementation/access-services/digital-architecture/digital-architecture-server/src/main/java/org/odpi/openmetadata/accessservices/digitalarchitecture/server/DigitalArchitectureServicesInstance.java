@@ -26,7 +26,8 @@ public class DigitalArchitectureServicesInstance extends OMASServiceInstance
     private static AccessServiceDescription myDescription = AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS;
 
 
-    private AssetHandler<ReferenceDataAssetElement>  assetHandler;
+    private ReferenceableHandler<ElementHeader>     referenceableHandler;
+    private AssetHandler<ReferenceDataAssetElement> assetHandler;
 
     private ConnectionHandler<ConnectionElement>       connectionHandler;
     private ConnectorTypeHandler<ConnectorTypeElement> connectorTypeHandler;
@@ -82,19 +83,33 @@ public class DigitalArchitectureServicesInstance extends OMASServiceInstance
 
         }
 
+        this.referenceableHandler = new ReferenceableHandler<>(new ElementHeaderConverter<>(repositoryHelper, serviceName, serverName),
+                                                               ElementHeader.class,
+                                                               serviceName,
+                                                               serverName,
+                                                               invalidParameterHandler,
+                                                               repositoryHandler,
+                                                               repositoryHelper,
+                                                               localServerUserId,
+                                                               securityVerifier,
+                                                               supportedZones,
+                                                               defaultZones,
+                                                               publishZones,
+                                                               auditLog);
+
         this.assetHandler = new AssetHandler<>(new ReferenceDataAssetConverter<>(repositoryHelper, serviceName, serverName),
-                                               ReferenceDataAssetElement.class,
-                                               serviceName,
-                                               serverName,
-                                               invalidParameterHandler,
-                                               repositoryHandler,
-                                               repositoryHelper,
-                                               localServerUserId,
-                                               securityVerifier,
-                                               supportedZones,
-                                               defaultZones,
-                                               publishZones,
-                                               auditLog);
+                                                       ReferenceDataAssetElement.class,
+                                                       serviceName,
+                                                       serverName,
+                                                       invalidParameterHandler,
+                                                       repositoryHandler,
+                                                       repositoryHelper,
+                                                       localServerUserId,
+                                                       securityVerifier,
+                                                       supportedZones,
+                                                       defaultZones,
+                                                       publishZones,
+                                                       auditLog);
 
         this.connectionHandler = new ConnectionHandler<>(new ConnectionConverter<>(repositoryHelper, serviceName, serverName),
                                                          ConnectionElement.class,
@@ -180,6 +195,22 @@ public class DigitalArchitectureServicesInstance extends OMASServiceInstance
                                                            publishZones,
                                                            auditLog);
 
+    }
+
+
+    /**
+     * Return the handler for managing events.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    public ReferenceableHandler<ElementHeader> getReferenceableHandler() throws PropertyServerException
+    {
+        final String methodName = "getAssetHandler";
+
+        validateActiveRepository(methodName);
+
+        return referenceableHandler;
     }
 
 

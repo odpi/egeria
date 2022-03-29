@@ -728,15 +728,13 @@ public class InfrastructureIntegratorContext
      * (The zones are set to the list of zones in the publishedZones option configured for each
      * instance of the IT Infrastructure OMAS).
      *
-     * @param userId calling user
      * @param softwareServerGUID unique identifier of the metadata element to publish
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void publishSoftwareServer(String userId,
-                                      String softwareServerGUID) throws InvalidParameterException,
+    public void publishSoftwareServer(String softwareServerGUID) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
     {
@@ -1804,10 +1802,6 @@ public class InfrastructureIntegratorContext
     /**
      * Create a new metadata element to represent a process.
      *
-     * @param userId calling user
-     * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
-     * @param infrastructureManagerName unique name of software server capability representing the caller
-     * @param infrastructureManagerIsHome ensure that only the infrastructure manager can update this process
      * @param processStatus initial status of the process
      * @param processProperties properties about the process to store
      *
@@ -1817,11 +1811,7 @@ public class InfrastructureIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createProcess(String            userId,
-                                String            infrastructureManagerGUID,
-                                String            infrastructureManagerName,
-                                boolean           infrastructureManagerIsHome,
-                                ProcessStatus     processStatus,
+    public String createProcess(ProcessStatus     processStatus,
                                 ProcessProperties processProperties) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException
@@ -1833,10 +1823,6 @@ public class InfrastructureIntegratorContext
     /**
      * Create a new metadata element to represent a process using an existing metadata element as a template.
      *
-     * @param userId calling user
-     * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
-     * @param infrastructureManagerName unique name of software server capability representing the caller
-     * @param infrastructureManagerIsHome ensure that only the infrastructure manager can update this process
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
      *
@@ -1846,11 +1832,7 @@ public class InfrastructureIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createProcessFromTemplate(String             userId,
-                                            String             infrastructureManagerGUID,
-                                            String             infrastructureManagerName,
-                                            boolean            infrastructureManagerIsHome,
-                                            String             templateGUID,
+    public String createProcessFromTemplate(String             templateGUID,
                                             TemplateProperties templateProperties) throws InvalidParameterException,
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
@@ -1863,9 +1845,6 @@ public class InfrastructureIntegratorContext
     /**
      * Update the metadata element representing a process.
      *
-     * @param userId calling user
-     * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
-     * @param infrastructureManagerName unique name of software server capability representing the caller
      * @param processGUID unique identifier of the metadata element to update
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param processProperties new properties for the metadata element
@@ -1874,10 +1853,7 @@ public class InfrastructureIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void updateProcess(String            userId,
-                              String            infrastructureManagerGUID,
-                              String            infrastructureManagerName,
-                              String            processGUID,
+    public void updateProcess(String            processGUID,
                               boolean           isMergeUpdate,
                               ProcessProperties processProperties) throws InvalidParameterException,
                                                                           UserNotAuthorizedException,
@@ -1891,9 +1867,6 @@ public class InfrastructureIntegratorContext
     /**
      * Update the status of the metadata element representing a process.
      *
-     * @param userId calling user
-     * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
-     * @param infrastructureManagerName unique name of software server capability representing the caller
      * @param processGUID unique identifier of the process to update
      * @param processStatus new status for the process
      *
@@ -1901,10 +1874,7 @@ public class InfrastructureIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void updateProcessStatus(String        userId,
-                                    String        infrastructureManagerGUID,
-                                    String        infrastructureManagerName,
-                                    String        processGUID,
+    public void updateProcessStatus(String        processGUID,
                                     ProcessStatus processStatus) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
@@ -1916,10 +1886,6 @@ public class InfrastructureIntegratorContext
     /**
      * Create a parent-child relationship between two processes.
      *
-     * @param userId calling user
-     * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
-     * @param infrastructureManagerName unique name of software server capability representing the caller
-     * @param infrastructureManagerIsHome ensure that only the infrastructure manager can update this asset
      * @param parentProcessGUID unique identifier of the process in the external infrastructure manager that is to be the parent process
      * @param childProcessGUID unique identifier of the process in the external infrastructure manager that is to be the nested sub-process
      * @param containmentType describes the ownership of the sub-process
@@ -1930,11 +1896,7 @@ public class InfrastructureIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupProcessParent(String                 userId,
-                                   String                 infrastructureManagerGUID,
-                                   String                 infrastructureManagerName,
-                                   boolean                infrastructureManagerIsHome,
-                                   String                 parentProcessGUID,
+    public void setupProcessParent(String                 parentProcessGUID,
                                    String                 childProcessGUID,
                                    ProcessContainmentType containmentType,
                                    Date                   effectiveFrom,
@@ -1949,9 +1911,6 @@ public class InfrastructureIntegratorContext
     /**
      * Remove a parent-child relationship between two processes.
      *
-     * @param userId calling user
-     * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
-     * @param infrastructureManagerName unique name of software server capability representing the caller
      * @param parentProcessGUID unique identifier of the process in the external infrastructure manager that is to be the parent process
      * @param childProcessGUID unique identifier of the process in the external infrastructure manager that is to be the nested sub-process
      * @param effectiveTime time when the relationship is effective
@@ -1960,10 +1919,7 @@ public class InfrastructureIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearProcessParent(String userId,
-                                   String infrastructureManagerGUID,
-                                   String infrastructureManagerName,
-                                   String parentProcessGUID,
+    public void clearProcessParent(String parentProcessGUID,
                                    String childProcessGUID,
                                    Date   effectiveTime) throws InvalidParameterException,
                                                                 UserNotAuthorizedException,
@@ -1978,15 +1934,13 @@ public class InfrastructureIntegratorContext
      * (The zones are set to the list of zones in the publishedZones option configured for each
      * instance of the IT Infrastructure OMAS).
      *
-     * @param userId calling user
      * @param processGUID unique identifier of the metadata element to publish
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void publishProcess(String userId,
-                               String processGUID) throws InvalidParameterException,
+    public void publishProcess(String processGUID) throws InvalidParameterException,
                                                           UserNotAuthorizedException,
                                                           PropertyServerException
 
@@ -2000,15 +1954,13 @@ public class InfrastructureIntegratorContext
      * (The zones are set to the list of zones in the defaultZones option configured for each
      * instance of the IT Infrastructure OMAS.  This is the setting when the host is first created).
      *
-     * @param userId calling user
      * @param processGUID unique identifier of the metadata element to withdraw
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void withdrawProcess(String userId,
-                                String processGUID) throws InvalidParameterException,
+    public void withdrawProcess(String processGUID) throws InvalidParameterException,
                                                            UserNotAuthorizedException,
                                                            PropertyServerException
 
@@ -2020,19 +1972,13 @@ public class InfrastructureIntegratorContext
     /**
      * Remove the metadata element representing a process.
      *
-     * @param userId calling user
-     * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
-     * @param infrastructureManagerName unique name of software server capability representing the caller
      * @param processGUID unique identifier of the metadata element to remove
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removeProcess(String userId,
-                              String infrastructureManagerGUID,
-                              String infrastructureManagerName,
-                              String processGUID) throws InvalidParameterException,
+    public void removeProcess(String processGUID) throws InvalidParameterException,
                                                          UserNotAuthorizedException,
                                                          PropertyServerException
     {
@@ -2044,7 +1990,6 @@ public class InfrastructureIntegratorContext
      * Retrieve the list of process metadata elements that contain the search string.
      * The search string is treated as a regular expression.
      *
-     * @param userId calling user
      * @param searchString string to find in the properties
      * @param effectiveTime effective time for the query
      * @param startFrom paging start point
@@ -2056,8 +2001,7 @@ public class InfrastructureIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<ProcessElement> findProcesses(String userId,
-                                              String searchString,
+    public List<ProcessElement> findProcesses(String searchString,
                                               Date   effectiveTime,
                                               int    startFrom,
                                               int    pageSize) throws InvalidParameterException,
@@ -2073,7 +2017,6 @@ public class InfrastructureIntegratorContext
      * Retrieve the list of process metadata elements with a matching qualified or display name.
      * There are no wildcards supported on this request.
      *
-     * @param userId calling user
      * @param name name to search for
      * @param effectiveTime effective time for the query
      * @param startFrom paging start point
@@ -2085,8 +2028,7 @@ public class InfrastructureIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<ProcessElement> getProcessesByName(String userId,
-                                                   String name,
+    public List<ProcessElement> getProcessesByName(String name,
                                                    Date   effectiveTime,
                                                    int    startFrom,
                                                    int    pageSize) throws InvalidParameterException,
@@ -2100,9 +2042,6 @@ public class InfrastructureIntegratorContext
     /**
      * Return the list of processes associated with the infrastructure manager.
      *
-     * @param userId calling user
-     * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
-     * @param infrastructureManagerName unique name of software server capability representing the caller
      * @param effectiveTime effective time for the query
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -2113,10 +2052,7 @@ public class InfrastructureIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<ProcessElement> getProcessesForInfrastructureManager(String userId,
-                                                                     String infrastructureManagerGUID,
-                                                                     String infrastructureManagerName,
-                                                                     Date   effectiveTime,
+    public List<ProcessElement> getProcessesForInfrastructureManager(Date   effectiveTime,
                                                                      int    startFrom,
                                                                      int    pageSize) throws InvalidParameterException,
                                                                                              UserNotAuthorizedException,
@@ -2131,7 +2067,6 @@ public class InfrastructureIntegratorContext
     /**
      * Retrieve the process metadata element with the supplied unique identifier.
      *
-     * @param userId calling user
      * @param processGUID unique identifier of the requested metadata element
      *
      * @return requested metadata element
@@ -2140,8 +2075,7 @@ public class InfrastructureIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ProcessElement getProcessByGUID(String userId,
-                                           String processGUID) throws InvalidParameterException,
+    public ProcessElement getProcessByGUID(String processGUID) throws InvalidParameterException,
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException
     {
@@ -2152,7 +2086,6 @@ public class InfrastructureIntegratorContext
     /**
      * Retrieve the process metadata element with the supplied unique identifier.
      *
-     * @param userId calling user
      * @param processGUID unique identifier of the requested metadata element
      * @param effectiveTime effective time for the query
      *
@@ -2162,8 +2095,7 @@ public class InfrastructureIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ProcessElement getProcessParent(String userId,
-                                           String processGUID,
+    public ProcessElement getProcessParent(String processGUID,
                                            Date   effectiveTime) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
@@ -2175,7 +2107,6 @@ public class InfrastructureIntegratorContext
     /**
      * Retrieve the process metadata element with the supplied unique identifier.
      *
-     * @param userId calling user
      * @param processGUID unique identifier of the requested metadata element
      * @param effectiveTime effective time for the query
      * @param startFrom paging start point
@@ -2187,8 +2118,7 @@ public class InfrastructureIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<ProcessElement> getSubProcesses(String userId,
-                                                String processGUID,
+    public List<ProcessElement> getSubProcesses(String processGUID,
                                                 Date   effectiveTime,
                                                 int    startFrom,
                                                 int    pageSize) throws InvalidParameterException,
@@ -2337,17 +2267,19 @@ public class InfrastructureIntegratorContext
      * Remove the data flow relationship between two elements.
      *
      * @param dataFlowGUID unique identifier of the data flow relationship
+     * @param effectiveTime time when the relationship is effective
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearDataFlow(String dataFlowGUID) throws InvalidParameterException,
+    public void clearDataFlow(String dataFlowGUID,
+                              Date   effectiveTime) throws InvalidParameterException,
                                                           UserNotAuthorizedException,
                                                           PropertyServerException
 
     {
-        processManagerClient.clearDataFlow(userId, infrastructureManagerGUID, infrastructureManagerName, dataFlowGUID);
+        processManagerClient.clearDataFlow(userId, infrastructureManagerGUID, infrastructureManagerName, dataFlowGUID, effectiveTime);
     }
 
 
@@ -2487,17 +2419,19 @@ public class InfrastructureIntegratorContext
      * Remove the control flow relationship between two elements.
      *
      * @param controlFlowGUID unique identifier of the  control flow relationship
+     * @param effectiveTime time when the relationship is effective
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearControlFlow(String controlFlowGUID) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException
+    public void clearControlFlow(String controlFlowGUID,
+                                 Date   effectiveTime) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
 
     {
-        processManagerClient.clearControlFlow(userId, infrastructureManagerGUID, infrastructureManagerName, controlFlowGUID);
+        processManagerClient.clearControlFlow(userId, infrastructureManagerGUID, infrastructureManagerName, controlFlowGUID, effectiveTime);
     }
 
 
@@ -2636,17 +2570,19 @@ public class InfrastructureIntegratorContext
      * Remove the process call relationship.
      *
      * @param processCallGUID unique identifier of the process call relationship
-
+     * @param effectiveTime time when the relationship is effective
+     *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearProcessCall(String processCallGUID) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException
+    public void clearProcessCall(String processCallGUID,
+                                 Date   effectiveTime) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
 
     {
-        processManagerClient.clearProcessCall(userId, infrastructureManagerGUID, infrastructureManagerName, processCallGUID);
+        processManagerClient.clearProcessCall(userId, infrastructureManagerGUID, infrastructureManagerName, processCallGUID, effectiveTime);
     }
 
 
@@ -2722,17 +2658,19 @@ public class InfrastructureIntegratorContext
      *
      * @param sourceElementGUID unique identifier of the source
      * @param destinationElementGUID unique identifier of the destination
-
+     * @param effectiveTime time when the relationship is effective
+     *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void clearLineageMapping(String sourceElementGUID,
-                                    String destinationElementGUID) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+                                    String destinationElementGUID,
+                                    Date   effectiveTime) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
     {
-        processManagerClient.clearLineageMapping(userId, sourceElementGUID, destinationElementGUID);
+        processManagerClient.clearLineageMapping(userId, sourceElementGUID, destinationElementGUID, effectiveTime);
     }
 
 
@@ -3226,6 +3164,30 @@ public class InfrastructureIntegratorContext
                                                                             PropertyServerException
     {
         return endpointManagerClient.getEndpointsByName(userId, name, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of endpoint metadata elements with a matching networkAddress.
+     * There are no wildcards supported on this request.
+     *
+     * @param networkAddress networkAddress to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<EndpointElement> getEndpointsByNetworkAddress(String networkAddress,
+                                                              int    startFrom,
+                                                              int    pageSize) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        return endpointManagerClient.getEndpointsByNetworkAddress(userId, networkAddress, startFrom, pageSize);
     }
 
 

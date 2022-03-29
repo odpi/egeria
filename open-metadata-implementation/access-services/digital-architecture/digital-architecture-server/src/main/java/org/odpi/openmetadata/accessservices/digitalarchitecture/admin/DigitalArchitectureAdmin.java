@@ -2,14 +2,20 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.digitalarchitecture.admin;
 
+import org.odpi.openmetadata.accessservices.digitalarchitecture.connectors.outtopic.DigitalArchitectureOutTopicServerConnector;
+import org.odpi.openmetadata.accessservices.digitalarchitecture.connectors.outtopic.DigitalArchitectureOutTopicServerProvider;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.ffdc.DigitalArchitectureAuditCode;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.listener.DigitalArchitectureOMRSTopicListener;
+import org.odpi.openmetadata.accessservices.digitalarchitecture.outtopic.DigitalArchitectureOMRSTopicListener;
+import org.odpi.openmetadata.accessservices.digitalarchitecture.outtopic.DigitalArchitectureOutTopicPublisher;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.server.DigitalArchitectureServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
@@ -21,9 +27,10 @@ import java.util.List;
  */
 public class DigitalArchitectureAdmin extends AccessServiceAdmin
 {
-    private AuditLog                            auditLog   = null;
-    private DigitalArchitectureServicesInstance instance   = null;
-    private String                              serverName = null;
+    private AuditLog                             auditLog   = null;
+    private DigitalArchitectureServicesInstance  instance   = null;
+    private String                               serverName = null;
+    private DigitalArchitectureOutTopicPublisher eventPublisher = null;
 
     /**
      * Default constructor
@@ -84,19 +91,37 @@ public class DigitalArchitectureAdmin extends AccessServiceAdmin
              */
             if (accessServiceConfig.getAccessServiceOutTopic() != null)
             {
-                DigitalArchitectureOMRSTopicListener omrsTopicListener;
+                Connection outTopicEventBusConnection = accessServiceConfig.getAccessServiceOutTopic();
 
-                omrsTopicListener = new DigitalArchitectureOMRSTopicListener(accessServiceConfig.getAccessServiceOutTopic(),
-                                                                             repositoryConnector.getRepositoryHelper(),
-                                                                             repositoryConnector.getRepositoryValidator(),
-                                                                             accessServiceConfig.getAccessServiceName(),
-                                                                             supportedZones,
-                                                                             auditLog);
-                super.registerWithEnterpriseTopic(accessServiceConfig.getAccessServiceName(),
-                                                  serverName,
-                                                  omrsTopicConnector,
-                                                  omrsTopicListener,
-                                                  auditLog);
+                Endpoint endpoint = outTopicEventBusConnection.getEndpoint();
+
+                AuditLog outTopicAuditLog = auditLog.createNewAuditLog(OMRSAuditingComponent.OMAS_OUT_TOPIC);
+                Connection serverSideOutTopicConnection = this.getOutTopicConnection(accessServiceConfig.getAccessServiceOutTopic(),
+                                                                                     AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS.getAccessServiceFullName(),
+                                                                                     DigitalArchitectureOutTopicServerProvider.class.getName(),
+                                                                                     auditLog);
+                DigitalArchitectureOutTopicServerConnector outTopicServerConnector = super.getTopicConnector(serverSideOutTopicConnection,
+                                                                                                             DigitalArchitectureOutTopicServerConnector.class,
+                                                                                                             outTopicAuditLog,
+                                                                                                             AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS.getAccessServiceFullName(),
+                                                                                                             actionDescription);
+                eventPublisher = new DigitalArchitectureOutTopicPublisher(outTopicServerConnector,
+                                                                          endpoint.getAddress(),
+                                                                          outTopicAuditLog,
+                                                                          repositoryConnector.getRepositoryHelper(),
+                                                                          AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS.getAccessServiceName(),
+                                                                          serverName);
+
+                this.registerWithEnterpriseTopic(AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS.getAccessServiceFullName(),
+                                                 serverName,
+                                                 omrsTopicConnector,
+                                                 new DigitalArchitectureOMRSTopicListener(AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS.getAccessServiceFullName(),
+                                                                                        serverUserName,
+                                                                                        eventPublisher,
+                                                                                        instance.getReferenceableHandler(),
+                                                                                        supportedZones,
+                                                                                        outTopicAuditLog),
+                                                 auditLog);
             }
 
             auditLog.logMessage(actionDescription,
@@ -127,7 +152,12 @@ public class DigitalArchitectureAdmin extends AccessServiceAdmin
     @Override
     public void shutdown()
     {
-        final String                  actionDescription = "shutdown";
+        final String actionDescription = "shutdown";
+
+        if (this.eventPublisher != null)
+        {
+            this.eventPublisher.disconnect();
+        }
 
         if (instance != null)
         {

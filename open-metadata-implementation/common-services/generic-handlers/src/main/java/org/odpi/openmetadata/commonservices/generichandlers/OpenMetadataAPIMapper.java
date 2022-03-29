@@ -984,6 +984,10 @@ public class OpenMetadataAPIMapper
     public static final String TOPIC_SUBSCRIBERS_TYPE_NAME               = "TopicSubscribers";
     /* End1 = SubscriberList; End 2 = Topic */
 
+    public static final String ASSOCIATED_LOG_TYPE_GUID                  = "0999e2b9-45d6-42c4-9767-4b74b0b48b89";  /* from Area 2 */
+    public static final String ASSOCIATED_LOG_TYPE_NAME                  = "AssociatedLog";
+    /* End1 = Referenceable; End 2 = Asset */
+
     public static final String INFORMATION_VIEW_TYPE_GUID                = "68d7b905-6438-43be-88cf-5de027b4aaaf";  /* from Area 2 */
     public static final String INFORMATION_VIEW_TYPE_NAME                = "InformationView";
     /* DataSet */

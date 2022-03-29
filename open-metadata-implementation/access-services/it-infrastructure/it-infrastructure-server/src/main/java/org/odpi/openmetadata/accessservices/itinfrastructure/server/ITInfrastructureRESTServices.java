@@ -1977,6 +1977,130 @@ public class ITInfrastructureRESTServices
     }
 
 
+
+
+    /**
+     * Retrieve the list of endpoint metadata elements with a matching network address.
+     *
+     * @param serverName name of calling server
+     * @param userId calling user
+     * @param requestBody url to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements or
+     * InvalidParameterException one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to make this request or
+     * PropertyServerException the repository is not available or not working properly.
+     */
+    public EndpointsResponse getEndpointsByNetworkAddress(String          serverName,
+                                                          String          userId,
+                                                          NameRequestBody requestBody,
+                                                          int             startFrom,
+                                                          int             pageSize)
+    {
+        final String methodName = "getEndpointsByNetworkAddress";
+        final String parameterName = "networkAddress";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        EndpointsResponse response = new EndpointsResponse();
+        AuditLog          auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                EndpointHandler<EndpointElement> handler = instanceHandler.getEndpointHandler(userId, serverName, methodName);
+
+                List<EndpointElement> endpoints = handler.getEndpointsByNetworkAddress(userId,
+                                                                                       requestBody.getName(),
+                                                                                       parameterName,
+                                                                                       startFrom,
+                                                                                       pageSize,
+                                                                                       new Date(),
+                                                                                       methodName);
+
+                response.setElementList(setUpVendorProperties(userId, endpoints, handler, methodName));
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of endpoint metadata elements that are attached to a specific infrastructure element.
+     *
+     * @param serverName name of calling server
+     * @param userId calling user
+     * @param infrastructureGUID element to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements or
+     *
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public EndpointsResponse getEndpointsForInfrastructure(String serverName,
+                                                           String userId,
+                                                           String infrastructureGUID,
+                                                           int    startFrom,
+                                                           int    pageSize)
+    {
+        final String methodName        = "getEndpointsForInfrastructure";
+        final String guidParameterName = "infrastructureGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        EndpointsResponse response = new EndpointsResponse();
+        AuditLog          auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            EndpointHandler<EndpointElement> handler = instanceHandler.getEndpointHandler(userId, serverName, methodName);
+
+            List<EndpointElement> endpoints = handler.getAttachedElements(userId,
+                                                                          infrastructureGUID,
+                                                                          guidParameterName,
+                                                                          OpenMetadataAPIMapper.IT_INFRASTRUCTURE_TYPE_NAME,
+                                                                          OpenMetadataAPIMapper.SERVER_ENDPOINT_TYPE_GUID,
+                                                                          OpenMetadataAPIMapper.SERVER_ENDPOINT_TYPE_NAME,
+                                                                          OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
+                                                                          null,
+                                                                          null,
+                                                                          0,
+                                                                          false,
+                                                                          false,
+                                                                          startFrom,
+                                                                          pageSize,
+                                                                          new Date(),
+                                                                          methodName);
+
+            response.setElementList(setUpVendorProperties(userId, endpoints, handler, methodName));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
     /**
      * Retrieve the endpoint metadata element with the supplied unique identifier.
      *
@@ -3104,6 +3228,7 @@ public class ITInfrastructureRESTServices
                                        serverAssetUseGUID,
                                        elementGUIDParameterName,
                                        OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                       null,
                                        methodName);
         }
         catch (Exception error)

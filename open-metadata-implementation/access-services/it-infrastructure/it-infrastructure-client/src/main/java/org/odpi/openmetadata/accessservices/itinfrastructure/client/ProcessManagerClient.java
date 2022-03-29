@@ -13,10 +13,28 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.Pr
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ProcessElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.RelatedAssetElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.AssetProperties;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ControlFlowProperties;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.DataFlowProperties;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProcessCallProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProcessContainmentType;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProcessProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProcessStatus;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.TemplateProperties;
+import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ControlFlowElementResponse;
+import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ControlFlowElementsResponse;
+import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ControlFlowRequestBody;
+import org.odpi.openmetadata.accessservices.itinfrastructure.rest.DataFlowElementResponse;
+import org.odpi.openmetadata.accessservices.itinfrastructure.rest.DataFlowElementsResponse;
+import org.odpi.openmetadata.accessservices.itinfrastructure.rest.DataFlowRequestBody;
+import org.odpi.openmetadata.accessservices.itinfrastructure.rest.EffectiveDatesRequestBody;
+import org.odpi.openmetadata.accessservices.itinfrastructure.rest.EffectiveTimeMetadataSourceRequestBody;
+import org.odpi.openmetadata.accessservices.itinfrastructure.rest.LineageMappingElementsResponse;
+import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ProcessCallElementResponse;
+import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ProcessCallElementsResponse;
+import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ProcessCallRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -730,7 +748,39 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
                                                             PropertyServerException
 
     {
-        return null;
+        final String methodName                    = "setupDataFlow";
+        final String dataSupplierGUIDParameterName = "dataSupplierGUID";
+        final String dataConsumerGUIDParameterName = "dataConsumerGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(dataSupplierGUID, dataSupplierGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(dataConsumerGUID, dataConsumerGUIDParameterName, methodName);
+
+        DataFlowRequestBody requestBody = new DataFlowRequestBody();
+        requestBody.setExternalSourceGUID(infrastructureManagerGUID);
+        requestBody.setExternalSourceName(infrastructureManagerName);
+
+        DataFlowProperties properties = new DataFlowProperties();
+        properties.setEffectiveFrom(effectiveFrom);
+        properties.setEffectiveTo(effectiveTo);
+        properties.setQualifiedName(qualifiedName);
+        properties.setDescription(description);
+        properties.setFormula(formula);
+
+        requestBody.setProperties(properties);
+
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/data-flows/suppliers/{2}/consumers/{3}?assetManagerIsHome={4}";
+
+        GUIDResponse results = restClient.callGUIDPostRESTCall(methodName,
+                                                               urlTemplate,
+                                                               requestBody,
+                                                               serverName,
+                                                               userId,
+                                                               dataSupplierGUID,
+                                                               dataConsumerGUID,
+                                                               infrastructureManagerIsHome);
+
+        return results.getGUID();
     }
 
 
@@ -761,7 +811,31 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
                                                                     PropertyServerException
 
     {
-        return null;
+        final String methodName                    = "getDataFlow";
+        final String dataSupplierGUIDParameterName = "dataSupplierGUID";
+        final String dataConsumerGUIDParameterName = "dataConsumerGUID";
+        final String qualifiedNameParameterName    = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(dataSupplierGUID, dataSupplierGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(dataConsumerGUID, dataConsumerGUIDParameterName, methodName);
+
+        NameRequestBody requestBody = new NameRequestBody();
+        requestBody.setName(qualifiedName);
+        requestBody.setNameParameterName(qualifiedNameParameterName);
+        requestBody.setEffectiveTime(effectiveTime);
+
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/data-flows/suppliers/{2}/consumers/{3}/retrieve";
+
+        DataFlowElementResponse restResult = restClient.callDataFlowPostRESTCall(methodName,
+                                                                                 urlTemplate,
+                                                                                 requestBody,
+                                                                                 serverName,
+                                                                                 userId,
+                                                                                 dataSupplierGUID,
+                                                                                 dataConsumerGUID);
+
+        return restResult.getElement();
     }
 
 
@@ -797,6 +871,33 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
                                                           PropertyServerException
 
     {
+        final String methodName                    = "updateDataFlow";
+        final String dataFlowGUIDParameterName     = "dataFlowGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(dataFlowGUID, dataFlowGUIDParameterName, methodName);
+
+        DataFlowRequestBody requestBody = new DataFlowRequestBody();
+        requestBody.setExternalSourceGUID(infrastructureManagerGUID);
+        requestBody.setExternalSourceName(infrastructureManagerName);
+
+        DataFlowProperties properties = new DataFlowProperties();
+        properties.setEffectiveFrom(effectiveFrom);
+        properties.setEffectiveTo(effectiveTo);
+        properties.setQualifiedName(qualifiedName);
+        properties.setDescription(description);
+        properties.setFormula(formula);
+
+        requestBody.setProperties(properties);
+
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/data-flows/{2}/update";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        dataFlowGUID);
     }
 
 
@@ -807,7 +908,8 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
      * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
      * @param infrastructureManagerName unique name of software server capability representing the caller
      * @param dataFlowGUID unique identifier of the data flow relationship
-
+     * @param effectiveTime time when the relationship is effective
+     *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -816,11 +918,31 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
     public void clearDataFlow(String userId,
                               String infrastructureManagerGUID,
                               String infrastructureManagerName,
-                              String dataFlowGUID) throws InvalidParameterException,
-                                                          UserNotAuthorizedException,
-                                                          PropertyServerException
+                              String dataFlowGUID,
+                              Date   effectiveTime) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
 
     {
+        final String methodName                = "clearDataFlow";
+        final String dataFlowGUIDParameterName = "dataFlowGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(dataFlowGUID, dataFlowGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/data-flows/{2}/remove";
+
+        EffectiveTimeMetadataSourceRequestBody requestBody = new EffectiveTimeMetadataSourceRequestBody();
+        requestBody.setExternalSourceGUID(infrastructureManagerGUID);
+        requestBody.setExternalSourceName(infrastructureManagerName);
+        requestBody.setEffectiveTime(effectiveTime);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        dataFlowGUID);
     }
 
 
@@ -845,7 +967,25 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
                                                                                    PropertyServerException
 
     {
-        return null;
+        final String methodName                    = "getDataFlowConsumers";
+        final String dataSupplierGUIDParameterName = "dataSupplierGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(dataSupplierGUID, dataSupplierGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/data-flows/suppliers/{2}/consumers/retrieve";
+
+        EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+        requestBody.setEffectiveTime(effectiveTime);
+
+        DataFlowElementsResponse restResult = restClient.callDataFlowsPostRESTCall(methodName,
+                                                                                   urlTemplate,
+                                                                                   requestBody,
+                                                                                   serverName,
+                                                                                   userId,
+                                                                                   dataSupplierGUID);
+
+        return restResult.getElementList();
     }
 
 
@@ -870,7 +1010,25 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
                                                                                    PropertyServerException
 
     {
-        return null;
+        final String methodName                    = "getDataFlowSuppliers";
+        final String dataConsumerGUIDParameterName = "dataConsumerGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(dataConsumerGUID, dataConsumerGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/data-flows/consumers/{2}/suppliers/retrieve";
+
+        EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+        requestBody.setEffectiveTime(effectiveTime);
+
+        DataFlowElementsResponse restResult = restClient.callDataFlowsPostRESTCall(methodName,
+                                                                                   urlTemplate,
+                                                                                   requestBody,
+                                                                                   serverName,
+                                                                                   userId,
+                                                                                   dataConsumerGUID);
+
+        return restResult.getElementList();
     }
 
 
@@ -911,7 +1069,39 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
                                                                PropertyServerException
 
     {
-        return null;
+        final String methodName                   = "setupControlFlow";
+        final String currentStepGUIDParameterName = "currentStepGUID";
+        final String nextStepGUIDParameterName    = "nextStepGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(currentStepGUID, currentStepGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(nextStepGUID, nextStepGUIDParameterName, methodName);
+
+        ControlFlowRequestBody requestBody = new ControlFlowRequestBody();
+        requestBody.setExternalSourceGUID(infrastructureManagerGUID);
+        requestBody.setExternalSourceName(infrastructureManagerName);
+
+        ControlFlowProperties properties = new ControlFlowProperties();
+        properties.setEffectiveFrom(effectiveFrom);
+        properties.setEffectiveTo(effectiveTo);
+        properties.setQualifiedName(qualifiedName);
+        properties.setDescription(description);
+        properties.setGuard(guard);
+
+        requestBody.setProperties(properties);
+
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/control-flows/current-steps/{2}/next-steps/{3}?assetManagerIsHome={4}";
+
+        GUIDResponse results = restClient.callGUIDPostRESTCall(methodName,
+                                                               urlTemplate,
+                                                               requestBody,
+                                                               serverName,
+                                                               userId,
+                                                               currentStepGUID,
+                                                               nextStepGUID,
+                                                               infrastructureManagerIsHome);
+
+        return results.getGUID();
     }
 
 
@@ -942,7 +1132,31 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
                                                                           PropertyServerException
 
     {
-        return null;
+        final String methodName                   = "getControlFlow";
+        final String currentStepGUIDParameterName = "currentStepGUID";
+        final String nextStepGUIDParameterName    = "nextStepGUID";
+        final String qualifiedNameParameterName   = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(currentStepGUID, currentStepGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(nextStepGUID, nextStepGUIDParameterName, methodName);
+
+        NameRequestBody requestBody = new NameRequestBody();
+        requestBody.setEffectiveTime(effectiveTime);
+        requestBody.setName(qualifiedName);
+        requestBody.setNameParameterName(qualifiedNameParameterName);
+
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/control-flows/current-steps/{2}/next-steps/{3}/retrieve";
+
+        ControlFlowElementResponse restResult = restClient.callControlFlowPostRESTCall(methodName,
+                                                                                       urlTemplate,
+                                                                                       requestBody,
+                                                                                       serverName,
+                                                                                       userId,
+                                                                                       currentStepGUID,
+                                                                                       nextStepGUID);
+
+        return restResult.getElement();
     }
 
 
@@ -977,6 +1191,33 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
                                                              PropertyServerException
 
     {
+        final String methodName                   = "updateControlFlow";
+        final String controlFlowGUIDParameterName = "controlFlowGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(controlFlowGUID, controlFlowGUIDParameterName, methodName);
+
+        ControlFlowRequestBody requestBody = new ControlFlowRequestBody();
+        requestBody.setExternalSourceGUID(infrastructureManagerGUID);
+        requestBody.setExternalSourceName(infrastructureManagerName);
+
+        ControlFlowProperties properties = new ControlFlowProperties();
+        properties.setEffectiveFrom(effectiveFrom);
+        properties.setEffectiveTo(effectiveTo);
+        properties.setQualifiedName(qualifiedName);
+        properties.setDescription(description);
+        properties.setGuard(guard);
+
+        requestBody.setProperties(properties);
+
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/control-flows/{2}/update";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        controlFlowGUID);
     }
 
 
@@ -987,6 +1228,7 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
      * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
      * @param infrastructureManagerName unique name of software server capability representing the caller
      * @param controlFlowGUID unique identifier of the  control flow relationship
+     * @param effectiveTime time when the relationship is effective
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -996,11 +1238,31 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
     public void clearControlFlow(String userId,
                                  String infrastructureManagerGUID,
                                  String infrastructureManagerName,
-                                 String controlFlowGUID) throws InvalidParameterException,
+                                 String controlFlowGUID,
+                                 Date   effectiveTime) throws InvalidParameterException,
                                                                 UserNotAuthorizedException,
                                                                 PropertyServerException
 
     {
+        final String methodName                   = "clearControlFlow";
+        final String controlFlowGUIDParameterName = "controlFlowGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(controlFlowGUID, controlFlowGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/control-flows/{2}/remove";
+
+        EffectiveTimeMetadataSourceRequestBody requestBody = new EffectiveTimeMetadataSourceRequestBody();
+        requestBody.setExternalSourceGUID(infrastructureManagerGUID);
+        requestBody.setExternalSourceName(infrastructureManagerName);
+        requestBody.setEffectiveTime(effectiveTime);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        controlFlowGUID);
     }
 
 
@@ -1025,7 +1287,25 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
                                                                                          PropertyServerException
 
     {
-        return null;
+        final String methodName                   = "getControlFlowNextSteps";
+        final String currentStepGUIDParameterName = "currentStepGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(currentStepGUID, currentStepGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/control-flows/current-steps/{2}/next-steps/retrieve";
+
+        EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+        requestBody.setEffectiveTime(effectiveTime);
+
+        ControlFlowElementsResponse restResult = restClient.callControlFlowsPostRESTCall(methodName,
+                                                                                         urlTemplate,
+                                                                                         requestBody,
+                                                                                         serverName,
+                                                                                         userId,
+                                                                                         currentStepGUID);
+
+        return restResult.getElementList();
     }
 
 
@@ -1050,7 +1330,25 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
                                                                                              PropertyServerException
 
     {
-        return null;
+        final String methodName                   = "getControlFlowPreviousSteps";
+        final String currentStepGUIDParameterName = "currentStepGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(currentStepGUID, currentStepGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/control-flows/current-steps/{2}/previous-steps/retrieve";
+
+        EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+        requestBody.setEffectiveTime(effectiveTime);
+
+        ControlFlowElementsResponse restResult = restClient.callControlFlowsPostRESTCall(methodName,
+                                                                                         urlTemplate,
+                                                                                         requestBody,
+                                                                                         serverName,
+                                                                                         userId,
+                                                                                         currentStepGUID);
+
+        return restResult.getElementList();
     }
 
 
@@ -1091,7 +1389,39 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
                                                                PropertyServerException
 
     {
-        return null;
+        final String methodName              = "setupProcessCall";
+        final String callerGUIDParameterName = "callerGUID";
+        final String calledGUIDParameterName = "calledGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(callerGUID, callerGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(calledGUID, calledGUIDParameterName, methodName);
+
+        ProcessCallRequestBody requestBody = new ProcessCallRequestBody();
+        requestBody.setExternalSourceGUID(infrastructureManagerGUID);
+        requestBody.setExternalSourceName(infrastructureManagerName);
+
+        ProcessCallProperties properties = new ProcessCallProperties();
+        properties.setEffectiveFrom(effectiveFrom);
+        properties.setEffectiveTo(effectiveTo);
+        properties.setQualifiedName(qualifiedName);
+        properties.setDescription(description);
+        properties.setFormula(formula);
+
+        requestBody.setProperties(properties);
+
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/process-calls/callers/{2}/called/{3}?assetManagerIsHome={4}";
+
+        GUIDResponse results = restClient.callGUIDPostRESTCall(methodName,
+                                                               urlTemplate,
+                                                               requestBody,
+                                                               serverName,
+                                                               userId,
+                                                               callerGUID,
+                                                               calledGUID,
+                                                               infrastructureManagerIsHome);
+
+        return results.getGUID();
     }
 
 
@@ -1120,9 +1450,32 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
                                              Date   effectiveTime) throws InvalidParameterException,
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
-
     {
-        return null;
+        final String methodName                 = "getProcessCall";
+        final String callerGUIDParameterName    = "callerGUID";
+        final String calledGUIDParameterName    = "calledGUID";
+        final String qualifiedNameParameterName = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(callerGUID, callerGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(calledGUID, calledGUIDParameterName, methodName);
+
+        NameRequestBody requestBody = new NameRequestBody();
+        requestBody.setName(qualifiedName);
+        requestBody.setNameParameterName(qualifiedNameParameterName);
+        requestBody.setEffectiveTime(effectiveTime);
+
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/process-calls/callers/{2}/called/{3}/retrieve";
+
+        ProcessCallElementResponse restResult = restClient.callProcessCallPostRESTCall(methodName,
+                                                                                       urlTemplate,
+                                                                                       requestBody,
+                                                                                       serverName,
+                                                                                       userId,
+                                                                                       callerGUID,
+                                                                                       calledGUID);
+
+        return restResult.getElement();
     }
 
 
@@ -1156,6 +1509,33 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
                                                              UserNotAuthorizedException,
                                                              PropertyServerException
     {
+        final String methodName                   = "updateProcessCall";
+        final String processCallGUIDParameterName = "processCallGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(processCallGUID, processCallGUIDParameterName, methodName);
+
+        ProcessCallRequestBody requestBody = new ProcessCallRequestBody();
+        requestBody.setExternalSourceGUID(infrastructureManagerGUID);
+        requestBody.setExternalSourceName(infrastructureManagerName);
+
+        ProcessCallProperties properties = new ProcessCallProperties();
+        properties.setEffectiveFrom(effectiveFrom);
+        properties.setEffectiveTo(effectiveTo);
+        properties.setQualifiedName(qualifiedName);
+        properties.setDescription(description);
+        properties.setFormula(formula);
+
+        requestBody.setProperties(properties);
+
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/process-calls/{2}/update";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        processCallGUID);
     }
 
 
@@ -1175,11 +1555,32 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
     public void clearProcessCall(String userId,
                                  String infrastructureManagerGUID,
                                  String infrastructureManagerName,
-                                 String processCallGUID) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException
+                                 String processCallGUID,
+                                 Date   effectiveTime) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
 
     {
+        final String methodName                   = "clearProcessCall";
+        final String processCallGUIDParameterName = "processCallGUID";
+
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(processCallGUID, processCallGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/process-calls/{2}/remove";
+
+        EffectiveTimeMetadataSourceRequestBody requestBody = new EffectiveTimeMetadataSourceRequestBody();
+        requestBody.setExternalSourceGUID(infrastructureManagerGUID);
+        requestBody.setExternalSourceName(infrastructureManagerName);
+        requestBody.setEffectiveTime(effectiveTime);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        processCallGUID);
     }
 
 
@@ -1203,7 +1604,25 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
     {
-        return null;
+        final String methodName                 = "getProcessCalled";
+        final String callerGUIDParameterName    = "callerGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(callerGUID, callerGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/process-calls/callers/{2}/called/retrieve";
+
+        EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+        requestBody.setEffectiveTime(effectiveTime);
+
+        ProcessCallElementsResponse restResult = restClient.callProcessCallsPostRESTCall(methodName,
+                                                                                         urlTemplate,
+                                                                                         requestBody,
+                                                                                         serverName,
+                                                                                         userId,
+                                                                                         callerGUID);
+
+        return restResult.getElementList();
     }
 
 
@@ -1227,7 +1646,25 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
-        return null;
+        final String methodName                 = "getProcessCallers";
+        final String calledGUIDParameterName    = "calledGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(calledGUID, calledGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/process-calls/called/{2}/callers/retrieve";
+
+        EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+        requestBody.setEffectiveTime(effectiveTime);
+
+        ProcessCallElementsResponse restResult = restClient.callProcessCallsPostRESTCall(methodName,
+                                                                                         urlTemplate,
+                                                                                         requestBody,
+                                                                                         serverName,
+                                                                                         userId,
+                                                                                         calledGUID);
+
+        return restResult.getElementList();
     }
 
 
@@ -1242,19 +1679,44 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
      * @param effectiveFrom time when this hosting is effective - null means immediately
      * @param effectiveTo time when this hosting is no longer effective - null means forever
      *
+     * @return unique identifier of the new relationship
+     *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void setupLineageMapping(String userId,
-                                    String sourceElementGUID,
-                                    String destinationElementGUID,
-                                    Date   effectiveFrom,
-                                    Date   effectiveTo) throws InvalidParameterException,
-                                                               UserNotAuthorizedException,
-                                                               PropertyServerException
+    public String setupLineageMapping(String userId,
+                                      String sourceElementGUID,
+                                      String destinationElementGUID,
+                                      Date   effectiveFrom,
+                                      Date   effectiveTo) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
     {
+        final String methodName                          = "setupLineageMapping";
+        final String sourceElementGUIDParameterName      = "sourceElementGUID";
+        final String destinationElementGUIDParameterName = "destinationElementGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(sourceElementGUID, sourceElementGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(destinationElementGUID, destinationElementGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/lineage-mappings/sources/{2}/destinations/{3}";
+
+        EffectiveDatesRequestBody requestBody = new EffectiveDatesRequestBody();
+        requestBody.setEffectiveFrom(effectiveFrom);
+        requestBody.setEffectiveTo(effectiveTo);
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId,
+                                                                  sourceElementGUID,
+                                                                  destinationElementGUID);
+
+        return restResult.getGUID();
     }
 
 
@@ -1264,7 +1726,9 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
      * @param userId calling user
      * @param sourceElementGUID unique identifier of the source
      * @param destinationElementGUID unique identifier of the destination
-
+     *
+     * @param effectiveTime time when the relationship is effective
+     *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -1272,10 +1736,31 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
     @Override
     public void clearLineageMapping(String userId,
                                     String sourceElementGUID,
-                                    String destinationElementGUID) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+                                    String destinationElementGUID,
+                                    Date   effectiveTime) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
     {
+        final String methodName                          = "clearLineageMapping";
+        final String sourceElementGUIDParameterName      = "sourceElementGUID";
+        final String destinationElementGUIDParameterName = "destinationElementGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(sourceElementGUID, sourceElementGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(destinationElementGUID, destinationElementGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/lineage-mappings/sources/{2}/destinations/{3}/remove";
+
+        EffectiveTimeMetadataSourceRequestBody requestBody = new EffectiveTimeMetadataSourceRequestBody();
+        requestBody.setEffectiveTime(effectiveTime);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        sourceElementGUID,
+                                        destinationElementGUID);
     }
 
 
@@ -1299,7 +1784,25 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
-        return null;
+        final String methodName                          = "getDestinationLineageMappings";
+        final String sourceElementGUIDParameterName      = "sourceElementGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(sourceElementGUID, sourceElementGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/lineage-mappings/sources/{2}/destinations/retrieve";
+
+        EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+        requestBody.setEffectiveTime(effectiveTime);
+
+        LineageMappingElementsResponse results = restClient.callLineageMappingsPostRESTCall(methodName,
+                                                                                            urlTemplate,
+                                                                                            requestBody,
+                                                                                            serverName,
+                                                                                            userId,
+                                                                                            sourceElementGUID);
+
+        return results.getElementList();
     }
 
 
@@ -1323,7 +1826,25 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
-        return null;
+        final String methodName                          = "getSourceLineageMappings";
+        final String destinationElementGUIDParameterName = "destinationElementGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(destinationElementGUID, destinationElementGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/lineage-mappings/destinations/{2}/sources/retrieve";
+
+        EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+        requestBody.setEffectiveTime(effectiveTime);
+
+        LineageMappingElementsResponse results = restClient.callLineageMappingsPostRESTCall(methodName,
+                                                                                            urlTemplate,
+                                                                                            requestBody,
+                                                                                            serverName,
+                                                                                            userId,
+                                                                                            destinationElementGUID);
+
+        return results.getElementList();
     }
 
 

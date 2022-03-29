@@ -11,6 +11,7 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
     testImplementation project(':open-metadata-test:open-metadata-ut')
+    testImplementation 'com.fasterxml.jackson.core:jackson-databind'
     testImplementation 'org.testng:testng'
 }
 

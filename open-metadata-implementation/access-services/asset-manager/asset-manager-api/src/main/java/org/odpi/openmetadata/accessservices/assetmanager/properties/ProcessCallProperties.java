@@ -127,7 +127,7 @@ public class ProcessCallProperties implements Serializable
     @Override
     public String toString()
     {
-        return "DataFlowProperties{" +
+        return "ProcessCallProperties{" +
                        "qualifiedName='" + qualifiedName + '\'' +
                        ", description='" + description + '\'' +
                        ", formula='" + formula + '\'' +

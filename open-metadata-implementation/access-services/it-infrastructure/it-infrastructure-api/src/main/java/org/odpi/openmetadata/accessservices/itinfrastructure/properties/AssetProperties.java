@@ -69,9 +69,9 @@ public class AssetProperties extends ConfigurationItemProperties
     {
         AssetProperties clone = new AssetProperties(this);
 
-        if (super.getTypeName() == null)
+        if (clone.getTypeName() == null)
         {
-            super.setTypeName(subTypeName);
+            clone.setTypeName(subTypeName);
         }
 
         return clone;
