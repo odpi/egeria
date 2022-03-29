@@ -995,32 +995,6 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         FederationControl       federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
         GetEntityDetailExecutor executor          = new GetEntityDetailExecutor(userId, guid, true, auditLog, methodName);
 
-        /*
-         * Ready to process the request.  Callers to the enterprise repository are typically well defined and only request entities that
-         * are known.  The loop below assumes that the entity is not returned because a repository is not currently registered.
-         * Therefore the enterprise connector will retry the request five times to give the owning repository time to register.
-         */
-        int retryCount = 0;
-
-        while (retryCount < 4)
-        {
-            try
-            {
-                federationControl.executeCommand(executor);
-
-                return executor.getEntityDetail();
-            }
-            catch (EntityProxyOnlyException proxyException)
-            {
-                cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
-
-                federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
-                executor          = new GetEntityDetailExecutor(userId, guid, true, auditLog, methodName);
-
-                retryCount ++;
-                auditLog.logMessage(methodName, OMRSAuditCode.RETRY_FOR_PROXY.getMessageDefinition(guid, userId, Integer.toString(retryCount)));
-            }
-        }
         federationControl.executeCommand(executor);
 
         return executor.getEntityDetail();

@@ -11,6 +11,7 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.El
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ElementType;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ElementVersions;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ContactMethodType;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.PortType;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ServerAssetUseType;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
@@ -678,5 +679,36 @@ public class ITInfrastructureOMASConverter<B> extends OpenMetadataAPIGenericConv
         }
 
         return serverAssetUseType;
+    }
+
+
+
+    /**
+     * Extract and delete the portType property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return PortType enum
+     */
+    PortType removePortType(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removePortType";
+
+        if (instanceProperties != null)
+        {
+            int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName,
+                                                                     OpenMetadataAPIMapper.PORT_TYPE_PROPERTY_NAME,
+                                                                     instanceProperties,
+                                                                     methodName);
+
+            for (PortType portType : PortType.values())
+            {
+                if (portType.getOpenTypeOrdinal() == ordinal)
+                {
+                    return portType;
+                }
+            }
+        }
+
+        return PortType.OTHER;
     }
 }

@@ -2,11 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.securitymanager.admin;
 
-import org.odpi.openmetadata.accessservices.securitymanager.connectors.outtopic.SecurityManagerOutTopicClientProvider;
 import org.odpi.openmetadata.accessservices.securitymanager.connectors.outtopic.SecurityManagerOutTopicServerConnector;
 import org.odpi.openmetadata.accessservices.securitymanager.connectors.outtopic.SecurityManagerOutTopicServerProvider;
 import org.odpi.openmetadata.accessservices.securitymanager.ffdc.SecurityManagerAuditCode;
-import org.odpi.openmetadata.accessservices.securitymanager.listener.SecurityManagerOMRSTopicListener;
+import org.odpi.openmetadata.accessservices.securitymanager.outtopic.SecurityManagerOMRSTopicListener;
 import org.odpi.openmetadata.accessservices.securitymanager.outtopic.SecurityManagerOutTopicPublisher;
 import org.odpi.openmetadata.accessservices.securitymanager.server.SecurityManagerServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
@@ -31,10 +30,10 @@ import java.util.List;
  */
 public class SecurityManagerAdmin extends AccessServiceAdmin
 {
-    private AuditLog                      auditLog         = null;
+    private AuditLog                         auditLog         = null;
     private SecurityManagerServicesInstance  instance         = null;
-    private OpenMetadataTopicConnector    inTopicConnector = null;
-    private String                        serverName       = null;
+    private OpenMetadataTopicConnector       inTopicConnector = null;
+    private String                           serverName       = null;
     private SecurityManagerOutTopicPublisher eventPublisher   = null;
 
 
@@ -125,9 +124,10 @@ public class SecurityManagerAdmin extends AccessServiceAdmin
                                                  serverName,
                                                  omrsTopicConnector,
                                                  new SecurityManagerOMRSTopicListener(AccessServiceDescription.SECURITY_MANAGER_OMAS.getAccessServiceFullName(),
+                                                                                      serverUserName,
                                                                                       eventPublisher,
+                                                                                      instance.getUserIdentityHandler(),
                                                                                       supportedZones,
-                                                                                      repositoryConnector.getRepositoryHelper(),
                                                                                       outTopicAuditLog),
                                                  auditLog);
             }

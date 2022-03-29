@@ -25,7 +25,7 @@ public class ConnectorTypeElement implements MetadataElement, Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    private ConnectorTypeProperties             connectorTypeProperties = null;
+    private ConnectorTypeProperties         connectorTypeProperties = null;
     private List<MetadataCorrelationHeader> correlationHeaders  = null;
     private ElementHeader                   elementHeader       = null;
 

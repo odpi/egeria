@@ -50,8 +50,14 @@ public enum OpenAPIIntegrationConnectorAuditCode implements AuditLogMessageSet
                                         "The connector will attempt to retrieve the specifications for each of the endpoints.",
                                         "Look to see if the right specs are retrieved."),
 
+    NEW_ENDPOINT("OPEN-API-INTEGRATION-CONNECTOR-0005",
+                                    OMRSAuditLogRecordSeverity.INFO,
+                                    "The {0} integration connector has retrieved a new endpoint {1} at URL {2}.",
+                                    "The connector will attempt to retrieve the specification for this endpoint if supported.",
+                                    "Look to see if an Open API Specification is retrieved where it is expected."),
 
-    RETRIEVED_OPEN_API_SPEC("OPEN-API-INTEGRATION-CONNECTOR-0005",
+
+    RETRIEVED_OPEN_API_SPEC("OPEN-API-INTEGRATION-CONNECTOR-0006",
                           OMRSAuditLogRecordSeverity.INFO,
                           "The {0} integration connector retrieved the Open API Specification from URL {1}.  The API retrieved was {2}",
                           "The exception is passed back to the API Integrator OMIS in the integration daemon that is hosting " +
@@ -62,13 +68,13 @@ public enum OpenAPIIntegrationConnectorAuditCode implements AuditLogMessageSet
                                   "Use the messages that where subsequently logged during the error handling to discover how to restart the " +
                                   "connector in the integration daemon once the original cause of the error has been corrected."),
 
-    CATALOGUED_OPEN_API_SPEC("OPEN-API-INTEGRATION-CONNECTOR-0006",
+    CATALOGUED_OPEN_API_SPEC("OPEN-API-INTEGRATION-CONNECTOR-0007",
                             OMRSAuditLogRecordSeverity.INFO,
                             "The {0} integration connector retrieved the Open API Specification from URL {1} ({2} ({3})) and catalogued {4} APIs with a total of {5} operations.",
                             "The connector extracted the content of the Open API, retrieved/created the endpoint for it and created a DeployedAPI asset for each 'tag' linked to an APIOperation for each 'path/operation' pair",
                             "Validate that the connector is extracting all of the required information for your use case."),
 
-    UNABLE_TO_RETRIEVE_OPEN_API_SPEC("OPEN-API-INTEGRATION-CONNECTOR-0007",
+    UNABLE_TO_RETRIEVE_OPEN_API_SPEC("OPEN-API-INTEGRATION-CONNECTOR-0008",
                             OMRSAuditLogRecordSeverity.EXCEPTION,
                             "An unexpected {0} exception was returned to the {1} integration connector {2} " +
                                     "method when trying to retrieve the Open API Spec for URL {3}.  The error message was {4}",
@@ -92,6 +98,18 @@ public enum OpenAPIIntegrationConnectorAuditCode implements AuditLogMessageSet
                      "Create the template in the metadata repository.  The connector will catalog the files during " +
                              "its next periodic refresh or you can force it to refresh immediately by calling the refresh" +
                              "operation on the integration daemon."),
+
+    BAD_ELEMENT("OPEN-API-INTEGRATION-CONNECTOR-0016",
+                     OMRSAuditLogRecordSeverity.ERROR,
+                     "The {0} integration connector retrieved an invalid {1} element in method {2}.  Element content is: {3}",
+                     "The metadata element is ignored.",
+                     "Investigate why this element is incomplete."),
+
+    UNEXPECTED_EXCEPTION( "OPEN-API-INTEGRATION-CONNECTOR-0029",
+                          OMRSAuditLogRecordSeverity.EXCEPTION,
+                          "The {0} integration connector received an unexpected exception {1} in method {2}; the error message was: {3}",
+                         "The connector is unable to catalog one or more APIs.",
+                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     CLIENT_SIDE_REST_API_ERROR( "OPEN-API-INTEGRATION-CONNECTOR-0030",
                                 OMRSAuditLogRecordSeverity.EXCEPTION,

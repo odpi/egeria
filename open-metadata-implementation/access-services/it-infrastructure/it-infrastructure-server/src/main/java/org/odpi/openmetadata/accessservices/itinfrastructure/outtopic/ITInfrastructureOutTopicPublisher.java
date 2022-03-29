@@ -82,10 +82,10 @@ public class ITInfrastructureOutTopicPublisher
      * @param previousClassification previous classification information (if the event relates to a classification)
      */
     public void publishEntityEvent(ITInfrastructureEventType eventType,
-                                   EntityDetail          entity,
-                                   EntityDetail          previousEntity,
-                                   Classification        newClassification,
-                                   Classification        previousClassification)
+                                   EntityDetail              entity,
+                                   EntityDetail              previousEntity,
+                                   Classification            newClassification,
+                                   Classification            previousClassification)
     {
         final String methodName = "publishEntityEvent";
 

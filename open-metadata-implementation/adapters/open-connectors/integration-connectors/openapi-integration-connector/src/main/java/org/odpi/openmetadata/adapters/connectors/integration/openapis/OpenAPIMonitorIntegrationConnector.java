@@ -5,6 +5,8 @@ package org.odpi.openmetadata.adapters.connectors.integration.openapis;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.accessservices.datamanager.api.DataManagerEventListener;
+import org.odpi.openmetadata.accessservices.datamanager.events.DataManagerOutboundEvent;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.APIElement;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.APIOperationElement;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.EndpointElement;
@@ -32,11 +34,12 @@ import java.util.Map;
 
 
 /**
- * OpenAPIMonitorIntegrationConnector provides common methods for the connectors
- * in this module.
+ * OpenAPIMonitorIntegrationConnector provides common methods for the connectors in this module.
  */
-public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector
+public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector implements DataManagerEventListener
 {
+    private static final String urlMarker = "http";
+
     private String templateQualifiedName = null;
     private String targetRootURL = null;
 
@@ -55,19 +58,7 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector
     {
         super.initialize(connectorInstanceId, connectionProperties);
 
-        org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties  endpoint = connectionProperties.getEndpoint();
 
-        if (endpoint != null)
-        {
-            targetRootURL = endpoint.getAddress();
-        }
-
-        Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
-
-        if (configurationProperties != null)
-        {
-            templateQualifiedName = configurationProperties.get(OpenAPIMonitorIntegrationProvider.TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY).toString();
-        }
     }
 
 
@@ -86,6 +77,23 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector
 
         myContext = super.getContext();
 
+        /*
+         * Retrieve information from the supplied connection.
+         */
+        org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties  endpoint = connectionProperties.getEndpoint();
+
+        if (endpoint != null)
+        {
+            targetRootURL = endpoint.getAddress();
+        }
+
+        Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
+
+        if (configurationProperties != null)
+        {
+            templateQualifiedName = configurationProperties.get(OpenAPIMonitorIntegrationProvider.TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY).toString();
+        }
+
         try
         {
             if (targetRootURL != null)
@@ -93,6 +101,13 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector
                 RESTClient restClient = new RESTClient(connectorName, targetRootURL, auditLog);
 
                 restClients.put(targetRootURL, restClient);
+            }
+            else
+            {
+                /*
+                 * Retrieve all the the rest endpoint already catalogued.
+                 */
+                getRESTClients();
             }
         }
         catch (OCFCheckedExceptionBase error)
@@ -122,11 +137,157 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector
     }
 
 
+    /**
+     * Process an event that was published by the Data Manager OMAS.
+     *
+     * @param event event object - call getEventType to find out what type of event.
+     */
+    public void processEvent(DataManagerOutboundEvent event)
+    {
+        /*
+         * Only interested in Endpoint events.
+         */
+        final String elementType = "Endpoint";
+        final String methodName = "processEvent";
+
+        if (elementType.equals(event.getPrincipleElement().getType().getTypeName()) ||
+            ((event.getPrincipleElement().getType().getSuperTypeNames() != null)) &&
+             (event.getPrincipleElement().getType().getSuperTypeNames().contains(elementType)))
+        {
+            try
+            {
+                EndpointElement endpointElement = myContext.getEndpointByGUID(event.getPrincipleElement().getGUID());
+
+                if (endpointElement != null)
+                {
+                    registerEndpoint(endpointElement, methodName);
+                }
+
+            }
+            catch (Exception error)
+            {
+                if (auditLog != null)
+                {
+                    auditLog.logMessage(methodName,
+                                        OpenAPIIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                       error.getClass().getName(),
+                                                                                                                       methodName,
+                                                                                                                       error.getMessage()));
+
+
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Retrieve all of the Endpoints
+     */
     private void getRESTClients()
     {
         final String methodName = "getRESTClients";
 
+        try
+        {
+            List<EndpointElement> endpointElements = myContext.findEndpoints(urlMarker, 0, 0);
+
+            if (endpointElements != null)
+            {
+                for (EndpointElement endpointElement : endpointElements)
+                {
+                    if (endpointElement != null)
+                    {
+                        registerEndpoint(endpointElement, methodName);
+                    }
+                }
+            }
+        }
+        catch (Exception error)
+        {
+            if (auditLog != null)
+            {
+                auditLog.logMessage(methodName,
+                                    OpenAPIIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                   error.getClass().getName(),
+                                                                                                                   methodName,
+                                                                                                                   error.getMessage()));
+
+
+            }
+        }
     }
+
+
+    /**
+     * Retrieve an endpoint element and if it is for a new URL, create a rest client and add it to map.
+     *
+     * @param endpointElement endpoint element
+     * @param methodName calling method
+     */
+    private void registerEndpoint(EndpointElement endpointElement,
+                                  String          methodName)
+    {
+
+        if ((endpointElement.getElementHeader() != null) &&
+            (endpointElement.getElementHeader().getGUID() != null) &&
+            (endpointElement.getEndpointProperties() != null) &&
+            (endpointElement.getEndpointProperties().getAddress() != null))
+        {
+            if (endpointElement.getEndpointProperties().getAddress().startsWith(urlMarker))
+            {
+                try
+                {
+                    /*
+                     * If this is new endpoint then add it to the restClients being monitored.
+                     */
+                    if (restClients.get(endpointElement.getEndpointProperties().getAddress()) == null)
+                    {
+                        if (auditLog != null)
+                        {
+                            auditLog.logMessage(methodName,
+                                                OpenAPIIntegrationConnectorAuditCode.NEW_ENDPOINT.getMessageDefinition(connectorName,
+                                                                                                                       endpointElement.getEndpointProperties().getDisplayName(),
+                                                                                                                       endpointElement.getEndpointProperties().getAddress()));
+                        }
+
+                        RESTClient restClient = new RESTClient(connectorName, endpointElement.getEndpointProperties().getAddress(), auditLog);
+
+                        restClients.put(endpointElement.getEndpointProperties().getAddress(), restClient);
+                    }
+                }
+                catch (Exception error)
+                {
+                    if (auditLog != null)
+                    {
+                        auditLog.logMessage(methodName,
+                                            OpenAPIIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                           error.getClass().getName(),
+                                                                                                                           methodName,
+                                                                                                                           error.getMessage()));
+
+
+                    }
+                }
+            }
+        }
+        else
+        {
+            if (auditLog != null)
+            {
+                final String elementType = "Endpoint";
+
+                auditLog.logMessage(methodName,
+                                    OpenAPIIntegrationConnectorAuditCode.BAD_ELEMENT.getMessageDefinition(connectorName,
+                                                                                                          elementType,
+                                                                                                          methodName,
+                                                                                                          endpointElement.toString()));
+
+
+            }
+        }
+    }
+
 
     /**
      * Requests that the connector does a comparison of the metadata in the third party technology and open metadata repositories.
@@ -144,8 +305,6 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector
 
         if (targetRootURL != null)
         {
-            getRESTClients();
-
             if (auditLog != null)
             {
                 auditLog.logMessage(methodName,
@@ -312,19 +471,30 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector
                                                                                                                                        url,
                                                                                                                                        error.getMessage()));
 
-                        throw new ConnectorCheckedException(OpenAPIIntegrationConnectorErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                               error.getClass().getName(),
-                                                                                                               error.getMessage()),
-                                this.getClass().getName(),
-                                methodName,
-                                error);
                     }
+
+                    throw new ConnectorCheckedException(OpenAPIIntegrationConnectorErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                                       error.getClass().getName(),
+                                                                                                                                       error.getMessage()),
+                                                        this.getClass().getName(),
+                                                        methodName,
+                                                        error);
                 }
             }
         }
     }
 
 
+    /**
+     * Return the endpoint's GUID - it may create a catalog entry if it does not exist.
+     *
+     * @param url URL of the API
+     * @param openAPISpecification descriptive information from the open API spec
+     * @return unique identifier of the metadata element for the Endpoint element
+     * @throws InvalidParameterException one of the parameters is not correct
+     * @throws UserNotAuthorizedException the connector's userId is not able to work with open metadata
+     * @throws PropertyServerException there is an issue with one of the open metadata repositories
+     */
     private String getEndpointGUID(String               url,
                                    OpenAPISpecification openAPISpecification) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
@@ -361,10 +531,26 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector
             endpointGUID = myContext.createEndpoint(properties);
         }
 
+        /*
+         * The connector could be improved here by updating the Endpoint catalog element with the latest values from the openAPI spec.
+         */
+
         return endpointGUID;
     }
 
 
+    /**
+     * Create a new API element if one does not already exist in the open metadata catalog.  The GUID of the API element is
+     * returned but it is the responsibility of the caller to add it to the apiGUIDMap if needed.
+     *
+     * @param url URL of the API
+     * @param endpointGUID unique identifier for endpoint element that the API should be connected to
+     * @param tag API identifiers from the openAPI spec
+     * @return unique identifier of the metadata element for the API element
+     * @throws InvalidParameterException one of the parameters is not correct
+     * @throws UserNotAuthorizedException the connector's userId is not able to work with open metadata
+     * @throws PropertyServerException there is an issue with one of the open metadata repositories
+     */
     private String getAPIGUID(String     url,
                               String     endpointGUID,
                               OpenAPITag tag) throws InvalidParameterException,
@@ -400,12 +586,29 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector
 
                 apiGUID = myContext.createAPI(endpointGUID, properties);
             }
+
+            /*
+             * The connector could be enhanced here to update the API element in the values differ between the API specification and the
+             * catalog.
+             */
         }
 
         return apiGUID;
     }
 
 
+    /**
+     * Catalog an API operation if not already catalogued.  The GUID is returned but the caller is responsible for adding the new GUID to
+     * the apiGUIDMap.
+     *
+     * @param apiGUIDMap map of known guids
+     * @param apiOperationQualifiedName unique name for the API operation in the open metadata catalog.
+     * @param operation operation extracted from the open metadata specification.
+     * @return unique identifier of the API operation in the open metadata catalog
+     * @throws InvalidParameterException one of the parameters is not correct
+     * @throws UserNotAuthorizedException the connector's userId is not able to work with open metadata
+     * @throws PropertyServerException there is an issue with one of the open metadata repositories
+     */
     private String getAPIOperationGUID(Map<String, String> apiGUIDMap,
                                        String              apiOperationQualifiedName,
                                        OpenAPIOperation    operation) throws InvalidParameterException,
@@ -421,12 +624,20 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector
         {
             for (String tag : tags)
             {
+                /*
+                 * The API operation has already been retrieved from the catalog and its GUID is known.
+                 */
                 apiGUID = apiGUIDMap.get(tag);
             }
         }
 
         if (apiGUID != null)
         {
+            /*
+             * The GUID is not known -  It may have been catalogued in a previous run of this connector - or not yet catalogued.  The retrieve
+             * should return all elements with the same qualified name - there should be only one.  This code could be enhanced to validate that
+             * when there are duplicates, they are logged and the selected one is the one created by this process.
+             */
             List<APIOperationElement> apiOperationElements = myContext.getAPIOperationsByName(apiOperationQualifiedName, 0, 0);
 
             if (apiOperationElements != null)
@@ -442,6 +653,9 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector
 
             if (apiOperationGUID == null)
             {
+                /*
+                 * Catalog the API Operation
+                 */
                 APIOperationProperties properties = new APIOperationProperties();
 
                 properties.setQualifiedName(apiOperationQualifiedName);

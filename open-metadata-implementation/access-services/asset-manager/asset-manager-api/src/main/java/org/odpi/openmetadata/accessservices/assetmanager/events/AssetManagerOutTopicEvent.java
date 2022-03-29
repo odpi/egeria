@@ -34,9 +34,19 @@ public class AssetManagerOutTopicEvent implements java.io.Serializable
     private ElementHeader         previousElementHeader     = null;
     private Map<String, Object>   previousElementProperties = null;
 
+    /*
+     * For entity events
+     */
     private String                classificationName               = null;
     private Map<String, Object>   previousClassificationProperties = null;
 
+    /*
+     * For relationship events
+     */
+    private ElementHeader         endOneElementHeader      = null;
+    private Map<String, Object>   endOneElementProperties  = null;
+    private ElementHeader         endTwoElementHeader      = null;
+    private Map<String, Object>   endTwoElementProperties  = null;
 
 
     /**
@@ -58,12 +68,17 @@ public class AssetManagerOutTopicEvent implements java.io.Serializable
         {
             eventVersionId = template.getEventVersionId();
             eventType = template.getEventType();
+            eventTime = template.getEventTime();
             elementHeader = template.getElementHeader();
             elementProperties = template.getElementProperties();
             previousElementHeader = template.getPreviousElementHeader();
             previousElementProperties = template.getPreviousElementProperties();
             classificationName = template.getClassificationName();
             previousClassificationProperties = template.getPreviousClassificationProperties();
+            endOneElementHeader = template.getEndOneElementHeader();
+            endOneElementProperties = template.getEndOneElementProperties();
+            endTwoElementHeader = template.getEndTwoElementHeader();
+            endTwoElementProperties = template.getEndOneElementProperties();
         }
     }
 
@@ -84,6 +99,7 @@ public class AssetManagerOutTopicEvent implements java.io.Serializable
      *
      * @param eventVersionId long
      */
+    @SuppressWarnings(value="unused")
     public void setEventVersionId(long eventVersionId)
     {
         /* provided for Jackson */
@@ -266,6 +282,100 @@ public class AssetManagerOutTopicEvent implements java.io.Serializable
     }
 
 
+
+    /**
+     * Return the element at end one of the relationship that is described in the principleElement. This is only set up on
+     * relationship events.
+     *
+     * @return element stub of entity at end 1
+     */
+    public ElementHeader getEndOneElementHeader()
+    {
+        return endOneElementHeader;
+    }
+
+
+    /**
+     * Set up the element at end one of the relationship that is described in the principleElement. This is only set up on
+     * relationship events.
+     *
+     * @param endOneElementHeader element stub of entity at end 1
+     */
+    public void setEndOneElementHeader(ElementHeader endOneElementHeader)
+    {
+        this.endOneElementHeader = endOneElementHeader;
+    }
+
+
+    /**
+     * Return the property map for end one's properties (used for relationship events).
+     *
+     * @return property map
+     */
+    public Map<String, Object> getEndOneElementProperties()
+    {
+        return endOneElementProperties;
+    }
+
+
+    /**
+     * Set up tthe property map for end one's properties (used for relationship events).
+     *
+     * @param properties property map
+     */
+    public void setEndOneElementProperties(Map<String, Object> properties)
+    {
+        this.endOneElementProperties = properties;
+    }
+
+
+    /**
+     * Return the element at end two of the relationship that is described in the principleElement. This is only set up on
+     * relationship events.
+     *
+     * @return element stub of entity at end 2
+     */
+    public ElementHeader getEndTwoElementHeader()
+    {
+        return endTwoElementHeader;
+    }
+
+
+    /**
+     * Set up the element at end two of the relationship that is described in the principleElement. This is only set up on
+     * relationship events.
+     *
+     * @param endTwoElementHeader element stub of entity at end 2
+     */
+    public void setEndTwoElementHeader(ElementHeader endTwoElementHeader)
+    {
+        this.endTwoElementHeader = endTwoElementHeader;
+    }
+
+
+
+    /**
+     * Return the property map for end two's properties (used for relationship events).
+     *
+     * @return property map
+     */
+    public Map<String, Object> getEndTwoElementProperties()
+    {
+        return endOneElementProperties;
+    }
+
+
+    /**
+     * Set up the property map for end two's properties (used for relationship events).
+     *
+     * @param properties property map
+     */
+    public void setEndTwoElementProperties(Map<String, Object> properties)
+    {
+        this.endOneElementProperties = properties;
+    }
+
+
     /**
      * Standard toString method.
      *
@@ -284,6 +394,10 @@ public class AssetManagerOutTopicEvent implements java.io.Serializable
                        ", previousElementProperties=" + previousElementProperties +
                        ", classificationName='" + classificationName + '\'' +
                        ", previousClassificationProperties=" + previousClassificationProperties +
+                       ", endOneElementHeader=" + endOneElementHeader +
+                       ", endOneElementProperties=" + endOneElementProperties +
+                       ", endTwoElementHeader=" + endTwoElementHeader +
+                       ", endTwoElementProperties=" + endTwoElementProperties +
                        '}';
     }
 
@@ -314,7 +428,11 @@ public class AssetManagerOutTopicEvent implements java.io.Serializable
                        Objects.equals(previousElementHeader, that.previousElementHeader) &&
                        Objects.equals(previousElementProperties, that.previousElementProperties) &&
                        Objects.equals(classificationName, that.classificationName) &&
-                       Objects.equals(previousClassificationProperties, that.previousClassificationProperties);
+                       Objects.equals(previousClassificationProperties, that.previousClassificationProperties) &&
+                       Objects.equals(endOneElementHeader, that.endOneElementHeader) &&
+                       Objects.equals(endOneElementProperties, that.endOneElementProperties) &&
+                       Objects.equals(endTwoElementHeader, that.endTwoElementHeader) &&
+                       Objects.equals(endTwoElementProperties, that.endTwoElementProperties);
     }
 
 
@@ -326,7 +444,8 @@ public class AssetManagerOutTopicEvent implements java.io.Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(eventVersionId, eventType, eventTime, elementHeader, elementProperties, classificationName, previousElementHeader,
-                            previousElementProperties, previousClassificationProperties);
+        return Objects.hash(eventVersionId, eventType, eventTime, elementHeader, elementProperties, previousElementHeader, previousElementProperties,
+                            classificationName, previousClassificationProperties, endOneElementHeader, endOneElementProperties, endTwoElementHeader,
+                            endTwoElementProperties);
     }
 }

@@ -2,14 +2,20 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.stewardshipaction.admin;
 
+import org.odpi.openmetadata.accessservices.stewardshipaction.connectors.outtopic.StewardshipActionOutTopicServerConnector;
+import org.odpi.openmetadata.accessservices.stewardshipaction.connectors.outtopic.StewardshipActionOutTopicServerProvider;
 import org.odpi.openmetadata.accessservices.stewardshipaction.ffdc.StewardshipActionAuditCode;
-import org.odpi.openmetadata.accessservices.stewardshipaction.listener.StewardshipActionOMRSTopicListener;
+import org.odpi.openmetadata.accessservices.stewardshipaction.outtopic.StewardshipActionOMRSTopicListener;
+import org.odpi.openmetadata.accessservices.stewardshipaction.outtopic.StewardshipActionOutTopicPublisher;
 import org.odpi.openmetadata.accessservices.stewardshipaction.server.StewardshipActionServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
@@ -24,6 +30,8 @@ public class StewardshipActionAdmin extends AccessServiceAdmin
     private AuditLog                          auditLog   = null;
     private StewardshipActionServicesInstance instance   = null;
     private String                            serverName = null;
+
+    private StewardshipActionOutTopicPublisher eventPublisher = null;
 
     /**
      * Default constructor
@@ -74,19 +82,37 @@ public class StewardshipActionAdmin extends AccessServiceAdmin
              */
             if (accessServiceConfig.getAccessServiceOutTopic() != null)
             {
-                StewardshipActionOMRSTopicListener omrsTopicListener;
+                Connection outTopicEventBusConnection = accessServiceConfig.getAccessServiceOutTopic();
 
-                omrsTopicListener = new StewardshipActionOMRSTopicListener(accessServiceConfig.getAccessServiceOutTopic(),
-                                                                           repositoryConnector.getRepositoryHelper(),
-                                                                           repositoryConnector.getRepositoryValidator(),
-                                                                           accessServiceConfig.getAccessServiceName(),
-                                                                           supportedZones,
-                                                                           auditLog);
-                super.registerWithEnterpriseTopic(accessServiceConfig.getAccessServiceName(),
-                                                  serverName,
-                                                  omrsTopicConnector,
-                                                  omrsTopicListener,
-                                                  auditLog);
+                Endpoint endpoint = outTopicEventBusConnection.getEndpoint();
+
+                AuditLog outTopicAuditLog = auditLog.createNewAuditLog(OMRSAuditingComponent.OMAS_OUT_TOPIC);
+                Connection serverSideOutTopicConnection = this.getOutTopicConnection(accessServiceConfig.getAccessServiceOutTopic(),
+                                                                                     AccessServiceDescription.STEWARDSHIP_ACTION_OMAS.getAccessServiceFullName(),
+                                                                                     StewardshipActionOutTopicServerProvider.class.getName(),
+                                                                                     auditLog);
+                StewardshipActionOutTopicServerConnector outTopicServerConnector = super.getTopicConnector(serverSideOutTopicConnection,
+                                                                                                           StewardshipActionOutTopicServerConnector.class,
+                                                                                                           outTopicAuditLog,
+                                                                                                           AccessServiceDescription.STEWARDSHIP_ACTION_OMAS.getAccessServiceFullName(),
+                                                                                                           actionDescription);
+                eventPublisher = new StewardshipActionOutTopicPublisher(outTopicServerConnector,
+                                                                       endpoint.getAddress(),
+                                                                       outTopicAuditLog,
+                                                                       repositoryConnector.getRepositoryHelper(),
+                                                                       AccessServiceDescription.STEWARDSHIP_ACTION_OMAS.getAccessServiceName(),
+                                                                       serverName);
+
+                this.registerWithEnterpriseTopic(AccessServiceDescription.STEWARDSHIP_ACTION_OMAS.getAccessServiceFullName(),
+                                                 serverName,
+                                                 omrsTopicConnector,
+                                                 new StewardshipActionOMRSTopicListener(AccessServiceDescription.STEWARDSHIP_ACTION_OMAS.getAccessServiceFullName(),
+                                                                                        serverUserName,
+                                                                                        eventPublisher,
+                                                                                        instance.getReferenceableHandler(),
+                                                                                        supportedZones,
+                                                                                        outTopicAuditLog),
+                                                 auditLog);
             }
 
             auditLog.logMessage(actionDescription,
@@ -119,6 +145,11 @@ public class StewardshipActionAdmin extends AccessServiceAdmin
     {
         final String actionDescription = "shutdown";
 
+        if (this.eventPublisher != null)
+        {
+            this.eventPublisher.disconnect();
+        }
+        
         if (instance != null)
         {
             this.instance.shutdown();

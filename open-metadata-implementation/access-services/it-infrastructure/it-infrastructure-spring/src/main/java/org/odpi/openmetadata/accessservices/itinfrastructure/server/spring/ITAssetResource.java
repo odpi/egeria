@@ -4,16 +4,7 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.AssetExtensionsRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.AssetListResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.AssetRelationshipListResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.AssetRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.AssetResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.EffectiveTimeMetadataSourceRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ElementStatusRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.MetadataSourceRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.RelatedAssetListResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.TemplateRequestBody;
+import org.odpi.openmetadata.accessservices.itinfrastructure.rest.*;
 import org.odpi.openmetadata.accessservices.itinfrastructure.server.ITAssetRESTService;
 import org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -555,8 +546,6 @@ public class ITAssetResource
     }
 
 
-
-
     /**
      * Return the list of relationships between assets.
      *
@@ -590,8 +579,7 @@ public class ITAssetResource
                                                                @RequestParam int                      pageSize,
                                                                @RequestBody  EffectiveTimeRequestBody requestBody)
     {
-        // todo
-        return null;    // not sure this is needed
+        return restAPI.getAssetRelationships(serverName, userId, assetTypeName, assetGUID, relationshipTypeName, relatedAssetTypeName, startingEnd, startFrom, pageSize, requestBody);
     }
 
 
@@ -629,5 +617,568 @@ public class ITAssetResource
                                                      @RequestBody  EffectiveTimeRequestBody requestBody)
     {
         return restAPI.getRelatedAssets(serverName, userId, assetTypeName, assetGUID, relationshipTypeName, relatedAssetTypeName, startingEnd, startFrom, pageSize, requestBody);
+    }
+
+
+    /* ===============================================================================
+     * General linkage and classifications
+     */
+
+
+    /**
+     * Link two elements together to show that data flows from one to the other.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param dataSupplierGUID unique identifier of the data supplier
+     * @param dataConsumerGUID unique identifier of the data consumer
+     * @param infrastructureManagerIsHome ensure that only the process manager can update this process
+     * @param requestBody properties of the relationship
+     *
+     * @return unique identifier of the relationship or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/data-flows/suppliers/{dataSupplierGUID}/consumers/{dataConsumerGUID}")
+
+    public GUIDResponse setupDataFlow(@PathVariable String              serverName,
+                                      @PathVariable String              userId,
+                                      @PathVariable String              dataSupplierGUID,
+                                      @PathVariable String              dataConsumerGUID,
+                                      @RequestParam boolean             infrastructureManagerIsHome,
+                                      @RequestBody  DataFlowRequestBody requestBody)
+    {
+        return restAPI.setupDataFlow(serverName, userId, dataSupplierGUID, dataConsumerGUID, infrastructureManagerIsHome, requestBody);
+    }
+
+
+    /**
+     * Retrieve the data flow relationship between two elements.  The qualifiedName is optional unless there
+     * is more than one data flow relationships between these two elements since it is used to disambiguate
+     * the request.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param dataSupplierGUID unique identifier of the data supplier
+     * @param dataConsumerGUID unique identifier of the data consumer
+     * @param requestBody optional name to search for
+     *
+     * @return unique identifier and properties of the relationship or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/data-flows/suppliers/{dataSupplierGUID}/consumers/{dataConsumerGUID}/retrieve")
+
+    public DataFlowElementResponse getDataFlow(@PathVariable String          serverName,
+                                               @PathVariable String          userId,
+                                               @PathVariable String          dataSupplierGUID,
+                                               @PathVariable String          dataConsumerGUID,
+                                               @RequestBody  NameRequestBody requestBody)
+    {
+        return restAPI.getDataFlow(serverName, userId, dataSupplierGUID, dataConsumerGUID, requestBody);
+    }
+
+
+    /**
+     * Update relationship between two elements that shows that data flows from one to the other.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param dataFlowGUID unique identifier of the data flow relationship
+     * @param requestBody properties of the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/data-flows/{dataFlowGUID}/update")
+
+    public VoidResponse updateDataFlow(@PathVariable String              serverName,
+                                       @PathVariable String              userId,
+                                       @PathVariable String              dataFlowGUID,
+                                       @RequestBody  DataFlowRequestBody requestBody)
+    {
+        return restAPI.updateDataFlow(serverName, userId, dataFlowGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the data flow relationship between two elements.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param dataFlowGUID unique identifier of the data flow relationship
+     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/data-flows/{dataFlowGUID}/remove")
+
+    public VoidResponse clearDataFlow(@PathVariable String                                 serverName,
+                                      @PathVariable String                                 userId,
+                                      @PathVariable String                                 dataFlowGUID,
+                                      @RequestBody  EffectiveTimeMetadataSourceRequestBody requestBody)
+    {
+        return restAPI.clearDataFlow(serverName, userId, dataFlowGUID, requestBody);
+    }
+
+
+    /**
+     * Retrieve the data flow relationships linked from an specific element to the downstream consumers.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param dataSupplierGUID unique identifier of the data supplier
+     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     *
+     * @return unique identifier and properties of the relationship or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/data-flows/suppliers/{dataSupplierGUID}/consumers/retrieve")
+
+    public DataFlowElementsResponse getDataFlowConsumers(@PathVariable String                   serverName,
+                                                         @PathVariable String                   userId,
+                                                         @PathVariable String                   dataSupplierGUID,
+                                                         @RequestBody  EffectiveTimeRequestBody requestBody)
+    {
+        return restAPI.getDataFlowConsumers(serverName, userId, dataSupplierGUID, requestBody);
+    }
+
+
+    /**
+     * Retrieve the data flow relationships linked from an specific element to the upstream suppliers.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param dataConsumerGUID unique identifier of the data consumer
+     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     *
+     * @return unique identifier and properties of the relationship or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/data-flows/consumers/{dataConsumerGUID}/suppliers/retrieve")
+
+    public DataFlowElementsResponse getDataFlowSuppliers(@PathVariable String                   serverName,
+                                                         @PathVariable String                   userId,
+                                                         @PathVariable String                   dataConsumerGUID,
+                                                         @RequestBody  EffectiveTimeRequestBody requestBody)
+    {
+        return restAPI.getDataFlowSuppliers(serverName, userId, dataConsumerGUID, requestBody);
+    }
+
+
+    /**
+     * Link two elements to show that when one completes the next is started.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param currentStepGUID unique identifier of the previous step
+     * @param nextStepGUID unique identifier of the next step
+     * @param infrastructureManagerIsHome ensure that only the process manager can update this process
+     * @param requestBody properties of the relationship
+     *
+     * @return unique identifier for the control flow relationship or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/control-flows/current-steps/{currentStepGUID}/next-steps/{nextStepGUID}")
+
+    public GUIDResponse setupControlFlow(@PathVariable String                 serverName,
+                                         @PathVariable String                 userId,
+                                         @PathVariable String                 currentStepGUID,
+                                         @PathVariable String                 nextStepGUID,
+                                         @RequestParam boolean                infrastructureManagerIsHome,
+                                         @RequestBody  ControlFlowRequestBody requestBody)
+    {
+        return restAPI.setupControlFlow(serverName, userId, currentStepGUID, nextStepGUID, infrastructureManagerIsHome, requestBody);
+    }
+
+
+    /**
+     * Retrieve the control flow relationship between two elements.  The qualifiedName is optional unless there
+     * is more than one control flow relationships between these two elements since it is used to disambiguate
+     * the request.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param currentStepGUID unique identifier of the previous step
+     * @param nextStepGUID unique identifier of the next step
+     * @param requestBody unique identifier for this relationship
+     *
+     * @return unique identifier and properties of the relationship or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/control-flows/current-steps/{currentStepGUID}/next-steps/{nextStepGUID}/retrieve")
+
+    public ControlFlowElementResponse getControlFlow(@PathVariable String          serverName,
+                                                     @PathVariable String          userId,
+                                                     @PathVariable String          currentStepGUID,
+                                                     @PathVariable String          nextStepGUID,
+                                                     @RequestBody  NameRequestBody requestBody)
+    {
+        return restAPI.getControlFlow(serverName, userId, currentStepGUID, nextStepGUID, requestBody);
+    }
+
+
+    /**
+     * Update the relationship between two elements that shows that when one completes the next is started.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param controlFlowGUID unique identifier of the  control flow relationship
+     * @param requestBody properties of the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/control-flows/{controlFlowGUID}/update")
+
+    public VoidResponse updateControlFlow(@PathVariable String                 serverName,
+                                          @PathVariable String                 userId,
+                                          @PathVariable String                 controlFlowGUID,
+                                          @RequestBody  ControlFlowRequestBody requestBody)
+    {
+        return restAPI.updateControlFlow(serverName, userId, controlFlowGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the control flow relationship between two elements.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param controlFlowGUID unique identifier of the  control flow relationship
+     * @param requestBody effective time and external identifiers
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/control-flows/{controlFlowGUID}/remove")
+
+    public VoidResponse clearControlFlow(@PathVariable String                                 serverName,
+                                         @PathVariable String                                 userId,
+                                         @PathVariable String                                 controlFlowGUID,
+                                         @RequestBody  EffectiveTimeMetadataSourceRequestBody requestBody)
+    {
+        return restAPI.clearControlFlow(serverName, userId, controlFlowGUID, requestBody);
+    }
+
+
+    /**
+     * Retrieve the control relationships linked from an specific element to the possible next elements in the process.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param currentStepGUID unique identifier of the current step
+     * @param requestBody null request body
+     *
+     * @return unique identifier and properties of the relationship or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/control-flows/current-steps/{currentStepGUID}/next-steps/retrieve")
+
+    public ControlFlowElementsResponse getControlFlowNextSteps(@PathVariable String                   serverName,
+                                                               @PathVariable String                   userId,
+                                                               @PathVariable String                   currentStepGUID,
+                                                               @RequestBody  EffectiveTimeRequestBody requestBody)
+    {
+        return restAPI.getControlFlowNextSteps(serverName, userId, currentStepGUID, requestBody);
+    }
+
+
+    /**
+     * Retrieve the control relationships linked from an specific element to the possible previous elements in the process.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param currentStepGUID unique identifier of the previous step
+     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     *
+     * @return unique identifier and properties of the relationship or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/control-flows/current-steps/{currentStepGUID}/previous-steps/retrieve")
+
+    public ControlFlowElementsResponse getControlFlowPreviousSteps(@PathVariable String                   serverName,
+                                                                   @PathVariable String                   userId,
+                                                                   @PathVariable String                   currentStepGUID,
+                                                                   @RequestBody  EffectiveTimeRequestBody requestBody)
+    {
+        return restAPI.getControlFlowPreviousSteps(serverName, userId, currentStepGUID, requestBody);
+    }
+
+
+    /**
+     * Link two elements together to show a request-response call between them.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param callerGUID unique identifier of the element that is making the call
+     * @param calledGUID unique identifier of the element that is processing the call
+     * @param infrastructureManagerIsHome ensure that only the process manager can update this process
+     * @param requestBody properties of the relationship
+     *
+     * @return unique identifier of the new relationship or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/process-calls/callers/{callerGUID}/called/{calledGUID}")
+
+    public GUIDResponse setupProcessCall(@PathVariable String                 serverName,
+                                         @PathVariable String                 userId,
+                                         @PathVariable String                 callerGUID,
+                                         @PathVariable String                 calledGUID,
+                                         @RequestParam boolean                infrastructureManagerIsHome,
+                                         @RequestBody  ProcessCallRequestBody requestBody)
+    {
+        return restAPI.setupProcessCall(serverName, userId, callerGUID, calledGUID, infrastructureManagerIsHome, requestBody);
+    }
+
+
+    /**
+     * Retrieve the process call relationship between two elements.  The qualifiedName is optional unless there
+     * is more than one process call relationships between these two elements since it is used to disambiguate
+     * the request.  This is often used in conjunction with update.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param callerGUID unique identifier of the element that is making the call
+     * @param calledGUID unique identifier of the element that is processing the call
+     * @param requestBody qualified name to disambiguate request
+     *
+     * @return unique identifier and properties of the relationship or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/process-calls/callers/{callerGUID}/called/{calledGUID}/retrieve")
+
+    public ProcessCallElementResponse getProcessCall(@PathVariable String          serverName,
+                                                     @PathVariable String          userId,
+                                                     @PathVariable String          callerGUID,
+                                                     @PathVariable String          calledGUID,
+                                                     @RequestBody  NameRequestBody requestBody)
+    {
+        return restAPI.getProcessCall(serverName, userId, callerGUID, calledGUID, requestBody);
+    }
+
+
+    /**
+     * Update the relationship between two elements that shows a request-response call between them.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param processCallGUID unique identifier of the process call relationship
+     * @param requestBody properties of the relationship
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/process-calls/{processCallGUID}/update")
+
+    public VoidResponse updateProcessCall(@PathVariable String                 serverName,
+                                          @PathVariable String                 userId,
+                                          @PathVariable String                 processCallGUID,
+                                          @RequestBody  ProcessCallRequestBody requestBody)
+    {
+        return restAPI.updateProcessCall(serverName, userId, processCallGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the process call relationship.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param processCallGUID unique identifier of the process call relationship
+     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/process-calls/{processCallGUID}/remove")
+
+    public VoidResponse clearProcessCall(@PathVariable String                                 serverName,
+                                         @PathVariable String                                 userId,
+                                         @PathVariable String                                 processCallGUID,
+                                         @RequestBody  EffectiveTimeMetadataSourceRequestBody requestBody)
+    {
+        return restAPI.clearProcessCall(serverName, userId, processCallGUID, requestBody);
+    }
+
+
+    /**
+     * Retrieve the process call relationships linked from an specific element to the elements it calls.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param callerGUID unique identifier of the element that is making the call
+     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     *
+     * @return unique identifier and properties of the relationship or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/process-calls/callers/{callerGUID}/called/retrieve")
+
+    public ProcessCallElementsResponse getProcessCalled(@PathVariable String                   serverName,
+                                                        @PathVariable String                   userId,
+                                                        @PathVariable String                   callerGUID,
+                                                        @RequestBody  EffectiveTimeRequestBody requestBody)
+    {
+        return restAPI.getProcessCalled(serverName, userId, callerGUID, requestBody);
+    }
+
+
+    /**
+     * Retrieve the process call relationships linked from an specific element to its callers.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param calledGUID unique identifier of the element that is processing the call
+     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     *
+     * @return unique identifier and properties of the relationship or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/process-calls/called/{calledGUID}/callers/retrieve")
+
+    public ProcessCallElementsResponse getProcessCallers(@PathVariable String                   serverName,
+                                                         @PathVariable String                   userId,
+                                                         @PathVariable String                   calledGUID,
+                                                         @RequestBody  EffectiveTimeRequestBody requestBody)
+    {
+        return restAPI.getProcessCallers(serverName, userId, calledGUID, requestBody);
+    }
+
+
+    /**
+     * Link to elements together to show that they are part of the lineage of the data that is moving
+     * between the processes.  Typically the lineage relationships stitch together processes and data assets
+     * supported by different technologies.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param sourceElementGUID unique identifier of the source
+     * @param destinationElementGUID unique identifier of the destination
+     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/lineage-mappings/sources/{sourceElementGUID}/destinations/{destinationElementGUID}")
+
+    public VoidResponse setupLineageMapping(@PathVariable String                    serverName,
+                                            @PathVariable String                    userId,
+                                            @PathVariable String                    sourceElementGUID,
+                                            @PathVariable String                    destinationElementGUID,
+                                            @RequestBody  EffectiveDatesRequestBody requestBody)
+    {
+        return restAPI.setupLineageMapping(serverName, userId, sourceElementGUID, destinationElementGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the lineage mapping between two elements.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param sourceElementGUID unique identifier of the source
+     * @param destinationElementGUID unique identifier of the destination
+     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/lineage-mappings/sources/{sourceElementGUID}/destinations/{destinationElementGUID}/remove")
+
+    public VoidResponse clearLineageMapping(@PathVariable String                                 serverName,
+                                            @PathVariable String                                 userId,
+                                            @PathVariable String                                 sourceElementGUID,
+                                            @PathVariable String                                 destinationElementGUID,
+                                            @RequestBody  EffectiveTimeMetadataSourceRequestBody requestBody)
+    {
+        return restAPI.clearLineageMapping(serverName, userId, sourceElementGUID, destinationElementGUID, requestBody);
+    }
+
+
+    /**
+     * Retrieve the lineage mapping relationships linked from an specific source element to its destinations.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param sourceElementGUID unique identifier of the source
+     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/lineage-mappings/sources/{sourceElementGUID}/destinations/retrieve")
+
+    public LineageMappingElementsResponse getDestinationLineageMappings(@PathVariable String                   serverName,
+                                                                        @PathVariable String                   userId,
+                                                                        @PathVariable String                   sourceElementGUID,
+                                                                        @RequestBody  EffectiveTimeRequestBody requestBody)
+    {
+        return restAPI.getDestinationLineageMappings(serverName, userId, sourceElementGUID, requestBody);
+    }
+
+
+    /**
+     * Retrieve the lineage mapping relationships linked from an specific destination element to its sources.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param destinationElementGUID unique identifier of the destination
+     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/lineage-mappings/destinations/{destinationElementGUID}/sources/retrieve")
+
+    public LineageMappingElementsResponse getSourceLineageMappings(@PathVariable String                   serverName,
+                                                                   @PathVariable String                   userId,
+                                                                   @PathVariable String                   destinationElementGUID,
+                                                                   @RequestBody  EffectiveTimeRequestBody requestBody)
+    {
+        return restAPI.getSourceLineageMappings(serverName, userId, destinationElementGUID, requestBody);
     }
 }
