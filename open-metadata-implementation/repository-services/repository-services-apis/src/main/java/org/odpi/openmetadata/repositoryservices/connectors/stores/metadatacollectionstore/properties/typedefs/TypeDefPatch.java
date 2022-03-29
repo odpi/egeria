@@ -43,9 +43,11 @@ public class TypeDefPatch extends TypeDefElementHeader
     private List<ExternalStandardMapping> externalStandardMappings = null;
     private List<InstanceStatus>          validInstanceStatusList  = null;
     private InstanceStatus                initialStatus            = null;
-    private List<TypeDefLink>             validEntityDefs          = null; // ClassificationDefs
-    private RelationshipEndDef            endDef1                  = null; // RelationshipDefs
-    private RelationshipEndDef            endDef2                  = null; // RelationshipDefs
+    private List<TypeDefLink>             validEntityDefs          = null;  // ClassificationDefs
+    private RelationshipEndDef            endDef1                  = null;  // RelationshipDefs
+    private RelationshipEndDef            endDef2                  = null;  // RelationshipDefs
+    private boolean                       updateMultiLink          = false; // RelationshipDefs
+    private boolean                       multiLink                = false; // RelationshipDefs
 
     /**
      * Default constructor relies on the initialization of variables in their declaration.
@@ -86,6 +88,8 @@ public class TypeDefPatch extends TypeDefElementHeader
             validEntityDefs          = template.getValidEntityDefs();
             endDef1                  = template.getEndDef1();
             endDef2                  = template.getEndDef2();
+            updateMultiLink          = template.getUpdateMultiLink();
+            multiLink                = template.getMultiLink();
         }
     }
 
@@ -583,6 +587,50 @@ public class TypeDefPatch extends TypeDefElementHeader
 
 
     /**
+     * Return whether the multi-link flag should be updated.
+     *
+     * @return boolean flag
+     */
+    public boolean getUpdateMultiLink()
+    {
+        return updateMultiLink;
+    }
+
+
+    /**
+     * Set up whether the multi-link flag should be updated.
+     *
+     * @param updateMultiLink boolean flag
+     */
+    public void setUpdateMultiLink(boolean updateMultiLink)
+    {
+        this.updateMultiLink = updateMultiLink;
+    }
+
+
+    /**
+     * Return whether multiple relationships of this type are allowed between the same two entities.
+     *
+     * @return boolean flag
+     */
+    public boolean getMultiLink()
+    {
+        return multiLink;
+    }
+
+
+    /**
+     * Set up whether multiple relationships of this type are allowed between the same two entities.
+     *
+     * @param multiLink boolean flag
+     */
+    public void setMultiLink(boolean multiLink)
+    {
+        this.multiLink = multiLink;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return JSON style description of variables.
@@ -593,13 +641,15 @@ public class TypeDefPatch extends TypeDefElementHeader
         return "TypeDefPatch{" +
                        "typeDefGUID='" + typeDefGUID + '\'' +
                        ", typeDefName='" + typeDefName + '\'' +
-                       ", typeDefStatus='" + typeDefStatus + '\'' +
+                       ", typeDefStatus=" + typeDefStatus +
                        ", applyToVersion=" + applyToVersion +
                        ", updateToVersion=" + updateToVersion +
                        ", newVersionName='" + newVersionName + '\'' +
+                       ", updatedBy='" + updatedBy + '\'' +
+                       ", updateTime=" + updateTime +
                        ", description='" + description + '\'' +
                        ", descriptionGUID='" + descriptionGUID + '\'' +
-                       ", superType='" + superType + '\'' +
+                       ", superType=" + superType +
                        ", propertyDefinitions=" + propertyDefinitions +
                        ", typeDefOptions=" + typeDefOptions +
                        ", externalStandardMappings=" + externalStandardMappings +
@@ -608,6 +658,9 @@ public class TypeDefPatch extends TypeDefElementHeader
                        ", validEntityDefs=" + validEntityDefs +
                        ", endDef1=" + endDef1 +
                        ", endDef2=" + endDef2 +
+                       ", updateMultiLink=" + updateMultiLink +
+                       ", multiLink=" + multiLink +
+                       ", headerVersion=" + getHeaderVersion() +
                        '}';
     }
 
@@ -632,6 +685,8 @@ public class TypeDefPatch extends TypeDefElementHeader
         TypeDefPatch that = (TypeDefPatch) objectToCompare;
         return applyToVersion == that.applyToVersion &&
                        updateToVersion == that.updateToVersion &&
+                       updateMultiLink == that.updateMultiLink &&
+                       multiLink == that.multiLink &&
                        Objects.equals(typeDefGUID, that.typeDefGUID) &&
                        Objects.equals(typeDefName, that.typeDefName) &&
                        typeDefStatus == that.typeDefStatus &&
@@ -663,6 +718,6 @@ public class TypeDefPatch extends TypeDefElementHeader
         return Objects.hash(typeDefGUID, typeDefName, typeDefStatus, applyToVersion, updateToVersion, newVersionName, updatedBy, updateTime,
                             description,
                             descriptionGUID, superType, propertyDefinitions, typeDefOptions, externalStandardMappings, validInstanceStatusList,
-                            initialStatus, validEntityDefs, endDef1, endDef2);
+                            initialStatus, validEntityDefs, endDef1, endDef2, updateMultiLink, multiLink);
     }
 }

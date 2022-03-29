@@ -831,6 +831,60 @@ public class ITInfrastructureResource
 
 
     /**
+     * Retrieve the list of endpoint metadata elements with a matching network address.
+     *
+     * @param serverName name of calling server
+     * @param userId calling user
+     * @param requestBody url to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements or
+     * InvalidParameterException one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to make this request or
+     * PropertyServerException the repository is not available or not working properly.
+     */
+    @PostMapping(path = "/endpoints/by-network-address")
+
+    public EndpointsResponse getEndpointsByNetworkAddress(String          serverName,
+                                                          String          userId,
+                                                          NameRequestBody requestBody,
+                                                          int             startFrom,
+                                                          int             pageSize)
+    {
+        return restAPI.getEndpointsByNetworkAddress(serverName, userId, requestBody, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of endpoint metadata elements that are attached to a specific infrastructure element.
+     *
+     * @param serverName name of calling server
+     * @param userId calling user
+     * @param infrastructureGUID element to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements or
+     *
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @GetMapping(path = "/endpoints/for-infrastructure/{infrastructureGUID}")
+
+    public EndpointsResponse getEndpointsForInfrastructure(@PathVariable String serverName,
+                                                           @PathVariable String userId,
+                                                           @PathVariable String infrastructureGUID,
+                                                           @RequestParam int    startFrom,
+                                                           @RequestParam int    pageSize)
+    {
+        return restAPI.getEndpointsForInfrastructure(serverName, userId, infrastructureGUID, startFrom, pageSize);
+    }
+
+
+
+    /**
      * Retrieve the endpoint  metadata element with the supplied unique identifier.
      *
      * @param serverName name of the service to route the request to.

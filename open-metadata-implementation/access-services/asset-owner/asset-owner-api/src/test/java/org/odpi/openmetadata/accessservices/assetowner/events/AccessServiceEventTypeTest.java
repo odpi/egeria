@@ -58,10 +58,10 @@ public class AccessServiceEventTypeTest
      */
     @Test public void testAllErrorCodeValues()
     {
-        testSingleErrorCodeValues(AssetOwnerEventType.UNKNOWN_ASSET_OWNER_EVENT);
-        testSingleErrorCodeValues(AssetOwnerEventType.NEW_ASSET_EVENT);
-        testSingleErrorCodeValues(AssetOwnerEventType.UPDATED_ASSET_EVENT);
-        testSingleErrorCodeValues(AssetOwnerEventType.DELETED_ASSET_EVENT);
+        for (AssetOwnerEventType eventType : AssetOwnerEventType.values())
+        {
+            testSingleErrorCodeValues(eventType);
+        }
     }
 
 
@@ -77,7 +77,7 @@ public class AccessServiceEventTypeTest
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(AssetOwnerEventType.NEW_ASSET_EVENT);
+            jsonString = objectMapper.writeValueAsString(AssetOwnerEventType.NEW_ELEMENT_CREATED);
         }
         catch (Exception  exc)
         {
@@ -86,7 +86,7 @@ public class AccessServiceEventTypeTest
 
         try
         {
-            assertTrue(objectMapper.readValue(jsonString, AssetOwnerEventType.class) == AssetOwnerEventType.NEW_ASSET_EVENT);
+            assertTrue(objectMapper.readValue(jsonString, AssetOwnerEventType.class) == AssetOwnerEventType.NEW_ELEMENT_CREATED);
         }
         catch (Exception  exc)
         {
@@ -100,7 +100,7 @@ public class AccessServiceEventTypeTest
      */
     @Test public void testToString()
     {
-        assertTrue(AssetOwnerEventType.DELETED_ASSET_EVENT.toString().contains("AssetOwnerEventType"));
+        assertTrue(AssetOwnerEventType.ELEMENT_UPDATED.toString().contains("AssetOwnerEventType"));
     }
 
 
@@ -109,8 +109,8 @@ public class AccessServiceEventTypeTest
      */
     @Test public void testEquals()
     {
-        assertTrue(AssetOwnerEventType.NEW_ASSET_EVENT.equals(AssetOwnerEventType.NEW_ASSET_EVENT));
-        assertFalse(AssetOwnerEventType.NEW_ASSET_EVENT.equals(AssetOwnerEventType.DELETED_ASSET_EVENT));
+        assertTrue(AssetOwnerEventType.NEW_ELEMENT_CREATED.equals(AssetOwnerEventType.NEW_ELEMENT_CREATED));
+        assertFalse(AssetOwnerEventType.NEW_ELEMENT_CREATED.equals(AssetOwnerEventType.ELEMENT_UPDATED));
     }
 
 
@@ -119,7 +119,7 @@ public class AccessServiceEventTypeTest
      */
     @Test public void testHashcode()
     {
-        assertTrue(AssetOwnerEventType.UPDATED_ASSET_EVENT.hashCode() == AssetOwnerEventType.UPDATED_ASSET_EVENT.hashCode());
-        assertFalse(AssetOwnerEventType.UPDATED_ASSET_EVENT.hashCode() == AssetOwnerEventType.UNKNOWN_ASSET_OWNER_EVENT.hashCode());
+        assertTrue(AssetOwnerEventType.ELEMENT_UPDATED.hashCode() == AssetOwnerEventType.ELEMENT_UPDATED.hashCode());
+        assertFalse(AssetOwnerEventType.ELEMENT_UPDATED.hashCode() == AssetOwnerEventType.UNKNOWN_EVENT.hashCode());
     }
 }

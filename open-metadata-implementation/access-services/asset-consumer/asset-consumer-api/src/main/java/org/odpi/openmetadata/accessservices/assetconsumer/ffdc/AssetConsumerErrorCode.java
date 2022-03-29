@@ -29,7 +29,7 @@ public enum AssetConsumerErrorCode implements ExceptionMessageSet
     BAD_OUT_TOPIC_CONNECTION(400, "OMAS-ASSET-CONSUMER-400-001",
              "The Asset Consumer Open Metadata Access Service (OMAS) has been passed an invalid connection for publishing events.  The connection was {0}.  The resulting exception of {1} included the following message: {2}",
              "The access service has not been passed valid configuration for its out topic connection.",
-             "Correct the configuration and restart the service."),
+             "Correct the server configuration and restart the server."),
     OMRS_NOT_INITIALIZED(404, "OMAS-ASSET-CONSUMER-404-002",
                          "The open metadata repository services are not initialized for the {0} operation",
                          "The system is unable to connect to an open metadata repository.",
@@ -59,7 +59,7 @@ public enum AssetConsumerErrorCode implements ExceptionMessageSet
             "The system is unable to update information associated with the asset because none of the connected open metadata repositories recognize the asset's unique identifier.",
             "The unique identifier of the asset is supplied by the caller.  Verify that the caller's logic is correct, and that there are no errors being reported by the open metadata repository. Once all errors have been resolved, retry the request."),
 
-    NULL_LISTENER(500, "OMAS-ASSET-CONSUMER-400-017",
+    NULL_LISTENER(400, "OMAS-ASSET-CONSUMER-400-017",
                   "A null topic listener has been passed by user {0} on method {1}",
                   "There is a coding error in the caller to the Asset Consumer OMAS.",
                   "Correct the caller logic and retry the request."),

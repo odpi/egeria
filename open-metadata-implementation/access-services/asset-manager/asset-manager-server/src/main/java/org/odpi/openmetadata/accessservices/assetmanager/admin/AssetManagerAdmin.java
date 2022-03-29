@@ -126,7 +126,8 @@ public class AssetManagerAdmin extends AccessServiceAdmin
                                                  new AssetManagerOMRSTopicListener(AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceFullName(),
                                                                                    serverUserName,
                                                                                    eventPublisher,
-                                                                                   instance.getDataAssetExchangeHandler(),
+                                                                                   instance.getGovernanceActionProcessHandler(),
+                                                                                   supportedZones,
                                                                                    outTopicAuditLog),
                                                  auditLog);
             }

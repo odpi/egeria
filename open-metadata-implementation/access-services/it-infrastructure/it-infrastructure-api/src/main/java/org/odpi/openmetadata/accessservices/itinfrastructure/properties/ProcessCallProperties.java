@@ -18,7 +18,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ProcessCallProperties implements Serializable
+public class ProcessCallProperties extends ConfigurationItemRelationshipProperties
 {
     private static final long    serialVersionUID = 1L;
 
@@ -127,10 +127,12 @@ public class ProcessCallProperties implements Serializable
     @Override
     public String toString()
     {
-        return "DataFlowProperties{" +
+        return "ProcessCallProperties{" +
                        "qualifiedName='" + qualifiedName + '\'' +
                        ", description='" + description + '\'' +
                        ", formula='" + formula + '\'' +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
                        '}';
     }
 

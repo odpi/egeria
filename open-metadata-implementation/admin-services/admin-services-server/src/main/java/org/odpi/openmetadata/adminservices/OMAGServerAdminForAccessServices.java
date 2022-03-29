@@ -98,6 +98,7 @@ public class OMAGServerAdminForAccessServices
                         {
                             RegisteredOMAGService service = new RegisteredOMAGService();
 
+                            service.setServiceId(accessServiceConfig.getAccessServiceId());
                             service.setServiceName(accessServiceConfig.getAccessServiceFullName());
                             service.setServiceDevelopmentStatus(accessServiceConfig.getAccessServiceDevelopmentStatus());
                             service.setServiceDescription(accessServiceConfig.getAccessServiceDescription());
@@ -111,7 +112,6 @@ public class OMAGServerAdminForAccessServices
                 {
                     response.setServices(services);
                 }
-
             }
         }
         catch (OMAGInvalidParameterException error)
