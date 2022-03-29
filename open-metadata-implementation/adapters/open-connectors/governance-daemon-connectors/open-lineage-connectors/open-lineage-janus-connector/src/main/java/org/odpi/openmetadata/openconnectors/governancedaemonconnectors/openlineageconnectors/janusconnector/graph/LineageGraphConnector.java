@@ -45,7 +45,7 @@ public class LineageGraphConnector extends ConnectorBase implements OpenLineageG
                     connectionProperties.getConfigurationProperties(), auditLog);
 
             this.graphStorageHelper = new LineageGraphStorageService(graphHelper, auditLog);
-            this.lineageGraphQueryService = new LineageGraphQueryService(graphHelper);
+            this.lineageGraphQueryService = new LineageGraphQueryService(graphHelper, auditLog);
 
         } catch (JanusConnectorException error) {
             log.error(THE_LINEAGE_GRAPH_COULD_NOT_BE_INITIALIZED_DUE_TO_AN_ERROR, error);

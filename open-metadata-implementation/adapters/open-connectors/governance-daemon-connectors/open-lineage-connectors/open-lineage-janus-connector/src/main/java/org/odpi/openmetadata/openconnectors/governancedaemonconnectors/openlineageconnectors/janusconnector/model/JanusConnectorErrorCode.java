@@ -110,9 +110,30 @@ public enum JanusConnectorErrorCode implements AuditLogMessageSet {
             "Check the status of the application and try again"),
     COULD_NOT_RETRIEVE_VERTEX("OPEN-LINEAGE-SERVICES-031",
             OMRSAuditLogRecordSeverity.ERROR,
+            "Could not find queried vertex with guid {0}",
             "Could not find queried vertex",
-            "Could not find queried vertex",
-            "Check the status of the application and try again");
+            "Check the status of the application and try again"),
+    COULD_NOT_RETRIEVE_LAST_UPDATE_TIME("OPEN-LINEAGE-SERVICES-032",
+            OMRSAuditLogRecordSeverity.ERROR,
+            "Could not retrieve last update time ",
+            "Could not retrieve last update time ",
+            "Check the status of the database"),
+    ENTITY_NOT_FOUND("OPEN-LINEAGE-SERVICES-033",
+            OMRSAuditLogRecordSeverity.ERROR,
+            "The entity with guid {0} could not be found in the graph",
+            "Entity not in graph",
+            "Check the input data and try again"),
+    LINEAGE_NOT_FOUND("OPEN-LINEAGE-SERVICES-034",
+            OMRSAuditLogRecordSeverity.ERROR,
+            "Could not find lineage for guid {0} with edge labels {1}",
+            "Could not find lineage for the queried node",
+            "Check the input data and try again"),
+    CLASSIFICATION_NOT_FOUND("OPEN-LINEAGE-SERVICES-035",
+            OMRSAuditLogRecordSeverity.ERROR,
+            "Could not find classification, vertexIds {0}",
+            "Could not find classification",
+            "Check the input data and try again")
+    ;
 
     private static final Logger log = LoggerFactory.getLogger(JanusConnectorErrorCode.class);
     private String errorMessageId;

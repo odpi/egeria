@@ -10,6 +10,7 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Property;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.VertexProperty;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageQueryService;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode;
@@ -39,7 +40,9 @@ import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.outE;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.until;
 import static org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode.ERROR_ENTITY_NOT_FOUND;
 import static org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode.ERROR_LINEAGE_NOT_FOUND;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.CLASSIFICATION_NOT_FOUND;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.COULD_NOT_RETRIEVE_VERTEX;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.LINEAGE_NOT_FOUND;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ASSETS;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ASSET_SCHEMA_TYPE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.AVRO_FILE;
@@ -52,7 +55,6 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.EMBEDDED_PROPERTIES;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.EMPTY_STRING;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.EVENT_SCHEMA_ATTRIBUTE;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.GENERIC_QUERY_EXCEPTION;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.GLOSSARY_TERM;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.GLOSSARY_TERM_AND_CLASSIFICATION_EDGES;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.INCOMPLETE;
@@ -90,9 +92,11 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
 
     private final GraphHelper graphHelper;
     private final LineageGraphQueryHelper lineageGraphQueryHelper;
+    private final AuditLog auditLog;
 
-    public LineageGraphQueryService(GraphHelper graphHelper) {
+    public LineageGraphQueryService(GraphHelper graphHelper, AuditLog auditLog) {
         this.graphHelper = graphHelper;
+        this.auditLog = auditLog;
         this.lineageGraphQueryHelper = new LineageGraphQueryHelper(graphHelper);
     }
 
@@ -199,7 +203,7 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
     }
 
     private void handleLineageNotFoundException(Exception e, String guid, List<String> edgeLabels) {
-        log.error("Could not find lineage for guid {} with edge labels {}", guid, edgeLabels, e);
+        auditLog.logException(LINEAGE_NOT_FOUND.getFormattedErrorMessage(guid, edgeLabels.toString()), LINEAGE_NOT_FOUND.getMessageDefinition(guid, edgeLabels.toString()), e);
     }
 
     /**
@@ -323,7 +327,7 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
     }
 
     private void handleGetQueriedVertexException(Exception e, String guid) {
-        log.error(COULD_NOT_RETRIEVE_VERTEX.getErrorMessage() + " " + guid, e);
+        auditLog.logException(COULD_NOT_RETRIEVE_VERTEX.getFormattedErrorMessage(guid), COULD_NOT_RETRIEVE_VERTEX.getMessageDefinition(guid), e);
         throw new JanusConnectorException(this.getClass().getName(), "getQueriedVertex", COULD_NOT_RETRIEVE_VERTEX);
     }
 
@@ -365,8 +369,7 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
     }
 
     private void handleVerticalLineageNotFoundException(Exception e, String guid) {
-        log.error(GENERIC_QUERY_EXCEPTION, guid, e);
-
+        auditLog.logException(LINEAGE_NOT_FOUND.getFormattedErrorMessage(guid), LINEAGE_NOT_FOUND.getMessageDefinition(guid), e);
     }
 
     /**
@@ -453,7 +456,7 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
     }
 
     private void handleIncompleteClassificationException(Exception e, List<Object> vertexIds) {
-        log.error("Could not find classification, vertexIds {}", vertexIds, e);
+        auditLog.logException(CLASSIFICATION_NOT_FOUND.getFormattedErrorMessage(vertexIds.toString()), CLASSIFICATION_NOT_FOUND.getMessageDefinition(vertexIds.toString()), e);
     }
 
     private String getCondensedNodeId(String condensationType) {

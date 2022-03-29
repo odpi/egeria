@@ -17,7 +17,6 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.LineageSyncUpdate
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.governanceservers.openlineage.graph.LineageGraph;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.GraphRelationship;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.ffdc.JanusConnectorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,8 +37,14 @@ import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.inE;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.inV;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.outV;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.unfold;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.COULD_NOT_RETRIEVE_LAST_UPDATE_TIME;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.COULD_NOT_SAVE_LAST_UPDATE_TIME;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.DELETE_CLASSIFICATION_EXCEPTION;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.DELETE_ENTITY_EXCEPTION;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.DELETE_RELATIONSHIP_EXCEPTION;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.ENTITY_NOT_FOUND;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.ERROR_REMOVING_OBSOLETE_EDGES;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.FAILED_TO_UPDATE_CLASSIFICATION_WITH_GUID;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.GET_ALL_NEIGHBOURS;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.PROPERTIES_UPDATE_EXCEPTION;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.UNABLE_TO_ADD_PROPERTIES_ON_EDGE_FROM_RELATIONSHIP_WITH_TYPE;
@@ -82,8 +87,8 @@ public class LineageGraphStorageService implements LineageGraph {
 
     public LineageGraphStorageService(GraphHelper graphHelper, AuditLog auditLog) {
         this.graphHelper = graphHelper;
-        this.helper = new LineageGraphQueryService(graphHelper);
         this.auditLog = auditLog;
+        this.helper = new LineageGraphQueryService(graphHelper, auditLog);
     }
 
     /**
@@ -108,7 +113,8 @@ public class LineageGraphStorageService implements LineageGraph {
     }
 
     private void handleStoreRelationshipError(Exception e) throws JanusConnectorException {
-        log.error(VERTICES_AND_RELATIONSHIP_CREATION_EXCEPTION.getErrorMessage() + "\n" + e.getMessage());
+        this.auditLog.logException(VERTICES_AND_RELATIONSHIP_CREATION_EXCEPTION.getErrorMessage(),
+                VERTICES_AND_RELATIONSHIP_CREATION_EXCEPTION.getMessageDefinition(), e);
         throw new JanusConnectorException(this.getClass().getName(), "upsertToGraph", VERTICES_AND_RELATIONSHIP_CREATION_EXCEPTION);
     }
 
@@ -181,7 +187,8 @@ public class LineageGraphStorageService implements LineageGraph {
     }
 
     private void handleErrorGetAllNeighbours(Exception e, String entityGuid) {
-        log.error(GET_ALL_NEIGHBOURS.getErrorMessage() + " " + entityGuid, e);
+        this.auditLog.logException(GET_ALL_NEIGHBOURS.getErrorMessage() + " " + entityGuid,
+                GET_ALL_NEIGHBOURS.getMessageDefinition(), e);
         throw new JanusConnectorException(this.getClass().getName(), "getAllNeighbours", GET_ALL_NEIGHBOURS);
     }
 
@@ -209,7 +216,8 @@ public class LineageGraphStorageService implements LineageGraph {
     }
 
     private void handleErrorRemoveObsoleteEdges(Exception e) {
-        log.error(ERROR_REMOVING_OBSOLETE_EDGES.getErrorMessage() + " " + e.getMessage(), e);
+        this.auditLog.logException(ERROR_REMOVING_OBSOLETE_EDGES.getErrorMessage(),
+                ERROR_REMOVING_OBSOLETE_EDGES.getMessageDefinition(), e);
         throw new JanusConnectorException(this.getClass().getName(), "removeObsoleteEdges", ERROR_REMOVING_OBSOLETE_EDGES);
     }
 
@@ -234,7 +242,8 @@ public class LineageGraphStorageService implements LineageGraph {
     }
 
     private void handleUpdateEntityError(Exception e) {
-        log.error(PROPERTIES_UPDATE_EXCEPTION.getErrorMessage(), e);
+        this.auditLog.logException(PROPERTIES_UPDATE_EXCEPTION.getErrorMessage(),
+                PROPERTIES_UPDATE_EXCEPTION.getMessageDefinition(), e);
         throw new JanusConnectorException(this.getClass().getName(), "updateEntity", PROPERTIES_UPDATE_EXCEPTION);
     }
 
@@ -311,7 +320,8 @@ public class LineageGraphStorageService implements LineageGraph {
     }
 
     private void handlePropertiesEdgeException(Exception e) {
-        log.error(UNABLE_TO_ADD_PROPERTIES_ON_EDGE_FROM_RELATIONSHIP_WITH_TYPE.getErrorMessage());
+        this.auditLog.logException(UNABLE_TO_ADD_PROPERTIES_ON_EDGE_FROM_RELATIONSHIP_WITH_TYPE.getErrorMessage(),
+                UNABLE_TO_ADD_PROPERTIES_ON_EDGE_FROM_RELATIONSHIP_WITH_TYPE.getMessageDefinition(), e);
         throw new JanusConnectorException(this.getClass().getName(), "addOrUpdatePropertiesEdge", UNABLE_TO_ADD_PROPERTIES_ON_EDGE_FROM_RELATIONSHIP_WITH_TYPE);
     }
 
@@ -361,8 +371,9 @@ public class LineageGraphStorageService implements LineageGraph {
     }
 
     private void handleUpdateClassificationException(Exception e) {
-        log.error(JanusConnectorErrorCode.FAILED_TO_UPDATE_CLASSIFICATION_WITH_GUID.getErrorMessage(), e);
-        throw new JanusConnectorException(this.getClass().getName(), "updateClassification", JanusConnectorErrorCode.FAILED_TO_UPDATE_CLASSIFICATION_WITH_GUID);
+        this.auditLog.logException(FAILED_TO_UPDATE_CLASSIFICATION_WITH_GUID.getErrorMessage(),
+                FAILED_TO_UPDATE_CLASSIFICATION_WITH_GUID.getMessageDefinition(), e);
+        throw new JanusConnectorException(this.getClass().getName(), "updateClassification", FAILED_TO_UPDATE_CLASSIFICATION_WITH_GUID);
 
     }
 
@@ -395,8 +406,9 @@ public class LineageGraphStorageService implements LineageGraph {
     }
 
     private void handleDeleteClassificationException(Exception e) {
-        log.error(JanusConnectorErrorCode.DELETE_CLASSIFICATION_EXCEPTION.getErrorMessage(), e);
-        throw new JanusConnectorException(this.getClass().getName(), "deleteClassification", JanusConnectorErrorCode.DELETE_CLASSIFICATION_EXCEPTION);
+        this.auditLog.logException(DELETE_CLASSIFICATION_EXCEPTION.getErrorMessage(),
+                DELETE_CLASSIFICATION_EXCEPTION.getMessageDefinition(), e);
+        throw new JanusConnectorException(this.getClass().getName(), "deleteClassification", DELETE_CLASSIFICATION_EXCEPTION);
     }
 
 
@@ -420,8 +432,9 @@ public class LineageGraphStorageService implements LineageGraph {
     }
 
     private void handleDeleteRelationshipException(Exception e) {
-        log.error(JanusConnectorErrorCode.DELETE_RELATIONSHIP_EXCEPTION.getErrorMessage(), e);
-        throw new JanusConnectorException(this.getClass().getName(), "deleteRelationship", JanusConnectorErrorCode.DELETE_RELATIONSHIP_EXCEPTION);
+        this.auditLog.logException(DELETE_RELATIONSHIP_EXCEPTION.getErrorMessage(),
+                DELETE_RELATIONSHIP_EXCEPTION.getMessageDefinition(), e);
+        throw new JanusConnectorException(this.getClass().getName(), "deleteRelationship", DELETE_RELATIONSHIP_EXCEPTION);
     }
 
 
@@ -446,8 +459,9 @@ public class LineageGraphStorageService implements LineageGraph {
     }
 
     private void handleDeleteEntityException(Exception e) {
-        log.error(JanusConnectorErrorCode.DELETE_ENTITY_EXCEPTION.getErrorMessage(), e);
-        throw new JanusConnectorException(this.getClass().getName(), "deleteEntity", JanusConnectorErrorCode.DELETE_ENTITY_EXCEPTION);
+        this.auditLog.logException(DELETE_ENTITY_EXCEPTION.getErrorMessage(),
+                DELETE_ENTITY_EXCEPTION.getMessageDefinition(), e);
+        throw new JanusConnectorException(this.getClass().getName(), "deleteEntity", DELETE_ENTITY_EXCEPTION);
     }
 
     @Override
@@ -457,7 +471,8 @@ public class LineageGraphStorageService implements LineageGraph {
     }
 
     public void handleSaveAssetLineageUpdateTimeException(Exception e) {
-        log.error(COULD_NOT_SAVE_LAST_UPDATE_TIME.getErrorMessage(), e);
+        this.auditLog.logException(COULD_NOT_SAVE_LAST_UPDATE_TIME.getErrorMessage(),
+                COULD_NOT_SAVE_LAST_UPDATE_TIME.getMessageDefinition(), e);
         throw new JanusConnectorException(this.getClass().getName(), "saveAssetLineageUpdateTime", COULD_NOT_SAVE_LAST_UPDATE_TIME);
     }
 
@@ -514,10 +529,10 @@ public class LineageGraphStorageService implements LineageGraph {
     }
 
     private void handleRetrievingError(Exception e) {
-        log.error("Could not retrieve last update time ", e);
+        log.error(COULD_NOT_RETRIEVE_LAST_UPDATE_TIME.getErrorMessage(), COULD_NOT_RETRIEVE_LAST_UPDATE_TIME.getMessageDefinition(), e);
     }
 
     private void handleRetrievingError(Exception e, String guid) {
-        log.error("Could not retrieve result from the database for guid {}", guid, e);
+        log.error(ENTITY_NOT_FOUND.getFormattedErrorMessage(guid), ENTITY_NOT_FOUND.getMessageDefinition(), e);
     }
 }

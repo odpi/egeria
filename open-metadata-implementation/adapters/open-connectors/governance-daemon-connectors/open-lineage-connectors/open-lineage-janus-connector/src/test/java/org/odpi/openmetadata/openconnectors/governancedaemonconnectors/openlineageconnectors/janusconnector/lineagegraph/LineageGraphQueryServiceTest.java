@@ -45,7 +45,7 @@ public class LineageGraphQueryServiceTest {
     public static void beforeClass() throws JanusConnectorException, OpenLineageException {
         GraphHelper graphHelper = new GraphHelper();
         graphHelper.openGraph(CONNECTOR_PROVIDER_NAME, Collections.singletonMap("storage.backend", "inmemory"), null);
-        lineageGraphQueryService = new LineageGraphQueryService(graphHelper);
+        lineageGraphQueryService = new LineageGraphQueryService(graphHelper, null);
         addColumnLineageData(graphHelper.getGraphTraversalSource());
         addGlossaryLineageData(graphHelper.getGraphTraversalSource());
         addTableLineageData(graphHelper.getGraphTraversalSource());
