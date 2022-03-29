@@ -112,7 +112,7 @@ public class RepositoryRelationshipsIterator extends RepositoryIterator
                                                                               relationshipTypeName,
                                                                               forDuplicateProcessing,
                                                                               startingFrom,
-                        pageSize,
+                                                                              pageSize,
                                                                               effectiveTime,
                                                                               methodName);
 

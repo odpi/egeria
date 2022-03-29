@@ -9646,7 +9646,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                           int          startFrom,
                                                           int          queryPageSize,
                                                           Date         effectiveTime,
-                                                          String       methodName) throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException
+                                                          String       methodName) throws InvalidParameterException
     {
         RepositoryIteratorForEntities iterator;
 

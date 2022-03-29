@@ -2467,7 +2467,9 @@ public class RepositoryHandler
                                         String  entityTypeName,
                                         boolean forDuplicateProcessing,
                                         String  methodName) throws UserNotAuthorizedException,
-            PropertyServerException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
+                                                                   PropertyServerException,
+                                                                   InvalidParameterException
+    {
         final String localMethodName = "isolateAndRemoveEntity";
 
         final String typeGUIDParameterName = "entityTypeGUID";
@@ -6247,7 +6249,9 @@ public class RepositoryHandler
                                              boolean forDuplicateProcessing,
                                              Date    effectiveTime,
                                              String  methodName) throws UserNotAuthorizedException,
-            PropertyServerException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
+                                                                        PropertyServerException,
+                                                                        InvalidParameterException
+    {
         final String localMethodName = "removeAllRelationshipsOfType";
         final String typeGUIDParameterName = "relationshipTypeGUID";
         final String typeNameParameterName = "relationshipTypeName";

@@ -14,6 +14,8 @@ import java.util.Date;
  */
 public class RepositoryIterator
 {
+    public static final int MAX_PAGE_SIZE = 500;
+
     protected RepositoryHandler       repositoryHandler;
     protected InvalidParameterHandler invalidParameterHandler;
     protected String                  userId;
@@ -48,9 +50,13 @@ public class RepositoryIterator
         this.invalidParameterHandler = invalidParameterHandler;
         this.userId = userId;
         this.startingFrom = startingFrom;
-        this.pageSize = invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
         this.methodName = methodName;
         this.forDuplicateProcessing = forDuplicateProcessing;
         this.effectiveTime = effectiveTime;
+        this.pageSize = invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
+        if(pageSize == 0)
+        {
+            pageSize = MAX_PAGE_SIZE;
+        }
     }
 }
