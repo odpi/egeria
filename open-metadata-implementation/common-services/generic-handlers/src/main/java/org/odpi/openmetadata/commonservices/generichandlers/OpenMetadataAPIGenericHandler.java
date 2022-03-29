@@ -5193,14 +5193,14 @@ public class OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the repositories
      */
-    public Relationship getAttachmentLink(String       userId,
-                                          String       relationshipGUID,
-                                          String       relationshipGUIDParameterName,
-                                          String       relationshipTypeName,
-                                          Date         effectiveTime,
-                                          String       methodName) throws InvalidParameterException,
-                                                                          PropertyServerException,
-                                                                          UserNotAuthorizedException
+    public Relationship getAttachmentLink(String userId,
+                                          String relationshipGUID,
+                                          String relationshipGUIDParameterName,
+                                          String relationshipTypeName,
+                                          Date   effectiveTime,
+                                          String methodName) throws InvalidParameterException,
+                                                                    PropertyServerException,
+                                                                    UserNotAuthorizedException
 
     {
         Relationship relationship = repositoryHandler.getRelationshipByGUID(userId,

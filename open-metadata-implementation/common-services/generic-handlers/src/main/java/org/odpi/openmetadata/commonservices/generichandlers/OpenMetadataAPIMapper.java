@@ -153,7 +153,7 @@ public class OpenMetadataAPIMapper
     public static final String URL_PROPERTY_NAME                         = "url";                 /* from ExternalReference entity */
     public static final String REFERENCE_VERSION_PROPERTY_NAME           = "referenceVersion";    /* from ExternalReference entity */
 
-    public static final String REFERENCE_ID_PROPERTY_NAME                = "referenceId";          /* from ExternalReferenceLink relationship */
+    public static final String REFERENCE_ID_PROPERTY_NAME                = "referenceId";         /* from ExternalReferenceLink relationship */
     /* also description property */
 
     public static final String RELATED_MEDIA_TYPE_GUID                   = "747f8b86-fe7c-4c9b-ba75-979e093cc307";

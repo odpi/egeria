@@ -55,14 +55,21 @@ public enum GenericHandlersAuditCode implements AuditLogMessageSet
                             "No action is required now but this message can be useful to understand where particular relationships " +
                                     "came from."),
 
-    EXTERNAL_RELATIONSHIP_REMOVED("OMAG-GENERIC-HANDLERS-0005",
+    EXTERNAL_RELATIONSHIP_UPDATED("OMAG-GENERIC-HANDLERS-0005",
+                              OMRSAuditLogRecordSeverity.INFO,
+                              "{0} has updated an existing {1} relationship {2} during method {3} on behalf of external metadata manager {4} ({5})",
+                              "The updated properties of described relationship is stored in one of the connected open metadata repositories.",
+                              "No action is required now but this message can be useful to understand where particular relationships' " +
+                                      "values came from."),
+
+    EXTERNAL_RELATIONSHIP_REMOVED("OMAG-GENERIC-HANDLERS-0006",
                               OMRSAuditLogRecordSeverity.INFO,
                               "{0} has removed the {1} relationship between {2} {3} and {4} {5} during method {6} on behalf of external metadata manager {7} ({8})",
                               "The removed relationship was stored in one of the connected open metadata repositories but has now been removed.",
                               "No action is required now but this message can be useful to understand why a particular relationship " +
                                       "has been removed."),
 
-    UNABLE_TO_DELETE_UNANCHORED_BEAN("OMAG-GENERIC-HANDLERS-0006",
+    UNABLE_TO_DELETE_UNANCHORED_BEAN("OMAG-GENERIC-HANDLERS-0007",
                           OMRSAuditLogRecordSeverity.EXCEPTION,
                           "The Open Metadata Service {0} has deleted a relationship, resulting in entity {1} of type {2} ({3}) losing its anchor." +
                                    "An attempt was made to delete this unanchored entity, which failed. " +

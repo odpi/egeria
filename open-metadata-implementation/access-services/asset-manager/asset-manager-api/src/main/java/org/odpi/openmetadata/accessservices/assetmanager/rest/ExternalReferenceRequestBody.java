@@ -28,6 +28,7 @@ public class ExternalReferenceRequestBody implements Serializable
 
     private MetadataCorrelationProperties metadataCorrelationProperties = null;
     private ExternalReferenceProperties   elementProperties = null;
+    private String                        anchorGUID = null;
 
 
     /**
@@ -50,6 +51,7 @@ public class ExternalReferenceRequestBody implements Serializable
         {
             metadataCorrelationProperties = template.getMetadataCorrelationProperties();
             elementProperties = template.getElementProperties();
+            anchorGUID = template.getAnchorGUID();
         }
     }
 
@@ -99,6 +101,30 @@ public class ExternalReferenceRequestBody implements Serializable
 
 
     /**
+     * Set up an optional anchor GUID for the new external reference.  The assumption is that the external reference
+     * will be linked to this element.
+     *
+     * @return string guid
+     */
+    public String getAnchorGUID()
+    {
+        return anchorGUID;
+    }
+
+
+    /**
+     * Set up an optional anchor GUID for the new external reference.  The assumption is that the external reference
+     * will be linked to this element.
+     *
+     * @param anchorGUID string guid
+     */
+    public void setAnchorGUID(String anchorGUID)
+    {
+        this.anchorGUID = anchorGUID;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -109,6 +135,7 @@ public class ExternalReferenceRequestBody implements Serializable
         return "ExternalReferenceRequestBody{" +
                        "metadataCorrelationProperties=" + metadataCorrelationProperties +
                        ", elementProperties=" + elementProperties +
+                       ", anchorGUID='" + anchorGUID + '\'' +
                        '}';
     }
 
@@ -131,8 +158,9 @@ public class ExternalReferenceRequestBody implements Serializable
             return false;
         }
         ExternalReferenceRequestBody that = (ExternalReferenceRequestBody) objectToCompare;
-        return Objects.equals(getMetadataCorrelationProperties(), that.getMetadataCorrelationProperties()) &&
-                       Objects.equals(getElementProperties(), that.getElementProperties());
+        return Objects.equals(metadataCorrelationProperties, that.metadataCorrelationProperties) &&
+                       Objects.equals(elementProperties, that.elementProperties) &&
+                       Objects.equals(anchorGUID, that.anchorGUID);
     }
 
 
@@ -144,6 +172,6 @@ public class ExternalReferenceRequestBody implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), metadataCorrelationProperties, elementProperties);
+        return Objects.hash(super.hashCode(), metadataCorrelationProperties, anchorGUID, elementProperties);
     }
 }
