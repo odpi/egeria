@@ -44,19 +44,19 @@ public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEnt
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName  name of calling method
      */
-    public RepositorySelectedEntitiesIterator(RepositoryHandler  repositoryHandler,
+    public RepositorySelectedEntitiesIterator(RepositoryHandler       repositoryHandler,
                                               InvalidParameterHandler invalidParameterHandler,
-                                              String             userId,
-                                              String             entityTypeGUID,
-                                              InstanceProperties properties,
-                                              MatchCriteria      matchCriteria,
-                                              String             sequencingPropertyName,
-                                              boolean            forLineage,
-                                              boolean            forDuplicateProcessing,
-                                              int                startingFrom,
-                                              int                pageSize,
-                                              Date               effectiveTime,
-                                              String             methodName) throws InvalidParameterException
+                                              String                  userId,
+                                              String                  entityTypeGUID,
+                                              InstanceProperties      properties,
+                                              MatchCriteria           matchCriteria,
+                                              String                  sequencingPropertyName,
+                                              boolean                 forLineage,
+                                              boolean                 forDuplicateProcessing,
+                                              int                     startingFrom,
+                                              int                     pageSize,
+                                              Date                    effectiveTime,
+                                              String                  methodName) throws InvalidParameterException
     {
         super(repositoryHandler,
               invalidParameterHandler,
