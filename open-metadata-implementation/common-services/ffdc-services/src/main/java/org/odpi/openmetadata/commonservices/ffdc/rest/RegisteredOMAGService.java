@@ -25,7 +25,7 @@ public class RegisteredOMAGService implements Serializable
 {
     private static final long     serialVersionUID    = 1L;
 
-    private int                        serviceId               = 0;
+    private int                        serviceId                = 0;
     private String                     serviceName              = null;
     private ComponentDevelopmentStatus serviceDevelopmentStatus = null;
     private String                     serviceURLMarker         = null;
