@@ -58,7 +58,7 @@ public class AssetLineageUpdateJob implements Job {
 
         try {
 
-            LineageGraph lineageGraph = (LineageGraph) dataMap.get(JobConstants.OPEN_LINEAGE_GRAPH_STORE);
+            LineageGraph lineageGraph = (LineageGraph) dataMap.get(JobConstants.OPEN_LINEAGE_STORAGE_SERVICE);
             String configAssetLineageDefaultTime = (String) dataMap.get(JobConstants.CONFIG_ASSET_LINEAGE_LAST_UPDATE_TIME);
             Optional<Long> storedAssetLineageUpdateTime = lineageGraph.getAssetLineageUpdateTime();
             Optional<Date> assetLineageLastUpdateTime = getAssetLineageLastUpdateTime(configAssetLineageDefaultTime,

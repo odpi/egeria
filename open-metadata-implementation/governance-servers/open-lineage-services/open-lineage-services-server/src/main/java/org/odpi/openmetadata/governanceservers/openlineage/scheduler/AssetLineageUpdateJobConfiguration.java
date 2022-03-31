@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.governanceservers.openlineage.scheduler;
 
 import org.odpi.openmetadata.accessservices.assetlineage.AssetLineage;
-import org.odpi.openmetadata.governanceservers.openlineage.graph.LineageGraph;
+import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraphConnector;
 import org.quartz.Job;
 
 /**
@@ -15,7 +15,7 @@ public class AssetLineageUpdateJobConfiguration extends JobConfiguration {
     /**
      * Instantiates a new Asset lineage update job configuration.
      *
-     * @param lineageGraph          the lineage graph used to store the job's last run time
+     * @param openLineageGraphConnector          the lineage graph used to store the job's last run time
      * @param jobName               the job name
      * @param jobClass              the job class
      * @param jobInterval           the job interval
@@ -23,12 +23,13 @@ public class AssetLineageUpdateJobConfiguration extends JobConfiguration {
      * @param serverName            the server name where Asset Lineage OMAS runs
      * @param localServerUserId     the local server user ID
      */
-    public AssetLineageUpdateJobConfiguration(LineageGraph lineageGraph, String jobName, Class<? extends Job> jobClass,
+    public AssetLineageUpdateJobConfiguration(OpenLineageGraphConnector openLineageGraphConnector, String jobName, Class<? extends Job> jobClass,
                                               int jobInterval, String configAssetLineageUpdateTime, AssetLineage assetLineageClient,
                                               String serverName, String localServerUserId) {
 
-        super(lineageGraph, jobName, jobClass, jobInterval);
+        super(openLineageGraphConnector, jobName, jobClass, jobInterval);
 
+        jobDetail.getJobDataMap().put(JobConstants.OPEN_LINEAGE_STORAGE_SERVICE, openLineageGraphConnector.getLineageStorageService());
         jobDetail.getJobDataMap().put(JobConstants.CONFIG_ASSET_LINEAGE_LAST_UPDATE_TIME, configAssetLineageUpdateTime);
         jobDetail.getJobDataMap().put(JobConstants.ASSET_LINEAGE_CLIENT, assetLineageClient);
         jobDetail.getJobDataMap().put(JobConstants.ASSET_LINEAGE_SERVER_NAME, serverName);
