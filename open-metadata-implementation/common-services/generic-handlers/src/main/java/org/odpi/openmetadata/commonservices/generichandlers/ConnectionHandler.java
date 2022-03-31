@@ -2061,13 +2061,15 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                         EntitySummary connectionEntity,
                                                         Date          effectiveTime,
                                                         String        methodName) throws PropertyServerException,
-                                                                                         UserNotAuthorizedException
+                                                                                         UserNotAuthorizedException,
+                                                                                         InvalidParameterException
     {
         List<Relationship> supplementaryRelationships = new ArrayList<>();
 
         if ((connectionEntity != null) && (connectionEntity.getType() != null))
         {
             RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
+                                                                                           invalidParameterHandler,
                                                                                            userId,
                                                                                            connectionEntity.getGUID(),
                                                                                            connectionEntity.getType().getTypeDefName(),

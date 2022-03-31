@@ -3,6 +3,8 @@
 
 package org.odpi.openmetadata.commonservices.repositoryhandler;
 
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -14,19 +16,12 @@ import java.util.List;
  * RepositoryIteratorForEntities is the shared interface of all repository helper iterators that retrieve entity details from
  * the repository.
  */
-public abstract class RepositoryIteratorForEntities
+public abstract class RepositoryIteratorForEntities extends RepositoryIterator
 {
-    protected RepositoryHandler  repositoryHandler;
-    protected String             userId;
     protected String             entityTypeGUID;
     protected String             entityTypeName;
-    protected int                startingFrom;
-    protected int                pageSize;
-    protected String             methodName;
     protected String             sequencingPropertyName;
     protected boolean            forLineage;
-    protected boolean            forDuplicateProcessing;
-    protected Date               effectiveTime;
 
     protected List<EntityDetail> entitiesCache = null;
 
@@ -35,6 +30,7 @@ public abstract class RepositoryIteratorForEntities
      * Constructor takes the parameters used to call the repository handler.
      *
      * @param repositoryHandler interface to the open metadata repositories.
+     * @param invalidParameterHandler invalid parameter handler
      * @param userId  user making the request
      * @param entityTypeGUID  identifier for the type of entity to retrieve
      * @param entityTypeName  name for the type of entity to retrieve
@@ -45,30 +41,34 @@ public abstract class RepositoryIteratorForEntities
      * @param pageSize maximum number of definitions to return on this call.
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName  name of calling method
+     * @throws InvalidParameterException when page size or start from parameters do not meet criteria
      */
-    public RepositoryIteratorForEntities(RepositoryHandler repositoryHandler,
-                                         String            userId,
-                                         String            entityTypeGUID,
-                                         String            entityTypeName,
-                                         String            sequencingPropertyName,
-                                         boolean           forLineage,
-                                         boolean           forDuplicateProcessing,
-                                         int               startingFrom,
-                                         int               pageSize,
-                                         Date              effectiveTime,
-                                         String            methodName)
+    public RepositoryIteratorForEntities(RepositoryHandler       repositoryHandler,
+                                         InvalidParameterHandler invalidParameterHandler,
+                                         String                  userId,
+                                         String                  entityTypeGUID,
+                                         String                  entityTypeName,
+                                         String                  sequencingPropertyName,
+                                         boolean                 forLineage,
+                                         boolean                 forDuplicateProcessing,
+                                         int                     startingFrom,
+                                         int                     pageSize,
+                                         Date                    effectiveTime,
+                                         String                  methodName) throws InvalidParameterException
     {
-        this.repositoryHandler      = repositoryHandler;
-        this.userId                 = userId;
-        this.entityTypeGUID         = entityTypeGUID;
-        this.entityTypeName         = entityTypeName;
-        this.sequencingPropertyName = sequencingPropertyName;
-        this.startingFrom           = startingFrom;
-        this.pageSize               = pageSize;
-        this.forLineage             = forLineage;
-        this.forDuplicateProcessing = forDuplicateProcessing;
-        this.effectiveTime          = effectiveTime;
-        this.methodName             = methodName;
+        super(repositoryHandler,
+              invalidParameterHandler,
+              userId,
+              startingFrom,
+              pageSize,
+              forDuplicateProcessing,
+              effectiveTime,
+              methodName);
+
+        this.entityTypeGUID          = entityTypeGUID;
+        this.entityTypeName          = entityTypeName;
+        this.sequencingPropertyName  = sequencingPropertyName;
+        this.forLineage              = forLineage;
     }
 
 
