@@ -3,8 +3,10 @@
 package org.odpi.openmetadata.accessservices.assetcatalog.handlers;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.odpi.openmetadata.accessservices.assetcatalog.builders.AssetCatalogConverter;
+import org.odpi.openmetadata.accessservices.assetcatalog.converters.AssetCatalogConverter;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogBean;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -17,16 +19,15 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -45,9 +46,11 @@ import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.R
 public class CommonHandler {
 
     public static final String ZONE_MEMBERSHIP = "zoneMembership";
+    public static final String NONE = "none";
     private final String sourceName;
     private final RepositoryHandler repositoryHandler;
     private final OMRSRepositoryHelper repositoryHelper;
+    private final OpenMetadataAPIGenericHandler<AssetCatalogBean> assetHandler;
     private final RepositoryErrorHandler errorHandler;
 
     /**
@@ -56,12 +59,15 @@ public class CommonHandler {
      * @param sourceName        the name of the component
      * @param repositoryHandler manages calls to the repository services
      * @param repositoryHelper  provides utilities for manipulating the repository services objects
+     * @param assetHandler      provides utilities for manipulating asset catalog objects using a generic handler
      * @param errorHandler      provides common validation routines for the other handler classes
      */
-    public CommonHandler(String sourceName, RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper, RepositoryErrorHandler errorHandler) {
+    CommonHandler(String sourceName, RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper,
+                  OpenMetadataAPIGenericHandler<AssetCatalogBean> assetHandler, RepositoryErrorHandler errorHandler) {
         this.sourceName = sourceName;
         this.repositoryHandler = repositoryHandler;
         this.repositoryHelper = repositoryHelper;
+        this.assetHandler = assetHandler;
         this.errorHandler = errorHandler;
     }
 
@@ -79,7 +85,7 @@ public class CommonHandler {
     List<Type> getTypeContext(String userId, String typeDefName) {
         List<Type> response = new ArrayList<>();
         TypeDef typeDefByName = repositoryHelper.getTypeDefByName(userId, typeDefName);
-        AssetCatalogConverter converter = new AssetCatalogConverter(sourceName, repositoryHelper);
+        AssetCatalogConverter<AssetCatalogBean> converter = new AssetCatalogConverter<>(repositoryHelper, sourceName, assetHandler.getServerName());
 
         if (typeDefByName != null) {
             if (repositoryHelper.getKnownTypeDefGallery() == null
@@ -109,7 +115,7 @@ public class CommonHandler {
     Type getTypeByTypeDefName(String userId, String typeDefName) {
 
         TypeDef typeDefByName = repositoryHelper.getTypeDefByName(userId, typeDefName);
-        AssetCatalogConverter converter = new AssetCatalogConverter(sourceName, repositoryHelper);
+        AssetCatalogConverter<AssetCatalogBean> converter = new AssetCatalogConverter<>(repositoryHelper, sourceName, assetHandler.getServerName());
 
         if (typeDefByName != null) {
             return converter.convertType(typeDefByName);
@@ -182,6 +188,7 @@ public class CommonHandler {
      *
      * @param userId calling user
      * @param guid   unique identifier for the entity
+     * @param type   entity type name
      * @return entity detail object
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
@@ -191,21 +198,14 @@ public class CommonHandler {
                                  String guid,
                                  String type) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
 
-        String entityTypeName = type == null ? "Unknown" : type;
-        String methodName = "getEntityByGUID";
-        try {
-            return repositoryHandler.getMetadataCollection().getEntityDetail(userId, guid);
-        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException | RepositoryErrorException e) {
-            errorHandler.handleRepositoryError(e, methodName);
-        } catch (EntityNotKnownException e) {
-            errorHandler.handleUnknownEntity(e, guid, entityTypeName, methodName, GUID_PARAMETER);
-        } catch (EntityProxyOnlyException e) {
-            errorHandler.handleEntityProxy(e, guid, entityTypeName, methodName, GUID_PARAMETER);
-        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
-            errorHandler.handleUnauthorizedUser(userId, methodName);
+        String entityTypeName = type;
+        if(NONE.equals(type)) {
+            entityTypeName = null;
         }
-
-        return null;
+        String methodName = "getEntityByGUID";
+        return assetHandler.getEntityFromRepository(userId, guid, GUID_PARAMETER, entityTypeName,
+                null, null, false, false,
+                null, methodName);
     }
 
     /**
@@ -226,6 +226,29 @@ public class CommonHandler {
                 collect(Collectors.toList());
     }
 
+    /**
+     * Return a map of the types def GUIDs and their associated type names
+     *
+     * @param userId calling user
+     * @param types  list of the type def names
+     * @return a list of type def GUIDs
+     */
+    Map<String, String> getTypesAndGUIDs(String userId, List<String> types) {
+        if (CollectionUtils.isEmpty(types)) {
+            return Collections.emptyMap();
+        }
+        Map<String, String> typesAndGUIDs = new HashMap<>();
+        for (String type : types) {
+            TypeDef typeDef = repositoryHelper.getTypeDefByName(userId, type);
+            String typeDefGUID = null;
+            if(typeDef != null) {
+                typeDefGUID = typeDef.getGUID();
+            }
+            typesAndGUIDs.put(type, typeDefGUID);
+        }
+        return typesAndGUIDs;
+    }
+
     private void collectSubTypes(List<Type> types, List<TypeDef> activeTypeDefs, List<Type> collector) {
         for (Type currentSubType : types) {
             List<Type> subTypes = getSubTypes(activeTypeDefs, currentSubType);
@@ -236,7 +259,7 @@ public class CommonHandler {
 
     private List<Type> getSubTypes(List<TypeDef> activeTypeDefs, Type type) {
         String typeName = type.getName();
-        AssetCatalogConverter converter = new AssetCatalogConverter(sourceName, repositoryHelper);
+        AssetCatalogConverter<AssetCatalogBean> converter = new AssetCatalogConverter<>(repositoryHelper, sourceName, assetHandler.getServerName());
 
         List<Type> subTypes = new ArrayList<>();
         for (TypeDef typeDef : activeTypeDefs) {

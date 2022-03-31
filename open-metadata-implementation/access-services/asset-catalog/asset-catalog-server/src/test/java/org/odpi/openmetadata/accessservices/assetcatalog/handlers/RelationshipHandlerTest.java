@@ -8,14 +8,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogErrorCode;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogBean;
+import org.odpi.openmetadata.accessservices.assetcatalog.util.Constants;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -37,10 +38,9 @@ public class RelationshipHandlerTest {
     private static final String FIRST_GUID = "ababa-123-acbd";
     private static final String SECOND_GUID = "ababc-2134-2341f";
     private static final String RELATIONSHIP_TYPE_GUID = "adadad-bcba-123";
+    public static final String SERVER_NAME = "server-name";
     private final String USER = "test-user";
-    private final String SERVER = "test-server";
     private final String RELATIONSHIP_TYPE = "SemanticAssigment";
-    private final String DATABASE_TYPE = "Database";
     @Mock
     private RepositoryHandler repositoryHandler;
 
@@ -48,10 +48,10 @@ public class RelationshipHandlerTest {
     private OMRSRepositoryHelper repositoryHelper;
 
     @Mock
-    private InvalidParameterHandler invalidParameterHandler;
+    private AssetHandler<AssetCatalogBean> assetHandler;
 
     @Mock
-    private CommonHandler commonHandler;
+    private InvalidParameterHandler invalidParameterHandler;
 
     @InjectMocks
     private RelationshipHandler relationshipHandler;
@@ -69,27 +69,14 @@ public class RelationshipHandlerTest {
         Relationship mock = mockRelationship();
         mockTypeDef(RELATIONSHIP_TYPE, RELATIONSHIP_TYPE_GUID);
         mockMetadataCollection();
-        InstanceType type = mockType(DATABASE_TYPE);
-        EntityDetail entity1Mock = mockEntity1Detail(type);
 
-        when(repositoryHandler.getRelationshipBetweenEntities(USER,
-                FIRST_GUID,
-                DATABASE_TYPE,
-                SECOND_GUID,
-                RELATIONSHIP_TYPE_GUID,
-                RELATIONSHIP_TYPE,
-                methodName)).thenReturn(mock);
-
-        when(commonHandler.getTypeDefGUID(USER, RELATIONSHIP_TYPE)).thenReturn(RELATIONSHIP_TYPE_GUID);
-        when(commonHandler.getEntityByGUID(USER, FIRST_GUID, null)).thenReturn(entity1Mock);
+        when(assetHandler.getUniqueAttachmentLink(USER, FIRST_GUID,
+                Constants.GUID_PARAMETER, "", RELATIONSHIP_TYPE_GUID, RELATIONSHIP_TYPE, SECOND_GUID,
+                "", null, methodName)).thenReturn(mock);
 
         org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship
-                result = relationshipHandler.getRelationshipBetweenEntities(USER,
-                SERVER,
-                FIRST_GUID,
-                SECOND_GUID,
+                result = relationshipHandler.getRelationshipBetweenEntities(USER, SERVER_NAME, FIRST_GUID, SECOND_GUID,
                 RELATIONSHIP_TYPE);
-
 
         assertNotNull(result);
         assertEquals(mock.getGUID(), result.getGuid());
@@ -104,27 +91,14 @@ public class RelationshipHandlerTest {
         String methodName = "getRelationshipBetweenEntities";
         mockTypeDef(RELATIONSHIP_TYPE, RELATIONSHIP_TYPE_GUID);
         mockMetadataCollection();
-        InstanceType type = mockType(DATABASE_TYPE);
-        EntityDetail entity1Mock = mockEntity1Detail(type);
-
-        when(commonHandler.getTypeDefGUID(USER, RELATIONSHIP_TYPE)).thenReturn(RELATIONSHIP_TYPE_GUID);
-        when(commonHandler.getEntityByGUID(USER, FIRST_GUID, null)).thenReturn(entity1Mock);
 
         UserNotAuthorizedException mockedException = new UserNotAuthorizedException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getMessageDefinition(), this.getClass().getName(), "", "");
-        doThrow(mockedException).when(repositoryHandler).getRelationshipBetweenEntities(USER,
-                FIRST_GUID,
-                DATABASE_TYPE,
-                SECOND_GUID,
-                RELATIONSHIP_TYPE_GUID,
-                RELATIONSHIP_TYPE,
-                methodName);
+        doThrow(mockedException).when(assetHandler).getUniqueAttachmentLink(USER, FIRST_GUID,
+                Constants.GUID_PARAMETER, "", RELATIONSHIP_TYPE_GUID, RELATIONSHIP_TYPE, SECOND_GUID,
+                "", null, methodName);
 
         assertThrows(UserNotAuthorizedException.class, () ->
-                relationshipHandler.getRelationshipBetweenEntities(USER,
-                        SERVER,
-                        FIRST_GUID,
-                        SECOND_GUID,
-                        RELATIONSHIP_TYPE));
+                relationshipHandler.getRelationshipBetweenEntities(USER, SERVER_NAME, FIRST_GUID, SECOND_GUID, RELATIONSHIP_TYPE));
 
     }
 
@@ -140,11 +114,7 @@ public class RelationshipHandlerTest {
         doThrow(mockedException).when(invalidParameterHandler).validateGUID(FIRST_GUID, "entity1GUID", methodName);
 
         assertThrows(InvalidParameterException.class, () ->
-                relationshipHandler.getRelationshipBetweenEntities(USER,
-                        SERVER,
-                        FIRST_GUID,
-                        SECOND_GUID,
-                        RELATIONSHIP_TYPE));
+                relationshipHandler.getRelationshipBetweenEntities(USER, SERVER_NAME, FIRST_GUID, SECOND_GUID, RELATIONSHIP_TYPE));
 
     }
 
@@ -162,26 +132,13 @@ public class RelationshipHandlerTest {
         return relationship;
     }
 
-    private OMRSMetadataCollection mockMetadataCollection() throws RepositoryErrorException {
+    private void mockMetadataCollection() throws RepositoryErrorException {
         OMRSMetadataCollection metadataCollection = mock(OMRSMetadataCollection.class);
 
         when(repositoryHandler.getMetadataCollection()).thenReturn(metadataCollection);
 
         when(metadataCollection.getMetadataCollectionId(USER)).thenReturn("metadataCollectionID");
         when(repositoryHelper.getMetadataCollectionName("metadataCollectionID")).thenReturn("metadataCollectionName");
-        return metadataCollection;
-    }
-
-    private EntityDetail mockEntity1Detail(InstanceType mockType) {
-        EntityDetail entityDetail = mock(EntityDetail.class);
-        when(entityDetail.getType()).thenReturn(mockType);
-        return entityDetail;
-    }
-
-    private InstanceType mockType(String typeName) {
-        InstanceType type = mock(InstanceType.class);
-        when(type.getTypeDefName()).thenReturn(typeName);
-        return type;
     }
 
 }
