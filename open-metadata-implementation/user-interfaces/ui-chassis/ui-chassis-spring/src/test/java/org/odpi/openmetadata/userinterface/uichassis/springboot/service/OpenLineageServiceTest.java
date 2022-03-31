@@ -70,7 +70,7 @@ public class OpenLineageServiceTest {
     @DisplayName("Ultimate Source")
     public void testUltimateSource() throws PropertyServerException, InvalidParameterException, OpenLineageException {
         try {
-            when(openLineageClient.lineage(USER_ID, Scope.ULTIMATE_SOURCE, guid, "", true))
+            when(openLineageClient.lineage(USER_ID, Scope.ULTIMATE_SOURCE, guid,true))
                     .thenReturn(lineageVerticesAndEdges);
         } catch (OpenLineageException e) {
             e.printStackTrace();
@@ -83,7 +83,7 @@ public class OpenLineageServiceTest {
     @DisplayName("End To End")
     public void testEndToEnd() throws PropertyServerException, InvalidParameterException, OpenLineageException {
         try {
-            when(openLineageClient.lineage(USER_ID, Scope.END_TO_END, guid, "", true))
+            when(openLineageClient.lineage(USER_ID, Scope.END_TO_END, guid,true))
                     .thenReturn(lineageVerticesAndEdges);
         } catch (OpenLineageException e) {
             e.printStackTrace();
@@ -97,7 +97,7 @@ public class OpenLineageServiceTest {
     @DisplayName("Ultimate Destination")
     public void testUltimateDestination() throws PropertyServerException, InvalidParameterException, OpenLineageException {
         try {
-            when(openLineageClient.lineage(USER_ID, Scope.ULTIMATE_DESTINATION, guid, "", true))
+            when(openLineageClient.lineage(USER_ID, Scope.ULTIMATE_DESTINATION, guid, true))
                     .thenReturn(lineageVerticesAndEdges);
         } catch (OpenLineageException e) {
             e.printStackTrace();
@@ -110,7 +110,7 @@ public class OpenLineageServiceTest {
     @DisplayName("GlossaryLineage")
     public void testGlossaryLineage() throws PropertyServerException, InvalidParameterException, OpenLineageException {
         try {
-            when(openLineageClient.lineage(USER_ID, Scope.VERTICAL, guid, "", true))
+            when(openLineageClient.lineage(USER_ID, Scope.VERTICAL, guid, true))
                     .thenReturn(lineageVerticesAndEdges);
         } catch (OpenLineageException e) {
             e.printStackTrace();

@@ -19,22 +19,20 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum CommunityProfileOutboundEventType implements Serializable
 {
-    UNKNOWN_COMMUNITY_PROFILE_EVENT           (0,   "Unknown Event",
-                                               "An event that is not recognized by the local server."),
-    NEW_ELEMENT_EVENT                         (1,   "New Element",
-                                               "A new element has been added through open metadata."),
-    UPDATED_ELEMENT_EVENT                     (2,   "Updated Element",
-                                               "An element has been updated."),
-    DELETED_ELEMENT_EVENT                     (3,   "Deleted Element",
-                                               "An existing user identity has been deleted."),
-    CLASSIFIED_ELEMENT_EVENT                  (4,   "Classified Element",
-                                               "A new classification has been added to an element through open metadata."),
-    RECLASSIFIED_ELEMENT_EVENT                (5,   "Reclassified Element",
-                                               "A classification attached to an element has been updated."),
-    DECLASSIFIED_ELEMENT_EVENT                (6,   "Declassified element",
-                                               "An existing classification has been removed from an element."),
-    KARMA_POINT_PLATEAU_EVENT                 (10,  "Karma Point Plateau",
-                                               "An individual has passed a karma point plateau.");
+    UNKNOWN_EVENT          (0,  "Unknown Event",         "An event that is not recognized by the local server."),
+    REFRESH_ELEMENT_EVENT  (1,  "Refresh Element",       "Check the synchronization of an element and update it as necessary."),
+    NEW_ELEMENT_CREATED    (2,  "New Element",           "A new element has been created."),
+    ELEMENT_UPDATED        (3,  "Element Updated",       "An element's properties has been updated."),
+    ELEMENT_DELETED        (4,  "Element Deleted",       "An element and all its anchored elements have been deleted."),
+    ELEMENT_CLASSIFIED     (5,  "Element Classified",    "A classification has been added to an element."),
+    ELEMENT_RECLASSIFIED   (6,  "Element Reclassified",  "The properties for a classification attached to an element have been updated."),
+    ELEMENT_DECLASSIFIED   (7,  "Element Declassified",  "A classification has been removed from an element."),
+    ELEMENT_RESTORED       (8,  "Element Restored",      "An element that was once deleted has been restored."),
+    ELEMENT_GUID_CHANGED   (9,  "Element GUID Changed",  "An element's GUID has changed."),
+    ELEMENT_TYPE_CHANGED   (10, "Element Type Changed",  "An element's type has changed."),
+    ELEMENT_HOME_CHANGED   (11, "Element Home Changed",  "An element's home has changed."),
+
+    KARMA_POINT_PLATEAU_EVENT (50,  "Karma Point Plateau", "An individual has passed a karma point plateau.");
 
     private static final long serialVersionUID = 1L;
 

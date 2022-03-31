@@ -125,7 +125,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
      * @return boolean flag indicating that the event is processed
      */
     private boolean excludeGovernanceEngineEvent(String         sourceName,
-                                                 EntityDetail   entity)
+                                                 EntitySummary  entity)
     {
         if (entity != null)
         {
@@ -279,8 +279,8 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
      * @param entity entity from the event
      * @return boolean flag indicating that the event should be ignored
      */
-    private boolean excludeGovernanceActionEvent(String       sourceName,
-                                                 EntityDetail entity)
+    private boolean excludeGovernanceActionEvent(String        sourceName,
+                                                 EntitySummary entity)
     {
         if (entity != null)
         {
@@ -308,8 +308,8 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
      * @param entity entity from the event
      * @return boolean flag indicating that the event should be ignored
      */
-    private boolean excludeGovernanceManagementEvents(String       sourceName,
-                                                      EntityDetail entity)
+    private boolean excludeGovernanceManagementEvents(String        sourceName,
+                                                      EntitySummary entity)
     {
         if (entity != null)
         {
@@ -708,7 +708,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
      */
     private void processWatchdogEvent(String            sourceName,
                                       WatchdogEventType eventType,
-                                      EntityDetail      entity,
+                                      EntitySummary     entity,
                                       Classification    classification,
                                       Classification    previousClassification,
                                       String            methodName)
@@ -943,6 +943,39 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
 
 
     /**
+     * A new classification has been added to an entity.
+     *
+     * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
+     *                   local repository, or event mapper name.
+     * @param originatorMetadataCollectionId  unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName  name of the server that the event came from.
+     * @param originatorServerType  type of server that the event came from.
+     * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
+     * @param entity  details of the entity with the new classification added. No guarantee this is all of the classifications.
+     * @param classification new classification
+     */
+    @Override
+    public void processClassifiedEntityEvent(String         sourceName,
+                                             String         originatorMetadataCollectionId,
+                                             String         originatorServerName,
+                                             String         originatorServerType,
+                                             String         originatorOrganizationName,
+                                             EntityProxy    entity,
+                                             Classification classification)
+    {
+        final String methodName = "processClassifiedEntityEvent(proxy)";
+
+        if ((! excludeGovernanceEngineEvent(sourceName, entity)) &&
+                    (! excludeGovernanceActionEvent(sourceName, entity)) &&
+                    (! excludeGovernanceManagementEvents(sourceName, entity)))
+        {
+            processWatchdogEvent(sourceName, WatchdogEventType.NEW_CLASSIFICATION, entity, classification, null, methodName);
+        }
+    }
+
+
+    /**
      * A classification has been removed from an entity.
      *
      * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
@@ -962,6 +995,39 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                                                String         originatorServerType,
                                                String         originatorOrganizationName,
                                                EntityDetail   entity,
+                                               Classification originalClassification)
+    {
+        final String methodName = "processDeclassifiedEntityEvent";
+
+        if ((! excludeGovernanceEngineEvent(sourceName, entity)) &&
+                    (! excludeGovernanceActionEvent(sourceName, entity)) &&
+                    (! excludeGovernanceManagementEvents(sourceName, entity)))
+        {
+            processWatchdogEvent(sourceName, WatchdogEventType.DELETED_CLASSIFICATION, entity, originalClassification, null, methodName);
+        }
+    }
+
+
+    /**
+     * A classification has been removed from an entity.
+     *
+     * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
+     *                   local repository, or event mapper name.
+     * @param originatorMetadataCollectionId  unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName  name of the server that the event came from.
+     * @param originatorServerType  type of server that the event came from.
+     * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
+     * @param entity  details of the entity after the classification has been removed. No guarantee this is all of the classifications.
+     * @param originalClassification classification that was removed
+     */
+    @Override
+    public void processDeclassifiedEntityEvent(String         sourceName,
+                                               String         originatorMetadataCollectionId,
+                                               String         originatorServerName,
+                                               String         originatorServerType,
+                                               String         originatorOrganizationName,
+                                               EntityProxy    entity,
                                                Classification originalClassification)
     {
         final String methodName = "processDeclassifiedEntityEvent";
@@ -996,6 +1062,42 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                                                String         originatorServerType,
                                                String         originatorOrganizationName,
                                                EntityDetail   entity,
+                                               Classification originalClassification,
+                                               Classification classification)
+    {
+        final String methodName = "processReclassifiedEntityEvent";
+
+        if ((! excludeGovernanceEngineEvent(sourceName, entity)) &&
+                    (! excludeGovernanceActionEvent(sourceName, entity)) &&
+                    (! excludeGovernanceManagementEvents(sourceName, entity)))
+        {
+            processWatchdogEvent(sourceName, WatchdogEventType.UPDATED_CLASSIFICATION_PROPERTIES, entity, classification, originalClassification, methodName);
+        }
+    }
+
+
+
+    /**
+     * An existing classification has been changed on an entity.
+     *
+     * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
+     *                   local repository, or event mapper name.
+     * @param originatorMetadataCollectionId  unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName  name of the server that the event came from.
+     * @param originatorServerType  type of server that the event came from.
+     * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
+     * @param entity  details of the entity after the classification has been changed. No guarantee this is all of the classifications.
+     * @param originalClassification classification that was removed
+     * @param classification new classification
+     */
+    @Override
+    public void processReclassifiedEntityEvent(String         sourceName,
+                                               String         originatorMetadataCollectionId,
+                                               String         originatorServerName,
+                                               String         originatorServerType,
+                                               String         originatorOrganizationName,
+                                               EntityProxy    entity,
                                                Classification originalClassification,
                                                Classification classification)
     {

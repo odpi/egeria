@@ -15,27 +15,27 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * SecurityManagerEventType describes the different types of events produced by the Security Manager OMAS.
  * Events are limited to assets that are in the zones listed in the supportedZones property
- * passed to the Security Manager OMAS at start up (a null value here means all zones).
+ * passed to the Security Manager OMAS at start up (a null value here means all zones).  There are also events for userIds,
+ * security groups and tags as well as profiles
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum SecurityManagerEventType implements Serializable
 {
-    UNKNOWN_SECURITY_MANAGER_EVENT    (0,  "Unknown Event",  "An event that is not recognized by the local server."),
-
-    NEW_SECURITY_GROUP_EVENT          (1,  "New Security Group Event", "A new security group definition has been created."),
-    UPDATED_SECURITY_GROUP_EVENT      (2,  "Updated Security Group Event", "The properties of a security group definition have been updated. "),
-    DELETED_SECURITY_GROUP_EVENT      (3,  "Deleted Security Group Event", "A security group definition has been deleted. "),
-
-    NEW_USER_IDENTITY_EVENT           (11, "New User Identity Event", "A new user identity has been created."),
-    UPDATED_USER_IDENTITY_EVENT       (12, "Updated User Identity Event", "The properties of a user identity have been updated. "),
-    GROUP_CHANGE_USER_IDENTITY_EVENT  (13, "Group Change User Identity Event", "The groups of a user identity have been updated. "),
-    DELETED_USER_IDENTITY_EVENT       (14, "Deleted User Identity Event", "A user identity has been deleted. "),
-
-    NEW_SECURITY_TAG_EVENT            (21,  "New Security Tag Event", "A new security tag definition has been attached to an element."),
-    UPDATED_SECURITY_TAG_EVENT        (22,  "Updated Security Tag Event", "The properties of a security tag classification have been updated. "),
-    DELETED_SECURITY_TAG_EVENT        (23,  "Deleted Security Tag Event", "A security tag classification has been removed from an element. ");
+    UNKNOWN_EVENT          (0,  "Unknown Event",         "An event that is not recognized by the local server."),
+    REFRESH_ELEMENT_EVENT  (1,  "Refresh Element",       "An element has been distributed around the cohort - could be for the first time."),
+    NEW_ELEMENT_CREATED    (2,  "New Element",           "A new element has been created."),
+    ELEMENT_UPDATED        (3,  "Element Updated",       "An element's properties has been updated."),
+    ELEMENT_DELETED        (4,  "Element Deleted",       "An element and all its anchored elements have been deleted."),
+    ELEMENT_CLASSIFIED     (5,  "Element Classified",    "A classification has been added to an element."),
+    ELEMENT_RECLASSIFIED   (6,  "Element Reclassified",  "The properties for a classification attached to an element have been updated."),
+    ELEMENT_DECLASSIFIED   (7,  "Element Declassified",  "A classification has been removed from an element."),
+    ELEMENT_RESTORED       (8,  "Element Restored",      "An element that was once deleted has been restored."),
+    ELEMENT_GUID_CHANGED   (9,  "Element GUID Changed",  "An element's GUID has changed."),
+    ELEMENT_TYPE_CHANGED   (10, "Element Type Changed",  "An element's type has changed."),
+    ELEMENT_HOME_CHANGED   (11, "Element Home Changed",  "An element's home has changed."),
+    ;
 
     private static final long     serialVersionUID = 1L;
 

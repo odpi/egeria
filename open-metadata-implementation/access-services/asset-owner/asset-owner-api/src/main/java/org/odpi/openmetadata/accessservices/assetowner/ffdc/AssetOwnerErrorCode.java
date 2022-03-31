@@ -22,7 +22,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  *     <li>Error Message Id - to uniquely identify the message</li>
  *     <li>Error Message Text - includes placeholder to allow additional values to be captured</li>
  *     <li>SystemAction - describes the result of the error</li>
- *     <li>UserAction - describes how a consumer should correct the error</li>
+ *     <li>UserAction - describes how a owner should correct the error</li>
  * </ul>
  */
 public enum AssetOwnerErrorCode implements ExceptionMessageSet
@@ -96,6 +96,16 @@ public enum AssetOwnerErrorCode implements ExceptionMessageSet
             "An unsupported property named {0} was passed to the repository services by the {1} request for open metadata access service {2} on server {3}; error message was: {4}",
             "The system is unable to process the request because it does not understand it.",
             "Correct the types and property names of the properties passed on the request."),
+    BAD_OUT_TOPIC_CONNECTION(400, "OMAS-ASSET-OWNER-400-018",
+            "The Asset Owner Open Metadata Access Service (OMAS) has been passed an invalid connection for publishing events.  The connection was {0}.  The resulting exception of {1} included the following message: {2}",
+            "The access service has not been passed valid configuration for its out topic connection.",
+             "Correct the server configuration and restart the server."),
+
+    NULL_LISTENER(400, "OMAS-ASSET-OWNER-400-019",
+                  "A null topic listener has been passed by user {0} on method {1}",
+                  "There is a coding error in the caller to the Asset Owner OMAS.",
+                  "Correct the caller logic and retry the request."),
+
     SERVER_NOT_AVAILABLE(404, "OMAS-ASSET-OWNER-404-001",
             "The OMAS Service {0} is not available",
             "The system is unable to connect to the OMAG Server.",
@@ -176,6 +186,20 @@ public enum AssetOwnerErrorCode implements ExceptionMessageSet
                        "A relationship of type {0} and unique identifier of {1} has a null entity proxy 2.  Relationship contents are: {2}",
                        "The system is unable to retrieve the asset.",
                        "This is a logic error in the open metadata repositories as it is not valid to have a relationship without two entity proxies that represent the entities that is connects.  Gather as much information about the usage of the metadata.  Use the metadata collection id to identify which server owns the relationship and raise an issue."),
+
+    UNABLE_TO_SEND_EVENT(500, "OMAS-ASSET-OWNER-500-004",
+                         "An unexpected exception occurred when sending an event through connector {0} to the Asset Owner OMAS out topic.  The failing " +
+                                 "event was {1}, the exception was {2} with message {3}",
+                         "The access service has issued a call to publish an event on its Out Topic and it failed.",
+                         "Look for errors in the event bus to understand why this is failing.  When the event bus is operating correctly, event will" +
+                                 " begin to be published again.  In the meantime, events are being lost."),
+
+    WRONG_TYPE_OF_CONNECTOR(500, "OMAS-ASSET-OWNER-500-007",
+                            "The connector generated from the connection named {0} return by the {1} service running in OMAG Server {2} at {3} is " +
+                                    "not of the required type. It should be an instance of {4}",
+                            "The system is unable to create the required connector which means some of its services will not work.",
+                            "Verify that the OMAG server is running and the OMAS service is correctly configured."),
+
     NULL_RESPONSE_FROM_API(503, "OMAS-ASSET-OWNER-503-001",
             "A null response was received from REST API call {0} to server {1}",
             "The system has issued a call to an open metadata access service REST API in a remote server and has received a null response.",

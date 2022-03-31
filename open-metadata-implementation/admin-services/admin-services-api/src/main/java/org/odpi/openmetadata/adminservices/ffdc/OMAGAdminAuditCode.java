@@ -76,7 +76,7 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
                                     "resources that they were using."),
 
     SERVER_SHUTDOWN_ERROR("OMAG-ADMIN-0007",
-                            OMRSAuditLogRecordSeverity.SHUTDOWN,
+                            OMRSAuditLogRecordSeverity.EXCEPTION,
                             "The {0} server has detected an {1} exception during server shutdown.  The error message was {2}",
                             "The request to shutdown the server has failed with an exception.  The server is in an " +
                                   "undetermined state.",

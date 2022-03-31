@@ -95,6 +95,7 @@ public class IntegrationServiceRegistry
                 {
                     RegisteredOMAGService service = new RegisteredOMAGService();
 
+                    service.setServiceId(serviceDescription.getIntegrationServiceCode());
                     service.setServiceName(serviceDescription.getIntegrationServiceFullName());
                     service.setServiceDevelopmentStatus(serviceDescription.getIntegrationServiceDevelopmentStatus());
                     service.setServiceURLMarker(serviceDescription.getIntegrationServiceURLMarker());

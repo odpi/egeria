@@ -10,7 +10,7 @@
     <parent>
         <artifactId>server-chassis</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.7-SNAPSHOT</version>
+        <version>3.8-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -260,6 +260,12 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>lineage-integrator-spring</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>infrastructure-integrator-spring</artifactId>
             <scope>runtime</scope>
         </dependency>
 
@@ -668,6 +674,18 @@
 
                 <dependency>
                     <groupId>org.odpi.egeria</groupId>
+                    <artifactId>api-integrator-spring</artifactId>
+                    <scope>runtime</scope>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.odpi.egeria</groupId>
+                    <artifactId>analytics-integrator-spring</artifactId>
+                    <scope>runtime</scope>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.odpi.egeria</groupId>
                     <artifactId>catalog-integrator-spring</artifactId>
                     <scope>runtime</scope>
                 </dependency>
@@ -680,6 +698,12 @@
 
                 <dependency>
                     <groupId>org.odpi.egeria</groupId>
+                    <artifactId>display-integrator-spring</artifactId>
+                    <scope>runtime</scope>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.odpi.egeria</groupId>
                     <artifactId>files-integrator-spring</artifactId>
                     <scope>runtime</scope>
                 </dependency>
@@ -687,6 +711,12 @@
                 <dependency>
                     <groupId>org.odpi.egeria</groupId>
                     <artifactId>lineage-integrator-spring</artifactId>
+                    <scope>runtime</scope>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.odpi.egeria</groupId>
+                    <artifactId>infrastructure-integrator-spring</artifactId>
                     <scope>runtime</scope>
                 </dependency>
 

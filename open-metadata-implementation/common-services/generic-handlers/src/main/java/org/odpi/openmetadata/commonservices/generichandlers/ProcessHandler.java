@@ -11,7 +11,9 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -23,16 +25,16 @@ import java.util.Map;
  */
 public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL, LINEAGE_MAPPING> extends ReferenceableHandler<PROCESS>
 {
-    private AssetHandler<PROCESS>                                          processHandler;
-    private PortHandler<PORT>                                              portHandler;
-    private OpenMetadataAPIGenericConverter<DATA_FLOW>                     dataFlowConverter;
-    private Class<DATA_FLOW>                                               dataFlowBeanClass;
-    private OpenMetadataAPIGenericConverter<CONTROL_FLOW>                  controlFlowConverter;
-    private Class<CONTROL_FLOW>                                            controlFlowBeanClass;
-    private OpenMetadataAPIGenericConverter<PROCESS_CALL>                  processCallConverter;
-    private Class<PROCESS_CALL>                                            processCallBeanClass;
-    private OpenMetadataAPIGenericConverter<LINEAGE_MAPPING>               validValueMappingConverter;
-    private Class<LINEAGE_MAPPING>                                         validValueMappingClass;
+    private AssetHandler<PROCESS>                            processHandler;
+    private PortHandler<PORT>                                portHandler;
+    private OpenMetadataAPIGenericConverter<DATA_FLOW>       dataFlowConverter;
+    private Class<DATA_FLOW>                                 dataFlowBeanClass;
+    private OpenMetadataAPIGenericConverter<CONTROL_FLOW>    controlFlowConverter;
+    private Class<CONTROL_FLOW>                              controlFlowBeanClass;
+    private OpenMetadataAPIGenericConverter<PROCESS_CALL>    processCallConverter;
+    private Class<PROCESS_CALL>                              processCallBeanClass;
+    private OpenMetadataAPIGenericConverter<LINEAGE_MAPPING> lineageMappingConverter;
+    private Class<LINEAGE_MAPPING>                           lineageMappingClass;
 
 
     /**
@@ -135,8 +137,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
         this.controlFlowBeanClass       = controlFlowBeanClass;
         this.processCallConverter       = processCallConverter;
         this.processCallBeanClass       = processCallBeanClass;
-        this.validValueMappingConverter = lineageMappingConverter;
-        this.validValueMappingClass     = lineageMappingClass;
+        this.lineageMappingConverter = lineageMappingConverter;
+        this.lineageMappingClass = lineageMappingClass;
     }
 
 
@@ -428,6 +430,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param parentProcessGUIDParameterName parameter supplying parentProcessGUID
      * @param childProcessGUID unique identifier of the process in the external process manager that is to be the nested sub-process
      * @param childProcessGUIDParameterName parameter supplying childProcessGUID
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param containmentType describes the ownership of the sub-process
      * @param methodName calling method
      *
@@ -442,12 +446,49 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                    String parentProcessGUIDParameterName,
                                    String childProcessGUID,
                                    String childProcessGUIDParameterName,
+                                   Date   effectiveFrom,
+                                   Date   effectiveTo,
                                    int    containmentType,
                                    String methodName) throws InvalidParameterException,
                                                              UserNotAuthorizedException,
                                                              PropertyServerException
     {
-        // todo
+        InstanceProperties properties;
+
+        try
+        {
+            properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
+                                                                     null,
+                                                                     OpenMetadataAPIMapper.CONTAINMENT_TYPE_PROPERTY_NAME,
+                                                                     OpenMetadataAPIMapper.PROCESS_CONTAINMENT_TYPE_ENUM_TYPE_GUID,
+                                                                     OpenMetadataAPIMapper.PROCESS_CONTAINMENT_TYPE_ENUM_TYPE_NAME,
+                                                                     containmentType,
+                                                                     methodName);
+        }
+        catch (TypeErrorException classificationNotSupported)
+        {
+            throw new InvalidParameterException(classificationNotSupported, OpenMetadataAPIMapper.CONTAINMENT_TYPE_PROPERTY_NAME);
+        }
+
+        processHandler.linkElementToElement(userId,
+                                            externalSourceGUID,
+                                            externalSourceName,
+                                            parentProcessGUID,
+                                            parentProcessGUIDParameterName,
+                                            OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                            childProcessGUID,
+                                            childProcessGUIDParameterName,
+                                            OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                            false,
+                                            false,
+                                            supportedZones,
+                                            OpenMetadataAPIMapper.PROCESS_HIERARCHY_TYPE_GUID,
+                                            OpenMetadataAPIMapper.PROCESS_HIERARCHY_TYPE_NAME,
+                                            properties,
+                                            effectiveFrom,
+                                            effectiveTo,
+                                            null,
+                                            methodName);
     }
 
 
@@ -475,10 +516,27 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                    String childProcessGUID,
                                    String childProcessGUIDParameterName,
                                    String methodName) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException
     {
-        // todo
+        processHandler.unlinkElementFromElement(userId,
+                                                false,
+                                                externalSourceGUID,
+                                                externalSourceName,
+                                                parentProcessGUID,
+                                                parentProcessGUIDParameterName,
+                                                OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                                childProcessGUID,
+                                                childProcessGUIDParameterName,
+                                                OpenMetadataAPIMapper.PROCESS_TYPE_GUID,
+                                                OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                                false,
+                                                false,
+                                                supportedZones,
+                                                OpenMetadataAPIMapper.PROCESS_HIERARCHY_TYPE_GUID,
+                                                OpenMetadataAPIMapper.PROCESS_HIERARCHY_TYPE_NAME,
+                                                null,
+                                                methodName);
     }
 
 
@@ -599,15 +657,15 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        List<PROCESS> results = processHandler.findAssets(userId,
-                                                          searchString,
-                                                          searchStringParameterName,
-                                                          startFrom,
-                                                          validatedPageSize,
-                                                          null,
-                                                          methodName);
-
-        return results;
+        return processHandler.findAssets(userId,
+                                         OpenMetadataAPIMapper.PROCESS_TYPE_GUID,
+                                         OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                         searchString,
+                                         searchStringParameterName,
+                                         startFrom,
+                                         validatedPageSize,
+                                         null,
+                                         methodName);
     }
 
 
@@ -620,6 +678,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param nameParameterName parameter supplying name
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -633,12 +692,21 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                               String nameParameterName,
                                               int    startFrom,
                                               int    pageSize,
+                                              Date   effectiveTime,
                                               String methodName) throws InvalidParameterException,
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
     {
-        // todo
-        return null;
+        return processHandler.getAssetsByName(userId,
+                                              OpenMetadataAPIMapper.PROCESS_TYPE_GUID,
+                                              OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                              name,
+                                              nameParameterName,
+                                              supportedZones,
+                                              startFrom,
+                                              pageSize,
+                                              effectiveTime,
+                                              methodName);
     }
 
 
@@ -648,6 +716,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param userId calling user
      * @param processGUID unique identifier of the requested metadata element
      * @param processGUIDParameterName parameter supplying processGUID
+     * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return requested metadata element
@@ -659,12 +728,19 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
     public PROCESS getProcessByGUID(String userId,
                                     String processGUID,
                                     String processGUIDParameterName,
+                                    Date   effectiveTime,
                                     String methodName) throws InvalidParameterException,
                                                               UserNotAuthorizedException,
                                                               PropertyServerException
     {
-        // todo
-        return null;
+        return processHandler.getBeanFromRepository(userId,
+                                                    processGUID,
+                                                    processGUIDParameterName,
+                                                    OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                                    false,
+                                                    false,
+                                                    effectiveTime,
+                                                    methodName);
     }
 
 
@@ -674,6 +750,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param userId calling user
      * @param processGUID unique identifier of the requested metadata element
      * @param processGUIDParameterName parameter supplying processGUID
+     * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return parent process element
@@ -685,12 +762,24 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
     public PROCESS getProcessParent(String userId,
                                     String processGUID,
                                     String processGUIDParameterName,
+                                    Date   effectiveTime,
                                     String methodName) throws InvalidParameterException,
                                                               UserNotAuthorizedException,
                                                               PropertyServerException
     {
-        // todo
-        return null;
+        return processHandler.getAttachedElement(userId,
+                                                 processGUID,
+                                                 processGUIDParameterName,
+                                                 OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                                 OpenMetadataAPIMapper.PROCESS_HIERARCHY_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.PROCESS_HIERARCHY_TYPE_NAME,
+                                                 OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                                 2,
+                                                 false,
+                                                 false,
+                                                 supportedZones,
+                                                 effectiveTime,
+                                                 methodName);
     }
 
 
@@ -702,6 +791,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param processGUIDParameterName parameter supplying processGUID
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of process element
@@ -715,12 +805,35 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                          String processGUIDParameterName,
                                          int    startFrom,
                                          int    pageSize,
+                                         Date   effectiveTime,
                                          String methodName) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
     {
-        // todo
-        return null;
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(processGUID, processGUIDParameterName, methodName);
+
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        return processHandler.getAttachedElements(userId,
+                                                  null,
+                                                  null,
+                                                  processGUID,
+                                                  processGUIDParameterName,
+                                                  OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                                  OpenMetadataAPIMapper.PROCESS_HIERARCHY_TYPE_GUID,
+                                                  OpenMetadataAPIMapper.PROCESS_HIERARCHY_TYPE_NAME,
+                                                  OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                                  null,
+                                                  null,
+                                                  2,
+                                                  false,
+                                                  false,
+                                                  supportedZones,
+                                                  startFrom,
+                                                  validatedPageSize,
+                                                  effectiveTime,
+                                                  methodName);
     }
 
 
@@ -1261,7 +1374,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      */
     
 
-
     /**
      * Link two elements together to show that data flows from one to the other.
      *
@@ -1272,6 +1384,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param dataSupplierGUIDParameterName parameter supplying dataSupplierGUID
      * @param dataConsumerGUID unique identifier of the data consumer
      * @param dataConsumerGUIDParameterName parameter supplying dataConsumerGUID
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param qualifiedName unique identifier for this relationship
      * @param description description and/or purpose of the data flow
      * @param formula function that determines the subset of the data that flows
@@ -1290,6 +1404,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                 String dataSupplierGUIDParameterName,
                                 String dataConsumerGUID,
                                 String dataConsumerGUIDParameterName,
+                                Date   effectiveFrom,
+                                Date   effectiveTo,
                                 String qualifiedName,
                                 String description,
                                 String formula,
@@ -1297,7 +1413,55 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                           UserNotAuthorizedException,
                                                           PropertyServerException
     {
-        return null;
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(dataSupplierGUID, dataSupplierGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(dataConsumerGUID, dataConsumerGUIDParameterName, methodName);
+
+        InstanceProperties relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                                 null,
+                                                                                                 OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                                 qualifiedName,
+                                                                                                 methodName);
+        relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                              relationshipProperties,
+                                                                              OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                              description,
+                                                                              methodName);
+
+        relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                              relationshipProperties,
+                                                                              OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME,
+                                                                              formula,
+                                                                              methodName);
+
+        if ((effectiveFrom != null) || (effectiveTo != null))
+        {
+            if (relationshipProperties == null)
+            {
+                relationshipProperties = new InstanceProperties();
+            }
+
+            relationshipProperties.setEffectiveFromTime(effectiveFrom);
+            relationshipProperties.setEffectiveToTime(effectiveTo);
+        }
+
+        return super.multiLinkElementToElement(userId,
+                                          externalSourceGUID,
+                                          externalSourceName,
+                                          dataSupplierGUID,
+                                          dataSupplierGUIDParameterName,
+                                          OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                          dataConsumerGUID,
+                                          dataConsumerGUIDParameterName,
+                                          OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                          false,
+                                          false,
+                                          supportedZones,
+                                          OpenMetadataAPIMapper.PROCESS_CALL_TYPE_GUID,
+                                          OpenMetadataAPIMapper.PROCESS_CALL_TYPE_NAME,
+                                          relationshipProperties,
+                                          null,
+                                          methodName);
     }
 
 
@@ -1311,6 +1475,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param dataSupplierGUIDParameterName parameter supplying dataSupplierGUID
      * @param dataConsumerGUID unique identifier of the data consumer
      * @param dataConsumerGUIDParameterName parameter supplying dataConsumerGUID
+     * @param effectiveTime time when the relationship is effective
      * @param qualifiedName unique identifier for this relationship
      * @param methodName calling method
      *
@@ -1325,11 +1490,57 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                  String dataSupplierGUIDParameterName,
                                  String dataConsumerGUID,
                                  String dataConsumerGUIDParameterName,
+                                 Date   effectiveTime,
                                  String qualifiedName,
                                  String methodName) throws InvalidParameterException,
                                                            UserNotAuthorizedException,
                                                            PropertyServerException
     {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(dataSupplierGUID, dataSupplierGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(dataConsumerGUID, dataConsumerGUIDParameterName, methodName);
+
+        List<Relationship> relationships = super.getAttachmentLinks(userId,
+                                                                    dataSupplierGUID,
+                                                                    dataSupplierGUIDParameterName,
+                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    OpenMetadataAPIMapper.DATA_FLOW_TYPE_GUID,
+                                                                    OpenMetadataAPIMapper.DATA_FLOW_TYPE_NAME,
+                                                                    dataConsumerGUID,
+                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    2,
+                                                                    false,
+                                                                    0,
+                                                                    0,
+                                                                    effectiveTime,
+                                                                    methodName);
+
+
+        if (relationships != null)
+        {
+            for (Relationship relationship : relationships)
+            {
+                if (relationship != null)
+                {
+                    if (qualifiedName == null)
+                    {
+                        return dataFlowConverter.getNewRelationshipBean(dataFlowBeanClass, relationship, methodName);
+                    }
+
+                    String relationshipQualifiedName = repositoryHelper.getStringProperty(serviceName,
+                                                                                          OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                          relationship.getProperties(),
+                                                                                          methodName);
+
+                    if (qualifiedName.equals(relationshipQualifiedName))
+                    {
+                        return dataFlowConverter.getNewRelationshipBean(dataFlowBeanClass, relationship, methodName);
+                    }
+
+                }
+            }
+        }
+
         return null;
     }
 
@@ -1342,6 +1553,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param externalSourceName unique name of software server capability representing the caller
      * @param dataFlowGUID unique identifier of the data flow relationship
      * @param dataFlowGUIDParameterName parameter supplying dataFlowGUID
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param qualifiedName unique identifier for this relationship
      * @param description description and/or purpose of the data flow
      * @param formula function that determines the subset of the data that flows
@@ -1352,19 +1565,60 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void   updateDataFlow(String userId,
-                                 String externalSourceGUID,
-                                 String externalSourceName,
-                                 String dataFlowGUID,
-                                 String dataFlowGUIDParameterName,
-                                 String qualifiedName,
-                                 String description,
-                                 String formula,
-                                 String methodName) throws InvalidParameterException,
-                                                        UserNotAuthorizedException,
-                                                        PropertyServerException
+    public void updateDataFlow(String userId,
+                               String externalSourceGUID,
+                               String externalSourceName,
+                               String dataFlowGUID,
+                               String dataFlowGUIDParameterName,
+                               Date   effectiveFrom,
+                               Date   effectiveTo,
+                               String qualifiedName,
+                               String description,
+                               String formula,
+                               String methodName) throws InvalidParameterException,
+                                                         UserNotAuthorizedException,
+                                                         PropertyServerException
     {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(dataFlowGUID, dataFlowGUIDParameterName, methodName);
 
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                     null,
+                                                                                     OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                     qualifiedName,
+                                                                                     methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  description,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME,
+                                                                  formula,
+                                                                  methodName);
+
+        if ((effectiveFrom != null) || (effectiveTo != null))
+        {
+            if (properties == null)
+            {
+                properties = new InstanceProperties();
+
+                properties.setEffectiveFromTime(effectiveFrom);
+                properties.setEffectiveToTime(effectiveTo);
+            }
+        }
+
+        super.updateRelationshipProperties(userId,
+                                           externalSourceGUID,
+                                           externalSourceName,
+                                           dataFlowGUID,
+                                           dataFlowGUIDParameterName,
+                                           OpenMetadataAPIMapper.DATA_FLOW_TYPE_NAME,
+                                           false,
+                                           properties,
+                                           methodName);
     }
 
 
@@ -1376,6 +1630,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param externalSourceName unique name of software server capability representing the caller
      * @param dataFlowGUID unique identifier of the data flow relationship
      * @param dataFlowGUIDParameterName parameter supplying dataFlowGUID
+     * @param effectiveTime time when the relationship is effective
      * @param methodName calling method
 
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -1387,11 +1642,22 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                               String externalSourceName,
                               String dataFlowGUID,
                               String dataFlowGUIDParameterName,
+                              Date   effectiveTime,
                               String methodName) throws InvalidParameterException,
-                                                          UserNotAuthorizedException,
-                                                          PropertyServerException
+                                                        UserNotAuthorizedException,
+                                                        PropertyServerException
     {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(dataFlowGUID, dataFlowGUIDParameterName, methodName);
 
+        super.deleteRelationship(userId,
+                                 externalSourceGUID,
+                                 externalSourceName,
+                                 dataFlowGUID,
+                                 dataFlowGUIDParameterName,
+                                 OpenMetadataAPIMapper.DATA_FLOW_TYPE_NAME,
+                                 effectiveTime,
+                                 methodName);
     }
 
 
@@ -1401,6 +1667,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param userId calling user
      * @param dataSupplierGUID unique identifier of the data supplier
      * @param dataSupplierGUIDParameterName parameter supplying dataSupplierGUID
+     * @param effectiveTime time when the relationship is effective
      * @param methodName calling method
      *
      * @return unique identifier and properties of the relationship
@@ -1412,11 +1679,48 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
     public List<DATA_FLOW> getDataFlowConsumers(String userId,
                                                 String dataSupplierGUID,
                                                 String dataSupplierGUIDParameterName,
+                                                Date   effectiveTime,
                                                 String methodName) throws InvalidParameterException,
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
     {
-        return null;
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(dataSupplierGUID, dataSupplierGUIDParameterName, methodName);
+
+        List<Relationship> relationships = super.getAttachmentLinks(userId,
+                                                                    dataSupplierGUID,
+                                                                    dataSupplierGUIDParameterName,
+                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    OpenMetadataAPIMapper.DATA_FLOW_TYPE_GUID,
+                                                                    OpenMetadataAPIMapper.DATA_FLOW_TYPE_NAME,
+                                                                    null,
+                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    2,
+                                                                    false,
+                                                                    0,
+                                                                    0,
+                                                                    effectiveTime,
+                                                                    methodName);
+
+        List<DATA_FLOW> dataFlowConsumers = new ArrayList<>();
+
+        if (relationships != null)
+        {
+            for (Relationship relationship : relationships)
+            {
+                if (relationship != null)
+                {
+                    dataFlowConsumers.add(dataFlowConverter.getNewRelationshipBean(dataFlowBeanClass, relationship, methodName));
+                }
+            }
+        }
+
+        if (dataFlowConsumers.isEmpty())
+        {
+            dataFlowConsumers = null;
+        }
+
+        return dataFlowConsumers;
     }
 
 
@@ -1437,11 +1741,48 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
     public List<DATA_FLOW> getDataFlowSuppliers(String userId,
                                                 String dataConsumerGUID,
                                                 String dataConsumerGUIDParameterName,
+                                                Date   effectiveTime,
                                                 String methodName) throws InvalidParameterException,
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
     {
-        return null;
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(dataConsumerGUID, dataConsumerGUIDParameterName, methodName);
+
+        List<Relationship> relationships = super.getAttachmentLinks(userId,
+                                                                    dataConsumerGUID,
+                                                                    dataConsumerGUIDParameterName,
+                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    OpenMetadataAPIMapper.DATA_FLOW_TYPE_GUID,
+                                                                    OpenMetadataAPIMapper.DATA_FLOW_TYPE_NAME,
+                                                                    null,
+                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    1,
+                                                                    false,
+                                                                    0,
+                                                                    0,
+                                                                    effectiveTime,
+                                                                    methodName);
+
+        List<DATA_FLOW> dataFlowSuppliers = new ArrayList<>();
+
+        if (relationships != null)
+        {
+            for (Relationship relationship : relationships)
+            {
+                if (relationship != null)
+                {
+                    dataFlowSuppliers.add(dataFlowConverter.getNewRelationshipBean(dataFlowBeanClass, relationship, methodName));
+                }
+            }
+        }
+
+        if (dataFlowSuppliers.isEmpty())
+        {
+            dataFlowSuppliers = null;
+        }
+
+        return dataFlowSuppliers;
     }
 
 
@@ -1455,6 +1796,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param currentStepGUIDParameterName parameter supplying currentStepGUID
      * @param nextStepGUID unique identifier of the next step
      * @param nextStepGUIDParameterName parameter supplying nextStepGUID
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param qualifiedName unique identifier for this relationship
      * @param description description and/or purpose of the data flow
      * @param guard function that must be true to travel down this control flow
@@ -1473,6 +1816,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                    String currentStepGUIDParameterName,
                                    String nextStepGUID,
                                    String nextStepGUIDParameterName,
+                                   Date   effectiveFrom,
+                                   Date   effectiveTo,
                                    String qualifiedName,
                                    String description,
                                    String guard,
@@ -1480,7 +1825,55 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                          UserNotAuthorizedException,
                                                          PropertyServerException
     {
-        return null;
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(currentStepGUID, currentStepGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(nextStepGUID, nextStepGUIDParameterName, methodName);
+
+        InstanceProperties relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                                 null,
+                                                                                                 OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                                 qualifiedName,
+                                                                                                 methodName);
+        relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                              relationshipProperties,
+                                                                              OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                              description,
+                                                                              methodName);
+
+        relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                              relationshipProperties,
+                                                                              OpenMetadataAPIMapper.GUARD_PROPERTY_NAME,
+                                                                              guard,
+                                                                              methodName);
+
+        if ((effectiveFrom != null) || (effectiveTo != null))
+        {
+            if (relationshipProperties == null)
+            {
+                relationshipProperties = new InstanceProperties();
+            }
+
+            relationshipProperties.setEffectiveFromTime(effectiveFrom);
+            relationshipProperties.setEffectiveToTime(effectiveTo);
+        }
+
+        return super.multiLinkElementToElement(userId,
+                                          externalSourceGUID,
+                                          externalSourceName,
+                                          currentStepGUID,
+                                          currentStepGUIDParameterName,
+                                          OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                          nextStepGUID,
+                                          nextStepGUIDParameterName,
+                                          OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                          false,
+                                          false,
+                                          supportedZones,
+                                          OpenMetadataAPIMapper.PROCESS_CALL_TYPE_GUID,
+                                          OpenMetadataAPIMapper.PROCESS_CALL_TYPE_NAME,
+                                          relationshipProperties,
+                                          null,
+                                          methodName);
     }
 
 
@@ -1495,6 +1888,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param nextStepGUID unique identifier of the next step
      * @param nextStepGUIDParameterName parameter supplying nextStepGUID
      * @param qualifiedName unique identifier for this relationship
+     * @param effectiveTime time when the relationship is effective
      * @param methodName calling method
      *
      * @return unique identifier and properties of the relationship
@@ -1508,11 +1902,57 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                        String currentStepGUIDParameterName,
                                        String nextStepGUID,
                                        String nextStepGUIDParameterName,
+                                       Date   effectiveTime,
                                        String qualifiedName,
                                        String methodName) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
     {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(currentStepGUID, currentStepGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(nextStepGUID, nextStepGUIDParameterName, methodName);
+
+        List<Relationship> relationships = super.getAttachmentLinks(userId,
+                                                                    currentStepGUID,
+                                                                    currentStepGUIDParameterName,
+                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    OpenMetadataAPIMapper.CONTROL_FLOW_TYPE_GUID,
+                                                                    OpenMetadataAPIMapper.CONTROL_FLOW_TYPE_NAME,
+                                                                    nextStepGUID,
+                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    2,
+                                                                    false,
+                                                                    0,
+                                                                    0,
+                                                                    effectiveTime,
+                                                                    methodName);
+
+
+        if (relationships != null)
+        {
+            for (Relationship relationship : relationships)
+            {
+                if (relationship != null)
+                {
+                    if (qualifiedName == null)
+                    {
+                        return controlFlowConverter.getNewRelationshipBean(controlFlowBeanClass, relationship, methodName);
+                    }
+
+                    String relationshipQualifiedName = repositoryHelper.getStringProperty(serviceName,
+                                                                                          OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                          relationship.getProperties(),
+                                                                                          methodName);
+
+                    if (qualifiedName.equals(relationshipQualifiedName))
+                    {
+                        return controlFlowConverter.getNewRelationshipBean(controlFlowBeanClass, relationship, methodName);
+                    }
+
+                }
+            }
+        }
+
         return null;
     }
 
@@ -1525,6 +1965,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param externalSourceName unique name of software server capability representing the caller
      * @param controlFlowGUID unique identifier of the  control flow relationship
      * @param controlFlowGUIDParameterName parameter supplying controlFlowGUID
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param qualifiedName unique identifier for this relationship
      * @param description description and/or purpose of the data flow
      * @param guard function that must be true to travel down this control flow
@@ -1539,6 +1981,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                   String externalSourceName,
                                   String controlFlowGUID,
                                   String controlFlowGUIDParameterName,
+                                  Date   effectiveFrom,
+                                  Date   effectiveTo,
                                   String qualifiedName,
                                   String description,
                                   String guard,
@@ -1546,7 +1990,46 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                             UserNotAuthorizedException,
                                                             PropertyServerException
     {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(controlFlowGUID, controlFlowGUIDParameterName, methodName);
 
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                     null,
+                                                                                     OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                     qualifiedName,
+                                                                                     methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  description,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.GUARD_PROPERTY_NAME,
+                                                                  guard,
+                                                                  methodName);
+
+        if ((effectiveFrom != null) || (effectiveTo != null))
+        {
+            if (properties == null)
+            {
+                properties = new InstanceProperties();
+
+                properties.setEffectiveFromTime(effectiveFrom);
+                properties.setEffectiveToTime(effectiveTo);
+            }
+        }
+
+        super.updateRelationshipProperties(userId,
+                                           externalSourceGUID,
+                                           externalSourceName,
+                                           controlFlowGUID,
+                                           controlFlowGUIDParameterName,
+                                           OpenMetadataAPIMapper.CONTROL_FLOW_TYPE_NAME,
+                                           false,
+                                           properties,
+                                           methodName);
     }
 
 
@@ -1558,6 +2041,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param externalSourceName unique name of software server capability representing the caller
      * @param controlFlowGUID unique identifier of the  control flow relationship
      * @param controlFlowGUIDParameterName parameter supplying controlFlowGUID
+     * @param effectiveTime time when the relationship is effective
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -1569,10 +2053,22 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                  String externalSourceName,
                                  String controlFlowGUID,
                                  String controlFlowGUIDParameterName,
+                                 Date   effectiveTime,
                                  String methodName) throws InvalidParameterException,
                                                            UserNotAuthorizedException,
                                                            PropertyServerException
     {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(controlFlowGUID, controlFlowGUIDParameterName, methodName);
+
+        super.deleteRelationship(userId,
+                                 externalSourceGUID,
+                                 externalSourceName,
+                                 controlFlowGUID,
+                                 controlFlowGUIDParameterName,
+                                 OpenMetadataAPIMapper.CONTROL_FLOW_TYPE_NAME,
+                                 effectiveTime,
+                                 methodName);
     }
 
 
@@ -1582,6 +2078,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param userId calling user
      * @param currentStepGUID unique identifier of the current step
      * @param currentStepGUIDParameterName parameter supplying currentStepGUID
+     * @param effectiveTime time when the relationship is effective
      * @param methodName calling method
      *
      * @return unique identifier and properties of the relationship
@@ -1593,11 +2090,48 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
     public List<CONTROL_FLOW> getControlFlowNextSteps(String userId,
                                                       String currentStepGUID,
                                                       String currentStepGUIDParameterName,
+                                                      Date   effectiveTime,
                                                       String methodName) throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
     {
-        return null;
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(currentStepGUID, currentStepGUIDParameterName, methodName);
+
+        List<Relationship> relationships = super.getAttachmentLinks(userId,
+                                                                    currentStepGUID,
+                                                                    currentStepGUIDParameterName,
+                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    OpenMetadataAPIMapper.CONTROL_FLOW_TYPE_GUID,
+                                                                    OpenMetadataAPIMapper.CONTROL_FLOW_TYPE_NAME,
+                                                                    null,
+                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    2,
+                                                                    false,
+                                                                    0,
+                                                                    0,
+                                                                    effectiveTime,
+                                                                    methodName);
+
+        List<CONTROL_FLOW> nextSteps = new ArrayList<>();
+
+        if (relationships != null)
+        {
+            for (Relationship relationship : relationships)
+            {
+                if (relationship != null)
+                {
+                    nextSteps.add(controlFlowConverter.getNewRelationshipBean(controlFlowBeanClass, relationship, methodName));
+                }
+            }
+        }
+
+        if (nextSteps.isEmpty())
+        {
+            nextSteps = null;
+        }
+
+        return nextSteps;
     }
 
 
@@ -1607,6 +2141,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param userId calling user
      * @param currentStepGUID unique identifier of the current step
      * @param currentStepGUIDParameterName parameter supplying currentStepGUID
+     * @param effectiveTime time when the relationship is effective
      * @param methodName calling method
      *
      * @return unique identifier and properties of the relationship
@@ -1618,11 +2153,48 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
     public List<CONTROL_FLOW> getControlFlowPreviousSteps(String userId,
                                                           String currentStepGUID,
                                                           String currentStepGUIDParameterName,
+                                                          Date   effectiveTime,
                                                           String methodName) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
-        return null;
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(currentStepGUID, currentStepGUIDParameterName, methodName);
+
+        List<Relationship> relationships = super.getAttachmentLinks(userId,
+                                                                    currentStepGUID,
+                                                                    currentStepGUIDParameterName,
+                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    OpenMetadataAPIMapper.CONTROL_FLOW_TYPE_GUID,
+                                                                    OpenMetadataAPIMapper.CONTROL_FLOW_TYPE_NAME,
+                                                                    null,
+                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    1,
+                                                                    false,
+                                                                    0,
+                                                                    0,
+                                                                    effectiveTime,
+                                                                    methodName);
+
+        List<CONTROL_FLOW> nextSteps = new ArrayList<>();
+
+        if (relationships != null)
+        {
+            for (Relationship relationship : relationships)
+            {
+                if (relationship != null)
+                {
+                    nextSteps.add(controlFlowConverter.getNewRelationshipBean(controlFlowBeanClass, relationship, methodName));
+                }
+            }
+        }
+
+        if (nextSteps.isEmpty())
+        {
+            nextSteps = null;
+        }
+
+        return nextSteps;
     }
 
 
@@ -1639,6 +2211,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param qualifiedName unique identifier for this relationship
      * @param description description and/or purpose of the data flow
      * @param formula function that determines the subset of the data that flows
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param methodName calling method
      *
      * @return unique identifier of the new relationship
@@ -1654,6 +2228,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                    String callerGUIDParameterName,
                                    String calledGUID,
                                    String calledGUIDParameterName,
+                                   Date   effectiveFrom,
+                                   Date   effectiveTo,
                                    String qualifiedName,
                                    String description,
                                    String formula,
@@ -1661,7 +2237,55 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                              UserNotAuthorizedException,
                                                              PropertyServerException
     {
-        return null;
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(callerGUID, callerGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(calledGUID, calledGUIDParameterName, methodName);
+
+        InstanceProperties relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                                 null,
+                                                                                                 OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                                 qualifiedName,
+                                                                                                 methodName);
+        relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                              relationshipProperties,
+                                                                              OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                              description,
+                                                                              methodName);
+
+        relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                              relationshipProperties,
+                                                                              OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME,
+                                                                              formula,
+                                                                              methodName);
+
+        if ((effectiveFrom != null) || (effectiveTo != null))
+        {
+            if (relationshipProperties == null)
+            {
+                relationshipProperties = new InstanceProperties();
+            }
+
+            relationshipProperties.setEffectiveFromTime(effectiveFrom);
+            relationshipProperties.setEffectiveToTime(effectiveTo);
+        }
+
+        return super.multiLinkElementToElement(userId,
+                                               externalSourceGUID,
+                                               externalSourceName,
+                                               callerGUID,
+                                               callerGUIDParameterName,
+                                               OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                               calledGUID,
+                                               calledGUIDParameterName,
+                                               OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                               false,
+                                               false,
+                                               supportedZones,
+                                               OpenMetadataAPIMapper.PROCESS_CALL_TYPE_GUID,
+                                               OpenMetadataAPIMapper.PROCESS_CALL_TYPE_NAME,
+                                               relationshipProperties,
+                                               null,
+                                               methodName);
     }
 
 
@@ -1676,6 +2300,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param calledGUID unique identifier of the element that is processing the call
      * @param calledGUIDParameterName parameter supplying calledGUID
      * @param qualifiedName unique identifier for this relationship
+     * @param effectiveTime time when the relationship is effective
      * @param methodName calling method
      *
      * @return unique identifier and properties of the relationship
@@ -1689,11 +2314,57 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                        String callerGUIDParameterName,
                                        String calledGUID,
                                        String calledGUIDParameterName,
+                                       Date   effectiveTime,
                                        String qualifiedName,
                                        String methodName) throws InvalidParameterException,
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
     {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(callerGUID, callerGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(calledGUID, calledGUIDParameterName, methodName);
+
+        List<Relationship> relationships = super.getAttachmentLinks(userId,
+                                                                    callerGUID,
+                                                                    callerGUIDParameterName,
+                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    OpenMetadataAPIMapper.PROCESS_CALL_TYPE_GUID,
+                                                                    OpenMetadataAPIMapper.PROCESS_CALL_TYPE_NAME,
+                                                                    calledGUID,
+                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    2,
+                                                                    false,
+                                                                    0,
+                                                                    0,
+                                                                    effectiveTime,
+                                                                    methodName);
+
+
+        if (relationships != null)
+        {
+            for (Relationship relationship : relationships)
+            {
+                if (relationship != null)
+                {
+                    if (qualifiedName == null)
+                    {
+                        return processCallConverter.getNewRelationshipBean(processCallBeanClass, relationship, methodName);
+                    }
+
+                    String relationshipQualifiedName = repositoryHelper.getStringProperty(serviceName,
+                                                                                          OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                          relationship.getProperties(),
+                                                                                          methodName);
+
+                    if (qualifiedName.equals(relationshipQualifiedName))
+                    {
+                        return processCallConverter.getNewRelationshipBean(processCallBeanClass, relationship, methodName);
+                    }
+
+                }
+            }
+        }
+
         return null;
     }
 
@@ -1706,6 +2377,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param externalSourceName unique name of software server capability representing the caller
      * @param processCallGUID unique identifier of the process call relationship
      * @param processCallGUIDParameterName parameter supplying processCallGUID
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param qualifiedName unique identifier for this relationship
      * @param description description and/or purpose of the data flow
      * @param formula function that determines the subset of the data that flows
@@ -1720,6 +2393,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                   String externalSourceName,
                                   String processCallGUID,
                                   String processCallGUIDParameterName,
+                                  Date   effectiveFrom,
+                                  Date   effectiveTo,
                                   String qualifiedName,
                                   String description,
                                   String formula,
@@ -1727,6 +2402,46 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                             UserNotAuthorizedException,
                                                             PropertyServerException
     {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(processCallGUID, processCallGUIDParameterName, methodName);
+
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                     null,
+                                                                                     OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                     qualifiedName,
+                                                                                     methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  description,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME,
+                                                                  formula,
+                                                                  methodName);
+
+        if ((effectiveFrom != null) || (effectiveTo != null))
+        {
+            if (properties == null)
+            {
+                properties = new InstanceProperties();
+
+                properties.setEffectiveFromTime(effectiveFrom);
+                properties.setEffectiveToTime(effectiveTo);
+            }
+        }
+
+        super.updateRelationshipProperties(userId,
+                                           externalSourceGUID,
+                                           externalSourceName,
+                                           processCallGUID,
+                                           processCallGUIDParameterName,
+                                           OpenMetadataAPIMapper.PROCESS_CALL_TYPE_NAME,
+                                           false,
+                                           properties,
+                                           methodName);
     }
 
 
@@ -1738,6 +2453,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param externalSourceName unique name of software server capability representing the caller
      * @param processCallGUID unique identifier of the process call relationship
      * @param processCallGUIDParameterName parameter supplying processCallGUID
+     * @param effectiveTime time when the relationship is effective
      * @param methodName calling method
 
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -1749,10 +2465,22 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                  String externalSourceName,
                                  String processCallGUID,
                                  String processCallGUIDParameterName,
+                                 Date   effectiveTime,
                                  String methodName) throws InvalidParameterException,
                                                            UserNotAuthorizedException,
                                                            PropertyServerException
     {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(processCallGUID, processCallGUIDParameterName, methodName);
+
+        super.deleteRelationship(userId,
+                                 externalSourceGUID,
+                                 externalSourceName,
+                                 processCallGUID,
+                                 processCallGUIDParameterName,
+                                 OpenMetadataAPIMapper.PROCESS_CALL_TYPE_NAME,
+                                 effectiveTime,
+                                 methodName);
     }
 
 
@@ -1762,6 +2490,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param userId calling user
      * @param callerGUID unique identifier of the element that is making the call
      * @param callerGUIDParameterName parameter supplying callerGUID
+     * @param effectiveTime time when the relationship is effective
      * @param methodName calling method
      *
      * @return unique identifier and properties of the relationship
@@ -1773,11 +2502,48 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
     public List<PROCESS_CALL> getProcessCalled(String userId,
                                                String callerGUID,
                                                String callerGUIDParameterName,
+                                               Date   effectiveTime,
                                                String methodName) throws InvalidParameterException,
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
     {
-        return null;
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(callerGUID, callerGUIDParameterName, methodName);
+
+        List<Relationship> relationships = super.getAttachmentLinks(userId,
+                                                                    callerGUID,
+                                                                    callerGUIDParameterName,
+                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    OpenMetadataAPIMapper.PROCESS_CALL_TYPE_GUID,
+                                                                    OpenMetadataAPIMapper.PROCESS_CALL_TYPE_NAME,
+                                                                    null,
+                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    2,
+                                                                    false,
+                                                                    0,
+                                                                    0,
+                                                                    effectiveTime,
+                                                                    methodName);
+
+        List<PROCESS_CALL> called = new ArrayList<>();
+
+        if (relationships != null)
+        {
+            for (Relationship relationship : relationships)
+            {
+                if (relationship != null)
+                {
+                    called.add(processCallConverter.getNewRelationshipBean(processCallBeanClass, relationship, methodName));
+                }
+            }
+        }
+
+        if (called.isEmpty())
+        {
+            called = null;
+        }
+
+        return called;
     }
 
 
@@ -1787,6 +2553,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param userId calling user
      * @param calledGUID unique identifier of the element that is processing the call
      * @param calledGUIDParameterName parameter supplying calledGUID
+     * @param effectiveTime time when the relationship is effective
      * @param methodName calling method
      *
      * @return unique identifier and properties of the relationship
@@ -1798,11 +2565,48 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
     public List<PROCESS_CALL> getProcessCallers(String userId,
                                                 String calledGUID,
                                                 String calledGUIDParameterName,
+                                                Date   effectiveTime,
                                                 String methodName) throws InvalidParameterException,
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
     {
-        return null;
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(calledGUID, calledGUIDParameterName, methodName);
+
+        List<Relationship> relationships = super.getAttachmentLinks(userId,
+                                                                    calledGUID,
+                                                                    calledGUIDParameterName,
+                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    OpenMetadataAPIMapper.PROCESS_CALL_TYPE_GUID,
+                                                                    OpenMetadataAPIMapper.PROCESS_CALL_TYPE_NAME,
+                                                                    null,
+                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    1,
+                                                                    false,
+                                                                    0,
+                                                                    0,
+                                                                    effectiveTime,
+                                                                    methodName);
+
+        List<PROCESS_CALL> caller = new ArrayList<>();
+
+        if (relationships != null)
+        {
+            for (Relationship relationship : relationships)
+            {
+                if (relationship != null)
+                {
+                    caller.add(processCallConverter.getNewRelationshipBean(processCallBeanClass, relationship, methodName));
+                }
+            }
+        }
+
+        if (caller.isEmpty())
+        {
+            caller = null;
+        }
+
+        return caller;
     }
 
 
@@ -1816,21 +2620,58 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param sourceElementGUIDParameterName parameter supplying sourceElementGUID
      * @param destinationElementGUID unique identifier of the destination
      * @param destinationElementGUIDParameterName parameter supplying destinationElementGUID
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param methodName calling method
+     *
+     * @return unique identifier of the new relationship
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupLineageMapping(String userId,
-                                    String sourceElementGUID,
-                                    String sourceElementGUIDParameterName,
-                                    String destinationElementGUID,
-                                    String destinationElementGUIDParameterName,
-                                    String methodName) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException
+    public String setupLineageMapping(String userId,
+                                      String sourceElementGUID,
+                                      String sourceElementGUIDParameterName,
+                                      String destinationElementGUID,
+                                      String destinationElementGUIDParameterName,
+                                      Date   effectiveFrom,
+                                      Date   effectiveTo,
+                                      String methodName) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException
     {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(sourceElementGUID, sourceElementGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(destinationElementGUID, destinationElementGUIDParameterName, methodName);
+
+        InstanceProperties relationshipProperties = null;
+
+        if ((effectiveFrom != null) || (effectiveTo != null))
+        {
+            relationshipProperties = new InstanceProperties();
+
+            relationshipProperties.setEffectiveFromTime(effectiveFrom);
+            relationshipProperties.setEffectiveToTime(effectiveTo);
+        }
+
+        return super.multiLinkElementToElement(userId,
+                                               null,
+                                               null,
+                                               sourceElementGUID,
+                                               sourceElementGUIDParameterName,
+                                               OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                               destinationElementGUID,
+                                               destinationElementGUIDParameterName,
+                                               OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                               false,
+                                               false,
+                                               supportedZones,
+                                               OpenMetadataAPIMapper.PROCESS_CALL_TYPE_GUID,
+                                               OpenMetadataAPIMapper.PROCESS_CALL_TYPE_NAME,
+                                               relationshipProperties,
+                                               null,
+                                               methodName);
     }
 
 
@@ -1842,6 +2683,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param sourceElementGUIDParameterName parameter supplying sourceElementGUID
      * @param destinationElementGUID unique identifier of the destination
      * @param destinationElementGUIDParameterName parameter supplying destinationElementGUID
+     * @param effectiveTime time when the relationship is effective
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -1853,10 +2695,48 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                     String sourceElementGUIDParameterName,
                                     String destinationElementGUID,
                                     String destinationElementGUIDParameterName,
+                                    Date   effectiveTime,
                                     String methodName) throws InvalidParameterException,
                                                               UserNotAuthorizedException,
                                                               PropertyServerException
     {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(sourceElementGUID, sourceElementGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(destinationElementGUID, destinationElementGUIDParameterName, methodName);
+
+        List<Relationship> relationships = super.getAttachmentLinks(userId,
+                                                                    sourceElementGUID,
+                                                                    sourceElementGUIDParameterName,
+                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    OpenMetadataAPIMapper.LINEAGE_MAPPING_TYPE_GUID,
+                                                                    OpenMetadataAPIMapper.LINEAGE_MAPPING_TYPE_NAME,
+                                                                    destinationElementGUID,
+                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    0,
+                                                                    false,
+                                                                    0,
+                                                                    0,
+                                                                    effectiveTime,
+                                                                    methodName);
+
+
+        if (relationships != null)
+        {
+            for (Relationship relationship : relationships)
+            {
+                if (relationship != null)
+                {
+                    super.deleteRelationship(userId,
+                                             null,
+                                             null,
+                                             relationship.getGUID(),
+                                             destinationElementGUIDParameterName,
+                                             OpenMetadataAPIMapper.DATA_FLOW_TYPE_NAME,
+                                             effectiveTime,
+                                             methodName);
+                }
+            }
+        }
     }
 
 
@@ -1866,6 +2746,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param userId calling user
      * @param sourceElementGUID unique identifier of the source
      * @param sourceElementGUIDParameterName parameter supplying sourceElementGUID
+     * @param effectiveTime time when the relationship is effective
      * @param methodName calling method
      *
      * @return list of lineage mapping relationships
@@ -1877,11 +2758,48 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
     public List<LINEAGE_MAPPING> getDestinationLineageMappings(String userId,
                                                                String sourceElementGUID,
                                                                String sourceElementGUIDParameterName,
+                                                               Date   effectiveTime,
                                                                String methodName) throws InvalidParameterException,
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
-        return null;
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(sourceElementGUID, sourceElementGUIDParameterName, methodName);
+
+        List<Relationship> relationships = super.getAttachmentLinks(userId,
+                                                                    sourceElementGUID,
+                                                                    sourceElementGUIDParameterName,
+                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    OpenMetadataAPIMapper.LINEAGE_MAPPING_TYPE_GUID,
+                                                                    OpenMetadataAPIMapper.LINEAGE_MAPPING_TYPE_NAME,
+                                                                    null,
+                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    2,
+                                                                    false,
+                                                                    0,
+                                                                    0,
+                                                                    effectiveTime,
+                                                                    methodName);
+
+        List<LINEAGE_MAPPING> mappings = new ArrayList<>();
+
+        if (relationships != null)
+        {
+            for (Relationship relationship : relationships)
+            {
+                if (relationship != null)
+                {
+                    mappings.add(lineageMappingConverter.getNewRelationshipBean(lineageMappingClass, relationship, methodName));
+                }
+            }
+        }
+
+        if (mappings.isEmpty())
+        {
+            mappings = null;
+        }
+
+        return mappings;
     }
 
 
@@ -1891,6 +2809,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param userId calling user
      * @param destinationElementGUID unique identifier of the destination
      * @param destinationElementGUIDParameterName parameter supplying destinationElementGUID
+     * @param effectiveTime time when the relationship is effective
      * @param methodName calling method
      *
      * @return list of lineage mapping relationships
@@ -1902,11 +2821,47 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
     public List<LINEAGE_MAPPING> getSourceLineageMappings(String userId,
                                                           String destinationElementGUID,
                                                           String destinationElementGUIDParameterName,
+                                                          Date   effectiveTime,
                                                           String methodName) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
-        return null;
-    }
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(destinationElementGUID, destinationElementGUIDParameterName, methodName);
 
+        List<Relationship> relationships = super.getAttachmentLinks(userId,
+                                                                    destinationElementGUID,
+                                                                    destinationElementGUIDParameterName,
+                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    OpenMetadataAPIMapper.LINEAGE_MAPPING_TYPE_GUID,
+                                                                    OpenMetadataAPIMapper.LINEAGE_MAPPING_TYPE_NAME,
+                                                                    null,
+                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    1,
+                                                                    false,
+                                                                    0,
+                                                                    0,
+                                                                    effectiveTime,
+                                                                    methodName);
+
+        List<LINEAGE_MAPPING> mappings = new ArrayList<>();
+
+        if (relationships != null)
+        {
+            for (Relationship relationship : relationships)
+            {
+                if (relationship != null)
+                {
+                    mappings.add(lineageMappingConverter.getNewRelationshipBean(lineageMappingClass, relationship, methodName));
+                }
+            }
+        }
+
+        if (mappings.isEmpty())
+        {
+            mappings = null;
+        }
+
+        return mappings;
+    }
 }

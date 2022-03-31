@@ -7,8 +7,14 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.converters.AssetCon
 import org.odpi.openmetadata.accessservices.itinfrastructure.converters.ConnectionConverter;
 import org.odpi.openmetadata.accessservices.itinfrastructure.converters.ConnectorTypeConverter;
 import org.odpi.openmetadata.accessservices.itinfrastructure.converters.ContactMethodConverter;
+import org.odpi.openmetadata.accessservices.itinfrastructure.converters.ControlFlowConverter;
+import org.odpi.openmetadata.accessservices.itinfrastructure.converters.DataFlowConverter;
 import org.odpi.openmetadata.accessservices.itinfrastructure.converters.EndpointConverter;
 import org.odpi.openmetadata.accessservices.itinfrastructure.converters.ITProfileConverter;
+import org.odpi.openmetadata.accessservices.itinfrastructure.converters.LineageMappingConverter;
+import org.odpi.openmetadata.accessservices.itinfrastructure.converters.PortConverter;
+import org.odpi.openmetadata.accessservices.itinfrastructure.converters.ProcessCallConverter;
+import org.odpi.openmetadata.accessservices.itinfrastructure.converters.ProcessConverter;
 import org.odpi.openmetadata.accessservices.itinfrastructure.converters.RelatedAssetConverter;
 import org.odpi.openmetadata.accessservices.itinfrastructure.converters.SoftwareCapabilityConverter;
 import org.odpi.openmetadata.accessservices.itinfrastructure.converters.UserIdentityConverter;
@@ -17,8 +23,14 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.As
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ConnectionElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ConnectorTypeElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ContactMethodElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ControlFlowElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.DataFlowElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.EndpointElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ITProfileElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.LineageMappingElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.PortElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ProcessCallElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ProcessElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.RelatedAssetElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareCapabilityElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.UserIdentityElement;
@@ -29,6 +41,7 @@ import org.odpi.openmetadata.commonservices.generichandlers.ConnectionHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ConnectorTypeHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ContactDetailsHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.EndpointHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.ProcessHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.RelatedAssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.SoftwareCapabilityHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.UserIdentityHandler;
@@ -58,6 +71,12 @@ public class ITInfrastructureServicesInstance extends OMASServiceInstance
     private SoftwareCapabilityHandler<SoftwareCapabilityElement> softwareCapabilityHandler;
     private AssetHandler<AssetElement>                           assetHandler;
     private RelatedAssetHandler<RelatedAssetElement>             relatedAssetHandler;
+    private ProcessHandler<ProcessElement,
+                                  PortElement,
+                                  DataFlowElement,
+                                  ControlFlowElement,
+                                  ProcessCallElement,
+                                  LineageMappingElement>         processHandler;
 
 
     /**
@@ -224,6 +243,30 @@ public class ITInfrastructureServicesInstance extends OMASServiceInstance
                                                                  defaultZones,
                                                                  publishZones,
                                                                  auditLog);
+
+            processHandler = new ProcessHandler<>(new ProcessConverter<>(repositoryHelper, serviceName, serverName),
+                                                  ProcessElement.class,
+                                                  new PortConverter<>(repositoryHelper, serviceName, serverName),
+                                                  PortElement.class,
+                                                  new DataFlowConverter<>(repositoryHelper, serviceName, serverName),
+                                                  DataFlowElement.class,
+                                                  new ControlFlowConverter<>(repositoryHelper, serviceName, serverName),
+                                                  ControlFlowElement.class,
+                                                  new ProcessCallConverter<>(repositoryHelper, serviceName, serverName),
+                                                  ProcessCallElement.class,
+                                                  new LineageMappingConverter<>(repositoryHelper, serviceName, serverName),
+                                                  LineageMappingElement.class,
+                                                  serviceName,
+                                                  serverName,
+                                                  invalidParameterHandler,
+                                                  repositoryHandler,
+                                                  repositoryHelper,
+                                                  localServerUserId,
+                                                  securityVerifier,
+                                                  supportedZones,
+                                                  defaultZones,
+                                                  publishZones,
+                                                  auditLog);
         }
         else
         {
@@ -380,5 +423,26 @@ public class ITInfrastructureServicesInstance extends OMASServiceInstance
         validateActiveRepository(methodName);
 
         return softwareCapabilityHandler;
+    }
+
+
+    /**
+     * Return the handler for managing processes objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    ProcessHandler<ProcessElement,
+                   PortElement,
+                   DataFlowElement,
+                   ControlFlowElement,
+                   ProcessCallElement,
+                   LineageMappingElement> getProcessHandler() throws PropertyServerException
+    {
+        final String methodName = "getProcessHandler";
+
+        validateActiveRepository(methodName);
+
+        return processHandler;
     }
 }

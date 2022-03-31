@@ -3,6 +3,8 @@
 
 package org.odpi.openmetadata.commonservices.repositoryhandler;
 
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
@@ -22,14 +24,9 @@ import java.util.List;
  *
  * Note this class is intended for a single request's use - it is not thread-safe.
  */
-public class RepositoryFindRelationshipsIterator
+public class RepositoryFindRelationshipsIterator extends RepositoryIterator
 {
-    private RepositoryHandler    repositoryHandler;
-    private String               userId;
     private String               relationshipTypeGUID;
-    private int                  startingFrom;
-    private int                  requesterPageSize;
-    private String               methodName;
     private List<Relationship>   relationshipsCache = null;
     private List<String>         relationshipSubtypeGUIDs;
     private SearchProperties     searchProperties;
@@ -37,14 +34,12 @@ public class RepositoryFindRelationshipsIterator
     private Date                 asOfTime;
     private String               sequencingProperty;
     private SequencingOrder      sequencingOrder;
-    private boolean              forDuplicateProcessing;
-    private Date                 effectiveTime;
-
 
     /**
      * Constructor takes the parameters used to call the repository handler.
      *
      * @param repositoryHandler interface to the open metadata repositories.
+     * @param invalidParameterHandler invalid parameter handler
      * @param userId  user making the request
      * @param relationshipTypeGUID String unique identifier for the relationship type of interest (null means any relationship type).
      * @param relationshipSubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the relationshipTypeGUID to
@@ -58,28 +53,37 @@ public class RepositoryFindRelationshipsIterator
      *                           Null means do not sequence on a property name (see SequencingOrder).
      * @param sequencingOrder Enum defining how the results should be ordered.
      * @param startingFrom initial position in the stored list.
-     * @param requesterPageSize maximum number of definitions to return on this call.
+     * @param pageSize maximum number of definitions to return on this call.
      * @param forDuplicateProcessing       the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName  name of calling method
+     * @throws InvalidParameterException when page size or start from parameters do not meet criteria
      */
-    public RepositoryFindRelationshipsIterator(RepositoryHandler     repositoryHandler,
-                                               String                userId,
-                                               String                relationshipTypeGUID,
-                                               List<String>          relationshipSubtypeGUIDs,
-                                               SearchProperties      searchProperties,
-                                               List<InstanceStatus>  limitResultsByStatus,
-                                               Date                  asOfTime,
-                                               String                sequencingProperty,
-                                               SequencingOrder       sequencingOrder,
-                                               int                   startingFrom,
-                                               int                   requesterPageSize,
-                                               boolean               forDuplicateProcessing,
-                                               Date                  effectiveTime,
-                                               String                methodName)
+    public RepositoryFindRelationshipsIterator(RepositoryHandler       repositoryHandler,
+                                               InvalidParameterHandler invalidParameterHandler,
+                                               String                  userId,
+                                               String                  relationshipTypeGUID,
+                                               List<String>            relationshipSubtypeGUIDs,
+                                               SearchProperties        searchProperties,
+                                               List<InstanceStatus>    limitResultsByStatus,
+                                               Date                    asOfTime,
+                                               String                  sequencingProperty,
+                                               SequencingOrder         sequencingOrder,
+                                               int                     startingFrom,
+                                               int                     pageSize,
+                                               boolean                 forDuplicateProcessing,
+                                               Date                    effectiveTime,
+                                               String                  methodName) throws InvalidParameterException
     {
-        this.repositoryHandler        = repositoryHandler;
-        this.userId                   = userId;
+        super(repositoryHandler,
+              invalidParameterHandler,
+              userId,
+              startingFrom,
+              pageSize,
+              forDuplicateProcessing,
+              effectiveTime,
+              methodName);
+
         this.relationshipTypeGUID     = relationshipTypeGUID;
         this.relationshipSubtypeGUIDs = relationshipSubtypeGUIDs;
         this.searchProperties         = searchProperties;
@@ -87,11 +91,6 @@ public class RepositoryFindRelationshipsIterator
         this.asOfTime                 = asOfTime;
         this.sequencingProperty       = sequencingProperty;
         this.sequencingOrder          = sequencingOrder;
-        this.startingFrom             = startingFrom;
-        this.requesterPageSize        = requesterPageSize;
-        this.forDuplicateProcessing   = forDuplicateProcessing;
-        this.effectiveTime            = effectiveTime;
-        this.methodName               = methodName;
     }
 
 
@@ -125,11 +124,11 @@ public class RepositoryFindRelationshipsIterator
                                                                          sequencingOrder,
                                                                          forDuplicateProcessing,
                                                                          startingFrom,
-                                                                         requesterPageSize,
+                                                                         pageSize,
                                                                          effectiveTime,
                                                                          methodName);
 
-                startingFrom = startingFrom + requesterPageSize;
+                startingFrom = startingFrom + pageSize;
             }
         }
 

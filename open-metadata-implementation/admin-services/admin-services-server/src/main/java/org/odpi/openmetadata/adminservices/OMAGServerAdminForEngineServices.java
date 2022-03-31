@@ -103,6 +103,7 @@ public class OMAGServerAdminForEngineServices
                         {
                             RegisteredOMAGService service = new RegisteredOMAGService();
 
+                            service.setServiceId(engineServiceConfig.getEngineServiceId());
                             service.setServiceName(engineServiceConfig.getEngineServiceFullName());
                             service.setServiceDevelopmentStatus(engineServiceConfig.getEngineServiceDevelopmentStatus());
                             service.setServiceDescription(engineServiceConfig.getEngineServiceDescription());
