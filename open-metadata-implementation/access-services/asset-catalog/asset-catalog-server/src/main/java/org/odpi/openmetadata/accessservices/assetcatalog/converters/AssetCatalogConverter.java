@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetcatalog.builders;
+package org.odpi.openmetadata.accessservices.assetcatalog.converters;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
@@ -14,6 +14,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.ElementOrigin;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
 import org.odpi.openmetadata.accessservices.assetcatalog.util.Constants;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ArrayPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
@@ -36,14 +37,10 @@ import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.A
 /**
  * AssetConverter is a helper class that maps the OMRS objects to Asset Catalog model.
  */
-public class AssetCatalogConverter {
+public class AssetCatalogConverter<B> extends OpenMetadataAPIGenericConverter<B> {
 
-    private String sourceName;
-    private OMRSRepositoryHelper repositoryHelper;
-
-    public AssetCatalogConverter(String sourceName, OMRSRepositoryHelper repositoryHelper) {
-        this.sourceName = sourceName;
-        this.repositoryHelper = repositoryHelper;
+    public AssetCatalogConverter(OMRSRepositoryHelper repositoryHelper, String serviceName, String serverName) {
+        super(repositoryHelper, serviceName, serverName);
     }
 
     /**
@@ -78,7 +75,7 @@ public class AssetCatalogConverter {
             assetCatalogBean.setClassifications(convertClassifications(entityDetail.getClassifications()));
         }
         ElementOrigin elementOrigin = new ElementOrigin();
-        elementOrigin.setSourceServer(sourceName);
+        elementOrigin.setSourceServer(serviceName);
         elementOrigin.setMetadataCollectionId(entityDetail.getMetadataCollectionId());
         elementOrigin.setMetadataCollectionName(entityDetail.getMetadataCollectionName());
         elementOrigin.setInstanceLicense(entityDetail.getInstanceLicense());
@@ -272,7 +269,7 @@ public class AssetCatalogConverter {
         element.setProperties(extractProperties(entityDetail.getProperties()));
         element.setAdditionalProperties(extractAdditionalProperties(entityDetail.getProperties()));
         ElementOrigin elementOrigin = new ElementOrigin();
-        elementOrigin.setSourceServer(sourceName);
+        elementOrigin.setSourceServer(serviceName);
         elementOrigin.setMetadataCollectionId(entityDetail.getMetadataCollectionId());
         elementOrigin.setMetadataCollectionName(entityDetail.getMetadataCollectionName());
         elementOrigin.setInstanceLicense(entityDetail.getInstanceLicense());
@@ -299,7 +296,7 @@ public class AssetCatalogConverter {
 
         asset.setGuid(entityProxy.getGUID());
         if (entityProxy.getUniqueProperties() != null) {
-            asset.setName(repositoryHelper.getStringProperty(sourceName, Constants.NAME, entityProxy.getUniqueProperties(), method));
+            asset.setName(repositoryHelper.getStringProperty(serviceName, Constants.NAME, entityProxy.getUniqueProperties(), method));
         }
         asset.setCreatedBy(entityProxy.getCreatedBy());
         asset.setCreateTime(entityProxy.getCreateTime());
@@ -331,10 +328,10 @@ public class AssetCatalogConverter {
             instancePropertiesAsMap.forEach((key, value) -> {
                 if (!key.equals(ADDITIONAL_PROPERTIES_PROPERTY_NAME)) {
                     if (value instanceof ArrayPropertyValue) {
-                        List<String> stringArrayProperty = repositoryHelper.getStringArrayProperty(sourceName, key, instanceProperties, methodName);
+                        List<String> stringArrayProperty = repositoryHelper.getStringArrayProperty(serviceName, key, instanceProperties, methodName);
                         properties.put(key, listToString(stringArrayProperty));
                     } else if (value instanceof MapPropertyValue) {
-                        Map<String, Object> mapProperty = repositoryHelper.getMapFromProperty(sourceName, key, instanceProperties, methodName);
+                        Map<String, Object> mapProperty = repositoryHelper.getMapFromProperty(serviceName, key, instanceProperties, methodName);
                         properties.put(key, mapToString(mapProperty));
                     } else {
                         properties.put(key, String.valueOf(value));
@@ -349,7 +346,7 @@ public class AssetCatalogConverter {
     private Map<String, String> extractAdditionalProperties(InstanceProperties instanceProperties) {
         String methodName = "extractAdditionalProperties";
 
-        return MapUtils.emptyIfNull(repositoryHelper.removeStringMapFromProperty(sourceName,
+        return MapUtils.emptyIfNull(repositoryHelper.removeStringMapFromProperty(serviceName,
                 ADDITIONAL_PROPERTIES_PROPERTY_NAME,
                 instanceProperties, methodName));
     }

@@ -77,8 +77,6 @@ public final class Constants {
     public static final String HOST_LOCATION = "HostLocation";
     public static final String ASSET_LOCATION_GUID = "bc236b62-d0e6-4c5c-93a1-3a35c3dba7b1";
     public static final String ASSET_LOCATION = "AssetLocation";
-    public static final String NESTED_LOCATION_GUID = "f82a96c2-95a3-4223-88c0-9cbf2882b772";
-    public static final String NESTED_LOCATION = "NestedLocation";
     public static final String API_ENDPOINT_GUID = "de5b9501-3ad4-4803-a8b2-e311c72a4336";
     public static final String API_ENDPOINT = "APIEndpoint";
     public static final String CONNECTION_ENDPOINT_GUID = "887a7132-d6bc-4b92-a483-e80b60c86fb2";
@@ -90,7 +88,6 @@ public final class Constants {
     public static final String ATTRIBUTE_FOR_SCHEMA_GUID = "86b176a2-015c-44a6-8106-54d5d69ba661";
     public static final String ATTRIBUTE_FOR_SCHEMA = "AttributeForSchema";
     //Instance Properties fields
-    public static final String TYPE = "dataType";
     public static final String QUALIFIED_NAME = "qualifiedName";
     public static final String NAME = "name";
     public static final String DISPLAY_NAME = "displayName";
@@ -99,4 +96,5 @@ public final class Constants {
     public static final String GUID_PARAMETER = "GUID";
     public static final String SEARCH_PARAMETER = "searchParameter";
     public static final String ADDITIONAL_PROPERTIES_PROPERTY_NAME = "additionalProperties";
+    public static final String SEARCH_STRING_PARAMETER_NAME = "searchCriteria";
 }

@@ -869,6 +869,7 @@ public class GovernanceConfigurationHandler
          * First check if this request type has already been registered.
          */
         RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
+                                                                                       invalidParameterHandler,
                                                                                        userId,
                                                                                        governanceEngineGUID,
                                                                                        OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME,
@@ -1087,6 +1088,7 @@ public class GovernanceConfigurationHandler
         invalidParameterHandler.validateGUID(governanceServiceGUID, governanceServiceGUIDParameter, methodName);
 
         RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
+                                                                                       invalidParameterHandler,
                                                                                        userId,
                                                                                        governanceEngineGUID,
                                                                                        OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME,
@@ -1162,6 +1164,7 @@ public class GovernanceConfigurationHandler
         invalidParameterHandler.validateGUID(governanceServiceGUID, governanceServiceGUIDParameter, methodName);
 
         RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
+                                                                                       invalidParameterHandler,
                                                                                        userId,
                                                                                        governanceEngineGUID,
                                                                                        OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME,
