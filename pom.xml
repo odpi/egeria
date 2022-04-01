@@ -157,8 +157,8 @@
         <slf4j.version>1.7.36</slf4j.version>
         <testng.version>7.5</testng.version>
         <jackson.version>2.13.2</jackson.version>
+        <jackson.databind.version>2.13.2.2</jackson.databind.version>
         <logback.version>1.2.11</logback.version>
-        <jackson.databind.version>2.10.0</jackson.databind.version>
         <spring-boot.version>2.6.6</spring-boot.version>
         <netty.version>4.1.75.Final</netty.version>
         <kafka.version>3.1.0</kafka.version>
@@ -316,7 +316,7 @@
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
                 <scope>compile</scope>
-                <version>${jackson.version}</version>
+                <version>${jackson.databind.version}</version>
             </dependency>
 
             <dependency>
@@ -3816,6 +3816,9 @@
                                 <ignoredUnusedDeclaredDependency>org.slf4j:slf4j-simple:*
                                 </ignoredUnusedDeclaredDependency>
                             </ignoredUnusedDeclaredDependencies>
+                            <ignoredNonTestScopedDependencies>
+                                <ignoredNonTestScopedDependency>*</ignoredNonTestScopedDependency>
+                            </ignoredNonTestScopedDependencies>
                         </configuration>
                     </execution>
                     <execution>
