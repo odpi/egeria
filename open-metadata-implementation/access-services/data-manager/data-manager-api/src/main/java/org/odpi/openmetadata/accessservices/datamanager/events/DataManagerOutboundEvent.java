@@ -34,7 +34,7 @@ public class DataManagerOutboundEvent extends DataManagerEventHeader
     private String                       classificationName = null;
 
     /*
-     * for relationship events
+     * For relationship events
      */
     private ElementStub                  endOneElement      = null;
     private ElementStub                  endTwoElement      = null;

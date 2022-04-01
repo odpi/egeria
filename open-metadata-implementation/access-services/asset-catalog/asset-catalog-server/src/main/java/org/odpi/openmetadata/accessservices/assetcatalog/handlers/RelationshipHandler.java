@@ -2,14 +2,16 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetcatalog.handlers;
 
-import org.odpi.openmetadata.accessservices.assetcatalog.builders.AssetCatalogConverter;
+import org.odpi.openmetadata.accessservices.assetcatalog.converters.AssetCatalogConverter;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogBean;
+import org.odpi.openmetadata.accessservices.assetcatalog.util.Constants;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -19,38 +21,40 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 public class RelationshipHandler {
 
-    private final RepositoryHandler repositoryHandler;
+    public static final String ENTITY_1_GUID_PARAMETER = "entity1GUID";
+    public static final String ENTITY_2_GUID_PARAMETER = "entity2GUID";
     private final OMRSRepositoryHelper repositoryHelper;
     private final InvalidParameterHandler invalidParameterHandler;
-    private final RepositoryErrorHandler errorHandler;
-    private final String sourceName;
+    private final OpenMetadataAPIGenericHandler<AssetCatalogBean> assetHandler;
+    private final CommonHandler commonHandler;
 
-    private CommonHandler commonHandler;
+    private final String sourceName;
 
     /**
      * Construct the handler information needed to interact with the repository services
      *
-     * @param sourceName           name of the component
+     * @param sourceName              name of the component
      * @param invalidParameterHandler handler for managing parameter errors
      * @param repositoryHandler       manages calls to the repository services
      * @param repositoryHelper        provides utilities for manipulating the repository services objects
+     * @param assetHandler            provides utilities for manipulating asset catalog objects using a generic handler
      * @param errorHandler            provides common validation routines for the other handler classes
      */
     public RelationshipHandler(String sourceName, InvalidParameterHandler invalidParameterHandler, RepositoryHandler repositoryHandler,
-                               OMRSRepositoryHelper repositoryHelper, RepositoryErrorHandler errorHandler, CommonHandler commonHandler) {
+                               OMRSRepositoryHelper repositoryHelper, OpenMetadataAPIGenericHandler<AssetCatalogBean> assetHandler,
+                               RepositoryErrorHandler errorHandler) {
         this.sourceName = sourceName;
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
-        this.repositoryHandler = repositoryHandler;
-        this.errorHandler = errorHandler;
-        this.commonHandler = commonHandler;
+        this.assetHandler = assetHandler;
+        this.commonHandler = new CommonHandler(sourceName, repositoryHandler, repositoryHelper, assetHandler, errorHandler);
     }
 
     /**
      * Fetch relationship between entities details based on its unique identifier of the ends
      *
      * @param userId           String unique identifier for the user
-     * @param serverName       String server name
+     * @param serverName       server name
      * @param entity1GUID      Entity guid of the first end of the relationship
      * @param entity2GUID      Entity guid of the second end of the relationship
      * @param relationshipType Type of the relationship
@@ -68,30 +72,21 @@ public class RelationshipHandler {
         final String methodName = "getRelationshipBetweenEntities";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(entity1GUID, "entity1GUID", methodName);
-        invalidParameterHandler.validateGUID(entity2GUID, "entity2GUID", methodName);
+        invalidParameterHandler.validateGUID(entity1GUID, ENTITY_1_GUID_PARAMETER, methodName);
+        invalidParameterHandler.validateGUID(entity2GUID, ENTITY_2_GUID_PARAMETER, methodName);
 
         String relationshipTypeGUID = null;
         if (relationshipType != null) {
             relationshipTypeGUID = commonHandler.getTypeDefGUID(userId, relationshipType);
         }
 
-        EntityDetail entityDetail1 = commonHandler.getEntityByGUID(userId, entity1GUID, null);
-        if(entityDetail1 == null){
-            invalidParameterHandler.throwUnknownElement(userId, entity1GUID, "-unknown-", sourceName, serverName, methodName);
-        }
-        String entity1TypeName = entityDetail1.getType().getTypeDefName();
-
-        Relationship relationshipBetweenEntities = repositoryHandler.getRelationshipBetweenEntities(userId,
-                entity1GUID,
-                entity1TypeName,
-                entity2GUID,
-                relationshipTypeGUID,
-                relationshipType,
-                methodName);
+        Relationship relationshipBetweenEntities = assetHandler.getUniqueAttachmentLink(userId, entity1GUID,
+                Constants.GUID_PARAMETER, "", relationshipTypeGUID, relationshipType, entity2GUID,
+                "", null, methodName);
 
         if (relationshipBetweenEntities != null) {
-            AssetCatalogConverter converter = new AssetCatalogConverter(sourceName, repositoryHelper);
+            AssetCatalogConverter<AssetCatalogBean> converter = new AssetCatalogConverter<>(repositoryHelper, serverName,
+                    assetHandler.getServerName());
             return converter.convertRelationship(relationshipBetweenEntities);
         }
 

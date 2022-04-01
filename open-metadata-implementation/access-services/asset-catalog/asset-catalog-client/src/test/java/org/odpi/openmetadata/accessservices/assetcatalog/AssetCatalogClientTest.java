@@ -141,66 +141,6 @@ public class AssetCatalogClientTest {
     }
 
     @Test
-    public void testGetLinkingAssets() throws Exception {
-        AssetCatalogListResponse response = mockAssetDescriptionListResponse();
-
-        when(connector.callGetRESTCall(eq("getLinkingAssets"),
-                eq(AssetCatalogListResponse.class),
-                anyString(),
-                eq(SERVER_NAME),
-                eq(USER_ID),
-                eq(ASSET_ID),
-                eq(SECOND_ASSET_ID))).thenReturn(response);
-
-        AssetCatalogListResponse assetCatalogListResponse = assetCatalog.getLinkingAssets(USER_ID,
-                ASSET_ID,
-                SECOND_ASSET_ID);
-
-        Assert.assertEquals(ASSET_ID, assetCatalogListResponse.getAssetCatalogBeanList().get(0).getGuid());
-    }
-
-    @Test
-    public void testGetLinkingRelationships() throws Exception {
-        RelationshipListResponse response = mockRelationshipsResponse();
-
-        when(connector.callGetRESTCall(eq("getLinkingRelationships"),
-                eq(RelationshipListResponse.class),
-                anyString(),
-                eq(SERVER_NAME),
-                eq(USER_ID),
-                eq(ASSET_ID),
-                eq(SECOND_ASSET_ID))).thenReturn(response);
-
-        RelationshipListResponse relationshipListResponse = assetCatalog.getLinkingRelationships(USER_ID,
-                ASSET_ID,
-                SECOND_ASSET_ID);
-
-        Assert.assertEquals(ASSET_ID, relationshipListResponse.getRelationships().get(0).getFromEntity().getGuid());
-        Assert.assertEquals(SECOND_ASSET_ID, relationshipListResponse.getRelationships().get(0).getToEntity().getGuid());
-    }
-
-    @Test
-    public void testGetAssetsFromNeighborhood() throws Exception {
-        AssetCatalogListResponse response = mockAssetDescriptionListResponse();
-        SearchParameters searchParameters = mockSearchParameters();
-
-        when(connector.callPostRESTCall(eq("getAssetsFromNeighborhood"),
-                eq(AssetCatalogListResponse.class),
-                anyString(),
-                eq(searchParameters),
-                eq(SERVER_NAME),
-                eq(USER_ID),
-                eq(ASSET_ID)
-                )).thenReturn(response);
-
-        AssetCatalogListResponse assetsFromNeighborhood = assetCatalog.getAssetsFromNeighborhood(USER_ID,
-                ASSET_ID,
-                searchParameters);
-
-        Assert.assertEquals(ASSET_ID, assetsFromNeighborhood.getAssetCatalogBeanList().get(0).getGuid());
-    }
-
-    @Test
     public void testSearchByType() throws Exception {
         AssetListResponse response = mockAssetListResponse();
         SearchParameters searchParameters = mockSearchParameters();

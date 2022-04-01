@@ -12,6 +12,7 @@ dependencies {
     implementation project(':open-metadata-implementation:admin-services:admin-services-registration')
     implementation 'org.slf4j:slf4j-api'
     implementation project(':open-metadata-implementation:access-services:stewardship-action:stewardship-action-api')
+    implementation project(':open-metadata-implementation:access-services:stewardship-action:stewardship-action-topic-connectors')
     implementation project(':open-metadata-implementation:common-services:metadata-security:metadata-security-server')
     implementation project(':open-metadata-implementation:common-services:generic-handlers')
     implementation project(':open-metadata-implementation:common-services:multi-tenant')

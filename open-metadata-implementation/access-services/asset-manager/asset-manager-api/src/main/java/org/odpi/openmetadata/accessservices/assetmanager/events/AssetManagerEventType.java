@@ -20,17 +20,18 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum AssetManagerEventType implements Serializable
 {
-    UNKNOWN_ASSET_MANAGER_EVENT                      (0,  "Unknown Event",         "An event that is not recognized by the local server."),
-    REFRESH_ELEMENT_EVENT                            (1,  "Refresh Element",       "Check the synchronization of an element and update it in open metadata as necessary."),
-    NEW_ELEMENT_CREATED                              (2,  "New Element",           "A new element has been created."),
-    ELEMENT_UPDATED                                  (3,  "Element Updated",       "An element's properties has been updated."),
-    ELEMENT_DELETED                                  (4,  "Element Deleted",       "An element and all its anchored elements have been deleted."),
-    ELEMENT_CLASSIFIED                               (5,  "Element Classified",    "A classification has been added to an element."),
-    ELEMENT_RECLASSIFIED                             (6,  "Element Reclassified",  "The properties for a classification attached to an element have been updated."),
-    ELEMENT_DECLASSIFIED                             (7,  "Element Declassified",  "A classification has been removed from an element."),
-    ELEMENT_RESTORED                                 (8,  "Element Restored",      "An element that was once deleted has been restored."),
-    ELEMENT_GUID_CHANGED                             (9,  "Element GUID Changed",  "An element's GUID has changed."),
-    ELEMENT_TYPE_CHANGED                             (10, "Element Type Changed",  "An element's type has changed."),
+    UNKNOWN_EVENT          (0,  "Unknown Event",         "An event that is not recognized by the local server."),
+    REFRESH_ELEMENT_EVENT  (1,  "Refresh Element",       "An element has been distributed around the cohort - could be for the first time."),
+    NEW_ELEMENT_CREATED    (2,  "New Element",           "A new element has been created."),
+    ELEMENT_UPDATED        (3,  "Element Updated",       "An element's properties has been updated."),
+    ELEMENT_DELETED        (4,  "Element Deleted",       "An element and all its anchored elements have been deleted."),
+    ELEMENT_CLASSIFIED     (5,  "Element Classified",    "A classification has been added to an element."),
+    ELEMENT_RECLASSIFIED   (6,  "Element Reclassified",  "The properties for a classification attached to an element have been updated."),
+    ELEMENT_DECLASSIFIED   (7,  "Element Declassified",  "A classification has been removed from an element."),
+    ELEMENT_RESTORED       (8,  "Element Restored",      "An element that was once deleted has been restored."),
+    ELEMENT_GUID_CHANGED   (9,  "Element GUID Changed",  "An element's GUID has changed."),
+    ELEMENT_TYPE_CHANGED   (10, "Element Type Changed",  "An element's type has changed."),
+    ELEMENT_HOME_CHANGED   (11, "Element Home Changed",  "An element's home has changed."),
     ;
 
     private static final long     serialVersionUID = 1L;

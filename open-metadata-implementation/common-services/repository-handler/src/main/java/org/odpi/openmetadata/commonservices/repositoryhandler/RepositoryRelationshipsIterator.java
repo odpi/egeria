@@ -3,6 +3,8 @@
 
 package org.odpi.openmetadata.commonservices.repositoryhandler;
 
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -20,21 +22,14 @@ import java.util.List;
  *
  * Note this class is intended for a single request's use - it is not thread-safe.
  */
-public class RepositoryRelationshipsIterator
+public class RepositoryRelationshipsIterator extends RepositoryIterator
 {
-    private static final Logger log = LoggerFactory.getLogger(RepositoryRelatedEntitiesIterator.class);
+    private static final Logger log = LoggerFactory.getLogger(RepositoryRelationshipsIterator.class);
 
-    private RepositoryHandler  repositoryHandler;
-    private String             userId;
     private String             startingEntityGUID;
     private String             startingEntityTypeName;
     private String             relationshipTypeGUID;
     private String             relationshipTypeName;
-    private int                startingFrom;
-    private int                requesterPageSize;
-    private boolean            forDuplicateProcessing;
-    private Date               effectiveTime;
-    private String             methodName;
     private List<Relationship> relationshipsCache = null;
 
 
@@ -42,6 +37,7 @@ public class RepositoryRelationshipsIterator
      * Constructor takes the parameters used to call the repository handler.
      *
      * @param repositoryHandler interface to the open metadata repositories.
+     * @param invalidParameterHandler invalid parameter handler
      * @param userId  user making the request
      * @param startingEntityGUID  starting entity's GUID
      * @param startingEntityTypeName  starting entity's type name
@@ -49,33 +45,38 @@ public class RepositoryRelationshipsIterator
      * @param relationshipTypeName  type name for the relationship to follow
      * @param forDuplicateProcessing is this retrieve part of duplicate processing?
      * @param startingFrom initial position in the stored list.
-     * @param requesterPageSize maximum number of definitions to return by this iterator.
+     * @param pageSize maximum number of definitions to return by this iterator.
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName  name of calling method
+     * @throws InvalidParameterException when page size or start from parameters do not meet criteria
      */
-    public RepositoryRelationshipsIterator(RepositoryHandler repositoryHandler,
-                                           String            userId,
-                                           String            startingEntityGUID,
-                                           String            startingEntityTypeName,
-                                           String            relationshipTypeGUID,
-                                           String            relationshipTypeName,
-                                           boolean           forDuplicateProcessing,
-                                           int               startingFrom,
-                                           int               requesterPageSize,
-                                           Date              effectiveTime,
-                                           String            methodName)
+    public RepositoryRelationshipsIterator(RepositoryHandler       repositoryHandler,
+                                           InvalidParameterHandler invalidParameterHandler,
+                                           String                  userId,
+                                           String                  startingEntityGUID,
+                                           String                  startingEntityTypeName,
+                                           String                  relationshipTypeGUID,
+                                           String                  relationshipTypeName,
+                                           boolean                 forDuplicateProcessing,
+                                           int                     startingFrom,
+                                           int                     pageSize,
+                                           Date                    effectiveTime,
+                                           String                  methodName) throws InvalidParameterException
     {
-        this.repositoryHandler      = repositoryHandler;
-        this.userId                 = userId;
+
+        super(repositoryHandler,
+              invalidParameterHandler,
+              userId,
+              startingFrom,
+              pageSize,
+              forDuplicateProcessing,
+              effectiveTime,
+              methodName);
+
         this.startingEntityGUID     = startingEntityGUID;
         this.startingEntityTypeName = startingEntityTypeName;
         this.relationshipTypeGUID   = relationshipTypeGUID;
         this.relationshipTypeName   = relationshipTypeName;
-        this.startingFrom           = startingFrom;
-        this.requesterPageSize      = requesterPageSize;
-        this.forDuplicateProcessing = forDuplicateProcessing;
-        this.effectiveTime          = effectiveTime;
-        this.methodName             = methodName;
 
         if (log.isDebugEnabled())
         {
@@ -111,11 +112,11 @@ public class RepositoryRelationshipsIterator
                                                                               relationshipTypeName,
                                                                               forDuplicateProcessing,
                                                                               startingFrom,
-                                                                              requesterPageSize,
+                                                                              pageSize,
                                                                               effectiveTime,
                                                                               methodName);
 
-                startingFrom = startingFrom + requesterPageSize;
+                startingFrom = startingFrom + pageSize;
             }
 
             if (relationshipsCache != null)

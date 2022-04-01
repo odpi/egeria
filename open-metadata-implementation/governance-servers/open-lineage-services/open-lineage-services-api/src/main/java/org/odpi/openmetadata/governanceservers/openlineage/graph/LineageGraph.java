@@ -5,12 +5,12 @@ package org.odpi.openmetadata.governanceservers.openlineage.graph;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship;
-import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraphConnector;
+import org.odpi.openmetadata.accessservices.assetlineage.model.LineageSyncUpdateContext;
 
 import java.util.Optional;
 import java.util.Set;
 
-public interface LineageGraph extends OpenLineageGraphConnector {
+public interface LineageGraph {
 
     /**
      * Stores a lineage event into the lineage graph database
@@ -22,10 +22,9 @@ public interface LineageGraph extends OpenLineageGraphConnector {
     /**
      * Updates the neighbours of a node by removing all the relationships that no longer have a direct link to the entity.
      *
-     * @param nodeGUID - the identifier of the entity that was updated
-     * @param neighboursGUIDS - the identifiers of the nodes that have a direct relationship to the entity
+     * SyncUpdateContext contains the context for syncing the relationships of a node after an update.
      */
-    void updateNeighbours(String nodeGUID, Set<String> neighboursGUIDS);
+    void updateNeighbours(LineageSyncUpdateContext syncUpdateContext);
 
     /**
      * Updates a vertex in the Graph
@@ -79,11 +78,6 @@ public interface LineageGraph extends OpenLineageGraphConnector {
     void deleteEntity(String guid,Object version);
 
     /**
-     * Task that the scheduler performs based on the interval
-     */
-    void performLineageGraphJob();
-
-    /**
      * Save last asset lineage update time in the graph
      *
      * @param timestamp the standard epoch time in milliseconds
@@ -103,5 +97,5 @@ public interface LineageGraph extends OpenLineageGraphConnector {
      * @param guid the lineage entity guid
      * @return the boolean
      */
-    boolean isEntityInGraph(String guid);
+    Boolean isEntityInGraph(String guid);
 }

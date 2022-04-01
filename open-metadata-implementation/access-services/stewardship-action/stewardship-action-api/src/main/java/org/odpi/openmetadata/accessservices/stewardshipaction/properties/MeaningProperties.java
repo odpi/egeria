@@ -12,7 +12,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * MeaningProperties is a cut-down summary of a glossary term to aid the asset consumer in understanding the content
+ * MeaningProperties is a cut-down summary of a glossary term to aid the stewardship action in understanding the content
  * of an asset.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)

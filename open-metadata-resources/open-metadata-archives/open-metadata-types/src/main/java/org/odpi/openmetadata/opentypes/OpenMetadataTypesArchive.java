@@ -162,6 +162,8 @@ public class OpenMetadataTypesArchive
          * Calls for new and changed types go here
          */
         update003040ITAssetDeployments();
+        update0233EventsAndLogs();
+        updateArea7LineageRelationships();
     }
 
 
@@ -425,5 +427,210 @@ public class OpenMetadataTypesArchive
 
         return typeDefPatch;
     }
+
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    /**
+     * Change the lineage relationships to allow multiLink and add missing properties.
+     */
+    private void updateArea7LineageRelationships()
+    {
+        this.archiveBuilder.addTypeDefPatch(enableMultiLinkOnLineageMappingRelationship());
+        this.archiveBuilder.addTypeDefPatch(enableMultiLinkOnDataFlowRelationship());
+        this.archiveBuilder.addTypeDefPatch(enableMultiLinkOnControlFlowRelationship());
+        this.archiveBuilder.addTypeDefPatch(enableMultiLinkOnProcessCallRelationship());
+    }
+
+
+    private TypeDefPatch enableMultiLinkOnLineageMappingRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "LineageMapping";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setUpdateMultiLink(true);
+        typeDefPatch.setMultiLink(true);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "qualifiedName";
+        final String attribute1Description     = "Unique name of the lineage flow.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "description";
+        final String attribute2Description     = "Description and purpose of the lineage flow.";
+        final String attribute2DescriptionGUID = null;
+
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch enableMultiLinkOnDataFlowRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "DataFlow";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setUpdateMultiLink(true);
+        typeDefPatch.setMultiLink(true);
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch enableMultiLinkOnControlFlowRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "ControlFlow";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setUpdateMultiLink(true);
+        typeDefPatch.setMultiLink(true);
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch enableMultiLinkOnProcessCallRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "ProcessCall";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setUpdateMultiLink(true);
+        typeDefPatch.setMultiLink(true);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "lineNumber";
+        final String attribute1Description     = "Location of the call in the implementation.";
+        final String attribute1DescriptionGUID = null;
+
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    /**
+     * Add associated log relationship
+     */
+    private void update0233EventsAndLogs()
+    {
+        this.archiveBuilder.addRelationshipDef(addAssociatedLogRelationship());
+    }
+
+    private RelationshipDef addAssociatedLogRelationship()
+    {
+        final String guid            = "0999e2b9-45d6-42c4-9767-4b74b0b48b89";
+        final String name            = "AssociatedLog";
+        final String description     = "Defines destination information for the log of activity associated with an element.";
+        final String descriptionGUID = null;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "Referenceable";
+        final String                     end1AttributeName            = "logSubjects";
+        final String                     end1AttributeDescription     = "Elements that the log records describe.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "Asset";
+        final String                     end2AttributeName            = "associatedLogs";
+        final String                     end2AttributeDescription     = "Destinations for log records.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        return relationshipDef;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
 }
 

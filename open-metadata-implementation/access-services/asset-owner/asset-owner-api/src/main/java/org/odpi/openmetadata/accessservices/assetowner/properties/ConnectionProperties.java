@@ -80,7 +80,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *  </ul>
  *
  * The connection class is simply used to cache the properties for an connection.
- * It is used by other classes to exchange this information between a metadata repository and a consumer.
+ * It is used by other classes to exchange this information between a metadata repository and a owner.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)

@@ -79,14 +79,14 @@ public class ITInfrastructureAdmin extends AccessServiceAdmin
                                                                  accessServiceConfig.getAccessServiceName(),
                                                                  auditLog);
 
-            this.instance   = new ITInfrastructureServicesInstance(repositoryConnector,
-                                                               supportedZones,
-                                                               defaultZones,
-                                                               publishZones,
-                                                               auditLog,
-                                                               serverUserName,
-                                                               repositoryConnector.getMaxPageSize(),
-                                                               accessServiceConfig.getAccessServiceOutTopic());
+            this.instance = new ITInfrastructureServicesInstance(repositoryConnector,
+                                                                 supportedZones,
+                                                                 defaultZones,
+                                                                 publishZones,
+                                                                 auditLog,
+                                                                 serverUserName,
+                                                                 repositoryConnector.getMaxPageSize(),
+                                                                 accessServiceConfig.getAccessServiceOutTopic());
             this.serverName = instance.getServerName();
 
 

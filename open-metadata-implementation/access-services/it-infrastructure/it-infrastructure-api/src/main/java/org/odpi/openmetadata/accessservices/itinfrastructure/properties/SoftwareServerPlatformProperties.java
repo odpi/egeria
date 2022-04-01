@@ -145,7 +145,7 @@ public class SoftwareServerPlatformProperties extends ITInfrastructureProperties
         }
         if (platformVersion != null)
         {
-            assetExtendedProperties.put(platformVersion, versionProperty);
+            assetExtendedProperties.put(versionProperty, platformVersion);
         }
         if (platformSource  != null)
         {

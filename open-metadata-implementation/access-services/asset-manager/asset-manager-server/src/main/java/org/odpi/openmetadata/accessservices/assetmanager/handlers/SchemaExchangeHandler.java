@@ -945,6 +945,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
         Date effectiveTime = new Date();
 
         RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
+                                                                                       invalidParameterHandler,
                                                                                        userId,
                                                                                        schemaTypeGUID,
                                                                                        OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
