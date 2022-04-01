@@ -94,7 +94,7 @@ allprojects {
         kafkaVersion = '3.1.0'
         lang3Version='3.8.1'
         lettuceVersion = '6.1.6.RELEASE'
-        logbackVersion = '1.2.10'
+        logbackVersion = '1.2.11'
         luceneVersion = '8.11.1'
         nettyVersion = '4.1.75.Final'
         openlineageVersion = '0.5.2'
