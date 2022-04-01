@@ -93,7 +93,7 @@ allprojects {
         jwtVersion = '0.9.1'
         kafkaVersion = '3.1.0'
         lang3Version='3.8.1'
-        lettuceVersion = '6.1.6.RELEASE'
+        lettuceVersion = '6.1.8.RELEASE'
         logbackVersion = '1.2.10'
         luceneVersion = '8.11.1'
         nettyVersion = '4.1.74.Final'
