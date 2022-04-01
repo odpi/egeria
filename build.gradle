@@ -73,7 +73,7 @@ allprojects {
         guavaVersion = '31.1-jre'
         hamcrestVersion = '2.2'
         hdrhistogramVersion = '2.1.12'
-        hibernatevalidatorVersion = '6.2.0.Final'
+        hibernatevalidatorVersion = '7.0.4.Final'
         httpclientVersion = '4.5.13'
         httpcoreVersion = '4.4.15'
         jacksonVersion = '2.13.1'
