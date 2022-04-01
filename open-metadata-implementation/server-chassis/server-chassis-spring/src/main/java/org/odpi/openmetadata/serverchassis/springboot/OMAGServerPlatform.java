@@ -101,8 +101,7 @@ public class OMAGServerPlatform
             {
                 log.warn("strict.ssl is set to false! Invalid certificates will be accepted for connection!");
                 HttpHelper.noStrictSSL();
-            }
-            if( strictSSL && System.getProperty("javax.net.ssl.trustStore")==null) {
+            } else if( System.getProperty("javax.net.ssl.trustStore")==null ) {
                 //load the 'javax.net.ssl.trustStore' and
                 //'javax.net.ssl.trustStorePassword' from application.properties
                 System.setProperty("javax.net.ssl.trustStore", env.getProperty("server.ssl.trust-store"));
