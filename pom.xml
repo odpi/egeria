@@ -170,7 +170,7 @@
         <springdoc.version>1.6.6</springdoc.version>
         <spring.version>5.3.16</spring.version>
         <spring-security.version>5.6.2</spring-security.version>
-        <springdoc-plugin.version>1.3</springdoc-plugin.version>
+        <springdoc-plugin.version>1.4</springdoc-plugin.version>
         <commons-io.version>2.11.0</commons-io.version>
 	    <commons-text.version>1.9</commons-text.version>
         <commons-collections4.version>4.4</commons-collections4.version>
