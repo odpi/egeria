@@ -257,8 +257,8 @@
         <git-commit-plugin.version>4.9.10</git-commit-plugin.version>
         <process-exec-plugin.version>0.9</process-exec-plugin.version>
         <groovy-plugin.version>2.1.1</groovy-plugin.version>
-        <properties.plugin.version>1.0.0</properties.plugin.version>
         <openlineage.version>0.6.2</openlineage.version>
+        <properties.plugin.version>1.1.0</properties.plugin.version>
 
         <!-- Configuration of sonar code scanning-->
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
