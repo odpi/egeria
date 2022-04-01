@@ -78,7 +78,7 @@ allprojects {
         httpcoreVersion = '4.4.15'
         jacksonVersion = '2.13.1'
         jacksonaslVersion = '1.9.14-atlassian-6'
-        jakartaannotationVersion = '1.3.5'
+        jakartaannotationVersion = '2.1.0'
         jakartapersistenceVersion = '2.2.3'
         janusVersion = '0.6.1'
 	    jakartavalidationVersion = '3.0.1'
