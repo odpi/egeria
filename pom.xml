@@ -511,13 +511,6 @@
             </dependency>
 
             <dependency>
-                <groupId>jakarta.annotation</groupId>
-                <artifactId>jakarta.annotation-api</artifactId>
-                <scope>compile</scope>
-                <version>${jakarta-annotation.version}</version>
-            </dependency>
-
-            <dependency>
                 <groupId>com.fasterxml</groupId>
                 <artifactId>classmate</artifactId>
                 <scope>compile</scope>
