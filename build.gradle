@@ -98,7 +98,7 @@ allprojects {
         luceneVersion = '8.11.1'
         nettyVersion = '4.1.74.Final'
         openlineageVersion = '0.5.2'
-        mockitoVersion = '4.3.1'
+        mockitoVersion = '4.4.0'
         ossVersion = '4.14.0'
         plexusVersion = '3.4.1'
         prometheusVersion = '1.8.3'
