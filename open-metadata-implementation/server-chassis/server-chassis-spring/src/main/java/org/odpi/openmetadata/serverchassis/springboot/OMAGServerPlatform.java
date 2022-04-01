@@ -26,8 +26,6 @@ import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
 import java.util.*;
 
 
@@ -103,6 +101,12 @@ public class OMAGServerPlatform
             {
                 log.warn("strict.ssl is set to false! Invalid certificates will be accepted for connection!");
                 HttpHelper.noStrictSSL();
+            }
+            if( strictSSL && System.getProperty("javax.net.ssl.trustStore")==null) {
+                //load the 'javax.net.ssl.trustStore' and
+                //'javax.net.ssl.trustStorePassword' from application.properties
+                System.setProperty("javax.net.ssl.trustStore", env.getProperty("server.ssl.trust-store"));
+                System.setProperty("javax.net.ssl.trustStorePassword", env.getProperty("server.ssl.trust-store-password"));
             }
         };
     }
@@ -208,19 +212,6 @@ public class OMAGServerPlatform
             temporaryDeactivateServers();
         }
 
-    }
-
-    @PostConstruct
-    private void configureTrustStore() {
-
-        //making sure truststore was not set using JVM options
-        // and strict.ssl is true ( if false, truststore will ignored anyway )
-        if(strictSSL && System.getProperty("javax.net.ssl.trustStore")==null) {
-            //load the 'javax.net.ssl.trustStore' and
-            //'javax.net.ssl.trustStorePassword' from application.properties
-            System.setProperty("javax.net.ssl.trustStore", env.getProperty("server.ssl.trust-store"));
-            System.setProperty("javax.net.ssl.trustStorePassword", env.getProperty("server.ssl.trust-store-password"));
-        }
     }
 
 }

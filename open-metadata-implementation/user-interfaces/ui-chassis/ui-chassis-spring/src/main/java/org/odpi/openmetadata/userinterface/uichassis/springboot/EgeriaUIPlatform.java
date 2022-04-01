@@ -18,12 +18,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
-
-import javax.annotation.PostConstruct;
 
 @SpringBootApplication(
         scanBasePackages = {"${scan.packages}"}
@@ -58,6 +55,11 @@ public class EgeriaUIPlatform {
             if (!strictSSL)
             {
                 HttpHelper.noStrictSSL();
+            }else if( System.getProperty("javax.net.ssl.trustStore")==null) {
+                //load the 'javax.net.ssl.trustStore' and
+                //'javax.net.ssl.trustStorePassword' from application.properties
+                System.setProperty("javax.net.ssl.trustStore", env.getProperty("server.ssl.trust-store"));
+                System.setProperty("javax.net.ssl.trustStorePassword", env.getProperty("server.ssl.trust-store-password"));
             }
         };
     }
@@ -97,18 +99,6 @@ public class EgeriaUIPlatform {
         };
     }
 
-    @PostConstruct
-    private void configureTrustStore() {
-
-        //making sure truststore was not set using JVM options
-        // and strict.ssl is true ( if false, truststore will ignored anyway )
-        if(strictSSL && System.getProperty("javax.net.ssl.trustStore")==null) {
-            //load the 'javax.net.ssl.trustStore' and
-            //'javax.net.ssl.trustStorePassword' from application.properties
-            System.setProperty("javax.net.ssl.trustStore", env.getProperty("server.ssl.trust-store"));
-            System.setProperty("javax.net.ssl.trustStorePassword", env.getProperty("server.ssl.trust-store-password"));
-        }
-    }
 }
 
 
