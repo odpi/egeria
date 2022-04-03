@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.connectors.outtopic.Ass
 import org.odpi.openmetadata.accessservices.assetmanager.converters.*;
 import org.odpi.openmetadata.accessservices.assetmanager.ffdc.AssetManagerErrorCode;
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.DataAssetExchangeHandler;
+import org.odpi.openmetadata.accessservices.assetmanager.handlers.ExternalReferenceExchangeHandler;
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.GlossaryExchangeHandler;
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.ProcessExchangeHandler;
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.SchemaExchangeHandler;
@@ -32,6 +33,7 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
     private SoftwareCapabilityHandler<SoftwareCapabilityElement>                assetManagerHandler;
     private ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> externalIdentifierHandler;
     private DataAssetExchangeHandler                                            dataAssetExchangeHandler;
+    private ExternalReferenceExchangeHandler                                    externalReferenceHandler;
     private GlossaryExchangeHandler                                             glossaryExchangeHandler;
     private ProcessExchangeHandler                                              processExchangeHandler;
     private SchemaExchangeHandler                                               schemaExchangeHandler;
@@ -127,6 +129,18 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
                                                                      defaultZones,
                                                                      publishZones,
                                                                      auditLog);
+
+        this.externalReferenceHandler = new ExternalReferenceExchangeHandler(serviceName,
+                                                                             serverName,
+                                                                             invalidParameterHandler,
+                                                                             repositoryHandler,
+                                                                             repositoryHelper,
+                                                                             localServerUserId,
+                                                                             securityVerifier,
+                                                                             supportedZones,
+                                                                             defaultZones,
+                                                                             publishZones,
+                                                                             auditLog);
 
         this.glossaryExchangeHandler = new GlossaryExchangeHandler(serviceName,
                                                                    serverName,
@@ -257,6 +271,22 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
 
 
     /**
+     * Return the handler for managing external reference objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    ExternalReferenceExchangeHandler getExternalReferenceExchangeHandler() throws PropertyServerException
+    {
+        final String methodName = "getExternalReferenceExchangeHandler";
+
+        validateActiveRepository(methodName);
+
+        return externalReferenceHandler;
+    }
+
+
+    /**
      * Return the handler for managing glossary objects.
      *
      * @return  handler object
@@ -309,9 +339,14 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
      * Return the handler for governance action process requests.
      *
      * @return handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
      */
-    public AssetHandler<GovernanceActionProcessElement> getGovernanceActionProcessHandler()
+    public AssetHandler<GovernanceActionProcessElement> getGovernanceActionProcessHandler()  throws PropertyServerException
     {
+        final String methodName = "getGovernanceActionProcessHandler";
+
+        validateActiveRepository(methodName);
+
         return governanceActionProcessHandler;
     }
 
@@ -320,9 +355,14 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
      * Return the handler for governance action type requests.
      *
      * @return handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
      */
-    GovernanceActionTypeHandler<GovernanceActionTypeElement> getGovernanceActionTypeHandler()
+    GovernanceActionTypeHandler<GovernanceActionTypeElement> getGovernanceActionTypeHandler() throws PropertyServerException
     {
+        final String methodName = "getGovernanceActionTypeHandler";
+
+        validateActiveRepository(methodName);
+
         return governanceActionTypeHandler;
     }
 
@@ -331,9 +371,14 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
      * Return the handler for governance action requests.
      *
      * @return handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
      */
-    GovernanceActionHandler<GovernanceActionElement> getGovernanceActionHandler()
+    GovernanceActionHandler<GovernanceActionElement> getGovernanceActionHandler() throws PropertyServerException
     {
+        final String methodName = "getGovernanceActionHandler";
+
+        validateActiveRepository(methodName);
+
         return governanceActionHandler;
     }
 

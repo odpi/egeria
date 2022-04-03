@@ -31,7 +31,7 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
     private InvalidParameterHandler                                invalidParameterHandler;
     private SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE>  dataContainerHandler;
 
-    protected RepositoryErrorHandler errorHandler;
+    protected RepositoryErrorHandler errorHandler; /* initialized in constructor */
 
 
     /**
@@ -87,8 +87,6 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
         this.serverName                      = serverName;
         this.invalidParameterHandler         = invalidParameterHandler;
         this.repositoryHelper                = repositoryHelper;
-
-
 
         this.dataContainerHandler = new SchemaAttributeHandler<>(dataContainerConverter,
                                                                  dataContainerClass,

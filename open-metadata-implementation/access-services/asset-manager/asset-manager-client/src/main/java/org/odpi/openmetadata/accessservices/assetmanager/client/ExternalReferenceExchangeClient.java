@@ -13,6 +13,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ExternalReferenceElementResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ExternalReferenceElementsResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ExternalReferenceLinkElementsResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.ExternalReferenceLinkRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ExternalReferenceRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.NameRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.SearchStringRequestBody;
@@ -22,6 +23,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -185,13 +187,14 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
                                                                                    mappingProperties,
                                                                                    methodName));
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/external-references";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/external-references?assetManagerIsHome={2}";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
                                                                   requestBody,
                                                                   serverName,
-                                                                  userId);
+                                                                  userId,
+                                                                  assetManagerIsHome);
 
         return restResult.getGUID();
     }
@@ -231,7 +234,7 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(externalReferenceGUID, externalReferenceGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
-        
+
         if (!isMergeUpdate)
         {
             invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
@@ -278,8 +281,8 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
-        final String methodName                  = "deleteExternalReference";
-        final String externalReferenceGUIDParameterName   = "externalReferenceGUID";
+        final String methodName                         = "deleteExternalReference";
+        final String externalReferenceGUIDParameterName = "externalReferenceGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(externalReferenceGUID, externalReferenceGUIDParameterName, methodName);
@@ -304,23 +307,27 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
      * @param userId the name of the calling user.
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerIsHome ensure that only the asset manager can update this asset
      * @param attachedToGUID object linked to external references.
      * @param linkProperties description for the reference from the perspective of the object that the reference is being attached to.
      * @param externalReferenceGUID unique identifier (guid) of the external reference details.
+     *
+     * @return Unique identifier for new relationship
      *
      * @throws InvalidParameterException problem with the GUID or the external references are not correctly specified, or are null.
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     @Override
-    public void linkExternalReferenceToElement(String                          userId,
-                                               String                          assetManagerGUID,
-                                               String                          assetManagerName,
-                                               String                          attachedToGUID,
-                                               String                          externalReferenceGUID,
-                                               ExternalReferenceLinkProperties linkProperties) throws InvalidParameterException,
-                                                                                                      PropertyServerException,
-                                                                                                      UserNotAuthorizedException
+    public String linkExternalReferenceToElement(String                          userId,
+                                                 String                          assetManagerGUID,
+                                                 String                          assetManagerName,
+                                                 boolean                         assetManagerIsHome,
+                                                 String                          attachedToGUID,
+                                                 String                          externalReferenceGUID,
+                                                 ExternalReferenceLinkProperties linkProperties) throws InvalidParameterException,
+                                                                                                        PropertyServerException,
+                                                                                                        UserNotAuthorizedException
     {
         final String methodName                          = "linkExternalReferenceToElement";
         final String attachedToGUIDParameterName         = "attachedToGUID";
@@ -330,16 +337,69 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
         invalidParameterHandler.validateGUID(attachedToGUID, attachedToGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(externalReferenceGUID, externalReferenceGUIDParameterName, methodName);
 
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/external-references/{2}/links/{3}?assetManagerIsHome={4}";
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/external-references/{2}/link/{3}";
+        ExternalReferenceLinkRequestBody requestBody = new ExternalReferenceLinkRequestBody();
+
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setElementProperties(linkProperties);
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId,
+                                                                  externalReferenceGUID,
+                                                                  attachedToGUID);
+
+        return restResult.getGUID();
+    }
+
+
+
+    /**
+     * Update the link between an external reference to an object.
+     *
+     * @param userId the name of the calling user.
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param linkProperties description for the reference from the perspective of the object that the reference is being attached to.
+     * @param externalReferenceLinkGUID unique identifier (guid) of the external reference details.
+     *
+     * @throws InvalidParameterException problem with the GUID or the external references are not correctly specified, or are null.
+     * @throws PropertyServerException the server is not available.
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
+     */
+    @Override
+    public void updateExternalReferenceToElementLink(String                          userId,
+                                                     String                          assetManagerGUID,
+                                                     String                          assetManagerName,
+                                                     String                          externalReferenceLinkGUID,
+                                                     ExternalReferenceLinkProperties linkProperties) throws InvalidParameterException,
+                                                                                                            PropertyServerException,
+                                                                                                            UserNotAuthorizedException
+    {
+        final String methodName                          = "linkExternalReferenceToElement";
+        final String externalReferenceGUIDParameterName  = "externalReferenceLinkGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(externalReferenceLinkGUID, externalReferenceGUIDParameterName, methodName);
+
+        ExternalReferenceLinkRequestBody requestBody = new ExternalReferenceLinkRequestBody();
+
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setElementProperties(linkProperties);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/external-references/links/{2}/update";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        requestBody,
                                         serverName,
                                         userId,
-                                        externalReferenceGUID,
-                                        attachedToGUID);
+                                        externalReferenceLinkGUID);
     }
 
 
@@ -349,8 +409,7 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
      * @param userId the name of the calling user.
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param attachedToGUID object linked to external references.
-     * @param externalReferenceGUID identifier of the external reference.
+     * @param externalReferenceLinkGUID identifier of the external reference relationship.
      *
      * @throws InvalidParameterException problem with the GUID or the external references are not correctly specified, or are null.
      * @throws PropertyServerException the server is not available.
@@ -360,71 +419,72 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
     public void unlinkExternalReferenceFromElement(String userId,
                                                    String assetManagerGUID,
                                                    String assetManagerName,
-                                                   String attachedToGUID,
-                                                   String externalReferenceGUID) throws InvalidParameterException,
-                                                                                        PropertyServerException,
-                                                                                        UserNotAuthorizedException
+                                                   String externalReferenceLinkGUID) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
     {
         final String methodName                          = "linkExternalReferenceToElement";
-        final String attachedToGUIDParameterName         = "attachedToGUID";
-        final String externalReferenceGUIDParameterName  = "externalReferenceGUID";
+        final String externalReferenceGUIDParameterName  = "externalReferenceLinkGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(attachedToGUID, attachedToGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(externalReferenceGUID, externalReferenceGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(externalReferenceLinkGUID, externalReferenceGUIDParameterName, methodName);
 
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/external-references/{2}/unlink/{3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/external-references/links/{2}/remove";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
                                         serverName,
                                         userId,
-                                        externalReferenceGUID,
-                                        attachedToGUID);
+                                        externalReferenceLinkGUID);
     }
 
 
     /**
-     * Return information about a specific external reference.
+     * Retrieve the list of external references sorted in open metadata.
      *
-     * @param userId calling user
+     * @param userId the name of the calling user.
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param externalReferenceGUID unique identifier for the external reference
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
      *
-     * @return properties of the external reference
+     * @return links to addition information.
      *
-     * @throws InvalidParameterException externalReferenceGUID or userId is null
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
+     * @throws InvalidParameterException guid invalid or the external references are not correctly specified, or are null.
+     * @throws PropertyServerException the server is not available.
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     @Override
-    public ExternalReferenceElement getExternalReferenceByGUID(String userId,
-                                                               String assetManagerGUID,
-                                                               String assetManagerName,
-                                                               String externalReferenceGUID) throws InvalidParameterException,
-                                                                                                    UserNotAuthorizedException,
-                                                                                                    PropertyServerException
+    public List<ExternalReferenceElement> getExternalReferences(String userId,
+                                                                String assetManagerGUID,
+                                                                String assetManagerName,
+                                                                Date   effectiveTime,
+                                                                int    startFrom,
+                                                                int    pageSize) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
     {
-        final String methodName = "getExternalReferenceByGUID";
-        final String guidParameterName = "externalReferenceGUID";
+        final String methodName = "getExternalReferences";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(externalReferenceGUID, guidParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/external-references/{2}/retrieve";
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        ExternalReferenceElementResponse restResult = restClient.callExternalReferencePostRESTCall(methodName,
-                                                                                                   urlTemplate,
-                                                                                                   getAssetManagerIdentifiersRequestBody(assetManagerGUID, 
-                                                                                                                                         assetManagerName),
-                                                                                                   serverName,
-                                                                                                   userId,
-                                                                                                   externalReferenceGUID);
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/external-references/by-type?startFrom={2}&pageSize={3}";
 
-        return restResult.getElement();
+        ExternalReferenceElementsResponse restResult = restClient.callExternalReferencesPostRESTCall(methodName,
+                                                                                                     urlTemplate,
+                                                                                                     getEffectiveTimeQueryRequestBody(assetManagerGUID,
+                                                                                                                                      assetManagerName,
+                                                                                                                                      effectiveTime),
+                                                                                                     serverName,
+                                                                                                     userId,
+                                                                                                     startFrom,
+                                                                                                     validatedPageSize);
+
+        return restResult.getElementList();
     }
 
 
@@ -435,6 +495,7 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param resourceId unique reference id assigned by the resource owner (supports wildcards). This is the qualified name of the entity
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
@@ -449,6 +510,7 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
                                                                     String assetManagerGUID,
                                                                     String assetManagerName,
                                                                     String resourceId,
+                                                                    Date   effectiveTime,
                                                                     int    startFrom,
                                                                     int    pageSize) throws InvalidParameterException,
                                                                                             PropertyServerException,
@@ -467,16 +529,17 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
         requestBody.setAssetManagerName(assetManagerName);
         requestBody.setName(resourceId);
         requestBody.setNameParameterName(nameParameterName);
+        requestBody.setEffectiveTime(effectiveTime);
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/external-references/by-resource-id?startFrom={2}&pageSize={3}";
 
         ExternalReferenceElementsResponse restResult = restClient.callExternalReferencesPostRESTCall(methodName,
-                                                                                             urlTemplate,
-                                                                                             requestBody,
-                                                                                             serverName,
-                                                                                             userId,
-                                                                                             startFrom,
-                                                                                             validatedPageSize);
+                                                                                                     urlTemplate,
+                                                                                                     requestBody,
+                                                                                                     serverName,
+                                                                                                     userId,
+                                                                                                     startFrom,
+                                                                                                     validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -489,6 +552,7 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param url URL of the external resource.
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
@@ -503,6 +567,7 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
                                                                      String assetManagerGUID,
                                                                      String assetManagerName,
                                                                      String url,
+                                                                     Date   effectiveTime,
                                                                      int    startFrom,
                                                                      int    pageSize) throws InvalidParameterException,
                                                                                              PropertyServerException,
@@ -521,8 +586,66 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
         requestBody.setAssetManagerName(assetManagerName);
         requestBody.setName(url);
         requestBody.setNameParameterName(nameParameterName);
+        requestBody.setEffectiveTime(effectiveTime);
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/external-references/by-url?startFrom={2}&pageSize={3}";
+
+        ExternalReferenceElementsResponse restResult = restClient.callExternalReferencesPostRESTCall(methodName,
+                                                                                                     urlTemplate,
+                                                                                                     requestBody,
+                                                                                                     serverName,
+                                                                                                     userId,
+                                                                                                     startFrom,
+                                                                                                     validatedPageSize);
+
+        return restResult.getElementList();
+    }
+
+
+    /**
+     * Retrieve the list of external references for this name.
+     *
+     * @param userId the name of the calling user.
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param name qualifiedName or displayName of the external resource.
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return links to addition information.
+     *
+     * @throws InvalidParameterException guid invalid or the external references are not correctly specified, or are null.
+     * @throws PropertyServerException the server is not available.
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
+     */
+    @Override
+    public List<ExternalReferenceElement> getExternalReferencesByName(String userId,
+                                                                      String assetManagerGUID,
+                                                                      String assetManagerName,
+                                                                      String name,
+                                                                      Date   effectiveTime,
+                                                                      int    startFrom,
+                                                                      int    pageSize) throws InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException
+    {
+        final String methodName        = "getExternalReferencesByName";
+        final String nameParameterName = "name";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(name, nameParameterName, methodName);
+
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        NameRequestBody requestBody = new NameRequestBody();
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setName(name);
+        requestBody.setNameParameterName(nameParameterName);
+        requestBody.setEffectiveTime(effectiveTime);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/external-references/by-name?startFrom={2}&pageSize={3}";
 
         ExternalReferenceElementsResponse restResult = restClient.callExternalReferencesPostRESTCall(methodName,
                                                                                                      urlTemplate,
@@ -542,6 +665,7 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -555,6 +679,7 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
     public List<ExternalReferenceElement> getExternalReferencesForAssetManager(String userId,
                                                                                String assetManagerGUID,
                                                                                String assetManagerName,
+                                                                               Date   effectiveTime,
                                                                                int    startFrom,
                                                                                int    pageSize) throws InvalidParameterException,
                                                                                                        UserNotAuthorizedException,
@@ -568,13 +693,14 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/external-references/by-asset-manager?startFrom={2}&pageSize={3}";
 
         ExternalReferenceElementsResponse restResult = restClient.callExternalReferencesPostRESTCall(methodName,
-                                                                                    urlTemplate,
-                                                                                    getAssetManagerIdentifiersRequestBody(assetManagerGUID,
-                                                                                                                          assetManagerName),
-                                                                                    serverName,
-                                                                                    userId,
-                                                                                    startFrom,
-                                                                                    validatedPageSize);
+                                                                                                     urlTemplate,
+                                                                                                     getEffectiveTimeQueryRequestBody(assetManagerGUID,
+                                                                                                                                      assetManagerName,
+                                                                                                                                      effectiveTime),
+                                                                                                     serverName,
+                                                                                                     userId,
+                                                                                                     startFrom,
+                                                                                                     validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -587,6 +713,7 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param searchString regular expression (RegEx) to search for
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
@@ -601,6 +728,7 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
                                                                  String assetManagerGUID,
                                                                  String assetManagerName,
                                                                  String searchString,
+                                                                 Date   effectiveTime,
                                                                  int    startFrom,
                                                                  int    pageSize) throws InvalidParameterException,
                                                                                          PropertyServerException,
@@ -618,16 +746,17 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
         requestBody.setAssetManagerName(assetManagerName);
         requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(searchStringParameterName);
+        requestBody.setEffectiveTime(effectiveTime);
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/external-references/by-search-string?startFrom={2}&pageSize={3}";
 
         ExternalReferenceElementsResponse restResult = restClient.callExternalReferencesPostRESTCall(methodName,
-                                                                                    urlTemplate,
-                                                                                    requestBody,
-                                                                                    serverName,
-                                                                                    userId,
-                                                                                    startFrom,
-                                                                                    validatedPageSize);
+                                                                                                     urlTemplate,
+                                                                                                     requestBody,
+                                                                                                     serverName,
+                                                                                                     userId,
+                                                                                                     startFrom,
+                                                                                                     validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -640,6 +769,7 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param attachedToGUID object linked to external reference.
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
@@ -654,6 +784,7 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
                                                                                  String assetManagerGUID,
                                                                                  String assetManagerName,
                                                                                  String attachedToGUID,
+                                                                                 Date   effectiveTime,
                                                                                  int    startFrom,
                                                                                  int    pageSize) throws InvalidParameterException,
                                                                                                          PropertyServerException,
@@ -670,8 +801,9 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
 
         ExternalReferenceLinkElementsResponse restResult = restClient.callExternalReferenceLinksPostRESTCall(methodName,
                                                                                                              urlTemplate,
-                                                                                                             getAssetManagerIdentifiersRequestBody(assetManagerGUID,
-                                                                                                                                                   assetManagerName),
+                                                                                                             getEffectiveTimeQueryRequestBody(assetManagerGUID,
+                                                                                                                                              assetManagerName,
+                                                                                                                                              effectiveTime),
                                                                                                              serverName,
                                                                                                              userId,
                                                                                                              attachedToGUID,
@@ -680,4 +812,50 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
 
         return restResult.getElementList();
     }
+
+
+    /**
+     * Return information about a specific external reference.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param externalReferenceGUID unique identifier for the external reference
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     *
+     * @return properties of the external reference
+     *
+     * @throws InvalidParameterException externalReferenceGUID or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public ExternalReferenceElement getExternalReferenceByGUID(String userId,
+                                                               String assetManagerGUID,
+                                                               String assetManagerName,
+                                                               String externalReferenceGUID,
+                                                               Date   effectiveTime) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
+    {
+        final String methodName = "getExternalReferenceByGUID";
+        final String guidParameterName = "externalReferenceGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(externalReferenceGUID, guidParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/external-references/{2}/by-guid";
+
+        ExternalReferenceElementResponse restResult = restClient.callExternalReferencePostRESTCall(methodName,
+                                                                                                   urlTemplate,
+                                                                                                   getEffectiveTimeQueryRequestBody(assetManagerGUID,
+                                                                                                                                    assetManagerName,
+                                                                                                                                    effectiveTime),
+                                                                                                   serverName,
+                                                                                                   userId,
+                                                                                                   externalReferenceGUID);
+
+        return restResult.getElement();
+    }
+
 }

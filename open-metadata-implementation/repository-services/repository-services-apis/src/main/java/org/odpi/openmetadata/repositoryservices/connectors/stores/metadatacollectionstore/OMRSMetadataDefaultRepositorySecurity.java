@@ -278,6 +278,7 @@ public class OMRSMetadataDefaultRepositorySecurity implements OpenMetadataReposi
     {
     }
 
+
     /**
      * Tests for whether a specific user should have the right to update the classification for an entity instance
      * within a repository.

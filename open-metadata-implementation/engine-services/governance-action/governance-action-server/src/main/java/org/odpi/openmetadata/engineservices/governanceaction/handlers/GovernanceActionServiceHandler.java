@@ -26,9 +26,9 @@ import java.util.Map;
  */
 public class GovernanceActionServiceHandler extends GovernanceServiceHandler
 {
-    private GovernanceActionService    governanceActionService;
-    private String                     governanceActionServiceType;
-    private GovernanceContext          governanceContext;
+    private GovernanceActionServiceConnector governanceActionService;
+    private String                           governanceActionServiceType;
+    private GovernanceContext                governanceContext;
 
 
     /**
@@ -87,6 +87,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
         final String actionDescription = "Initializing GovernanceActionService";
         final String governanceActionServiceConnectorParameterName = "governanceActionServiceConnector";
 
+        final String genericGovernanceActionServiceType      = "GovernanceActionService";
         final String watchdogGovernanceActionServiceType     = "WatchdogGovernanceActionService";
         final String provisioningGovernanceActionServiceType = "ProvisioningGovernanceActionService";
         final String verificationGovernanceActionServiceType = "VerificationGovernanceActionService";
@@ -102,49 +103,9 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
                                                                                 this,
                                                                                 governanceActionUserId);
 
-            if (governanceActionServiceConnector instanceof WatchdogGovernanceActionService)
+            if (governanceActionServiceConnector instanceof GovernanceActionServiceConnector)
             {
-                WatchdogGovernanceContext context = new WatchdogGovernanceContext(governanceActionUserId,
-                                                                                  governanceActionGUID,
-                                                                                  requestType,
-                                                                                  requestParameters,
-                                                                                  requestSourceElements,
-                                                                                  actionTargetElements,
-                                                                                  openMetadataClient);
-
-                WatchdogGovernanceActionService service = (WatchdogGovernanceActionService)governanceActionServiceConnector;
-
-                service.setGovernanceContext(context);
-                service.setAuditLog(auditLog);
-                service.setGovernanceServiceName(governanceServiceName);
-
-                this.governanceContext = context;
-                this.governanceActionService = service;
-                this.governanceActionServiceType = watchdogGovernanceActionServiceType;
-            }
-            else if (governanceActionServiceConnector instanceof VerificationGovernanceActionService)
-            {
-                VerificationGovernanceContext context = new VerificationGovernanceContext(governanceActionUserId,
-                                                                                          governanceActionGUID,
-                                                                                          requestType,
-                                                                                          requestParameters,
-                                                                                          requestSourceElements,
-                                                                                          actionTargetElements,
-                                                                                          openMetadataClient);
-
-                VerificationGovernanceActionService service = (VerificationGovernanceActionService)governanceActionServiceConnector;
-
-                service.setGovernanceContext(context);
-                service.setAuditLog(auditLog);
-                service.setGovernanceServiceName(governanceServiceName);
-
-                this.governanceContext = context;
-                this.governanceActionService = service;
-                this.governanceActionServiceType = verificationGovernanceActionServiceType;
-            }
-            else if (governanceActionServiceConnector instanceof TriageGovernanceActionService)
-            {
-                TriageGovernanceContext context = new TriageGovernanceContext(governanceActionUserId,
+                GovernanceActionContext context = new GovernanceActionContext(governanceActionUserId,
                                                                               governanceActionGUID,
                                                                               requestType,
                                                                               requestParameters,
@@ -152,7 +113,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
                                                                               actionTargetElements,
                                                                               openMetadataClient);
 
-                TriageGovernanceActionService service = (TriageGovernanceActionService)governanceActionServiceConnector;
+                GovernanceActionServiceConnector service = (GovernanceActionServiceConnector) governanceActionServiceConnector;
 
                 service.setGovernanceContext(context);
                 service.setAuditLog(auditLog);
@@ -160,60 +121,51 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
 
                 this.governanceContext = context;
                 this.governanceActionService = service;
-                this.governanceActionServiceType = triageGovernanceActionServiceType;
-            }
-            else if (governanceActionServiceConnector instanceof RemediationGovernanceActionService)
-            {
-                RemediationGovernanceContext context = new RemediationGovernanceContext(governanceActionUserId,
-                                                                                        governanceActionGUID,
-                                                                                        requestType,
-                                                                                        requestParameters,
-                                                                                        requestSourceElements,
-                                                                                        actionTargetElements,
-                                                                                        openMetadataClient);
 
-                RemediationGovernanceActionService service = (RemediationGovernanceActionService)governanceActionServiceConnector;
+                if (governanceActionServiceConnector instanceof GovernanceActionService)
+                {
+                    this.governanceActionServiceType = genericGovernanceActionServiceType;
+                }
+                else if (governanceActionServiceConnector instanceof WatchdogGovernanceActionService)
+                {
+                    this.governanceActionServiceType = watchdogGovernanceActionServiceType;
+                }
+                else if (governanceActionServiceConnector instanceof VerificationGovernanceActionService)
+                {
+                    this.governanceActionServiceType = verificationGovernanceActionServiceType;
+                }
+                else if (governanceActionServiceConnector instanceof TriageGovernanceActionService)
+                {
+                    this.governanceActionServiceType = triageGovernanceActionServiceType;
+                }
+                else if (governanceActionServiceConnector instanceof RemediationGovernanceActionService)
+                {
+                    this.governanceActionServiceType = remediationGovernanceActionServiceType;
+                }
+                else if (governanceActionServiceConnector instanceof ProvisioningGovernanceActionService)
+                {
+                    this.governanceActionServiceType = provisioningGovernanceActionServiceType;
+                }
+                else
+                {
+                    auditLog.logMessage(actionDescription,
+                                        GovernanceActionAuditCode.UNKNOWN_GOVERNANCE_ACTION_SERVICE.getMessageDefinition(governanceActionServiceName,
+                                                                                                                         requestType,
+                                                                                                                         governanceActionServiceConnector.getClass().getName()));
+                    throw new InvalidParameterException(
+                            GovernanceActionErrorCode.UNKNOWN_GOVERNANCE_ACTION_SERVICE.getMessageDefinition(governanceActionServiceName,
+                                                                                                             requestType,
+                                                                                                             governanceActionServiceConnector.getClass().getName()),
+                            this.getClass().getName(),
+                            actionDescription,
+                            governanceActionServiceConnectorParameterName);
+                }
 
-                service.setGovernanceContext(context);
-                service.setAuditLog(auditLog);
-                service.setGovernanceServiceName(governanceServiceName);
-
-                this.governanceContext = context;
-                this.governanceActionService = service;
-                this.governanceActionServiceType = remediationGovernanceActionServiceType;
-            }
-            else if (governanceActionServiceConnector instanceof ProvisioningGovernanceActionService)
-            {
-                ProvisioningGovernanceContext context = new ProvisioningGovernanceContext(governanceActionUserId,
-                                                                                          governanceActionGUID,
-                                                                                          requestType,
-                                                                                          requestParameters,
-                                                                                          requestSourceElements,
-                                                                                          actionTargetElements,
-                                                                                          openMetadataClient);
-
-                ProvisioningGovernanceActionService service = (ProvisioningGovernanceActionService)governanceActionServiceConnector;
-
-                service.setGovernanceContext(context);
-                service.setAuditLog(auditLog);
-                service.setGovernanceServiceName(governanceServiceName);
-
-                this.governanceContext = context;
-                this.governanceActionService = service;
-                this.governanceActionServiceType = provisioningGovernanceActionServiceType;
-            }
-            else if (governanceActionServiceConnector instanceof GovernanceActionService)
-            {
                 auditLog.logMessage(actionDescription,
-                                      GovernanceActionAuditCode.UNKNOWN_GOVERNANCE_ACTION_SERVICE.getMessageDefinition(governanceActionServiceName,
-                                                                                                                       requestType,
-                                                                                                                       governanceActionServiceConnector.getClass().getName()));
-                throw new InvalidParameterException(GovernanceActionErrorCode.UNKNOWN_GOVERNANCE_ACTION_SERVICE.getMessageDefinition(governanceActionServiceName,
-                                                                                                                                     requestType,
-                                                                                                                                     governanceActionServiceConnector.getClass().getName()),
-                                                    this.getClass().getName(),
-                                                    actionDescription,
-                                                    governanceActionServiceConnectorParameterName);
+                                    GovernanceActionAuditCode.GOVERNANCE_ACTION_INITIALIZED.getMessageDefinition(governanceActionServiceName,
+                                                                                                                 requestType,
+                                                                                                                 governanceActionServiceConnector.getClass().getName(),
+                                                                                                                 getGovernanceEngineName()));
             }
             else
             {

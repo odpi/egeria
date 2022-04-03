@@ -54,9 +54,10 @@ public class RepositoryIterator
         this.forDuplicateProcessing = forDuplicateProcessing;
         this.effectiveTime = effectiveTime;
         this.pageSize = invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
-        if(pageSize == 0)
+
+        if (this.pageSize == 0)
         {
-            pageSize = MAX_PAGE_SIZE;
+            this.pageSize = MAX_PAGE_SIZE;
         }
     }
 }

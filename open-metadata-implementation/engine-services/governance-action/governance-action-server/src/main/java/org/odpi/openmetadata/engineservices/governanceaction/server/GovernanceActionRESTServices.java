@@ -10,7 +10,7 @@ import org.odpi.openmetadata.commonservices.ffdc.properties.ConnectorReport;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 
-import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionService;
+import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionServiceConnector;
 import org.slf4j.LoggerFactory;
 
 
@@ -58,7 +58,7 @@ public class GovernanceActionRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             ConnectorReport connectorReport = instanceHandler.validateConnector(connectorProviderClassName,
-                                                                                GovernanceActionService.class,
+                                                                                GovernanceActionServiceConnector.class,
                                                                                 EngineServiceDescription.GOVERNANCE_ACTION_OMES.getEngineServiceFullName());
             if (connectorReport != null)
             {

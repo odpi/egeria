@@ -112,7 +112,7 @@ public class AssetProperties extends SupplementaryProperties
     @Override
     public String toString()
     {
-        return "DataAssetProperties{" +
+        return "AssetProperties{" +
                        "technicalName='" + technicalName + '\'' +
                        ", technicalDescription='" + technicalDescription + '\'' +
                        ", displayName='" + getDisplayName() + '\'' +
@@ -122,6 +122,8 @@ public class AssetProperties extends SupplementaryProperties
                        ", usage='" + getUsage() + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
                        ", vendorProperties=" + getVendorProperties() +
                        ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
