@@ -78,6 +78,60 @@ public enum GenericHandlersAuditCode implements AuditLogMessageSet
                           "This message is to highlight that an entity has lost its anchor, and a delete was attempted on it, but failed. " +
                                   "An administrator should assess what is required for the entity, and either delete it or supply a new anchor for it."),
 
+    IGNORING_UNNECESSARY_ENTITY_UPDATE("OMAG-GENERIC-HANDLERS-0008",
+                                       OMRSAuditLogRecordSeverity.INFO,
+                                       "Ignoring unnecessary update to {0} entity with unique identifier {1} through method {2} by user {3}",
+                                       "No update is made to the entity in the repository because the new properties are the same as the old. In order to determine that the update is unnecessary, Egeria has retrieved the existing entity from the repository and compared it to the new values.",
+                                       "Determine if the processing by Egeria is the most efficient way to detect if an update is required to the entity and make adjustments to the caller's logic if appropriate."),
+
+    IGNORING_UNNECESSARY_RELATIONSHIP_UPDATE("OMAG-GENERIC-HANDLERS-0009",
+                                             OMRSAuditLogRecordSeverity.INFO,
+                                             "Ignoring unnecessary update to {0} relationship with unique identifier {1} through method {2} by user {3}",
+                                             "No update is made to the relationship in the repository because the new properties are the same as the old. In order to determine that the update is unnecessary, Egeria has retrieved the existing relationship from the repository and compared it to the new values.",
+                                             "Determine if the processing by Egeria is the most efficient way to detect if an update is required to the relationship and make adjustments to the caller's logic if appropriate."),
+
+    IGNORING_UNNECESSARY_CLASSIFICATION_UPDATE("OMAG-GENERIC-HANDLERS-0010",
+                                               OMRSAuditLogRecordSeverity.INFO,
+                                               "Ignoring unnecessary update to {0} classification attached to entity with unique identifier {1} through method {2} by user {3}",
+                                               "No update is made to the classification in the repository because the new properties are the same as the old. In order to determine that the update is unnecessary, Egeria has retrieved the existing entity from the repository and compared the classification properties to the new values.",
+                                               "Determine if the processing by Egeria is the most efficient way to detect if an update is required to the classification and make adjustments to the caller's logic if appropriate."),
+
+    INITIATE_GOVERNANCE_ACTION("OMAG-GENERIC-HANDLERS-0020",
+                               OMRSAuditLogRecordSeverity.STARTUP,
+                               "Initializing a new governance action {0} for request type {1} to run on governance engine {2} with receivedGuards of {3}, mandatoryGuards of {4}, supplied with request parameters {5} and a start time of {6}",
+                               "A new GovernanceAction entity is created.  This will be picked up by the Governance Engine OMASs running in the connected cohorts and passed onto their connected engine hosts.  These engine hosts will compete for the right to execute the governance action.",
+                               "Validate that this governance action should be initialized.  If so, check that the Governance Engine OMASs running in the connected cohorts publish the governance action to their connected engine host(s)."),
+
+    INITIATE_GOVERNANCE_ACTION_FROM_TYPE("OMAG-GENERIC-HANDLERS-0021",
+                               OMRSAuditLogRecordSeverity.STARTUP,
+                               "Initializing a new governance action {0} from governance action type {1} for request type {2} to run on governance engine {3} with receivedGuards of {4}, mandatoryGuards of {5}, supplied with request parameters {6} and a start time of {7}",
+                               "A new GovernanceAction entity is created using the definition of the governance action type.  This will be picked up by the Governance Engine OMASs running in the connected cohorts and passed onto their connected engine hosts.  These engine hosts will compete for the right to execute the governance action.",
+                               "Validate that this governance action should be initialized using this type.  If so, check that the Governance Engine OMASs running in the connected cohorts publish the governance action to their connected engine host(s)."),
+
+    ADD_ACTION_TARGETS("OMAG-GENERIC-HANDLERS-0022",
+                                         OMRSAuditLogRecordSeverity.STARTUP,
+                                         "Adding action target {0} ({1}) to governance action {2} ({3})",
+                                         "The governance action is linked to the action target so that it is made available to the governance action service when it runs.",
+                                         "Validate that this action target should be added to the governance action."),
+
+    ACTION_CLAIM_REQUEST("OMAG-GENERIC-HANDLERS-0023",
+                       OMRSAuditLogRecordSeverity.STARTUP,
+                       "Governance engine with {0} userId is claiming governance action {1}",
+                       "The governance engine is requesting permission to execute the governance action.  This will be successful if the governance engine is the first to claim the governance action and it is in APPROVED status.",
+                       "Validate that one of the governance engines successfully claims the governance action."),
+
+    SUCCESSFUL_ACTION_CLAIM_REQUEST("OMAG-GENERIC-HANDLERS-0024",
+                         OMRSAuditLogRecordSeverity.STARTUP,
+                         "Governance engine with {0} userId has successfully claimed governance action {1}",
+                         "The governance action is updated to show that the governance engine has claimed it and that its status is now WAITING.  This will be successful if the governance engine is the first to claim the governance action and it is in APPROVED status.",
+                         "Validate that only one of the governance engines successfully claims the governance action."),
+
+    GOVERNANCE_ACTION_STATUS_CHANGE("OMAG-GENERIC-HANDLERS-0025",
+                                    OMRSAuditLogRecordSeverity.STARTUP,
+                                    "Status changed from {0} to {1} for governance action {2} by governance engine with {3} userId",
+                                    "The governance action's status has been updated as requested.",
+                                    "Validate that the status change is valid."),
+
     ;
 
     private String                     logMessageId;

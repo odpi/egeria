@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.commonservices.generichandlers;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersAuditCode;
 import org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersErrorCode;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryEntitiesIterator;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -387,6 +388,56 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
         invalidParameterHandler.validateName(governanceEngineName, engineNameParameterName, methodName);
 
         /*
+         * Log details of the requested governance action.
+         */
+        String receivedGuardsString  = "<null>";
+        String mandatoryGuardsString = "<null>";
+        String startTimeString       = "<now>";
+        String requestParameterNames = "<null>";
+
+        if (receivedGuards != null)
+        {
+            receivedGuardsString = receivedGuards.toString();
+        }
+
+        if (mandatoryGuards != null)
+        {
+            mandatoryGuardsString = mandatoryGuards.toString();
+        }
+
+        if (startTime != null)
+        {
+            startTimeString = startTime.toString();
+        }
+
+        if (requestParameters != null)
+        {
+            requestParameterNames = requestParameters.keySet().toString();
+        }
+
+        if (governanceActionTypeName != null)
+        {
+            auditLog.logMessage(methodName, GenericHandlersAuditCode.INITIATE_GOVERNANCE_ACTION_FROM_TYPE.getMessageDefinition(qualifiedName,
+                                                                                                                               governanceActionTypeName,
+                                                                                                                               requestType,
+                                                                                                                               governanceEngineName,
+                                                                                                                               receivedGuardsString,
+                                                                                                                               mandatoryGuardsString,
+                                                                                                                               requestParameterNames,
+                                                                                                                               startTimeString));
+        }
+        else
+        {
+            auditLog.logMessage(methodName, GenericHandlersAuditCode.INITIATE_GOVERNANCE_ACTION.getMessageDefinition(qualifiedName,
+                                                                                                                     requestType,
+                                                                                                                     governanceEngineName,
+                                                                                                                     receivedGuardsString,
+                                                                                                                     mandatoryGuardsString,
+                                                                                                                     requestParameterNames,
+                                                                                                                     startTimeString));
+        }
+
+        /*
          * Effective time is set to "any time" and all elements that make up the governance action
          * are set up without effectivity dates.  Any control on start time is done using the startTime property.
          */
@@ -516,6 +567,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
             this.addActionTargets(userId,
                                   governanceActionGUID,
                                   governanceActionGUIDParameterName,
+                                  qualifiedName,
                                   actionTargets,
                                   methodName);
 
@@ -539,6 +591,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param userId calling user
      * @param governanceActionGUID unique identifier of the governance action to connector the targets to
      * @param governanceActionGUIDParameterName parameter passing the governanceActionGUID
+     * @param governanceActionName name of governance action - for logging
      * @param actionTargets map of action target names to GUIDs for the resulting governance action service
      * @param methodName calling method
      * @throws InvalidParameterException null qualified name
@@ -548,6 +601,7 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
     private void addActionTargets(String                userId,
                                   String                governanceActionGUID,
                                   String                governanceActionGUIDParameterName,
+                                  String                governanceActionName,
                                   List<NewActionTarget> actionTargets,
                                   String                methodName) throws InvalidParameterException,
                                                                            UserNotAuthorizedException,
@@ -559,32 +613,41 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
             for (NewActionTarget actionTarget : actionTargets)
             {
-                String actionTargetGUID = actionTarget.getActionTargetGUID();
-                String actionTargetName = actionTarget.getActionTargetName();
-                if (actionTargetGUID != null)
+                if (actionTarget != null)
                 {
-                    InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                                                 null,
-                                                                                                 OpenMetadataAPIMapper.ACTION_TARGET_NAME_PROPERTY_NAME,
-                                                                                                 actionTargetName,
-                                                                                                 methodName);
+                    String actionTargetGUID = actionTarget.getActionTargetGUID();
+                    String actionTargetName = actionTarget.getActionTargetName();
 
-                    this.linkElementToElement(userId,
-                                              null,
-                                              null,
-                                              governanceActionGUID,
-                                              governanceActionGUIDParameterName,
-                                              OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME,
-                                              actionTargetGUID,
-                                              actionTargetGUIDParameterName,
-                                              OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                              false,
-                                              false,
-                                              supportedZones,
-                                              OpenMetadataAPIMapper.TARGET_FOR_ACTION_TYPE_GUID,
-                                              OpenMetadataAPIMapper.TARGET_FOR_ACTION_TYPE_NAME,
-                                              properties,
-                                              methodName);
+                    if (actionTargetGUID != null)
+                    {
+                        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                                     null,
+                                                                                                     OpenMetadataAPIMapper.ACTION_TARGET_NAME_PROPERTY_NAME,
+                                                                                                     actionTargetName,
+                                                                                                     methodName);
+
+                        this.linkElementToElement(userId,
+                                                  null,
+                                                  null,
+                                                  governanceActionGUID,
+                                                  governanceActionGUIDParameterName,
+                                                  OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME,
+                                                  actionTargetGUID,
+                                                  actionTargetGUIDParameterName,
+                                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                  false,
+                                                  false,
+                                                  supportedZones,
+                                                  OpenMetadataAPIMapper.TARGET_FOR_ACTION_TYPE_GUID,
+                                                  OpenMetadataAPIMapper.TARGET_FOR_ACTION_TYPE_NAME,
+                                                  properties,
+                                                  methodName);
+
+                        auditLog.logMessage(methodName, GenericHandlersAuditCode.ADD_ACTION_TARGETS.getMessageDefinition(actionTargetName,
+                                                                                                                         actionTargetGUID,
+                                                                                                                         governanceActionName,
+                                                                                                                         governanceActionGUID));
+                    }
                 }
             }
         }
@@ -910,6 +973,8 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            true,
                                            effectiveTime,
                                            methodName);
+
+                    auditLog.logMessage(methodName, GenericHandlersAuditCode.SUCCESSFUL_ACTION_CLAIM_REQUEST.getMessageDefinition(userId, governanceActionGUID));
                 }
                 else
                 {
@@ -943,6 +1008,57 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
         }
     }
 
+
+    /**
+     * Create a string message for log messages.
+     *
+     * @param ordinal ordinal for the status
+     * @return string name
+     */
+    private String getGovernanceActionStatusName(int ordinal)
+    {
+        String governanceActionStatusName = "UNKNOWN";
+        switch(ordinal)
+        {
+            case OpenMetadataAPIMapper.REQUESTED_GA_STATUS_ORDINAL:
+                governanceActionStatusName = "REQUESTED";
+                break;
+
+            case OpenMetadataAPIMapper.APPROVED_GA_STATUS_ORDINAL:
+                governanceActionStatusName = "APPROVED";
+                break;
+
+            case OpenMetadataAPIMapper.WAITING_GA_STATUS_ORDINAL:
+                governanceActionStatusName = "WAITING";
+                break;
+
+            case OpenMetadataAPIMapper.IN_PROGRESS_GA_STATUS_ORDINAL:
+                governanceActionStatusName = "IN_PROGRESS";
+                break;
+
+            case OpenMetadataAPIMapper.ACTIONED_GA_STATUS_ORDINAL:
+                governanceActionStatusName = "ACTIONED";
+                break;
+
+            case OpenMetadataAPIMapper.INVALID_GA_STATUS_ORDINAL:
+                governanceActionStatusName = "iNVALID";
+                break;
+
+            case OpenMetadataAPIMapper.IGNORED_GA_STATUS_ORDINAL:
+                governanceActionStatusName = "IGNORED";
+                break;
+
+            case OpenMetadataAPIMapper.FAILED_GA_STATUS_ORDINAL:
+                governanceActionStatusName = "FAILED";
+                break;
+
+            case OpenMetadataAPIMapper.OTHER_GA_STATUS_ORDINAL:
+                governanceActionStatusName = "OTHER";
+                break;
+        }
+
+        return  governanceActionStatusName;
+    }
 
 
     /**
@@ -989,6 +1105,11 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
             if (properties != null)
             {
+                int currentStatus = repositoryHelper.getEnumPropertyOrdinal(serviceName,
+                                                                            OpenMetadataAPIMapper.ACTION_STATUS_PROPERTY_NAME,
+                                                                            properties,
+                                                                            methodName);
+
                 String processingEngineUserId = repositoryHelper.getStringProperty(serviceName,
                                                                                    OpenMetadataAPIMapper.PROCESSING_ENGINE_USER_ID_PROPERTY_NAME,
                                                                                    properties,
@@ -1026,6 +1147,12 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            true,
                                            effectiveTime,
                                            methodName);
+
+                    auditLog.logMessage(methodName, GenericHandlersAuditCode.GOVERNANCE_ACTION_STATUS_CHANGE.getMessageDefinition(this.getGovernanceActionStatusName(currentStatus),
+                                                                                                                                  this.getGovernanceActionStatusName(governanceActionStatus),
+                                                                                                                                  governanceActionGUID,
+                                                                                                                                  userId));
+
                 }
                 else
                 {
@@ -1731,9 +1858,14 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                  * Need to use this governance action rather than creating a new one.  It needs updating with the
                                  * additional action targets and the output guards.  It may then be ready to run.
                                  */
+                                String nextGovernanceActionName = repositoryHelper.getStringProperty(serviceName,
+                                                                                                     OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                                     nextGovernanceAction.getProperties(),
+                                                                                                     methodName);
                                 this.addActionTargets(userId,
                                                       nextGovernanceAction.getGUID(),
                                                       governanceActionGUIDParameterName,
+                                                      nextGovernanceActionName,
                                                       newActionTargets,
                                                       methodName);
 
