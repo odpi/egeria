@@ -56,6 +56,11 @@ public class CreateDatabaseTest
     private final static String databaseColumnDescription = "DatabaseColumn description";
     private final static String databaseColumnType = "string";
 
+    private final static String databaseColumnTwoName        = "TestDatabaseColumn2";
+    private final static String databaseColumnTwoDisplayName = "DatabaseColumn2 displayName";
+    private final static String databaseColumnTwoDescription = "DatabaseColumn2 description";
+    private final static String databaseColumnTwoType = "date";
+
 
     /**
      * Run all of the defined tests and capture the results.
@@ -116,7 +121,6 @@ public class CreateDatabaseTest
         String databaseSchemaGUID = thisTest.getDatabaseSchema(client, databaseManagerGUID, databaseGUID, userId);
         String databaseTableGUID = thisTest.createDatabaseTable(client, databaseManagerGUID, databaseSchemaGUID, userId);
         String databaseColumnGUID = thisTest.createDatabaseColumn(client, databaseManagerGUID, databaseTableGUID, userId);
-
 
         /*
          * Check that all elements are deleted when the database is deleted.
@@ -191,6 +195,125 @@ public class CreateDatabaseTest
             thisTest.checkDatabaseTableGone(client, databaseTableGUID, null, activityName, userId);
             thisTest.checkDatabaseSchemaGone(client, databaseSchemaGUID, null, activityName, userId);
             thisTest.checkDatabaseGone(client, databaseGUID, activityName, userId);
+
+
+            /*
+             * Recreate database
+             */
+            activityName= "deleteOneByOne";
+
+            databaseGUID = thisTest.getDatabase(client, databaseManagerGUID, userId);
+            databaseSchemaGUID = thisTest.getDatabaseSchema(client, databaseManagerGUID, databaseGUID, userId);
+            databaseTableGUID = thisTest.createDatabaseTable(client, databaseManagerGUID, databaseSchemaGUID, userId);
+            databaseColumnGUID = thisTest.createDatabaseColumn(client, databaseManagerGUID, databaseTableGUID, userId);
+
+            /*
+             * Update tests
+             */
+            activityName = "updateNonExistentColumn";
+
+            String databaseColumnTwoGUID = "Blah Blah";
+            DatabaseColumnProperties databaseColumnTwoProperties = new DatabaseColumnProperties();
+            databaseColumnTwoProperties.setQualifiedName(databaseColumnTwoName);
+            databaseColumnTwoProperties.setDisplayName(databaseColumnDisplayName); // Note wrong value
+            databaseColumnTwoProperties.setDescription(databaseColumnTwoDescription);
+            databaseColumnTwoProperties.setDataType(databaseColumnType); // Note wrong value
+
+            try
+            {
+
+                client.updateDatabaseColumn(userId, databaseManagerGUID, databaseManagerName, databaseColumnTwoGUID, databaseColumnTwoProperties);
+                throw new FVTUnexpectedCondition(testCaseName, activityName);
+            }
+            catch (InvalidParameterException expectedError)
+            {
+                // very good
+            }
+
+            activityName = "updateColumnWithSameProperties";
+
+            databaseColumnTwoGUID = client.createDatabaseColumn(userId, databaseManagerGUID, databaseManagerName, databaseTableGUID, databaseColumnTwoProperties);
+
+            DatabaseColumnElement beforeElement = client.getDatabaseColumnByGUID(userId, databaseColumnTwoGUID);
+
+            client.updateDatabaseColumn(userId, databaseManagerGUID, databaseManagerName, databaseColumnTwoGUID, databaseColumnTwoProperties);
+
+            DatabaseColumnElement afterElement = client.getDatabaseColumnByGUID(userId, databaseColumnTwoGUID);
+
+            /*
+             * No change should occur in the version number because the properties are not different.
+             */
+            if (! beforeElement.getElementHeader().getVersions().equals(afterElement.getElementHeader().getVersions()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(version changed from " + beforeElement.getElementHeader().getVersions() + " to " + afterElement.getElementHeader().getVersions() + ")");
+            }
+
+            activityName = "updateColumnClassificationProperties";
+
+            /*
+             * This change effects the classification of the column
+             */
+            databaseColumnTwoProperties.setDataType(databaseColumnTwoType);
+
+            client.updateDatabaseColumn(userId, databaseManagerGUID, databaseManagerName, databaseColumnTwoGUID, databaseColumnTwoProperties);
+
+            afterElement = client.getDatabaseColumnByGUID(userId, databaseColumnTwoGUID);
+
+            /*
+             * No change should occur in the version number because the entity properties are not different.
+             */
+            if (! beforeElement.getElementHeader().getVersions().equals(afterElement.getElementHeader().getVersions()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(version changed from " + beforeElement.getElementHeader().getVersions() + " to " + afterElement.getElementHeader().getVersions() + ")");
+            }
+
+            if (! databaseColumnTwoType.equals(afterElement.getDatabaseColumnProperties().getDataType()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(data type should be " + databaseColumnTwoType + " rather than " + afterElement.getDatabaseColumnProperties().getDataType() + ")");
+            }
+
+            /*
+             * This change affects the entity
+             */
+            activityName = "updateColumnProperties";
+
+            databaseColumnTwoProperties.setDisplayName(databaseColumnTwoDisplayName);
+
+            client.updateDatabaseColumn(userId, databaseManagerGUID, databaseManagerName, databaseColumnTwoGUID, databaseColumnTwoProperties);
+
+            afterElement = client.getDatabaseColumnByGUID(userId, databaseColumnTwoGUID);
+
+            /*
+             * The change should have taken effect.
+             */
+            if (beforeElement.getElementHeader().getVersions().equals(afterElement.getElementHeader().getVersions()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(version did not change from " + beforeElement.getElementHeader().getVersions() + ")");
+            }
+
+            if (! databaseColumnTwoDisplayName.equals(afterElement.getDatabaseColumnProperties().getDisplayName()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(display name should be " + databaseColumnTwoDisplayName + " rather than " + afterElement.getDatabaseColumnProperties().getDisplayName() + ")");
+            }
+
+            /*
+             * Check that all elements are deleted when the database is deleted.
+             */
+            activityName = "cascadedDelete";
+            try
+            {
+                client.removeDatabase(userId, databaseManagerGUID, databaseManagerName, databaseGUID, databaseName);
+
+                thisTest.checkDatabaseGone(client, databaseGUID, activityName, userId);
+                thisTest.checkDatabaseSchemaGone(client, databaseSchemaGUID, null, activityName, userId);
+                thisTest.checkDatabaseTableGone(client, databaseTableGUID, null, activityName, userId);
+                thisTest.checkDatabaseColumnGone(client, databaseColumnGUID, null, activityName, userId);
+                thisTest.checkDatabaseColumnGone(client, databaseColumnTwoGUID, null, activityName, userId);
+            }
+            catch (Exception unexpectedError)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
+            }
 
         }
         catch (Exception unexpectedError)
