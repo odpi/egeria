@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6};
+var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6,"i11":6,"i12":6,"i13":6};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -179,10 +179,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ExternalReferenceElement&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findExternalReferences(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">findExternalReferences</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findExternalReferences(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">findExternalReferences</a></span>&#8203;(java.lang.String&nbsp;userId,
                       java.lang.String&nbsp;assetManagerGUID,
                       java.lang.String&nbsp;assetManagerName,
                       java.lang.String&nbsp;searchString,
+                      java.util.Date&nbsp;effectiveTime,
                       int&nbsp;startFrom,
                       int&nbsp;pageSize)</code></th>
 <td class="colLast">
@@ -191,54 +192,84 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ExternalReferenceElement</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getExternalReferenceByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getExternalReferenceByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getExternalReferenceByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">getExternalReferenceByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
                           java.lang.String&nbsp;assetManagerGUID,
                           java.lang.String&nbsp;assetManagerName,
-                          java.lang.String&nbsp;externalReferenceGUID)</code></th>
+                          java.lang.String&nbsp;externalReferenceGUID,
+                          java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
 <div class="block">Return information about a specific external reference.</div>
 </td>
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ExternalReferenceElement&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getExternalReferencesById(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">getExternalReferencesById</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getExternalReferences(java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">getExternalReferences</a></span>&#8203;(java.lang.String&nbsp;userId,
+                     java.lang.String&nbsp;assetManagerGUID,
+                     java.lang.String&nbsp;assetManagerName,
+                     java.util.Date&nbsp;effectiveTime,
+                     int&nbsp;startFrom,
+                     int&nbsp;pageSize)</code></th>
+<td class="colLast">
+<div class="block">Retrieve the list of external references sorted in open metadata.</div>
+</td>
+</tr>
+<tr id="i5" class="rowColor">
+<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ExternalReferenceElement&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getExternalReferencesById(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">getExternalReferencesById</a></span>&#8203;(java.lang.String&nbsp;userId,
                          java.lang.String&nbsp;assetManagerGUID,
                          java.lang.String&nbsp;assetManagerName,
                          java.lang.String&nbsp;resourceId,
+                         java.util.Date&nbsp;effectiveTime,
                          int&nbsp;startFrom,
                          int&nbsp;pageSize)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the list of external references for this resourceId.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ExternalReferenceElement&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getExternalReferencesByURL(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">getExternalReferencesByURL</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getExternalReferencesByName(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">getExternalReferencesByName</a></span>&#8203;(java.lang.String&nbsp;userId,
+                           java.lang.String&nbsp;assetManagerGUID,
+                           java.lang.String&nbsp;assetManagerName,
+                           java.lang.String&nbsp;name,
+                           java.util.Date&nbsp;effectiveTime,
+                           int&nbsp;startFrom,
+                           int&nbsp;pageSize)</code></th>
+<td class="colLast">
+<div class="block">Retrieve the list of external references for this name.</div>
+</td>
+</tr>
+<tr id="i7" class="rowColor">
+<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ExternalReferenceElement&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getExternalReferencesByURL(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">getExternalReferencesByURL</a></span>&#8203;(java.lang.String&nbsp;userId,
                           java.lang.String&nbsp;assetManagerGUID,
                           java.lang.String&nbsp;assetManagerName,
                           java.lang.String&nbsp;url,
+                          java.util.Date&nbsp;effectiveTime,
                           int&nbsp;startFrom,
                           int&nbsp;pageSize)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the list of external references for this URL.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ExternalReferenceElement&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getExternalReferencesForAssetManager(java.lang.String,java.lang.String,java.lang.String,int,int)">getExternalReferencesForAssetManager</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getExternalReferencesForAssetManager(java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">getExternalReferencesForAssetManager</a></span>&#8203;(java.lang.String&nbsp;userId,
                                     java.lang.String&nbsp;assetManagerGUID,
                                     java.lang.String&nbsp;assetManagerName,
+                                    java.util.Date&nbsp;effectiveTime,
                                     int&nbsp;startFrom,
                                     int&nbsp;pageSize)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the list of external reference created on behalf of the named asset manager.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#linkExternalReferenceToElement(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceLinkProperties)">linkExternalReferenceToElement</a></span>&#8203;(java.lang.String&nbsp;userId,
+<tr id="i9" class="rowColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#linkExternalReferenceToElement(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceLinkProperties)">linkExternalReferenceToElement</a></span>&#8203;(java.lang.String&nbsp;userId,
                               java.lang.String&nbsp;assetManagerGUID,
                               java.lang.String&nbsp;assetManagerName,
+                              boolean&nbsp;assetManagerIsHome,
                               java.lang.String&nbsp;attachedToGUID,
                               java.lang.String&nbsp;externalReferenceGUID,
                               org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceLinkProperties&nbsp;linkProperties)</code></th>
@@ -246,30 +277,30 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Link an external reference to an object.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ExternalReferenceLinkElement&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#retrieveAttachedExternalReferences(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">retrieveAttachedExternalReferences</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#retrieveAttachedExternalReferences(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">retrieveAttachedExternalReferences</a></span>&#8203;(java.lang.String&nbsp;userId,
                                   java.lang.String&nbsp;assetManagerGUID,
                                   java.lang.String&nbsp;assetManagerName,
                                   java.lang.String&nbsp;attachedToGUID,
+                                  java.util.Date&nbsp;effectiveTime,
                                   int&nbsp;startFrom,
                                   int&nbsp;pageSize)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the list of external references attached to the supplied object.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#unlinkExternalReferenceFromElement(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">unlinkExternalReferenceFromElement</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#unlinkExternalReferenceFromElement(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">unlinkExternalReferenceFromElement</a></span>&#8203;(java.lang.String&nbsp;userId,
                                   java.lang.String&nbsp;assetManagerGUID,
                                   java.lang.String&nbsp;assetManagerName,
-                                  java.lang.String&nbsp;attachedToGUID,
-                                  java.lang.String&nbsp;externalReferenceGUID)</code></th>
+                                  java.lang.String&nbsp;externalReferenceLinkGUID)</code></th>
 <td class="colLast">
 <div class="block">Remove the link between a external reference and an element.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateExternalReference(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceProperties)">updateExternalReference</a></span>&#8203;(java.lang.String&nbsp;userId,
                        java.lang.String&nbsp;assetManagerGUID,
@@ -280,6 +311,17 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                        org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceProperties&nbsp;properties)</code></th>
 <td class="colLast">
 <div class="block">Update the definition of a external reference.</div>
+</td>
+</tr>
+<tr id="i13" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateExternalReferenceToElementLink(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceLinkProperties)">updateExternalReferenceToElementLink</a></span>&#8203;(java.lang.String&nbsp;userId,
+                                    java.lang.String&nbsp;assetManagerGUID,
+                                    java.lang.String&nbsp;assetManagerName,
+                                    java.lang.String&nbsp;externalReferenceLinkGUID,
+                                    org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceLinkProperties&nbsp;linkProperties)</code></th>
+<td class="colLast">
+<div class="block">Update the link between an external reference to an object.</div>
 </td>
 </tr>
 </table>
@@ -407,30 +449,34 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="linkExternalReferenceToElement(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceLinkProperties)">
+<a id="linkExternalReferenceToElement(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceLinkProperties)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>linkExternalReferenceToElement</h4>
-<pre class="methodSignature">void&nbsp;linkExternalReferenceToElement&#8203;(java.lang.String&nbsp;userId,
-                                    java.lang.String&nbsp;assetManagerGUID,
-                                    java.lang.String&nbsp;assetManagerName,
-                                    java.lang.String&nbsp;attachedToGUID,
-                                    java.lang.String&nbsp;externalReferenceGUID,
-                                    org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceLinkProperties&nbsp;linkProperties)
-                             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                    org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                                    org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+<pre class="methodSignature">java.lang.String&nbsp;linkExternalReferenceToElement&#8203;(java.lang.String&nbsp;userId,
+                                                java.lang.String&nbsp;assetManagerGUID,
+                                                java.lang.String&nbsp;assetManagerName,
+                                                boolean&nbsp;assetManagerIsHome,
+                                                java.lang.String&nbsp;attachedToGUID,
+                                                java.lang.String&nbsp;externalReferenceGUID,
+                                                org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceLinkProperties&nbsp;linkProperties)
+                                         throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
+                                                org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
+                                                org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
 <div class="block">Link an external reference to an object.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - the name of the calling user.</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
+<dd><code>assetManagerIsHome</code> - ensure that only the asset manager can update this asset</dd>
 <dd><code>attachedToGUID</code> - object linked to external references.</dd>
 <dd><code>linkProperties</code> - description for the reference from the perspective of the object that the reference is being attached to.</dd>
 <dd><code>externalReferenceGUID</code> - unique identifier (guid) of the external reference details.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>Unique identifier for new relationship</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - problem with the GUID or the external references are not correctly specified, or are null.</dd>
 <dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - the server is not available.</dd>
@@ -438,7 +484,36 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="unlinkExternalReferenceFromElement(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="updateExternalReferenceToElementLink(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceLinkProperties)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>updateExternalReferenceToElementLink</h4>
+<pre class="methodSignature">void&nbsp;updateExternalReferenceToElementLink&#8203;(java.lang.String&nbsp;userId,
+                                          java.lang.String&nbsp;assetManagerGUID,
+                                          java.lang.String&nbsp;assetManagerName,
+                                          java.lang.String&nbsp;externalReferenceLinkGUID,
+                                          org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceLinkProperties&nbsp;linkProperties)
+                                   throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
+                                          org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
+                                          org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+<div class="block">Update the link between an external reference to an object.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - the name of the calling user.</dd>
+<dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
+<dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
+<dd><code>linkProperties</code> - description for the reference from the perspective of the object that the reference is being attached to.</dd>
+<dd><code>externalReferenceLinkGUID</code> - unique identifier (guid) of the external reference details.</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - problem with the GUID or the external references are not correctly specified, or are null.</dd>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - the server is not available.</dd>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the calling user is not authorized to issue the call.</dd>
+</dl>
+</li>
+</ul>
+<a id="unlinkExternalReferenceFromElement(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -447,8 +522,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre class="methodSignature">void&nbsp;unlinkExternalReferenceFromElement&#8203;(java.lang.String&nbsp;userId,
                                         java.lang.String&nbsp;assetManagerGUID,
                                         java.lang.String&nbsp;assetManagerName,
-                                        java.lang.String&nbsp;attachedToGUID,
-                                        java.lang.String&nbsp;externalReferenceGUID)
+                                        java.lang.String&nbsp;externalReferenceLinkGUID)
                                  throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
                                         org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
                                         org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
@@ -458,8 +532,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>userId</code> - the name of the calling user.</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
-<dd><code>attachedToGUID</code> - object linked to external references.</dd>
-<dd><code>externalReferenceGUID</code> - identifier of the external reference.</dd>
+<dd><code>externalReferenceLinkGUID</code> - identifier of the external reference relationship.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - problem with the GUID or the external references are not correctly specified, or are null.</dd>
 <dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - the server is not available.</dd>
@@ -467,36 +540,40 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="getExternalReferenceByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="getExternalReferences(java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>getExternalReferenceByGUID</h4>
-<pre class="methodSignature">org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ExternalReferenceElement&nbsp;getExternalReferenceByGUID&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                       java.lang.String&nbsp;assetManagerGUID,
-                                                                                                                       java.lang.String&nbsp;assetManagerName,
-                                                                                                                       java.lang.String&nbsp;externalReferenceGUID)
-                                                                                                                throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                       org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                       org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
-<div class="block">Return information about a specific external reference.</div>
+<h4>getExternalReferences</h4>
+<pre class="methodSignature">java.util.List&lt;org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ExternalReferenceElement&gt;&nbsp;getExternalReferences&#8203;(java.lang.String&nbsp;userId,
+                                                                                                                                  java.lang.String&nbsp;assetManagerGUID,
+                                                                                                                                  java.lang.String&nbsp;assetManagerName,
+                                                                                                                                  java.util.Date&nbsp;effectiveTime,
+                                                                                                                                  int&nbsp;startFrom,
+                                                                                                                                  int&nbsp;pageSize)
+                                                                                                                           throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
+                                                                                                                                  org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
+                                                                                                                                  org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+<div class="block">Retrieve the list of external references sorted in open metadata.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>userId</code> - calling user</dd>
+<dd><code>userId</code> - the name of the calling user.</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
-<dd><code>externalReferenceGUID</code> - unique identifier for the external reference</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
+<dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
+<dd><code>pageSize</code> - maximum number of elements to return.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>properties of the external reference</dd>
+<dd>links to addition information.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - externalReferenceGUID or userId is null</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing property server</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - security access problem</dd>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - guid invalid or the external references are not correctly specified, or are null.</dd>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - the server is not available.</dd>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the calling user is not authorized to issue the call.</dd>
 </dl>
 </li>
 </ul>
-<a id="getExternalReferencesById(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">
+<a id="getExternalReferencesById(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -506,6 +583,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                                                                                                                                       java.lang.String&nbsp;assetManagerGUID,
                                                                                                                                       java.lang.String&nbsp;assetManagerName,
                                                                                                                                       java.lang.String&nbsp;resourceId,
+                                                                                                                                      java.util.Date&nbsp;effectiveTime,
                                                                                                                                       int&nbsp;startFrom,
                                                                                                                                       int&nbsp;pageSize)
                                                                                                                                throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
@@ -518,6 +596,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>resourceId</code> - unique reference id assigned by the resource owner (supports wildcards). This is the qualified name of the entity</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
 <dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
 <dd><code>pageSize</code> - maximum number of elements to return.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -529,7 +608,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="getExternalReferencesByURL(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">
+<a id="getExternalReferencesByURL(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -539,6 +618,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                                                                                                                                        java.lang.String&nbsp;assetManagerGUID,
                                                                                                                                        java.lang.String&nbsp;assetManagerName,
                                                                                                                                        java.lang.String&nbsp;url,
+                                                                                                                                       java.util.Date&nbsp;effectiveTime,
                                                                                                                                        int&nbsp;startFrom,
                                                                                                                                        int&nbsp;pageSize)
                                                                                                                                 throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
@@ -551,6 +631,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>url</code> - URL of the external resource.</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
 <dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
 <dd><code>pageSize</code> - maximum number of elements to return.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -562,7 +643,42 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="getExternalReferencesForAssetManager(java.lang.String,java.lang.String,java.lang.String,int,int)">
+<a id="getExternalReferencesByName(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getExternalReferencesByName</h4>
+<pre class="methodSignature">java.util.List&lt;org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ExternalReferenceElement&gt;&nbsp;getExternalReferencesByName&#8203;(java.lang.String&nbsp;userId,
+                                                                                                                                        java.lang.String&nbsp;assetManagerGUID,
+                                                                                                                                        java.lang.String&nbsp;assetManagerName,
+                                                                                                                                        java.lang.String&nbsp;name,
+                                                                                                                                        java.util.Date&nbsp;effectiveTime,
+                                                                                                                                        int&nbsp;startFrom,
+                                                                                                                                        int&nbsp;pageSize)
+                                                                                                                                 throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
+                                                                                                                                        org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
+                                                                                                                                        org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+<div class="block">Retrieve the list of external references for this name.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - the name of the calling user.</dd>
+<dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
+<dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
+<dd><code>name</code> - qualifiedName or displayNAme of the external resource</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
+<dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
+<dd><code>pageSize</code> - maximum number of elements to return.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>links to addition information.</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - guid invalid or the external references are not correctly specified, or are null.</dd>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - the server is not available.</dd>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the calling user is not authorized to issue the call.</dd>
+</dl>
+</li>
+</ul>
+<a id="getExternalReferencesForAssetManager(java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -571,6 +687,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre class="methodSignature">java.util.List&lt;org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ExternalReferenceElement&gt;&nbsp;getExternalReferencesForAssetManager&#8203;(java.lang.String&nbsp;userId,
                                                                                                                                                  java.lang.String&nbsp;assetManagerGUID,
                                                                                                                                                  java.lang.String&nbsp;assetManagerName,
+                                                                                                                                                 java.util.Date&nbsp;effectiveTime,
                                                                                                                                                  int&nbsp;startFrom,
                                                                                                                                                  int&nbsp;pageSize)
                                                                                                                                           throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
@@ -582,6 +699,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
 <dd><code>startFrom</code> - paging start point</dd>
 <dd><code>pageSize</code> - maximum results that can be returned</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -593,7 +711,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="findExternalReferences(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">
+<a id="findExternalReferences(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -603,6 +721,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                                                                                                                                    java.lang.String&nbsp;assetManagerGUID,
                                                                                                                                    java.lang.String&nbsp;assetManagerName,
                                                                                                                                    java.lang.String&nbsp;searchString,
+                                                                                                                                   java.util.Date&nbsp;effectiveTime,
                                                                                                                                    int&nbsp;startFrom,
                                                                                                                                    int&nbsp;pageSize)
                                                                                                                             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
@@ -615,6 +734,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>searchString</code> - regular expression (RegEx) to search for</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
 <dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
 <dd><code>pageSize</code> - maximum number of elements to return.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -626,16 +746,17 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="retrieveAttachedExternalReferences(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">
+<a id="retrieveAttachedExternalReferences(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>retrieveAttachedExternalReferences</h4>
 <pre class="methodSignature">java.util.List&lt;org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ExternalReferenceLinkElement&gt;&nbsp;retrieveAttachedExternalReferences&#8203;(java.lang.String&nbsp;userId,
                                                                                                                                                    java.lang.String&nbsp;assetManagerGUID,
                                                                                                                                                    java.lang.String&nbsp;assetManagerName,
                                                                                                                                                    java.lang.String&nbsp;attachedToGUID,
+                                                                                                                                                   java.util.Date&nbsp;effectiveTime,
                                                                                                                                                    int&nbsp;startFrom,
                                                                                                                                                    int&nbsp;pageSize)
                                                                                                                                             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
@@ -648,6 +769,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>attachedToGUID</code> - object linked to external reference.</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
 <dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
 <dd><code>pageSize</code> - maximum number of elements to return.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -656,6 +778,37 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - guid invalid or the external references are not correctly specified, or are null.</dd>
 <dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - the server is not available.</dd>
 <dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the calling user is not authorized to issue the call.</dd>
+</dl>
+</li>
+</ul>
+<a id="getExternalReferenceByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>getExternalReferenceByGUID</h4>
+<pre class="methodSignature">org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ExternalReferenceElement&nbsp;getExternalReferenceByGUID&#8203;(java.lang.String&nbsp;userId,
+                                                                                                                       java.lang.String&nbsp;assetManagerGUID,
+                                                                                                                       java.lang.String&nbsp;assetManagerName,
+                                                                                                                       java.lang.String&nbsp;externalReferenceGUID,
+                                                                                                                       java.util.Date&nbsp;effectiveTime)
+                                                                                                                throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
+                                                                                                                       org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
+                                                                                                                       org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<div class="block">Return information about a specific external reference.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
+<dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
+<dd><code>externalReferenceGUID</code> - unique identifier for the external reference</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>properties of the external reference</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - externalReferenceGUID or userId is null</dd>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing property server</dd>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - security access problem</dd>
 </dl>
 </li>
 </ul>
