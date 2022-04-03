@@ -106,4 +106,17 @@ public class LineageVertex implements Serializable {
     public int hashCode() {
         return Objects.hash(nodeID, nodeType, displayName, guid, qualifiedName, properties);
     }
+
+    @Override
+    public String toString() {
+        return "LineageVertex{" +
+                "id=" + id +
+                ", nodeID='" + nodeID + '\'' +
+                ", nodeType='" + nodeType + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", guid='" + guid + '\'' +
+                ", qualifiedName='" + qualifiedName + '\'' +
+                ", properties=" + properties +
+                '}';
+    }
 }

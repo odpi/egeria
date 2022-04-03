@@ -120,60 +120,6 @@ public class AssetCatalogEntityResource {
     }
 
     /**
-     * Returns a sub-graph of intermediate assets that connected two assets
-     *
-     * @param serverName     unique identifier for requested server.
-     * @param userId         the unique identifier for the user
-     * @param startAssetGUID the starting asset identifier of the query
-     * @param endAssetGUID   the ending asset identifier of the query
-     * @return a list of assets between the given assets
-     */
-    @GetMapping(path = "/linking-assets/from/{assetGUID}/to/{endAssetGUID}",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public AssetCatalogListResponse getLinkingAssets(@PathVariable("serverName") String serverName,
-                                                     @PathVariable("userId") String userId,
-                                                     @PathVariable("assetGUID") @NotBlank String startAssetGUID,
-                                                     @PathVariable("endAssetGUID") @NotBlank String endAssetGUID) {
-        return assetService.getLinkingAssets(serverName, userId, startAssetGUID, endAssetGUID);
-    }
-
-    /**
-     * Return a sub-graph of relationships that connect two assets
-     *
-     * @param serverName     unique identifier for requested server.
-     * @param userId         the unique identifier for the user
-     * @param startAssetGUID the starting asset identifier of the query
-     * @param endAssetGUID   the ending asset identifier of the query
-     * @return a list of relationships that connects the assets
-     */
-    @GetMapping(path = "/linking-assets-relationships/from/{assetGUID}/to/{endAssetGUID}",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public RelationshipListResponse getLinkingRelationships(@PathVariable("serverName") String serverName,
-                                                            @PathVariable("userId") String userId,
-                                                            @PathVariable("assetGUID") String startAssetGUID,
-                                                            @PathVariable("endAssetGUID") String endAssetGUID) {
-        return assetService.getLinkingRelationships(serverName, userId, startAssetGUID, endAssetGUID);
-    }
-
-    /**
-     * Returns the sub-graph that represents the returned linked relationships.
-     *
-     * @param serverName       unique identifier for requested server.
-     * @param userId           the unique identifier for the user
-     * @param assetGUID        the starting asset identifier of the query
-     * @param searchParameters constrains to make the assets's search results more precise
-     * @return a list of assets that in neighborhood of the given asset
-     */
-    @PostMapping(path = "/assets-from-neighborhood/{assetGUID}",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public AssetCatalogListResponse getAssetsFromNeighborhood(@PathVariable("serverName") String serverName,
-                                                              @PathVariable("userId") String userId,
-                                                              @PathVariable("assetGUID") @NotBlank String assetGUID,
-                                                              @RequestBody SearchParameters searchParameters) {
-        return assetService.getAssetsFromNeighborhood(serverName, userId, assetGUID, searchParameters);
-    }
-
-    /**
      * Return a list of assets matching the search criteria without the full context
      *
      * @param serverName       unique identifier for requested server.
@@ -189,7 +135,6 @@ public class AssetCatalogEntityResource {
                                           @RequestBody SearchParameters searchParameters) {
         return assetService.searchByType(serverName, userId, searchCriteria, searchParameters);
     }
-
 
     /**
      * Return the full context of an asset/glossary term based on its identifier.

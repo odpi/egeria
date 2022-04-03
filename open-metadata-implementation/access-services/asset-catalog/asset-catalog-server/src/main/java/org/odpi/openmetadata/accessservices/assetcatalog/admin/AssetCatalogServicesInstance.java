@@ -4,11 +4,13 @@ package org.odpi.openmetadata.accessservices.assetcatalog.admin;
 
 import lombok.Getter;
 import org.odpi.openmetadata.accessservices.assetcatalog.connectors.outtopic.AssetCatalogOutTopicClientProvider;
+import org.odpi.openmetadata.accessservices.assetcatalog.converters.AssetCatalogConverter;
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogErrorCode;
 import org.odpi.openmetadata.accessservices.assetcatalog.handlers.AssetCatalogHandler;
-import org.odpi.openmetadata.accessservices.assetcatalog.handlers.CommonHandler;
 import org.odpi.openmetadata.accessservices.assetcatalog.handlers.RelationshipHandler;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogBean;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -69,12 +71,21 @@ class AssetCatalogServicesInstance extends OMASServiceInstance {
         super.supportedZones = supportedZones;
 
         if (repositoryHandler != null) {
+            AssetCatalogConverter<AssetCatalogBean> assetCatalogConverter =
+                    new AssetCatalogConverter<>(repositoryHelper, serviceName, serverName);
 
-            assetCatalogHandler = new AssetCatalogHandler(serverName, sourceName, invalidParameterHandler, repositoryHandler, repositoryHelper,
-                    errorHandler, supportedZones, supportedTypesForSearch);
-            CommonHandler commonHandler = new CommonHandler(sourceName, repositoryHandler, repositoryHelper, errorHandler);
-            relationshipHandler = new RelationshipHandler(sourceName, invalidParameterHandler, repositoryHandler, repositoryHelper, errorHandler,
-                    commonHandler);
+            OpenMetadataAPIGenericHandler<AssetCatalogBean> assetHandler =
+                    new OpenMetadataAPIGenericHandler<>(new AssetCatalogConverter<>(repositoryHelper, serviceName, serverName),
+                            AssetCatalogBean.class, serviceName, serverName, invalidParameterHandler, repositoryHandler,
+                            repositoryHelper, localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones,
+                            auditLog);
+
+            assetCatalogHandler = new AssetCatalogHandler(serverName, sourceName, invalidParameterHandler,
+                    repositoryHandler, repositoryHelper, assetHandler, assetCatalogConverter,  errorHandler,
+                    supportedZones, supportedTypesForSearch);
+
+            relationshipHandler = new RelationshipHandler(sourceName, invalidParameterHandler, repositoryHandler,
+                    repositoryHelper, assetHandler, errorHandler);
         } else {
             final String methodName = "new ServiceInstance";
             throw new NewInstanceException(AssetCatalogErrorCode.OMRS_NOT_INITIALIZED.getMessageDefinition(serverName),

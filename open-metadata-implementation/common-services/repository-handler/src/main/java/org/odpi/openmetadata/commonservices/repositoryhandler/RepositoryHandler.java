@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.repositoryhandler;
 
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -47,11 +48,12 @@ public class RepositoryHandler
 
     private static final String memento                       = "Memento";
 
-    private RepositoryErrorHandler errorHandler;
-    private OMRSRepositoryHelper   repositoryHelper;
-    private OMRSMetadataCollection metadataCollection;
-    private int                    maxPageSize;
-    private AuditLog               auditLog;
+    private InvalidParameterHandler invalidParameterHandler;
+    private RepositoryErrorHandler  errorHandler;
+    private OMRSRepositoryHelper    repositoryHelper;
+    private OMRSMetadataCollection  metadataCollection;
+    private int                     maxPageSize;
+    private AuditLog                auditLog;
 
     private static final Logger log = LoggerFactory.getLogger(RepositoryHandler.class);
 
@@ -76,6 +78,8 @@ public class RepositoryHandler
         this.errorHandler = errorHandler;
         this.metadataCollection = metadataCollection;
         this.maxPageSize = maxPageSize;
+        this.invalidParameterHandler = new InvalidParameterHandler();
+        invalidParameterHandler.setMaxPagingSize(maxPageSize);
     }
 
 
@@ -693,6 +697,7 @@ public class RepositoryHandler
                             if (deduplicationNeeded)
                             {
                                 peerIterator = new RepositoryRelationshipsIterator(repositoryHandler,
+                                                                                   invalidParameterHandler,
                                                                                    userId,
                                                                                    this.principleEntity.getGUID(),
                                                                                    entityTypeName,
@@ -2463,7 +2468,8 @@ public class RepositoryHandler
                                         String  entityTypeName,
                                         boolean forDuplicateProcessing,
                                         String  methodName) throws UserNotAuthorizedException,
-                                                                  PropertyServerException
+                                                                   PropertyServerException,
+                                                                   InvalidParameterException
     {
         final String localMethodName = "isolateAndRemoveEntity";
 
@@ -5509,6 +5515,7 @@ public class RepositoryHandler
                 }
 
                 RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(this,
+                                                                                               invalidParameterHandler,
                                                                                                userId,
                                                                                                startingEntityGUID,
                                                                                                startingEntityTypeName,
@@ -6243,7 +6250,8 @@ public class RepositoryHandler
                                              boolean forDuplicateProcessing,
                                              Date    effectiveTime,
                                              String  methodName) throws UserNotAuthorizedException,
-                                                                        PropertyServerException
+                                                                        PropertyServerException,
+                                                                        InvalidParameterException
     {
         final String localMethodName = "removeAllRelationshipsOfType";
         final String typeGUIDParameterName = "relationshipTypeGUID";
@@ -6257,6 +6265,7 @@ public class RepositoryHandler
                                              localMethodName);
 
         RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(this,
+                                                                                       invalidParameterHandler,
                                                                                        userId,
                                                                                        startingEntityGUID,
                                                                                        startingEntityTypeName,

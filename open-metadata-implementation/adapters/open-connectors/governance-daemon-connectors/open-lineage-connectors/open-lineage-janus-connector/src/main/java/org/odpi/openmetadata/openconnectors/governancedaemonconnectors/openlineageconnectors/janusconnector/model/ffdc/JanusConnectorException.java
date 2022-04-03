@@ -3,9 +3,10 @@
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.ffdc;
 
 import lombok.Getter;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode;
 
 @Getter
-public class JanusConnectorException extends Exception {
+public class JanusConnectorException extends RuntimeException {
     private final String reportingClassName;
     private final String reportingActionDescription;
     private final String reportedErrorMessage;
@@ -21,4 +22,15 @@ public class JanusConnectorException extends Exception {
         this.reportedSystemAction = systemAction;
         this.reportedUserAction = userAction;
     }
+
+    public JanusConnectorException(String className, String methodName, JanusConnectorErrorCode errorCode) {
+        super(errorCode.getErrorMessage());
+        this.reportingClassName = className;
+        this.reportingActionDescription = methodName;
+        this.reportedErrorMessage = errorCode.getErrorMessage();
+        this.reportedSystemAction = errorCode.getSystemAction();
+        this.reportedUserAction = errorCode.getUserAction();
+
+    }
+
 }

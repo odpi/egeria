@@ -41,25 +41,17 @@ public enum AssetCatalogErrorCode implements ExceptionMessageSet {
             "The system is unable to retrieve the assets neighborhood from the specified asset identifier.",
             "Check that the unique identifier for the asset is correct."),
 
-    LINKING_RELATIONSHIPS_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-015 ",
-            "There is no intermediate relationships that connect the {0} with the {1} in OMAS Server {2}",
-            "The system is unable to retrieve the linking relationship.",
-            "Check that the unique identifier for the asset is correct."),
-
-    LINKING_ASSETS_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-016 ",
-            "There is no intermediate assets that connect the {0} with the {1} in OMAS Server {2}",
-            "The system is unable to retrieve linking assets.",
-            "Check that the unique identifier for the asset is correct."),
-
     TYPE_DEF_NOT_FOUND(404, "OMAS-ASSET-CATALOG-404-017 ",
-            "The provided entity type/s are non known to the OMAS Server",
+            "The provided entity type {0} is non known to the OMAS Server",
             "The system is unable to retrieve assets of an unknown type/s.",
             "Check that the entity type/s provided is/are correct."),
 
     SERVICE_NOT_INITIALIZED(503, "OMAS-ASSET-CATALOG-503-001 ",
             "The access service has not been initialized for server {0} and can not support REST API calls",
-            "The server has received a call to one of its open metadata access services but is unable to process it because the access service is not active for the requested server.",
-            "If the server is supposed to have this access service activated, correct the server configuration and restart the server.");
+            "The server has received a call to one of its open metadata access services but is unable to " +
+                    "process it because the access service is not active for the requested server.",
+            "If the server is supposed to have this access service activated, correct the server configuration " +
+                    "and restart the server.");
 
     private static final long serialVersionUID = 1L;
 
