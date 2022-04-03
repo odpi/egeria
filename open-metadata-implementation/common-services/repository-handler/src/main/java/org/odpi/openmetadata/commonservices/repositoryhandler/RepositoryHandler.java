@@ -2024,6 +2024,7 @@ public class RepositoryHandler
                                                                  forDuplicateProcessing,
                                                                  effectiveTime,
                                                                  methodName);
+
                 EntityProxy entityProxy = repositoryHelper.getNewEntityProxy(userId, entityDetail);
 
                 Classification newClassification = metadataCollection.updateEntityClassification(userId,
