@@ -5,15 +5,9 @@ package org.odpi.openmetadata.frameworks.governanceaction;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.PortType;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RequestSourceElement;
-import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 /**
  * ProvisioningGovernanceContext provides access to details of the provisioning request along with basic access to the
@@ -26,67 +20,8 @@ import java.util.Map;
  * if needed.  Alternatively, the provisioning service can specify a guard on completion to initiate a remediation service to fill out the
  * lineage metadata in more detail.
  */
-public class ProvisioningGovernanceContext extends GovernanceContext
+public interface ProvisioningGovernanceContext extends GovernanceContext
 {
-    /**
-     * Constructor sets up the key parameters for processing the request to the governance action service.
-     *
-     * @param userId calling user
-     * @param governanceActionGUID unique identifier of the governance action that triggered this governance service
-     * @param requestType unique identifier of the asset that the annotations should be attached to
-     * @param requestParameters name-value properties to control the governance action service
-     * @param requestSourceElements metadata elements associated with the request to the governance action service
-     * @param actionTargetElements metadata elements that need to be worked on by the governance action service
-     * @param openMetadataStore client to the metadata store for use by the governance action service
-     */
-    public ProvisioningGovernanceContext(String                     userId,
-                                         String                     governanceActionGUID,
-                                         String                     requestType,
-                                         Map<String, String>        requestParameters,
-                                         List<RequestSourceElement> requestSourceElements,
-                                         List<ActionTargetElement>  actionTargetElements,
-                                         OpenMetadataClient         openMetadataStore)
-    {
-        super(userId, governanceActionGUID, requestType, requestParameters, requestSourceElements, actionTargetElements, openMetadataStore);
-    }
-
-
-    /**
-     * Pack the basic properties into an ElementProperties object.
-     *
-     * @param qualifiedName the unique name of the new metadata element
-     * @param name the technical name of the metadata element
-     * @param description the description of the metadata element
-     * @return ElementProperties contain the supplied properties.
-     * @throws InvalidParameterException null qualifiedName
-     */
-    private ElementProperties packBasicProperties(String qualifiedName,
-                                                  String name,
-                                                  String description,
-                                                  String methodName) throws InvalidParameterException
-    {
-        final String qualifiedNamePropertyName = "qualifiedName";
-        final String namePropertyName = "name";
-        final String descriptionPropertyName = "description";
-
-        propertyHelper.validateMandatoryName(qualifiedName, qualifiedNamePropertyName, methodName);
-
-        ElementProperties properties = propertyHelper.addStringProperty(null, qualifiedNamePropertyName, qualifiedName);
-
-        if (name != null)
-        {
-            properties = propertyHelper.addStringProperty(properties, namePropertyName, name);
-        }
-
-        if (description != null)
-        {
-            properties = propertyHelper.addStringProperty(properties, descriptionPropertyName, description);
-        }
-
-        return properties;
-    }
-
-
     /**
      * Create an asset such as a data file, database, API or server.  This is used if the provisioning
      * governance action service has created a new asset as part of the provisioning process.
@@ -103,19 +38,12 @@ public class ProvisioningGovernanceContext extends GovernanceContext
      * @throws UserNotAuthorizedException this governance action service is not authorized to create an asset
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
-    public String createAsset(String assetTypeName,
-                              String qualifiedName,
-                              String name,
-                              String description) throws InvalidParameterException,
-                                                          UserNotAuthorizedException,
-                                                          PropertyServerException
-    {
-        final String methodName = "createAsset";
-
-        ElementProperties properties = packBasicProperties(qualifiedName, name, description, methodName);
-
-        return openMetadataStore.createMetadataElementInStore(assetTypeName, ElementStatus.ACTIVE, null, null, properties, null);
-    }
+    String createAsset(String assetTypeName,
+                       String qualifiedName,
+                       String name,
+                       String description) throws InvalidParameterException,
+                                                  UserNotAuthorizedException,
+                                                  PropertyServerException;
 
 
     /**
@@ -135,19 +63,12 @@ public class ProvisioningGovernanceContext extends GovernanceContext
      * @throws UserNotAuthorizedException this governance action service is not authorized to create an asset
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
-    public String createAssetFromTemplate(String templateGUID,
-                                          String qualifiedName,
-                                          String name,
-                                          String description) throws InvalidParameterException,
-                                                                     UserNotAuthorizedException,
-                                                                     PropertyServerException
-    {
-        final String methodName = "createAssetFromTemplate";
-
-        ElementProperties properties = packBasicProperties(qualifiedName, name, description, methodName);
-
-        return openMetadataStore.createMetadataElementInStore(null, ElementStatus.ACTIVE, null, null, properties, templateGUID);
-    }
+    String createAssetFromTemplate(String templateGUID,
+                                   String qualifiedName,
+                                   String name,
+                                   String description) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException;
 
 
     /**
@@ -165,25 +86,13 @@ public class ProvisioningGovernanceContext extends GovernanceContext
      * @throws UserNotAuthorizedException this governance action service is not authorized to create a process
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
-    public String createProcess(String        processTypeName,
-                                ElementStatus initialStatus,
-                                String        qualifiedName,
-                                String        name,
-                                String        description) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
-    {
-        final String methodName = "createProcess";
-
-        ElementProperties properties = packBasicProperties(qualifiedName, name, description, methodName);
-
-        return openMetadataStore.createMetadataElementInStore(processTypeName,
-                                                              initialStatus,
-                                                              null,
-                                                              null,
-                                                              properties,
-                                                              null);
-    }
+    String createProcess(String        processTypeName,
+                         ElementStatus initialStatus,
+                         String        qualifiedName,
+                         String        name,
+                         String        description) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException;
 
 
     /**
@@ -202,25 +111,13 @@ public class ProvisioningGovernanceContext extends GovernanceContext
      * @throws UserNotAuthorizedException this governance action service is not authorized to create a process
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
-    public String createProcessFromTemplate(String        templateGUID,
-                                            ElementStatus initialStatus,
-                                            String        qualifiedName,
-                                            String        name,
-                                            String        description) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException
-    {
-        final String methodName = "createProcess";
-
-        ElementProperties properties = packBasicProperties(qualifiedName, name, description, methodName);
-
-        return openMetadataStore.createMetadataElementInStore(null,
-                                                              initialStatus,
-                                                              null,
-                                                              null,
-                                                              properties,
-                                                              templateGUID);
-    }
+    String createProcessFromTemplate(String        templateGUID,
+                                     ElementStatus initialStatus,
+                                     String        qualifiedName,
+                                     String        name,
+                                     String        description) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException;
 
 
     /**
@@ -239,46 +136,14 @@ public class ProvisioningGovernanceContext extends GovernanceContext
      * @throws UserNotAuthorizedException this governance action service is not authorized to create a process
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
-    public String createChildProcess(String        processTypeName,
-                                     ElementStatus initialStatus,
-                                     String        qualifiedName,
-                                     String        name,
-                                     String        description,
-                                     String        parentGUID) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
-    {
-        final String methodName = "createProcess";
-
-        ElementProperties properties = packBasicProperties(qualifiedName, name, description, methodName);
-
-        String processGUID = openMetadataStore.createMetadataElementInStore(processTypeName,
-                                                                            initialStatus,
-                                                                            null,
-                                                                            null,
-                                                                            properties,
-                                                                            null);
-
-        if (processGUID != null)
-        {
-            ElementProperties relationshipProperties = propertyHelper.addEnumProperty(null,
-                                                                                      "containmentType",
-                                                                                      "ProcessContainmentType",
-                                                                                      "OWNED");
-
-            openMetadataStore.createRelatedElementsInStore("ProcessHierarchy",
-                                                           parentGUID,
-                                                           processGUID,
-                                                           false,
-                                                           false,
-                                                           null,
-                                                           null,
-                                                           relationshipProperties,
-                                                           new Date());
-        }
-
-        return processGUID;
-    }
+    String createChildProcess(String        processTypeName,
+                              ElementStatus initialStatus,
+                              String        qualifiedName,
+                              String        name,
+                              String        description,
+                              String        parentGUID) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException;
 
 
     /**
@@ -296,45 +161,13 @@ public class ProvisioningGovernanceContext extends GovernanceContext
      * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of element
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public String createPort(String   processGUID,
-                             String   qualifiedName,
-                             String   displayName,
-                             PortType portType,
-                             String   templateGUID) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
-    {
-        final String methodName = "createProcess";
-
-        final String portTypeName        = "PortImplementation";
-        final String processPortTypeName = "ProcessPort";
-
-        final String displayNamePropertyName = "displayName";
-        final String portTypePropertyName = "portType";
-        final String portTypeTypeName = "PortType";
-
-        final String processGUIDParameterName = "processGUID";
-
-        propertyHelper.validateGUID(processGUID, processGUIDParameterName, methodName);
-
-        ElementProperties properties = packBasicProperties(qualifiedName, null, null, methodName);
-
-        if (displayName != null)
-        {
-            properties = propertyHelper.addStringProperty(properties, displayNamePropertyName, displayName);
-        }
-
-        if (portType != null)
-        {
-            properties = propertyHelper.addEnumProperty(properties, portTypePropertyName, portTypeTypeName, portType.getOpenTypeSymbolicName());
-        }
-
-        String portGUID = openMetadataStore.createMetadataElementInStore(portTypeName, ElementStatus.ACTIVE, null, null, properties, templateGUID);
-
-        openMetadataStore.createRelatedElementsInStore(processPortTypeName, processGUID, portGUID, false, false, null, null, null, new Date());
-
-        return portGUID;
-    }
+    String createPort(String   processGUID,
+                      String   qualifiedName,
+                      String   displayName,
+                      PortType portType,
+                      String   templateGUID) throws InvalidParameterException,
+                                                    UserNotAuthorizedException,
+                                                    PropertyServerException;
 
 
     /**
@@ -350,20 +183,8 @@ public class ProvisioningGovernanceContext extends GovernanceContext
      * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of relationship
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public String createLineageMapping(String sourceElementGUID,
-                                       String targetElementGUID) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
-    {
-        final String methodName = "createLineageMapping";
-        final String lineageMappingTypeName = "LineageMapping";
-
-        final String sourceElementGUIDParameterName = "sourceElementGUID";
-        final String targetElementGUIDParameterName = "targetElementGUID";
-
-        propertyHelper.validateGUID(sourceElementGUID, sourceElementGUIDParameterName, methodName);
-        propertyHelper.validateGUID(targetElementGUID, targetElementGUIDParameterName, methodName);
-
-        return openMetadataStore.createRelatedElementsInStore(lineageMappingTypeName, sourceElementGUID, targetElementGUID, false, false, null, null, null, new Date());
-    }
+    String createLineageMapping(String sourceElementGUID,
+                                String targetElementGUID) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException;
 }
