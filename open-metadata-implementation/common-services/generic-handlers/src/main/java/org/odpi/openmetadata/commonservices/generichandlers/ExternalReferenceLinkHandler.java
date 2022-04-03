@@ -183,8 +183,6 @@ public class ExternalReferenceLinkHandler<B> extends ReferenceableHandler<B>
      * @param effectiveTo ending time for this relationship (null for all time)
      * @param methodName calling method
      *
-     * @return unique identifier of relationship
-     *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)

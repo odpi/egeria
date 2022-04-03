@@ -13561,6 +13561,8 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param isMergeUpdate             should the supplied properties be merged with existing properties (true) by replacing the just the properties with
      *                                  matching names, or should the entire properties of the instance be replaced?
      * @param relationshipProperties    properties to add to the relationship or null if no properties to add
+     * @param effectiveFrom             the date when this element is active - null for active now
+     * @param effectiveTo               the date when this element becomes inactive - null for active until deleted
      * @param methodName                calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -15183,6 +15185,8 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param sequencingProperty String name of the entity property that is to be used to sequence the results.
      *                           Null means do not sequence on a property name (see SequencingOrder).
      * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
      * @param startingFrom the starting element number of the entities to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
@@ -15191,8 +15195,9 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param methodName calling method
      * @return a list of entities matching the supplied criteria; null means no matching entities in the metadata
      * collection; list (even if empty) means more to receive
-     * @throws UserNotAuthorizedException user not authorized to issue this request.
-     * @throws PropertyServerException problem retrieving the entity.
+     * @throws InvalidParameterException bad parameter
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem retrieving the entity
      */
     public List<EntityDetail> findEntities(String                userId,
                                            String                entityTypeGUID,
