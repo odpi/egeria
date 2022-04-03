@@ -2010,12 +2010,14 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
         final String methodName               = "updateDatabaseColumn";
         final String elementGUIDParameterName = "databaseColumnGUID";
         final String propertiesParameterName  = "databaseColumnProperties";
+        final String qualifiedNameParameterName  = "databaseColumnProperties.qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
         invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(databaseColumnGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(databaseColumnProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(databaseColumnProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
         final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/tables/columns/{4}";
 

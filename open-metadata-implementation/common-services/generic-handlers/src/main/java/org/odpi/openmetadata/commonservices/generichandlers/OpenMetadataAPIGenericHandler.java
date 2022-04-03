@@ -545,6 +545,32 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                       classificationProperties,
                                                                       existingClassification.getProperties());
 
+                /*
+                 * If there are no properties to change then nothing more to do
+                 */
+                if ((newProperties == null) && (existingClassification.getProperties() == null))
+                {
+                    auditLog.logMessage(methodName,
+                                        GenericHandlersAuditCode.IGNORING_UNNECESSARY_CLASSIFICATION_UPDATE.getMessageDefinition(classificationTypeName,
+                                                                                                                         beanEntity.getGUID(),
+                                                                                                                         methodName,
+                                                                                                                         userId));
+                    return;
+                }
+
+                /*
+                 * If nothing has changed in the properties then nothing to do
+                 */
+                if ((newProperties != null) && (newProperties.equals(existingClassification.getProperties())))
+                {
+                    auditLog.logMessage(methodName,
+                                        GenericHandlersAuditCode.IGNORING_UNNECESSARY_CLASSIFICATION_UPDATE.getMessageDefinition(classificationTypeName,
+                                                                                                                                 beanEntity.getGUID(),
+                                                                                                                                 methodName,
+                                                                                                                                 userId));
+                    return;
+                }
+
                 repositoryHandler.reclassifyEntity(userId,
                                                    externalSourceGUID,
                                                    externalSourceName,
@@ -1237,6 +1263,33 @@ public class OpenMetadataAPIGenericHandler<B>
                                       supportedZones,
                                       effectiveTime,
                                       methodName);
+
+
+            /*
+             * If there are no properties to change then nothing more to do
+             */
+            if ((newProperties == null) && (relationship.getProperties() == null))
+            {
+                auditLog.logMessage(methodName,
+                                    GenericHandlersAuditCode.IGNORING_UNNECESSARY_RELATIONSHIP_UPDATE.getMessageDefinition(relationship.getType().getTypeDefName(),
+                                                                                                                           relationship.getGUID(),
+                                                                                                                           methodName,
+                                                                                                                           userId));
+                return;
+            }
+
+            /*
+             * If nothing has changed in the properties then nothing to do
+             */
+            if ((newProperties != null) && (newProperties.equals(relationship.getProperties())))
+            {
+                auditLog.logMessage(methodName,
+                                    GenericHandlersAuditCode.IGNORING_UNNECESSARY_RELATIONSHIP_UPDATE.getMessageDefinition(relationship.getType().getTypeDefName(),
+                                                                                                                           relationship.getGUID(),
+                                                                                                                           methodName,
+                                                                                                                           userId));
+                return;
+            }
 
             repositoryHandler.updateRelationshipProperties(userId,
                                                            externalSourceGUID,
@@ -6608,6 +6661,33 @@ public class OpenMetadataAPIGenericHandler<B>
             InstanceProperties newProperties = setUpNewProperties(isMergeUpdate,
                                                                   updateProperties,
                                                                   originalEntity.getProperties());
+
+            /*
+             * If there are no properties to change then nothing more to do
+             */
+            if ((newProperties == null) && (originalEntity.getProperties() == null))
+            {
+                auditLog.logMessage(methodName,
+                                    GenericHandlersAuditCode.IGNORING_UNNECESSARY_ENTITY_UPDATE.getMessageDefinition(originalEntity.getType().getTypeDefName(),
+                                                                                                                     originalEntity.getGUID(),
+                                                                                                                     methodName,
+                                                                                                                     userId));
+                return;
+            }
+
+            /*
+             * If nothing has changed in the properties then nothing to do
+             */
+            if ((newProperties != null) && (newProperties.equals(originalEntity.getProperties())))
+            {
+                auditLog.logMessage(methodName,
+                                    GenericHandlersAuditCode.IGNORING_UNNECESSARY_ENTITY_UPDATE.getMessageDefinition(originalEntity.getType().getTypeDefName(),
+                                                                                                                     originalEntity.getGUID(),
+                                                                                                                     methodName,
+                                                                                                                     userId));
+
+                return;
+            }
 
             /*
              * Validate that any changes to the unique properties do not clash with other entities.
