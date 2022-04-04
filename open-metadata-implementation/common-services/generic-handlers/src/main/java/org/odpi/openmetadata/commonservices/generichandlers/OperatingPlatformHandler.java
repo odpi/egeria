@@ -164,6 +164,7 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
      * @param additionalProperties additional properties for a governance operatingPlatform
      * @param suppliedTypeName name of sub type or null
      * @param extendedProperties  properties for a governance operatingPlatform subtype
+     * @param isMergeUpdate should the properties be merged with existing properties or replace the existing properties?
      * @param effectiveFrom starting time for this relationship (null for all time)
      * @param effectiveTo ending time for this relationship (null for all time)
      * @param methodName calling method
@@ -185,6 +186,7 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
                                           Map<String, String> additionalProperties,
                                           String              suppliedTypeName,
                                           Map<String, Object> extendedProperties,
+                                          boolean             isMergeUpdate,
                                           Date                effectiveFrom,
                                           Date                effectiveTo,
                                           String              methodName) throws InvalidParameterException,
@@ -238,7 +240,7 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
                                     false,
                                     supportedZones,
                                     builder.getInstanceProperties(methodName),
-                                    false,
+                                    isMergeUpdate,
                                     effectiveTime,
                                     methodName);
     }

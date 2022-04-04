@@ -545,6 +545,32 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                       classificationProperties,
                                                                       existingClassification.getProperties());
 
+                /*
+                 * If there are no properties to change then nothing more to do
+                 */
+                if ((newProperties == null) && (existingClassification.getProperties() == null))
+                {
+                    auditLog.logMessage(methodName,
+                                        GenericHandlersAuditCode.IGNORING_UNNECESSARY_CLASSIFICATION_UPDATE.getMessageDefinition(classificationTypeName,
+                                                                                                                         beanEntity.getGUID(),
+                                                                                                                         methodName,
+                                                                                                                         userId));
+                    return;
+                }
+
+                /*
+                 * If nothing has changed in the properties then nothing to do
+                 */
+                if ((newProperties != null) && (newProperties.equals(existingClassification.getProperties())))
+                {
+                    auditLog.logMessage(methodName,
+                                        GenericHandlersAuditCode.IGNORING_UNNECESSARY_CLASSIFICATION_UPDATE.getMessageDefinition(classificationTypeName,
+                                                                                                                                 beanEntity.getGUID(),
+                                                                                                                                 methodName,
+                                                                                                                                 userId));
+                    return;
+                }
+
                 repositoryHandler.reclassifyEntity(userId,
                                                    externalSourceGUID,
                                                    externalSourceName,
@@ -1237,6 +1263,33 @@ public class OpenMetadataAPIGenericHandler<B>
                                       supportedZones,
                                       effectiveTime,
                                       methodName);
+
+
+            /*
+             * If there are no properties to change then nothing more to do
+             */
+            if ((newProperties == null) && (relationship.getProperties() == null))
+            {
+                auditLog.logMessage(methodName,
+                                    GenericHandlersAuditCode.IGNORING_UNNECESSARY_RELATIONSHIP_UPDATE.getMessageDefinition(relationship.getType().getTypeDefName(),
+                                                                                                                           relationship.getGUID(),
+                                                                                                                           methodName,
+                                                                                                                           userId));
+                return;
+            }
+
+            /*
+             * If nothing has changed in the properties then nothing to do
+             */
+            if ((newProperties != null) && (newProperties.equals(relationship.getProperties())))
+            {
+                auditLog.logMessage(methodName,
+                                    GenericHandlersAuditCode.IGNORING_UNNECESSARY_RELATIONSHIP_UPDATE.getMessageDefinition(relationship.getType().getTypeDefName(),
+                                                                                                                           relationship.getGUID(),
+                                                                                                                           methodName,
+                                                                                                                           userId));
+                return;
+            }
 
             repositoryHandler.updateRelationshipProperties(userId,
                                                            externalSourceGUID,
@@ -5196,14 +5249,14 @@ public class OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the repositories
      */
-    public Relationship getAttachmentLink(String       userId,
-                                          String       relationshipGUID,
-                                          String       relationshipGUIDParameterName,
-                                          String       relationshipTypeName,
-                                          Date         effectiveTime,
-                                          String       methodName) throws InvalidParameterException,
-                                                                          PropertyServerException,
-                                                                          UserNotAuthorizedException
+    public Relationship getAttachmentLink(String userId,
+                                          String relationshipGUID,
+                                          String relationshipGUIDParameterName,
+                                          String relationshipTypeName,
+                                          Date   effectiveTime,
+                                          String methodName) throws InvalidParameterException,
+                                                                    PropertyServerException,
+                                                                    UserNotAuthorizedException
 
     {
         Relationship relationship = repositoryHandler.getRelationshipByGUID(userId,
@@ -6614,6 +6667,33 @@ public class OpenMetadataAPIGenericHandler<B>
             InstanceProperties newProperties = setUpNewProperties(isMergeUpdate,
                                                                   updateProperties,
                                                                   originalEntity.getProperties());
+
+            /*
+             * If there are no properties to change then nothing more to do
+             */
+            if ((newProperties == null) && (originalEntity.getProperties() == null))
+            {
+                auditLog.logMessage(methodName,
+                                    GenericHandlersAuditCode.IGNORING_UNNECESSARY_ENTITY_UPDATE.getMessageDefinition(originalEntity.getType().getTypeDefName(),
+                                                                                                                     originalEntity.getGUID(),
+                                                                                                                     methodName,
+                                                                                                                     userId));
+                return;
+            }
+
+            /*
+             * If nothing has changed in the properties then nothing to do
+             */
+            if ((newProperties != null) && (newProperties.equals(originalEntity.getProperties())))
+            {
+                auditLog.logMessage(methodName,
+                                    GenericHandlersAuditCode.IGNORING_UNNECESSARY_ENTITY_UPDATE.getMessageDefinition(originalEntity.getType().getTypeDefName(),
+                                                                                                                     originalEntity.getGUID(),
+                                                                                                                     methodName,
+                                                                                                                     userId));
+
+                return;
+            }
 
             /*
              * Validate that any changes to the unique properties do not clash with other entities.
@@ -13481,6 +13561,8 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param isMergeUpdate             should the supplied properties be merged with existing properties (true) by replacing the just the properties with
      *                                  matching names, or should the entire properties of the instance be replaced?
      * @param relationshipProperties    properties to add to the relationship or null if no properties to add
+     * @param effectiveFrom             the date when this element is active - null for active now
+     * @param effectiveTo               the date when this element becomes inactive - null for active until deleted
      * @param methodName                calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -15103,6 +15185,8 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param sequencingProperty String name of the entity property that is to be used to sequence the results.
      *                           Null means do not sequence on a property name (see SequencingOrder).
      * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
      * @param startingFrom the starting element number of the entities to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
@@ -15111,8 +15195,9 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param methodName calling method
      * @return a list of entities matching the supplied criteria; null means no matching entities in the metadata
      * collection; list (even if empty) means more to receive
-     * @throws UserNotAuthorizedException user not authorized to issue this request.
-     * @throws PropertyServerException problem retrieving the entity.
+     * @throws InvalidParameterException bad parameter
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem retrieving the entity
      */
     public List<EntityDetail> findEntities(String                userId,
                                            String                entityTypeGUID,

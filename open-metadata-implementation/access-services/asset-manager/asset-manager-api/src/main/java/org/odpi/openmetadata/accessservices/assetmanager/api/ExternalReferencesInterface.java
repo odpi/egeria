@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -114,22 +115,48 @@ public interface ExternalReferencesInterface
      * @param userId the name of the calling user.
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
+     * @param assetManagerIsHome ensure that only the asset manager can update this asset
      * @param attachedToGUID object linked to external references.
      * @param linkProperties description for the reference from the perspective of the object that the reference is being attached to.
      * @param externalReferenceGUID unique identifier (guid) of the external reference details.
+     *
+     * @return Unique identifier for new relationship
      *
      * @throws InvalidParameterException problem with the GUID or the external references are not correctly specified, or are null.
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    void linkExternalReferenceToElement(String                          userId,
-                                        String                          assetManagerGUID,
-                                        String                          assetManagerName,
-                                        String                          attachedToGUID,
-                                        String                          externalReferenceGUID,
-                                        ExternalReferenceLinkProperties linkProperties) throws InvalidParameterException,
-                                                                                               PropertyServerException,
-                                                                                               UserNotAuthorizedException;
+    String linkExternalReferenceToElement(String                          userId,
+                                          String                          assetManagerGUID,
+                                          String                          assetManagerName,
+                                          boolean                         assetManagerIsHome,
+                                          String                          attachedToGUID,
+                                          String                          externalReferenceGUID,
+                                          ExternalReferenceLinkProperties linkProperties) throws InvalidParameterException,
+                                                                                                 PropertyServerException,
+                                                                                                 UserNotAuthorizedException;
+
+
+    /**
+     * Update the link between an external reference to an object.
+     *
+     * @param userId the name of the calling user.
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param linkProperties description for the reference from the perspective of the object that the reference is being attached to.
+     * @param externalReferenceLinkGUID unique identifier (guid) of the external reference details.
+     *
+     * @throws InvalidParameterException problem with the GUID or the external references are not correctly specified, or are null.
+     * @throws PropertyServerException the server is not available.
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
+     */
+    void updateExternalReferenceToElementLink(String                          userId,
+                                              String                          assetManagerGUID,
+                                              String                          assetManagerName,
+                                              String                          externalReferenceLinkGUID,
+                                              ExternalReferenceLinkProperties linkProperties) throws InvalidParameterException,
+                                                                                                     PropertyServerException,
+                                                                                                     UserNotAuthorizedException;
 
 
     /**
@@ -138,8 +165,7 @@ public interface ExternalReferencesInterface
      * @param userId the name of the calling user.
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param attachedToGUID object linked to external references.
-     * @param externalReferenceGUID identifier of the external reference.
+     * @param externalReferenceLinkGUID identifier of the external reference relationship.
      *
      * @throws InvalidParameterException problem with the GUID or the external references are not correctly specified, or are null.
      * @throws PropertyServerException the server is not available.
@@ -148,32 +174,36 @@ public interface ExternalReferencesInterface
     void unlinkExternalReferenceFromElement(String userId,
                                             String assetManagerGUID,
                                             String assetManagerName,
-                                            String attachedToGUID,
-                                            String externalReferenceGUID) throws InvalidParameterException,
-                                                                                 PropertyServerException,
-                                                                                 UserNotAuthorizedException;
+                                            String externalReferenceLinkGUID) throws InvalidParameterException,
+                                                                                     PropertyServerException,
+                                                                                     UserNotAuthorizedException;
 
 
     /**
-     * Return information about a specific external reference.
+     * Retrieve the list of external references sorted in open metadata.
      *
-     * @param userId calling user
+     * @param userId the name of the calling user.
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param externalReferenceGUID unique identifier for the external reference
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
      *
-     * @return properties of the external reference
+     * @return links to addition information.
      *
-     * @throws InvalidParameterException externalReferenceGUID or userId is null
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
+     * @throws InvalidParameterException guid invalid or the external references are not correctly specified, or are null.
+     * @throws PropertyServerException the server is not available.
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    ExternalReferenceElement getExternalReferenceByGUID(String userId,
-                                                        String assetManagerGUID,
-                                                        String assetManagerName,
-                                                        String externalReferenceGUID) throws InvalidParameterException,
-                                                                                             UserNotAuthorizedException,
-                                                                                             PropertyServerException;
+    List<ExternalReferenceElement> getExternalReferences(String userId,
+                                                         String assetManagerGUID,
+                                                         String assetManagerName,
+                                                         Date   effectiveTime,
+                                                         int    startFrom,
+                                                         int    pageSize) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException;
+
 
     /**
      * Retrieve the list of external references for this resourceId.
@@ -182,6 +212,7 @@ public interface ExternalReferencesInterface
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param resourceId unique reference id assigned by the resource owner (supports wildcards). This is the qualified name of the entity
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
@@ -195,6 +226,7 @@ public interface ExternalReferencesInterface
                                                              String assetManagerGUID,
                                                              String assetManagerName,
                                                              String resourceId,
+                                                             Date   effectiveTime,
                                                              int    startFrom,
                                                              int    pageSize) throws InvalidParameterException,
                                                                                      PropertyServerException,
@@ -207,6 +239,7 @@ public interface ExternalReferencesInterface
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param url URL of the external resource.
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
@@ -220,10 +253,40 @@ public interface ExternalReferencesInterface
                                                               String assetManagerGUID,
                                                               String assetManagerName,
                                                               String url,
+                                                              Date   effectiveTime,
                                                               int    startFrom,
                                                               int    pageSize) throws InvalidParameterException,
                                                                                       PropertyServerException,
                                                                                       UserNotAuthorizedException;
+
+
+
+    /**
+     * Retrieve the list of external references for this name.
+     *
+     * @param userId the name of the calling user.
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param name qualifiedName or displayNAme of the external resource
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return links to addition information.
+     *
+     * @throws InvalidParameterException guid invalid or the external references are not correctly specified, or are null.
+     * @throws PropertyServerException the server is not available.
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
+     */
+    List<ExternalReferenceElement> getExternalReferencesByName(String userId,
+                                                               String assetManagerGUID,
+                                                               String assetManagerName,
+                                                               String name,
+                                                               Date   effectiveTime,
+                                                               int    startFrom,
+                                                               int    pageSize) throws InvalidParameterException,
+                                                                                       PropertyServerException,
+                                                                                       UserNotAuthorizedException;
 
 
     /**
@@ -232,6 +295,7 @@ public interface ExternalReferencesInterface
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -244,6 +308,7 @@ public interface ExternalReferencesInterface
     List<ExternalReferenceElement> getExternalReferencesForAssetManager(String userId,
                                                                         String assetManagerGUID,
                                                                         String assetManagerName,
+                                                                        Date   effectiveTime,
                                                                         int    startFrom,
                                                                         int    pageSize) throws InvalidParameterException,
                                                                                                 UserNotAuthorizedException,
@@ -257,6 +322,7 @@ public interface ExternalReferencesInterface
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param searchString regular expression (RegEx) to search for
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
@@ -270,6 +336,7 @@ public interface ExternalReferencesInterface
                                                           String assetManagerGUID,
                                                           String assetManagerName,
                                                           String searchString,
+                                                          Date   effectiveTime,
                                                           int    startFrom,
                                                           int    pageSize) throws InvalidParameterException,
                                                                                   PropertyServerException,
@@ -283,6 +350,7 @@ public interface ExternalReferencesInterface
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param attachedToGUID object linked to external reference.
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
@@ -296,8 +364,35 @@ public interface ExternalReferencesInterface
                                                                           String assetManagerGUID,
                                                                           String assetManagerName,
                                                                           String attachedToGUID,
+                                                                          Date   effectiveTime,
                                                                           int    startFrom,
                                                                           int    pageSize) throws InvalidParameterException,
                                                                                                   PropertyServerException,
                                                                                                   UserNotAuthorizedException;
+
+
+
+    /**
+     * Return information about a specific external reference.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param externalReferenceGUID unique identifier for the external reference
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     *
+     * @return properties of the external reference
+     *
+     * @throws InvalidParameterException externalReferenceGUID or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    ExternalReferenceElement getExternalReferenceByGUID(String userId,
+                                                        String assetManagerGUID,
+                                                        String assetManagerName,
+                                                        String externalReferenceGUID,
+                                                        Date   effectiveTime) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException;
+
 }

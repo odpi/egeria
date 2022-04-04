@@ -121,7 +121,7 @@ allprojects {
         testngVersion = '7.5'
         thriftVersion = '0.16.0'
         tinkVersion = '1.6.1'
-        tomcatVersion = '9.0.60'
+        tomcatVersion = '9.0.62'
         validationVersion = '2.0.1.Final'
     }
 
@@ -160,7 +160,6 @@ allprojects {
             implementation("io.netty:netty-resolver:${nettyVersion}")
             implementation("io.swagger.core.v3:swagger-annotations:${swaggerVersion}")
             implementation("io.openlineage:openlineage-java:${openlineageVersion}")
-            implementation("jakarta.annotation:jakarta.annotation-api:${jakartaannotationVersion}")
             implementation("jakarta.persistence:jakarta.persistence-api:${jakartapersistenceVersion}")
             implementation("jakarta.validation:jakarta.validation-api:${jakartavalidationVersion}")
             implementation("javax.validation:validation-api:${validationVersion}")
@@ -316,7 +315,7 @@ allprojects {
 subprojects {
 }
 
-// Aggregation task 
+// Aggregation task
 
 // Jacoco reporting -- from gradle docs
 task codeCoverageReport(type: JacocoReport) {

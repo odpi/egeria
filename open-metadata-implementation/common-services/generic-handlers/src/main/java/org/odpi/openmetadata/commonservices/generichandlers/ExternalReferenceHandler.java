@@ -9,10 +9,14 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * ExternalReferenceHandler manages ExternalReference objects.  It runs server-side in
@@ -67,84 +71,503 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
     }
 
 
+
     /**
-     * Count the number of external references attached to an anchor entity.
+     * Create a definition of a operating platform.
      *
-     * @param userId     calling user
-     * @param elementGUID identifier for the entity that the object is attached to
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param anchorGUID optional element to link the external reference to that will act as an anchor - that is, this external reference
+     *                   will be deleted when the element is deleted (once the external reference is linked to the anchor).
+     * @param qualifiedName unique name for the reference
+     * @param displayName short display name for the reference
+     * @param description description of the reference
+     * @param url the location of the reference
+     * @param referenceVersion version of the reference
+     * @param organization owning org for the reference
+     * @param additionalProperties additional properties for an external reference
+     * @param suppliedTypeName type of external reference
+     * @param extendedProperties  properties for an external reference subtype
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
      * @param methodName calling method
-     * @return count of attached objects or null if none found
-     * @throws InvalidParameterException  the parameters are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
+     *
+     * @return unique identifier of external reference
+     *
+     * @throws InvalidParameterException qualifiedName or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
      */
-    public int countExternalReferences(String   userId,
-                                       String   elementGUID,
-                                       Date     effectiveTime,
-                                       String   methodName) throws InvalidParameterException,
-                                                                   PropertyServerException,
-                                                                   UserNotAuthorizedException
+    public String createExternalReference(String              userId,
+                                          String              externalSourceGUID,
+                                          String              externalSourceName,
+                                          String              anchorGUID,
+                                          String              qualifiedName,
+                                          String              displayName,
+                                          String              description,
+                                          String              url,
+                                          String              referenceVersion,
+                                          String              organization,
+                                          Map<String, String> additionalProperties,
+                                          String              suppliedTypeName,
+                                          Map<String, Object> extendedProperties,
+                                          Date                effectiveFrom,
+                                          Date                effectiveTo,
+                                          String              methodName) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
     {
-        return super.countAttachments(userId,
-                                      elementGUID,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_EXT_REF_TYPE_GUID,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_EXT_REF_TYPE_NAME,
-                                      effectiveTime,
-                                      methodName);
+        String typeName = OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME;
+
+        if (suppliedTypeName != null)
+        {
+            typeName = suppliedTypeName;
+        }
+
+        String typeGUID = invalidParameterHandler.validateTypeName(typeName,
+                                                                   OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME,
+                                                                   serviceName,
+                                                                   methodName,
+                                                                   repositoryHelper);
+
+        ExternalReferenceBuilder builder = new ExternalReferenceBuilder(qualifiedName,
+                                                                        displayName,
+                                                                        description,
+                                                                        url,
+                                                                        referenceVersion,
+                                                                        organization,
+                                                                        additionalProperties,
+                                                                        typeGUID,
+                                                                        suppliedTypeName,
+                                                                        extendedProperties,
+                                                                        repositoryHelper,
+                                                                        serviceName,
+                                                                        serverName);
+
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
+
+        if (anchorGUID != null)
+        {
+            builder.setAnchors(userId, anchorGUID, methodName);
+        }
+
+        return this.createBeanInRepository(userId,
+                                           externalSourceGUID,
+                                           externalSourceName,
+                                           OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_GUID,
+                                           OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME,
+                                           qualifiedName,
+                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                           builder,
+                                           methodName);
     }
 
 
     /**
-     * Return the external references attached to an anchor entity.
+     * Update the operating platform.
      *
-     * @param userId     calling user
-     * @param elementGUID identifier for the entity that the reference is attached to
-     * @param elementGUIDParameterName name of parameter supplying the GUID
-     * @param elementTypeName name of the type of object being attached to
-     * @param serviceSupportedZones supported zones for calling service
-     * @param startingFrom where to start from in the list
-     * @param pageSize maximum number of results that can be returned
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param operatingPlatformGUID unique identifier of the operating platform to update
+     * @param operatingPlatformGUIDParameterName parameter passing the operatingPlatformGUID
+     * @param qualifiedName unique name for the reference
+     * @param displayName short display name for the reference
+     * @param description description of the reference
+     * @param url the location of the reference
+     * @param referenceVersion version of the reference
+     * @param organization owning org for the reference
+     * @param additionalProperties additional properties for an external reference
+     * @param suppliedTypeName name of sub type or null
+     * @param extendedProperties  properties for a governance operatingPlatform subtype
+     * @param isMergeUpdate should the properties be merged with existing properties or replace the existing properties?
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException qualifiedName or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void   updateExternalReference(String              userId,
+                                          String              externalSourceGUID,
+                                          String              externalSourceName,
+                                          String              operatingPlatformGUID,
+                                          String              operatingPlatformGUIDParameterName,
+                                          String              qualifiedName,
+                                          String              displayName,
+                                          String              description,
+                                          String              url,
+                                          String              referenceVersion,
+                                          String              organization,
+                                          Map<String, String> additionalProperties,
+                                          String              suppliedTypeName,
+                                          Map<String, Object> extendedProperties,
+                                          boolean             isMergeUpdate,
+                                          Date                effectiveFrom,
+                                          Date                effectiveTo,
+                                          String              methodName) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        final String qualifiedNameParameterName = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(operatingPlatformGUID, operatingPlatformGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+        String typeName = OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME;
+
+        if (suppliedTypeName != null)
+        {
+            typeName = suppliedTypeName;
+        }
+
+        String typeGUID = invalidParameterHandler.validateTypeName(typeName,
+                                                                   OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME,
+                                                                   serviceName,
+                                                                   methodName,
+                                                                   repositoryHelper);
+
+        ExternalReferenceBuilder builder = new ExternalReferenceBuilder(qualifiedName,
+                                                                        displayName,
+                                                                        description,
+                                                                        url,
+                                                                        referenceVersion,
+                                                                        organization,
+                                                                        additionalProperties,
+                                                                        typeGUID,
+                                                                        typeName,
+                                                                        extendedProperties,
+                                                                        repositoryHelper,
+                                                                        serviceName,
+                                                                        serverName);
+
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
+
+        Date effectiveTime = getEffectiveTime(effectiveFrom, effectiveTo);
+
+        this.updateBeanInRepository(userId,
+                                    externalSourceGUID,
+                                    externalSourceName,
+                                    operatingPlatformGUID,
+                                    operatingPlatformGUIDParameterName,
+                                    typeGUID,
+                                    typeName,
+                                    false,
+                                    false,
+                                    supportedZones,
+                                    builder.getInstanceProperties(methodName),
+                                    isMergeUpdate,
+                                    effectiveTime,
+                                    methodName);
+    }
+
+
+    /**
+     * Remove the metadata element representing an external reference.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param operatingPlatformGUID unique identifier of the metadata element to remove
+     * @param operatingPlatformGUIDParameterName parameter supplying the operatingPlatformGUID
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeExternalReference(String userId,
+                                        String externalSourceGUID,
+                                        String externalSourceName,
+                                        String operatingPlatformGUID,
+                                        String operatingPlatformGUIDParameterName,
+                                        String methodName) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
+    {
+        this.deleteBeanInRepository(userId,
+                                    externalSourceGUID,
+                                    externalSourceName,
+                                    operatingPlatformGUID,
+                                    operatingPlatformGUIDParameterName,
+                                    OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_GUID,
+                                    OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME,
+                                    null,
+                                    null,
+                                    false,
+                                    false,
+                                    new Date(),
+                                    methodName);
+    }
+
+
+    /**
+     * Return information about a specific operating platform.
+     *
+     * @param userId calling user
+     * @param qualifiedName unique name for the operating platform
+     * @param qualifiedNameParameter name of parameter supplying the qualifiedName
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
-     * @return list of retrieved objects
+     * @return properties of the operating platform
      *
-     * @throws InvalidParameterException  the input properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
+     * @throws InvalidParameterException qualifiedName or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
      */
-    public List<B>  getExternalReferences(String       userId,
-                                          String       elementGUID,
-                                          String       elementGUIDParameterName,
-                                          String       elementTypeName,
-                                          List<String> serviceSupportedZones,
-                                          int          startingFrom,
-                                          int          pageSize,
-                                          Date         effectiveTime,
-                                          String       methodName) throws InvalidParameterException,
-                                                                          PropertyServerException,
-                                                                          UserNotAuthorizedException
+    public B getExternalReferenceByQualifiedName(String userId,
+                                                 String qualifiedName,
+                                                 String qualifiedNameParameter,
+                                                 Date   effectiveTime,
+                                                 String methodName) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
-        return this.getAttachedElements(userId,
-                                        null,
-                                        null,
-                                        elementGUID,
-                                        elementGUIDParameterName,
-                                        elementTypeName,
-                                        OpenMetadataAPIMapper.REFERENCEABLE_TO_EXT_REF_TYPE_GUID,
-                                        OpenMetadataAPIMapper.REFERENCEABLE_TO_EXT_REF_TYPE_NAME,
+        return this.getBeanByUniqueName(userId,
+                                        qualifiedName,
+                                        qualifiedNameParameter,
+                                        OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                        OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_GUID,
                                         OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME,
-                                        null,
-                                        null,
-                                        0,
-                                        false,
-                                        false,
-                                        serviceSupportedZones,
-                                        startingFrom,
-                                        pageSize,
                                         effectiveTime,
                                         methodName);
+    }
+
+
+    /**
+     * Retrieve the list of external reference metadata elements with a matching referenceId.
+     * There are no wildcards supported on this request.
+     *
+     * @param userId calling user
+     * @param referenceId referenceId to search for
+     * @param referenceIdParameterName parameter supplying referenceId
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<B>  getExternalReferencesById(String userId,
+                                              String referenceId,
+                                              String referenceIdParameterName,
+                                              int    startFrom,
+                                              int    pageSize,
+                                              Date   effectiveTime,
+                                              String methodName) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
+    {
+        List<String> specificMatchPropertyNames = new ArrayList<>();
+        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
+
+        return this.getBeansByValue(userId,
+                                    referenceId,
+                                    referenceIdParameterName,
+                                    OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_GUID,
+                                    OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME,
+                                    specificMatchPropertyNames,
+                                    true,
+                                    null,
+                                    null,
+                                    false,
+                                    false,
+                                    supportedZones,
+                                    null,
+                                    startFrom,
+                                    pageSize,
+                                    effectiveTime,
+                                    methodName);
+    }
+
+
+
+    /**
+     * Retrieve the list of external reference metadata elements with a matching name.
+     * There are no wildcards supported on this request.
+     *
+     * @param userId calling user
+     * @param name name to search for
+     * @param nameParameterName parameter supplying name
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<B>  getExternalReferencesByName(String userId,
+                                                String name,
+                                                String nameParameterName,
+                                                int    startFrom,
+                                                int    pageSize,
+                                                Date   effectiveTime,
+                                                String methodName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
+        List<String> specificMatchPropertyNames = new ArrayList<>();
+        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME);
+
+        return this.getBeansByValue(userId,
+                                    name,
+                                    nameParameterName,
+                                    OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_GUID,
+                                    OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME,
+                                    specificMatchPropertyNames,
+                                    true,
+                                    null,
+                                    null,
+                                    false,
+                                    false,
+                                    supportedZones,
+                                    null,
+                                    startFrom,
+                                    pageSize,
+                                    effectiveTime,
+                                    methodName);
+    }
+
+
+
+    /**
+     * Retrieve the list of external reference metadata elements with a matching url.
+     * There are no wildcards supported on this request.
+     *
+     * @param userId calling user
+     * @param url url to search for
+     * @param urlParameterName parameter supplying url
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<B>  getExternalReferencesByURL(String userId,
+                                               String url,
+                                               String urlParameterName,
+                                               int    startFrom,
+                                               int    pageSize,
+                                               Date   effectiveTime,
+                                               String methodName) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        List<String> specificMatchPropertyNames = new ArrayList<>();
+        specificMatchPropertyNames.add(OpenMetadataAPIMapper.URL_PROPERTY_NAME);
+
+        return this.getBeansByValue(userId,
+                                    url,
+                                    urlParameterName,
+                                    OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_GUID,
+                                    OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME,
+                                    specificMatchPropertyNames,
+                                    true,
+                                    null,
+                                    null,
+                                    false,
+                                    false,
+                                    supportedZones,
+                                    null,
+                                    startFrom,
+                                    pageSize,
+                                    effectiveTime,
+                                    methodName);
+    }
+
+
+    /**
+     * Return information about the defined operating platforms.
+     *
+     * @param userId calling user
+     * @param startingFrom position in the list (used when there are so many reports that paging is needed
+     * @param pageSize maximum number of elements to return an this call
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     *
+     * @return properties of the operating platform
+     *
+     * @throws InvalidParameterException qualifiedName or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public List<B> getExternalReferences(String userId,
+                                         int    startingFrom,
+                                         int    pageSize,
+                                         Date   effectiveTime,
+                                         String methodName) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
+    {
+        return this.getBeansByType(userId,
+                                   OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_GUID,
+                                   OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME,
+                                   null,
+                                   false,
+                                   false,
+                                   supportedZones,
+                                   startingFrom,
+                                   pageSize,
+                                   effectiveTime,
+                                   methodName);
+    }
+
+
+    /**
+     * Retrieve the list of metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param userId calling user
+     * @param searchString string to find in the properties
+     * @param searchStringParameterName name of parameter supplying the search string
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<B> findExternalReferences(String userId,
+                                          String searchString,
+                                          String searchStringParameterName,
+                                          int    startFrom,
+                                          int    pageSize,
+                                          Date   effectiveTime,
+                                          String methodName) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
+    {
+        return this.findBeans(userId,
+                              searchString,
+                              searchStringParameterName,
+                              OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_GUID,
+                              OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME,
+                              null,
+                              startFrom,
+                              pageSize,
+                              effectiveTime,
+                              methodName);
     }
 }

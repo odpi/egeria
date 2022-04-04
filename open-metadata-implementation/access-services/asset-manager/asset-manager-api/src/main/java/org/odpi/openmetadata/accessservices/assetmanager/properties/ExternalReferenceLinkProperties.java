@@ -18,7 +18,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ExternalReferenceLinkProperties implements Serializable
+public class ExternalReferenceLinkProperties extends RelationshipProperties
 {
     private static final long    serialVersionUID = 1L;
 
@@ -104,6 +104,8 @@ public class ExternalReferenceLinkProperties implements Serializable
         return "ExternalReferenceLinkProperties{" +
                        "linkId='" + linkId + '\'' +
                        ", linkDescription='" + linkDescription + '\'' +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
                        '}';
     }
 
@@ -125,6 +127,10 @@ public class ExternalReferenceLinkProperties implements Serializable
         {
             return false;
         }
+        if (! super.equals(objectToCompare))
+        {
+            return false;
+        }
         ExternalReferenceLinkProperties that = (ExternalReferenceLinkProperties) objectToCompare;
         return Objects.equals(linkId, that.linkId) &&
                        Objects.equals(linkDescription, that.linkDescription);
@@ -139,6 +145,6 @@ public class ExternalReferenceLinkProperties implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(linkId, linkDescription);
+        return Objects.hash(super.hashCode(), linkId, linkDescription);
     }
 }

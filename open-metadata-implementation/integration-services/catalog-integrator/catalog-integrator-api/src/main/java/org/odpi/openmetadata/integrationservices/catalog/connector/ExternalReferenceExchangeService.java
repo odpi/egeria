@@ -16,6 +16,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.integrationservices.catalog.ffdc.CatalogIntegratorErrorCode;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -224,21 +225,58 @@ public class ExternalReferenceExchangeService
      * @param linkProperties description for the reference from the perspective of the object that the reference is being attached to.
      * @param externalReferenceGUID unique identifier (guid) of the external reference details.
      *
+     * @return Unique identifier for new relationship
+     *
      * @throws InvalidParameterException problem with the GUID or the external references are not correctly specified, or are null.
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public void linkExternalReferenceToElement(String                          attachedToGUID,
-                                               String                          externalReferenceGUID,
-                                               ExternalReferenceLinkProperties linkProperties) throws InvalidParameterException,
-                                                                                                      PropertyServerException,
-                                                                                                      UserNotAuthorizedException
+    public String linkExternalReferenceToElement(String                          attachedToGUID,
+                                                 String                          externalReferenceGUID,
+                                                 ExternalReferenceLinkProperties linkProperties) throws InvalidParameterException,
+                                                                                                        PropertyServerException,
+                                                                                                        UserNotAuthorizedException
     {
         final String methodName = "linkExternalReferenceToElement";
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            externalReferenceClient.linkExternalReferenceToElement(userId, assetManagerGUID, assetManagerName, attachedToGUID, externalReferenceGUID, linkProperties);
+            return externalReferenceClient.linkExternalReferenceToElement(userId, assetManagerGUID, assetManagerName, assetManagerIsHome, attachedToGUID, externalReferenceGUID, linkProperties);
+        }
+        else
+        {
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
+                    synchronizationDirection.getName(),
+                    connectorName,
+                    methodName),
+                                                 this.getClass().getName(),
+                                                 methodName,
+                                                 userId);
+        }
+    }
+
+
+
+    /**
+     * Update the link between an external reference to an object.
+     *
+     * @param linkProperties description for the reference from the perspective of the object that the reference is being attached to.
+     * @param externalReferenceLinkGUID unique identifier (guid) of the external reference details.
+     *
+     * @throws InvalidParameterException problem with the GUID or the external references are not correctly specified, or are null.
+     * @throws PropertyServerException the server is not available.
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
+     */
+    public void updateExternalReferenceToElementLink(String                          externalReferenceLinkGUID,
+                                                     ExternalReferenceLinkProperties linkProperties) throws InvalidParameterException,
+                                                                                                            PropertyServerException,
+                                                                                                            UserNotAuthorizedException
+    {
+        final String methodName = "linkExternalReferenceToElement";
+
+        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        {
+            externalReferenceClient.updateExternalReferenceToElementLink(userId, assetManagerGUID, assetManagerName, externalReferenceLinkGUID, linkProperties);
         }
         else
         {
@@ -256,23 +294,21 @@ public class ExternalReferenceExchangeService
     /**
      * Remove the link between a external reference and an element.  If the element is its anchor, the external reference is removed.
      *
-     * @param attachedToGUID object linked to external references.
-     * @param externalReferenceGUID identifier of the external reference.
+     * @param externalReferenceLinkGUID identifier of the external reference relationship.
      *
      * @throws InvalidParameterException problem with the GUID or the external references are not correctly specified, or are null.
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public void unlinkExternalReferenceFromElement(String attachedToGUID,
-                                                   String externalReferenceGUID) throws InvalidParameterException,
-                                                                                        PropertyServerException,
-                                                                                        UserNotAuthorizedException
+    public void unlinkExternalReferenceFromElement(String externalReferenceLinkGUID) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
     {
         final String methodName = "unlinkExternalReferenceFromElement";
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            externalReferenceClient.unlinkExternalReferenceFromElement(userId, assetManagerGUID, assetManagerName, attachedToGUID, externalReferenceGUID);
+            externalReferenceClient.unlinkExternalReferenceFromElement(userId, assetManagerGUID, assetManagerName, externalReferenceLinkGUID);
         }
         else
         {
@@ -288,27 +324,25 @@ public class ExternalReferenceExchangeService
 
 
     /**
-     * Return information about a specific external reference.
+     * Retrieve the list of external references sorted in open metadata.
      *
-     * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
-     * @param externalReferenceGUID unique identifier for the external reference
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
      *
-     * @return properties of the external reference
+     * @return links to addition information.
      *
-     * @throws InvalidParameterException externalReferenceGUID or userId is null
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
+     * @throws InvalidParameterException guid invalid or the external references are not correctly specified, or are null.
+     * @throws PropertyServerException the server is not available.
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public ExternalReferenceElement getExternalReferenceByGUID(String userId,
-                                                               String assetManagerGUID,
-                                                               String assetManagerName,
-                                                               String externalReferenceGUID) throws InvalidParameterException,
-                                                                                                    UserNotAuthorizedException,
-                                                                                                    PropertyServerException
+    public List<ExternalReferenceElement> getExternalReferences(Date   effectiveTime,
+                                                                int    startFrom,
+                                                                int    pageSize) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
     {
-        return externalReferenceClient.getExternalReferenceByGUID(userId, assetManagerGUID, assetManagerName, externalReferenceGUID);
+        return externalReferenceClient.getExternalReferences(userId, assetManagerGUID, assetManagerName, effectiveTime, startFrom, pageSize);
     }
 
 
@@ -316,6 +350,7 @@ public class ExternalReferenceExchangeService
      * Retrieve the list of external references for this resourceId.
      *
      * @param resourceId unique reference id assigned by the resource owner (supports wildcards). This is the qualified name of the entity
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
@@ -326,12 +361,13 @@ public class ExternalReferenceExchangeService
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     public List<ExternalReferenceElement> getExternalReferencesById(String resourceId,
+                                                                    Date   effectiveTime,
                                                                     int    startFrom,
                                                                     int    pageSize) throws InvalidParameterException,
                                                                                             PropertyServerException,
                                                                                             UserNotAuthorizedException
     {
-        return externalReferenceClient.getExternalReferencesById(userId, assetManagerGUID, assetManagerName, resourceId, startFrom, pageSize);
+        return externalReferenceClient.getExternalReferencesById(userId, assetManagerGUID, assetManagerName, resourceId, effectiveTime, startFrom, pageSize);
     }
 
 
@@ -339,6 +375,7 @@ public class ExternalReferenceExchangeService
      * Retrieve the list of external references for this URL.
      *
      * @param url URL of the external resource.
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
@@ -349,18 +386,46 @@ public class ExternalReferenceExchangeService
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     public List<ExternalReferenceElement> getExternalReferencesByURL(String url,
+                                                                     Date   effectiveTime,
                                                                      int    startFrom,
                                                                      int    pageSize) throws InvalidParameterException,
                                                                                              PropertyServerException,
                                                                                              UserNotAuthorizedException
     {
-        return externalReferenceClient.getExternalReferencesByURL(userId, assetManagerGUID, assetManagerName, url, startFrom, pageSize);
+        return externalReferenceClient.getExternalReferencesByURL(userId, assetManagerGUID, assetManagerName, url, effectiveTime, startFrom, pageSize);
     }
 
+
+
+
+    /**
+     * Retrieve the list of external references for this name.
+     *
+     * @param name qualifiedName or displayName of the external resource.
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return links to addition information.
+     *
+     * @throws InvalidParameterException guid invalid or the external references are not correctly specified, or are null.
+     * @throws PropertyServerException the server is not available.
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
+     */
+    public List<ExternalReferenceElement> getExternalReferencesByName(String name,
+                                                                      Date   effectiveTime,
+                                                                      int    startFrom,
+                                                                      int    pageSize) throws InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException
+    {
+        return externalReferenceClient.getExternalReferencesByName(userId, assetManagerGUID, assetManagerName, name, effectiveTime, startFrom, pageSize);
+    }
 
     /**
      * Retrieve the list of external reference created on behalf of the named asset manager.
      *
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -370,12 +435,13 @@ public class ExternalReferenceExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<ExternalReferenceElement> getExternalReferencesForAssetManager(int    startFrom,
+    public List<ExternalReferenceElement> getExternalReferencesForAssetManager(Date   effectiveTime,
+                                                                               int    startFrom,
                                                                                int    pageSize) throws InvalidParameterException,
                                                                                                        UserNotAuthorizedException,
                                                                                                        PropertyServerException
     {
-        return externalReferenceClient.getExternalReferencesForAssetManager(userId, assetManagerGUID, assetManagerName, startFrom, pageSize);
+        return externalReferenceClient.getExternalReferencesForAssetManager(userId, assetManagerGUID, assetManagerName, effectiveTime, startFrom, pageSize);
     }
 
 
@@ -383,6 +449,7 @@ public class ExternalReferenceExchangeService
      * Find the external references that contain the search string - which may contain wildcards.
      *
      * @param searchString regular expression (RegEx) to search for
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
@@ -393,12 +460,13 @@ public class ExternalReferenceExchangeService
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     public List<ExternalReferenceElement> findExternalReferences(String searchString,
+                                                                 Date   effectiveTime,
                                                                  int    startFrom,
                                                                  int    pageSize) throws InvalidParameterException,
                                                                                          PropertyServerException,
                                                                                          UserNotAuthorizedException
     {
-        return externalReferenceClient.findExternalReferences(userId, assetManagerGUID, assetManagerName, searchString, startFrom, pageSize);
+        return externalReferenceClient.findExternalReferences(userId, assetManagerGUID, assetManagerName, searchString, effectiveTime, startFrom, pageSize);
     }
 
 
@@ -406,6 +474,7 @@ public class ExternalReferenceExchangeService
      * Retrieve the list of external references attached to the supplied object.
      *
      * @param attachedToGUID object linked to external reference.
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
@@ -416,11 +485,34 @@ public class ExternalReferenceExchangeService
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     public List<ExternalReferenceLinkElement> retrieveAttachedExternalReferences(String attachedToGUID,
+                                                                                 Date   effectiveTime,
                                                                                  int    startFrom,
                                                                                  int    pageSize) throws InvalidParameterException,
                                                                                                          PropertyServerException,
                                                                                                          UserNotAuthorizedException
     {
-        return externalReferenceClient.retrieveAttachedExternalReferences(userId, assetManagerGUID, assetManagerName, attachedToGUID, startFrom, pageSize);
+        return externalReferenceClient.retrieveAttachedExternalReferences(userId, assetManagerGUID, assetManagerName, attachedToGUID, effectiveTime, startFrom, pageSize);
     }
+
+
+    /**
+     * Return information about a specific external reference.
+     *
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param externalReferenceGUID unique identifier for the external reference
+     *
+     * @return properties of the external reference
+     *
+     * @throws InvalidParameterException externalReferenceGUID or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public ExternalReferenceElement getExternalReferenceByGUID(Date   effectiveTime,
+                                                               String externalReferenceGUID) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException
+    {
+        return externalReferenceClient.getExternalReferenceByGUID(userId, assetManagerGUID, assetManagerName, externalReferenceGUID, effectiveTime);
+    }
+
 }

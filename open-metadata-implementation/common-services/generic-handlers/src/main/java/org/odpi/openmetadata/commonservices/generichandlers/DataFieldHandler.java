@@ -20,6 +20,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Handler for data fields which are part of discovery reports.
+ *
+ * @param <B> class of bean
+ */
 public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
 {
     /**

@@ -39,7 +39,6 @@ dependencies {
     implementation 'ch.qos.logback:logback-core'
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
     implementation 'org.slf4j:slf4j-api'
-    implementation 'jakarta.annotation:jakarta.annotation-api'
     implementation 'org.springdoc:springdoc-openapi-ui'
     implementation 'io.swagger.core.v3:swagger-annotations'
     implementation 'org.hibernate:hibernate-validator'

@@ -73,7 +73,7 @@ implementing the OMAS one scenario at a time.
 
 * Define who the intended consumer(s) of the OMAS is/are, the types of information they need from the metadata
   repository and the tasks they need to perform on that metadata.   Ideally pick one or two appropriate persona
-  from [Coco Pharmaceuticals](https://odpi.github.io/data-governance/coco-pharmaceuticals/personas/) to help
+  from [Coco Pharmaceuticals](https://egeria-project.org/practices/coco-pharmaceuticals/personas/overview/) to help
   clarify who the consumer is if it is a person.
   
   Use the vocabulary that is familiar to the consumer community in your description, rather than the vocabulary used in the

@@ -25,18 +25,18 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
  * governanceContext.recordCompletionStatus() and then return. The recordCompletionStatus() call will include guards that are used to determine
  * the next step if any.
  */
-public abstract class WatchdogGovernanceActionService extends GovernanceActionService
+public abstract class WatchdogGovernanceActionService extends GovernanceActionServiceConnector
 {
     protected WatchdogGovernanceContext governanceContext = null;
-    
+
 
     /**
      * Set up details of the the governance action request and access to the metadata store.
-     * This method is called before start and should
+     * This method is called before start and should not be null
      *
      * @param governanceContext specialist context for this type of governance action.
      */
-    public synchronized void setGovernanceContext(WatchdogGovernanceContext governanceContext)
+    public synchronized void setGovernanceContext(GovernanceActionContext governanceContext)
     {
         this.governanceContext = governanceContext;
     }
