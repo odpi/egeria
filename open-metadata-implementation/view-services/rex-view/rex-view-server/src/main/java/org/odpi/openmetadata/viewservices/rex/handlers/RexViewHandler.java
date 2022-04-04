@@ -830,7 +830,7 @@ public class RexViewHandler
                     searchText,
                     0,
                     null,
-                    asOfTime,
+                     asOfTime,
                     null,
                     null,
                     0);

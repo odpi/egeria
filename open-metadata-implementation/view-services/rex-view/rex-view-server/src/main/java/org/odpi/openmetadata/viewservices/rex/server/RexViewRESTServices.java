@@ -257,11 +257,12 @@ public class RexViewRESTServices {
             /*
              * Attempt to retrieve the entity
              */
-            Date asOfTime = null;
-            if (requestBody instanceof RexHistoricalEntityRequestBody) {
-                RexHistoricalEntityRequestBody historicalBody = (RexHistoricalEntityRequestBody) requestBody;
-                asOfTime = historicalBody.getAsOfTime();
+            Integer asOfTime = requestBody.getAsOfTime();
+            Date asOfTimeDate = null;
+            if (asOfTime !=null) {
+                asOfTimeDate = new Date(asOfTime.intValue());
             }
+
             try {
 
                     response.setExpandedEntityDetail(handler.getEntity(userId,
@@ -269,7 +270,7 @@ public class RexViewRESTServices {
                                                                        requestBody.getPlatformName(),
                                                                        requestBody.getEnterpriseOption(),
                                                                        requestBody.getEntityGUID(),
-                                                                       asOfTime,
+                                                                       asOfTimeDate,
                                                                        methodName));
 
             }
@@ -355,11 +356,12 @@ public class RexViewRESTServices {
             {
                 restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
-            Date asOfTime = null;
-            if (requestBody instanceof RexHistoricalRelationshipRequestBody) {
-                RexHistoricalRelationshipRequestBody historicalBody = (RexHistoricalRelationshipRequestBody) requestBody;
-                asOfTime = historicalBody.getAsOfTime();
+            Integer asOfTime = requestBody.getAsOfTime();
+            Date asOfTimeDate = null;
+            if (asOfTime !=null) {
+                asOfTimeDate = new Date(asOfTime.intValue());
             }
+
             /*
              * Attempt to retrieve the relationship
              */
@@ -371,7 +373,7 @@ public class RexViewRESTServices {
                                                                          requestBody.getPlatformName(),
                                                                          requestBody.getEnterpriseOption(),
                                                                          requestBody.getRelationshipGUID(),
-                                                                         asOfTime,
+                                                                         asOfTimeDate,
                                                                          methodName));
 
             }
@@ -457,11 +459,10 @@ public class RexViewRESTServices {
             {
                 restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
-            Date asOfTime = null;
-            if (requestBody instanceof RexHistoricalSearchBody) {
-                RexHistoricalSearchBody historicalBody = (RexHistoricalSearchBody) requestBody;
-
-                asOfTime = historicalBody.getAsOfTime();
+            Integer asOfTime =requestBody.getAsOfTime();
+            Date asOfTimeDate = null;
+            if (asOfTime !=null) {
+                asOfTimeDate = new Date(asOfTime.intValue());
             }
             try
             {
@@ -473,7 +474,7 @@ public class RexViewRESTServices {
                                                           requestBody.getSearchText(),
                                                           requestBody.getTypeName(),
                                                           requestBody.getClassificationNames(),
-                                                          asOfTime,
+                                                          asOfTimeDate,
                                                           methodName));
 
                 response.setSearchCategory("Entity");
@@ -565,11 +566,10 @@ public class RexViewRESTServices {
             {
                 restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
-            Date asOfTime = null;
-            if (requestBody instanceof RexHistoricalSearchBody) {
-                RexHistoricalSearchBody historicalBody = (RexHistoricalSearchBody) requestBody;
-
-                asOfTime = historicalBody.getAsOfTime();
+            Integer asOfTime =requestBody.getAsOfTime();
+            Date asOfTimeDate = null;
+            if (asOfTime !=null) {
+                asOfTimeDate = new Date(asOfTime.intValue());
             }
 
             try
@@ -581,7 +581,7 @@ public class RexViewRESTServices {
                                                                                                        requestBody.getEnterpriseOption(),
                                                                                                        requestBody.getSearchText(),
                                                                                                        requestBody.getTypeName(),
-                                                                                                       asOfTime,
+                                                                                                       asOfTimeDate,
                                                                                                        methodName);
 
                 response.setRelationships(superDigests);

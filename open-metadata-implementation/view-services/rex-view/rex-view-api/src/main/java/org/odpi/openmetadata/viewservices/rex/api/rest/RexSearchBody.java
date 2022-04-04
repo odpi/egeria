@@ -10,16 +10,15 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-@JsonSubTypes(
-        {
-                @JsonSubTypes.Type(value = RexHistoricalSearchBody.class, name = "RexHistoricalSearchBody")
-        })
+
 public class RexSearchBody {
 
 
@@ -34,7 +33,7 @@ public class RexSearchBody {
     private Boolean                   enterpriseOption;
     private String                    typeName;                      // filter by type, or null
     private List<String>              classificationNames;           // Limit results of entity searches to instances with at least one of these classifications
-
+    private Integer                   asOfTime;                      // as of time to issue the query. null means now.
 
     public RexSearchBody() {
        // No initialization yet
@@ -53,6 +52,10 @@ public class RexSearchBody {
     public String getTypeName() { return typeName; }
 
     public List<String> getClassificationNames() { return classificationNames; }
+
+    public Integer getAsOfTime() {
+        return asOfTime;
+    }
 
     public Boolean getEnterpriseOption() {
         if (enterpriseOption == null)
@@ -74,22 +77,34 @@ public class RexSearchBody {
 
     public void setEnterpriseOption(Boolean enterpriseOption) { this.enterpriseOption = enterpriseOption; }
 
-
-
-
-
-    @Override
-    public String toString()
-    {
-        return "RexSearchBody{" +
-                ", serverName=" + serverName +
-                ", platformName=" + platformName +
-                ", searchText=" + searchText +
-                ", enterpriseOption=" + enterpriseOption +
-                ", typeName=" + typeName +
-                '}';
+    public void setAsOfTime(Integer asOfTime) {
+        this.asOfTime = asOfTime;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RexSearchBody)) return false;
+        RexSearchBody that = (RexSearchBody) o;
+        return getAsOfTime() == that.getAsOfTime() && Objects.equals(getServerName(), that.getServerName()) && Objects.equals(getPlatformName(), that.getPlatformName()) && Objects.equals(getSearchText(), that.getSearchText()) && Objects.equals(getEnterpriseOption(), that.getEnterpriseOption()) && Objects.equals(getTypeName(), that.getTypeName()) && Objects.equals(getClassificationNames(), that.getClassificationNames());
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(getServerName(), getPlatformName(), getSearchText(), getEnterpriseOption(), getTypeName(), getClassificationNames(), getAsOfTime());
+    }
+
+    @Override
+    public String toString() {
+        return "RexSearchBody{" +
+                "serverName='" + serverName + '\'' +
+                ", platformName='" + platformName + '\'' +
+                ", searchText='" + searchText + '\'' +
+                ", enterpriseOption=" + enterpriseOption +
+                ", typeName='" + typeName + '\'' +
+                ", classificationNames=" + classificationNames +
+                ", asOfTime=" + asOfTime +
+                '}';
+    }
 
 }

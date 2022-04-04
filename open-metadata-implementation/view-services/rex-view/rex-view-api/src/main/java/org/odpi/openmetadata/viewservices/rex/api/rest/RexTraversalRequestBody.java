@@ -12,15 +12,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 import java.util.List;
+import java.util.Objects;
 
 
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-@JsonSubTypes(
-        {
-                @JsonSubTypes.Type(value = RexHistoricalTraversalRequestBody.class, name = "RexHistoricalTraversalRequestBody")
-        })
+
 public class RexTraversalRequestBody {
 
 
@@ -36,6 +34,7 @@ public class RexTraversalRequestBody {
     private List<String>              relationshipTypeGUIDs;         // a list of type guids or null
     private List<String>              classificationNames;           // a list of names or null
     private Integer                   depth;                         // the depth of traversal
+    private Integer                       asOfTime;                      // as of time to issue the query. null means now.
 
 
     public RexTraversalRequestBody() {
@@ -71,6 +70,9 @@ public class RexTraversalRequestBody {
 
     public Integer getDepth() { return depth; }
 
+    public Integer getAsOfTime() {
+        return asOfTime;
+    }
 
     public void setServerName(String serverName) { this.serverName = serverName; }
 
@@ -92,7 +94,22 @@ public class RexTraversalRequestBody {
 
     public void setDepth(Integer depth) { this.depth = depth; }
 
+    public void setAsOfTime(Integer asOfTime) {
+        this.asOfTime = asOfTime;
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RexTraversalRequestBody)) return false;
+        RexTraversalRequestBody that = (RexTraversalRequestBody) o;
+        return getAsOfTime() == that.getAsOfTime() && Objects.equals(getServerName(), that.getServerName()) && Objects.equals(getPlatformName(), that.getPlatformName()) && Objects.equals(getEntityGUID(), that.getEntityGUID()) && Objects.equals(getEnterpriseOption(), that.getEnterpriseOption()) && Objects.equals(getEntityTypeGUIDs(), that.getEntityTypeGUIDs()) && Objects.equals(getRelationshipTypeGUIDs(), that.getRelationshipTypeGUIDs()) && Objects.equals(getClassificationNames(), that.getClassificationNames()) && Objects.equals(getDepth(), that.getDepth());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getServerName(), getPlatformName(), getEntityGUID(), getEnterpriseOption(), getEntityTypeGUIDs(), getRelationshipTypeGUIDs(), getClassificationNames(), getDepth(), getAsOfTime());
+    }
 
 
     @Override
