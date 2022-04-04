@@ -2,8 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 
 /**
- * This package defines the event payloads sent on the Asset Consumer OMAS's out topic.  In the header of each
- * event (see AssetConsumerEventHeader) is an event version number and an event type enum.
+ * This package defines the event payloads sent on the Asset Consumer OMAS's out topic.
  *
  * The event version number indicates which version of the payload is in use.  With the version number in
  * place it is possible to change the payload over time and enable the consumer to adjust.

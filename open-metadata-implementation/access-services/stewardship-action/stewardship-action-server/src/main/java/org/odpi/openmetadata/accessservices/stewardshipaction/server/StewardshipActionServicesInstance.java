@@ -97,7 +97,7 @@ public class StewardshipActionServicesInstance extends OMASServiceInstance
      *
      * @return handler
      */
-    ReferenceableHandler<ElementStub> getReferenceableHandler()
+    public ReferenceableHandler<ElementStub> getReferenceableHandler()
     {
         return referenceableHandler;
     }

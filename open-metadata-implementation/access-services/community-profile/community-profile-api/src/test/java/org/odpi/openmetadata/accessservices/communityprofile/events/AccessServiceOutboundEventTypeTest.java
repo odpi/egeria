@@ -39,7 +39,7 @@ public class AccessServiceOutboundEventTypeTest
         }
     }
 
-    private void testSingleErrorCodeValues(CommunityProfileOutboundEventType testValue)
+    private void testSingleErrorCodeValues(CommunityProfileOutboundEventType  testValue)
     {
         String                  testInfo;
 
@@ -56,16 +56,12 @@ public class AccessServiceOutboundEventTypeTest
     /**
      * Validated the values of the enum.
      */
-    @Test public void testAllValues()
+    @Test public void testAllErrorCodeValues()
     {
-        testSingleErrorCodeValues(CommunityProfileOutboundEventType.UNKNOWN_COMMUNITY_PROFILE_EVENT);
-        testSingleErrorCodeValues(CommunityProfileOutboundEventType.NEW_ELEMENT_EVENT);
-        testSingleErrorCodeValues(CommunityProfileOutboundEventType.UPDATED_ELEMENT_EVENT);
-        testSingleErrorCodeValues(CommunityProfileOutboundEventType.DELETED_ELEMENT_EVENT);
-        testSingleErrorCodeValues(CommunityProfileOutboundEventType.CLASSIFIED_ELEMENT_EVENT);
-        testSingleErrorCodeValues(CommunityProfileOutboundEventType.RECLASSIFIED_ELEMENT_EVENT);
-        testSingleErrorCodeValues(CommunityProfileOutboundEventType.DECLASSIFIED_ELEMENT_EVENT);
-        testSingleErrorCodeValues(CommunityProfileOutboundEventType.KARMA_POINT_PLATEAU_EVENT);
+        for (CommunityProfileOutboundEventType eventType : CommunityProfileOutboundEventType.values())
+        {
+            testSingleErrorCodeValues(eventType);
+        }
     }
 
 
@@ -81,7 +77,7 @@ public class AccessServiceOutboundEventTypeTest
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(CommunityProfileOutboundEventType.KARMA_POINT_PLATEAU_EVENT);
+            jsonString = objectMapper.writeValueAsString(CommunityProfileOutboundEventType.NEW_ELEMENT_CREATED);
         }
         catch (Exception  exc)
         {
@@ -90,7 +86,7 @@ public class AccessServiceOutboundEventTypeTest
 
         try
         {
-            assertTrue(objectMapper.readValue(jsonString, CommunityProfileOutboundEventType.class) == CommunityProfileOutboundEventType.KARMA_POINT_PLATEAU_EVENT);
+            assertTrue(objectMapper.readValue(jsonString, CommunityProfileOutboundEventType.class) == CommunityProfileOutboundEventType.NEW_ELEMENT_CREATED);
         }
         catch (Exception  exc)
         {
@@ -104,8 +100,7 @@ public class AccessServiceOutboundEventTypeTest
      */
     @Test public void testToString()
     {
-        assertTrue(
-                CommunityProfileOutboundEventType.DELETED_ELEMENT_EVENT.toString().contains("CommunityProfileOutboundEventType"));
+        assertTrue(CommunityProfileOutboundEventType.ELEMENT_UPDATED.toString().contains("CommunityProfileOutboundEventType"));
     }
 
 
@@ -114,10 +109,8 @@ public class AccessServiceOutboundEventTypeTest
      */
     @Test public void testEquals()
     {
-        assertTrue(
-                CommunityProfileOutboundEventType.CLASSIFIED_ELEMENT_EVENT.equals(CommunityProfileOutboundEventType.CLASSIFIED_ELEMENT_EVENT));
-        assertFalse(
-                CommunityProfileOutboundEventType.CLASSIFIED_ELEMENT_EVENT.equals(CommunityProfileOutboundEventType.DECLASSIFIED_ELEMENT_EVENT));
+        assertTrue(CommunityProfileOutboundEventType.NEW_ELEMENT_CREATED.equals(CommunityProfileOutboundEventType.NEW_ELEMENT_CREATED));
+        assertFalse(CommunityProfileOutboundEventType.NEW_ELEMENT_CREATED.equals(CommunityProfileOutboundEventType.ELEMENT_UPDATED));
     }
 
 
@@ -126,9 +119,7 @@ public class AccessServiceOutboundEventTypeTest
      */
     @Test public void testHashcode()
     {
-        assertTrue(
-                CommunityProfileOutboundEventType.UPDATED_ELEMENT_EVENT.hashCode() == CommunityProfileOutboundEventType.UPDATED_ELEMENT_EVENT.hashCode());
-        assertFalse(
-                CommunityProfileOutboundEventType.UPDATED_ELEMENT_EVENT.hashCode() == CommunityProfileOutboundEventType.UNKNOWN_COMMUNITY_PROFILE_EVENT.hashCode());
+        assertTrue(CommunityProfileOutboundEventType.ELEMENT_UPDATED.hashCode() == CommunityProfileOutboundEventType.ELEMENT_UPDATED.hashCode());
+        assertFalse(CommunityProfileOutboundEventType.ELEMENT_UPDATED.hashCode() == CommunityProfileOutboundEventType.UNKNOWN_EVENT.hashCode());
     }
 }

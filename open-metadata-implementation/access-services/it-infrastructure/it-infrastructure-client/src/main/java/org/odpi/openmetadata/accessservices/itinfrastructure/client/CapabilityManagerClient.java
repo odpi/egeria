@@ -596,9 +596,19 @@ public class CapabilityManagerClient extends AssetManagerClientBase implements S
             effectiveTo = deploymentProperties.getEffectiveTo();
         }
 
-        super.setupRelatedAsset(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, softwareCapabilityTypeName,
-                                capabilityGUID, deploymentRelationshipTypeName, itAssetTypeName, infrastructureAssetGUID,
-                                effectiveFrom, effectiveTo, propertyMap, methodName);
+        super.setupRelatedAsset(userId,
+                                infrastructureManagerGUID,
+                                infrastructureManagerName,
+                                infrastructureManagerIsHome,
+                                itAssetTypeName,
+                                infrastructureAssetGUID,
+                                deploymentRelationshipTypeName,
+                                softwareCapabilityTypeName,
+                                capabilityGUID,
+                                effectiveFrom,
+                                effectiveTo,
+                                propertyMap,
+                                methodName);
     }
 
 
@@ -671,8 +681,16 @@ public class CapabilityManagerClient extends AssetManagerClientBase implements S
     {
         final String methodName = "removeCapabilityDeployment";
 
-        super.clearRelatedAsset(userId, infrastructureManagerGUID, infrastructureManagerName, softwareCapabilityTypeName,
-                                capabilityGUID, deploymentRelationshipTypeName, itAssetTypeName, itAssetGUID, effectiveTime, methodName);
+        super.clearRelatedAsset(userId,
+                                infrastructureManagerGUID,
+                                infrastructureManagerName,
+                                itAssetTypeName,
+                                itAssetGUID,
+                                deploymentRelationshipTypeName,
+                                softwareCapabilityTypeName,
+                                capabilityGUID,
+                                effectiveTime,
+                                methodName);
     }
 
 
@@ -1037,7 +1055,7 @@ public class CapabilityManagerClient extends AssetManagerClientBase implements S
         invalidParameterHandler.validateGUID(capabilityGUID, capabilityGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + assetUsesURLTemplatePrefix + "/software-server-capabilities/{2}/assets/{3}?infrastructureManagerIsHome={4}";
+        final String urlTemplate = serverPlatformURLRoot + assetUsesURLTemplatePrefix + "/software-capabilities/{2}/assets/{3}?infrastructureManagerIsHome={4}";
 
         ServerAssetUseRequestBody requestBody = new ServerAssetUseRequestBody();
 
@@ -1180,7 +1198,7 @@ public class CapabilityManagerClient extends AssetManagerClientBase implements S
         invalidParameterHandler.validateGUID(capabilityGUID, elementGUIDParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + assetUsesURLTemplatePrefix + "/software-server-capabilities/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + assetUsesURLTemplatePrefix + "/software-capabilities/{2}?startFrom={3}&pageSize={4}";
 
         UseTypeRequestBody requestBody = new UseTypeRequestBody();
 
@@ -1288,7 +1306,7 @@ public class CapabilityManagerClient extends AssetManagerClientBase implements S
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + assetUsesURLTemplatePrefix + "/software-server-capabilities/{2}/assets/{3}/by-elements?startFrom={4}&pageSize={5}";
+        final String urlTemplate = serverPlatformURLRoot + assetUsesURLTemplatePrefix + "/software-capabilities/{2}/assets/{3}/by-elements?startFrom={4}&pageSize={5}";
 
         EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
 

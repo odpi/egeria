@@ -4,8 +4,8 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.connectors.outtopic;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.accessservices.assetconsumer.events.AssetConsumerOutTopicEvent;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerAuditCode;
-import org.odpi.openmetadata.accessservices.assetconsumer.events.AssetConsumerEvent;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -25,7 +25,7 @@ public class AssetConsumerOutTopicServerConnector extends OpenMetadataTopicSende
      * @throws InvalidParameterException the event is null
      * @throws ConnectorCheckedException there is a problem with the embedded event bus connector(s).
      */
-    public void sendEvent(AssetConsumerEvent event) throws InvalidParameterException, ConnectorCheckedException
+    public void sendEvent(AssetConsumerOutTopicEvent event) throws InvalidParameterException, ConnectorCheckedException
     {
         final String methodName = "sendEvent";
         ObjectMapper objectMapper = new ObjectMapper();

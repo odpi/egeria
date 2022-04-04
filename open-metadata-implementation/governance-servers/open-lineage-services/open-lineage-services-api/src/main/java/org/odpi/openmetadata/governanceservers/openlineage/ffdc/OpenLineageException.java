@@ -6,7 +6,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 /**
  * OpenLineageException provides a checked exception for reporting errors found when using
  * the Open Lineage services.
- * Typically these errors are either configuration or operational errors that can be fixed by an administrator
+ * Typically, these errors are either configuration or operational errors that can be fixed by an administrator
  * or power Open LineageConsumerInterface.  However, there may be the odd bug that surfaces here.
  * The OpenLineageErrorCode can be used with this exception to populate it with standard messages.
  * The aim is to be able to uniquely identify the cause and remedy for the error.

@@ -30,5 +30,5 @@ public interface AssetConsumerEventInterface
                                                                        ConnectionCheckedException,
                                                                        ConnectorCheckedException,
                                                                        PropertyServerException,
-                                                                       UserNotAuthorizedException;;
+                                                                       UserNotAuthorizedException;
 }

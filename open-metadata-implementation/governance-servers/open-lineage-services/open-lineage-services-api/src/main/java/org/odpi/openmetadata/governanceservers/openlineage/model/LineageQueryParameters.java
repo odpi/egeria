@@ -15,7 +15,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
         property = "class"
 )
 public class LineageQueryParameters {
@@ -27,9 +26,8 @@ public class LineageQueryParameters {
     public LineageQueryParameters() {
     }
 
-    public LineageQueryParameters(Scope scope, String displayNameMustContain, boolean includeProcesses ) {
+    public LineageQueryParameters(Scope scope, boolean includeProcesses ) {
         this.scope = scope;
-        this.displayNameMustContain = displayNameMustContain;
         this.includeProcesses = includeProcesses;
     }
 

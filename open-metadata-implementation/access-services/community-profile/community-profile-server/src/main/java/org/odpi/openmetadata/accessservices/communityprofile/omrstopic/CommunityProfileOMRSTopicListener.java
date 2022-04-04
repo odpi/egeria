@@ -246,6 +246,72 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
     }
 
 
+
+
+    /**
+     * An entity has been changed - only the proxy is available.
+     *
+     * @param eventType                      type of change to the entity
+     * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
+     *                                       local repository, or event mapper name.
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName           name of the server that the event came from.
+     * @param originatorServerType           type of server that the event came from.
+     * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
+     * @param entity                         details of the new entity
+     * @param classificationName             potential classification change
+     * @param methodName                     calling method
+     */
+    private void processEntityEvent(CommunityProfileOutboundEventType eventType,
+                                    String                            sourceName,
+                                    String                            originatorMetadataCollectionId,
+                                    String                            originatorServerName,
+                                    String                            originatorServerType,
+                                    String                            originatorOrganizationName,
+                                    EntityProxy                       entity,
+                                    String                            classificationName,
+                                    String                            methodName)
+    {
+        this.awardKarmaPoints(entity);
+
+        String instanceTypeName = this.getInstanceTypeName(sourceName,
+                                                           originatorMetadataCollectionId,
+                                                           originatorServerName,
+                                                           originatorServerType,
+                                                           originatorOrganizationName,
+                                                           entity,
+                                                           methodName);
+
+        if (instanceTypeName != null)
+        {
+            try
+            {
+                ElementStub elementStub = converter.getElementStub(ElementStub.class, entity, methodName);
+
+                if ((repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.COMMUNITY_TYPE_NAME)))
+                {
+
+                    publisher.sendEntityEvent(eventType, entity.getGUID(), instanceTypeName, classificationName, elementStub);
+                }
+            }
+            catch (Exception error)
+            {
+                auditLog.logException(methodName,
+                                      CommunityProfileAuditCode.OUTBOUND_EVENT_EXCEPTION.getMessageDefinition(entity.getGUID(),
+                                                                                                              instanceTypeName,
+                                                                                                              error.getClass().getName(),
+                                                                                                              error.getMessage()),
+                                      error);
+            }
+        }
+    }
+
+
     /**
      * A relationship has changed.
      *
@@ -338,7 +404,7 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processNewEntityEvent";
 
-        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.NEW_ELEMENT_EVENT;
+        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.NEW_ELEMENT_CREATED;
 
         log.debug("Processing new Entity event from: " + sourceName);
 
@@ -352,6 +418,45 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
                                 null,
                                 methodName);
     }
+
+
+    /**
+     * A remote repository in the cohort has sent entity details in response to a refresh request.
+     *
+     * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
+     *                                       local repository, or event mapper name.
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName           name of the server that the event came from.
+     * @param originatorServerType           type of server that the event came from.
+     * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
+     * @param entity                         details of the requested entity
+     */
+    @Override
+    public void processRefreshEntityEvent(String       sourceName,
+                                          String       originatorMetadataCollectionId,
+                                          String       originatorServerName,
+                                          String       originatorServerType,
+                                          String       originatorOrganizationName,
+                                          EntityDetail entity)
+    {
+        final String methodName = "processRefreshEntityEvent";
+
+        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.REFRESH_ELEMENT_EVENT;
+
+        log.debug("Processing refresh Entity event from: " + sourceName);
+
+        this.processEntityEvent(eventType,
+                                sourceName,
+                                originatorMetadataCollectionId,
+                                originatorServerName,
+                                originatorServerType,
+                                originatorOrganizationName,
+                                entity,
+                                null,
+                                methodName);
+    }
+
 
     /**
      * An existing entity has been updated.
@@ -377,7 +482,7 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processUpdatedEntityEvent";
 
-        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.UPDATED_ELEMENT_EVENT;
+        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.ELEMENT_UPDATED;
 
         log.debug("Processing updated Entity event from: " + sourceName);
 
@@ -417,7 +522,47 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processClassifiedEntityEvent";
 
-        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.CLASSIFIED_ELEMENT_EVENT;
+        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.ELEMENT_CLASSIFIED;
+
+        log.debug("Processing classified Entity event from: " + sourceName);
+
+        this.processEntityEvent(eventType,
+                                sourceName,
+                                originatorMetadataCollectionId,
+                                originatorServerName,
+                                originatorServerType,
+                                originatorOrganizationName,
+                                entity,
+                                classification.getName(),
+                                methodName);
+    }
+
+
+    /**
+     * A new classification has been added to an entity.
+     *
+     * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
+     *                   local repository, or event mapper name.
+     * @param originatorMetadataCollectionId  unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName  name of the server that the event came from.
+     * @param originatorServerType  type of server that the event came from.
+     * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
+     * @param entity  details of the entity with the new classification added. No guarantee this is all of the classifications.
+     * @param classification new classification
+     */
+    @Override
+    public void processClassifiedEntityEvent(String         sourceName,
+                                             String         originatorMetadataCollectionId,
+                                             String         originatorServerName,
+                                             String         originatorServerType,
+                                             String         originatorOrganizationName,
+                                             EntityProxy    entity,
+                                             Classification classification)
+    {
+        final String methodName = "processClassifiedEntityEvent(proxy)";
+
+        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.ELEMENT_CLASSIFIED;
 
         log.debug("Processing classified Entity event from: " + sourceName);
 
@@ -457,7 +602,47 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processDeclassifiedEntityEvent";
 
-        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.DECLASSIFIED_ELEMENT_EVENT;
+        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.ELEMENT_DECLASSIFIED;
+
+        log.debug("Processing declassified Entity event from: " + sourceName);
+
+        this.processEntityEvent(eventType,
+                                sourceName,
+                                originatorMetadataCollectionId,
+                                originatorServerName,
+                                originatorServerType,
+                                originatorOrganizationName,
+                                entity,
+                                originalClassification.getName(),
+                                methodName);
+    }
+
+
+    /**
+     * A classification has been removed from an entity.
+     *
+     * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
+     *                   local repository, or event mapper name.
+     * @param originatorMetadataCollectionId  unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName  name of the server that the event came from.
+     * @param originatorServerType  type of server that the event came from.
+     * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
+     * @param entity  details of the entity after the classification has been removed. No guarantee this is all of the classifications.
+     * @param originalClassification classification that was removed
+     */
+    @Override
+    public void processDeclassifiedEntityEvent(String         sourceName,
+                                               String         originatorMetadataCollectionId,
+                                               String         originatorServerName,
+                                               String         originatorServerType,
+                                               String         originatorOrganizationName,
+                                               EntityProxy    entity,
+                                               Classification originalClassification)
+    {
+        final String methodName = "processDeclassifiedEntityEvent(proxy)";
+
+        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.ELEMENT_DECLASSIFIED;
 
         log.debug("Processing declassified Entity event from: " + sourceName);
 
@@ -499,7 +684,49 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processReclassifiedEntityEvent";
 
-        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.RECLASSIFIED_ELEMENT_EVENT;
+        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.ELEMENT_RECLASSIFIED;
+
+        log.debug("Processing reclassified Entity event from: " + sourceName);
+
+        this.processEntityEvent(eventType,
+                                sourceName,
+                                originatorMetadataCollectionId,
+                                originatorServerName,
+                                originatorServerType,
+                                originatorOrganizationName,
+                                entity,
+                                originalClassification.getName(),
+                                methodName);
+    }
+
+
+    /**
+     * An existing classification has been changed on an entity.
+     *
+     * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
+     *                   local repository, or event mapper name.
+     * @param originatorMetadataCollectionId  unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName  name of the server that the event came from.
+     * @param originatorServerType  type of server that the event came from.
+     * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
+     * @param entity  details of the entity after the classification has been changed. No guarantee this is all of the classifications.
+     * @param originalClassification classification that was removed
+     * @param classification new classification
+     */
+    @Override
+    public void processReclassifiedEntityEvent(String         sourceName,
+                                               String         originatorMetadataCollectionId,
+                                               String         originatorServerName,
+                                               String         originatorServerType,
+                                               String         originatorOrganizationName,
+                                               EntityProxy    entity,
+                                               Classification originalClassification,
+                                               Classification classification)
+    {
+        final String methodName = "processReclassifiedEntityEvent";
+
+        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.ELEMENT_RECLASSIFIED;
 
         log.debug("Processing reclassified Entity event from: " + sourceName);
 
@@ -544,7 +771,7 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processDeletedEntityEvent";
 
-        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.DELETED_ELEMENT_EVENT;
+        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.ELEMENT_DELETED;
 
         log.debug("Processing deleted Entity event from: " + sourceName);
 
@@ -586,7 +813,7 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processDeletePurgedEntityEvent";
 
-        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.DELETED_ELEMENT_EVENT;
+        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.ELEMENT_DELETED;
 
         log.debug("Processing delete-purge entity event from: " + sourceName);
 
@@ -628,7 +855,7 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processReIdentifiedEntityEvent";
 
-        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.UPDATED_ELEMENT_EVENT;
+        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.ELEMENT_GUID_CHANGED;
 
         log.debug("Processing re-identified Entity event from: " + sourceName);
 
@@ -670,7 +897,7 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processReTypedEntityEvent";
 
-        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.UPDATED_ELEMENT_EVENT;
+        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.ELEMENT_TYPE_CHANGED;
 
         log.debug("Processing re-typed Entity event from: " + sourceName);
 
@@ -712,7 +939,7 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processReHomedEntityEvent";
 
-        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.UPDATED_ELEMENT_EVENT;
+        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.ELEMENT_HOME_CHANGED;
 
         log.debug("Processing re-homed Entity event from: " + sourceName);
 
@@ -726,7 +953,6 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
                                 null,
                                 methodName);
     }
-
 
 
     /**
@@ -751,7 +977,7 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processNewRelationshipEvent";
 
-        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.NEW_ELEMENT_EVENT;
+        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.NEW_ELEMENT_CREATED;
 
         log.debug("Processing new relationship event from: " + sourceName);
 
@@ -790,7 +1016,7 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processUpdatedRelationshipEvent";
 
-        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.UPDATED_ELEMENT_EVENT;
+        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.ELEMENT_UPDATED;
 
         log.debug("Processing updated relationship event from: " + sourceName);
 
@@ -831,7 +1057,7 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processDeletedRelationshipEvent";
 
-        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.DELETED_ELEMENT_EVENT;
+        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.ELEMENT_DELETED;
 
         log.debug("Processing deleted relationship event from: " + sourceName);
 
@@ -868,7 +1094,7 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processUpdatedRelationshipEvent";
 
-        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.DELETED_ELEMENT_EVENT;
+        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.ELEMENT_DELETED;
 
         log.debug("Processing delete-purge relationship event from: " + sourceName);
 
@@ -909,7 +1135,7 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processReIdentifiedRelationshipEvent";
 
-        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.UPDATED_ELEMENT_EVENT;
+        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.ELEMENT_GUID_CHANGED;
 
         log.debug("Processing re-identified relationship event from: " + sourceName);
 
@@ -950,7 +1176,7 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processReTypedRelationshipEvent";
 
-        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.UPDATED_ELEMENT_EVENT;
+        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.ELEMENT_TYPE_CHANGED;
 
         log.debug("Processing re-typed relationship event from: " + sourceName);
 
@@ -991,7 +1217,7 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processReHomedRelationshipEvent";
 
-        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.UPDATED_ELEMENT_EVENT;
+        final CommunityProfileOutboundEventType eventType = CommunityProfileOutboundEventType.ELEMENT_HOME_CHANGED;
 
         log.debug("Processing re-homed relationship event from: " + sourceName);
 

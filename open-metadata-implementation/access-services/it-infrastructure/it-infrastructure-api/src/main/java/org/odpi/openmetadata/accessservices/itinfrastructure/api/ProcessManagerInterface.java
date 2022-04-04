@@ -5,10 +5,8 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.api;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ControlFlowElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.DataFlowElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.LineageMappingElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.PortElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ProcessCallElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ProcessElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.PortProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProcessContainmentType;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProcessProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProcessStatus;
@@ -526,7 +524,8 @@ public interface ProcessManagerInterface
      * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
      * @param infrastructureManagerName unique name of software server capability representing the caller
      * @param dataFlowGUID unique identifier of the data flow relationship
-
+     * @param effectiveTime time when the relationship is effective
+     *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -534,9 +533,10 @@ public interface ProcessManagerInterface
     void clearDataFlow(String userId,
                        String infrastructureManagerGUID,
                        String infrastructureManagerName,
-                       String dataFlowGUID) throws InvalidParameterException,
-                                                   UserNotAuthorizedException,
-                                                   PropertyServerException;
+                       String dataFlowGUID,
+                       Date   effectiveTime) throws InvalidParameterException,
+                                                    UserNotAuthorizedException,
+                                                    PropertyServerException;
 
 
     /**
@@ -677,6 +677,7 @@ public interface ProcessManagerInterface
      * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
      * @param infrastructureManagerName unique name of software server capability representing the caller
      * @param controlFlowGUID unique identifier of the  control flow relationship
+     * @param effectiveTime time when the relationship is effective
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -685,9 +686,10 @@ public interface ProcessManagerInterface
     void clearControlFlow(String userId,
                           String infrastructureManagerGUID,
                           String infrastructureManagerName,
-                          String controlFlowGUID) throws InvalidParameterException,
-                                                         UserNotAuthorizedException,
-                                                         PropertyServerException;
+                          String controlFlowGUID,
+                          Date   effectiveTime) throws InvalidParameterException,
+                                                       UserNotAuthorizedException,
+                                                       PropertyServerException;
 
 
     /**
@@ -828,6 +830,7 @@ public interface ProcessManagerInterface
      * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
      * @param infrastructureManagerName unique name of software server capability representing the caller
      * @param processCallGUID unique identifier of the process call relationship
+     * @param effectiveTime time when the relationship is effective
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -836,7 +839,8 @@ public interface ProcessManagerInterface
     void clearProcessCall(String userId,
                           String infrastructureManagerGUID,
                           String infrastructureManagerName,
-                          String processCallGUID) throws InvalidParameterException,
+                          String processCallGUID,
+                          Date   effectiveTime) throws InvalidParameterException,
                                                          UserNotAuthorizedException,
                                                          PropertyServerException;
 
@@ -891,17 +895,19 @@ public interface ProcessManagerInterface
      * @param effectiveFrom time when this hosting is effective - null means immediately
      * @param effectiveTo time when this hosting is no longer effective - null means forever
      *
+     * @return unique identifier of the new relationship
+     *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void setupLineageMapping(String userId,
-                             String sourceElementGUID,
-                             String destinationElementGUID,
-                             Date   effectiveFrom,
-                             Date   effectiveTo) throws InvalidParameterException,
-                                                        UserNotAuthorizedException,
-                                                        PropertyServerException;
+    String setupLineageMapping(String userId,
+                               String sourceElementGUID,
+                               String destinationElementGUID,
+                               Date   effectiveFrom,
+                               Date   effectiveTo) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException;
 
 
     /**
@@ -910,6 +916,7 @@ public interface ProcessManagerInterface
      * @param userId calling user
      * @param sourceElementGUID unique identifier of the source
      * @param destinationElementGUID unique identifier of the destination
+     * @param effectiveTime time when the relationship is effective
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -917,9 +924,10 @@ public interface ProcessManagerInterface
      */
     void clearLineageMapping(String userId,
                              String sourceElementGUID,
-                             String destinationElementGUID) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException;
+                             String destinationElementGUID,
+                             Date   effectiveTime) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException;
 
 
     /**

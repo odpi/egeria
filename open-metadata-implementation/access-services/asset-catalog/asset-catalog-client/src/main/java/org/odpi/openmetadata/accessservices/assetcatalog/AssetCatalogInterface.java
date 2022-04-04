@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.assetcatalog;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogSupportedTypes;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogListResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetListResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.ClassificationListResponse;
@@ -76,42 +75,6 @@ public interface AssetCatalogInterface {
      * @throws InvalidParameterException if parameter validation fails
      */
     ClassificationListResponse getClassificationsForAsset(String userId, String assetGUID, String assetType, String classificationName) throws InvalidParameterException, PropertyServerException;
-
-    /**
-     * Returns a sub-graph of intermediate assets that connected two assets
-     *
-     * @param userId         the unique identifier for the user
-     * @param startAssetGUID the starting asset identifier of the query
-     * @param endAssetGUID   the ending asset identifier of the query
-     * @return a list of assets between the given assets
-     * @throws PropertyServerException   if a problem occurs while serving the request
-     * @throws InvalidParameterException if parameter validation fails
-     */
-    AssetCatalogListResponse getLinkingAssets(String userId, String startAssetGUID, String endAssetGUID) throws InvalidParameterException, PropertyServerException;
-
-    /**
-     * Return a sub-graph of relationships that connect two assets
-     *
-     * @param userId         the unique identifier for the user
-     * @param startAssetGUID the starting asset identifier of the query
-     * @param endAssetGUID   the ending asset identifier of the query
-     * @return a list of relationships that connects the assets
-     * @throws PropertyServerException   if a problem occurs while serving the request
-     * @throws InvalidParameterException if parameter validation fails
-     */
-    RelationshipListResponse getLinkingRelationships(String userId, String startAssetGUID, String endAssetGUID) throws InvalidParameterException, PropertyServerException;
-
-    /**
-     * Returns the sub-graph that represents the list of assets that in neighborhood of the given asset
-     *
-     * @param userId           the unique identifier for the user
-     * @param assetGUID        the starting asset identifier of the query
-     * @param searchParameters constrains to make the assets's search results more precise
-     * @return a list of assets that in neighborhood of the given asset
-     * @throws PropertyServerException   if a problem occurs while serving the request
-     * @throws InvalidParameterException if parameter validation fails
-     */
-    AssetCatalogListResponse getAssetsFromNeighborhood(String userId, String assetGUID, SearchParameters searchParameters) throws InvalidParameterException, PropertyServerException;
 
     /**
      * Return a list of assets matching the search criteria without the full context

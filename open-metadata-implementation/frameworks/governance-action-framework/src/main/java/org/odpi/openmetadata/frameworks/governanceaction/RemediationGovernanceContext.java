@@ -5,14 +5,11 @@ package org.odpi.openmetadata.frameworks.governanceaction;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ElementStatus;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RequestSourceElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
+
 
 /**
  * RemediationGovernanceContext provides access to details of the remediation request along with access to the
@@ -25,31 +22,8 @@ import java.util.Map;
  * The requestSourceElements could then have the schema annotations created by a discovery service.
  * These would guide the
  */
-public class RemediationGovernanceContext extends GovernanceContext
+public interface RemediationGovernanceContext extends GovernanceContext
 {
-    /**
-     * Constructor sets up the key parameters for processing the request to the governance action service.
-     *
-     * @param userId calling user
-     * @param governanceActionGUID unique identifier of the governance action that triggered this governance service
-     * @param requestType unique identifier of the asset that the annotations should be attached to
-     * @param requestParameters name-value properties to control the governance action service
-     * @param requestSourceElements metadata elements associated with the request to the governance action service
-     * @param actionTargetElements metadata elements that need to be worked on by the governance action service
-     * @param openMetadataStore client to the metadata store for use by the governance action service
-     */
-    public RemediationGovernanceContext(String                     userId,
-                                        String                     governanceActionGUID,
-                                        String                     requestType,
-                                        Map<String, String>        requestParameters,
-                                        List<RequestSourceElement> requestSourceElements,
-                                        List<ActionTargetElement>  actionTargetElements,
-                                        OpenMetadataClient         openMetadataStore)
-    {
-        super(userId, governanceActionGUID, requestType, requestParameters, requestSourceElements, actionTargetElements, openMetadataStore);
-    }
-
-
     /**
      * Create a new metadata element in the metadata store.  The type name comes from the open metadata types.
      * The selected type also controls the names and types of the properties that are allowed.
@@ -66,14 +40,11 @@ public class RemediationGovernanceContext extends GovernanceContext
      * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of element
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public String createMetadataElement(String            metadataElementTypeName,
-                                        ElementProperties properties,
-                                        String            templateGUID) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
-    {
-        return openMetadataStore.createMetadataElementInStore(metadataElementTypeName, ElementStatus.ACTIVE, null, null, properties, templateGUID);
-    }
+    String createMetadataElement(String            metadataElementTypeName,
+                                 ElementProperties properties,
+                                 String            templateGUID) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException;
 
 
     /**
@@ -96,17 +67,14 @@ public class RemediationGovernanceContext extends GovernanceContext
      * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of element
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public String createMetadataElement(String            metadataElementTypeName,
-                                        ElementStatus     initialStatus,
-                                        Date              effectiveFrom,
-                                        Date              effectiveTo,
-                                        ElementProperties properties,
-                                        String            templateGUID) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
-    {
-        return openMetadataStore.createMetadataElementInStore(metadataElementTypeName, initialStatus, effectiveFrom, effectiveTo, properties, templateGUID);
-    }
+    String createMetadataElement(String            metadataElementTypeName,
+                                 ElementStatus     initialStatus,
+                                 Date              effectiveFrom,
+                                 Date              effectiveTo,
+                                 ElementProperties properties,
+                                 String            templateGUID) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException;
 
 
     /**
@@ -126,22 +94,14 @@ public class RemediationGovernanceContext extends GovernanceContext
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public void updateMetadataElement(String            metadataElementGUID,
-                                      boolean           replaceProperties,
-                                      boolean           forLineage,
-                                      boolean           forDuplicateProcessing,
-                                      ElementProperties properties,
-                                      Date              effectiveTime) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException
-    {
-        openMetadataStore.updateMetadataElementInStore(metadataElementGUID,
-                                                       replaceProperties,
-                                                       forLineage,
-                                                       forDuplicateProcessing,
-                                                       properties,
-                                                       effectiveTime);
-    }
+    void updateMetadataElement(String            metadataElementGUID,
+                               boolean           replaceProperties,
+                               boolean           forLineage,
+                               boolean           forDuplicateProcessing,
+                               ElementProperties properties,
+                               Date              effectiveTime) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException;
 
 
     /**
@@ -161,24 +121,15 @@ public class RemediationGovernanceContext extends GovernanceContext
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public void updateMetadataElementStatus(String        metadataElementGUID,
-                                            boolean       forLineage,
-                                            boolean       forDuplicateProcessing,
-                                            ElementStatus newElementStatus,
-                                            Date          effectiveFrom,
-                                            Date          effectiveTo,
-                                            Date          effectiveTime) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
-    {
-        openMetadataStore.updateMetadataElementStatusInStore(metadataElementGUID,
-                                                             forLineage,
-                                                             forDuplicateProcessing,
-                                                             newElementStatus,
-                                                             effectiveFrom,
-                                                             effectiveTo,
-                                                             effectiveTime);
-    }
+    void updateMetadataElementStatus(String        metadataElementGUID,
+                                     boolean       forLineage,
+                                     boolean       forDuplicateProcessing,
+                                     ElementStatus newElementStatus,
+                                     Date          effectiveFrom,
+                                     Date          effectiveTo,
+                                     Date          effectiveTime) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException;
 
 
     /**
@@ -193,18 +144,12 @@ public class RemediationGovernanceContext extends GovernanceContext
      * @throws UserNotAuthorizedException the governance action service is not authorized to delete this element
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public void deleteMetadataElement(String  metadataElementGUID,
-                                      boolean forLineage,
-                                      boolean forDuplicateProcessing,
-                                      Date    effectiveTime) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
-    {
-        openMetadataStore.deleteMetadataElementInStore(metadataElementGUID,
-                                                       forLineage,
-                                                       forDuplicateProcessing,
-                                                       effectiveTime);
-    }
+    void deleteMetadataElement(String  metadataElementGUID,
+                               boolean forLineage,
+                               boolean forDuplicateProcessing,
+                               Date    effectiveTime) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException;
 
 
     /**
@@ -224,24 +169,14 @@ public class RemediationGovernanceContext extends GovernanceContext
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public void classifyMetadataElement(String            metadataElementGUID,
-                                        String            classificationName,
-                                        boolean           forLineage,
-                                        boolean           forDuplicateProcessing,
-                                        ElementProperties properties,
-                                        Date              effectiveTime) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
-    {
-        openMetadataStore.classifyMetadataElementInStore(metadataElementGUID,
-                                                         classificationName,
-                                                         forLineage,
-                                                         forDuplicateProcessing,
-                                                         null,
-                                                         null,
-                                                         properties,
-                                                         effectiveTime);
-    }
+    void classifyMetadataElement(String            metadataElementGUID,
+                                 String            classificationName,
+                                 boolean           forLineage,
+                                 boolean           forDuplicateProcessing,
+                                 ElementProperties properties,
+                                 Date              effectiveTime) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException;
 
 
     /**
@@ -263,26 +198,16 @@ public class RemediationGovernanceContext extends GovernanceContext
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public void classifyMetadataElement(String            metadataElementGUID,
-                                        String            classificationName,
-                                        boolean           forLineage,
-                                        boolean           forDuplicateProcessing,
-                                        Date              effectiveFrom,
-                                        Date              effectiveTo,
-                                        ElementProperties properties,
-                                        Date              effectiveTime) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
-    {
-        openMetadataStore.classifyMetadataElementInStore(metadataElementGUID,
-                                                         classificationName,
-                                                         forLineage,
-                                                         forDuplicateProcessing,
-                                                         effectiveFrom,
-                                                         effectiveTo,
-                                                         properties,
-                                                         effectiveTime);
-    }
+    void classifyMetadataElement(String            metadataElementGUID,
+                                 String            classificationName,
+                                 boolean           forLineage,
+                                 boolean           forDuplicateProcessing,
+                                 Date              effectiveFrom,
+                                 Date              effectiveTo,
+                                 ElementProperties properties,
+                                 Date              effectiveTime) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException;
 
 
     /**
@@ -302,25 +227,15 @@ public class RemediationGovernanceContext extends GovernanceContext
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element/classification
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public void reclassifyMetadataElement(String            metadataElementGUID,
-                                          String            classificationName,
-                                          boolean           replaceProperties,
-                                          boolean           forLineage,
-                                          boolean           forDuplicateProcessing,
-                                          ElementProperties properties,
-                                          Date              effectiveTime) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
-    {
-        openMetadataStore.reclassifyMetadataElementInStore(metadataElementGUID,
-                                                           classificationName,
-                                                           replaceProperties,
-                                                           forLineage,
-                                                           forDuplicateProcessing,
-                                                           properties,
-                                                           effectiveTime);
-    }
-
+    void reclassifyMetadataElement(String            metadataElementGUID,
+                                   String            classificationName,
+                                   boolean           replaceProperties,
+                                   boolean           forLineage,
+                                   boolean           forDuplicateProcessing,
+                                   ElementProperties properties,
+                                   Date              effectiveTime) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException;
 
 
     /**
@@ -339,24 +254,15 @@ public class RemediationGovernanceContext extends GovernanceContext
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public void updateClassificationStatus(String  metadataElementGUID,
-                                           String  classificationName,
-                                           boolean forLineage,
-                                           boolean forDuplicateProcessing,
-                                           Date    effectiveFrom,
-                                           Date    effectiveTo,
-                                           Date    effectiveTime) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
-    {
-        openMetadataStore.updateClassificationStatusInStore(metadataElementGUID,
-                                                            classificationName,
-                                                            forLineage,
-                                                            forDuplicateProcessing,
-                                                            effectiveFrom,
-                                                            effectiveTo,
-                                                            effectiveTime);
-    }
+    void updateClassificationStatus(String  metadataElementGUID,
+                                    String  classificationName,
+                                    boolean forLineage,
+                                    boolean forDuplicateProcessing,
+                                    Date    effectiveFrom,
+                                    Date    effectiveTo,
+                                    Date    effectiveTime) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException;
 
 
     /**
@@ -372,20 +278,13 @@ public class RemediationGovernanceContext extends GovernanceContext
      * @throws UserNotAuthorizedException the governance action service is not authorized to remove this classification
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public void unclassifyMetadataElement(String  metadataElementGUID,
-                                          String  classificationName,
-                                          boolean forLineage,
-                                          boolean forDuplicateProcessing,
-                                          Date    effectiveTime) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
-    {
-        openMetadataStore.unclassifyMetadataElementInStore(metadataElementGUID,
-                                                           classificationName,
-                                                           forLineage,
-                                                           forDuplicateProcessing,
-                                                           effectiveTime);
-    }
+    void unclassifyMetadataElement(String  metadataElementGUID,
+                                   String  classificationName,
+                                   boolean forLineage,
+                                   boolean forDuplicateProcessing,
+                                   Date    effectiveTime) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException;
 
 
     /**
@@ -408,26 +307,15 @@ public class RemediationGovernanceContext extends GovernanceContext
      * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of relationship
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public String createRelatedElements(String            relationshipTypeName,
-                                        String            metadataElement1GUID,
-                                        String            metadataElement2GUID,
-                                        boolean           forLineage,
-                                        boolean           forDuplicateProcessing,
-                                        ElementProperties properties,
-                                        Date              effectiveTime) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
-    {
-        return openMetadataStore.createRelatedElementsInStore(relationshipTypeName,
-                                                              metadataElement1GUID,
-                                                              metadataElement2GUID,
-                                                              forLineage,
-                                                              forDuplicateProcessing,
-                                                              null,
-                                                              null,
-                                                              properties,
-                                                              effectiveTime);
-    }
+    String createRelatedElements(String            relationshipTypeName,
+                                 String            metadataElement1GUID,
+                                 String            metadataElement2GUID,
+                                 boolean           forLineage,
+                                 boolean           forDuplicateProcessing,
+                                 ElementProperties properties,
+                                 Date              effectiveTime) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException;
 
 
     /**
@@ -452,28 +340,17 @@ public class RemediationGovernanceContext extends GovernanceContext
      * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of relationship
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public String createRelatedElements(String            relationshipTypeName,
-                                        String            metadataElement1GUID,
-                                        String            metadataElement2GUID,
-                                        boolean           forLineage,
-                                        boolean           forDuplicateProcessing,
-                                        Date              effectiveFrom,
-                                        Date              effectiveTo,
-                                        ElementProperties properties,
-                                        Date              effectiveTime) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
-    {
-        return openMetadataStore.createRelatedElementsInStore(relationshipTypeName,
-                                                              metadataElement1GUID,
-                                                              metadataElement2GUID,
-                                                              forLineage,
-                                                              forDuplicateProcessing,
-                                                              effectiveFrom,
-                                                              effectiveTo,
-                                                              properties,
-                                                              effectiveTime);
-    }
+    String createRelatedElements(String            relationshipTypeName,
+                                 String            metadataElement1GUID,
+                                 String            metadataElement2GUID,
+                                 boolean           forLineage,
+                                 boolean           forDuplicateProcessing,
+                                 Date              effectiveFrom,
+                                 Date              effectiveTo,
+                                 ElementProperties properties,
+                                 Date              effectiveTime) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException;
 
 
     /**
@@ -489,14 +366,11 @@ public class RemediationGovernanceContext extends GovernanceContext
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this relationship
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public void updateRelatedElements(String            relationshipGUID,
-                                      boolean           replaceProperties,
-                                      ElementProperties properties) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
-    {
-        openMetadataStore.updateRelatedElementsInStore(relationshipGUID, replaceProperties, properties);
-    }
+    void updateRelatedElements(String            relationshipGUID,
+                               boolean           replaceProperties,
+                               ElementProperties properties) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException;
 
 
     /**
@@ -511,14 +385,11 @@ public class RemediationGovernanceContext extends GovernanceContext
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public void updateRelatedElementsStatus(String relationshipGUID,
-                                            Date   effectiveFrom,
-                                            Date   effectiveTo) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
-    {
-        openMetadataStore.updateRelatedElementsStatusInStore(relationshipGUID, effectiveFrom, effectiveTo);
-    }
+    void updateRelatedElementsStatus(String relationshipGUID,
+                                     Date   effectiveFrom,
+                                     Date   effectiveTo) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException;
 
 
     /**
@@ -530,12 +401,10 @@ public class RemediationGovernanceContext extends GovernanceContext
      * @throws UserNotAuthorizedException the governance action service is not authorized to delete this relationship
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public void deleteRelatedElements(String relationshipGUID) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
-    {
-        openMetadataStore.deleteRelatedElementsInStore(relationshipGUID);
-    }
+    void deleteRelatedElements(String relationshipGUID) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException;
+
 
     /**
      * Link elements as peer duplicates. Create a simple relationship between two elements.
@@ -554,25 +423,14 @@ public class RemediationGovernanceContext extends GovernanceContext
      * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of relationship
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public void linkElementsAsPeerDuplicates(String metadataElement1GUID,
-                                             String metadataElement2GUID,
-                                             int    statusIdentifier,
-                                             String steward,
-                                             String stewardTypeName,
-                                             String stewardPropertyName,
-                                             String source,
-                                             String notes) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException
-    {
-        openMetadataStore.linkElementsAsPeerDuplicates(metadataElement1GUID,
-                                                       metadataElement2GUID,
-                                                       statusIdentifier,
-                                                       steward,
-                                                       stewardTypeName,
-                                                       stewardPropertyName,
-                                                       source,
-                                                       notes);
-    }
-
+    void linkElementsAsPeerDuplicates(String metadataElement1GUID,
+                                      String metadataElement2GUID,
+                                      int    statusIdentifier,
+                                      String steward,
+                                      String stewardTypeName,
+                                      String stewardPropertyName,
+                                      String source,
+                                      String notes) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException;
 }

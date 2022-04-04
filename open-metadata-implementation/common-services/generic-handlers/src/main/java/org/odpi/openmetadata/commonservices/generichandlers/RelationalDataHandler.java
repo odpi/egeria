@@ -4020,107 +4020,56 @@ public class RelationalDataHandler<DATABASE,
          * Check that the type name requested is valid.
          */
         String attributeTypeName = OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME;
-        String attributeTypeId   = OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_GUID;
 
         if (typeName != null)
         {
             attributeTypeName = typeName;
-            attributeTypeId   = invalidParameterHandler.validateTypeName(typeName,
-                                                                         OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
-                                                                         serviceName,
-                                                                         methodName,
-                                                                         repositoryHelper);
+            invalidParameterHandler.validateTypeName(typeName,
+                                                     OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
+                                                     serviceName,
+                                                     methodName,
+                                                     repositoryHelper);
         }
 
-        /*
-         * Retrieve the current schema attribute for the database column. An exception is thrown if the guid is invalid, points to
-         * an entity of the wrong type, or one with the CalculatedValue classification on its schema type.
-         */
-        EntityDetail columnSchemaAttribute = databaseColumnHandler.getEntityFromRepository(userId,
-                                                                                           databaseColumnGUID,
-                                                                                           elementGUIDParameterName,
-                                                                                           OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
-                                                                                           null,
-                                                                                           null,
-                                                                                           false,
-                                                                                           false,
-                                                                                           null,
-                                                                                           methodName);
+        databaseColumnHandler.updateSchemaAttribute(userId,
+                                                    databaseManagerGUID,
+                                                    databaseManagerName,
+                                                    databaseColumnGUID,
+                                                    elementGUIDParameterName,
+                                                    qualifiedName,
+                                                    qualifiedNameParameterName,
+                                                    displayName,
+                                                    description,
+                                                    externalSchemaTypeGUID,
+                                                    dataType,
+                                                    defaultValue,
+                                                    fixedValue,
+                                                    validValuesSetGUID,
+                                                    formula,
+                                                    isDeprecated,
+                                                    elementPosition,
+                                                    minCardinality,
+                                                    maxCardinality,
+                                                    allowsDuplicateValues,
+                                                    orderedValues,
+                                                    defaultValueOverride,
+                                                    sortOrder,
+                                                    minimumLength,
+                                                    length,
+                                                    significantDigits,
+                                                    isNullable,
+                                                    nativeJavaClass,
+                                                    aliases,
+                                                    additionalProperties,
+                                                    attributeTypeName,
+                                                    extendedProperties,
+                                                    false,
+                                                    methodName);
 
-        if (columnSchemaAttribute != null)
-        {
-            /*
-             * Load up the builder objects for processing by the generic handler.  The builders manage the properties
-             * of the metadata elements that make up the database table, and the schemaTypeHandler manages the elements themselves.
-             */
-            SchemaAttributeBuilder schemaAttributeBuilder = new SchemaAttributeBuilder(qualifiedName,
-                                                                                       displayName,
-                                                                                       description,
-                                                                                       elementPosition,
-                                                                                       minCardinality,
-                                                                                       maxCardinality,
-                                                                                       isDeprecated,
-                                                                                       defaultValueOverride,
-                                                                                       allowsDuplicateValues,
-                                                                                       orderedValues,
-                                                                                       sortOrder,
-                                                                                       minimumLength,
-                                                                                       length,
-                                                                                       significantDigits,
-                                                                                       isNullable,
-                                                                                       nativeJavaClass,
-                                                                                       aliases,
-                                                                                       additionalProperties,
-                                                                                       attributeTypeId,
-                                                                                       attributeTypeName,
-                                                                                       extendedProperties,
-                                                                                       repositoryHelper,
-                                                                                       serviceName,
-                                                                                       serverName);
-
-            SchemaTypeBuilder schemaTypeBuilder = databaseColumnHandler.getSchemaTypeBuilder(qualifiedName,
-                                                                                             externalSchemaTypeGUID,
-                                                                                             dataType,
-                                                                                             defaultValue,
-                                                                                             fixedValue,
-                                                                                             validValuesSetGUID);
-
-
-            schemaAttributeBuilder.setSchemaType(userId, schemaTypeBuilder, methodName);
-
-            /*
-             * The formula is set if the column is derived
-             */
-            if (formula != null)
-            {
-                schemaAttributeBuilder.setCalculatedValue(userId, databaseManagerGUID, databaseManagerName, formula, methodName);
-            }
-
-            databaseColumnHandler.updateBeanInRepository(userId,
-                                                         databaseManagerGUID,
-                                                         databaseManagerName,
-                                                         databaseColumnGUID,
-                                                         elementGUIDParameterName,
-                                                         attributeTypeId,
-                                                         attributeTypeName,
-                                                         schemaAttributeBuilder.getInstanceProperties(methodName),
-                                                         false,
-                                                         methodName);
-
-            databaseColumnHandler.setVendorProperties(userId,
-                                                      databaseColumnGUID,
-                                                      vendorProperties,
-                                                      methodName);
-        }
-        else
-        {
-            invalidParameterHandler.throwUnknownElement(userId,
-                                                        databaseColumnGUID,
-                                                        attributeTypeName,
-                                                        serviceName,
-                                                        serverName,
-                                                        methodName);
-        }
+        databaseColumnHandler.setVendorProperties(userId,
+                                                  databaseColumnGUID,
+                                                  vendorProperties,
+                                                  methodName);
     }
 
 

@@ -5,9 +5,7 @@ package org.odpi.openmetadata.governanceservers.openlineage;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
-import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
-import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
-import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageVertexResponse;
+import org.odpi.openmetadata.governanceservers.openlineage.graph.LineageGraph;
 
 public interface OpenLineageGraphConnector {
 
@@ -32,13 +30,12 @@ public interface OpenLineageGraphConnector {
      */
     void initializeGraphDB(AuditLog auditLog) throws OpenLineageException;
 
-    LineageResponse lineage(Scope scope, String guid, String displayNameMustContain, boolean includeProcesses) throws OpenLineageException;
-
     /**
-     * Gets entity details.
-     *
-     * @param guid the guid
-     * @return the entity details
+     * Task that the scheduler performs based on the interval
      */
-    LineageVertexResponse getEntityDetails(String guid);
+    void performLineageGraphJob();
+
+    OpenLineageQueryService getLineageQueryService();
+
+    LineageGraph getLineageStorageService();
 }

@@ -91,6 +91,7 @@ public class OMAGServerAdminForIntegrationServices
                         {
                             RegisteredOMAGService service = new RegisteredOMAGService();
 
+                            service.setServiceId(integrationServiceConfig.getIntegrationServiceId());
                             service.setServiceName(integrationServiceConfig.getIntegrationServiceFullName());
                             service.setServiceDevelopmentStatus(integrationServiceConfig.getIntegrationServiceDevelopmentStatus());
                             service.setServiceDescription(integrationServiceConfig.getIntegrationServiceDescription());
@@ -223,6 +224,11 @@ public class OMAGServerAdminForIntegrationServices
                         }
                     }
                 }
+            }
+
+            if (response.getConfig() == null)
+            {
+                response.setConfig(IntegrationServiceRegistry.getIntegrationServiceConfig(serviceURLMarker, serverName, methodName));
             }
         }
         catch (OMAGInvalidParameterException  error)

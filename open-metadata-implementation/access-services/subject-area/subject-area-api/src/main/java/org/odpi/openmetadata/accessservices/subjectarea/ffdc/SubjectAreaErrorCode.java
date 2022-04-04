@@ -244,7 +244,7 @@ public enum SubjectAreaErrorCode implements ExceptionMessageSet {
     BAD_OUT_TOPIC_CONNECTION(400, "OMAS-SUBJECT-AREA-400-071",
             "The Subject Area Open Metadata Access Service (OMAS) has been passed an invalid connection for publishing events.  The connection was {0}.  The resulting exception of {1} included the following message: {2}",
             "The access service has not been passed valid configuration for its out topic connection.",
-            "Correct the topic configuration and restart the service."),
+            "Correct the topic configuration and restart the server."),
     PROJECT_CONTENT_PREVENTED_DELETE(400, "OMAS-SUBJECT-AREA-400-072",
             "Project (guid {0}) deletion failed, because there is project content",
             "The system is unable to process the project delete because the project has content.",

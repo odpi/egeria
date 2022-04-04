@@ -93,6 +93,12 @@ public enum AssetConsumerAuditCode implements AuditLogMessageSet
                      "This event indicates that the metadata for an asset has changed.  This my or may not be significant to " +
                              "the receiving tools."),
 
+    PROCESS_EVENT_EXCEPTION("OMAS-ASSET-CONSUMER-0014",
+                            OMRSAuditLogRecordSeverity.EXCEPTION,
+                            "Event {0} could not be published due to {1} exception with message: {2}",
+                            "The system is unable to publish the event to the Asset Consumer OMAS's OutTopic.",
+                            "Verify the topic configuration and that the event broker is running."),
+
     OUT_TOPIC_FAILURE("OMAS-ASSET-CONSUMER-0018",
                       OMRSAuditLogRecordSeverity.EXCEPTION,
                       "The Asset Consumer Open Metadata Access Service (OMAS) is unable to send an event on its out topic {0}; exception {1} returned " +

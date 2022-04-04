@@ -19,7 +19,6 @@ dependencies {
     implementation 'org.slf4j:slf4j-api'
     implementation project(':open-metadata-implementation:access-services:asset-consumer:asset-consumer-api')
     implementation project(':open-metadata-implementation:access-services:asset-consumer:asset-consumer-topic-connectors')
-    implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-handlers')
     implementation project(':open-metadata-implementation:common-services:multi-tenant')
 }
 

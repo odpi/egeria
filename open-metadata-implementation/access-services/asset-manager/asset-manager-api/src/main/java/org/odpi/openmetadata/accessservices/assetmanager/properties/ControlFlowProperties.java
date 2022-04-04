@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -18,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ControlFlowProperties implements Serializable
+public class ControlFlowProperties extends RelationshipProperties
 {
     private static final long    serialVersionUID = 1L;
 
@@ -43,6 +44,7 @@ public class ControlFlowProperties implements Serializable
      */
     public ControlFlowProperties(ControlFlowProperties template)
     {
+        super(template);
         if (template != null)
         {
             qualifiedName = template.getQualifiedName();
@@ -127,10 +129,12 @@ public class ControlFlowProperties implements Serializable
     @Override
     public String toString()
     {
-        return "DataFlowProperties{" +
+        return "ControlFlowProperties{" +
                        "qualifiedName='" + qualifiedName + '\'' +
                        ", description='" + description + '\'' +
                        ", guard='" + guard + '\'' +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
                        '}';
     }
 
@@ -152,10 +156,14 @@ public class ControlFlowProperties implements Serializable
         {
             return false;
         }
+        if (! super.equals(objectToCompare))
+        {
+            return false;
+        }
         ControlFlowProperties that = (ControlFlowProperties) objectToCompare;
-        return Objects.equals(getQualifiedName(), that.getQualifiedName()) &&
-                       Objects.equals(getDescription(), that.getDescription()) &&
-                       Objects.equals(getGuard(), that.getGuard());
+        return Objects.equals(qualifiedName, that.qualifiedName) &&
+                       Objects.equals(description, that.description) &&
+                       Objects.equals(guard, that.guard);
     }
 
 
@@ -167,6 +175,6 @@ public class ControlFlowProperties implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(qualifiedName, description, guard);
+        return Objects.hash(super.hashCode(), qualifiedName, description, guard);
     }
 }
