@@ -214,7 +214,7 @@ public class OpenMetadataAPIGenericBuilder
                     }
                     catch (TypeErrorException error)
                     {
-                        errorHandler.handleUnsupportedType(error, methodName, OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME);
+                        errorHandler.handleUnsupportedType(error, methodName, templateClassification.getName());
                     }
                 }
             }
