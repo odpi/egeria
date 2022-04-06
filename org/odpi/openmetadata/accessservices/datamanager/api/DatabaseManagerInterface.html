@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6,"i11":6,"i12":6,"i13":6,"i14":6,"i15":6,"i16":6,"i17":6,"i18":6,"i19":6,"i20":6,"i21":6,"i22":6,"i23":6,"i24":6,"i25":6,"i26":6,"i27":6,"i28":6,"i29":6,"i30":38,"i31":6,"i32":38,"i33":6,"i34":6,"i35":6,"i36":6,"i37":6,"i38":6,"i39":6,"i40":6,"i41":6,"i42":6,"i43":6,"i44":6,"i45":6,"i46":6,"i47":6,"i48":6,"i49":6};
+var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6,"i11":6,"i12":6,"i13":6,"i14":6,"i15":6,"i16":6,"i17":6,"i18":6,"i19":6,"i20":6,"i21":6,"i22":6,"i23":6,"i24":6,"i25":6,"i26":6,"i27":6,"i28":6,"i29":6,"i30":6,"i31":6,"i32":6,"i33":6,"i34":38,"i35":6,"i36":38,"i37":6,"i38":6,"i39":6,"i40":6,"i41":6,"i42":6,"i43":6,"i44":6,"i45":6,"i46":6,"i47":6,"i48":6,"i49":6,"i50":6,"i51":6,"i52":6,"i53":6};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"],32:["t6","Deprecated Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -163,6 +163,17 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </td>
 </tr>
 <tr id="i1" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#attachSchemaTypeToDatabaseAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">attachSchemaTypeToDatabaseAsset</a></span>&#8203;(java.lang.String&nbsp;userId,
+                               java.lang.String&nbsp;databaseManagerGUID,
+                               java.lang.String&nbsp;databaseManagerName,
+                               java.lang.String&nbsp;databaseAssetGUID,
+                               java.lang.String&nbsp;schemaTypeGUID)</code></th>
+<td class="colLast">
+<div class="block">Link the schema type and asset.</div>
+</td>
+</tr>
+<tr id="i2" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDatabase(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseProperties)">createDatabase</a></span>&#8203;(java.lang.String&nbsp;userId,
               java.lang.String&nbsp;databaseManagerGUID,
@@ -172,7 +183,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Create a new metadata element to represent a database.</div>
 </td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDatabaseColumn(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseColumnProperties)">createDatabaseColumn</a></span>&#8203;(java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;databaseManagerGUID,
@@ -183,7 +194,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Create a new metadata element to represent a database column.</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDatabaseColumnFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties)">createDatabaseColumnFromTemplate</a></span>&#8203;(java.lang.String&nbsp;userId,
                                 java.lang.String&nbsp;databaseManagerGUID,
@@ -195,7 +206,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Create a new metadata element to represent a database column using an existing metadata element as a template.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDatabaseFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties)">createDatabaseFromTemplate</a></span>&#8203;(java.lang.String&nbsp;userId,
                           java.lang.String&nbsp;databaseManagerGUID,
@@ -206,7 +217,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Create a new metadata element to represent a database using an existing metadata element as a template.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDatabaseSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseSchemaProperties)">createDatabaseSchema</a></span>&#8203;(java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;databaseManagerGUID,
@@ -217,7 +228,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Create a new metadata element to represent a database schema.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDatabaseSchemaFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties)">createDatabaseSchemaFromTemplate</a></span>&#8203;(java.lang.String&nbsp;userId,
                                 java.lang.String&nbsp;databaseManagerGUID,
@@ -229,7 +240,17 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Create a new metadata element to represent a database schema using an existing metadata element as a template.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDatabaseSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">createDatabaseSchemaType</a></span>&#8203;(java.lang.String&nbsp;userId,
+                        java.lang.String&nbsp;databaseManagerGUID,
+                        java.lang.String&nbsp;databaseManagerName,
+                        java.lang.String&nbsp;qualifiedName)</code></th>
+<td class="colLast">
+<div class="block">Create a database top-level schema type used to attach tables and views to the database/database schema.</div>
+</td>
+</tr>
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDatabaseTable(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseTableProperties)">createDatabaseTable</a></span>&#8203;(java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;databaseManagerGUID,
@@ -240,7 +261,18 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Create a new metadata element to represent a database table.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i10" class="altColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDatabaseTableForSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseTableProperties)">createDatabaseTableForSchemaType</a></span>&#8203;(java.lang.String&nbsp;userId,
+                                java.lang.String&nbsp;databaseManagerGUID,
+                                java.lang.String&nbsp;databaseManagerName,
+                                java.lang.String&nbsp;databaseSchemaTypeGUID,
+                                org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseTableProperties&nbsp;databaseTableProperties)</code></th>
+<td class="colLast">
+<div class="block">Create a new metadata element to represent a database table.</div>
+</td>
+</tr>
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDatabaseTableFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties)">createDatabaseTableFromTemplate</a></span>&#8203;(java.lang.String&nbsp;userId,
                                java.lang.String&nbsp;databaseManagerGUID,
@@ -252,7 +284,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Create a new metadata element to represent a database table using an existing metadata element as a template.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDatabaseView(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseViewProperties)">createDatabaseView</a></span>&#8203;(java.lang.String&nbsp;userId,
                   java.lang.String&nbsp;databaseManagerGUID,
@@ -263,7 +295,18 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Create a new metadata element to represent a database view.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i13" class="rowColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDatabaseViewForSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseViewProperties)">createDatabaseViewForSchemaType</a></span>&#8203;(java.lang.String&nbsp;userId,
+                               java.lang.String&nbsp;databaseManagerGUID,
+                               java.lang.String&nbsp;databaseManagerName,
+                               java.lang.String&nbsp;databaseSchemaTypeGUID,
+                               org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseViewProperties&nbsp;databaseViewProperties)</code></th>
+<td class="colLast">
+<div class="block">Create a new metadata element to represent a database view.</div>
+</td>
+</tr>
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDatabaseViewFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties)">createDatabaseViewFromTemplate</a></span>&#8203;(java.lang.String&nbsp;userId,
                               java.lang.String&nbsp;databaseManagerGUID,
@@ -275,7 +318,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Create a new metadata element to represent a database view using an existing metadata element as a template.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseColumnElement&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findDatabaseColumns(java.lang.String,java.lang.String,int,int)">findDatabaseColumns</a></span>&#8203;(java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;searchString,
@@ -285,7 +328,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Retrieve the list of database column metadata elements that contain the search string.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i16" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseElement&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findDatabases(java.lang.String,java.lang.String,int,int)">findDatabases</a></span>&#8203;(java.lang.String&nbsp;userId,
              java.lang.String&nbsp;searchString,
@@ -295,7 +338,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Retrieve the list of database metadata elements that contain the search string.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseSchemaElement&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findDatabaseSchemas(java.lang.String,java.lang.String,int,int)">findDatabaseSchemas</a></span>&#8203;(java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;searchString,
@@ -305,7 +348,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Retrieve the list of database schema metadata elements that contain the search string.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseTableElement&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findDatabaseTables(java.lang.String,java.lang.String,int,int)">findDatabaseTables</a></span>&#8203;(java.lang.String&nbsp;userId,
                   java.lang.String&nbsp;searchString,
@@ -315,7 +358,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Retrieve the list of database table metadata elements that contain the search string.</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseViewElement&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findDatabaseViews(java.lang.String,java.lang.String,int,int)">findDatabaseViews</a></span>&#8203;(java.lang.String&nbsp;userId,
                  java.lang.String&nbsp;searchString,
@@ -325,7 +368,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Retrieve the list of database view metadata elements that contain the search string.</div>
 </td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i20" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseColumnElement&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getColumnsForDatabaseTable(java.lang.String,java.lang.String,int,int)">getColumnsForDatabaseTable</a></span>&#8203;(java.lang.String&nbsp;userId,
                           java.lang.String&nbsp;databaseTableGUID,
@@ -335,7 +378,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Retrieve the list of column for a database table (or view)</div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i21" class="rowColor">
 <td class="colFirst"><code>org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseElement</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDatabaseByGUID(java.lang.String,java.lang.String)">getDatabaseByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
                  java.lang.String&nbsp;guid)</code></th>
@@ -343,7 +386,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Retrieve the database metadata element with the supplied unique identifier.</div>
 </td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i22" class="altColor">
 <td class="colFirst"><code>org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseColumnElement</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDatabaseColumnByGUID(java.lang.String,java.lang.String)">getDatabaseColumnByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
                        java.lang.String&nbsp;guid)</code></th>
@@ -351,7 +394,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Retrieve the database column metadata element with the supplied unique identifier.</div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i23" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseColumnElement&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDatabaseColumnsByName(java.lang.String,java.lang.String,int,int)">getDatabaseColumnsByName</a></span>&#8203;(java.lang.String&nbsp;userId,
                         java.lang.String&nbsp;name,
@@ -361,7 +404,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Retrieve the list of database column metadata elements with a matching qualified or display name.</div>
 </td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i24" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseElement&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDatabasesByName(java.lang.String,java.lang.String,int,int)">getDatabasesByName</a></span>&#8203;(java.lang.String&nbsp;userId,
                   java.lang.String&nbsp;name,
@@ -371,7 +414,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Retrieve the list of database metadata elements with a matching qualified or display name.</div>
 </td>
 </tr>
-<tr id="i21" class="rowColor">
+<tr id="i25" class="rowColor">
 <td class="colFirst"><code>org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseSchemaElement</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDatabaseSchemaByGUID(java.lang.String,java.lang.String)">getDatabaseSchemaByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
                        java.lang.String&nbsp;guid)</code></th>
@@ -379,7 +422,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Retrieve the database schema metadata element with the supplied unique identifier.</div>
 </td>
 </tr>
-<tr id="i22" class="altColor">
+<tr id="i26" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseSchemaElement&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDatabaseSchemasByName(java.lang.String,java.lang.String,int,int)">getDatabaseSchemasByName</a></span>&#8203;(java.lang.String&nbsp;userId,
                         java.lang.String&nbsp;name,
@@ -389,7 +432,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Retrieve the list of database schema metadata elements with a matching qualified or display name.</div>
 </td>
 </tr>
-<tr id="i23" class="rowColor">
+<tr id="i27" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseElement&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDatabasesForDatabaseManager(java.lang.String,java.lang.String,java.lang.String,int,int)">getDatabasesForDatabaseManager</a></span>&#8203;(java.lang.String&nbsp;userId,
                               java.lang.String&nbsp;databaseManagerGUID,
@@ -400,7 +443,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Retrieve the list of databases created by this caller.</div>
 </td>
 </tr>
-<tr id="i24" class="altColor">
+<tr id="i28" class="altColor">
 <td class="colFirst"><code>org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseTableElement</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDatabaseTableByGUID(java.lang.String,java.lang.String)">getDatabaseTableByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
                       java.lang.String&nbsp;guid)</code></th>
@@ -408,7 +451,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Retrieve the database table metadata element with the supplied unique identifier.</div>
 </td>
 </tr>
-<tr id="i25" class="rowColor">
+<tr id="i29" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseTableElement&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDatabaseTablesByName(java.lang.String,java.lang.String,int,int)">getDatabaseTablesByName</a></span>&#8203;(java.lang.String&nbsp;userId,
                        java.lang.String&nbsp;name,
@@ -418,7 +461,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Retrieve the list of database table metadata elements with a matching qualified or display name.</div>
 </td>
 </tr>
-<tr id="i26" class="altColor">
+<tr id="i30" class="altColor">
 <td class="colFirst"><code>org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseViewElement</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDatabaseViewByGUID(java.lang.String,java.lang.String)">getDatabaseViewByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;guid)</code></th>
@@ -426,7 +469,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Retrieve the database view metadata element with the supplied unique identifier.</div>
 </td>
 </tr>
-<tr id="i27" class="rowColor">
+<tr id="i31" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseViewElement&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDatabaseViewsByName(java.lang.String,java.lang.String,int,int)">getDatabaseViewsByName</a></span>&#8203;(java.lang.String&nbsp;userId,
                       java.lang.String&nbsp;name,
@@ -436,7 +479,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Retrieve the list of database view metadata elements with a matching qualified or display name.</div>
 </td>
 </tr>
-<tr id="i28" class="altColor">
+<tr id="i32" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseSchemaElement&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemasForDatabase(java.lang.String,java.lang.String,int,int)">getSchemasForDatabase</a></span>&#8203;(java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;databaseGUID,
@@ -446,7 +489,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Return the list of schemas associated with a database.</div>
 </td>
 </tr>
-<tr id="i29" class="rowColor">
+<tr id="i33" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseTableElement&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTablesForDatabaseAsset(java.lang.String,java.lang.String,int,int)">getTablesForDatabaseAsset</a></span>&#8203;(java.lang.String&nbsp;userId,
                          java.lang.String&nbsp;databaseAssetGUID,
@@ -456,7 +499,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Retrieve the list of database tables associated with a database or database schema.</div>
 </td>
 </tr>
-<tr id="i30" class="altColor">
+<tr id="i34" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseTableElement&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTablesForDatabaseSchema(java.lang.String,java.lang.String,int,int)">getTablesForDatabaseSchema</a></span>&#8203;(java.lang.String&nbsp;userId,
                           java.lang.String&nbsp;databaseSchemaGUID,
@@ -466,7 +509,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block"><span class="deprecatedLabel">Deprecated.</span></div>
 </td>
 </tr>
-<tr id="i31" class="rowColor">
+<tr id="i35" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseViewElement&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getViewsForDatabaseAsset(java.lang.String,java.lang.String,int,int)">getViewsForDatabaseAsset</a></span>&#8203;(java.lang.String&nbsp;userId,
                         java.lang.String&nbsp;databaseAssetGUID,
@@ -476,7 +519,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Retrieve the list of database views associated with a database or database schema.</div>
 </td>
 </tr>
-<tr id="i32" class="altColor">
+<tr id="i36" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseViewElement&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getViewsForDatabaseSchema(java.lang.String,java.lang.String,int,int)">getViewsForDatabaseSchema</a></span>&#8203;(java.lang.String&nbsp;userId,
                          java.lang.String&nbsp;databaseSchemaGUID,
@@ -486,7 +529,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block"><span class="deprecatedLabel">Deprecated.</span></div>
 </td>
 </tr>
-<tr id="i33" class="rowColor">
+<tr id="i37" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#publishDatabase(java.lang.String,java.lang.String)">publishDatabase</a></span>&#8203;(java.lang.String&nbsp;userId,
                java.lang.String&nbsp;databaseGUID)</code></th>
@@ -494,7 +537,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Update the zones for the database asset so that it becomes visible to consumers.</div>
 </td>
 </tr>
-<tr id="i34" class="altColor">
+<tr id="i38" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#publishDatabaseSchema(java.lang.String,java.lang.String)">publishDatabaseSchema</a></span>&#8203;(java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;databaseSchemaGUID)</code></th>
@@ -502,7 +545,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Update the zones for the database asset so that it becomes visible to consumers.</div>
 </td>
 </tr>
-<tr id="i35" class="rowColor">
+<tr id="i39" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeDatabase(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeDatabase</a></span>&#8203;(java.lang.String&nbsp;userId,
               java.lang.String&nbsp;databaseManagerGUID,
@@ -513,7 +556,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Remove the metadata element representing a database.</div>
 </td>
 </tr>
-<tr id="i36" class="altColor">
+<tr id="i40" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeDatabaseColumn(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeDatabaseColumn</a></span>&#8203;(java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;databaseManagerGUID,
@@ -524,7 +567,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Remove the metadata element representing a database column.</div>
 </td>
 </tr>
-<tr id="i37" class="rowColor">
+<tr id="i41" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeDatabaseSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeDatabaseSchema</a></span>&#8203;(java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;databaseManagerGUID,
@@ -535,7 +578,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Remove the metadata element representing a database schema.</div>
 </td>
 </tr>
-<tr id="i38" class="altColor">
+<tr id="i42" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeDatabaseTable(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeDatabaseTable</a></span>&#8203;(java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;databaseManagerGUID,
@@ -546,7 +589,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Remove the metadata element representing a database table.</div>
 </td>
 </tr>
-<tr id="i39" class="rowColor">
+<tr id="i43" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeDatabaseView(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeDatabaseView</a></span>&#8203;(java.lang.String&nbsp;userId,
                   java.lang.String&nbsp;databaseManagerGUID,
@@ -557,7 +600,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Remove the metadata element representing a database table.</div>
 </td>
 </tr>
-<tr id="i40" class="altColor">
+<tr id="i44" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeForeignKeyRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeForeignKeyRelationship</a></span>&#8203;(java.lang.String&nbsp;userId,
                             java.lang.String&nbsp;databaseManagerGUID,
@@ -568,7 +611,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Remove the foreign key relationship for the requested columns.</div>
 </td>
 </tr>
-<tr id="i41" class="rowColor">
+<tr id="i45" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removePrimaryKeyFromColumn(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removePrimaryKeyFromColumn</a></span>&#8203;(java.lang.String&nbsp;userId,
                           java.lang.String&nbsp;databaseManagerGUID,
@@ -578,7 +621,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Remove the classification that this column is a primary key.</div>
 </td>
 </tr>
-<tr id="i42" class="altColor">
+<tr id="i46" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setPrimaryKeyOnColumn(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabasePrimaryKeyProperties)">setPrimaryKeyOnColumn</a></span>&#8203;(java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;databaseManagerGUID,
@@ -589,7 +632,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Classify a column in a database table as the primary key.</div>
 </td>
 </tr>
-<tr id="i43" class="rowColor">
+<tr id="i47" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateDatabase(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseProperties)">updateDatabase</a></span>&#8203;(java.lang.String&nbsp;userId,
               java.lang.String&nbsp;databaseManagerGUID,
@@ -600,7 +643,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Update the metadata element representing a database.</div>
 </td>
 </tr>
-<tr id="i44" class="altColor">
+<tr id="i48" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateDatabaseColumn(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseColumnProperties)">updateDatabaseColumn</a></span>&#8203;(java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;databaseManagerGUID,
@@ -611,7 +654,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Update the metadata element representing a database column.</div>
 </td>
 </tr>
-<tr id="i45" class="rowColor">
+<tr id="i49" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateDatabaseSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseSchemaProperties)">updateDatabaseSchema</a></span>&#8203;(java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;databaseManagerGUID,
@@ -622,7 +665,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Update the metadata element representing a database schema.</div>
 </td>
 </tr>
-<tr id="i46" class="altColor">
+<tr id="i50" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateDatabaseTable(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseTableProperties)">updateDatabaseTable</a></span>&#8203;(java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;databaseManagerGUID,
@@ -633,7 +676,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Update the metadata element representing a database table.</div>
 </td>
 </tr>
-<tr id="i47" class="rowColor">
+<tr id="i51" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateDatabaseView(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseViewProperties)">updateDatabaseView</a></span>&#8203;(java.lang.String&nbsp;userId,
                   java.lang.String&nbsp;databaseManagerGUID,
@@ -644,7 +687,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Update the metadata element representing a database table.</div>
 </td>
 </tr>
-<tr id="i48" class="altColor">
+<tr id="i52" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#withdrawDatabase(java.lang.String,java.lang.String)">withdrawDatabase</a></span>&#8203;(java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;databaseGUID)</code></th>
@@ -652,7 +695,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Update the zones for the database asset so that it is no longer visible to consumers.</div>
 </td>
 </tr>
-<tr id="i49" class="rowColor">
+<tr id="i53" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#withdrawDatabaseSchema(java.lang.String,java.lang.String)">withdrawDatabaseSchema</a></span>&#8203;(java.lang.String&nbsp;userId,
                       java.lang.String&nbsp;databaseSchemaGUID)</code></th>
@@ -1247,6 +1290,65 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
+<a id="createDatabaseSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>createDatabaseSchemaType</h4>
+<pre class="methodSignature">java.lang.String&nbsp;createDatabaseSchemaType&#8203;(java.lang.String&nbsp;userId,
+                                          java.lang.String&nbsp;databaseManagerGUID,
+                                          java.lang.String&nbsp;databaseManagerName,
+                                          java.lang.String&nbsp;qualifiedName)
+                                   throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
+                                          org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
+                                          org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<div class="block">Create a database top-level schema type used to attach tables and views to the database/database schema.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>databaseManagerGUID</code> - guid of the software server capability entity that represented the external source - null for local</dd>
+<dd><code>databaseManagerName</code> - name of the software server capability entity that represented the external source - null for local</dd>
+<dd><code>qualifiedName</code> - qualified name ofr the schema type - suggest "SchemaOf:" + asset's qualified name</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>unique identifier of the database schema type</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the bean properties are invalid</dd>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request</dd>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing the property server</dd>
+</dl>
+</li>
+</ul>
+<a id="attachSchemaTypeToDatabaseAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>attachSchemaTypeToDatabaseAsset</h4>
+<pre class="methodSignature">void&nbsp;attachSchemaTypeToDatabaseAsset&#8203;(java.lang.String&nbsp;userId,
+                                     java.lang.String&nbsp;databaseManagerGUID,
+                                     java.lang.String&nbsp;databaseManagerName,
+                                     java.lang.String&nbsp;databaseAssetGUID,
+                                     java.lang.String&nbsp;schemaTypeGUID)
+                              throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
+                                     org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
+                                     org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+<div class="block">Link the schema type and asset.  This is called from outside of AssetHandler.  The databaseAssetGUID is checked to ensure the
+ asset exists and updates are allowed.  If there is already a schema attached, it is deleted.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>databaseManagerGUID</code> - guid of the software server capability entity that represented the external source - null for local</dd>
+<dd><code>databaseManagerName</code> - name of the software server capability entity that represented the external source - null for local</dd>
+<dd><code>databaseAssetGUID</code> - unique identifier of the asset to connect the schema to</dd>
+<dd><code>schemaTypeGUID</code> - identifier for schema Type object</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the bean properties are invalid</dd>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request</dd>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing the property server</dd>
+</dl>
+</li>
+</ul>
 <a id="createDatabaseTable(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseTableProperties)">
 <!--   -->
 </a>
@@ -1302,6 +1404,37 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>templateGUID</code> - unique identifier of the metadata element to copy</dd>
 <dd><code>databaseAssetGUID</code> - unique identifier of the database or database schema where the database table is located.</dd>
 <dd><code>templateProperties</code> - properties that override the template</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>unique identifier of the new metadata element for the database table</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="createDatabaseTableForSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseTableProperties)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>createDatabaseTableForSchemaType</h4>
+<pre class="methodSignature">java.lang.String&nbsp;createDatabaseTableForSchemaType&#8203;(java.lang.String&nbsp;userId,
+                                                  java.lang.String&nbsp;databaseManagerGUID,
+                                                  java.lang.String&nbsp;databaseManagerName,
+                                                  java.lang.String&nbsp;databaseSchemaTypeGUID,
+                                                  org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseTableProperties&nbsp;databaseTableProperties)
+                                           throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
+                                                  org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
+                                                  org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<div class="block">Create a new metadata element to represent a database table.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the DBMS</dd>
+<dd><code>databaseManagerName</code> - unique name of software server capability representing the DBMS</dd>
+<dd><code>databaseSchemaTypeGUID</code> - unique identifier of the database or database schema where the database table is located</dd>
+<dd><code>databaseTableProperties</code> - properties for the database table</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new metadata element for the database table</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -1569,6 +1702,37 @@ java.util.List&lt;org.odpi.openmetadata.accessservices.datamanager.metadataeleme
 <dd><code>templateGUID</code> - unique identifier of the metadata element to copy</dd>
 <dd><code>databaseAssetGUID</code> - unique identifier of the database or database schema where the database view is located.</dd>
 <dd><code>templateProperties</code> - properties that override the template</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>unique identifier of the new metadata element for the database view</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
+<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="createDatabaseViewForSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseViewProperties)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>createDatabaseViewForSchemaType</h4>
+<pre class="methodSignature">java.lang.String&nbsp;createDatabaseViewForSchemaType&#8203;(java.lang.String&nbsp;userId,
+                                                 java.lang.String&nbsp;databaseManagerGUID,
+                                                 java.lang.String&nbsp;databaseManagerName,
+                                                 java.lang.String&nbsp;databaseSchemaTypeGUID,
+                                                 org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseViewProperties&nbsp;databaseViewProperties)
+                                          throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
+                                                 org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
+                                                 org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<div class="block">Create a new metadata element to represent a database view.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the DBMS</dd>
+<dd><code>databaseManagerName</code> - unique name of software server capability representing the DBMS</dd>
+<dd><code>databaseSchemaTypeGUID</code> - unique identifier of the schema type where the database view is located.</dd>
+<dd><code>databaseViewProperties</code> - properties for the new view</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new metadata element for the database view</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
