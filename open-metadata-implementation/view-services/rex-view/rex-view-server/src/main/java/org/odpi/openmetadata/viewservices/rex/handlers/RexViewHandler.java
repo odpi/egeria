@@ -357,7 +357,7 @@ public class RexViewHandler
      * @param platformName The name of the platform running the repository server to interrogate
      * @param enterpriseOption Whether the query is at cohort level or server specific
      * @param entityGUID the GUID of the entity to retrieve
-     * @param asOfTime   return the entity as is was / will be at this date.
+     * @param asOfTime   return the entity at this date, if null then now.
      * @param methodName The name of the method being invoked
      * @return response containing the RexExpandedEntityDetail object.
      *
@@ -474,6 +474,7 @@ public class RexViewHandler
      * @param platformName The name of the platform running the repository server to interrogate
      * @param enterpriseOption Whether the query is at cohort level or server specific
      * @param relationshipGUID the GUID of the relationship to retrieve
+     * @param asOfTime   return the entity at this date, if null then now.
      * @param methodName The name of the method being invoked
      * @return response containing the RexExpandedEntityDetail object.
      *
@@ -611,6 +612,7 @@ public class RexViewHandler
      * @param searchText the search expression that entities must match
      * @param entityTypeName the name of a type used to filter the entity search
      * @param classificationNames classification names to limit find by
+     * @param asOfTime   return the entity at this date, if null then now.
      * @param methodName The name of the method being invoked
      * @return a map of entity digests for the entities that matched the search
      *
@@ -768,6 +770,7 @@ public class RexViewHandler
      * @param enterpriseOption Whether the query is at cohort level or server specific
      * @param searchText the search expression that relationships must match
      * @param relationshipTypeName the name of a type used to filter the relationship search
+     * @param asOfTime   return the entity at this date, if null then now.
      * @param methodName The name of the method being invoked
      * @return a map of relationship digests for the relationships that matched the search
      *
@@ -963,6 +966,7 @@ public class RexViewHandler
      * @param enterpriseOption Whether the query is at cohort level or server specific
      * @param entityGUID the identity of the entity from which to traverse
      * @param depth the depth to which the method should traverse
+     * @param asOfTime   return the entity at this date, if null then now.
      * @param methodName The name of the method being invoked
      * @return a RexTraversal object containing the neighborhood information
      *
@@ -1218,7 +1222,7 @@ public class RexViewHandler
      * @param entityTypeGUIDs the GUIDs of entity types to filter the neighborhood
      * @param relationshipTypeGUIDs the GUIDs of relationship types to filter the neighborhood
      * @param classificationNames the names of classification types to filter the neighborhood
-     * @param asOfTime  the query retrieved results based on this time
+     * @param asOfTime   return the entity at this date, if null then now.
      * @param methodName The name of the method being invoked
      * @return a RexTraversal object containing the neighborhood information
      *
