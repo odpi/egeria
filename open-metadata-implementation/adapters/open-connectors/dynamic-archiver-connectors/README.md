@@ -7,7 +7,7 @@
 
 This module contains the implementation of the
 archive service connectors that run in the
-[Archive Manager Open Metadata Engine Service (OMES)](../../../engine-services/archive-manager)
+[Archive Manager Open Metadata Engine Service (OMES)](../../../engine-services/repository-governance)
 hosted by the
 [Engine Host OMAG Server](../../../admin-services/docs/concepts/engine-host.md).
 

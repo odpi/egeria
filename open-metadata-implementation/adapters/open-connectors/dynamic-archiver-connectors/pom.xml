@@ -42,12 +42,22 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>governance-action-framework</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>repository-services-apis</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>archive-manager-api</artifactId>
+            <artifactId>repository-services-archive-utilities</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>repository-governance-api</artifactId>
         </dependency>
 
        <!-- Test framework -->

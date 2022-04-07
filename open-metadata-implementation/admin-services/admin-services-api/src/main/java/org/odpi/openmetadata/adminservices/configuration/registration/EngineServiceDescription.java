@@ -31,14 +31,14 @@ public enum EngineServiceDescription implements Serializable
                            "https://egeria-project.org/services/omes/governance-action/overview/",
                            "Governance Engine OMAS"),
 
-    ARCHIVE_MANAGER_OMES(402,
-                           ComponentDevelopmentStatus.IN_DEVELOPMENT,
-                           "Archive Manager",
-                           "Archive Manager OMES",
-                           "archive-manager",
-                           "Maintains open metadata archives based on the activity in the connected cohorts.",
-                           "https://egeria-project.org/services/omes/archive-manager/overview/",
-                           "Open Metadata Repository Services (OMRS)"),
+    REPOSITORY_GOVERNANCE_OMES(402,
+                               ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                               "Repository Governance",
+                               "Repository Governance OMES",
+                               "repository-governance",
+                               "Dynamically governance open metadata repositories in the connected cohorts.",
+                               "https://egeria-project.org/services/omes/repository-governance/overview/",
+                               "Open Metadata Repository Services (OMRS)"),
     ;
 
     private static final long     serialVersionUID    = 1L;

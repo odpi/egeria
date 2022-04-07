@@ -276,7 +276,7 @@
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>archive-manager-client</artifactId>
+            <artifactId>repository-governance-client</artifactId>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
