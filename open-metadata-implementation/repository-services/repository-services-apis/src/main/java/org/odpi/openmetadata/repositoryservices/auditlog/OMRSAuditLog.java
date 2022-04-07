@@ -44,6 +44,7 @@ public class OMRSAuditLog extends AuditLog
      *
      * @param omrsDestination destination for the log records
      * @param componentId numerical identifier for the component
+     * @param componentDevelopmentStatus status of the component's implementation
      * @param componentName display name for the component
      * @param componentDescription description of the component
      * @param componentWikiURL link to more information
@@ -90,7 +91,7 @@ public class OMRSAuditLog extends AuditLog
      * Clone request is used to create an audit log for a component outside of OMRS.
      *
      * @param componentId numerical identifier for the component
-     * @param componentDevelopmentStatus development status
+     * @param componentDevelopmentStatus status of the component's implementation
      * @param componentName display name for the component
      * @param componentDescription description of the component
      * @param componentWikiURL link to more information

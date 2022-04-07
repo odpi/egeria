@@ -859,28 +859,28 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
-                <artifactId>archive-manager-api</artifactId>
+                <artifactId>repository-governance-api</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
-                <artifactId>archive-manager-client</artifactId>
+                <artifactId>repository-governance-client</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
-                <artifactId>archive-manager-server</artifactId>
+                <artifactId>repository-governance-server</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
-                <artifactId>archive-manager-spring</artifactId>
+                <artifactId>repository-governance-spring</artifactId>
                 <scope>runtime</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
