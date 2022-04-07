@@ -28,7 +28,7 @@ public class RexRelationshipRequestBody {
     private String                    platformName;                  // must be non-null
     private String                    relationshipGUID;              // must be non-null, GUID of root of traversal
     private Boolean                   enterpriseOption;
-    private int                       asOfTime;                      // as of time to issue the query. null means now.
+    private Long                      asOfTime;                      // as of time to issue the query. null means now.
 
 
     public RexRelationshipRequestBody() {
@@ -53,7 +53,7 @@ public class RexRelationshipRequestBody {
             return enterpriseOption;
     }
 
-    public int getAsOfTime() {
+    public Long getAsOfTime() {
         return asOfTime;
     }
 
@@ -67,7 +67,7 @@ public class RexRelationshipRequestBody {
 
     public void setEnterpriseOption(Boolean enterpriseOption) { this.enterpriseOption = enterpriseOption; }
 
-    public void setAsOfTime(int asOfTime) {
+    public void setAsOfTime(Long asOfTime) {
         this.asOfTime = asOfTime;
     }
 

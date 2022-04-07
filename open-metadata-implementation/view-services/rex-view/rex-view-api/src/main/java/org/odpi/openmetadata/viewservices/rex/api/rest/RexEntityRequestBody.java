@@ -28,7 +28,7 @@ public class RexEntityRequestBody {
     private String                    platformName;                  // must be non-null
     private String                    entityGUID;                    // must be non-null, GUID of root of traversal
     private Boolean                   enterpriseOption;              // if not set will default to false
-    private Integer                       asOfTime;                      // as of time to issue the query. null means now.
+    private Long                      asOfTime;                      // as of time to issue the query. null means now.
 
 
     public RexEntityRequestBody() {
@@ -52,7 +52,7 @@ public class RexEntityRequestBody {
             return enterpriseOption;
     }
 
-    public Integer getAsOfTime() {
+    public Long getAsOfTime() {
         return asOfTime;
     }
 
@@ -66,7 +66,7 @@ public class RexEntityRequestBody {
 
     public void setEnterpriseOption(Boolean enterpriseOption) { this.enterpriseOption = enterpriseOption; }
 
-    public void setAsOfTime(Integer asOfTime) {
+    public void setAsOfTime(Long asOfTime) {
         this.asOfTime = asOfTime;
     }
 

@@ -33,7 +33,7 @@ public class RexSearchBody {
     private Boolean                   enterpriseOption;
     private String                    typeName;                      // filter by type, or null
     private List<String>              classificationNames;           // Limit results of entity searches to instances with at least one of these classifications
-    private Integer                   asOfTime;                      // as of time to issue the query. null means now.
+    private Long                      asOfTime;                      // as of time to issue the query. null means now.
 
     public RexSearchBody() {
        // No initialization yet
@@ -53,7 +53,7 @@ public class RexSearchBody {
 
     public List<String> getClassificationNames() { return classificationNames; }
 
-    public Integer getAsOfTime() {
+    public Long getAsOfTime() {
         return asOfTime;
     }
 
@@ -77,7 +77,7 @@ public class RexSearchBody {
 
     public void setEnterpriseOption(Boolean enterpriseOption) { this.enterpriseOption = enterpriseOption; }
 
-    public void setAsOfTime(Integer asOfTime) {
+    public void setAsOfTime(Long asOfTime) {
         this.asOfTime = asOfTime;
     }
 

@@ -34,7 +34,7 @@ public class RexTraversalRequestBody {
     private List<String>              relationshipTypeGUIDs;         // a list of type guids or null
     private List<String>              classificationNames;           // a list of names or null
     private Integer                   depth;                         // the depth of traversal
-    private Integer                       asOfTime;                      // as of time to issue the query. null means now.
+    private Long                      asOfTime;                      // as of time to issue the query. null means now.
 
 
     public RexTraversalRequestBody() {
@@ -70,7 +70,7 @@ public class RexTraversalRequestBody {
 
     public Integer getDepth() { return depth; }
 
-    public Integer getAsOfTime() {
+    public Long getAsOfTime() {
         return asOfTime;
     }
 
@@ -94,7 +94,7 @@ public class RexTraversalRequestBody {
 
     public void setDepth(Integer depth) { this.depth = depth; }
 
-    public void setAsOfTime(Integer asOfTime) {
+    public void setAsOfTime(Long asOfTime) {
         this.asOfTime = asOfTime;
     }
 

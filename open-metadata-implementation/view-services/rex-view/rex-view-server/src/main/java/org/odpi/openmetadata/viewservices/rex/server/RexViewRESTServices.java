@@ -257,10 +257,10 @@ public class RexViewRESTServices {
             /*
              * Attempt to retrieve the entity
              */
-            Integer asOfTime = requestBody.getAsOfTime();
+            Long asOfTime = requestBody.getAsOfTime();
             Date asOfTimeDate = null;
             if (asOfTime !=null) {
-                asOfTimeDate = new Date(asOfTime.intValue());
+                asOfTimeDate = new Date(asOfTime.longValue());
             }
 
             try {
@@ -356,10 +356,10 @@ public class RexViewRESTServices {
             {
                 restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
-            Integer asOfTime = requestBody.getAsOfTime();
+            Long asOfTime = requestBody.getAsOfTime();
             Date asOfTimeDate = null;
             if (asOfTime !=null) {
-                asOfTimeDate = new Date(asOfTime.intValue());
+                asOfTimeDate = new Date(asOfTime.longValue());
             }
 
             /*
@@ -459,10 +459,10 @@ public class RexViewRESTServices {
             {
                 restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
-            Integer asOfTime =requestBody.getAsOfTime();
+            Long asOfTime =requestBody.getAsOfTime();
             Date asOfTimeDate = null;
             if (asOfTime !=null) {
-                asOfTimeDate = new Date(asOfTime.intValue());
+                asOfTimeDate = new Date(asOfTime.longValue());
             }
             try
             {
@@ -566,10 +566,10 @@ public class RexViewRESTServices {
             {
                 restExceptionHandler.captureExceptions(response, exception, methodName, auditLog);
             }
-            Integer asOfTime =requestBody.getAsOfTime();
+            Long asOfTime =requestBody.getAsOfTime();
             Date asOfTimeDate = null;
             if (asOfTime !=null) {
-                asOfTimeDate = new Date(asOfTime.intValue());
+                asOfTimeDate = new Date(asOfTime.longValue());
             }
 
             try
@@ -691,6 +691,7 @@ public class RexViewRESTServices {
                                                                     requestBody.getEnterpriseOption(),
                                                                     requestBody.getEntityGUID(),
                                                                     requestBody.getDepth(),
+                                                                    requestBody.getAsOfTime(),
                                                                     methodName);
 
                 if (preTraversal != null)
@@ -800,6 +801,7 @@ public class RexViewRESTServices {
                                                            requestBody.getEntityTypeGUIDs(),
                                                            requestBody.getRelationshipTypeGUIDs(),
                                                            requestBody.getClassificationNames(),
+                                                           requestBody.getAsOfTime(),
                                                            methodName);
 
                 if (traversal != null)
