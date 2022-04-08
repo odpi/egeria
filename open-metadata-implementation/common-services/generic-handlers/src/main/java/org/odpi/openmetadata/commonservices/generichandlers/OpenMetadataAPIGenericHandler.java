@@ -2531,7 +2531,6 @@ public class OpenMetadataAPIGenericHandler<B>
 
                 if (anchorsClassification == null)
                 {
-
                     if (anchorGUID != null)
                     {
                         repositoryHandler.classifyEntity(localServerUserId,
@@ -4277,72 +4276,115 @@ public class OpenMetadataAPIGenericHandler<B>
         if ((repositoryHelper.isTypeOf(serviceName, anchorTypeName, OpenMetadataAPIMapper.ASSET_TYPE_NAME)) ||
             (repositoryHelper.isTypeOf(serviceName, anchorTypeName, OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME)))
         {
-            try
-            {
-                invalidParameterHandler.validateObject(anchorEntity, guidParameterName, methodName);
-
-                newProperties = this.getLatestChangeClassificationProperties(latestChangeTargetOrdinal,
-                                                                             latestChangeActionOrdinal,
-                                                                             classificationName,
-                                                                             attachmentGUID,
-                                                                             attachmentTypeName,
-                                                                             relationshipTypeName,
-                                                                             userId,
-                                                                             actionDescription,
-                                                                             methodName);
-
-                Classification classification = repositoryHelper.getClassificationFromEntity(serviceName,
-                                                                                             anchorEntity,
-                                                                                             OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_NAME,
-                                                                                             methodName);
-                if (classification != null)
-                {
-                    repositoryHandler.reclassifyEntity(localServerUserId,
-                                                       null,
-                                                       null,
-                                                       anchorEntity.getGUID(),
-                                                       guidParameterName,
-                                                       anchorEntity.getType().getTypeDefName(),
-                                                       OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_GUID,
-                                                       OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_NAME,
-                                                       classification,
-                                                       newProperties,
-                                                       false,
-                                                       false,
-                                                       null,
-                                                       methodName);
-                }
-            }
-            catch (ClassificationErrorException newClassificationNeeded)
+            if (! OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME.equals(classificationName))
             {
                 /*
-                 * This is not an error - it just means that the classification is not present on the anchor entity.
+                 * Do not log latest change for anchor classification updates
                  */
                 try
                 {
-                    repositoryHandler.classifyEntity(localServerUserId,
-                                                    null,
-                                                    null,
-                                                    anchorEntity.getGUID(),
-                                                    anchorEntity,
-                                                    guidParameterName,
-                                                    anchorEntity.getType().getTypeDefName(),
-                                                    OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_GUID,
-                                                    OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_NAME,
-                                                    ClassificationOrigin.ASSIGNED,
-                                                    null,
-                                                    newProperties,
-                                                    false,
-                                                    false,
-                                                     null,
-                                                     methodName);
+                    invalidParameterHandler.validateObject(anchorEntity, guidParameterName, methodName);
+
+                    newProperties = this.getLatestChangeClassificationProperties(latestChangeTargetOrdinal,
+                                                                                 latestChangeActionOrdinal,
+                                                                                 classificationName,
+                                                                                 attachmentGUID,
+                                                                                 attachmentTypeName,
+                                                                                 relationshipTypeName,
+                                                                                 userId,
+                                                                                 actionDescription,
+                                                                                 methodName);
+
+                    Classification classification = repositoryHelper.getClassificationFromEntity(serviceName,
+                                                                                                 anchorEntity,
+                                                                                                 OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_NAME,
+                                                                                                 methodName);
+                    if (classification != null)
+                    {
+                        repositoryHandler.reclassifyEntity(localServerUserId,
+                                                           null,
+                                                           null,
+                                                           anchorEntity.getGUID(),
+                                                           guidParameterName,
+                                                           anchorEntity.getType().getTypeDefName(),
+                                                           OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_GUID,
+                                                           OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_NAME,
+                                                           classification,
+                                                           newProperties,
+                                                           false,
+                                                           false,
+                                                           null,
+                                                           methodName);
+                    }
                 }
-                catch (PropertyServerException e)
+                catch (ClassificationErrorException newClassificationNeeded)
                 {
-                    // Ignore exception, possibly a race condition - the entity is already classified
+                    /*
+                     * This is not an error - it just means that the classification is not present on the anchor entity.
+                     */
+                    try
+                    {
+                        repositoryHandler.classifyEntity(localServerUserId,
+                                                         null,
+                                                         null,
+                                                         anchorEntity.getGUID(),
+                                                         anchorEntity,
+                                                         guidParameterName,
+                                                         anchorEntity.getType().getTypeDefName(),
+                                                         OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_GUID,
+                                                         OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_NAME,
+                                                         ClassificationOrigin.ASSIGNED,
+                                                         null,
+                                                         newProperties,
+                                                         false,
+                                                         false,
+                                                         null,
+                                                         methodName);
+                    }
+                    catch (PropertyServerException e)
+                    {
+                        // Ignore exception, possibly a race condition - the entity is already classified
+                    }
+                }
+                catch (InvalidParameterException | TypeErrorException error)
+                {
+                    throw new PropertyServerException(error);
                 }
             }
-            catch (InvalidParameterException | TypeErrorException error)
+        }
+
+
+        /*
+         * Check whether this anchor is nested in another anchor.
+         */
+        String parentAnchorGUID = getAnchorGUIDFromAnchorsClassification(anchorEntity, methodName);
+
+        if (parentAnchorGUID != null)
+        {
+            try
+            {
+                final String parentAnchorGUIDParameterName = "parentAnchorGUID";
+                EntityDetail parentAnchorEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                                    parentAnchorGUID,
+                                                                                    parentAnchorGUIDParameterName,
+                                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                                    false,
+                                                                                    false,
+                                                                                    null,
+                                                                                    methodName);
+
+                this.addLatestChangeToAnchor(parentAnchorEntity,
+                                             latestChangeTargetOrdinal,
+                                             latestChangeActionOrdinal,
+                                             classificationName,
+                                             attachmentGUID,
+                                             attachmentTypeName,
+                                             relationshipTypeName,
+                                             userId,
+                                             actionDescription,
+                                             methodName);
+            }
+            catch (InvalidParameterException  error)
             {
                 throw new PropertyServerException(error);
             }
@@ -5947,6 +5989,7 @@ public class OpenMetadataAPIGenericHandler<B>
         String              newBeanGUID          = null; /* GUID of last new entity created - ultimately this is returned to the original caller*/
         String              previousTemplateGUID = null; /* GUID of last template entity processed - prevents processing a relationship twice */
         Map<String, String> coveredGUIDMap       = new HashMap<>(); /* Map of template GUIDs to new bean GUIDs that have been processed - prevents replicating the same entity twice */
+        List<String>        templateAnchorGUIDs  = new ArrayList<>(); /* List of anchor GUIDs associated with the template - to allow nested anchors to be handled */
         String              beanAnchorGUID       = null; /* value of the anchor to set into the new beans */
     }
 
@@ -6030,12 +6073,28 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                           supportedZones,
                                                                           effectiveTime,
                                                                           methodName);
-            String templateAnchorGUID = null;
             if (templateAnchorEntity != null)
             {
-                templateAnchorGUID = templateAnchorEntity.getGUID();
+                if ((firstIteration) && (! templateGUID.equals(templateAnchorEntity.getGUID())))
+                {
+                    /*
+                     * Need to use the same anchor as the template because the template is anchored to another bean.
+                     * This occurs the first time through the iteration if the initial template object has an anchor.
+                     */
+                    templateProgress.beanAnchorGUID = templateAnchorEntity.getGUID();
+                }
+
+                templateProgress.templateAnchorGUIDs.add(templateAnchorEntity.getGUID());
             }
 
+            if (templateProgress.beanAnchorGUID != null)
+            {
+                /*
+                 * A bean anchor has been set up on a previous iteration.  This value is typically set when the top-level bean is created
+                 * from the template.  The alternative is that the top-level template bean has an anchor.
+                 */
+                propertyBuilder.setAnchors(userId, templateProgress.beanAnchorGUID, methodName);
+            }
 
             /*
              * Verify that the user is permitted to create a new bean.
@@ -6066,26 +6125,6 @@ public class OpenMetadataAPIGenericHandler<B>
                     }
                 }
             }
-
-            /*
-             * If the template has another anchor set up then this same anchor needs to be established for the new bean.
-             */
-            if ((firstIteration) && (templateAnchorGUID != null) && (! templateGUID.equals(templateAnchorGUID)))
-            {
-                /*
-                 * Need to use the same anchor as the template.  This occurs the first time through the iteration if the initial
-                 * template object has an anchor.
-                 */
-                propertyBuilder.setAnchors(userId, templateAnchorGUID, methodName);
-            }
-            else if (! firstIteration)
-            {
-                /*
-                 * A bean anchor has been set up on a previous iteration.
-                 */
-                propertyBuilder.setAnchors(userId, templateProgress.beanAnchorGUID, methodName);
-            }
-
 
             List<Classification> builderClassifications = propertyBuilder.getEntityClassifications();
             if (builderClassifications != null)
@@ -6139,7 +6178,6 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                newEntityGUID,
                                                                newEntityParameterName,
                                                                templateGUID,
-                                                               templateAnchorGUID,
                                                                entityTypeName,
                                                                uniqueParameterValue,
                                                                forLineage,
@@ -6170,7 +6208,6 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param startingGUID unique identifier of the newly created element
      * @param startingGUIDParameterName parameter providing the startingGUID value
      * @param templateGUID unique identifier of the template element
-     * @param templateAnchorGUID unique identifier of the template's anchor
      * @param expectedTypeName type name of the new bean
      * @param qualifiedName unique name for this new bean - must not be null
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
@@ -6190,7 +6227,6 @@ public class OpenMetadataAPIGenericHandler<B>
                                                         String           startingGUID,
                                                         String           startingGUIDParameterName,
                                                         String           templateGUID,
-                                                        String           templateAnchorGUID,
                                                         String           expectedTypeName,
                                                         String           qualifiedName,
                                                         boolean          forLineage,
@@ -6297,7 +6333,7 @@ public class OpenMetadataAPIGenericHandler<B>
                          */
                         nextBeanEntityGUID = templateProgress.coveredGUIDMap.get(nextTemplateEntity.getGUID());
                     }
-                    else if ((nextTemplateAnchorGUID == null) || (! nextTemplateAnchorGUID.equals(templateAnchorGUID)))
+                    else if ((nextTemplateAnchorGUID == null) || (! templateProgress.templateAnchorGUIDs.contains(nextTemplateAnchorGUID)))
                     {
                         /*
                          * The linked entity is either not got an anchorGUID or has a different anchorGUID.
@@ -6314,6 +6350,11 @@ public class OpenMetadataAPIGenericHandler<B>
                         String nextQualifiedName = null;
                         if (repositoryHelper.isTypeOf(serviceName, nextTemplateEntityTypeName, OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
                         {
+                            /*
+                             * This entity may be a nested anchor itself.  We can not tell until processing attachments to it later in the
+                             * process so the GUID is stored as a potential anchor.
+                             */
+                            templateProgress.templateAnchorGUIDs.add(nextTemplateEntity.getGUID());
 
                             nextQualifiedName = qualifiedName + "::" + nextTemplateEntityTypeName;
                             int    nextQualifiedNameCount = 0;
@@ -6359,18 +6400,18 @@ public class OpenMetadataAPIGenericHandler<B>
                                                            methodName);
 
                         templateProgress = this.createBeanFromTemplate(userId,
-                                                                         externalSourceGUID,
-                                                                         externalSourceName,
-                                                                         false,
-                                                                         templateProgress,
-                                                                         nextTemplateEntity.getGUID(),
-                                                                         nextTemplateEntityGUIDParameterName,
-                                                                         nextTemplateEntity.getType().getTypeDefGUID(),
-                                                                         nextTemplateEntityTypeName,
-                                                                         nextQualifiedName,
-                                                                         nextQualifiedNameParameterName,
-                                                                         builder,
-                                                                         methodName);
+                                                                       externalSourceGUID,
+                                                                       externalSourceName,
+                                                                       false,
+                                                                       templateProgress,
+                                                                       nextTemplateEntity.getGUID(),
+                                                                       nextTemplateEntityGUIDParameterName,
+                                                                       nextTemplateEntity.getType().getTypeDefGUID(),
+                                                                       nextTemplateEntityTypeName,
+                                                                       nextQualifiedName,
+                                                                       nextQualifiedNameParameterName,
+                                                                       builder,
+                                                                       methodName);
 
                         nextBeanEntityGUID = templateProgress.newBeanGUID;
                     }
@@ -7417,7 +7458,7 @@ public class OpenMetadataAPIGenericHandler<B>
     /**
      * Remove an entity if it is anchored to the anchor entity
      *
-     * @param anchorEntity entity anchor to match against
+     * @param anchoredEntityGUIDs entity anchors to match against
      * @param potentialAnchoredEntity entity to validate
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
@@ -7427,7 +7468,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @throws PropertyServerException problem in the repository services
      * @throws UserNotAuthorizedException calling user is not authorize to issue this request
      */
-    public void deleteAnchoredEntity(EntityDetail anchorEntity,
+    public void deleteAnchoredEntity(List<String> anchoredEntityGUIDs,
                                      EntityProxy  potentialAnchoredEntity,
                                      boolean      forLineage,
                                      boolean      forDuplicateProcessing,
@@ -7439,7 +7480,7 @@ public class OpenMetadataAPIGenericHandler<B>
         /*
          * Only need to progress if anchor entity exists.
          */
-        if (anchorEntity != null)
+        if ((anchoredEntityGUIDs != null) && (! anchoredEntityGUIDs.isEmpty()))
         {
             final String guidParameterName = "potentialAnchoredEntity";
 
@@ -7459,7 +7500,7 @@ public class OpenMetadataAPIGenericHandler<B>
 
                 String anchorGUID = this.getAnchorGUIDFromAnchorsClassification(entity, methodName);
 
-                if ((anchorGUID != null) && (anchorGUID.equals(anchorEntity.getGUID())))
+                if ((anchorGUID != null) && ((anchoredEntityGUIDs.contains(anchorGUID))))
                 {
                     /*
                      * The element is part of the same set of elements for the anchorGUID.
@@ -7492,7 +7533,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                     potentialAnchoredEntity.getType().getTypeDefName(),
                                                     null,
                                                     null,
-                                                    anchorEntity,
+                                                    anchoredEntityGUIDs,
                                                     forLineage,
                                                     forDuplicateProcessing,
                                                     effectiveTime,
@@ -7666,13 +7707,17 @@ public class OpenMetadataAPIGenericHandler<B>
                                                               effectiveTime,
                                                               methodName);
 
+        List<String> anchorEntityGUIDs = new ArrayList<>();
+
         /*
          * The call above has validated that the entity to delete exists.
-         * The anchorEntity is only set up if the deleted entity has an anchor entity.
+         * The anchorEntity is only set up if the entity to delete has an anchor entity.
          * This means it is not an anchor entity itself or without an anchor.
          */
         if (anchorEntity != null)
         {
+            anchorEntityGUIDs.add(anchorEntity.getGUID());
+
             this.deleteBeanInRepository(userId,
                                         externalSourceGUID,
                                         externalSourceName,
@@ -7682,14 +7727,38 @@ public class OpenMetadataAPIGenericHandler<B>
                                         entityTypeName,
                                         validatingPropertyName,
                                         validatingPropertyValue,
-                                        anchorEntity,
+                                        anchorEntityGUIDs,
                                         forLineage,
                                         forDuplicateProcessing,
                                         effectiveTime,
                                         methodName);
+
+            /*
+             * Update the LatestChange in the anchor entity if it is not the instance we have just deleted.
+             */
+            if (! entityGUID.equals(anchorEntity.getGUID()))
+            {
+                final String actionDescriptionTemplate = "Deleting %s %s";
+
+                String actionDescription  = String.format(actionDescriptionTemplate, entityTypeName, entityGUID);
+                int    latestChangeTarget = OpenMetadataAPIMapper.ATTACHMENT_LATEST_CHANGE_TARGET_ORDINAL;
+
+                this.addLatestChangeToAnchor(anchorEntity,
+                                             latestChangeTarget,
+                                             OpenMetadataAPIMapper.DELETED_LATEST_CHANGE_ACTION_ORDINAL,
+                                             null,
+                                             entityGUID,
+                                             entityTypeName,
+                                             null,
+                                             userId,
+                                             actionDescription,
+                                             methodName);
+            }
         }
         else
         {
+            anchorEntityGUIDs.add(entity.getGUID());
+
             this.deleteBeanInRepository(userId,
                                         externalSourceGUID,
                                         externalSourceName,
@@ -7699,7 +7768,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                         entityTypeName,
                                         validatingPropertyName,
                                         validatingPropertyValue,
-                                        entity,
+                                        anchorEntityGUIDs,
                                         forLineage,
                                         forDuplicateProcessing,
                                         effectiveTime,
@@ -7720,7 +7789,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param entityTypeName unique name of the entity's type
      * @param validatingPropertyName name of property to verify - null if no verification is required
      * @param validatingPropertyValue value of property to verify
-     * @param anchorEntity anchor entity for the bean (can be null)
+     * @param anchorEntityGUIDs list of anchor entities for the bean (can be null)
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -7738,7 +7807,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                        String       entityTypeName,
                                        String       validatingPropertyName,
                                        String       validatingPropertyValue,
-                                       EntityDetail anchorEntity,
+                                       List<String> anchorEntityGUIDs,
                                        boolean      forLineage,
                                        boolean      forDuplicateProcessing,
                                        Date         effectiveTime,
@@ -7746,6 +7815,14 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                        PropertyServerException,
                                                                        UserNotAuthorizedException
     {
+        /*
+         * Initialize the lists if this is the first iteration
+         */
+        if (anchorEntityGUIDs == null)
+        {
+            anchorEntityGUIDs = new ArrayList<>();
+        }
+
         /*
          * Retrieve the entities attached to this element.  Any entity that is anchored, directly or indirectly, to the anchor entity is deleted.
          * (This is why we explicitly delete the relationship to the parent element before calling this method).
@@ -7773,7 +7850,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                  relationship,
                                                  methodName);
 
-            this.deleteAnchoredEntity(anchorEntity,
+            this.deleteAnchoredEntity(anchorEntityGUIDs,
                                       repositoryHandler.getOtherEnd(entityGUID,
                                                                     entityTypeName,
                                                                     relationship,
@@ -7801,29 +7878,8 @@ public class OpenMetadataAPIGenericHandler<B>
                                        forDuplicateProcessing,
                                        effectiveTime,
                                        methodName);
-
-        /*
-         * Update the LatestChange in the anchor entity if it is not the instance we have just deleted.
-         */
-        if ((anchorEntity != null) && (! entityGUID.equals(anchorEntity.getGUID())))
-        {
-            final String actionDescriptionTemplate = "Deleting %s %s";
-
-            String actionDescription  = String.format(actionDescriptionTemplate, entityTypeName, entityGUID);
-            int    latestChangeTarget = OpenMetadataAPIMapper.ATTACHMENT_LATEST_CHANGE_TARGET_ORDINAL;
-
-            this.addLatestChangeToAnchor(anchorEntity,
-                                         latestChangeTarget,
-                                         OpenMetadataAPIMapper.DELETED_LATEST_CHANGE_ACTION_ORDINAL,
-                                         null,
-                                         entityGUID,
-                                         entityTypeName,
-                                         null,
-                                         userId,
-                                         actionDescription,
-                                         methodName);
-        }
     }
+
 
     /**
      * Is the bean isolated - i.e. has no relationships.
@@ -14682,6 +14738,10 @@ public class OpenMetadataAPIGenericHandler<B>
         {
             try
             {
+                List<String> anchorEntityGUIDs = new ArrayList<>();
+
+                anchorEntityGUIDs.add(attachedElementAnchorEntity.getGUID());
+
                 this.deleteBeanInRepository(userId,
                                             externalSourceGUID,
                                             externalSourceName,
@@ -14691,7 +14751,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                             attachedElementTypeName,
                                             null,
                                             null,
-                                            attachedElementAnchorEntity,
+                                            anchorEntityGUIDs,
                                             forLineage,
                                             forDuplicateProcessing,
                                             effectiveTime,
@@ -14722,6 +14782,10 @@ public class OpenMetadataAPIGenericHandler<B>
 
             try
             {
+                List<String> anchorEntityGUIDs = new ArrayList<>();
+
+                anchorEntityGUIDs.add(startingElementAnchorEntity.getGUID());
+
                 this.deleteBeanInRepository(userId,
                                             externalSourceGUID,
                                             externalSourceName,
@@ -14731,7 +14795,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                             startingElementTypeName,
                                             null,
                                             null,
-                                            startingElementAnchorEntity,
+                                            anchorEntityGUIDs,
                                             forLineage,
                                             forDuplicateProcessing,
                                             effectiveTime,

@@ -45,7 +45,7 @@
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>archive-manager-spring</artifactId>
+            <artifactId>repository-governance-spring</artifactId>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
