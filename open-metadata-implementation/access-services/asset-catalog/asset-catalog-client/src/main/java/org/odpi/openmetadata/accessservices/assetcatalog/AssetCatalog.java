@@ -160,7 +160,7 @@ public class AssetCatalog extends OCFRESTClient implements AssetCatalogInterface
             throws InvalidParameterException, PropertyServerException {
         String methodName = "searchByType";
 
-        invalidParameterHandler.validateUserId(methodName, userId);
+        invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateSearchString(searchCriteria, "searchCriteria", methodName);
         invalidParameterHandler.validateObject(searchParameters, SEARCH_PARAMETERS, methodName);
 
@@ -182,7 +182,7 @@ public class AssetCatalog extends OCFRESTClient implements AssetCatalogInterface
             throws InvalidParameterException, PropertyServerException {
         String methodName = "getAssetContext";
 
-        invalidParameterHandler.validateUserId(methodName, userId);
+        invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateSearchString(assetGUID, GUID_PARAMETER, methodName);
 
         AssetResponse assetResponse = callGetRESTCall(methodName, AssetResponse.class,
@@ -233,7 +233,7 @@ public class AssetCatalog extends OCFRESTClient implements AssetCatalogInterface
                                           String assetGUID,
                                           String methodName,
                                           String guidParameter) throws InvalidParameterException {
-        invalidParameterHandler.validateUserId(methodName, userId);
+        invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, guidParameter, methodName);
     }
 
