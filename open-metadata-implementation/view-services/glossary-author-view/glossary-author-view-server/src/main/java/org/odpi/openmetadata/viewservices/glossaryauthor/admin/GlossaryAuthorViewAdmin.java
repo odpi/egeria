@@ -53,7 +53,7 @@ public class GlossaryAuthorViewAdmin extends ViewServiceAdmin {
         final String actionDescription = "initialize";
         final String methodName = actionDescription;
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userid=" + serverUserName);
+            log.debug("==> Method: " + methodName);
         }
         //TODO validate the configuration and when invalid, throw OMAGConfigurationErrorException
         if (maxPageSize < MINIMUM_GLOSSARY_AUTHOR_PAGE_SIZE) {
@@ -89,7 +89,7 @@ public class GlossaryAuthorViewAdmin extends ViewServiceAdmin {
             writeAuditLogPassingErrorMessage(auditLog, actionDescription, GlossaryAuthorViewAuditCode.SERVICE_INITIALIZED, serverName);
 
             if (log.isDebugEnabled()) {
-                log.debug("<== Method: " + methodName + ",userid=" + serverUserName);
+                log.debug("<== Method: " + methodName);
             }
             // todo - not valid to use private exception from SubjectArea OMAS
         } catch (InvalidParameterException iae) {
