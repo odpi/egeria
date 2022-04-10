@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
@@ -21,7 +22,7 @@ public class OMRSRepositoryContentManagerTest
     @Test
     public void testGetInstanceType() throws TypeErrorException
     {
-        AuditLog auditLog = new AuditLog(null, 1, null, null, null);
+        AuditLog auditLog = new AuditLog(null, 1, ComponentDevelopmentStatus.IN_DEVELOPMENT, null, null, null);
         OMRSRepositoryContentManager testSubject = new OMRSRepositoryContentManager("testserver", auditLog);
 
         List<InstanceStatus> validInstanceStatusList = new LinkedList<>();
