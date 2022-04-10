@@ -781,6 +781,10 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                 instanceType.setTypeDefDescription(typeDef.getDescription());
                 instanceType.setTypeDefDescriptionGUID(typeDef.getDescriptionGUID());
                 instanceType.setTypeDefSuperTypes(this.getSuperTypes(sourceName, typeName, methodName));
+                if (typeDef.getValidInstanceStatusList() != null)
+                {
+                    instanceType.setValidStatusList(typeDef.getValidInstanceStatusList());
+                }
 
                 /*
                  * Extract the properties for this TypeDef.  These will be augmented with property names
