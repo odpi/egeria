@@ -27,7 +27,7 @@ public class SequentialDiscoveryPipeline extends DiscoveryPipeline
             if (embeddedDiscoveryService != null)
             {
                 embeddedDiscoveryService.setDiscoveryContext(super.discoveryContext);
-                // discoveryReport.setAnalysisStep(embeddedDiscoveryService.);
+                discoveryReport.setAnalysisStep(embeddedDiscoveryService.getConnectorInstanceId());
                 embeddedDiscoveryService.start();
                 embeddedDiscoveryService.disconnect();
             }

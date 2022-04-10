@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name="Administration Services - Platform Configuration", description="The platform configuration administration services support the " +
         "configuration of the security and configuration store connectors for an OMAG Server Platform.",
         externalDocs=@ExternalDocumentation(description="Further information",
-        url="https://odpi.github.io/egeria-docs/guides/admin/servers/"))
+        url="https://egeria-project.org/guides/admin/servers/"))
 
 public class ConfigStoreResource
 {

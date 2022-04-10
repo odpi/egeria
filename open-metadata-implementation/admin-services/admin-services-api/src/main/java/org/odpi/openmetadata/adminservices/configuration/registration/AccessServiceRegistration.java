@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices.configuration.registration;
 
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
+
 import java.io.Serializable;
 
 /**
@@ -18,14 +20,15 @@ public class AccessServiceRegistration implements Serializable
     private static final String   defaultOutTopicLeaf = ".outTopic";
 
 
-    private int                      accessServiceCode;
-    private String                   accessServiceName;
-    private String                   accessServiceFullName;
-    private String                   accessServiceURLMarker;
-    private String                   accessServiceDescription;
-    private String                   accessServiceWiki;
-    private ServiceOperationalStatus accessServiceOperationalStatus;
-    private String                   accessServiceAdminClassName;
+    private int                        accessServiceCode;
+    private ComponentDevelopmentStatus accessServiceDevelopmentStatus = null;
+    private String                     accessServiceName;
+    private String                     accessServiceFullName;
+    private String                     accessServiceURLMarker;
+    private String                     accessServiceDescription;
+    private String                     accessServiceWiki;
+    private ServiceOperationalStatus   accessServiceOperationalStatus;
+    private String                     accessServiceAdminClassName;
 
     /**
      * Complete Constructor
@@ -39,16 +42,18 @@ public class AccessServiceRegistration implements Serializable
      * @param accessServiceOperationalStatus default initial operational status for the access service
      * @param accessServiceAdminClassName  name of AccessServiceAdmin implementation class for the access service
      */
-    public AccessServiceRegistration(int                      accessServiceCode,
-                                     String                   accessServiceName,
-                                     String                   accessServiceFullName,
-                                     String                   accessServiceURLMarker,
-                                     String                   accessServiceDescription,
-                                     String                   accessServiceWiki,
-                                     ServiceOperationalStatus accessServiceOperationalStatus,
-                                     String                   accessServiceAdminClassName)
+    public AccessServiceRegistration(int                        accessServiceCode,
+                                     ComponentDevelopmentStatus accessServiceDevelopmentStatus,
+                                     String                     accessServiceName,
+                                     String                     accessServiceFullName,
+                                     String                     accessServiceURLMarker,
+                                     String                     accessServiceDescription,
+                                     String                     accessServiceWiki,
+                                     ServiceOperationalStatus   accessServiceOperationalStatus,
+                                     String                     accessServiceAdminClassName)
     {
         this.accessServiceCode = accessServiceCode;
+        this.accessServiceDevelopmentStatus = accessServiceDevelopmentStatus;
         this.accessServiceName = accessServiceName;
         this.accessServiceFullName = accessServiceFullName;
         this.accessServiceURLMarker = accessServiceURLMarker;
@@ -71,6 +76,7 @@ public class AccessServiceRegistration implements Serializable
                                      String                   accessServiceAdminClassName)
     {
         this(accessServiceDescription.getAccessServiceCode(),
+             accessServiceDescription.getAccessServiceDevelopmentStatus(),
              accessServiceDescription.getAccessServiceName(),
              accessServiceDescription.getAccessServiceFullName(),
              accessServiceDescription.getAccessServiceURLMarker(),
@@ -108,6 +114,28 @@ public class AccessServiceRegistration implements Serializable
     public void setAccessServiceCode(int accessServiceCode)
     {
         this.accessServiceCode = accessServiceCode;
+    }
+
+
+    /**
+     * Return the development status of the service.
+     *
+     * @return enum describing the status
+     */
+    public ComponentDevelopmentStatus getAccessServiceDevelopmentStatus()
+    {
+        return accessServiceDevelopmentStatus;
+    }
+
+
+    /**
+     * Set up the development status of the service.
+     *
+     * @param accessServiceDevelopmentStatus  enum describing the status
+     */
+    public void setAccessServiceDevelopmentStatus(ComponentDevelopmentStatus accessServiceDevelopmentStatus)
+    {
+        this.accessServiceDevelopmentStatus = accessServiceDevelopmentStatus;
     }
 
 

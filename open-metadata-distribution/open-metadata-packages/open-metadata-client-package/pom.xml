@@ -10,7 +10,7 @@
     <parent>
         <artifactId>open-metadata-packages</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.5-SNAPSHOT</version>
+        <version>3.8-SNAPSHOT</version>
     </parent>
 
     <name>Open Metadata Client Package</name>
@@ -178,6 +178,10 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-analysis-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>repository-governance-client</artifactId>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>

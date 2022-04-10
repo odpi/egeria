@@ -75,6 +75,7 @@ public class LineageExchangeRESTServices
                                                        requestBody.getMetadataCorrelationProperties(),
                                                        assetManagerIsHome,
                                                        requestBody.getElementProperties(),
+                                                       requestBody.getProcessStatus(),
                                                        methodName));
             }
             else
@@ -451,6 +452,7 @@ public class LineageExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param processGUID unique identifier of the metadata element to withdraw
+     * @param requestBody asset manager identifiers
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid

@@ -194,7 +194,7 @@ public class ValidValuesResponseTest
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -203,7 +203,7 @@ public class ValidValuesResponseTest
         {
             validateResultObject(objectMapper.readValue(jsonString, ValidValuesResponse.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -217,7 +217,7 @@ public class ValidValuesResponseTest
         {
             jsonString = objectMapper.writeValueAsString(superObject);
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -226,7 +226,7 @@ public class ValidValuesResponseTest
         {
             validateResultObject((ValidValuesResponse) objectMapper.readValue(jsonString, OCFOMASAPIResponse.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

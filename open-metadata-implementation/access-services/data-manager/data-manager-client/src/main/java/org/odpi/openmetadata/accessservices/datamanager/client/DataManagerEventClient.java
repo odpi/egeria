@@ -174,7 +174,7 @@ public class DataManagerEventClient implements DataManagerEventInterface
                                                                                     callerId);
 
             Connection      topicConnection = restResult.getConnection();
-            ConnectorBroker connectorBroker = new ConnectorBroker();
+            ConnectorBroker connectorBroker = new ConnectorBroker(auditLog);
             Connector       connector       = connectorBroker.getConnector(topicConnection);
 
             if (connector == null)
@@ -190,7 +190,6 @@ public class DataManagerEventClient implements DataManagerEventInterface
             if (connector instanceof DataManagerOutTopicClientConnector)
             {
                 configurationEventTopicConnector = (DataManagerOutTopicClientConnector)connector;
-                configurationEventTopicConnector.setAuditLog(auditLog);
                 configurationEventTopicConnector.start();
             }
             else

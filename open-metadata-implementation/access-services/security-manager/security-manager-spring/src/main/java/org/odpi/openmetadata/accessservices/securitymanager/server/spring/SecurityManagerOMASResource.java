@@ -37,7 +37,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name="Security Manager OMAS",
         description="The Security Manager OMAS provides APIs for tools and applications wishing to manage metadata relating to security managers.",
         externalDocs=@ExternalDocumentation(description="Security Manager Open Metadata Access Service (OMAS)",
-                url="https://odpi.github.io/egeria-docs/services/omas/security-manager/overview/"))
+                url="https://egeria-project.org/services/omas/security-manager/overview/"))
 
 public class SecurityManagerOMASResource
 {
@@ -145,6 +145,7 @@ public class SecurityManagerOMASResource
     /**
      * Update an existing security group.
      *
+     * @param serverName called server
      * @param userId calling user
      * @param securityGroupGUID unique identifier of the definition to update
      * @param isMergeUpdate are unspecified properties unchanged (true) or removed?

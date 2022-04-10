@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name="Governance Engine OMAS", description="The Governance Engine Open Metadata Access Service (OMAS) provides support for governance engines, services and actions.",
      externalDocs=@ExternalDocumentation(description="Governance Engine Open Metadata Access Service (OMAS)",
-                                         url="https://odpi.github.io/egeria-docs/services/omas/governance-engine/overview/"))
+                                         url="https://egeria-project.org/services/omas/governance-engine/overview/"))
 
 public class GovernanceActionProcessResource
 {
@@ -298,6 +298,7 @@ public class GovernanceActionProcessResource
      * @param serverName name of the service to route the request to
      * @param userId calling user
      * @param actionTypeGUID unique identifier of the metadata element to remove
+     * @param requestBody null request body
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid
@@ -447,6 +448,7 @@ public class GovernanceActionProcessResource
      * @param serverName name of the service to route the request to
      * @param userId calling user
      * @param processGUID unique identifier of the governance action process
+     * @param requestBody null request body
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid

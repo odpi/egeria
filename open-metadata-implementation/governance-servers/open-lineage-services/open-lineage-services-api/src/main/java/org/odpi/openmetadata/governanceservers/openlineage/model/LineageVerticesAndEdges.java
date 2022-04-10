@@ -50,4 +50,12 @@ public class LineageVerticesAndEdges implements Serializable {
     public Set<LineageEdge> getLineageEdges() {
         return lineageEdges;
     }
+
+    @Override
+    public String toString() {
+        return "LineageVerticesAndEdges{" +
+                "lineageVertices=" + lineageVertices +
+                ", lineageEdges=" + lineageEdges +
+                '}';
+    }
 }

@@ -195,7 +195,7 @@ public class ConnectionsResponseTest
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -204,7 +204,7 @@ public class ConnectionsResponseTest
         {
             validateResultObject(objectMapper.readValue(jsonString, ConnectionsResponse.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -218,7 +218,7 @@ public class ConnectionsResponseTest
         {
             jsonString = objectMapper.writeValueAsString(superObject);
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -227,7 +227,7 @@ public class ConnectionsResponseTest
         {
             validateResultObject((ConnectionsResponse) objectMapper.readValue(jsonString, OCFOMASAPIResponse.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

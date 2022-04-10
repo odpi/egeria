@@ -11,6 +11,7 @@ import org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedExc
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.OMAGServerInstanceErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.governanceservers.enginehostservices.registration.OMAGEngineServiceRegistration;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceRegistry;
@@ -55,20 +56,26 @@ public class OMAGServerPlatformInstanceMap
     /**
      * Create a service description object.
      *
+     * @param serviceId component identifier for the service
      * @param serviceName name of the service
+     * @param serviceDevelopmentStatus development status
      * @param serviceURLMarker name use in URLs
      * @param serviceDescription short description
      * @param serviceWiki link to more info
      * @return service description object
      */
-    private static RegisteredOMAGService getServiceDescription(String serviceName,
-                                                               String serviceURLMarker,
-                                                               String serviceDescription,
-                                                               String serviceWiki)
+    private static RegisteredOMAGService getServiceDescription(int                        serviceId,
+                                                               String                     serviceName,
+                                                               ComponentDevelopmentStatus serviceDevelopmentStatus,
+                                                               String                     serviceURLMarker,
+                                                               String                     serviceDescription,
+                                                               String                     serviceWiki)
     {
         RegisteredOMAGService service = new RegisteredOMAGService();
 
+        service.setServiceId(serviceId);
         service.setServiceName(serviceName);
+        service.setServiceDevelopmentStatus(serviceDevelopmentStatus);
         service.setServiceURLMarker(serviceURLMarker);
         service.setServiceDescription(serviceDescription);
         service.setServiceWiki(serviceWiki);
@@ -107,7 +114,9 @@ public class OMAGServerPlatformInstanceMap
                 {
                     if (registration.getAccessServiceOperationalStatus() == ServiceOperationalStatus.ENABLED)
                     {
-                        response.add(getServiceDescription(registration.getAccessServiceName(),
+                        response.add(getServiceDescription(registration.getAccessServiceCode(),
+                                                           registration.getAccessServiceFullName(),
+                                                           registration.getAccessServiceDevelopmentStatus(),
                                                            registration.getAccessServiceURLMarker(),
                                                            registration.getAccessServiceDescription(),
                                                            registration.getAccessServiceWiki()));
@@ -156,7 +165,9 @@ public class OMAGServerPlatformInstanceMap
                 {
                     if (registration.getEngineServiceOperationalStatus() == ServiceOperationalStatus.ENABLED)
                     {
-                        response.add(getServiceDescription(registration.getEngineServiceName(),
+                        response.add(getServiceDescription(registration.getEngineServiceId(),
+                                                           registration.getEngineServiceFullName(),
+                                                           registration.getEngineServiceDevelopmentStatus(),
                                                            registration.getEngineServiceURLMarker(),
                                                            registration.getEngineServiceDescription(),
                                                            registration.getEngineServiceWiki()));
@@ -221,7 +232,9 @@ public class OMAGServerPlatformInstanceMap
                 {
                     if (registration.getViewServiceOperationalStatus() == ServiceOperationalStatus.ENABLED)
                     {
-                        response.add(getServiceDescription(registration.getViewServiceName(),
+                        response.add(getServiceDescription(registration.getViewServiceCode(),
+                                                           registration.getViewServiceFullName(),
+                                                           registration.getViewServiceDevelopmentStatus(),
                                                            registration.getViewServiceURLMarker(),
                                                            registration.getViewServiceDescription(),
                                                            registration.getViewServiceWiki()));
@@ -266,7 +279,9 @@ public class OMAGServerPlatformInstanceMap
             {
                 if (registration != null)
                 {
-                    response.add(getServiceDescription(registration.getServiceName(),
+                    response.add(getServiceDescription(registration.getServiceCode(),
+                                                       registration.getServiceName(),
+                                                       registration.getServiceDevelopmentStatus(),
                                                        registration.getServiceURLMarker(),
                                                        registration.getServiceDescription(),
                                                        registration.getServiceWiki()));
@@ -312,7 +327,9 @@ public class OMAGServerPlatformInstanceMap
             {
                 if (registration != null)
                 {
-                    response.add(getServiceDescription(registration.getServiceName(),
+                    response.add(getServiceDescription(registration.getServiceCode(),
+                                                       registration.getServiceName(),
+                                                       registration.getServiceDevelopmentStatus(),
                                                        registration.getServiceURLMarker(),
                                                        registration.getServiceDescription(),
                                                        registration.getServiceWiki()));

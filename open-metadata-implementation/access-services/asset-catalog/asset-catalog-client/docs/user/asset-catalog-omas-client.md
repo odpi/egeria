@@ -41,16 +41,10 @@ Once you have an instance of the client, you can use it to:
 
 * Fetch the classification for a specific asset - [getClassificationsForAsset]()
 
-* Returns a sub-graph of intermediate assets that connected two assets - [getLinkingAssets]()
-
-* Return a sub-graph of relationships that connect two assets - [getLinkingRelationships]()
-
 * Returns a list of supported asset types - [getSupportedTypes]()
 
-* Returns the sub-graph that represents the list of assets that in neighborhood of the given asset - [getAssetsFromNeighborhood]()
-
-* Return a list of assets matching the search criteria without the full context [searchByType](). Entity types are case 
-insensitive, so proper values should be given in the request, otherwise an EntityNotKnownException will be thrown. If
+* Return a list of assets matching the search criteria without the full context [searchByType](). Entity types are case
+  insensitive, so proper values should be given in the request, otherwise an EntityNotKnownException will be thrown. If
   no type will be provided the operation will be made using the default search types. In order to determine de supported types
   call [getSupportedTypes]() before.
 

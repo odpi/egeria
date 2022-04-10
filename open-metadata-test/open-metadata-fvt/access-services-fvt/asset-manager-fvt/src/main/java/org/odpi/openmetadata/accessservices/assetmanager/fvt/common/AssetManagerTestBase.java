@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.accessservices.assetmanager.fvt.common;
 
-import org.odpi.openmetadata.accessservices.assetmanager.client.AssetManagerClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.ExternalAssetManagerClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.GlossaryExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ElementHeader;
@@ -48,10 +48,10 @@ public class AssetManagerTestBase
      * @return client
      * @throws FVTUnexpectedCondition the test case failed
      */
-    protected AssetManagerClient getAssetManagerClient(String   serverName,
-                                                       String   serverPlatformRootURL,
-                                                       AuditLog auditLog,
-                                                       String   testCaseName) throws FVTUnexpectedCondition
+    protected ExternalAssetManagerClient getAssetManagerClient(String   serverName,
+                                                               String   serverPlatformRootURL,
+                                                               AuditLog auditLog,
+                                                               String   testCaseName) throws FVTUnexpectedCondition
     {
         final String activityName = "getAssetManagerClient";
 
@@ -59,7 +59,7 @@ public class AssetManagerTestBase
         {
             AssetManagerRESTClient restClient = new AssetManagerRESTClient(serverName, serverPlatformRootURL);
 
-            return new AssetManagerClient(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
+            return new ExternalAssetManagerClient(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
         }
         catch (Exception unexpectedError)
         {
@@ -121,8 +121,8 @@ public class AssetManagerTestBase
 
         try
         {
-            AssetManagerRESTClient restClient = new AssetManagerRESTClient(serverName, serverPlatformRootURL);
-            AssetManagerClient  client        = new AssetManagerClient(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
+            AssetManagerRESTClient     restClient = new AssetManagerRESTClient(serverName, serverPlatformRootURL);
+            ExternalAssetManagerClient client     = new ExternalAssetManagerClient(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
 
             String assetManagerGUID = client.getExternalAssetManagerGUID(userId, assetManagerName);
 

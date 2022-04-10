@@ -6,6 +6,7 @@ package org.odpi.openmetadata.accessservices.stewardshipaction.converters;
 import org.odpi.openmetadata.accessservices.stewardshipaction.metadataelements.ElementHeader;
 import org.odpi.openmetadata.accessservices.stewardshipaction.metadataelements.ElementOrigin;
 import org.odpi.openmetadata.accessservices.stewardshipaction.metadataelements.ElementOriginCategory;
+import org.odpi.openmetadata.accessservices.stewardshipaction.metadataelements.ElementStatus;
 import org.odpi.openmetadata.accessservices.stewardshipaction.metadataelements.ElementStub;
 import org.odpi.openmetadata.accessservices.stewardshipaction.metadataelements.ElementType;
 import org.odpi.openmetadata.accessservices.stewardshipaction.metadataelements.ElementVersions;
@@ -18,6 +19,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceAuditHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
@@ -71,6 +73,7 @@ public class StewardshipActionOMASConverter<B> extends OpenMetadataAPIGenericCon
             ElementHeader elementHeader = new ElementHeader();
 
             elementHeader.setGUID(header.getGUID());
+            elementHeader.setStatus(this.getElementStatus(header.getStatus()));
             elementHeader.setClassifications(this.getEntityClassifications(entityClassifications));
             elementHeader.setType(this.getElementType(header));
 
@@ -98,6 +101,74 @@ public class StewardshipActionOMASConverter<B> extends OpenMetadataAPIGenericCon
         return null;
     }
 
+
+    /**
+     * Translate the repository services' InstanceStatus to an ElementStatus.
+     *
+     * @param instanceStatus value from the repository services
+     * @return ElementStatus enum
+     */
+    ElementStatus getElementStatus(InstanceStatus instanceStatus)
+    {
+        if (instanceStatus != null)
+        {
+            switch (instanceStatus)
+            {
+                case UNKNOWN:
+                    return ElementStatus.UNKNOWN;
+
+                case DRAFT:
+                    return ElementStatus.DRAFT;
+
+                case PREPARED:
+                    return ElementStatus.PREPARED;
+
+                case PROPOSED:
+                    return ElementStatus.PROPOSED;
+
+                case APPROVED:
+                    return ElementStatus.APPROVED;
+
+                case REJECTED:
+                    return ElementStatus.REJECTED;
+
+                case APPROVED_CONCEPT:
+                    return ElementStatus.APPROVED_CONCEPT;
+
+                case UNDER_DEVELOPMENT:
+                    return ElementStatus.UNDER_DEVELOPMENT;
+
+                case DEVELOPMENT_COMPLETE:
+                    return ElementStatus.DEVELOPMENT_COMPLETE;
+
+                case APPROVED_FOR_DEPLOYMENT:
+                    return ElementStatus.APPROVED_FOR_DEPLOYMENT;
+
+                case STANDBY:
+                    return ElementStatus.STANDBY;
+
+                case ACTIVE:
+                    return ElementStatus.ACTIVE;
+
+                case FAILED:
+                    return ElementStatus.FAILED;
+
+                case DISABLED:
+                    return ElementStatus.DISABLED;
+
+                case COMPLETE:
+                    return ElementStatus.COMPLETE;
+
+                case DEPRECATED:
+                    return ElementStatus.DEPRECATED;
+
+                case OTHER:
+                    return ElementStatus.OTHER;
+            }
+        }
+
+        return ElementStatus.UNKNOWN;
+    }
 
     /**
      * Extract the properties from the entity.

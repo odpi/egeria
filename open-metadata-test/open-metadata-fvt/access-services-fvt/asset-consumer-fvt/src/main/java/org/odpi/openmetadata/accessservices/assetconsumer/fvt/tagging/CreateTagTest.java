@@ -32,18 +32,20 @@ public class CreateTagTest
      * The tag name is constant - the guid is created as part of the test.
      */
     private final static String publicTag1Name         = "TestPublicTag1";
-    private final static String publicTag1Description  = "PublicTag1 description";
+    private final static String publicTag1Description1 = "PublicTag1 description1";
+    private final static String publicTag1Description2 = "PublicTag1 description2";
     private final static String publicTag2Name         = "TestPublicTag2";
-    private final static String publicTag2Description  = "PublicTag2 description";
+    private final static String publicTag2Description1 = "PublicTag2 description1";
+    private final static String publicTag2Description2 = "PublicTag2 description2";
     private final static String privateTagName         = "TestPrivateTag";
     private final static String privateTagDescription1 = "PrivateTag description1";
     private final static String privateTagDescription2 = "PrivateTag description2";
 
     private final static String differentUser = "newUserId";
 
-    private final static String searchStringGetAll     = "PrivateTag description";
-    private final static String searchStringGetNone    = "PrivateTag description";
-    private final static String searchStringGetPrivate = "PrivateTag description";
+    private final static String searchStringGetAll     = "Tag";
+    private final static String searchStringGetNone    = "Blah";
+    private final static String searchStringGetPrivate = "Private";
 
 
 
@@ -96,6 +98,7 @@ public class CreateTagTest
 
         AuditLog auditLog = new AuditLog(auditLogDestination,
                                          AccessServiceDescription.ASSET_CONSUMER_OMAS.getAccessServiceCode(),
+                                         AccessServiceDescription.ASSET_CONSUMER_OMAS.getAccessServiceDevelopmentStatus(),
                                          AccessServiceDescription.ASSET_CONSUMER_OMAS.getAccessServiceName(),
                                          AccessServiceDescription.ASSET_CONSUMER_OMAS.getAccessServiceDescription(),
                                          AccessServiceDescription.ASSET_CONSUMER_OMAS.getAccessServiceWiki());
@@ -105,12 +108,25 @@ public class CreateTagTest
 
         String assetGUID = factory.getAsset(userId);
         System.out.println("AssetGUID: " + assetGUID);
+
         String schemaTypeGUID = factory.getSchemaType(userId, assetGUID);
         System.out.println("SchemaTypeGUID: " + schemaTypeGUID);
+
         String asset2GUID = factory.getAssetFromTemplate(userId, assetGUID);
         System.out.println("Asset2GUID: " + asset2GUID);
-        String publicTagGUID = thisTest.getPublicTag(client, userId);
-        System.out.println("PublicTagGUID: " + publicTagGUID);
+
+        /* Create Tag */
+        String publicTag1GUID = thisTest.getTagTest(client, userId, publicTag1Name, publicTag1Description1, false, "getPublicTag", "PublicTag1");
+        System.out.println("PublicTag1GUID: " + publicTag1GUID);
+        String publicTag2GUID = thisTest.getTagTest(client, userId, publicTag2Name, publicTag2Description1, false, "getPublicTag", "PublicTag2");
+        System.out.println("PublicTag2GUID: " + publicTag2GUID);
+        String privateTagGUID = thisTest.getTagTest(client, userId, privateTagName, privateTagDescription1, true, "getPrivateTag", "PrivateTag");
+        System.out.println("PrivateTagGUID: " + privateTagGUID);
+
+        /* Update Tag */
+        thisTest.updateTagTest(client, userId, publicTag1GUID, publicTag1Name, publicTag1Description2, false, "updatePublicTag1", "PublicTag1");
+        thisTest.updateTagTest(client, userId, publicTag2GUID, publicTag2Name, publicTag2Description2, false, "updatePublicTag2", "PublicTag2");
+        thisTest.updateTagTest(client, userId, privateTagGUID, privateTagName, privateTagDescription2, true, "updatePrivateTag", "PrivateTag");
     }
 
 
@@ -143,184 +159,102 @@ public class CreateTagTest
     }
 
 
+
     /**
-     * Create a public tag and return its GUID.  Also test the
+     * Create a tag, retrieve it by different methods and return its GUID.  Also test the retrieve methods
      *
      * @param client interface to Asset Consumer OMAS
      * @param userId calling user
+     * @param tagName name of tag to store
+     * @param tagDescription description of tag to store
+     * @param isPrivate should this be a private tag or not?
+     * @param testCaseName name of the test case
+     * @param tagTypeName name of tag in reporting output
      * @return GUID of privateTag
      * @throws FVTUnexpectedCondition the test case failed
      */
-    private String getPublicTag(AssetConsumer client,
-                                String        userId) throws FVTUnexpectedCondition
+    private String getTagTest(AssetConsumer client,
+                              String        userId,
+                              String        tagName,
+                              String        tagDescription,
+                              boolean       isPrivate,
+                              String        testCaseName,
+                              String        tagTypeName) throws FVTUnexpectedCondition
     {
-        final String methodName = "getPublicTag";
-
-
         try
         {
-            String activityName = methodName + "::createPrivateTag";
+            String activityName = testCaseName + "::create" + tagTypeName;
             System.out.println();
-            String privateTagGUID = client.createPrivateTag(userId, privateTagName, privateTagDescription1);
-            if (privateTagGUID == null)
+            String tagGUID;
+
+            if (isPrivate)
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GUID for create of private tag)");
+                tagGUID = client.createPrivateTag(userId, tagName, tagDescription);
+            }
+            else
+            {
+                tagGUID = client.createPublicTag(userId, tagName, tagDescription);
+            }
+            if (tagGUID == null)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GUID for create of" +  tagTypeName + ")");
             }
 
-            activityName = methodName + "::getAfterCreatePrivateTag";
-            InformalTagElement    retrievedElement = client.getTag(userId, privateTagGUID);
-            InformalTagProperties retrievedTag     = retrievedElement.getInformalTagProperties();
+            activityName = testCaseName + "::getByGUIDAfterCreate" + tagTypeName;
+            InformalTagElement    retrievedElement = client.getTag(userId, tagGUID);
 
-            if (retrievedTag == null)
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no PrivateTag from Retrieve of private tag)");
-            }
+            this.validateTag(retrievedElement, userId, tagName, tagDescription, isPrivate, activityName, tagTypeName);
 
-            if (! privateTagName.equals(retrievedTag.getName()))
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad tag name from Retrieve of private tag)");
-            }
-            if (! privateTagDescription1.equals(retrievedTag.getDescription()))
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from Retrieve of private tag)");
-            }
-            if (! retrievedTag.getIsPrivateTag())
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Returned as public tag by Retrieve of private tag)");
-            }
-            if (! userId.equals(retrievedTag.getUser()))
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad user from Retrieve of private tag)");
-            }
+            activityName = testCaseName + "::getByNameAfterCreate" + tagTypeName;
+            List<InformalTagElement> tagList = client.getTagsByName(userId, tagName, 0, maxPageSize);
 
-            activityName = methodName + "::getByNameAfterCreatePrivateTag";
-            List<InformalTagElement> privateTagList = client.getTagsByName(userId, privateTagName, 0, maxPageSize);
-
-            if (privateTagList == null)
+            if (tagList == null)
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no PrivateTag for RetrieveByName of private tag)");
+                Thread.sleep(600);
+                tagList = client.getTagsByName(userId, tagName, 0, maxPageSize);
             }
-            else if (privateTagList.isEmpty())
+            if (tagList == null)
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Empty list for RetrieveByName of private tag)");
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no tag for RetrieveByName of " + tagTypeName + ")");
             }
-            else if (privateTagList.size() != 1)
+            else if (tagList.isEmpty())
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Empty list for RetrieveByName of " + tagTypeName + ")");
+            }
+            else if (tagList.size() != 1)
             {
                 throw new FVTUnexpectedCondition(testCaseName,
-                                                 activityName + "(PrivateTag list for RetrieveByName contains" + privateTagList.size() +
-                                                 " elements)");
-            }
-
-            retrievedElement = privateTagList.get(0);
-            retrievedTag = retrievedElement.getInformalTagProperties();
-
-            if (! privateTagName.equals(retrievedTag.getName()))
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad tag name from RetrieveByName of private tag)");
-            }
-            if (! privateTagDescription1.equals(retrievedTag.getDescription()))
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName of private tag)");
-            }
-            if (! retrievedTag.getIsPrivateTag())
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Returned as public tag by RetrieveByName of private tag)");
-            }
-            if (! userId.equals(retrievedTag.getUser()))
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad user from RetrieveByName of private tag)");
-            }
-
-            activityName = methodName + "::getHiddenPrivateTag";
-            try
-            {
-                retrievedElement = client.getTag(differentUser, privateTagGUID);
-                if (retrievedElement == null)
-                {
-                    throw new FVTUnexpectedCondition(testCaseName, activityName + "(Null Private tag returned to wrong user");
-                }
-                else
-                {
-                    throw new FVTUnexpectedCondition(testCaseName,
-                                                     activityName + "(Private tag returned to wrong user: " + retrievedElement.toString() + ")");
-                }
-            }
-            catch (InvalidParameterException notFound)
-            {
-                // expected because this is a private tag
-            }
-
-            activityName = methodName + "::createPublicTag1";
-            String publicTag1GUID = client.createPublicTag(userId, publicTag1Name, publicTag1Description);
-            if (publicTag1GUID == null)
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GUID for create of public tag 1)");
-            }
-
-            activityName = methodName + "::getTagAfterCreatePublicTag1";
-            retrievedElement = client.getTag(userId, publicTag1GUID);
-            retrievedTag     = retrievedElement.getInformalTagProperties();
-
-            if (retrievedTag == null)
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no PublicTag from Retrieve of public tag 1)");
-            }
-
-            if (! publicTag1Name.equals(retrievedTag.getName()))
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad tag name from Retrieve of public tag 1)");
-            }
-            if (! publicTag1Description.equals(retrievedTag.getDescription()))
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from Retrieve of public tag 1)");
-            }
-            if (! userId.equals(retrievedTag.getUser()))
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad user from Retrieve of public tag 1)");
-            }
-
-            activityName = methodName + "::getTagByNameAfterCreatePublicTag1";
-            List<InformalTagElement> retrievedTagList = client.getTagsByName(userId, publicTag1Name, 0, maxPageSize);
-
-            if (retrievedTagList == null)
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Null result for RetrieveByName of public tag 1)");
-            }
-            else if (retrievedTagList.isEmpty())
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Empty list for RetrieveByName of public tag 1)");
-            }
-            else if (retrievedTagList.size() != 1)
-            {
-                throw new FVTUnexpectedCondition(testCaseName,
-                                                 activityName + "(Public tag 1 list for RetrieveByName contains" + retrievedTagList.size() +
+                                                 activityName + "(" + tagTypeName + " list for RetrieveByName contains" + tagList.size() +
                                                          " elements)");
             }
 
-            retrievedElement = retrievedTagList.get(0);
-            retrievedTag = retrievedElement.getInformalTagProperties();
+            retrievedElement = tagList.get(0);
 
-            if (! publicTag1Name.equals(retrievedTag.getName()))
+            this.validateTag(retrievedElement, userId, tagName, tagDescription, isPrivate, activityName, tagTypeName);
+
+            if (isPrivate)
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad tag name from RetrieveByName of public tag 1)");
-            }
-            if (! publicTag1Description.equals(retrievedTag.getDescription()))
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName of public tag 1)");
-            }
-            if (! userId.equals(retrievedTag.getUser()))
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad user from RetrieveByName of public tag 1)");
+                activityName = testCaseName + "::getHiddenPrivateTag";
+                try
+                {
+                    retrievedElement = client.getTag(differentUser, tagGUID);
+                    if (retrievedElement == null)
+                    {
+                        throw new FVTUnexpectedCondition(testCaseName, activityName + "(Null Private tag returned to wrong user");
+                    }
+                    else
+                    {
+                        throw new FVTUnexpectedCondition(testCaseName,
+                                                         activityName + "(Private tag returned to wrong user: " + retrievedElement.toString() + ")");
+                    }
+                }
+                catch (InvalidParameterException notFound)
+                {
+                    // expected because this is a private tag
+                }
             }
 
-            activityName = methodName + "::getTagAfterCreatePublicTag2";
-            String publicTag2GUID = client.createPublicTag(userId, publicTag2Name, publicTag2Description);
-            if (publicTag2GUID == null)
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GUID for create of public tag 2)");
-            }
-
-            return publicTag1GUID;
+            return tagGUID;
         }
         catch (FVTUnexpectedCondition testCaseError)
         {
@@ -328,7 +262,98 @@ public class CreateTagTest
         }
         catch (Exception unexpectedError)
         {
-            throw new FVTUnexpectedCondition(testCaseName, methodName, unexpectedError);
+            throw new FVTUnexpectedCondition(testCaseName, testCaseName, unexpectedError);
+        }
+    }
+
+
+    private void updateTagTest(AssetConsumer client,
+                               String        userId,
+                               String        tagGUID,
+                               String        tagName,
+                               String        newTagDescription,
+                               boolean       isPrivate,
+                               String        testCaseName,
+                               String        tagTypeName) throws FVTUnexpectedCondition
+    {
+        try
+        {
+            String activityName = testCaseName + "::update" + tagTypeName;
+            System.out.println();
+
+            client.updateTagDescription(userId, tagGUID, newTagDescription);
+
+            InformalTagElement  retrievedElement = client.getTag(userId, tagGUID);
+
+            this.validateTag(retrievedElement, userId, tagName, newTagDescription, isPrivate, activityName, tagTypeName);
+        }
+        catch (FVTUnexpectedCondition testCaseError)
+        {
+            throw testCaseError;
+        }
+        catch (Exception unexpectedError)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, testCaseName, unexpectedError);
+        }
+    }
+
+
+    /**
+     * Create a tag, retrieve it by different methods and return its GUID.  Also test the retrieve methods
+     *
+     * @param retrievedElement element to test
+     * @param userId calling user
+     * @param tagName name of tag to store
+     * @param tagDescription description of tag to store
+     * @param isPrivate should this be a private tag or not?
+     * @param activityName name of the test case
+     * @param tagTypeName name of tag in reporting output
+     * @return GUID of privateTag
+     * @throws FVTUnexpectedCondition the test case failed
+     */
+    private void validateTag(InformalTagElement retrievedElement,
+                             String             userId,
+                             String             tagName,
+                             String             tagDescription,
+                             boolean            isPrivate,
+                             String             activityName,
+                             String             tagTypeName) throws FVTUnexpectedCondition
+    {
+        InformalTagProperties retrievedTag = retrievedElement.getInformalTagProperties();
+
+        if (retrievedTag == null)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName + "(no tag from Retrieve of " + tagTypeName + " by GUID)");
+        }
+
+        if (! tagName.equals(retrievedTag.getName()))
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad tag name <" + retrievedTag.getName() + "> from Retrieve of " + tagTypeName + " by GUID).  Full Tag is " + retrievedElement.toString());
+        }
+        if (! tagDescription.equals(retrievedTag.getDescription()))
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description <" + retrievedTag.getDescription() + "> from Retrieve of " + tagTypeName + " by GUID)");
+        }
+        if (isPrivate)
+        {
+            if (! retrievedTag.getIsPrivateTag())
+            {
+                throw new FVTUnexpectedCondition(testCaseName,
+                                                 activityName + "(Returned as public tag by Retrieve of " + tagTypeName + " by GUID)");
+            }
+        }
+        else
+        {
+            if (retrievedTag.getIsPrivateTag())
+            {
+                throw new FVTUnexpectedCondition(testCaseName,
+                                                 activityName + "(Returned as private tag by Retrieve of " + tagTypeName + " by GUID)");
+            }
+        }
+
+        if (! userId.equals(retrievedTag.getUser()))
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad user from Retrieve of " + tagTypeName + " by GUID)");
         }
     }
 }

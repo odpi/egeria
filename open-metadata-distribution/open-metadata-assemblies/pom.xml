@@ -10,7 +10,7 @@
     <parent>
         <artifactId>open-metadata-distribution</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.5-SNAPSHOT</version>
+        <version>3.8-SNAPSHOT</version>
     </parent>
 
     <name>Open Metadata Assemblies</name>
@@ -140,6 +140,10 @@
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-metadata-archive-directory-connector</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>open-metadata-security-samples</artifactId>
         </dependency>
         <dependency>
@@ -173,6 +177,10 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>governance-leadership-sample</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>governance-subject-area-sample</artifactId>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
@@ -265,6 +273,10 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-analysis-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>repository-governance-client</artifactId>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>

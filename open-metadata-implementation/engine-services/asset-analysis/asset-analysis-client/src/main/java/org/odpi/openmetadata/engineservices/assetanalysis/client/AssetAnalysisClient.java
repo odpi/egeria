@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.discoveryengine.rest.DiscoveryAnalys
 import org.odpi.openmetadata.accessservices.discoveryengine.rest.DiscoveryRequestRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.properties.ConnectorReport;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
@@ -16,7 +17,6 @@ import org.odpi.openmetadata.engineservices.assetanalysis.client.rest.AssetAnaly
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryEngine;
 import org.odpi.openmetadata.frameworks.discovery.ffdc.DiscoveryEngineException;
 import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
@@ -90,16 +90,16 @@ public class AssetAnalysisClient extends DiscoveryEngine implements AssetAnalysi
      * @param userId calling user
      * @param connectorProviderClassName name of a specific connector or null for all connectors
      *
-     * @return connector type for this connector
+     * @return connector report for this connector
      *
      * @throws InvalidParameterException the connector provider class name is not a valid connector fo this service
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException there was a problem detected by the integration service
      */
-    public ConnectorType validateConnector(String userId,
-                                           String connectorProviderClassName) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+    public ConnectorReport validateConnector(String userId,
+                                             String connectorProviderClassName) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
     {
         final String   methodName = "validateConnector";
         final String   nameParameter = "connectorProviderClassName";
@@ -114,7 +114,7 @@ public class AssetAnalysisClient extends DiscoveryEngine implements AssetAnalysi
                                                                                       userId,
                                                                                       connectorProviderClassName);
 
-        return restResult.getConnectorType();
+        return new ConnectorReport(restResult);
     }
 
 

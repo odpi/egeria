@@ -29,7 +29,7 @@ import java.util.List;
      description="The Data Manager OMAS provides APIs for tools and applications wishing to manage metadata relating to data managers " +
                          "such as database servers, event brokers, content managers and file systems.",
      externalDocs=@ExternalDocumentation(description="Data Manager Open Metadata Access Service (OMAS)",
-                                         url="https://odpi.github.io/egeria-docs/services/omas/data-manager/overview/"))
+                                         url="https://egeria-project.org/services/omas/data-manager/overview/"))
 
 public class ConnectionManagerResource
 {

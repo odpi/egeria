@@ -6,11 +6,11 @@ import org.odpi.openmetadata.adminservices.configuration.registration.EngineServ
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.properties.ConnectorReport;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
-import org.odpi.openmetadata.engineservices.governanceaction.rest.ProviderReportResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 
-import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionService;
+import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionServiceConnector;
 import org.slf4j.LoggerFactory;
 
 
@@ -36,30 +36,34 @@ public class GovernanceActionRESTServices
      * @param userId calling user
      * @param connectorProviderClassName name of a specific connector or null for all connectors
      *
-     * @return connector type or
+     * @return connector report or
      *
      *  InvalidParameterException the connector provider class name is not a valid connector fo this service
      *  UserNotAuthorizedException user not authorized to issue this request
      *  PropertyServerException there was a problem detected by the integration service
      */
-    public ProviderReportResponse validateConnector(String serverName,
-                                                    String userId,
-                                                    String connectorProviderClassName)
+    public ConnectorTypeResponse validateConnector(String serverName,
+                                                   String userId,
+                                                   String connectorProviderClassName)
     {
         final String methodName = "validateConnector";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ProviderReportResponse response = new ProviderReportResponse();
-        AuditLog               auditLog = null;
+        ConnectorTypeResponse response = new ConnectorTypeResponse();
+        AuditLog              auditLog = null;
 
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setProviderReport(instanceHandler.validateGovernanceActionConnector(connectorProviderClassName,
-                                                                                         GovernanceActionService.class,
-                                                                                         EngineServiceDescription.GOVERNANCE_ACTION_OMES.getEngineServiceFullName()));
+            ConnectorReport connectorReport = instanceHandler.validateConnector(connectorProviderClassName,
+                                                                                GovernanceActionServiceConnector.class,
+                                                                                EngineServiceDescription.GOVERNANCE_ACTION_OMES.getEngineServiceFullName());
+            if (connectorReport != null)
+            {
+                response = new ConnectorTypeResponse(connectorReport);
+            }
         }
         catch (Exception error)
         {

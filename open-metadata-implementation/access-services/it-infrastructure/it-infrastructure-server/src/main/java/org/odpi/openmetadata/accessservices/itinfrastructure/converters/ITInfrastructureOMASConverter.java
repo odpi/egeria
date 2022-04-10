@@ -6,10 +6,12 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.El
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ElementHeader;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ElementOrigin;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ElementOriginCategory;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ElementStatus;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ElementStub;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ElementType;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ElementVersions;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ContactMethodType;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.PortType;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ServerAssetUseType;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
@@ -21,6 +23,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
@@ -96,6 +99,7 @@ public class ITInfrastructureOMASConverter<B> extends OpenMetadataAPIGenericConv
      *
      * @param beanClass name of the class to create
      * @param header header from the entity containing the properties
+     * @param entityClassifications classifications associated with the header
      * @param methodName calling method
      * @return filled out element header
      * @throws PropertyServerException there is a problem in the use of the generic handlers because
@@ -111,6 +115,7 @@ public class ITInfrastructureOMASConverter<B> extends OpenMetadataAPIGenericConv
             ElementHeader elementHeader = new ElementHeader();
 
             elementHeader.setGUID(header.getGUID());
+            elementHeader.setStatus(this.getElementStatus(header.getStatus()));
             elementHeader.setClassifications(this.getEntityClassifications(entityClassifications));
             elementHeader.setType(this.getElementType(header));
 
@@ -136,6 +141,75 @@ public class ITInfrastructureOMASConverter<B> extends OpenMetadataAPIGenericConv
         }
 
         return null;
+    }
+
+
+    /**
+     * Translate the repository services' InstanceStatus to an ElementStatus.
+     *
+     * @param instanceStatus value from the repository services
+     * @return ElementStatus enum
+     */
+    ElementStatus getElementStatus(InstanceStatus instanceStatus)
+    {
+        if (instanceStatus != null)
+        {
+            switch (instanceStatus)
+            {
+                case UNKNOWN:
+                    return ElementStatus.UNKNOWN;
+
+                case DRAFT:
+                    return ElementStatus.DRAFT;
+
+                case PREPARED:
+                    return ElementStatus.PREPARED;
+
+                case PROPOSED:
+                    return ElementStatus.PROPOSED;
+
+                case APPROVED:
+                    return ElementStatus.APPROVED;
+
+                case REJECTED:
+                    return ElementStatus.REJECTED;
+
+                case APPROVED_CONCEPT:
+                    return ElementStatus.APPROVED_CONCEPT;
+
+                case UNDER_DEVELOPMENT:
+                    return ElementStatus.UNDER_DEVELOPMENT;
+
+                case DEVELOPMENT_COMPLETE:
+                    return ElementStatus.DEVELOPMENT_COMPLETE;
+
+                case APPROVED_FOR_DEPLOYMENT:
+                    return ElementStatus.APPROVED_FOR_DEPLOYMENT;
+
+                case STANDBY:
+                    return ElementStatus.STANDBY;
+
+                case ACTIVE:
+                    return ElementStatus.ACTIVE;
+
+                case FAILED:
+                    return ElementStatus.FAILED;
+
+                case DISABLED:
+                    return ElementStatus.DISABLED;
+
+                case COMPLETE:
+                    return ElementStatus.COMPLETE;
+
+                case DEPRECATED:
+                    return ElementStatus.DEPRECATED;
+
+                case OTHER:
+                    return ElementStatus.OTHER;
+            }
+        }
+
+        return ElementStatus.UNKNOWN;
     }
 
 
@@ -264,6 +338,7 @@ public class ITInfrastructureOMASConverter<B> extends OpenMetadataAPIGenericConv
     /**
      * Extract the requested classification from the entity.
      *
+     * @param classificationName name of classification
      * @param entity entity containing the classifications
      * @return list of bean classifications
      */
@@ -604,5 +679,36 @@ public class ITInfrastructureOMASConverter<B> extends OpenMetadataAPIGenericConv
         }
 
         return serverAssetUseType;
+    }
+
+
+
+    /**
+     * Extract and delete the portType property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return PortType enum
+     */
+    PortType removePortType(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removePortType";
+
+        if (instanceProperties != null)
+        {
+            int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName,
+                                                                     OpenMetadataAPIMapper.PORT_TYPE_PROPERTY_NAME,
+                                                                     instanceProperties,
+                                                                     methodName);
+
+            for (PortType portType : PortType.values())
+            {
+                if (portType.getOpenTypeOrdinal() == ordinal)
+                {
+                    return portType;
+                }
+            }
+        }
+
+        return PortType.OTHER;
     }
 }

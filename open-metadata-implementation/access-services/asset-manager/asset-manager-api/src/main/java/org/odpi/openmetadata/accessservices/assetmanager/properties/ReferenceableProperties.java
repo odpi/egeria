@@ -39,6 +39,9 @@ public class ReferenceableProperties implements Serializable
     private String               qualifiedName        = null;
     private Map<String, String>  additionalProperties = null;
 
+    private Date                 effectiveFrom        = null;
+    private Date                 effectiveTo          = null;
+
     private Map<String, String>  vendorProperties     = null;
 
     private String               typeName             = null;
@@ -64,6 +67,9 @@ public class ReferenceableProperties implements Serializable
         {
             qualifiedName        = template.getQualifiedName();
             additionalProperties = template.getAdditionalProperties();
+
+            effectiveFrom        = template.getEffectiveFrom();
+            effectiveTo          = template.getEffectiveTo();
 
             vendorProperties     = template.getVendorProperties();
 
@@ -126,6 +132,50 @@ public class ReferenceableProperties implements Serializable
         {
             return new HashMap<>(additionalProperties);
         }
+    }
+
+
+    /**
+     * Return the date/time that this element is effective from (null means effective from the epoch).
+     *
+     * @return date object
+     */
+    public Date getEffectiveFrom()
+    {
+        return effectiveFrom;
+    }
+
+
+    /**
+     * Set up the date/time that this element is effective from (null means effective from the epoch).
+     *
+     * @param effectiveFrom date object
+     */
+    public void setEffectiveFrom(Date effectiveFrom)
+    {
+        this.effectiveFrom = effectiveFrom;
+    }
+
+
+    /**
+     * Return the date/time that element is effective to (null means that it is effective indefinitely into the future).
+     *
+     * @return date object
+     */
+    public Date getEffectiveTo()
+    {
+        return effectiveTo;
+    }
+
+
+    /**
+     * Set the date/time that element is effective to (null means that it is effective indefinitely into the future).
+     *
+     * @param effectiveTo date object
+     */
+    public void setEffectiveTo(Date effectiveTo)
+    {
+        this.effectiveTo = effectiveTo;
     }
 
 
@@ -256,10 +306,12 @@ public class ReferenceableProperties implements Serializable
         }
         ReferenceableProperties that = (ReferenceableProperties) objectToCompare;
         return Objects.equals(qualifiedName, that.qualifiedName) &&
-                Objects.equals(additionalProperties, that.additionalProperties) &&
-                Objects.equals(vendorProperties, that.vendorProperties) &&
-                Objects.equals(typeName, that.typeName) &&
-                Objects.equals(extendedProperties, that.extendedProperties);
+                       Objects.equals(additionalProperties, that.additionalProperties) &&
+                       Objects.equals(effectiveFrom, that.effectiveFrom) &&
+                       Objects.equals(effectiveTo, that.effectiveTo) &&
+                       Objects.equals(vendorProperties, that.vendorProperties) &&
+                       Objects.equals(typeName, that.typeName) &&
+                       Objects.equals(extendedProperties, that.extendedProperties);
     }
 
 
@@ -271,6 +323,6 @@ public class ReferenceableProperties implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(qualifiedName, additionalProperties, vendorProperties, typeName, extendedProperties);
+        return Objects.hash(qualifiedName, additionalProperties, effectiveFrom, effectiveTo, vendorProperties, typeName, extendedProperties);
     }
 }

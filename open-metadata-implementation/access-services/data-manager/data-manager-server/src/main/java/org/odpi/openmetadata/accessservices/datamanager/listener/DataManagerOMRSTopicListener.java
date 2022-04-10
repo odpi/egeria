@@ -11,10 +11,12 @@ import org.odpi.openmetadata.accessservices.datamanager.server.DataManagerServic
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -45,10 +47,13 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
      * Initialize the topic listener.
      *
      * @param supportedZones list of zones for the visible assets
-     * @param serviceName this is the full name of the service - used for error logging in base class
      * @param publisher this is the out topic publisher.
-     * @param repositoryHelper repository helper
+     * @param serverUserId this servers user id for accessing the repositories
      * @param auditLog logging destination
+     * @param serviceName this is the full name of the service - used for error logging in base class
+     * @param repositoryHelper repository helper
+     * @param serverName this server
+     * @param instance server instance
      */
     public DataManagerOMRSTopicListener(List<String>                 supportedZones,
                                         DataManagerOutTopicPublisher publisher,
@@ -94,60 +99,115 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
                                     String                       originatorServerType,
                                     String                       originatorOrganizationName,
                                     EntityDetail                 entity,
+                                    EntityProxy                  entityProxy,
                                     String                       classificationName,
                                     String                       methodName)
     {
         final String entityGUIDParameterName = "entity.getGUID()";
 
-        Date effectiveTime = new Date();
+        String instanceTypeName = null;
 
-        String instanceTypeName = this.getInstanceTypeName(sourceName,
-                                                           originatorMetadataCollectionId,
-                                                           originatorServerName,
-                                                           originatorServerType,
-                                                           originatorOrganizationName,
-                                                           entity,
-                                                           methodName);
+        if (entity != null)
+        {
+            instanceTypeName = this.getInstanceTypeName(sourceName,
+                                                        originatorMetadataCollectionId,
+                                                        originatorServerName,
+                                                        originatorServerType,
+                                                        originatorOrganizationName,
+                                                        entity,
+                                                        methodName);
+        }
+        else if (entityProxy != null)
+        {
+            instanceTypeName = this.getInstanceTypeName(sourceName,
+                                                        originatorMetadataCollectionId,
+                                                        originatorServerName,
+                                                        originatorServerType,
+                                                        originatorOrganizationName,
+                                                        entityProxy,
+                                                        methodName);
+        }
 
         if (instanceTypeName != null)
         {
             try
             {
-                ElementStub elementStub = converter.getElementStub(ElementStub.class, entity, methodName);
+                Date effectiveTime = new Date();
 
-                if ((repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.DATA_SET_TYPE_NAME)) ||
-                    (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.DATA_STORE_TYPE_NAME)) ||
-                    (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME)))
+                ElementStub elementStub;
+
+                if (entity != null)
                 {
-                    genericHandler.validateAnchorEntity(serverUserId,
-                                                        entity.getGUID(),
-                                                        instanceTypeName,
-                                                        entity,
-                                                        entityGUIDParameterName,
-                                                        false,
-                                                        false,
-                                                        false,
-                                                        supportedZones,
-                                                        effectiveTime,
-                                                        methodName);
+                    elementStub = converter.getElementStub(ElementStub.class, entity, methodName);
+                }
+                else
+                {
+                    elementStub = converter.getElementStub(ElementStub.class, entityProxy, methodName);
+                }
+
+                if (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME))
+                {
+                    if (entity != null)
+                    {
+                        genericHandler.validateAnchorEntity(serverUserId,
+                                                            entity.getGUID(),
+                                                            instanceTypeName,
+                                                            entity,
+                                                            entityGUIDParameterName,
+                                                            false,
+                                                            false,
+                                                            false,
+                                                            supportedZones,
+                                                            effectiveTime,
+                                                            methodName);
+
+                    }
+                    else /* proxy */
+                    {
+                        genericHandler.validateAnchorEntity(serverUserId,
+                                                            entityProxy.getGUID(),
+                                                            entityGUIDParameterName,
+                                                            instanceTypeName,
+                                                            false,
+                                                            false,
+                                                            false,
+                                                            supportedZones,
+                                                            effectiveTime,
+                                                            methodName);
+                    }
 
                     /*
                      * The event will publish if the entity is visible through this interface.
                      */
-                    publisher.sendEntityEvent(eventType, entity.getGUID(), instanceTypeName, classificationName, elementStub);
+                    publisher.sendEntityEvent(eventType, elementStub.getGUID(), instanceTypeName, classificationName, elementStub);
                 }
             }
-            catch (UserNotAuthorizedException error)
+            catch (UserNotAuthorizedException | InvalidParameterException error)
             {
                 // message already logged
             }
             catch (Exception error)
-            {    auditLog.logException(methodName,
-                                      DataManagerAuditCode.OUTBOUND_EVENT_EXCEPTION.getMessageDefinition(entity.getGUID(),
-                                                                                                         instanceTypeName,
-                                                                                                         error.getClass().getName(),
-                                                                                                         error.getMessage()),
-                                      error);
+            {
+                if (entity != null)
+                {
+                    auditLog.logException(methodName,
+                                          DataManagerAuditCode.OUTBOUND_EVENT_EXCEPTION.getMessageDefinition(eventType.getEventTypeName(),
+                                                                                                             entity.getGUID(),
+                                                                                                             instanceTypeName,
+                                                                                                             error.getClass().getName(),
+                                                                                                             error.getMessage()),
+                                          error);
+                }
+                else /* proxy */
+                {
+                    auditLog.logException(methodName,
+                                          DataManagerAuditCode.OUTBOUND_EVENT_EXCEPTION.getMessageDefinition(eventType.getEventTypeName(),
+                                                                                                             entityProxy.getGUID(),
+                                                                                                             instanceTypeName,
+                                                                                                             error.getClass().getName(),
+                                                                                                             error.getMessage()),
+                                          error);
+                }
             }
         }
     }
@@ -199,12 +259,32 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
 
                 if ((repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.SERVER_ENDPOINT_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.API_ENDPOINT_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.CONNECTION_ENDPOINT_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.CONNECTION_CONNECTOR_TYPE_TYPE_NAME)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_NAME)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_NAME)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP_TYPE_NAME)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.MAP_FROM_RELATIONSHIP_TYPE_NAME)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.MAP_TO_RELATIONSHIP_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.API_HEADER_RELATIONSHIP_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.API_REQUEST_RELATIONSHIP_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.API_RESPONSE_RELATIONSHIP_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.API_OPERATIONS_RELATIONSHIP_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.GRAPH_EDGE_LINK_RELATIONSHIP_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.FOREIGN_KEY_RELATIONSHIP_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.NESTED_FILE_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.LINKED_FILE_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.FOLDER_HIERARCHY_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.LINKED_MEDIA_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.GROUPED_MEDIA_TYPE_GUID)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.TOPIC_SUBSCRIBERS_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.ASSOCIATED_LOG_TYPE_NAME)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME)))
                 {
                     genericHandler.validateAnchorEntity(serverUserId,
@@ -235,9 +315,12 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
                     publisher.sendRelationshipEvent(eventType, relationship.getGUID(), instanceTypeName, relationshipElementStub, endOneElementStub, endTwoElementStub);
                 }
             }
-            catch (UserNotAuthorizedException error)
+            catch (UserNotAuthorizedException | InvalidParameterException error)
             {
-                // message already logged
+                /*
+                 * InvalidParameterException is returned if an entity is not visible due to the zones.
+                 * UserNotAuthorizedException means that the server's userId is not allowed to access the entity.
+                 */
             }
             catch (Exception error)
             {
@@ -250,6 +333,8 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
             }
         }
     }
+
+
 
 
     /*
@@ -280,7 +365,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processNewEntityEvent";
 
-        final DataManagerOutboundEventType eventType = DataManagerOutboundEventType.NEW_ELEMENT_EVENT;
+        final DataManagerOutboundEventType eventType = DataManagerOutboundEventType.NEW_ELEMENT_CREATED;
 
         log.debug("Processing new Entity event from: " + sourceName);
 
@@ -292,8 +377,10 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
                                 originatorOrganizationName,
                                 entity,
                                 null,
+                                null,
                                 methodName);
     }
+
 
     /**
      * An existing entity has been updated.
@@ -319,7 +406,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processUpdatedEntityEvent";
 
-        final DataManagerOutboundEventType eventType = DataManagerOutboundEventType.UPDATED_ELEMENT_EVENT;
+        final DataManagerOutboundEventType eventType = DataManagerOutboundEventType.ELEMENT_UPDATED;
 
         log.debug("Processing updated Entity event from: " + sourceName);
 
@@ -331,6 +418,48 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
                                 originatorOrganizationName,
                                 newEntity,
                                 null,
+                                null,
+                                methodName);
+    }
+
+
+    /**
+     * A new classification has been added to an entityProxy.
+     *
+     * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
+     *                   local repository, or event mapper name.
+     * @param originatorMetadataCollectionId  unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName  name of the server that the event came from.
+     * @param originatorServerType  type of server that the event came from.
+     * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
+     * @param entityProxy  details of the entityProxy with the new classification added. No guarantee this is all of the classifications.
+     * @param classification new classification
+     */
+    @Override
+    public void processClassifiedEntityEvent(String         sourceName,
+                                             String         originatorMetadataCollectionId,
+                                             String         originatorServerName,
+                                             String         originatorServerType,
+                                             String         originatorOrganizationName,
+                                             EntityProxy    entityProxy,
+                                             Classification classification)
+    {
+        final String methodName = "processClassifiedEntityEvent(proxy)";
+
+        final DataManagerOutboundEventType eventType = DataManagerOutboundEventType.ELEMENT_CLASSIFIED;
+
+        log.debug("Processing classified Entity event from: " + sourceName);
+
+        this.processEntityEvent(eventType,
+                                sourceName,
+                                originatorMetadataCollectionId,
+                                originatorServerName,
+                                originatorServerType,
+                                originatorOrganizationName,
+                                null,
+                                entityProxy,
+                                classification.getName(),
                                 methodName);
     }
 
@@ -359,7 +488,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processClassifiedEntityEvent";
 
-        final DataManagerOutboundEventType eventType = DataManagerOutboundEventType.CLASSIFIED_ELEMENT_EVENT;
+        final DataManagerOutboundEventType eventType = DataManagerOutboundEventType.ELEMENT_CLASSIFIED;
 
         log.debug("Processing classified Entity event from: " + sourceName);
 
@@ -370,7 +499,88 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
                                 originatorServerType,
                                 originatorOrganizationName,
                                 entity,
+                                null,
                                 classification.getName(),
+                                methodName);
+    }
+
+
+    /**
+     * A new classification has been added to an entity.
+     *
+     * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
+     *                                       local repository, or event mapper name.
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName           name of the server that the event came from.
+     * @param originatorServerType           type of server that the event came from.
+     * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
+     * @param entity                         details of the entity with the new classification added.
+     */
+    @SuppressWarnings(value = "deprecation")
+    @Override
+    public void processClassifiedEntityEvent(String       sourceName,
+                                             String       originatorMetadataCollectionId,
+                                             String       originatorServerName,
+                                             String       originatorServerType,
+                                             String       originatorOrganizationName,
+                                             EntityDetail entity)
+    {
+        final String methodName = "processClassifiedEntityEvent";
+
+        final DataManagerOutboundEventType eventType = DataManagerOutboundEventType.ELEMENT_CLASSIFIED;
+
+        log.debug("Processing classified Entity event from: " + sourceName);
+
+        this.processEntityEvent(eventType,
+                                sourceName,
+                                originatorMetadataCollectionId,
+                                originatorServerName,
+                                originatorServerType,
+                                originatorOrganizationName,
+                                entity,
+                                null,
+                                null,
+                                methodName);
+    }
+
+
+    /**
+     * A classification has been removed from an entityProxy.
+     *
+     * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
+     *                   local repository, or event mapper name.
+     * @param originatorMetadataCollectionId  unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName  name of the server that the event came from.
+     * @param originatorServerType  type of server that the event came from.
+     * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
+     * @param entityProxy  details of the entityProxy after the classification has been removed. No guarantee this is all of the classifications.
+     * @param originalClassification classification that was removed
+     */
+    public void processDeclassifiedEntityEvent(String         sourceName,
+                                               String         originatorMetadataCollectionId,
+                                               String         originatorServerName,
+                                               String         originatorServerType,
+                                               String         originatorOrganizationName,
+                                               EntityProxy    entityProxy,
+                                               Classification originalClassification)
+    {
+        final String methodName = "processDeclassifiedEntityEvent(proxy)";
+
+        final DataManagerOutboundEventType eventType = DataManagerOutboundEventType.ELEMENT_DECLASSIFIED;
+
+        log.debug("Processing declassified Entity event from: " + sourceName);
+
+        this.processEntityEvent(eventType,
+                                sourceName,
+                                originatorMetadataCollectionId,
+                                originatorServerName,
+                                originatorServerType,
+                                originatorOrganizationName,
+                                null,
+                                entityProxy,
+                                null,
                                 methodName);
     }
 
@@ -399,7 +609,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processDeclassifiedEntityEvent";
 
-        final DataManagerOutboundEventType eventType = DataManagerOutboundEventType.DECLASSIFIED_ELEMENT_EVENT;
+        final DataManagerOutboundEventType eventType = DataManagerOutboundEventType.ELEMENT_DECLASSIFIED;
 
         log.debug("Processing declassified Entity event from: " + sourceName);
 
@@ -410,6 +620,90 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
                                 originatorServerType,
                                 originatorOrganizationName,
                                 entity,
+                                null,
+                                originalClassification.getName(),
+                                methodName);
+    }
+
+
+    /**
+     * A classification has been removed from an entity.
+     *
+     * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
+     *                                       local repository, or event mapper name.
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName           name of the server that the event came from.
+     * @param originatorServerType           type of server that the event came from.
+     * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
+     * @param entity                         details of the entity after the classification has been removed.
+     */
+    @SuppressWarnings(value = "deprecation")
+    @Override
+    public void processDeclassifiedEntityEvent(String       sourceName,
+                                               String       originatorMetadataCollectionId,
+                                               String       originatorServerName,
+                                               String       originatorServerType,
+                                               String       originatorOrganizationName,
+                                               EntityDetail entity)
+    {
+        final String methodName = "processDeclassifiedEntityEvent";
+
+        final DataManagerOutboundEventType eventType = DataManagerOutboundEventType.ELEMENT_DECLASSIFIED;
+
+        log.debug("Processing declassified Entity event from: " + sourceName);
+
+        this.processEntityEvent(eventType,
+                                sourceName,
+                                originatorMetadataCollectionId,
+                                originatorServerName,
+                                originatorServerType,
+                                originatorOrganizationName,
+                                entity,
+                                null,
+                                null,
+                                methodName);
+    }
+
+
+    /**
+     * An existing classification has been changed on an entityProxy.
+     *
+     * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
+     *                   local repository, or event mapper name.
+     * @param originatorMetadataCollectionId  unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName  name of the server that the event came from.
+     * @param originatorServerType  type of server that the event came from.
+     * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
+     * @param entityProxy  details of the entityProxy after the classification has been changed. No guarantee this is all of the classifications.
+     * @param originalClassification classification that was removed
+     * @param classification new classification
+     */
+    @Override
+    public void processReclassifiedEntityEvent(String         sourceName,
+                                               String         originatorMetadataCollectionId,
+                                               String         originatorServerName,
+                                               String         originatorServerType,
+                                               String         originatorOrganizationName,
+                                               EntityProxy    entityProxy,
+                                               Classification originalClassification,
+                                               Classification classification)
+    {
+        final String methodName = "processReclassifiedEntityEvent(proxy)";
+
+        final DataManagerOutboundEventType eventType = DataManagerOutboundEventType.ELEMENT_RECLASSIFIED;
+
+        log.debug("Processing reclassified Entity event from: " + sourceName);
+
+        this.processEntityEvent(eventType,
+                                sourceName,
+                                originatorMetadataCollectionId,
+                                originatorServerName,
+                                originatorServerType,
+                                originatorOrganizationName,
+                                null,
+                                entityProxy,
                                 originalClassification.getName(),
                                 methodName);
     }
@@ -441,7 +735,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processReclassifiedEntityEvent";
 
-        final DataManagerOutboundEventType eventType = DataManagerOutboundEventType.RECLASSIFIED_ELEMENT_EVENT;
+        final DataManagerOutboundEventType eventType = DataManagerOutboundEventType.ELEMENT_RECLASSIFIED;
 
         log.debug("Processing reclassified Entity event from: " + sourceName);
 
@@ -452,7 +746,48 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
                                 originatorServerType,
                                 originatorOrganizationName,
                                 entity,
+                                null,
                                 originalClassification.getName(),
+                                methodName);
+    }
+
+
+    /**
+     * An existing classification has been changed on an entity.
+     *
+     * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
+     *                                       local repository, or event mapper name.
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName           name of the server that the event came from.
+     * @param originatorServerType           type of server that the event came from.
+     * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
+     * @param entity                         details of the entity after the classification has been changed.
+     */
+    @SuppressWarnings(value = "deprecation")
+    @Override
+    public void processReclassifiedEntityEvent(String       sourceName,
+                                               String       originatorMetadataCollectionId,
+                                               String       originatorServerName,
+                                               String       originatorServerType,
+                                               String       originatorOrganizationName,
+                                               EntityDetail entity)
+    {
+        final String methodName = "processReclassifiedEntityEvent";
+
+        final DataManagerOutboundEventType eventType = DataManagerOutboundEventType.ELEMENT_RECLASSIFIED;
+
+        log.debug("Processing reclassified Entity event from: " + sourceName);
+
+        this.processEntityEvent(eventType,
+                                sourceName,
+                                originatorMetadataCollectionId,
+                                originatorServerName,
+                                originatorServerType,
+                                originatorOrganizationName,
+                                entity,
+                                null,
+                                null,
                                 methodName);
     }
 
@@ -486,7 +821,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processDeletedEntityEvent";
 
-        final DataManagerOutboundEventType eventType = DataManagerOutboundEventType.DELETED_ELEMENT_EVENT;
+        final DataManagerOutboundEventType eventType = DataManagerOutboundEventType.ELEMENT_DELETED;
 
         log.debug("Processing deleted Entity event from: " + sourceName);
 
@@ -497,6 +832,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
                                 originatorServerType,
                                 originatorOrganizationName,
                                 entity,
+                                null,
                                 null,
                                 methodName);
     }
@@ -528,7 +864,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processDeletePurgedEntityEvent";
 
-        final DataManagerOutboundEventType eventType = DataManagerOutboundEventType.DELETED_ELEMENT_EVENT;
+        final DataManagerOutboundEventType eventType = DataManagerOutboundEventType.ELEMENT_DELETED;
 
         log.debug("Processing delete-purge entity event from: " + sourceName);
 
@@ -539,6 +875,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
                                 originatorServerType,
                                 originatorOrganizationName,
                                 entity,
+                                null,
                                 null,
                                 methodName);
     }
@@ -570,7 +907,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processReIdentifiedEntityEvent";
 
-        final DataManagerOutboundEventType eventType = DataManagerOutboundEventType.UPDATED_ELEMENT_EVENT;
+        final DataManagerOutboundEventType eventType = DataManagerOutboundEventType.ELEMENT_GUID_CHANGED;
 
         log.debug("Processing re-identified Entity event from: " + sourceName);
 
@@ -581,6 +918,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
                                 originatorServerType,
                                 originatorOrganizationName,
                                 entity,
+                                null,
                                 null,
                                 methodName);
     }
@@ -612,7 +950,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processReTypedEntityEvent";
 
-        final DataManagerOutboundEventType eventType = DataManagerOutboundEventType.UPDATED_ELEMENT_EVENT;
+        final DataManagerOutboundEventType eventType = DataManagerOutboundEventType.ELEMENT_TYPE_CHANGED;
 
         log.debug("Processing re-typed Entity event from: " + sourceName);
 
@@ -623,6 +961,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
                                 originatorServerType,
                                 originatorOrganizationName,
                                 entity,
+                                null,
                                 null,
                                 methodName);
     }
@@ -654,7 +993,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processReHomedEntityEvent";
 
-        final DataManagerOutboundEventType eventType = DataManagerOutboundEventType.UPDATED_ELEMENT_EVENT;
+        final DataManagerOutboundEventType eventType = DataManagerOutboundEventType.ELEMENT_HOME_CHANGED;
 
         log.debug("Processing re-homed Entity event from: " + sourceName);
 
@@ -665,6 +1004,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
                                 originatorServerType,
                                 originatorOrganizationName,
                                 entity,
+                                null,
                                 null,
                                 methodName);
     }
@@ -693,7 +1033,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processNewRelationshipEvent";
 
-        final DataManagerOutboundEventType eventType = DataManagerOutboundEventType.NEW_ELEMENT_EVENT;
+        final DataManagerOutboundEventType eventType = DataManagerOutboundEventType.NEW_ELEMENT_CREATED;
 
         log.debug("Processing new relationship event from: " + sourceName);
 
@@ -732,7 +1072,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processUpdatedRelationshipEvent";
 
-        final DataManagerOutboundEventType eventType = DataManagerOutboundEventType.UPDATED_ELEMENT_EVENT;
+        final DataManagerOutboundEventType eventType = DataManagerOutboundEventType.ELEMENT_UPDATED;
 
         log.debug("Processing updated relationship event from: " + sourceName);
 
@@ -773,7 +1113,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processDeletedRelationshipEvent";
 
-        final DataManagerOutboundEventType eventType = DataManagerOutboundEventType.DELETED_ELEMENT_EVENT;
+        final DataManagerOutboundEventType eventType = DataManagerOutboundEventType.ELEMENT_DELETED;
 
         log.debug("Processing deleted relationship event from: " + sourceName);
 
@@ -810,7 +1150,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processUpdatedRelationshipEvent";
 
-        final DataManagerOutboundEventType eventType = DataManagerOutboundEventType.DELETED_ELEMENT_EVENT;
+        final DataManagerOutboundEventType eventType = DataManagerOutboundEventType.ELEMENT_DELETED;
 
         log.debug("Processing delete-purge relationship event from: " + sourceName);
 
@@ -851,7 +1191,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processReIdentifiedRelationshipEvent";
 
-        final DataManagerOutboundEventType eventType = DataManagerOutboundEventType.UPDATED_ELEMENT_EVENT;
+        final DataManagerOutboundEventType eventType = DataManagerOutboundEventType.ELEMENT_GUID_CHANGED;
 
         log.debug("Processing re-identified relationship event from: " + sourceName);
 
@@ -892,7 +1232,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processReTypedRelationshipEvent";
 
-        final DataManagerOutboundEventType eventType = DataManagerOutboundEventType.UPDATED_ELEMENT_EVENT;
+        final DataManagerOutboundEventType eventType = DataManagerOutboundEventType.ELEMENT_TYPE_CHANGED;
 
         log.debug("Processing re-typed relationship event from: " + sourceName);
 
@@ -933,7 +1273,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processReHomedRelationshipEvent";
 
-        final DataManagerOutboundEventType eventType = DataManagerOutboundEventType.UPDATED_ELEMENT_EVENT;
+        final DataManagerOutboundEventType eventType = DataManagerOutboundEventType.ELEMENT_GUID_CHANGED;
 
         log.debug("Processing re-homed relationship event from: " + sourceName);
 

@@ -303,8 +303,9 @@ public class OCFMetadataRESTServices
             ExternalIdentifierHandler<ExternalIdentifier, Object> externalIdentifierHandler = instanceHandler.getExternalIdentifierHandler(userId,
                                                                                                                                            serverName,
                                                                                                                                            methodName);
-            ExternalReferenceHandler<ExternalReference>  externalReferenceHandler  = instanceHandler.getExternalReferenceHandler(userId, serverName,
-                                                                                                                       methodName);
+            ExternalReferenceLinkHandler<ExternalReference>  externalReferenceHandler  = instanceHandler.getExternalReferenceHandler(userId,
+                                                                                                                                     serverName,
+                                                                                                                                     methodName);
             InformalTagHandler<InformalTag>             informalTagHandler  = instanceHandler.getInformalTagHandler(userId, serverName,
                                                                                                                        methodName);
             LicenseHandler<License>                     licenseHandler      = instanceHandler.getLicenseHandler(userId, serverName,
@@ -819,7 +820,7 @@ public class OCFMetadataRESTServices
 
         try
         {
-            ExternalReferenceHandler<ExternalReference> handler = instanceHandler.getExternalReferenceHandler(userId, serverName, methodName);
+            ExternalReferenceLinkHandler<ExternalReference> handler = instanceHandler.getExternalReferenceHandler(userId, serverName, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setList(handler.getExternalReferences(userId,
@@ -1300,7 +1301,9 @@ public class OCFMetadataRESTServices
                                                       OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                       null,
                                                       null,
+                                                      OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                       instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
+                                                      0,
                                                       elementStart,
                                                       maxElements,
                                                       new Date(),

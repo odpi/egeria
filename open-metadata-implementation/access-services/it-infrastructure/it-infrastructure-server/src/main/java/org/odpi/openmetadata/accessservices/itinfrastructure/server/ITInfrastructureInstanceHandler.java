@@ -6,8 +6,15 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.As
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ConnectionElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ConnectorTypeElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ContactMethodElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ControlFlowElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.DataFlowElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.EndpointElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ITProfileElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.LineageMappingElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.PortElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ProcessCallElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ProcessElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.RelatedAssetElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareCapabilityElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.UserIdentityElement;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
@@ -17,6 +24,8 @@ import org.odpi.openmetadata.commonservices.generichandlers.ConnectionHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ConnectorTypeHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ContactDetailsHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.EndpointHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.ProcessHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.RelatedAssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.SoftwareCapabilityHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.UserIdentityHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstanceHandler;
@@ -41,8 +50,6 @@ class ITInfrastructureInstanceHandler extends OMASServiceInstanceHandler
 
         ITInfrastructureRegistration.registerAccessService();
     }
-
-
 
 
     /**
@@ -264,8 +271,6 @@ class ITInfrastructureInstanceHandler extends OMASServiceInstanceHandler
     }
 
 
-
-
     /**
      * Retrieve the specific handler for the access service.
      *
@@ -291,6 +296,74 @@ class ITInfrastructureInstanceHandler extends OMASServiceInstanceHandler
         if (instance != null)
         {
             return instance.getAssetHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException error in the requested server
+     */
+    RelatedAssetHandler<RelatedAssetElement> getRelatedAssetHandler(String userId,
+                                                                    String serverName,
+                                                                    String serviceOperationName) throws InvalidParameterException,
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        PropertyServerException
+    {
+
+        ITInfrastructureServicesInstance instance = (ITInfrastructureServicesInstance) super.getServerServiceInstance(userId,
+                                                                                                                      serverName,
+                                                                                                                      serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getRelatedAssetHandler();
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException error in the requested server
+     */
+    public ProcessHandler<ProcessElement,
+                          PortElement,
+                          DataFlowElement,
+                          ControlFlowElement,
+                          ProcessCallElement,
+                          LineageMappingElement> getProcessHandler(String userId,
+                                                                   String serverName,
+                                                                   String serviceOperationName) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException
+    {
+
+        ITInfrastructureServicesInstance instance = (ITInfrastructureServicesInstance) super.getServerServiceInstance(userId,
+                                                                                                                      serverName,
+                                                                                                                      serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getProcessHandler();
         }
 
         return null;

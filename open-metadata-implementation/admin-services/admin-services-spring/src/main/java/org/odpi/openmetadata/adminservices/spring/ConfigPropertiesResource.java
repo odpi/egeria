@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
         " of the open metadata and governance services within an OMAG Server. This configuration determines which of the Open Metadata and " +
         "Governance (OMAG) services are active.",
         externalDocs=@ExternalDocumentation(description="Further information",
-                url="https://odpi.github.io/egeria-docs/guides/admin/servers/"))
+                url="https://egeria-project.org/guides/admin/servers/"))
 
 
 public class ConfigPropertiesResource
@@ -97,8 +97,8 @@ public class ConfigPropertiesResource
      */
     @PostMapping(path = "/server-description")
     public VoidResponse setServerDescription(@PathVariable String userId,
-                                            @PathVariable String serverName,
-                                            @RequestBody String description)
+                                             @PathVariable String serverName,
+                                             @RequestBody String description)
     {
         return adminAPI.setServerDescription(userId, serverName, description);
     }

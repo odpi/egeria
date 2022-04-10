@@ -3,6 +3,19 @@ package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openline
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_ANTONYM;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_CLASSIFICATION;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_IS_A_RELATIONSHIP;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_RELATED_TERM;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_REPLACEMENT_TERM;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_SEMANTIC_ASSIGNMENT;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_SYNONYM;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_TERM_CATEGORIZATION;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_TRANSLATION;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ADDITIONAL_PROPERTIES;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_EXTENDED_PROPERTIES;
 
 public final class Constants {
 
@@ -37,12 +50,16 @@ public final class Constants {
     public static final String PROCESS = "Process";
     public static final String ENDPOINT = "Endpoint";
     public static final String COLLECTION = "Collection";
+    public static final String TOPIC = "Topic";
+    public static final String EVENT_SCHEMA_ATTRIBUTE = "EventSchemaAttribute";
+    public static final String EVENT_TYPE_LIST = "EventTypeList";
+    public static final String EVENT_TYPE = "EventType";
 
     public static final Collection<String> DATA_FILE_AND_SUBTYPES = Arrays.asList(DATA_FILE, AVRO_FILE, CSV_FILE, JSON_FILE,
             KEYSTORE_FILE, LOG_FILE, MEDIA_FILE, DOCUMENT);
 
     public static final Collection<String> ASSETS = Arrays.asList(RELATIONAL_TABLE, DATA_FILE, AVRO_FILE, CSV_FILE, JSON_FILE,
-            KEYSTORE_FILE, LOG_FILE, MEDIA_FILE, DOCUMENT);
+            KEYSTORE_FILE, LOG_FILE, MEDIA_FILE, DOCUMENT, TOPIC);
 
     public static final String RELATIONAL_TABLE_KEY = "relationalTable";
     public static final String TRANSFORMATION_PROJECT_KEY = "transformationProject";
@@ -52,6 +69,9 @@ public final class Constants {
     public static final String FILE_FOLDER_KEY = "fileFolder";
     public static final String CONNECTION_KEY = "connection";
     public static final String GLOSSARY_KEY = "glossary";
+    public static final String EVENT_TYPE_LIST_KEY = "eventTypeList";
+    public static final String EVENT_TYPE_KEY = "eventType";
+    public static final String TOPIC_KEY = "topic";
 
     //Relationships Type
     public static final String SCHEMA_ATTRIBUTE_TYPE = "SchemaAttributeType";
@@ -74,5 +94,47 @@ public final class Constants {
     public static final String NESTED_FILE = "NestedFile";
     public static final String NESTED_SCHEMA_ATTRIBUTE = "NestedSchemaAttribute";
     public static final String FOLDER_HIERARCHY = "FolderHierarchy";
+    public static final String SCHEMA_TYPE_OPTION = "SchemaTypeOption";
+    public static final String EMPTY_STRING = "";
+    public static final String COMMA_SPACE_DELIMITER = ", ";
+    public static final String COLUMN_SPACE_DELIMITER = ": ";
+    public static final List<String> EMBEDDED_PROPERTIES = Arrays.asList(PROPERTY_KEY_ADDITIONAL_PROPERTIES, PROPERTY_KEY_EXTENDED_PROPERTIES);
+    public static final String SUB_GRAPH = "subGraph";
+    public static final String GENERIC_QUERY_EXCEPTION = "Exception while querying for guid {}. Executed rollback.";
+    public static final String S = "s";
+    public static final String INCOMPLETE = "Incomplete";
+    public static final String CLASSIFICATION_GRAPH = "classificationGraph";
+
+    public static final String KV = "kv";
+    public static final String CLOSE_LINEAGE_GRAPH_EXCEPTION = "Exception while closing lineage graph";
+    public static final String EXCEPTION_WHILE_CLOSING_LINEAGE_GRAPH_MESSAGE = CLOSE_LINEAGE_GRAPH_EXCEPTION + ": ";
+    public static final String FROM = "from";
+
+    public static final String ASSET_LINEAGE_VARIABLES = "ASSET_LINEAGE_VARIABLES";
+    public static final String INPUT_PORT = "INPUT_PORT";
+    public static final String PROPERTIES = "properties";
+    public static final String V = "v";
+    public static final String VERTEX_GUID_NOT_FOUND_WHEN_UPDATE = "When trying to update, vertex with guid {} was not found  ";
+
+    public static final String EDGE_GUID_NOT_FOUND_WHEN_UPDATE = "When trying to update, edge with guid {} was not found";
+    public static final String CLASSIFICATION_WITH_GUID_NOT_FOUND = "Classification with guid {} not found";
+
+    public static final String VERTEX_WITH_GUID_IS_NOT_PRESENT = "Vertex with guid is not present {}";
+    public static final String VERTEX_WITH_GUID_DELETED = "Vertex with guid {} deleted";
+    public static final String EDGE_WITH_GUID_DID_NOT_DELETE = "Edge with guid did not delete {}";
+    public static final String EDGE_WITH_GUID_DELETED = "Edge with guid {} deleted";
+    public static final String EDGE = "edge";
+
+    public static final String[] RELATIONAL_TABLE_CONTEXT_IN_EDGES = new String[]{ATTRIBUTE_FOR_SCHEMA, ASSET_SCHEMA_TYPE, DATA_CONTENT_FOR_DATA_SET, CONNECTION_TO_ASSET};
+
+    public static final String[] GLOSSARY_TERM_AND_CLASSIFICATION_EDGES = {EDGE_LABEL_SEMANTIC_ASSIGNMENT, EDGE_LABEL_RELATED_TERM,
+            EDGE_LABEL_SYNONYM, EDGE_LABEL_ANTONYM, EDGE_LABEL_REPLACEMENT_TERM, EDGE_LABEL_TRANSLATION, EDGE_LABEL_IS_A_RELATIONSHIP,
+            EDGE_LABEL_CLASSIFICATION, EDGE_LABEL_TERM_CATEGORIZATION};
+
+    public static final String[] RELATIONAL_COLUMN_AND_CLASSIFICATION_EDGES =
+            {NESTED_SCHEMA_ATTRIBUTE, EDGE_LABEL_CLASSIFICATION, EDGE_LABEL_SEMANTIC_ASSIGNMENT};
+
+    public static final String[] TABULAR_COLUMN_AND_CLASSIFICATION_EDGES = {ATTRIBUTE_FOR_SCHEMA, EDGE_LABEL_CLASSIFICATION, EDGE_LABEL_SEMANTIC_ASSIGNMENT};
+
 
 }

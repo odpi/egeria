@@ -1,5 +1,8 @@
 lineage-display-config:
   rules:
+    incomplete:
+      - edgeType: Classification
+        destinationNodeType: Incomplete
     invertEdge:
       - edgeType: SemanticAssignment
         destinationNodeType: GlossaryTerm

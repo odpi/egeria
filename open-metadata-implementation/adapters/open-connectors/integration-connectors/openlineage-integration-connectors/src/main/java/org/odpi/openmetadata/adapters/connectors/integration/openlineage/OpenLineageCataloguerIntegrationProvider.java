@@ -2,19 +2,38 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.integration.openlineage;
 
-import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.connectors.IntegrationConnectorProvider;
 
 /**
  * The OpenLineageCataloguerIntegrationProvider provides the connector provider for OpenLineageCataloguerIntegrationConnector.
  */
-public class OpenLineageCataloguerIntegrationProvider extends ConnectorProviderBase
+public class OpenLineageCataloguerIntegrationProvider extends IntegrationConnectorProvider
 {
-    private static final String connectorTypeGUID          = "60c80f78-552d-42e3-b0a4-00131869996a";
-    private static final String connectorTypeQualifiedName = "Egeria:IntegrationConnector:Lineage:OpenLineageCataloguer";
-    private static final String connectorTypeDisplayName   = "Open Lineage Cataloguer Integration Connector";
-    private static final String connectorTypeDescription   = "Connector to register an OpenLineage listener with the Lineage Integrator OMIS and " +
-                                                                     "to catalog any processes that are not already known to the open metadata ecosystem.";
+    /*
+     * Unique identifier of the connector for the audit log.
+     */
+    private static final int    connectorComponentId   = 657;
+
+    /*
+     * Unique identifier for the connector type.
+     */
+    private static final String connectorTypeGUID      = "60c80f78-552d-42e3-b0a4-00131869996a";
+
+    /*
+     * Descriptive information about the connector for the connector type and audit log.
+     */
+    private static final String connectorQualifiedName = "Egeria:IntegrationConnector:Lineage:OpenLineageCataloguer";
+    private static final String connectorDisplayName   = "Open Lineage Cataloguer Integration Connector";
+    private static final String connectorDescription   = "Connector to register an OpenLineage listener with the Lineage Integrator OMIS and " +
+                                                                 "to catalog any processes that are not already known to the open metadata ecosystem.";
+    private static final String connectorWikiPage      = "https://egeria-project.org/connectors/integration/open-lineage-cataloguer-integration-connector/";
+
+    /*
+     * Class of the connector.
+     */
+    private static final Class<?> connectorClass       = OpenLineageCataloguerIntegrationConnector.class;
 
 
     /**
@@ -24,17 +43,35 @@ public class OpenLineageCataloguerIntegrationProvider extends ConnectorProviderB
     {
         super();
 
-        super.setConnectorClassName(OpenLineageCataloguerIntegrationConnector.class.getName());
+        /*
+         * Set up the class name of the connector that this provider creates.
+         */
+        super.setConnectorClassName(connectorClass.getName());
 
+        /*
+         * Set up the connector type that should be included in a connection used to configure this connector.
+         */
         ConnectorType connectorType = new ConnectorType();
         connectorType.setType(ConnectorType.getConnectorTypeType());
         connectorType.setGUID(connectorTypeGUID);
-        connectorType.setQualifiedName(connectorTypeQualifiedName);
-        connectorType.setDisplayName(connectorTypeDisplayName);
-        connectorType.setDescription(connectorTypeDescription);
+        connectorType.setQualifiedName(connectorQualifiedName);
+        connectorType.setDisplayName(connectorDisplayName);
+        connectorType.setDescription(connectorDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
 
         super.connectorTypeBean = connectorType;
+
+        /*
+         * Set up the component description used in the connector's audit log messages.
+         */
+        AuditLogReportingComponent componentDescription = new AuditLogReportingComponent();
+
+        componentDescription.setComponentId(connectorComponentId);
+        componentDescription.setComponentName(connectorQualifiedName);
+        componentDescription.setComponentDescription(connectorDescription);
+        componentDescription.setComponentWikiURL(connectorWikiPage);
+
+        super.setConnectorComponentDescription(componentDescription);
     }
 }
 

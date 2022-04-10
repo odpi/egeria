@@ -115,31 +115,10 @@ public enum IntegrationDaemonServicesErrorCode implements ExceptionMessageSet
                          "Add a suitable value for this configuration property in the integration service configuration."),
 
     NO_PERMITTED_SYNCHRONIZATION( 400,"INTEGRATION-DAEMON-SERVICES-400-012",
-                                 "The integration service {0} does not have a default permitted synchronization value set.",
+                                 "The integration service {0} in integration daemon {1} does not have a default permitted synchronization value set.",
                                  "The integration daemon is not able to initialize one of the configured integration because its defaultPermittedSynchronization value is null.  " +
                                  "The integration daemon shuts down, this error is reported to the caller and a similar message is written to the audit log.",
                                   "Update the configuration for the integration service to include a value for the default permitted synchronization."),
-
-
-    /*
-     * Invalid use of statistics methods.
-     */
-    ALREADY_COUNTER_NAME(400, "INTEGRATION-DAEMON-SERVICES-400-015",
-             "The {0} is already in use as a counter statistic and can not be used by the {1} method to {2}",
-             "The integration context returns an exception on the invalid request.",
-              "Change the connector logic to use a different name for the statistic."),
-
-    ALREADY_PROPERTY_NAME(400, "INTEGRATION-DAEMON-SERVICES-400-016",
-                         "The {0} is already in use as a property statistic and can not be used by the {1} method to {2}",
-                         "The integration context returns an exception on the invalid request.",
-                         "Change the connector logic to use a different name for the statistic."),
-
-    ALREADY_TIMESTAMP_NAME(400, "INTEGRATION-DAEMON-SERVICES-400-017",
-                         "The {0} is already in use as a timestamp statistic and can not be used by the {1} method to {2}",
-                         "The integration context returns an exception on the invalid request.",
-                         "Change the connector logic to use a different name for the statistic."),
-
-
 
     /*
      * Old

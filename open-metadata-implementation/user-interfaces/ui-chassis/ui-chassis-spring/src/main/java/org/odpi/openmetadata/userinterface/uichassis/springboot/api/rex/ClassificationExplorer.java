@@ -12,8 +12,8 @@ import java.util.List;
 public class ClassificationExplorer {
 
     private ClassificationDef classificationDef;
-    private List<TypeDefAttribute> inheritedAttributes;
-    private List<String>             subTypeNames;
+    private List<TypeDefAttribute> inheritedAttributes = new ArrayList<>();
+    private List<String>             subTypeNames = new ArrayList<>();
 
 
     public ClassificationExplorer(ClassificationDef def) {

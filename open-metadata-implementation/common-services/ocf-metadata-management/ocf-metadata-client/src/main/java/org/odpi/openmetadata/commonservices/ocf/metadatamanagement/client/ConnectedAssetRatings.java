@@ -174,7 +174,7 @@ public class ConnectedAssetRatings extends AssetRatings
                 return resultList;
             }
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             restExceptionHandler.handleUnexpectedException(error, methodName, serverName, omasServerURL);
         }

@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.governanceprogram.fvt.errorhandling
 
 import org.odpi.openmetadata.accessservices.governanceprogram.client.CertificationManager;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.CertificationTypeProperties;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
 
@@ -32,7 +33,7 @@ class CreateCertificationTypeInvalidParameterTest
             testCreateCertificationTypeNoProperties(client, userId);
             testCreateCertificationTypeNoQualifiedName(client, userId);
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -53,14 +54,14 @@ class CreateCertificationTypeInvalidParameterTest
 
         try
         {
-            client.createCertificationType(null, properties);
+            client.createCertificationType(null, properties, GovernanceDefinitionStatus.ACTIVE);
             throw new FVTUnexpectedCondition(testCaseName, activityName);
         }
         catch (InvalidParameterException expectedException)
         {
             // ignore
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -81,14 +82,14 @@ class CreateCertificationTypeInvalidParameterTest
 
         try
         {
-            client.createCertificationType(userId, null);
+            client.createCertificationType(userId, null, GovernanceDefinitionStatus.ACTIVE);
             throw new FVTUnexpectedCondition(testCaseName, activityName);
         }
         catch (InvalidParameterException expectedException)
         {
             // ignore
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -111,14 +112,14 @@ class CreateCertificationTypeInvalidParameterTest
         {
             CertificationTypeProperties properties = new CertificationTypeProperties();
 
-            client.createCertificationType(userId, properties);
+            client.createCertificationType(userId, properties, GovernanceDefinitionStatus.ACTIVE);
             throw new FVTUnexpectedCondition(testCaseName, activityName);
         }
         catch (InvalidParameterException expectedException)
         {
             // ignore
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }

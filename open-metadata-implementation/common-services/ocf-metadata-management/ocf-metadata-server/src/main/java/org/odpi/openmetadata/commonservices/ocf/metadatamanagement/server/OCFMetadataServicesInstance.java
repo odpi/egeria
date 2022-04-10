@@ -15,7 +15,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 
 /**
- * ConnectedAssetServicesInstance caches references to OMRS objects for a specific server.
+ * OCFMetadataServicesInstance caches references to OMRS objects for a specific server.
  * It is also responsible for registering itself in the instance map.
  */
 public class OCFMetadataServicesInstance extends OMASServiceInstance
@@ -27,7 +27,7 @@ public class OCFMetadataServicesInstance extends OMASServiceInstance
     private ConnectorTypeHandler<ConnectorType>                   connectorTypeHandler;
     private EndpointHandler<Endpoint>                             endpointHandler;
     private ExternalIdentifierHandler<ExternalIdentifier, Object> externalIdentifierHandler;
-    private ExternalReferenceHandler<ExternalReference>           externalReferenceHandler;
+    private ExternalReferenceLinkHandler<ExternalReference>       externalReferenceHandler;
     private GlossaryTermHandler<Meaning>                          glossaryTermHandler;
     private InformalTagHandler<InformalTag>                       informalTagHandler;
     private LicenseHandler<License>                               licenseHandler;
@@ -171,19 +171,19 @@ public class OCFMetadataServicesInstance extends OMASServiceInstance
                                                                              publishZones,
                                                                              auditLog);
 
-            this.externalReferenceHandler = new ExternalReferenceHandler<>(new ExternalReferenceConverter<>(repositoryHelper, serviceName, serverName),
-                                                                           ExternalReference.class,
-                                                                           serviceName,
-                                                                           serverName,
-                                                                           invalidParameterHandler,
-                                                                           repositoryHandler,
-                                                                           repositoryHelper,
-                                                                           localServerUserId,
-                                                                           securityVerifier,
-                                                                           supportedZones,
-                                                                           defaultZones,
-                                                                           publishZones,
-                                                                           auditLog);
+            this.externalReferenceHandler = new ExternalReferenceLinkHandler<>(new ExternalReferenceConverter<>(repositoryHelper, serviceName, serverName),
+                                                                               ExternalReference.class,
+                                                                               serviceName,
+                                                                               serverName,
+                                                                               invalidParameterHandler,
+                                                                               repositoryHandler,
+                                                                               repositoryHelper,
+                                                                               localServerUserId,
+                                                                               securityVerifier,
+                                                                               supportedZones,
+                                                                               defaultZones,
+                                                                               publishZones,
+                                                                               auditLog);
 
             this.glossaryTermHandler = new GlossaryTermHandler<>(new MeaningConverter<>(repositoryHelper, serviceName, serverName),
                                                                  Meaning.class,
@@ -511,7 +511,7 @@ public class OCFMetadataServicesInstance extends OMASServiceInstance
      * @return  handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    ExternalReferenceHandler<ExternalReference> getExternalReferenceHandler() throws PropertyServerException
+    ExternalReferenceLinkHandler<ExternalReference> getExternalReferenceHandler() throws PropertyServerException
     {
         final String methodName = "getExternalReferenceHandler";
 

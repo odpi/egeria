@@ -30,7 +30,6 @@ public abstract class OMRSAPIPagedResponse extends OMRSAPIResponse
 {
     private static final long    serialVersionUID = 1L;
 
-    protected String  nextPageURL = null;
     protected int     offset      = 0;
     protected int     pageSize    = 0;
 
@@ -55,34 +54,10 @@ public abstract class OMRSAPIPagedResponse extends OMRSAPIResponse
 
         if (template != null)
         {
-            nextPageURL = template.getNextPageURL();
             offset = template.getOffset();
             pageSize = template.getPageSize();
         }
     }
-
-
-    /**
-     * Return the url that can be used to retrieve the next page.
-     *
-     * @return url string
-     */
-    public String getNextPageURL()
-    {
-        return nextPageURL;
-    }
-
-
-    /**
-     * Set up the url that can be used to retrieve the next page.
-     *
-     * @param nextPageURL url string
-     */
-    public void setNextPageURL(String nextPageURL)
-    {
-        this.nextPageURL = nextPageURL;
-    }
-
 
     /**
      * Return the starting element number for this set of results.  This is used when retrieving elements
@@ -139,8 +114,7 @@ public abstract class OMRSAPIPagedResponse extends OMRSAPIResponse
     public String toString()
     {
         return "OMRSRESTAPIPagedResponse{" +
-                "nextPageURL='" + nextPageURL + '\'' +
-                ", offset=" + offset +
+                "offset=" + offset +
                 ", pageSize=" + pageSize +
                 ", relatedHTTPCode=" + relatedHTTPCode +
                 ", actionDescription='" + actionDescription + '\'' +
@@ -180,8 +154,7 @@ public abstract class OMRSAPIPagedResponse extends OMRSAPIResponse
         OMRSAPIPagedResponse
                 that = (OMRSAPIPagedResponse) objectToCompare;
         return getOffset() == that.getOffset() &&
-                getPageSize() == that.getPageSize() &&
-                Objects.equals(getNextPageURL(), that.getNextPageURL());
+                getPageSize() == that.getPageSize();
     }
 
 
@@ -193,6 +166,6 @@ public abstract class OMRSAPIPagedResponse extends OMRSAPIResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getNextPageURL(), getOffset(), getPageSize());
+        return Objects.hash(super.hashCode(), getOffset(), getPageSize());
     }
 }

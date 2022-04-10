@@ -5,9 +5,11 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.client;
 import org.odpi.openmetadata.accessservices.itinfrastructure.api.SoftwareCapabilityManagerInterface;
 import org.odpi.openmetadata.accessservices.itinfrastructure.api.SoftwareServerCapabilityManagerInterface;
 import org.odpi.openmetadata.accessservices.itinfrastructure.client.rest.ITInfrastructureRESTClient;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.RelatedAssetElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ServerAssetUseElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareCapabilityElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareServerCapabilityElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.CapabilityDeploymentProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ServerAssetUseProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ServerAssetUseType;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.SoftwareCapabilityProperties;
@@ -22,7 +24,6 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.rest.SoftwareCapabi
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.SoftwareCapabilityResponse;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.TemplateRequestBody;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.UseTypeRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
@@ -35,20 +36,18 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * CapabilityManagerClient supports the APIs to maintain software server capabilities and their related objects.
  */
-public class CapabilityManagerClient implements SoftwareCapabilityManagerInterface, SoftwareServerCapabilityManagerInterface
+public class CapabilityManagerClient extends AssetManagerClientBase implements SoftwareCapabilityManagerInterface, SoftwareServerCapabilityManagerInterface
 {
-    private static final String capabilityURLTemplatePrefix = "/servers/{0}/open-metadata/access-services/it-infrastructure/users/{1}/software-capabilities";
-    private static final String assetUsesURLTemplatePrefix  = "/servers/{0}/open-metadata/access-services/it-infrastructure/users/{1}/server-asset-uses";
+    private static final String capabilityURLTemplatePrefix = baseURLTemplatePrefix + "/software-capabilities";
+    private static final String assetUsesURLTemplatePrefix  = baseURLTemplatePrefix + "/server-asset-uses";
 
-    private String   serverName;               /* Initialized in constructor */
-    private String   serverPlatformURLRoot;    /* Initialized in constructor */
-
-    private InvalidParameterHandler     invalidParameterHandler = new InvalidParameterHandler();
-    private ITInfrastructureRESTClient  restClient;               /* Initialized in constructor */
+    private static final String softwareCapabilityTypeName      = "SoftwareCapability";
+    private static final String deploymentRelationshipTypeName  = "SupportedSoftwareCapability";
 
 
     /**
@@ -64,14 +63,7 @@ public class CapabilityManagerClient implements SoftwareCapabilityManagerInterfa
                                    String   serverPlatformURLRoot,
                                    AuditLog auditLog) throws InvalidParameterException
     {
-        final String methodName = "Client Constructor";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-
-        this.restClient = new ITInfrastructureRESTClient(serverName, serverPlatformURLRoot, auditLog);
+        super(serverName, serverPlatformURLRoot, auditLog);
     }
 
 
@@ -86,14 +78,7 @@ public class CapabilityManagerClient implements SoftwareCapabilityManagerInterfa
     public CapabilityManagerClient(String serverName,
                                    String serverPlatformURLRoot) throws InvalidParameterException
     {
-        final String methodName = "Client Constructor";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-
-        this.restClient = new ITInfrastructureRESTClient(serverName, serverPlatformURLRoot);
+        super(serverName, serverPlatformURLRoot);
     }
 
 
@@ -113,14 +98,7 @@ public class CapabilityManagerClient implements SoftwareCapabilityManagerInterfa
                                    String userId,
                                    String password) throws InvalidParameterException
     {
-        final String methodName = "Client Constructor";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-
-        this.restClient = new ITInfrastructureRESTClient(serverName, serverPlatformURLRoot, userId, password);
+        super(serverName, serverPlatformURLRoot, userId, password);
     }
 
 
@@ -143,14 +121,7 @@ public class CapabilityManagerClient implements SoftwareCapabilityManagerInterfa
                                    String   password,
                                    AuditLog auditLog) throws InvalidParameterException
     {
-        final String methodName = "Client Constructor";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-
-        this.restClient = new ITInfrastructureRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
+        super(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
 
 
@@ -169,16 +140,7 @@ public class CapabilityManagerClient implements SoftwareCapabilityManagerInterfa
                                    ITInfrastructureRESTClient restClient,
                                    int                        maxPageSize) throws InvalidParameterException
     {
-        final String methodName = "Client Constructor";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-
-        this.restClient = restClient;
+        super(serverName, serverPlatformURLRoot, restClient, maxPageSize);
     }
 
 
@@ -430,11 +392,9 @@ public class CapabilityManagerClient implements SoftwareCapabilityManagerInterfa
     }
 
 
-
     /* =====================================================================================================================
      * The software capability links assets to the hosting server.
      */
-
 
     /**
      * Create a new metadata element to represent a software server capability.
@@ -595,6 +555,146 @@ public class CapabilityManagerClient implements SoftwareCapabilityManagerInterfa
     }
 
 
+
+
+    /**
+     * Link a software capability to a software server.
+     *
+     * @param userId calling user
+     * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
+     * @param infrastructureManagerName unique name of software server capability representing the caller
+     * @param infrastructureManagerIsHome should the software server capability be marked as owned by the infrastructure manager so others can not update?
+     * @param capabilityGUID unique identifier of the software server capability
+     * @param infrastructureAssetGUID unique identifier of the software server
+     * @param deploymentProperties describes the deployment of the capability onto the server
+     *
+     * @throws InvalidParameterException one of the guids is null or not known
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public void deployCapability(String                         userId,
+                                 String                         infrastructureManagerGUID,
+                                 String                         infrastructureManagerName,
+                                 boolean                        infrastructureManagerIsHome,
+                                 String                         capabilityGUID,
+                                 String                         infrastructureAssetGUID,
+                                 CapabilityDeploymentProperties deploymentProperties) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        final String methodName = "deployCapability";
+
+        Map<String, Object> propertyMap   = null;
+        Date                effectiveFrom = null;
+        Date                effectiveTo   = null;
+
+        if (deploymentProperties != null)
+        {
+            propertyMap = deploymentProperties.cloneToMap();
+            effectiveFrom = deploymentProperties.getEffectiveFrom();
+            effectiveTo = deploymentProperties.getEffectiveTo();
+        }
+
+        super.setupRelatedAsset(userId,
+                                infrastructureManagerGUID,
+                                infrastructureManagerName,
+                                infrastructureManagerIsHome,
+                                itAssetTypeName,
+                                infrastructureAssetGUID,
+                                deploymentRelationshipTypeName,
+                                softwareCapabilityTypeName,
+                                capabilityGUID,
+                                effectiveFrom,
+                                effectiveTo,
+                                propertyMap,
+                                methodName);
+    }
+
+
+    /**
+     * Update the properties of a server capability's deployment.
+     *
+     * @param userId calling user
+     * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
+     * @param infrastructureManagerName unique name of software server capability representing the caller
+     * @param deploymentGUID unique identifier of the relationship
+     * @param deploymentProperties describes the deployment of the capability onto the server
+     * @param isMergeUpdate are unspecified properties unchanged (true) or removed?
+     *
+     * @throws InvalidParameterException one of the guids is null or not known
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public void updateCapabilityDeployment(String                         userId,
+                                           String                         infrastructureManagerGUID,
+                                           String                         infrastructureManagerName,
+                                           String                         deploymentGUID,
+                                           boolean                        isMergeUpdate,
+                                           CapabilityDeploymentProperties deploymentProperties) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException
+    {
+        final String methodName = "updateCapabilityDeployment";
+
+        Map<String, Object> propertyMap   = null;
+        Date                effectiveFrom = null;
+        Date                effectiveTo   = null;
+
+        if (deploymentProperties != null)
+        {
+            propertyMap = deploymentProperties.cloneToMap();
+            effectiveFrom = deploymentProperties.getEffectiveFrom();
+            effectiveTo = deploymentProperties.getEffectiveTo();
+        }
+
+        super.updateAssetRelationship(userId, infrastructureManagerGUID, infrastructureManagerName,
+                                deploymentGUID, deploymentRelationshipTypeName,
+                                effectiveFrom, effectiveTo, isMergeUpdate, propertyMap, methodName);
+    }
+
+
+    /**
+     * Remove the link between a software server capability and a software server.
+     *
+     * @param userId calling user
+     * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
+     * @param infrastructureManagerName unique name of software server capability representing the caller
+     * @param itAssetGUID unique identifier of the software server/platform/host
+     * @param capabilityGUID unique identifier of the software server capability
+     * @param effectiveTime time that the relationship is effective
+     *
+     * @throws InvalidParameterException one of the guids is null or not known
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public void removeCapabilityDeployment(String userId,
+                                           String infrastructureManagerGUID,
+                                           String infrastructureManagerName,
+                                           String itAssetGUID,
+                                           String capabilityGUID,
+                                           Date   effectiveTime) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
+    {
+        final String methodName = "removeCapabilityDeployment";
+
+        super.clearRelatedAsset(userId,
+                                infrastructureManagerGUID,
+                                infrastructureManagerName,
+                                itAssetTypeName,
+                                itAssetGUID,
+                                deploymentRelationshipTypeName,
+                                softwareCapabilityTypeName,
+                                capabilityGUID,
+                                effectiveTime,
+                                methodName);
+    }
+
+
+
     /**
      * Remove the metadata element representing a software capability.
      *
@@ -742,6 +842,144 @@ public class CapabilityManagerClient implements SoftwareCapabilityManagerInterfa
 
 
     /**
+     * Retrieve the IT asset metadata elements where the software with the supplied unique identifier is deployed.
+     *
+     * @param userId calling user
+     * @param guid unique identifier of the requested metadata element
+     * @param effectiveTime effective time for the query
+     *
+     * @return list of related IT Assets
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<RelatedAssetElement> getSoftwareCapabilityDeployments(String userId,
+                                                                      String guid,
+                                                                      Date   effectiveTime,
+                                                                      int    startFrom,
+                                                                      int    pageSize) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
+    {
+        final String methodName = "getSoftwareCapabilityDeployments";
+
+        return super.getRelatedAssets(userId, softwareCapabilityTypeName, guid, 2, null, itAssetTypeName, effectiveTime, startFrom, pageSize, methodName);
+    }
+
+
+    /**
+     * Retrieve the software capabilities that are deployed to an IT asset.
+     *
+     * @param userId calling user
+     * @param itAssetGUID unique identifier of the hosting metadata element
+     * @param effectiveTime effective time for the query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of related IT Assets
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<SoftwareCapabilityElement> getDeployedSoftwareCapabilities(String userId,
+                                                                           String itAssetGUID,
+                                                                           Date   effectiveTime,
+                                                                           int    startFrom,
+                                                                           int    pageSize) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
+    {
+        final String methodName = "getDeployedSoftwareCapabilities";
+        final String guidParameterName = "itAssetGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(itAssetGUID, guidParameterName, methodName);
+
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + capabilityURLTemplatePrefix + "/deployed-on-it-assets/{2}?startFrom={3}&pageSize={4}";
+
+        EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+
+        requestBody.setEffectiveTime(effectiveTime);
+
+        SoftwareCapabilityListResponse restResult = restClient.callSoftwareServerCapabilityListPostRESTCall(methodName,
+                                                                            urlTemplate,
+                                                                            requestBody,
+                                                                            serverName,
+                                                                            userId,
+                                                                            itAssetGUID,
+                                                                            startFrom,
+                                                                            validatedPageSize);
+
+        return restResult.getElementList();
+    }
+
+
+    /**
+     * Retrieve the list of capabilities created by this caller.
+     *
+     * @param userId calling user
+     * @param infrastructureManagerGUID unique identifier of software server capability representing the infrastructure manager
+     * @param infrastructureManagerName unique name of software server capability representing the infrastructure manager
+     * @param effectiveTime effective time for the query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<SoftwareCapabilityElement> getSoftwareCapabilitiesForInfrastructureManager(String userId,
+                                                                                           String infrastructureManagerGUID,
+                                                                                           String infrastructureManagerName,
+                                                                                           Date   effectiveTime,
+                                                                                           int    startFrom,
+                                                                                           int    pageSize) throws InvalidParameterException,
+                                                                                                                   UserNotAuthorizedException,
+                                                                                                                   PropertyServerException
+    {
+        final String methodName = "getSoftwareCapabilitiesForInfrastructureManager";
+
+        final String infrastructureManagerGUIDParameterName = "infrastructureManagerGUID";
+        final String infrastructureManagerNameParameterName = "infrastructureManagerName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(infrastructureManagerGUID, infrastructureManagerGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(infrastructureManagerName, infrastructureManagerNameParameterName, methodName);
+
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/infrastructure-managers/{2}/{3}/software-capabilities" + "?startFrom={4}&pageSize={5}";
+
+        EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+
+        requestBody.setEffectiveTime(effectiveTime);
+
+        SoftwareCapabilityListResponse restResult = restClient.callSoftwareServerCapabilityListPostRESTCall(methodName,
+                                                                            urlTemplate,
+                                                                            requestBody,
+                                                                            serverName,
+                                                                            userId,
+                                                                            infrastructureManagerGUID,
+                                                                            infrastructureManagerName,
+                                                                            startFrom,
+                                                                            validatedPageSize);
+
+        return restResult.getElementList();
+
+    }
+
+
+
+    /**
      * Retrieve the software capability metadata element with the supplied unique identifier.
      *
      * @param userId calling user
@@ -817,7 +1055,7 @@ public class CapabilityManagerClient implements SoftwareCapabilityManagerInterfa
         invalidParameterHandler.validateGUID(capabilityGUID, capabilityGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + assetUsesURLTemplatePrefix + "/software-server-capabilities/{2}/assets/{3}?infrastructureManagerIsHome={4}";
+        final String urlTemplate = serverPlatformURLRoot + assetUsesURLTemplatePrefix + "/software-capabilities/{2}/assets/{3}?infrastructureManagerIsHome={4}";
 
         ServerAssetUseRequestBody requestBody = new ServerAssetUseRequestBody();
 
@@ -960,7 +1198,7 @@ public class CapabilityManagerClient implements SoftwareCapabilityManagerInterfa
         invalidParameterHandler.validateGUID(capabilityGUID, elementGUIDParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + assetUsesURLTemplatePrefix + "/software-server-capabilities/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + assetUsesURLTemplatePrefix + "/software-capabilities/{2}?startFrom={3}&pageSize={4}";
 
         UseTypeRequestBody requestBody = new UseTypeRequestBody();
 
@@ -1068,7 +1306,7 @@ public class CapabilityManagerClient implements SoftwareCapabilityManagerInterfa
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + assetUsesURLTemplatePrefix + "/software-server-capabilities/{2}/assets/{3}/by-elements?startFrom={4}&pageSize={5}";
+        final String urlTemplate = serverPlatformURLRoot + assetUsesURLTemplatePrefix + "/software-capabilities/{2}/assets/{3}/by-elements?startFrom={4}&pageSize={5}";
 
         EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
 

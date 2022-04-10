@@ -93,71 +93,32 @@ public interface HostManagerInterface
                                                           PropertyServerException;
 
 
-
-    /**
-     * Create a relationship between a host and a hosted host.
-     *
-     * @param userId calling user
-     * @param infrastructureManagerGUID unique identifier of software server capability representing the infrastructure manager
-     * @param infrastructureManagerName unique name of software server capability representing the infrastructure manager
-     * @param hostGUID unique identifier of the host 
-     * @param hostedHostGUID unique identifier of the hosted host 
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    void setupHostedHost(String userId,
-                         String infrastructureManagerGUID,
-                         String infrastructureManagerName,
-                         String hostGUID,
-                         String hostedHostGUID) throws InvalidParameterException,
-                                                       UserNotAuthorizedException,
-                                                       PropertyServerException;
-
-
-    /**
-     * Remove a relationship between a host and a hosted host.
-     *
-     * @param userId calling user
-     * @param infrastructureManagerGUID unique identifier of software server capability representing the infrastructure manager
-     * @param infrastructureManagerName unique name of software server capability representing the infrastructure manager
-     * @param hostGUID unique identifier of the host 
-     * @param hostedHostGUID unique identifier of the hosted host 
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    void clearHostedHost(String userId,
-                         String infrastructureManagerGUID,
-                         String infrastructureManagerName,
-                         String hostGUID,
-                         String hostedHostGUID) throws InvalidParameterException,
-                                                       UserNotAuthorizedException,
-                                                       PropertyServerException;
-
-
     /**
      * Create a relationship between a host and an cluster member host.
      *
      * @param userId calling user
      * @param infrastructureManagerGUID unique identifier of software server capability representing the infrastructure manager
      * @param infrastructureManagerName unique name of software server capability representing the infrastructure manager
-     * @param hostGUID unique identifier of the host 
+     * @param infrastructureManagerIsHome ensure that only the infrastructure manager can update this asset
+     * @param hostGUID unique identifier of the host
      * @param clusterMemberGUID unique identifier of the cluster member host 
+     * @param effectiveFrom time when this hosting is effective - null means immediately
+     * @param effectiveTo time when this hosting is no longer effective - null means forever
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void setupClusterMember(String userId,
-                            String infrastructureManagerGUID,
-                            String infrastructureManagerName,
-                            String hostGUID,
-                            String clusterMemberGUID) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException;
+    void setupClusterMember(String  userId,
+                            String  infrastructureManagerGUID,
+                            String  infrastructureManagerName,
+                            boolean infrastructureManagerIsHome,
+                            String  hostGUID,
+                            String  clusterMemberGUID,
+                            Date    effectiveFrom,
+                            Date    effectiveTo) throws InvalidParameterException,
+                                                        UserNotAuthorizedException,
+                                                        PropertyServerException;
 
 
     /**
@@ -168,6 +129,7 @@ public interface HostManagerInterface
      * @param infrastructureManagerName unique name of software server capability representing the infrastructure manager
      * @param hostGUID unique identifier of the host 
      * @param clusterMemberGUID unique identifier of the cluster member host 
+     * @param effectiveTime time when the deployment is effective
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -177,9 +139,10 @@ public interface HostManagerInterface
                             String infrastructureManagerGUID,
                             String infrastructureManagerName,
                             String hostGUID,
-                            String clusterMemberGUID) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException;
+                            String clusterMemberGUID,
+                            Date   effectiveTime) throws InvalidParameterException,
+                                                         UserNotAuthorizedException,
+                                                         PropertyServerException;
 
 
 
@@ -332,29 +295,6 @@ public interface HostManagerInterface
                               String guid) throws InvalidParameterException,
                                                   UserNotAuthorizedException,
                                                   PropertyServerException;
-
-    /**
-     * Return the list of hosts hosted by another host.
-     *
-     * @param userId calling user
-     * @param supportingHostGUID unique identifier of the host to query
-     * @param effectiveTime effective time for the query
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     *
-     * @return list of matching metadata elements
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    List<HostElement> getHostedHosts(String userId,
-                                     String supportingHostGUID,
-                                     Date   effectiveTime,
-                                     int    startFrom,
-                                     int    pageSize) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException;
 
     /**
      * Return the list of cluster members associated with a host.

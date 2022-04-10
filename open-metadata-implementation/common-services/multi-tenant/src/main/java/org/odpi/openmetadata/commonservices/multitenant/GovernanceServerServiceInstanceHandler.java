@@ -3,14 +3,18 @@
 package org.odpi.openmetadata.commonservices.multitenant;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.ffdc.properties.ConnectorReport;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.OMAGServerInstanceErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
+import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionServiceProviderBase;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.connectors.IntegrationConnectorProvider;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -54,16 +58,16 @@ public class GovernanceServerServiceInstanceHandler extends AuditableServerServi
      * @throws NoSuchMethodException the default constructor is missing
      * @throws InvocationTargetException unable to call the default constructor
      */
-    public ConnectorType validateConnector(String   connectorProviderClassName,
-                                           Class<?> requiredConnectorInterface,
-                                           String   serviceName) throws InvalidParameterException,
-                                                                        ConnectionCheckedException,
-                                                                        ConnectorCheckedException,
-                                                                        ClassNotFoundException,
-                                                                        InstantiationException,
-                                                                        IllegalAccessException,
-                                                                        NoSuchMethodException,
-                                                                        InvocationTargetException
+    public ConnectorReport validateConnector(String   connectorProviderClassName,
+                                             Class<?> requiredConnectorInterface,
+                                             String   serviceName) throws InvalidParameterException,
+                                                                          ConnectionCheckedException,
+                                                                          ConnectorCheckedException,
+                                                                          ClassNotFoundException,
+                                                                          InstantiationException,
+                                                                          IllegalAccessException,
+                                                                          NoSuchMethodException,
+                                                                          InvocationTargetException
     {
         final String providerClassNameParameterName = "connectorProviderClassName";
         final String requiredConnectorInterfaceParameterName = "requiredConnectorInterface";
@@ -107,6 +111,35 @@ public class GovernanceServerServiceInstanceHandler extends AuditableServerServi
                     connectorProviderClassName);
         }
 
-        return connectorType;
+        ConnectorReport connectorReport = new ConnectorReport();
+
+        connectorReport.setConnectorType(connectorType);
+
+        if (connectorProvider instanceof ConnectorProviderBase)
+        {
+            ConnectorProviderBase connectorProviderBase = (ConnectorProviderBase)connectorProvider;
+
+            connectorReport.setComponentDescription(connectorProviderBase.getConnectorComponentDescription());
+        }
+
+        if (connectorProvider instanceof IntegrationConnectorProvider)
+        {
+            IntegrationConnectorProvider integrationConnectorProvider = (IntegrationConnectorProvider)connectorProvider;
+
+            connectorReport.setRefreshTimeInterval(integrationConnectorProvider.getRefreshTimeInterval());
+            connectorReport.setUsesBlockingCalls(integrationConnectorProvider.getUsesBlockingCalls());
+        }
+
+        if (connectorProvider instanceof GovernanceActionServiceProviderBase)
+        {
+            GovernanceActionServiceProviderBase governanceActionServiceProvider = (GovernanceActionServiceProviderBase)connectorProvider;
+            connectorReport.setSupportedRequestTypes(governanceActionServiceProvider.supportedRequestTypes());
+            connectorReport.setSupportedRequestParameters(governanceActionServiceProvider.supportedRequestParameters());
+            connectorReport.setSupportedRequestSourceNames(governanceActionServiceProvider.supportedRequestSourceNames());
+            connectorReport.setSupportedActionTargetNames(governanceActionServiceProvider.supportedActionTargetNames());
+            connectorReport.setSupportedGuards(governanceActionServiceProvider.supportedGuards());
+        }
+
+        return connectorReport;
     }
 }

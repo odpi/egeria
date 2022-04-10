@@ -137,6 +137,7 @@ public class AssetOwnerFactory
      * Create an asset and return its GUID.
      *
      * @param userId calling user
+     * @param templateGUID unique identifier of template to use
      * @return GUID of asset
      * @throws FVTUnexpectedCondition the test case failed
      */

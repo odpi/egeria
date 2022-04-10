@@ -153,7 +153,7 @@ public class BasicFileStoreConnector extends ConnectorBase implements BasicFileS
         {
             this.throwException(BasicFileConnectorErrorCode.UNEXPECTED_SECURITY_EXCEPTION, methodName, fileStoreName, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             this.throwException(BasicFileConnectorErrorCode.UNEXPECTED_IO_EXCEPTION, methodName, fileStoreName, error);
         }
@@ -165,13 +165,14 @@ public class BasicFileStoreConnector extends ConnectorBase implements BasicFileS
     /**
      * Close the file
      */
+    @Override
     public void disconnect()
     {
         try
         {
             super.disconnect();
         }
-        catch (Throwable  exec)
+        catch (Exception  exec)
         {
             log.debug("Ignoring unexpected exception " + exec.getClass().getSimpleName() + " with message " + exec.getMessage());
         }

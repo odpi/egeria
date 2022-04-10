@@ -216,7 +216,7 @@ public class IntegrationDaemonConfigurationClient extends GovernanceServerConfig
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
-                                        integrationServiceOptions,
+                                        requestBody,
                                         adminUserId,
                                         serverName,
                                         serviceURLMarker);
@@ -232,8 +232,8 @@ public class IntegrationDaemonConfigurationClient extends GovernanceServerConfig
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
     public void disableIntegrationService(String serviceURLMarker) throws OMAGNotAuthorizedException,
-                                                                                                                 OMAGInvalidParameterException,
-                                                                                                                 OMAGConfigurationErrorException
+                                                                          OMAGInvalidParameterException,
+                                                                          OMAGConfigurationErrorException
     {
         final String methodName    = "disableIntegrationService";
         final String parameterName = "serviceURLMarker";

@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
@@ -73,14 +74,35 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
         this.auditLog = auditLog;
     }
 
+
+    /**
+     * Return the component description that is used by this connector in the audit log.
+     *
+     * @return id, name, description, wiki page URL.
+     */
+    @Override
+    public ComponentDescription getConnectorComponentDescription()
+    {
+        if ((this.auditLog != null) && (this.auditLog.getReport() != null))
+        {
+            return auditLog.getReport().getReportingComponent();
+        }
+
+        return null;
+    }
+
+
     /**
      * This is the method called by the listener thread when it starts.
      */
     public void run()
     {
-        auditLog.logMessage(listenerThreadName,
-                            OMRSAuditCode.OPEN_METADATA_TOPIC_LISTENER_START.getMessageDefinition(topicName),
-                            this.getConnection().toString());
+        if (auditLog != null)
+        {
+            auditLog.logMessage(listenerThreadName,
+                                OMRSAuditCode.OPEN_METADATA_TOPIC_LISTENER_START.getMessageDefinition(topicName),
+                                this.getConnection().toString());
+        }
 
         while (keepRunning)
         {
@@ -114,9 +136,12 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
             }
         }
 
-        auditLog.logMessage(listenerThreadName,
-                            OMRSAuditCode.OPEN_METADATA_TOPIC_LISTENER_SHUTDOWN.getMessageDefinition(topicName),
-                           this.getConnection().toString());
+        if (auditLog != null)
+        {
+            auditLog.logMessage(listenerThreadName,
+                                OMRSAuditCode.OPEN_METADATA_TOPIC_LISTENER_SHUTDOWN.getMessageDefinition(topicName),
+                                this.getConnection().toString());
+        }
     }
 
 
@@ -137,14 +162,17 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
             {
                 topicListener.processEvent(event.getJson());
             }
-            catch (Throwable  error)
+            catch (Exception  error)
             {
                 final String   actionDescription = "distributeEvent";
 
-                auditLog.logException(actionDescription,
-                                      OMRSAuditCode.EVENT_PROCESSING_ERROR.getMessageDefinition(event.getJson(), error.toString()),
-                                      event.getJson(),
-                                      error);
+                if (auditLog != null)
+                {
+                    auditLog.logException(actionDescription,
+                                          OMRSAuditCode.EVENT_PROCESSING_ERROR.getMessageDefinition(event.getJson(), error.toString()),
+                                          event.getJson(),
+                                          error);
+                }
             }
         }
         

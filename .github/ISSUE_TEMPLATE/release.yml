@@ -31,16 +31,16 @@ body:
         - [ ] Ensure any remaining fixes are merged into branch (and vice-versa to master)
 
         Generate a release image for testing
-        - [ ] Start release pipeline manually to generate docker image
+        - [ ] Start release pipeline manually to generate container image
 
         Updating the React UI (as this is part of the notebook test). Note egeria-ui is out of scope other than inclusion of current release
         - [ ] Create branch
         - [ ] Update version in master
         - [ ] Update version in new branch 
-        - [ ] Ensure new docker image is available for testing (there is no distinct release pipeline)
+        - [ ] Ensure new container image is available for testing (there is no distinct release pipeline)
 
         Updating the Helm Charts (egeria-charts repo)
-        - [ ] checker correct docker images are on dockerhub (these are built by the 'merge' build of a release)
+        - [ ] checker correct container images are on docker.io & quay.io (these are built by the 'merge' build of a release)
         - [ ] update image versions for helm charts (egeria-charts repo) (using -prerelease for chart version)
 
         Final tests

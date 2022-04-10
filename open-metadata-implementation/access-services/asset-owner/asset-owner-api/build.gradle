@@ -10,7 +10,7 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
-    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    testImplementation 'com.fasterxml.jackson.core:jackson-databind'
     implementation project(':open-metadata-implementation:frameworks:open-discovery-framework')
     testImplementation project(':open-metadata-test:open-metadata-ut')
     testImplementation 'org.testng:testng'

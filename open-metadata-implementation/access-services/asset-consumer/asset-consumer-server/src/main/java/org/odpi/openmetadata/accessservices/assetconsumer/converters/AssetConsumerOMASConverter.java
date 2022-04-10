@@ -93,6 +93,7 @@ public abstract class AssetConsumerOMASConverter<B> extends OpenMetadataAPIGener
             ElementHeader elementHeader = new ElementHeader();
 
             elementHeader.setGUID(header.getGUID());
+            elementHeader.setStatus(this.getElementStatus(header.getStatus()));
             elementHeader.setClassifications(this.getEntityClassifications(entityClassifications));
             elementHeader.setType(this.getElementType(header));
 
@@ -156,36 +157,73 @@ public abstract class AssetConsumerOMASConverter<B> extends OpenMetadataAPIGener
 
 
     /**
-     * Extract the properties from the entity.
+     * Translate the repository services' InstanceStatus to an ElementStatus.
      *
-     * @param entity entity containing the properties
-     * @return filled out element header
+     * @param instanceStatus value from the repository services
+     * @return ElementStatus enum
      */
-    ElementHeader getMetadataElementHeader(EntityDetail entity)
+    ElementStatus getElementStatus(InstanceStatus instanceStatus)
     {
-        if (entity != null)
+        if (instanceStatus != null)
         {
-            ElementHeader elementHeader = new ElementHeader();
+            switch (instanceStatus)
+            {
+                case UNKNOWN:
+                    return ElementStatus.UNKNOWN;
 
-            elementHeader.setGUID(entity.getGUID());
-            elementHeader.setClassifications(this.getEntityClassifications(entity));
-            elementHeader.setType(this.getElementType(entity));
+                case DRAFT:
+                    return ElementStatus.DRAFT;
 
-            ElementOrigin elementOrigin = new ElementOrigin();
+                case PREPARED:
+                    return ElementStatus.PREPARED;
 
-            elementOrigin.setSourceServer(serverName);
-            elementOrigin.setOriginCategory(this.getElementOriginCategory(entity.getInstanceProvenanceType()));
-            elementOrigin.setHomeMetadataCollectionId(entity.getMetadataCollectionId());
-            elementOrigin.setHomeMetadataCollectionName(entity.getMetadataCollectionName());
-            elementOrigin.setLicense(entity.getInstanceLicense());
+                case PROPOSED:
+                    return ElementStatus.PROPOSED;
 
-            elementHeader.setOrigin(elementOrigin);
+                case APPROVED:
+                    return ElementStatus.APPROVED;
 
-            return elementHeader;
+                case REJECTED:
+                    return ElementStatus.REJECTED;
+
+                case APPROVED_CONCEPT:
+                    return ElementStatus.APPROVED_CONCEPT;
+
+                case UNDER_DEVELOPMENT:
+                    return ElementStatus.UNDER_DEVELOPMENT;
+
+                case DEVELOPMENT_COMPLETE:
+                    return ElementStatus.DEVELOPMENT_COMPLETE;
+
+                case APPROVED_FOR_DEPLOYMENT:
+                    return ElementStatus.APPROVED_FOR_DEPLOYMENT;
+
+                case STANDBY:
+                    return ElementStatus.STANDBY;
+
+                case ACTIVE:
+                    return ElementStatus.ACTIVE;
+
+                case FAILED:
+                    return ElementStatus.FAILED;
+
+                case DISABLED:
+                    return ElementStatus.DISABLED;
+
+                case COMPLETE:
+                    return ElementStatus.COMPLETE;
+
+                case DEPRECATED:
+                    return ElementStatus.DEPRECATED;
+
+                case OTHER:
+                    return ElementStatus.OTHER;
+            }
         }
 
-        return null;
+        return ElementStatus.UNKNOWN;
     }
+
 
 
     /**

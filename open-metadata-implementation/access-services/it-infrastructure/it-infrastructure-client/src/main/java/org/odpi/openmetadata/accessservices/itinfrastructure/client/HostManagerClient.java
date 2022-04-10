@@ -6,20 +6,10 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.api.HostManagerInte
 import org.odpi.openmetadata.accessservices.itinfrastructure.client.rest.ITInfrastructureRESTClient;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.AssetElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.HostElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.RelatedAssetElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.AssetProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.HostProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.TemplateProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.AssetRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.AssetListResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.AssetResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.MetadataSourceRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.TemplateRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -32,21 +22,11 @@ import java.util.List;
 /**
  * HostManagerClient supports the APIs to maintain hosts and their related objects.
  */
-public class HostManagerClient implements HostManagerInterface
+public class HostManagerClient extends AssetManagerClientBase implements HostManagerInterface
 {
-    private static final String assetURLTemplatePrefix = "/servers/{0}/open-metadata/access-services/it-infrastructure/users/{1}/assets";
-
-    private static final String hostEntityURL = "/Host";
-    private static final String hostedHostRelationship = "HostedHost";
+    private static final String hostEntityType                = "Host";
+    private static final String hostClusterEntityType         = "HostCluster";
     private static final String hostClusterMemberRelationship = "HostClusterMember";
-
-    private String   serverName;               /* Initialized in constructor */
-    private String   serverPlatformURLRoot;    /* Initialized in constructor */
-
-    private InvalidParameterHandler     invalidParameterHandler = new InvalidParameterHandler();
-    private ITInfrastructureRESTClient  restClient;               /* Initialized in constructor */
-
-    private NullRequestBody nullRequestBody = new NullRequestBody();
 
 
     /**
@@ -62,14 +42,7 @@ public class HostManagerClient implements HostManagerInterface
                              String   serverPlatformURLRoot,
                              AuditLog auditLog) throws InvalidParameterException
     {
-        final String methodName = "Client Constructor";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-
-        this.restClient = new ITInfrastructureRESTClient(serverName, serverPlatformURLRoot, auditLog);
+        super(serverName, serverPlatformURLRoot, auditLog);
     }
 
 
@@ -84,14 +57,7 @@ public class HostManagerClient implements HostManagerInterface
     public HostManagerClient(String serverName,
                              String serverPlatformURLRoot) throws InvalidParameterException
     {
-        final String methodName = "Client Constructor";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-
-        this.restClient = new ITInfrastructureRESTClient(serverName, serverPlatformURLRoot);
+        super(serverName, serverPlatformURLRoot);
     }
 
 
@@ -111,14 +77,7 @@ public class HostManagerClient implements HostManagerInterface
                              String userId,
                              String password) throws InvalidParameterException
     {
-        final String methodName = "Client Constructor";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-
-        this.restClient = new ITInfrastructureRESTClient(serverName, serverPlatformURLRoot, userId, password);
+        super(serverName, serverPlatformURLRoot, userId, password);
     }
 
 
@@ -141,14 +100,7 @@ public class HostManagerClient implements HostManagerInterface
                              String   password,
                              AuditLog auditLog) throws InvalidParameterException
     {
-        final String methodName = "Client Constructor";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-
-        this.restClient = new ITInfrastructureRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
+        super(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
 
 
@@ -167,16 +119,7 @@ public class HostManagerClient implements HostManagerInterface
                              ITInfrastructureRESTClient restClient,
                              int                        maxPageSize) throws InvalidParameterException
     {
-        final String methodName = "Client Constructor";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-
-        this.restClient = restClient;
+        super(serverName, serverPlatformURLRoot, restClient, maxPageSize);
     }
 
 
@@ -210,31 +153,11 @@ public class HostManagerClient implements HostManagerInterface
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException
     {
-        final String methodName                  = "createHost";
-        final String propertiesParameterName     = "hostProperties";
-        final String qualifiedNameParameterName  = "qualifiedName";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateObject(hostProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(hostProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "?infrastructureManagerIsHome={2}";
+        final String methodName = "createHost";
 
         AssetProperties assetProperties = hostProperties.cloneToAsset();
 
-        AssetRequestBody requestBody = new AssetRequestBody(assetProperties);
-
-        requestBody.setExternalSourceGUID(infrastructureManagerGUID);
-        requestBody.setExternalSourceName(infrastructureManagerName);
-
-        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId,
-                                                                  infrastructureManagerIsHome);
-
-        return restResult.getGUID();
+        return super.createAsset(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, assetProperties, null, methodName);
     }
 
 
@@ -264,32 +187,9 @@ public class HostManagerClient implements HostManagerInterface
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
-        final String methodName                  = "createHostFromTemplate";
-        final String templateGUIDParameterName   = "templateGUID";
-        final String propertiesParameterName     = "templateProperties";
-        final String qualifiedNameParameterName  = "qualifiedName";
+        final String methodName = "createHost";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
-        invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(templateProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/from-template/{2}?infrastructureManagerIsHome={3}";
-
-        TemplateRequestBody requestBody = new TemplateRequestBody(templateProperties);
-
-        requestBody.setExternalSourceGUID(infrastructureManagerGUID);
-        requestBody.setExternalSourceName(infrastructureManagerName);
-
-        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId,
-                                                                  templateGUID,
-                                                                  infrastructureManagerIsHome);
-
-        return restResult.getGUID();
+        return super.createAssetFromTemplate(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, templateGUID, templateProperties, methodName);
     }
 
 
@@ -317,127 +217,11 @@ public class HostManagerClient implements HostManagerInterface
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
     {
-        final String methodName                  = "updateHost";
-        final String elementGUIDParameterName    = "hostGUID";
-        final String propertiesParameterName     = "hostProperties";
-        final String qualifiedNameParameterName  = "qualifiedName";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(hostGUID, elementGUIDParameterName, methodName);
-        invalidParameterHandler.validateObject(hostProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(hostProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/{2}?isMergeUpdate={3}";
+        final String methodName = "updateHost";
 
         AssetProperties assetProperties = hostProperties.cloneToAsset();
 
-        AssetRequestBody requestBody = new AssetRequestBody(assetProperties);
-
-        requestBody.setExternalSourceGUID(infrastructureManagerGUID);
-        requestBody.setExternalSourceName(infrastructureManagerName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        requestBody,
-                                        serverName,
-                                        userId,
-                                        hostGUID,
-                                        isMergeUpdate);
-    }
-
-
-
-    /**
-     * Create a relationship between a host and a hosted host.
-     *
-     * @param userId calling user
-     * @param infrastructureManagerGUID unique identifier of software server capability representing the infrastructure manager
-     * @param infrastructureManagerName unique name of software server capability representing the infrastructure manager
-     * @param hostGUID unique identifier of the host
-     * @param hostedHostGUID unique identifier of the hosted host
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @Override
-    public void setupHostedHost(String userId,
-                                String infrastructureManagerGUID,
-                                String infrastructureManagerName,
-                                String hostGUID,
-                                String hostedHostGUID) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException
-    {
-        final String methodName                  = "setupHostedHost";
-        final String hostGUIDParameterName       = "hostGUID";
-        final String hostedHostGUIDParameterName = "hostedHostGUID";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(hostGUID, hostGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(hostedHostGUID, hostedHostGUIDParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/{2}/" + hostedHostRelationship + "/{3}";
-
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
-
-        requestBody.setExternalSourceGUID(infrastructureManagerGUID);
-        requestBody.setExternalSourceName(infrastructureManagerName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        requestBody,
-                                        serverName,
-                                        userId,
-                                        hostGUID,
-                                        hostedHostGUID);
-    }
-
-
-    /**
-     * Remove a relationship between a host and a hosted host.
-     *
-     * @param userId calling user
-     * @param infrastructureManagerGUID unique identifier of software server capability representing the infrastructure manager
-     * @param infrastructureManagerName unique name of software server capability representing the infrastructure manager
-     * @param hostGUID unique identifier of the host
-     * @param hostedHostGUID unique identifier of the hosted host
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @Override
-    public void clearHostedHost(String userId,
-                                String infrastructureManagerGUID,
-                                String infrastructureManagerName,
-                                String hostGUID,
-                                String hostedHostGUID) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException
-    {
-        final String methodName                  = "clearHostedHost";
-        final String hostGUIDParameterName       = "hostGUID";
-        final String hostedHostGUIDParameterName = "hostedHostGUID";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(hostGUID, hostGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(hostedHostGUID, hostedHostGUIDParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/{2}/" + hostedHostRelationship + "/{3}/delete";
-
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
-
-        requestBody.setExternalSourceGUID(infrastructureManagerGUID);
-        requestBody.setExternalSourceName(infrastructureManagerName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        requestBody,
-                                        serverName,
-                                        userId,
-                                        hostGUID,
-                                        hostedHostGUID);
+        super.updateAsset(userId, infrastructureManagerGUID, infrastructureManagerName, hostGUID, isMergeUpdate, assetProperties, methodName);
     }
 
 
@@ -447,44 +231,31 @@ public class HostManagerClient implements HostManagerInterface
      * @param userId calling user
      * @param infrastructureManagerGUID unique identifier of software server capability representing the infrastructure manager
      * @param infrastructureManagerName unique name of software server capability representing the infrastructure manager
+     * @param infrastructureManagerIsHome ensure that only the infrastructure manager can update this asset
      * @param hostGUID unique identifier of the host
      * @param clusterMemberGUID unique identifier of the cluster member host
+     * @param effectiveFrom time when this hosting is effective - null means immediately
+     * @param effectiveTo time when this hosting is no longer effective - null means forever
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void setupClusterMember(String userId,
-                                   String infrastructureManagerGUID,
-                                   String infrastructureManagerName,
-                                   String hostGUID,
-                                   String clusterMemberGUID) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
+    public void setupClusterMember(String  userId,
+                                   String  infrastructureManagerGUID,
+                                   String  infrastructureManagerName,
+                                   boolean infrastructureManagerIsHome,
+                                   String  hostGUID,
+                                   String  clusterMemberGUID,
+                                   Date    effectiveFrom,
+                                   Date    effectiveTo) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
     {
-        final String methodName                     = "setupClusterMember";
-        final String hostGUIDParameterName          = "hostGUID";
-        final String clusterMemberGUIDParameterName = "clusterMemberGUID";
+        final String methodName = "setupClusterMember";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(hostGUID, hostGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(clusterMemberGUID, clusterMemberGUIDParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/{2}/" + hostClusterMemberRelationship + "/{3}";
-
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
-
-        requestBody.setExternalSourceGUID(infrastructureManagerGUID);
-        requestBody.setExternalSourceName(infrastructureManagerName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        requestBody,
-                                        serverName,
-                                        userId,
-                                        hostGUID,
-                                        clusterMemberGUID);
+        super.setupRelatedAsset(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, hostClusterEntityType, hostGUID, hostClusterMemberRelationship, hostEntityType, clusterMemberGUID, effectiveFrom, effectiveTo,null, methodName);
     }
 
 
@@ -496,6 +267,7 @@ public class HostManagerClient implements HostManagerInterface
      * @param infrastructureManagerName unique name of software server capability representing the infrastructure manager
      * @param hostGUID unique identifier of the host
      * @param clusterMemberGUID unique identifier of the cluster member host
+     * @param effectiveTime time when the hosting is effective
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -506,32 +278,14 @@ public class HostManagerClient implements HostManagerInterface
                                    String infrastructureManagerGUID,
                                    String infrastructureManagerName,
                                    String hostGUID,
-                                   String clusterMemberGUID) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
+                                   String clusterMemberGUID,
+                                   Date   effectiveTime) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException
     {
-        final String methodName                     = "clearClusterMember";
-        final String hostGUIDParameterName          = "hostGUID";
-        final String clusterMemberGUIDParameterName = "clusterMemberGUID";
+        final String methodName = "clearClusterMember";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(hostGUID, hostGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(clusterMemberGUID, clusterMemberGUIDParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/{2}/" + hostClusterMemberRelationship + "/{3/delete";
-
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
-
-        requestBody.setExternalSourceGUID(infrastructureManagerGUID);
-        requestBody.setExternalSourceName(infrastructureManagerName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        requestBody,
-                                        serverName,
-                                        userId,
-                                        hostGUID,
-                                        clusterMemberGUID);
+        super.clearRelatedAsset(userId, infrastructureManagerGUID, infrastructureManagerName, hostClusterEntityType, hostGUID, hostClusterMemberRelationship, hostEntityType, clusterMemberGUID, effectiveTime, methodName);
     }
 
 
@@ -554,20 +308,9 @@ public class HostManagerClient implements HostManagerInterface
                                                     UserNotAuthorizedException,
                                                     PropertyServerException
     {
-        final String methodName               = "publishHost";
-        final String elementGUIDParameterName = "hostGUID";
+        final String methodName = "publishHost";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(hostGUID, elementGUIDParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/{2}/publish";
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        hostGUID);
+        super.publishAsset(userId, hostGUID, methodName);
     }
 
 
@@ -589,20 +332,9 @@ public class HostManagerClient implements HostManagerInterface
                                                      UserNotAuthorizedException,
                                                      PropertyServerException
     {
-        final String methodName               = "withdrawHost";
-        final String elementGUIDParameterName = "hostGUID";
+        final String methodName = "withdrawHost";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(hostGUID, elementGUIDParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/{2}/withdraw";
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        hostGUID);
+        super.withdrawAsset(userId, hostGUID, methodName);
     }
 
 
@@ -627,24 +359,8 @@ public class HostManagerClient implements HostManagerInterface
                                                    PropertyServerException
     {
         final String methodName = "removeHost";
-        final String elementGUIDParameterName  = "hostGUID";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(hostGUID, elementGUIDParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/{2}/delete";
-
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
-
-        requestBody.setExternalSourceGUID(infrastructureManagerGUID);
-        requestBody.setExternalSourceName(infrastructureManagerName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        requestBody,
-                                        serverName,
-                                        userId,
-                                        hostGUID);
+        super.removeAsset(userId, infrastructureManagerGUID, infrastructureManagerName, hostGUID, methodName);
     }
 
 
@@ -674,30 +390,9 @@ public class HostManagerClient implements HostManagerInterface
                                                                UserNotAuthorizedException,
                                                                PropertyServerException
     {
-        final String methodName                = "findHosts";
-        final String searchStringParameterName = "searchString";
+        final String methodName = "findHosts";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
-        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + hostEntityURL + "/by-search-string?startFrom={2}&pageSize={3}";
-
-        SearchStringRequestBody requestBody = new SearchStringRequestBody();
-
-        requestBody.setEffectiveTime(effectiveTime);
-        requestBody.setSearchString(searchString);
-        requestBody.setSearchStringParameterName(searchStringParameterName);
-
-        AssetListResponse restResult = restClient.callAssetListPostRESTCall(methodName,
-                                                                            urlTemplate,
-                                                                            requestBody,
-                                                                            serverName,
-                                                                            userId,
-                                                                            startFrom,
-                                                                            validatedPageSize);
-
-        return this.convertAssetElements(restResult.getElementList());
+        return this.convertAssetElements(super.findAssets(userId, searchString, hostEntityType, effectiveTime, startFrom, pageSize, methodName));
     }
 
 
@@ -726,30 +421,9 @@ public class HostManagerClient implements HostManagerInterface
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        final String methodName        = "getHostsByName";
-        final String nameParameterName = "name";
+        final String methodName = "getHostsByName";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(name, nameParameterName, methodName);
-        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + hostEntityURL + "?startFrom={2}&pageSize={3}";
-
-        NameRequestBody requestBody = new NameRequestBody();
-
-        requestBody.setEffectiveTime(effectiveTime);
-        requestBody.setName(name);
-        requestBody.setNamePropertyName(nameParameterName);
-
-        AssetListResponse restResult = restClient.callAssetListPostRESTCall(methodName,
-                                                                            urlTemplate,
-                                                                            requestBody,
-                                                                            serverName,
-                                                                            userId,
-                                                                            startFrom,
-                                                                            validatedPageSize);
-
-        return this.convertAssetElements(restResult.getElementList());
+        return this.convertAssetElements(super.getAssetsByName(userId, name, hostEntityType, effectiveTime, startFrom, pageSize, methodName));
     }
 
 
@@ -780,116 +454,8 @@ public class HostManagerClient implements HostManagerInterface
                                                                                       PropertyServerException
     {
         final String methodName = "getHostsForInfrastructureManager";
-        final String infrastructureManagerGUIDParameterName = "infrastructureManagerGUID";
-        final String infrastructureManagerNameParameterName = "infrastructureManagerName";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(infrastructureManagerGUID, infrastructureManagerGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(infrastructureManagerName, infrastructureManagerNameParameterName, methodName);
-
-        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + hostEntityURL + "/infrastructureManagers/{2}/{3}/hosts?startFrom={4}&pageSize={5}";
-
-        EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
-
-        requestBody.setEffectiveTime(effectiveTime);
-
-        AssetListResponse restResult = restClient.callAssetListPostRESTCall(methodName,
-                                                                            urlTemplate,
-                                                                            requestBody,
-                                                                            serverName,
-                                                                            userId,
-                                                                            infrastructureManagerGUID,
-                                                                            infrastructureManagerName,
-                                                                            startFrom,
-                                                                            validatedPageSize);
-
-        return this.convertAssetElements(restResult.getElementList());
-    }
-
-
-    /**
-     * Retrieve the host metadata element with the supplied unique identifier.
-     *
-     * @param userId calling user
-     * @param guid unique identifier of the requested metadata element
-     *
-     * @return matching metadata element
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @Override
-    public HostElement getHostByGUID(String userId,
-                                     String guid) throws InvalidParameterException,
-                                                         UserNotAuthorizedException,
-                                                         PropertyServerException
-    {
-        final String methodName = "getHostByGUID";
-        final String guidParameterName = "guid";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + hostEntityURL + "/{2}";
-
-        AssetResponse restResult = restClient.callAssetGetRESTCall(methodName,
-                                                                   urlTemplate,
-                                                                   serverName,
-                                                                   userId,
-                                                                   guid);
-
-        return this.convertAssetElement(restResult.getElement());
-    }
-
-
-    /**
-     * Return the list of hosts hosted by another host.
-     *
-     * @param userId calling user
-     * @param supportingHostGUID unique identifier of the host to query
-     * @param effectiveTime effective time for the query
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     *
-     * @return list of matching metadata elements
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @Override
-    public List<HostElement> getHostedHosts(String userId,
-                                            String supportingHostGUID,
-                                            Date   effectiveTime,
-                                            int    startFrom,
-                                            int    pageSize) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
-    {
-        final String methodName = "getHostedHosts";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/{2}/" + hostedHostRelationship + "?startFrom={3}&pageSize={4}";
-
-        EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
-
-        requestBody.setEffectiveTime(effectiveTime);
-
-        AssetListResponse restResult = restClient.callAssetListPostRESTCall(methodName,
-                                                                            urlTemplate,
-                                                                            requestBody,
-                                                                            serverName,
-                                                                            userId,
-                                                                            supportingHostGUID,
-                                                                            startFrom,
-                                                                            validatedPageSize);
-
-        return this.convertAssetElements(restResult.getElementList());
+        return this.convertAssetElements(super.getAssetsForInfrastructureManager(userId, infrastructureManagerGUID, infrastructureManagerName, hostEntityType, effectiveTime, startFrom, pageSize, methodName));
     }
 
 
@@ -919,25 +485,58 @@ public class HostManagerClient implements HostManagerInterface
     {
         final String methodName = "getClusterMembersForHost";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+        return this.convertRelatedAssetElements(super.getRelatedAssets(userId, hostClusterEntityType, hostGUID, 1, hostClusterMemberRelationship, hostEntityType, effectiveTime, startFrom, pageSize, methodName));
+    }
 
-        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/{2}/" + hostClusterMemberRelationship + "?startFrom={3}&pageSize={4}";
 
-        EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+    /**
+     * Retrieve the host metadata element with the supplied unique identifier.
+     *
+     * @param userId calling user
+     * @param guid unique identifier of the requested metadata element
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public HostElement getHostByGUID(String userId,
+                                     String guid) throws InvalidParameterException,
+                                                         UserNotAuthorizedException,
+                                                         PropertyServerException
+    {
+        final String methodName = "getHostByGUID";
 
-        requestBody.setEffectiveTime(effectiveTime);
+        return this.convertAssetElement(super.getAssetByGUID(userId, hostEntityType, guid, null, methodName));
+    }
 
-        AssetListResponse restResult = restClient.callAssetListPostRESTCall(methodName,
-                                                                            urlTemplate,
-                                                                            requestBody,
-                                                                            serverName,
-                                                                            userId,
-                                                                            hostGUID,
-                                                                            startFrom,
-                                                                            validatedPageSize);
 
-        return this.convertAssetElements(restResult.getElementList());
+    /**
+     * Convert a list of RelatedAssetElements into a list of HostElements.
+     *
+     * @param relatedAssetElements returned assets
+     * @return result for caller
+     */
+    private List<HostElement> convertRelatedAssetElements(List<RelatedAssetElement> relatedAssetElements)
+    {
+        if (relatedAssetElements != null)
+        {
+            List<HostElement> hostElements = new ArrayList<>();
+
+            for (RelatedAssetElement relatedAssetElement : relatedAssetElements)
+            {
+                hostElements.add(this.convertAssetElement(relatedAssetElement.getRelatedAsset()));
+            }
+
+            if (! hostElements.isEmpty())
+            {
+                return hostElements;
+            }
+        }
+
+        return null;
     }
 
 

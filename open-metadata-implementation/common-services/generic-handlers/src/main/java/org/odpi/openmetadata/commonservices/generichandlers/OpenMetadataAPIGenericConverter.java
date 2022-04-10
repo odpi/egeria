@@ -1256,6 +1256,28 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
+     * Extract and delete the referenceId property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removeReferenceId(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeReferenceId";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.REFERENCE_ID_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract the referenceId property from the supplied instance properties.
      *
      * @param instanceProperties properties from relationship
@@ -3898,6 +3920,29 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         {
             return repositoryHelper.removeStringProperty(serviceName,
                                                          OpenMetadataAPIMapper.ABBREVIATION_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Extract and remove the examples property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from governance entities
+     * @return string property or null
+     */
+    protected String removeExamples(InstanceProperties instanceProperties)
+    {
+        final String methodName = "removeExamples";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.EXAMPLES_PROPERTY_NAME,
                                                          instanceProperties,
                                                          methodName);
         }

@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices.configuration.registration;
 
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -13,41 +15,47 @@ import java.util.Set;
  */
 public enum GovernanceServicesDescription implements Serializable
 {
-    OPEN_LINEAGE_SERVICES            (2003,
+    OPEN_LINEAGE_SERVICES            (190,
+                                      ComponentDevelopmentStatus.STABLE,
                                       "Open Lineage Services",
                                       "open-lineage",
                                       "Store and query asset lineage",
-                                      "https://odpi.github.io/egeria-docs/services/open-lineage-services/"),
-    CONFORMANCE_SUITE_SERVICES       (2005,
+                                      "https://egeria-project.org/services/open-lineage-services/"),
+    CONFORMANCE_SUITE_SERVICES       (191,
+                                      ComponentDevelopmentStatus.STABLE,
                                       "Conformance Suite Services",
                                       "conformance-suite",
                                       "Run automated open metadata conformance suite services",
-                                      "https://odpi.github.io/egeria-docs/guides/cts/overview/"),
-    DATA_ENGINE_PROXY_SERVICES       (2007,
+                                      "https://egeria-project.org/guides/cts/overview/"),
+    DATA_ENGINE_PROXY_SERVICES       (192,
+                                      ComponentDevelopmentStatus.STABLE,
                                       "Data Engine Proxy Services",
                                       null,
                                       "Integrate Data Engines that are not self-capable of integrating directly with the Data Engine OMAS",
-                                      "https://odpi.github.io/egeria-docs/services/data-engine-proxy-services/"),
-    INTEGRATION_DAEMON_SERVICES      (2009,
+                                      "https://egeria-project.org/services/data-engine-proxy-services/"),
+    INTEGRATION_DAEMON_SERVICES      (193,
+                                      ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                                       "Integration Daemon Services",
                                       null,
                                       "Host one or more integration services that are exchanging metadata with third party technologies",
-                                      "https://odpi.github.io/egeria-docs/services/integration-daemon-services/"),
-    ENGINE_HOST_SERVICES             (2010,
+                                      "https://egeria-project.org/services/integration-daemon-services/"),
+    ENGINE_HOST_SERVICES             (194,
+                                      ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                                       "Engine Host Services",
                                       null,
                                       "Host one or more engine services that are actively managing governance of open metadata and the digital landscape",
-                                      "https://odpi.github.io/egeria-docs/services/engine-host-services/"),
+                                      "https://egeria-project.org/services/engine-host-services/"),
     ;
 
 
     private static final long serialVersionUID = 1L;
 
-    private int    serviceCode;
-    private String serviceName;
-    private String serviceURLMarker;
-    private String serviceDescription;
-    private String serviceWiki;
+    private int                        serviceCode;
+    private ComponentDevelopmentStatus serviceDevelopmentStatus;
+    private String                     serviceName;
+    private String                     serviceURLMarker;
+    private String                     serviceDescription;
+    private String                     serviceWiki;
 
 
     /**
@@ -92,19 +100,22 @@ public enum GovernanceServicesDescription implements Serializable
     /**
      * Default Constructor
      *
-     * @param serviceCode ordinal for this governance service
-     * @param serviceName symbolic name for this governance service
+     * @param serviceCode ordinal for this access service
+     * @param serviceDevelopmentStatus development status
+     * @param serviceName symbolic name for this access service
      * @param serviceURLMarker string used in URLs
-     * @param serviceDescription short description for this governance service
-     * @param serviceWiki wiki page for the governance service for this governance service
+     * @param serviceDescription short description for this access service
+     * @param serviceWiki wiki page for the access service for this access service
      */
-    GovernanceServicesDescription(int    serviceCode,
-                                  String serviceName,
-                                  String serviceURLMarker,
-                                  String serviceDescription,
-                                  String serviceWiki)
+    GovernanceServicesDescription(int                        serviceCode,
+                                  ComponentDevelopmentStatus serviceDevelopmentStatus,
+                                  String                     serviceName,
+                                  String                     serviceURLMarker,
+                                  String                     serviceDescription,
+                                  String                     serviceWiki)
     {
         this.serviceCode = serviceCode;
+        this.serviceDevelopmentStatus = serviceDevelopmentStatus;
         this.serviceName = serviceName;
         this.serviceURLMarker = serviceURLMarker;
         this.serviceDescription = serviceDescription;
@@ -120,6 +131,17 @@ public enum GovernanceServicesDescription implements Serializable
     public int getServiceCode()
     {
         return serviceCode;
+    }
+
+
+    /**
+     * Return the development status of the component.
+     *
+     * @return enum describing the status
+     */
+    public ComponentDevelopmentStatus getServiceDevelopmentStatus()
+    {
+        return serviceDevelopmentStatus;
     }
 
 

@@ -17,17 +17,25 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum WatchdogEventType
 {
-    NEW_ELEMENT                       ( 0,  "New Element",                     "A new metadata element has been created in the metadata store."),
-    REFRESHED_ELEMENT                 ( 1,  "Refreshed Element",               "A metadata element has been distributed around the cohort - could be for the first time."),
-    UPDATED_ELEMENT_PROPERTIES        ( 2,  "Updated Element Properties",      "The properties of an existing metadata element have been updated."),
-    DELETED_ELEMENT                   ( 3,  "Deleted Element",                 "A metadata element has been deleted."),
+    UNKNOWN_EVENT                     ( 0,  "Unknown Event",         "An event that is not recognized by the local server."),
+
+    NEW_ELEMENT                       ( 1,  "New Element",                     "A new metadata element has been created in the metadata store."),
+    REFRESHED_ELEMENT                 ( 2,  "Refreshed Element",               "A metadata element has been distributed around the cohort - could be for the first time."),
+    UPDATED_ELEMENT_PROPERTIES        ( 3,  "Updated Element Properties",      "The properties of an existing metadata element have been updated."),
     NEW_CLASSIFICATION                ( 4,  "New Classification",              "A new classification has been added to a metadata element."),
     UPDATED_CLASSIFICATION_PROPERTIES ( 5,  "Updated Classification",          "The properties of one of the classifications attached to a metadata element have been updated."),
     DELETED_CLASSIFICATION            ( 6,  "Deleted Classification",          "One of the classifications has been removed from a metadata element."),
-    NEW_RELATIONSHIP                  ( 7,  "New Relationship",                "A new relationship linking two metadata elements together has been created."),
-    REFRESHED_RELATIONSHIP            ( 8,  "Refreshed Relationship",          "A relationship linking two metadata elements together has been distributed around the cohort - could be for the first time."),
-    UPDATED_RELATIONSHIP_PROPERTIES   ( 9,  "Updated Relationship Properties", "The properties of a relationship linking two metadata elements have been updated."),
-    DELETED_RELATIONSHIP              (10,  "Deleted Relationship",            "A relationship between two metadata elements has been deleted.");
+    DELETED_ELEMENT                   ( 7,  "Deleted Element",                 "A metadata element has been deleted."),
+    ELEMENT_RESTORED                  ( 8,  "Element Restored",                "An element that was once deleted has been restored."),
+    NEW_RELATIONSHIP                  ( 9,  "New Relationship",                "A new relationship linking two metadata elements together has been created."),
+    REFRESHED_RELATIONSHIP            (10,  "Refreshed Relationship",          "A relationship linking two metadata elements together has been distributed around the cohort - could be for the first time."),
+    UPDATED_RELATIONSHIP_PROPERTIES   (11,  "Updated Relationship Properties", "The properties of a relationship linking two metadata elements have been updated."),
+    RELATIONSHIP_GUID_CHANGED         (12,  "Relationship GUID Changed",       "An relationship's GUID has changed."),
+    RELATIONSHIP_TYPE_CHANGED         (13,  "Relationship Type Changed",       "An relationship's type has changed."),
+    RELATIONSHIP_HOME_CHANGED         (14,  "Relationship Home Changed",       "An relationship's home has changed."),
+    DELETED_RELATIONSHIP              (15,  "Deleted Relationship",            "A relationship between two metadata elements has been deleted."),
+
+    ;
 
     private static final long serialVersionUID = 1L;
 

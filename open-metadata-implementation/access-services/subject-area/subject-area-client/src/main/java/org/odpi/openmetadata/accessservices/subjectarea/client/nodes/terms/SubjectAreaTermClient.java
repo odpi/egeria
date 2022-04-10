@@ -30,6 +30,7 @@ public class SubjectAreaTermClient<T extends Term> extends AbstractSubjectAreaNo
      *
      * @param userId      unique identifier for requesting user, under which the request is performed.
      * @param guid        unique identifier of the Term
+     * @param findRequest request specification
      * @return list of categories
      * @throws PropertyServerException    something went wrong with the REST call stack.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.

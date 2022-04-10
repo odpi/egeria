@@ -6,6 +6,7 @@ package org.odpi.openmetadata.governanceservers.integrationdaemonservices.proper
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -16,8 +17,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * IntegrationConnectorReport provides information on the operation of a single connector within an integration
- * service.
+ * IntegrationConnectorReport provides information on the operation of a single connector within an integration service.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -26,7 +26,10 @@ public class IntegrationConnectorReport implements Serializable
 {
     private static final long    serialVersionUID = 1L;
 
+    private String                     connectorId              = null;
     private String                     connectorName            = null;
+    private Connection                 connection               = null;
+    private String                     connectorInstanceId      = null;
     private IntegrationConnectorStatus connectorStatus          = null;
     private Date                       lastStatusChange         = null;
     private Date                       lastRefreshTime          = null;
@@ -52,7 +55,10 @@ public class IntegrationConnectorReport implements Serializable
     {
         if (template != null)
         {
+            connectorInstanceId      = template.getConnectorId();
             connectorName            = template.getConnectorName();
+            connection               = template.getConnection();
+            connectorInstanceId      = template.getConnectorInstanceId();
             connectorStatus          = template.getConnectorStatus();
             lastStatusChange         = template.getLastStatusChange();
             lastRefreshTime          = template.getLastRefreshTime();
@@ -60,6 +66,28 @@ public class IntegrationConnectorReport implements Serializable
             failingExceptionMessage  = template.getFailingExceptionMessage();
             statistics               = template.getStatistics();
         }
+    }
+
+
+    /**
+     * Return the unique identifier of the connector - set up in the configuration.
+     *
+     * @return string guid
+     */
+    public String getConnectorId()
+    {
+        return connectorId;
+    }
+
+
+    /**
+     * Set up the unique identifier of the connector - set up in the configuration.
+     *
+     * @param connectorId string guid
+     */
+    public void setConnectorId(String connectorId)
+    {
+        this.connectorId = connectorId;
     }
 
 
@@ -85,6 +113,51 @@ public class IntegrationConnectorReport implements Serializable
     {
         this.connectorName = connectorName;
     }
+
+
+    /**
+     * Return the connection used to create the instance of the connector.
+     *
+     * @return connection object
+     */
+    public Connection getConnection()
+    {
+        return connection;
+    }
+
+
+    /**
+     * Set up the connection object used to create the instance of the connector.
+     *
+     * @param connection connection object
+     */
+    public void setConnection(Connection connection)
+    {
+        this.connection = connection;
+    }
+
+
+    /**
+     * Return the unique identifier of the connector instance.
+     *
+     * @return string guid
+     */
+    public String getConnectorInstanceId()
+    {
+        return connectorInstanceId;
+    }
+
+
+    /**
+     * Set up the unique identifier of the connector instance.
+     *
+     * @param connectorInstanceId string guid
+     */
+    public void setConnectorInstanceId(String connectorInstanceId)
+    {
+        this.connectorInstanceId = connectorInstanceId;
+    }
+
 
 
     /**
@@ -232,14 +305,17 @@ public class IntegrationConnectorReport implements Serializable
     public String toString()
     {
         return "IntegrationConnectorReport{" +
-                "connectorName='" + connectorName + '\'' +
-                ", connectorStatus=" + connectorStatus +
-                ", lastStatusChange=" + lastStatusChange +
-                ", lastRefreshTime=" + lastRefreshTime +
-                ", minMinutesBetweenRefresh=" + minMinutesBetweenRefresh +
-                ", failingExceptionMessage='" + failingExceptionMessage + '\'' +
-                ", statistics=" + statistics +
-                '}';
+                       "connectorId='" + connectorId + '\'' +
+                       ", connectorName='" + connectorName + '\'' +
+                       ", connection=" + connection +
+                       ", connectorInstanceId='" + connectorInstanceId + '\'' +
+                       ", connectorStatus=" + connectorStatus +
+                       ", lastStatusChange=" + lastStatusChange +
+                       ", lastRefreshTime=" + lastRefreshTime +
+                       ", minMinutesBetweenRefresh=" + minMinutesBetweenRefresh +
+                       ", failingExceptionMessage='" + failingExceptionMessage + '\'' +
+                       ", statistics=" + statistics +
+                       '}';
     }
 
 
@@ -262,12 +338,15 @@ public class IntegrationConnectorReport implements Serializable
         }
         IntegrationConnectorReport that = (IntegrationConnectorReport) objectToCompare;
         return minMinutesBetweenRefresh == that.minMinutesBetweenRefresh &&
-                Objects.equals(connectorName, that.connectorName) &&
-                connectorStatus == that.connectorStatus &&
-                Objects.equals(lastStatusChange, that.lastStatusChange) &&
-                Objects.equals(lastRefreshTime, that.lastRefreshTime) &&
-                Objects.equals(failingExceptionMessage, that.failingExceptionMessage) &&
-                Objects.equals(statistics, that.statistics);
+                       Objects.equals(connectorId, that.connectorId) &&
+                       Objects.equals(connectorName, that.connectorName) &&
+                       Objects.equals(connection, that.connection) &&
+                       Objects.equals(connectorInstanceId, that.connectorInstanceId) &&
+                       connectorStatus == that.connectorStatus &&
+                       Objects.equals(lastStatusChange, that.lastStatusChange) &&
+                       Objects.equals(lastRefreshTime, that.lastRefreshTime) &&
+                       Objects.equals(failingExceptionMessage, that.failingExceptionMessage) &&
+                       Objects.equals(statistics, that.statistics);
     }
 
 
@@ -279,6 +358,7 @@ public class IntegrationConnectorReport implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(connectorName, connectorStatus, lastStatusChange, lastRefreshTime, minMinutesBetweenRefresh, failingExceptionMessage, statistics);
+        return Objects.hash(connectorId, connectorName, connection, connectorInstanceId, connectorStatus, lastStatusChange,
+                            lastRefreshTime, minMinutesBetweenRefresh, failingExceptionMessage, statistics);
     }
 }

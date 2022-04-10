@@ -8,7 +8,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogErrorCode;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogBean;
+import org.odpi.openmetadata.accessservices.assetcatalog.util.Constants;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -35,6 +38,7 @@ public class RelationshipHandlerTest {
     private static final String FIRST_GUID = "ababa-123-acbd";
     private static final String SECOND_GUID = "ababc-2134-2341f";
     private static final String RELATIONSHIP_TYPE_GUID = "adadad-bcba-123";
+    public static final String SERVER_NAME = "server-name";
     private final String USER = "test-user";
     private final String RELATIONSHIP_TYPE = "SemanticAssigment";
     @Mock
@@ -42,6 +46,9 @@ public class RelationshipHandlerTest {
 
     @Mock
     private OMRSRepositoryHelper repositoryHelper;
+
+    @Mock
+    private AssetHandler<AssetCatalogBean> assetHandler;
 
     @Mock
     private InvalidParameterHandler invalidParameterHandler;
@@ -63,20 +70,13 @@ public class RelationshipHandlerTest {
         mockTypeDef(RELATIONSHIP_TYPE, RELATIONSHIP_TYPE_GUID);
         mockMetadataCollection();
 
-        when(repositoryHandler.getRelationshipBetweenEntities(USER,
-                FIRST_GUID,
-                "",
-                SECOND_GUID,
-                RELATIONSHIP_TYPE_GUID,
-                RELATIONSHIP_TYPE,
-                methodName)).thenReturn(mock);
+        when(assetHandler.getUniqueAttachmentLink(USER, FIRST_GUID,
+                Constants.GUID_PARAMETER, "", RELATIONSHIP_TYPE_GUID, RELATIONSHIP_TYPE, SECOND_GUID,
+                "", null, methodName)).thenReturn(mock);
 
         org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship
-                result = relationshipHandler.getRelationshipBetweenEntities(USER,
-                FIRST_GUID,
-                SECOND_GUID,
+                result = relationshipHandler.getRelationshipBetweenEntities(USER, SERVER_NAME, FIRST_GUID, SECOND_GUID,
                 RELATIONSHIP_TYPE);
-
 
         assertNotNull(result);
         assertEquals(mock.getGUID(), result.getGuid());
@@ -93,19 +93,12 @@ public class RelationshipHandlerTest {
         mockMetadataCollection();
 
         UserNotAuthorizedException mockedException = new UserNotAuthorizedException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getMessageDefinition(), this.getClass().getName(), "", "");
-        doThrow(mockedException).when(repositoryHandler).getRelationshipBetweenEntities(USER,
-                FIRST_GUID,
-                "",
-                SECOND_GUID,
-                RELATIONSHIP_TYPE_GUID,
-                RELATIONSHIP_TYPE,
-                methodName);
+        doThrow(mockedException).when(assetHandler).getUniqueAttachmentLink(USER, FIRST_GUID,
+                Constants.GUID_PARAMETER, "", RELATIONSHIP_TYPE_GUID, RELATIONSHIP_TYPE, SECOND_GUID,
+                "", null, methodName);
 
         assertThrows(UserNotAuthorizedException.class, () ->
-                relationshipHandler.getRelationshipBetweenEntities(USER,
-                        FIRST_GUID,
-                        SECOND_GUID,
-                        RELATIONSHIP_TYPE));
+                relationshipHandler.getRelationshipBetweenEntities(USER, SERVER_NAME, FIRST_GUID, SECOND_GUID, RELATIONSHIP_TYPE));
 
     }
 
@@ -121,10 +114,7 @@ public class RelationshipHandlerTest {
         doThrow(mockedException).when(invalidParameterHandler).validateGUID(FIRST_GUID, "entity1GUID", methodName);
 
         assertThrows(InvalidParameterException.class, () ->
-                relationshipHandler.getRelationshipBetweenEntities(USER,
-                        FIRST_GUID,
-                        SECOND_GUID,
-                        RELATIONSHIP_TYPE));
+                relationshipHandler.getRelationshipBetweenEntities(USER, SERVER_NAME, FIRST_GUID, SECOND_GUID, RELATIONSHIP_TYPE));
 
     }
 
@@ -142,14 +132,13 @@ public class RelationshipHandlerTest {
         return relationship;
     }
 
-    private OMRSMetadataCollection mockMetadataCollection() throws RepositoryErrorException {
+    private void mockMetadataCollection() throws RepositoryErrorException {
         OMRSMetadataCollection metadataCollection = mock(OMRSMetadataCollection.class);
 
         when(repositoryHandler.getMetadataCollection()).thenReturn(metadataCollection);
 
         when(metadataCollection.getMetadataCollectionId(USER)).thenReturn("metadataCollectionID");
         when(repositoryHelper.getMetadataCollectionName("metadataCollectionID")).thenReturn("metadataCollectionName");
-        return metadataCollection;
     }
 
 }

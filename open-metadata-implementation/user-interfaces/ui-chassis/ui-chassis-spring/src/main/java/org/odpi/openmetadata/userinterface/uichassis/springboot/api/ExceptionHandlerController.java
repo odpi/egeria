@@ -6,7 +6,13 @@ import org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewO
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.userinterface.uichassis.springboot.service.OpenLineageServiceException;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.BadRequestException;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.CategoryNotFoundException;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.GlossaryNotFoundException;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.LineageNotFoundException;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.OpenLineageServiceException;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.TermNotFoundException;
+import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,6 +81,23 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
                 new HttpHeaders(), UserInterfaceErrorCodes.INVALID_REQUEST_FOR_OPEN_LINEAGE.getHttpErrorCode(), request);
     }
 
+    @ExceptionHandler(value = {LineageNotFoundException.class})
+    protected ResponseEntity<Object> handleLineageNotFoundException(LineageNotFoundException ex, WebRequest request) {
+        LOG.error(ex.getMessage(), ex);
+        Map<String, Object> errorAttributes = this.errorAttributes.getErrorAttributes(request, UserInterfaceErrorCodes.LINEAGE_NOT_FOUND);
+        return handleExceptionInternal(ex, errorAttributes,
+                new HttpHeaders(), UserInterfaceErrorCodes.LINEAGE_NOT_FOUND.getHttpErrorCode(), request);
+    }
+
+
+    @ExceptionHandler(value = {BadRequestException.class})
+    protected ResponseEntity<Object> handleBadRequestException(BadRequestException ex, WebRequest request) {
+        LOG.error(ex.getMessage(), ex);
+        Map<String, Object> errorAttributes = this.errorAttributes.getErrorAttributes(request, ex.getErrorCode());
+        return handleExceptionInternal(ex, errorAttributes,
+                new HttpHeaders(), ex.getErrorCode().getHttpErrorCode(), request);
+    }
+
     /**
      * 
      * @param ex - raised exception to be handled
@@ -111,4 +134,27 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
                 UserInterfaceErrorCodes.INVALID_REQUEST_FOR_GLOSSARY_VIEW.getHttpErrorCode(), request);
     }
 
+    @ExceptionHandler(value = {GlossaryNotFoundException.class})
+    protected ResponseEntity<Object> handleGlossaryViewNotFoundRequestException(GlossaryNotFoundException ex, WebRequest request) {
+        LOG.error(ex.getMessage(), ex);
+        Map<String, Object> errorAttributes = this.errorAttributes.getErrorAttributes(request, UserInterfaceErrorCodes.GLOSSARY_NOT_FOUND);
+        return handleExceptionInternal(ex, errorAttributes, new HttpHeaders(),
+                UserInterfaceErrorCodes.GLOSSARY_NOT_FOUND.getHttpErrorCode(), request);
+    }
+
+    @ExceptionHandler(value = {TermNotFoundException.class})
+    protected ResponseEntity<Object> handleGlossaryViewNotFoundRequestException(TermNotFoundException ex, WebRequest request) {
+        LOG.error(ex.getMessage(), ex);
+        Map<String, Object> errorAttributes = this.errorAttributes.getErrorAttributes(request, UserInterfaceErrorCodes.TERM_NOT_FOUND);
+        return handleExceptionInternal(ex, errorAttributes, new HttpHeaders(),
+                UserInterfaceErrorCodes.TERM_NOT_FOUND.getHttpErrorCode(), request);
+    }
+
+    @ExceptionHandler(value = {CategoryNotFoundException.class})
+    protected ResponseEntity<Object> handleGlossaryViewNotFoundRequestException(CategoryNotFoundException ex, WebRequest request) {
+        LOG.error(ex.getMessage(), ex);
+        Map<String, Object> errorAttributes = this.errorAttributes.getErrorAttributes(request, UserInterfaceErrorCodes.CATEGORY_NOT_FOUND);
+        return handleExceptionInternal(ex, errorAttributes, new HttpHeaders(),
+                UserInterfaceErrorCodes.CATEGORY_NOT_FOUND.getHttpErrorCode(), request);
+    }
 }

@@ -736,15 +736,8 @@ public abstract class AccessServiceAdmin
     {
         try
         {
-            ConnectorBroker connectorBroker = new ConnectorBroker();
+            ConnectorBroker connectorBroker = new ConnectorBroker(auditLog);
             Connector       connector       = connectorBroker.getConnector(topicConnection);
-
-            if (connector instanceof AuditLoggingComponent)
-            {
-                AuditLoggingComponent topicConnector = (AuditLoggingComponent)connector;
-
-                topicConnector.setAuditLog(auditLog);
-            }
 
             connector.start();
 

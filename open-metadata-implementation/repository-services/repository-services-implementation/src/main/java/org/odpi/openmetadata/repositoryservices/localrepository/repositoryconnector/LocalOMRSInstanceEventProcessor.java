@@ -164,10 +164,10 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                   String                methodName)
     {
         auditLog.logMessage(methodName,
-                           OMRSAuditCode.PROCESS_INCOMING_EVENT.getMessageDefinition(instanceEventType.getName(), 
-                                                                                     instanceGUID, 
-                                                                                     instanceEventOriginator.toString()),
-                           instanceEvent.toString());
+                            OMRSAuditCode.PROCESS_INCOMING_EVENT.getMessageDefinition(instanceEventType.getName(),
+                                                                                      instanceGUID,
+                                                                                      instanceEventOriginator.toString()),
+                            instanceEvent.toString());
     }
 
 
@@ -221,49 +221,105 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                     break;
 
                 case CLASSIFIED_ENTITY_EVENT:
-                    this.logIncomingEvent(instanceEventType,
-                                          instanceEvent.getEntity(),
-                                          instanceEventOriginator,
-                                          instanceEvent,
-                                          methodName + "(ClassifiedEntity)");
-                    this.processClassifiedEntityEvent(cohortName,
-                                                      instanceEventOriginator.getMetadataCollectionId(),
-                                                      instanceEventOriginator.getServerName(),
-                                                      instanceEventOriginator.getServerType(),
-                                                      instanceEventOriginator.getOrganizationName(),
-                                                      instanceEvent.getEntity(),
-                                                      instanceEvent.getClassification());
+                    if (instanceEvent.getEntityProxy() != null)
+                    {
+                        this.logIncomingEvent(instanceEventType,
+                                              instanceEvent.getEntityProxy(),
+                                              instanceEventOriginator,
+                                              instanceEvent,
+                                              methodName + "(ClassifiedEntityProxy)");
+                        this.processClassifiedEntityEvent(cohortName,
+                                                          instanceEventOriginator.getMetadataCollectionId(),
+                                                          instanceEventOriginator.getServerName(),
+                                                          instanceEventOriginator.getServerType(),
+                                                          instanceEventOriginator.getOrganizationName(),
+                                                          instanceEvent.getEntityProxy(),
+                                                          instanceEvent.getClassification());
+                    }
+                    else
+                    {
+                        this.logIncomingEvent(instanceEventType,
+                                              instanceEvent.getEntity(),
+                                              instanceEventOriginator,
+                                              instanceEvent,
+                                              methodName + "(ClassifiedEntity)");
+                        this.processClassifiedEntityEvent(cohortName,
+                                                          instanceEventOriginator.getMetadataCollectionId(),
+                                                          instanceEventOriginator.getServerName(),
+                                                          instanceEventOriginator.getServerType(),
+                                                          instanceEventOriginator.getOrganizationName(),
+                                                          instanceEvent.getEntity(),
+                                                          instanceEvent.getClassification());
+                    }
                     break;
 
                 case RECLASSIFIED_ENTITY_EVENT:
-                    this.logIncomingEvent(instanceEventType,
-                                          instanceEvent.getEntity(),
-                                          instanceEventOriginator,
-                                          instanceEvent,
-                                          methodName + "(ReclassifiedEntity)");
-                    this.processReclassifiedEntityEvent(cohortName,
-                                                        instanceEventOriginator.getMetadataCollectionId(),
-                                                        instanceEventOriginator.getServerName(),
-                                                        instanceEventOriginator.getServerType(),
-                                                        instanceEventOriginator.getOrganizationName(),
-                                                        instanceEvent.getEntity(),
-                                                        instanceEvent.getOriginalClassification(),
-                                                        instanceEvent.getClassification());
+                    if (instanceEvent.getEntityProxy() != null)
+                    {
+                        this.logIncomingEvent(instanceEventType,
+                                              instanceEvent.getEntityProxy(),
+                                              instanceEventOriginator,
+                                              instanceEvent,
+                                              methodName + "(ReclassifiedEntityProxy)");
+                        this.processReclassifiedEntityEvent(cohortName,
+                                                            instanceEventOriginator.getMetadataCollectionId(),
+                                                            instanceEventOriginator.getServerName(),
+                                                            instanceEventOriginator.getServerType(),
+                                                            instanceEventOriginator.getOrganizationName(),
+                                                            instanceEvent.getEntityProxy(),
+                                                            instanceEvent.getOriginalClassification(),
+                                                            instanceEvent.getClassification());
+
+                    }
+                    else
+                    {
+                        this.logIncomingEvent(instanceEventType,
+                                              instanceEvent.getEntity(),
+                                              instanceEventOriginator,
+                                              instanceEvent,
+                                              methodName + "(ReclassifiedEntity)");
+                        this.processReclassifiedEntityEvent(cohortName,
+                                                            instanceEventOriginator.getMetadataCollectionId(),
+                                                            instanceEventOriginator.getServerName(),
+                                                            instanceEventOriginator.getServerType(),
+                                                            instanceEventOriginator.getOrganizationName(),
+                                                            instanceEvent.getEntity(),
+                                                            instanceEvent.getOriginalClassification(),
+                                                            instanceEvent.getClassification());
+                    }
                     break;
 
                 case DECLASSIFIED_ENTITY_EVENT:
-                    this.logIncomingEvent(instanceEventType,
-                                          instanceEvent.getEntity(),
-                                          instanceEventOriginator,
-                                          instanceEvent,
-                                          methodName + "(DeclassifiedEntity)");
-                    this.processDeclassifiedEntityEvent(cohortName,
-                                                        instanceEventOriginator.getMetadataCollectionId(),
-                                                        instanceEventOriginator.getServerName(),
-                                                        instanceEventOriginator.getServerType(),
-                                                        instanceEventOriginator.getOrganizationName(),
-                                                        instanceEvent.getEntity(),
-                                                        instanceEvent.getOriginalClassification());
+                    if (instanceEvent.getEntityProxy() != null)
+                    {
+                        this.logIncomingEvent(instanceEventType,
+                                              instanceEvent.getEntityProxy(),
+                                              instanceEventOriginator,
+                                              instanceEvent,
+                                              methodName + "(DeclassifiedEntityProxy)");
+                        this.processDeclassifiedEntityEvent(cohortName,
+                                                            instanceEventOriginator.getMetadataCollectionId(),
+                                                            instanceEventOriginator.getServerName(),
+                                                            instanceEventOriginator.getServerType(),
+                                                            instanceEventOriginator.getOrganizationName(),
+                                                            instanceEvent.getEntityProxy(),
+                                                            instanceEvent.getOriginalClassification());
+                    }
+                    else
+                    {
+                        this.logIncomingEvent(instanceEventType,
+                                              instanceEvent.getEntity(),
+                                              instanceEventOriginator,
+                                              instanceEvent,
+                                              methodName + "(DeclassifiedEntity)");
+                        this.processDeclassifiedEntityEvent(cohortName,
+                                                            instanceEventOriginator.getMetadataCollectionId(),
+                                                            instanceEventOriginator.getServerName(),
+                                                            instanceEventOriginator.getServerType(),
+                                                            instanceEventOriginator.getOrganizationName(),
+                                                            instanceEvent.getEntity(),
+                                                            instanceEvent.getOriginalClassification());
+                    }
                     break;
 
                 case DELETED_ENTITY_EVENT:
@@ -840,7 +896,46 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                              EntityDetail   entity,
                                              Classification classification)
     {
-        final String methodName = "processClassifiedEntityEvent";
+        final String methodName = "processClassifiedEntityEvent(detail)";
+
+        try
+        {
+            verifyEventProcessor(methodName);
+
+            localMetadataCollection.saveClassificationReferenceCopy(localRepositoryConnector.getServerUserId(), entity, classification);
+        }
+        catch (Exception error)
+        {
+            handleUnexpectedErrorFromEvent(error,
+                                           methodName,
+                                           originatorServerName,
+                                           originatorMetadataCollectionId);
+        }
+    }
+
+
+    /**
+     * A new classification has been added to an entity.
+     *
+     * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
+     *                   local repository, or event mapper name.
+     * @param originatorMetadataCollectionId  unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName  name of the server that the event came from.
+     * @param originatorServerType  type of server that the event came from.
+     * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
+     * @param entity  proxy of the entity with the new classification added. No guarantee this is all of the classifications.
+     * @param classification new classification
+     */
+    public void processClassifiedEntityEvent(String         sourceName,
+                                             String         originatorMetadataCollectionId,
+                                             String         originatorServerName,
+                                             String         originatorServerType,
+                                             String         originatorOrganizationName,
+                                             EntityProxy    entity,
+                                             Classification classification)
+    {
+        final String methodName = "processClassifiedEntityEvent(proxy)";
 
         try
         {
@@ -880,7 +975,46 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                                EntityDetail   entity,
                                                Classification originalClassification)
     {
-        final String methodName = "processDeclassifiedEntityEvent";
+        final String methodName = "processDeclassifiedEntityEvent(detail)";
+
+        try
+        {
+            verifyEventProcessor(methodName);
+
+            localMetadataCollection.purgeClassificationReferenceCopy(localRepositoryConnector.getServerUserId(), entity, originalClassification);
+        }
+        catch (Exception error)
+        {
+            handleUnexpectedErrorFromEvent(error,
+                                           methodName,
+                                           originatorServerName,
+                                           originatorMetadataCollectionId);
+        }
+    }
+
+
+    /**
+     * A classification has been removed from an entity.
+     *
+     * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
+     *                   local repository, or event mapper name.
+     * @param originatorMetadataCollectionId  unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName  name of the server that the event came from.
+     * @param originatorServerType  type of server that the event came from.
+     * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
+     * @param entity  proxy of the entity after the classification has been removed. No guarantee this is all of the classifications.
+     * @param originalClassification classification that was removed
+     */
+    public void processDeclassifiedEntityEvent(String         sourceName,
+                                               String         originatorMetadataCollectionId,
+                                               String         originatorServerName,
+                                               String         originatorServerType,
+                                               String         originatorOrganizationName,
+                                               EntityProxy    entity,
+                                               Classification originalClassification)
+    {
+        final String methodName = "processDeclassifiedEntityEvent(proxy)";
 
         try
         {
@@ -922,7 +1056,48 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                                Classification originalClassification,
                                                Classification classification)
     {
-        final String methodName = "processReclassifiedEntityEvent";
+        final String methodName = "processReclassifiedEntityEvent(detail)";
+
+        try
+        {
+            verifyEventProcessor(methodName);
+
+            localMetadataCollection.saveClassificationReferenceCopy(localRepositoryConnector.getServerUserId(), entity, classification);
+        }
+        catch (Exception error)
+        {
+            handleUnexpectedErrorFromEvent(error,
+                                           methodName,
+                                           originatorServerName,
+                                           originatorMetadataCollectionId);
+        }
+    }
+
+
+    /**
+     * An existing classification has been changed on an entity.
+     *
+     * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
+     *                   local repository, or event mapper name.
+     * @param originatorMetadataCollectionId  unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName  name of the server that the event came from.
+     * @param originatorServerType  type of server that the event came from.
+     * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
+     * @param entity  proxy of the entity after the classification has been changed. No guarantee this is all of the classifications.
+     * @param originalClassification classification that was removed
+     * @param classification new classification
+     */
+    public void processReclassifiedEntityEvent(String         sourceName,
+                                               String         originatorMetadataCollectionId,
+                                               String         originatorServerName,
+                                               String         originatorServerType,
+                                               String         originatorOrganizationName,
+                                               EntityProxy    entity,
+                                               Classification originalClassification,
+                                               Classification classification)
+    {
+        final String methodName = "processReclassifiedEntityEvent(proxy)";
 
         try
         {

@@ -51,7 +51,7 @@ public class OrganizationManagement implements OrganizationManagementInterface
 
     private InvalidParameterHandler    invalidParameterHandler = new InvalidParameterHandler();
 
-    private final String urlTemplatePrefix = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/organizations";
+    private final String urlTemplatePrefix = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}";
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -233,6 +233,7 @@ public class OrganizationManagement implements OrganizationManagementInterface
      * @param actorProfileGUID unique identifier of actor profile
      * @param isMergeUpdate are unspecified properties unchanged (true) or replaced with null?
      * @param properties properties to change
+     * @param contributionRecord additional properties for contribution record.
      *
      * @throws InvalidParameterException guid, qualifiedName or userId is null; qualifiedName is not unique; guid is not known
      * @throws PropertyServerException problem accessing property server

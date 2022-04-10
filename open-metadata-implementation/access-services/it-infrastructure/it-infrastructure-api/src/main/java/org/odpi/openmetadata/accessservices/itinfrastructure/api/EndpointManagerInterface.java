@@ -162,6 +162,29 @@ public interface EndpointManagerInterface
 
 
     /**
+     * Retrieve the list of endpoint metadata elements with a matching networkAddress.
+     * There are no wildcards supported on this request.
+     *
+     * @param userId calling user
+     * @param networkAddress networkAddress to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<EndpointElement> getEndpointsByNetworkAddress(String userId,
+                                                       String networkAddress,
+                                                       int    startFrom,
+                                                       int    pageSize) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException;
+
+
+    /**
      * Retrieve the list of endpoint metadata elements that are attached to a specific infrastructure element.
      *
      * @param userId calling user

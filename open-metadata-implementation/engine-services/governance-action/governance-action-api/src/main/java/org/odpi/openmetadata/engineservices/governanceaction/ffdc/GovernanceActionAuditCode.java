@@ -129,9 +129,7 @@ public enum GovernanceActionAuditCode implements AuditLogMessageSet
     GOVERNANCE_ACTION_SERVICE_RETURNED("OMES-GOVERNANCE-ACTION-0020",
                                        OMRSAuditLogRecordSeverity.INFO,
                                        "The {0} governance action service {1} for request type {2} is continuing to run in a background thread",
-                                       "A governance action service has returned from the start() method and without setting up the completion status prior to returning.  " +
-                                               "The Governance Action OMES will call disconnect() on the governance action service since it is complete.  " +
-                                               "The Governance Action entity in the ",
+                                       "A governance action service has returned from the start() method and without setting up the completion status prior to returning.",
                                        "Validate that this governance action service should still be running.  Typically you would expect a WatchdogGovernanceActionService to" +
                                                "still be running at this stage because it will have registered a listener. The other types of governance action services should have completed during " +
                                                "start() unless they are managing their own thread(s)."),
@@ -186,6 +184,13 @@ public enum GovernanceActionAuditCode implements AuditLogMessageSet
                                                "Its class is {2} rather than a subclass of {3}",
                                        "The governance action request is not run and an error is returned to the caller.  Subsequent calls to this service will fail in the same way",
                                        "Correct the configuration for the Governance Action OMES to only include valid governance action service implementations."),
+
+    GOVERNANCE_ACTION_INITIALIZED("OMES-GOVERNANCE-ACTION-0032",
+                                  OMRSAuditLogRecordSeverity.STARTUP,
+                                  "{0} governance service {1} with request type {2} has initialized in governance engine {3}",
+                                  "The governance engine is starting a governance action request.",
+                                  "Validate that the governance action ran to successful completion."),
+
     ;
 
 

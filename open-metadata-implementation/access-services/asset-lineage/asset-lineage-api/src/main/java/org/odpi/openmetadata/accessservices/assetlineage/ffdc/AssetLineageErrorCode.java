@@ -47,7 +47,7 @@ public enum AssetLineageErrorCode implements ExceptionMessageSet {
     BAD_OUT_TOPIC_CONNECTION(400, "OMAS-ASSET-LINEAGE-008",
             "The Asset Lineage Open Metadata Access Service (OMAS) has been passed an invalid connection for publishing events.  The connection was {0}.  The resulting exception of {1} included the following message: {2}",
             "The access service has not been passed valid configuration for its out topic connection.",
-            "Correct the configuration and restart the service."),
+            "Correct the configuration and restart the server."),
 
     ENTITY_NOT_FOUND(404, "OMAS-ASSET-LINEAGE-404-009",
             "Cannot get entity from repository, entity does not exist.",

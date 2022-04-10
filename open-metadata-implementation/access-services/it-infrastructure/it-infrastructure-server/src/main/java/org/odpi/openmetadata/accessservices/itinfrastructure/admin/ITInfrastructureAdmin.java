@@ -2,14 +2,20 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.itinfrastructure.admin;
 
+import org.odpi.openmetadata.accessservices.itinfrastructure.connectors.outtopic.ITInfrastructureOutTopicServerConnector;
+import org.odpi.openmetadata.accessservices.itinfrastructure.connectors.outtopic.ITInfrastructureOutTopicServerProvider;
 import org.odpi.openmetadata.accessservices.itinfrastructure.ffdc.ITInfrastructureAuditCode;
 import org.odpi.openmetadata.accessservices.itinfrastructure.listener.ITInfrastructureOMRSTopicListener;
+import org.odpi.openmetadata.accessservices.itinfrastructure.outtopic.ITInfrastructureOutTopicPublisher;
 import org.odpi.openmetadata.accessservices.itinfrastructure.server.ITInfrastructureServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
@@ -24,6 +30,9 @@ public class ITInfrastructureAdmin extends AccessServiceAdmin
     private AuditLog                         auditLog   = null;
     private ITInfrastructureServicesInstance instance   = null;
     private String                           serverName = null;
+
+    private ITInfrastructureOutTopicPublisher eventPublisher = null;
+
 
     /**
      * Default constructor
@@ -58,35 +67,65 @@ public class ITInfrastructureAdmin extends AccessServiceAdmin
 
         try
         {
-            List<String>  supportedZones = this.extractSupportedZones(accessServiceConfig.getAccessServiceOptions(),
-                                                                      accessServiceConfig.getAccessServiceName(),
-                                                                      auditLog);
+            List<String> supportedZones = this.extractSupportedZones(accessServiceConfig.getAccessServiceOptions(),
+                                                                     accessServiceConfig.getAccessServiceName(),
+                                                                     auditLog);
+
+            List<String> defaultZones = this.extractDefaultZones(accessServiceConfig.getAccessServiceOptions(),
+                                                                 accessServiceConfig.getAccessServiceName(),
+                                                                 auditLog);
+
+            List<String> publishZones = this.extractPublishZones(accessServiceConfig.getAccessServiceOptions(),
+                                                                 accessServiceConfig.getAccessServiceName(),
+                                                                 auditLog);
 
             this.instance = new ITInfrastructureServicesInstance(repositoryConnector,
                                                                  supportedZones,
+                                                                 defaultZones,
+                                                                 publishZones,
                                                                  auditLog,
                                                                  serverUserName,
-                                                                 repositoryConnector.getMaxPageSize());
+                                                                 repositoryConnector.getMaxPageSize(),
+                                                                 accessServiceConfig.getAccessServiceOutTopic());
             this.serverName = instance.getServerName();
+
 
             /*
              * Only set up the listening and event publishing if requested in the config.
              */
             if (accessServiceConfig.getAccessServiceOutTopic() != null)
             {
-                ITInfrastructureOMRSTopicListener omrsTopicListener;
+                Connection outTopicEventBusConnection = accessServiceConfig.getAccessServiceOutTopic();
 
-                omrsTopicListener = new ITInfrastructureOMRSTopicListener(accessServiceConfig.getAccessServiceOutTopic(),
-                                                                           repositoryConnector.getRepositoryHelper(),
-                                                                           repositoryConnector.getRepositoryValidator(),
-                                                                           accessServiceConfig.getAccessServiceName(),
-                                                                           supportedZones,
-                                                                           auditLog);
-                super.registerWithEnterpriseTopic(accessServiceConfig.getAccessServiceName(),
-                                                  serverName,
-                                                  omrsTopicConnector,
-                                                  omrsTopicListener,
-                                                  auditLog);
+                Endpoint endpoint = outTopicEventBusConnection.getEndpoint();
+
+                AuditLog outTopicAuditLog = auditLog.createNewAuditLog(OMRSAuditingComponent.OMAS_OUT_TOPIC);
+                Connection serverSideOutTopicConnection = this.getOutTopicConnection(accessServiceConfig.getAccessServiceOutTopic(),
+                                                                                     AccessServiceDescription.IT_INFRASTRUCTURE_OMAS.getAccessServiceFullName(),
+                                                                                     ITInfrastructureOutTopicServerProvider.class.getName(),
+                                                                                     auditLog);
+                ITInfrastructureOutTopicServerConnector outTopicServerConnector = super.getTopicConnector(serverSideOutTopicConnection,
+                                                                                                          ITInfrastructureOutTopicServerConnector.class,
+                                                                                                          outTopicAuditLog,
+                                                                                                          AccessServiceDescription.IT_INFRASTRUCTURE_OMAS.getAccessServiceFullName(),
+                                                                                                          actionDescription);
+                eventPublisher = new ITInfrastructureOutTopicPublisher(outTopicServerConnector,
+                                                                       endpoint.getAddress(),
+                                                                       outTopicAuditLog,
+                                                                       repositoryConnector.getRepositoryHelper(),
+                                                                       AccessServiceDescription.IT_INFRASTRUCTURE_OMAS.getAccessServiceName(),
+                                                                       serverName);
+
+                this.registerWithEnterpriseTopic(AccessServiceDescription.IT_INFRASTRUCTURE_OMAS.getAccessServiceFullName(),
+                                                 serverName,
+                                                 omrsTopicConnector,
+                                                 new ITInfrastructureOMRSTopicListener(AccessServiceDescription.IT_INFRASTRUCTURE_OMAS.getAccessServiceFullName(),
+                                                                                       serverUserName,
+                                                                                       eventPublisher,
+                                                                                       instance.getAssetHandler(),
+                                                                                       supportedZones,
+                                                                                       outTopicAuditLog),
+                                                 auditLog);
             }
 
             auditLog.logMessage(actionDescription,
@@ -119,9 +158,14 @@ public class ITInfrastructureAdmin extends AccessServiceAdmin
     {
         final String actionDescription = "shutdown";
 
+        if (this.eventPublisher != null)
+        {
+            this.eventPublisher.disconnect();
+        }
+
         if (instance != null)
         {
-            this.instance.shutdown();
+            instance.shutdown();
         }
 
         auditLog.logMessage(actionDescription, ITInfrastructureAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(serverName));

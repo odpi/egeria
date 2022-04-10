@@ -4,8 +4,8 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.connectors.outtopic;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.accessservices.assetconsumer.events.AssetConsumerOutTopicEvent;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerAuditCode;
-import org.odpi.openmetadata.accessservices.assetconsumer.events.AssetConsumerEvent;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -23,9 +23,9 @@ public class AssetConsumerOutTopicServerConnector extends OpenMetadataTopicSende
      *
      * @param event event object
      * @throws InvalidParameterException the event is null
-     * @throws ConnectorCheckedException there is a problem with the embedded event bus connector(s)./
+     * @throws ConnectorCheckedException there is a problem with the embedded event bus connector(s).
      */
-    public void sendEvent(AssetConsumerEvent event) throws InvalidParameterException, ConnectorCheckedException
+    public void sendEvent(AssetConsumerOutTopicEvent event) throws InvalidParameterException, ConnectorCheckedException
     {
         final String methodName = "sendEvent";
         ObjectMapper objectMapper = new ObjectMapper();
@@ -37,7 +37,9 @@ public class AssetConsumerOutTopicServerConnector extends OpenMetadataTopicSende
 
             if (super.auditLog != null)
             {
-                super.auditLog.logMessage(methodName, AssetConsumerAuditCode.OUT_TOPIC_EVENT.getMessageDefinition(eventString));
+                super.auditLog.logMessage(methodName,
+                                          AssetConsumerAuditCode.OUT_TOPIC_EVENT.getMessageDefinition(event.getEventType().getEventTypeName()),
+                                          eventString);
             }
         }
         catch (InvalidParameterException | ConnectorCheckedException error)
@@ -47,9 +49,9 @@ public class AssetConsumerOutTopicServerConnector extends OpenMetadataTopicSende
         catch (Exception  error)
         {
             throw new ConnectorCheckedException(AssetConsumerErrorCode.UNABLE_TO_SEND_EVENT.getMessageDefinition(connectionName,
-                                                                                                                   event.toString(),
-                                                                                                                   error.getClass().getName(),
-                                                                                                                   error.getMessage()),
+                                                                                                                 event.toString(),
+                                                                                                                 error.getClass().getName(),
+                                                                                                                 error.getMessage()),
                                                 this.getClass().getName(),
                                                 methodName,
                                                 error);

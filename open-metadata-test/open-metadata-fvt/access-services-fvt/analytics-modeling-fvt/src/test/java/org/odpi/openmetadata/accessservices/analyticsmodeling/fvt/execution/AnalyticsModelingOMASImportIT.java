@@ -25,7 +25,7 @@ public class AnalyticsModelingOMASImportIT
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {FVTConstants.IN_MEMORY_SERVER, FVTConstants.GRAPH_SERVER})
+        @ValueSource(strings = {FVTConstants.IN_MEMORY_SERVER})
     public void testImport(String serverName)
     {
         FVTResults results = ImportsTest.performFVT(serverName, StringUtils.defaultIfEmpty(System.getProperty("fvt.url"),FVTConstants.SERVER_PLATFORM_URL_ROOT), FVTConstants.USERID);

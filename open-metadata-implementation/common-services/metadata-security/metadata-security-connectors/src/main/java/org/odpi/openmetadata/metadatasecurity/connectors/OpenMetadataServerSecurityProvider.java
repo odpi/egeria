@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.metadatasecurity.connectors;
 
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 
 
 /**
@@ -13,11 +14,11 @@ public abstract class OpenMetadataServerSecurityProvider extends ConnectorProvid
 {
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
-     * OMRS Connector implementation.
+     * Security Connector implementation.
      */
     public OpenMetadataServerSecurityProvider()
     {
-        super();
+        super.setConnectorComponentDescription(OMRSAuditingComponent.SERVER_SECURITY_CONNECTOR);
 
         Class<?>        connectorClass = OpenMetadataServerSecurityConnector.class;
 
