@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * This controller serves all requests for retrieving lineage details, both vertical and horizontal
  */
@@ -98,6 +100,32 @@ public class OpenLineageController {
     public LineageVertex getEntityDetails(@PathVariable("guid") String guid) throws InvalidParameterException, PropertyServerException, OpenLineageException {
         String user = SecurityContextHolder.getContext().getAuthentication().getName();
         return openLineageService.getEntityDetails(user, guid);
+    }
+
+    /**
+     * Gets available entities types from lineage repository.
+     *
+     * @return the available entities types
+     */
+    @GetMapping( value = "types")
+    public List<String> getTypes() {
+        String user = SecurityContextHolder.getContext().getAuthentication().getName();
+        return openLineageService.getTypes(user);
+    }
+
+    /**
+     * Gets nodes names of certain type with qualified name containing a certain value.
+     * @param type        the type of the nodes name to search for
+     * @param searchValue the string to be contained in the qualified name of the node - case insensitive
+     * @param limit       the maximum number of node names to retrieve
+     *
+     * @return the list of node names
+     */
+    @GetMapping( value = "nodes")
+    public List<String> getNodes(@RequestParam("type") String type, @RequestParam("name") String searchValue,
+                                 @RequestParam("limit") int limit) {
+        String user = SecurityContextHolder.getContext().getAuthentication().getName();
+        return openLineageService.getNodes(user, type, searchValue, limit);
     }
 
     /**

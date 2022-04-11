@@ -172,6 +172,37 @@ public class OpenLineageService {
     }
 
     /**
+     * Gets available entities types from lineage repository.
+     * @param userId user ID
+     * @return the available entities types
+     */
+    public List<String> getTypes(String userId) {
+        try {
+            return openLineageClient.getTypes(userId);
+        } catch (PropertyServerException | InvalidParameterException | OpenLineageException e) {
+            LOG.error("Cannot get entities types in the lineage graph");
+            throw new OpenLineageServiceException("entities types retrieval error", e);
+        }
+    }
+
+    /**
+     * Gets available entities types from lineage repository.
+     * @param userId      user ID
+     * @param type        the type of the nodes name to search for
+     * @param searchValue the string to be contained in the qualified name of the node - case insensitive
+     * @param limit       the maximum number of node names to retrieve
+     * @return the available entities types
+     */
+    public List<String> getNodes(String userId, String type, String searchValue, int limit) {
+        try {
+            return openLineageClient.getNodes(userId, type, searchValue, limit);
+        } catch (PropertyServerException | InvalidParameterException | OpenLineageException e) {
+            LOG.error("Cannot get node names from the lineage graph");
+            throw new OpenLineageServiceException("node names retrieval error", e);
+        }
+    }
+
+    /**
      * @param response string returned from Open Lineage Services to be processed
      * @param guid     the guid to process
      * @return map of nodes and edges describing the end to end flow

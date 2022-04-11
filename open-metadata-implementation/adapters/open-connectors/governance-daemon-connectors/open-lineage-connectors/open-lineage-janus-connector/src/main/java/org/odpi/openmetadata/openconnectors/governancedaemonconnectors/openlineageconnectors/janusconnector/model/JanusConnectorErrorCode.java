@@ -132,7 +132,17 @@ public enum JanusConnectorErrorCode implements AuditLogMessageSet {
             OMRSAuditLogRecordSeverity.ERROR,
             "Could not find classification, vertexIds {0}",
             "Could not find classification",
-            "Check the input data and try again")
+            "Check the input data and try again"),
+    TYPES_NOT_FOUND("OPEN-LINEAGE-SERVICES-036",
+            OMRSAuditLogRecordSeverity.ERROR,
+            "Could not find available entities types from lineage repository",
+            "Could not find available entities types from lineage repository",
+            "Check the status of the application and try again"),
+    NODES_NOT_FOUND("OPEN-LINEAGE-SERVICES-036",
+            OMRSAuditLogRecordSeverity.ERROR,
+            "Could not find nodes of type {0} with qualified name containing {1} in the lineage repository",
+            "Could not find nodes in lineage repository",
+            "Check the status of the application and try again")
     ;
 
     private static final Logger log = LoggerFactory.getLogger(JanusConnectorErrorCode.class);

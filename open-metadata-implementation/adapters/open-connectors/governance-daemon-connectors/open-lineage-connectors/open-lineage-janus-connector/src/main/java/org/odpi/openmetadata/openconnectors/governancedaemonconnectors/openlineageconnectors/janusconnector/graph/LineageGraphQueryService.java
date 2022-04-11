@@ -10,15 +10,19 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Property;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.VertexProperty;
+import org.janusgraph.core.attribute.Text;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageQueryService;
+import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageEdge;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
+import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageNodeNamesResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
+import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageTypesResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageVertexResponse;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.ffdc.JanusConnectorException;
 import org.slf4j.Logger;
@@ -35,14 +39,18 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.hasLabel;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.inE;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.outE;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.until;
 import static org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode.ERROR_ENTITY_NOT_FOUND;
 import static org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode.ERROR_LINEAGE_NOT_FOUND;
+import static org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode.ERROR_TYPES_NOT_FOUND;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.CLASSIFICATION_NOT_FOUND;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.COULD_NOT_RETRIEVE_VERTEX;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.LINEAGE_NOT_FOUND;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.NODES_NOT_FOUND;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.TYPES_NOT_FOUND;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ASSETS;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ASSET_SCHEMA_TYPE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.AVRO_FILE;
@@ -88,7 +96,10 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 
 public class LineageGraphQueryService implements OpenLineageQueryService {
 
-    private static final Logger log = LoggerFactory.getLogger(LineageGraphQueryService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LineageGraphQueryService.class);
+
+    private static final String ASSET_LINEAGE_VARIABLES = "ASSET_LINEAGE_VARIABLES";
+    private static final String QUALIFIED_NAME_PROPERTY = "vertex--InstancePropqualifiedName";
 
     private final GraphHelper graphHelper;
     private final LineageGraphQueryHelper lineageGraphQueryHelper;
@@ -204,6 +215,14 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
 
     private void handleLineageNotFoundException(Exception e, String guid, List<String> edgeLabels) {
         auditLog.logException(LINEAGE_NOT_FOUND.getFormattedErrorMessage(guid, edgeLabels.toString()), LINEAGE_NOT_FOUND.getMessageDefinition(guid, edgeLabels.toString()), e);
+    }
+
+    private void handleTypesNotFoundException(Exception e) {
+        auditLog.logException(TYPES_NOT_FOUND.getErrorMessage(), TYPES_NOT_FOUND.getMessageDefinition(), e);
+    }
+
+    private void handleNodeNamesNotFoundException(Exception e, String type, String searchValue) {
+        auditLog.logException(NODES_NOT_FOUND.getFormattedErrorMessage(type, searchValue), NODES_NOT_FOUND.getMessageDefinition(), e);
     }
 
     /**
@@ -515,6 +534,49 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
             return lineageResponse;
         }
         return new LineageVertexResponse(lineageVertex);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LineageTypesResponse getTypes() {
+        List<String> types = this.graphHelper.getResult(this::getTypes, this::handleTypesNotFoundException);
+        LineageTypesResponse typesResponse = new LineageTypesResponse();
+
+        if(CollectionUtils.isEmpty(types)) {
+            typesResponse.setRelatedHTTPCode(ERROR_TYPES_NOT_FOUND.getHTTPErrorCode());
+            typesResponse.setExceptionErrorMessage(ERROR_TYPES_NOT_FOUND.getFormattedErrorMessage());
+            typesResponse.setActionDescription(ERROR_TYPES_NOT_FOUND.getUserAction());
+            typesResponse.setExceptionUserAction(ERROR_TYPES_NOT_FOUND.getUserAction());
+            typesResponse.setExceptionErrorMessageId(ERROR_TYPES_NOT_FOUND.getErrorMessageId());
+            typesResponse.setExceptionClassName(OpenLineageException.class.getName());
+            return typesResponse;
+        }
+
+        typesResponse.setTypes(types);
+        return typesResponse;
+    }
+
+    private List<String> getTypes(GraphTraversalSource g) {
+       return g.V().not(hasLabel(ASSET_LINEAGE_VARIABLES)).label().dedup().toList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LineageNodeNamesResponse getNodes(String type, String searchValue, int limit) {
+        List<String> nodeNames = this.graphHelper.getResult(this::getNodes, type, searchValue, limit,
+                this::handleNodeNamesNotFoundException);
+        LineageNodeNamesResponse nodeNamesResponse = new LineageNodeNamesResponse();
+        nodeNamesResponse.setNames(nodeNames);
+        return nodeNamesResponse;
+    }
+
+    private List<String> getNodes(GraphTraversalSource g, String type, String searchValue, int limit) {
+        return g.V().hasLabel(type).has(QUALIFIED_NAME_PROPERTY, Text.textContains(searchValue.toLowerCase()))
+                .values(QUALIFIED_NAME_PROPERTY).limit(limit).map(Object::toString).toList();
     }
 
     /**
