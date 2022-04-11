@@ -315,6 +315,41 @@ public class CreateDatabaseTest
                 throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
             }
 
+
+            /*
+             * Working with database schema types
+
+             * Recreate database
+             */
+            activityName= "schemaType test";
+
+            databaseGUID = thisTest.getDatabase(client, databaseManagerGUID, userId);
+            databaseSchemaGUID = thisTest.getDatabaseSchema(client, databaseManagerGUID, databaseGUID, userId);
+
+            String databaseSchemaTypeGUID = client.createDatabaseSchemaType(userId, databaseManagerGUID, databaseManagerName, "SchemaOf:" + databaseSchemaName);
+
+            databaseTableGUID = thisTest.createDatabaseTableForSchemaType(client, databaseManagerGUID, databaseSchemaTypeGUID, userId);
+            databaseColumnGUID = thisTest.createDatabaseColumn(client, databaseManagerGUID, databaseTableGUID, userId);
+
+            client.attachSchemaTypeToDatabaseAsset(userId, databaseManagerGUID, databaseManagerName, databaseSchemaGUID, databaseSchemaTypeGUID);
+
+            /*
+             * Check that all elements are deleted when the database is deleted.
+             */
+            activityName = "cascadedDelete for SchemaType";
+            try
+            {
+                client.removeDatabase(userId, databaseManagerGUID, databaseManagerName, databaseGUID, databaseName);
+
+                thisTest.checkDatabaseGone(client, databaseGUID, activityName, userId);
+                thisTest.checkDatabaseSchemaGone(client, databaseSchemaGUID, null, activityName, userId);
+                thisTest.checkDatabaseTableGone(client, databaseTableGUID, null, activityName, userId);
+                thisTest.checkDatabaseColumnGone(client, databaseColumnGUID, null, activityName, userId);
+            }
+            catch (Exception unexpectedError)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
+            }
         }
         catch (Exception unexpectedError)
         {
@@ -982,21 +1017,24 @@ public class CreateDatabaseTest
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName)");
             }
 
-            databaseTableList = client.getTablesForDatabaseAsset(userId, databaseSchemaGUID, 0, maxPageSize);
+            if (databaseSchemaGUID != null)
+            {
+                databaseTableList = client.getTablesForDatabaseAsset(userId, databaseSchemaGUID, 0, maxPageSize);
 
-            if (databaseTableList == null)
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no DatabaseTable for getTablesForDatabaseAsset)");
-            }
-            else if (databaseTableList.isEmpty())
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Empty DatabaseTable list for getTablesForDatabaseAsset)");
-            }
-            else if (databaseTableList.size() != 1)
-            {
-                throw new FVTUnexpectedCondition(testCaseName,
-                                                 activityName + "(DatabaseColumn list for getTablesForDatabaseAsset contains" + databaseTableList.size() +
-                                                         " elements)");
+                if (databaseTableList == null)
+                {
+                    throw new FVTUnexpectedCondition(testCaseName, activityName + "(no DatabaseTable for getTablesForDatabaseAsset)");
+                }
+                else if (databaseTableList.isEmpty())
+                {
+                    throw new FVTUnexpectedCondition(testCaseName, activityName + "(Empty DatabaseTable list for getTablesForDatabaseAsset)");
+                }
+                else if (databaseTableList.size() != 1)
+                {
+                    throw new FVTUnexpectedCondition(testCaseName,
+                                                     activityName + "(DatabaseColumn list for getTablesForDatabaseAsset contains" + databaseTableList.size() +
+                                                             " elements)");
+                }
             }
         }
         catch (FVTUnexpectedCondition testCaseError)
@@ -1045,6 +1083,56 @@ public class CreateDatabaseTest
             else
             {
                 checkDatabaseTableOK(client, databaseTableGUID, databaseSchemaGUID, activityName, userId);
+            }
+
+            return databaseTableGUID;
+        }
+        catch (FVTUnexpectedCondition testCaseError)
+        {
+            throw testCaseError;
+        }
+        catch (Exception unexpectedError)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
+        }
+    }
+
+
+    /**
+     * Create a database table and attach it to the supplied schema type and return its GUID.
+     *
+     * @param client interface to Data Manager OMAS
+     * @param databaseManagerGUID unique id of the database manager
+     * @param databaseSchemaTypeGUID unique id of the databaseSchemaType
+     * @param userId calling user
+     * @return GUID of database
+     * @throws FVTUnexpectedCondition the test case failed
+     */
+    private String createDatabaseTableForSchemaType(DatabaseManagerClient client,
+                                                    String                databaseManagerGUID,
+                                                    String                databaseSchemaTypeGUID,
+                                                    String                userId) throws FVTUnexpectedCondition
+    {
+        final String activityName = "createDatabaseTableForSchemaType";
+
+        try
+        {
+            DatabaseTableProperties properties = new DatabaseTableProperties();
+
+            properties.setQualifiedName(databaseTableName);
+            properties.setDisplayName(databaseTableDisplayName);
+            properties.setDescription(databaseTableDescription);
+
+
+            String databaseTableGUID = client.createDatabaseTableForSchemaType(userId, databaseManagerGUID, databaseManagerName, databaseSchemaTypeGUID, properties);
+
+            if (databaseTableGUID == null)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GUID for tableCreate)");
+            }
+            else
+            {
+                checkDatabaseTableOK(client, databaseTableGUID, null, activityName, userId);
             }
 
             return databaseTableGUID;

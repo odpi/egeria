@@ -25,7 +25,7 @@ data platforms.
 from the [Open Discovery Framework (ODF)](../../frameworks/open-discovery-framework).
 
 * **[dynamic-archiver-connectors](dynamic-archiver-connectors)** implementations of archive services
-that run in the [Archive Manager OMES](../../engine-services/archive-manager).
+that run in the [Repository Governance OMES](../../engine-services/repository-governance).
 
 * **[event-bus-connectors](event-bus-connectors)** supports different event/messaging infrastructures.
 They can be plugged into the topic connectors from the access-service-connectors

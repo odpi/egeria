@@ -72,7 +72,7 @@ public class TexViewAdmin extends ViewServiceAdmin {
 
         if (log.isDebugEnabled())
         {
-            log.debug("==> Method: " + actionDescription + ", userid=" + serverUserName);
+            log.debug("==> Method: " + actionDescription);
         }
 
         /*
@@ -127,7 +127,7 @@ public class TexViewAdmin extends ViewServiceAdmin {
 
             if (log.isDebugEnabled())
             {
-                log.debug("<== Method: " + actionDescription + ",userid=" + serverUserName);
+                log.debug("<== Method: " + actionDescription);
             }
 
         }
@@ -157,7 +157,7 @@ public class TexViewAdmin extends ViewServiceAdmin {
     {
         final String actionDescription = "shutdown";
 
-        log.debug("==> Method: " + actionDescription + ", userid=" + serverUserName);
+        log.debug("==> Method: " + actionDescription);
 
         auditLog.logMessage(actionDescription, TexViewAuditCode.SERVICE_TERMINATING.getMessageDefinition(serverName));
 
@@ -168,7 +168,7 @@ public class TexViewAdmin extends ViewServiceAdmin {
 
         auditLog.logMessage(actionDescription, TexViewAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(serverName));
 
-        log.debug("<== Method: " + actionDescription + ", userid=" + serverUserName);
+        log.debug("<== Method: " + actionDescription);
 
     }
 

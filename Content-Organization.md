@@ -79,7 +79,7 @@ The Egeria core repository contains the core Egeria functionality, and is organi
   
   * **[engine-services](open-metadata-implementation/engine-services)** - services that host data management and governance engines.  These run in the [Engine Host](open-metadata-implementation/admin-services/docs/concepts/engine-host.md) OMAG Server.
     * **[asset-analysis](open-metadata-implementation/engine-services/asset-analysis)** - services that host [Open Discovery Framework (ODF)](open-metadata-implementation/frameworks/open-discovery-framework) discovery services.
-    * **[archive-manager](open-metadata-implementation/engine-services/archive-manager)** - services that host dynamic archive services.
+    * **[repository-governance](open-metadata-implementation/engine-services/repository-governance)** - services that host dynamic governance services for open metadata repositories.
     * **[governance-action](open-metadata-implementation/engine-services/governance-action)** - services that host [Governance Action Framework (GAF)](open-metadata-implementation/frameworks/governance-action-framework) governance action services.
 
   * **[frameworks](open-metadata-implementation/frameworks)** - frameworks that support pluggable components.

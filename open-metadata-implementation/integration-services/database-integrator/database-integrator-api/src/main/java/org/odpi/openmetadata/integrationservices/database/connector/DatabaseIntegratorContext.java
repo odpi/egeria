@@ -506,8 +506,46 @@ public class DatabaseIntegratorContext
 
 
     /* ==========================================================================
-     * A database schema may contain multiple database tables and database views.
+     * A database or database schema may contain multiple database tables and database views.
      */
+
+
+
+    /**
+     * Create a database top-level schema type used to attach tables and views to the database/database schema.
+     *
+     * @param qualifiedName qualified name ofr the schema type - suggest "SchemaOf:" + asset's qualified name
+     * @return unique identifier of the database schema type
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public String createDatabaseSchemaType(String qualifiedName) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
+    {
+        return databaseManagerClient.createDatabaseSchemaType(userId, databaseManagerGUID, databaseManagerName, qualifiedName);
+    }
+
+
+    /**
+     * Link the schema type and asset.  This is called from outside of AssetHandler.  The databaseAssetGUID is checked to ensure the
+     * asset exists and updates are allowed.  If there is already a schema attached, it is deleted.
+     *
+     * @param databaseAssetGUID unique identifier of the asset to connect the schema to
+     * @param schemaTypeGUID identifier for schema Type object
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public  void attachSchemaTypeToDatabaseAsset(String  databaseAssetGUID,
+                                                 String  schemaTypeGUID) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
+        databaseManagerClient.attachSchemaTypeToDatabaseAsset(userId, databaseManagerGUID, databaseManagerName, databaseAssetGUID, schemaTypeGUID);
+    }
+
 
     /**
      * Create a new metadata element to represent a database table.
@@ -550,6 +588,27 @@ public class DatabaseIntegratorContext
                                                                                                 PropertyServerException
     {
         return databaseManagerClient.createDatabaseTableFromTemplate(userId, databaseManagerGUID, databaseManagerName, templateGUID, databaseAssetGUID, templateProperties);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a database table.
+     *
+     * @param databaseSchemaTypeGUID unique identifier of the database or database schema where the database table is located
+     * @param databaseTableProperties properties for the database table
+     *
+     * @return unique identifier of the new metadata element for the database table
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createDatabaseTableForSchemaType(String                  databaseSchemaTypeGUID,
+                                                   DatabaseTableProperties databaseTableProperties) throws InvalidParameterException,
+                                                                                                           UserNotAuthorizedException,
+                                                                                                           PropertyServerException
+    {
+        return databaseManagerClient.createDatabaseTableForSchemaType(userId, databaseManagerGUID, databaseManagerName, databaseSchemaTypeGUID, databaseTableProperties);
     }
 
 
@@ -746,6 +805,27 @@ public class DatabaseIntegratorContext
                                                                                                PropertyServerException
     {
         return databaseManagerClient.createDatabaseViewFromTemplate(userId, databaseManagerGUID, databaseManagerName, templateGUID, databaseAssetGUID, templateProperties);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a database view.
+     *
+     * @param databaseSchemaTypeGUID unique identifier of the schema type where the database view is located.
+     * @param databaseViewProperties properties for the new view
+     *
+     * @return unique identifier of the new metadata element for the database view
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createDatabaseViewForSchemaType(String                 databaseSchemaTypeGUID,
+                                                  DatabaseViewProperties databaseViewProperties) throws InvalidParameterException,
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        PropertyServerException
+    {
+        return databaseManagerClient.createDatabaseViewForSchemaType(userId, databaseManagerGUID, databaseManagerName, databaseSchemaTypeGUID, databaseViewProperties);
     }
 
 
