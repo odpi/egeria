@@ -34,7 +34,7 @@ public class RexTraversalRequestBody {
     private List<String>              relationshipTypeGUIDs;         // a list of type guids or null
     private List<String>              classificationNames;           // a list of names or null
     private Integer                   depth;                         // the depth of traversal
-    private Long                      asOfTime;                      // as of time to issue the query. null means now.
+    private long                      asOfTime = 0;                  // as of time to issue the query. 0 means now.
 
 
     public RexTraversalRequestBody() {
@@ -70,7 +70,7 @@ public class RexTraversalRequestBody {
 
     public Integer getDepth() { return depth; }
 
-    public Long getAsOfTime() {
+    public long getAsOfTime() {
         return asOfTime;
     }
 
@@ -94,7 +94,7 @@ public class RexTraversalRequestBody {
 
     public void setDepth(Integer depth) { this.depth = depth; }
 
-    public void setAsOfTime(Long asOfTime) {
+    public void setAsOfTime(long asOfTime) {
         this.asOfTime = asOfTime;
     }
 
@@ -103,18 +103,8 @@ public class RexTraversalRequestBody {
         if (this == o) return true;
         if (!(o instanceof RexTraversalRequestBody)) return false;
         RexTraversalRequestBody that = (RexTraversalRequestBody) o;
-        Long myAsOfTime = getAsOfTime();
-        Long theirAsOfTime = that.getAsOfTime();
-        if (myAsOfTime == null && theirAsOfTime !=null) {
-            return false;
-        } else  if (myAsOfTime != null && theirAsOfTime ==null) {
-            return false;
-        } else  if (myAsOfTime != null && theirAsOfTime !=null) {
-            if (Long.valueOf(myAsOfTime) != Long.valueOf(theirAsOfTime)) {
-                return false;
-            }
-        }
-        return Objects.equals(getServerName(), that.getServerName()) && Objects.equals(getPlatformName(), that.getPlatformName()) && Objects.equals(getEntityGUID(), that.getEntityGUID()) && Objects.equals(getEnterpriseOption(), that.getEnterpriseOption()) && Objects.equals(getEntityTypeGUIDs(), that.getEntityTypeGUIDs()) && Objects.equals(getRelationshipTypeGUIDs(), that.getRelationshipTypeGUIDs()) && Objects.equals(getClassificationNames(), that.getClassificationNames()) && Objects.equals(getDepth(), that.getDepth());
+
+        return getAsOfTime() == that.getAsOfTime() && Objects.equals(getServerName(), that.getServerName())  && Objects.equals(getPlatformName(), that.getPlatformName()) && Objects.equals(getEntityGUID(), that.getEntityGUID()) && Objects.equals(getEnterpriseOption(), that.getEnterpriseOption()) && Objects.equals(getEntityTypeGUIDs(), that.getEntityTypeGUIDs()) && Objects.equals(getRelationshipTypeGUIDs(), that.getRelationshipTypeGUIDs()) && Objects.equals(getClassificationNames(), that.getClassificationNames()) && Objects.equals(getDepth(), that.getDepth());
     }
 
     @Override

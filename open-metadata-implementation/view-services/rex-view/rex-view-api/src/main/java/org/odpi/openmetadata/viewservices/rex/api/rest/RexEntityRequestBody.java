@@ -28,8 +28,7 @@ public class RexEntityRequestBody {
     private String                    platformName;                  // must be non-null
     private String                    entityGUID;                    // must be non-null, GUID of root of traversal
     private Boolean                   enterpriseOption;              // if not set will default to false
-    private Long                      asOfTime;                      // as of time to issue the query. null means now.
-
+    private long                      asOfTime = 0;                  // as of time to issue the query. 0 means now.
 
     public RexEntityRequestBody() {
        // No initialization yet
@@ -52,7 +51,7 @@ public class RexEntityRequestBody {
             return enterpriseOption;
     }
 
-    public Long getAsOfTime() {
+    public long getAsOfTime() {
         return asOfTime;
     }
 
@@ -66,7 +65,7 @@ public class RexEntityRequestBody {
 
     public void setEnterpriseOption(Boolean enterpriseOption) { this.enterpriseOption = enterpriseOption; }
 
-    public void setAsOfTime(Long asOfTime) {
+    public void setAsOfTime(long asOfTime) {
         this.asOfTime = asOfTime;
     }
 
@@ -75,19 +74,9 @@ public class RexEntityRequestBody {
         if (this == o) return true;
         if (!(o instanceof RexEntityRequestBody)) return false;
         RexEntityRequestBody that = (RexEntityRequestBody) o;
-        Long myAsOfTime = getAsOfTime();
-        Long theirAsOfTime = that.getAsOfTime();
-        if (myAsOfTime == null && theirAsOfTime !=null) {
-            return false;
-        } else  if (myAsOfTime != null && theirAsOfTime ==null) {
-            return false;
-        } else  if (myAsOfTime != null && theirAsOfTime !=null) {
-            if (Long.valueOf(myAsOfTime) != Long.valueOf(theirAsOfTime)) {
-                return false;
-            }
-        }
 
-        return  Objects.equals(getServerName(), that.getServerName()) && Objects.equals(getPlatformName(), that.getPlatformName()) && Objects.equals(getEntityGUID(), that.getEntityGUID()) && Objects.equals(getEnterpriseOption(), that.getEnterpriseOption());
+
+        return  Objects.equals(getAsOfTime(), that.getAsOfTime()) && Objects.equals(getServerName(), that.getServerName()) && Objects.equals(getPlatformName(), that.getPlatformName()) && Objects.equals(getEntityGUID(), that.getEntityGUID()) && Objects.equals(getEnterpriseOption(), that.getEnterpriseOption());
     }
 
     @Override
