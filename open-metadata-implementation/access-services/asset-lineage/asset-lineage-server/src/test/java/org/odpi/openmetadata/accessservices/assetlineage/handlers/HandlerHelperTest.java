@@ -201,14 +201,15 @@ class HandlerHelperTest {
         List<String> guids = Arrays.asList(ENTITY_ONE_GUID, ENTITY_TWO_GUID);
         FindEntitiesParameters findEntitiesParameters = mock(FindEntitiesParameters.class);
         when(findEntitiesParameters.getEntitySubtypeGUIDs()).thenReturn(guids);
+        when(invalidParameterHandler.getMaxPagingSize()).thenReturn(500);
 
         mockTypeDef(ENTITY_TYPE_NAME, ENTITY_TYPE_GUID);
         List<EntityDetail> entities = new ArrayList<>();
         EntityDetail entityDetail = mock(EntityDetail.class);
         entities.add(entityDetail);
         when(genericHandler.findEntities(USER, ENTITY_TYPE_GUID, guids, searchProperties, Collections.emptyList(),
-                null, null, null, null, true, false, 0, 0,
-                "findEntitiesByType")).thenReturn(entities);
+                null, null, null, null, true, false, 0, 500,
+                "addPagedEntities")).thenReturn(entities);
 
         Optional<List<EntityDetail>> response = handlerHelper.findEntitiesByType(USER, ENTITY_TYPE_NAME, searchProperties, findEntitiesParameters);
         assertTrue(response.isPresent());
@@ -221,14 +222,16 @@ class HandlerHelperTest {
         List<String> guids = Arrays.asList(ENTITY_ONE_GUID, ENTITY_TWO_GUID);
         FindEntitiesParameters findEntitiesParameters = mock(FindEntitiesParameters.class);
         when(findEntitiesParameters.getEntitySubtypeGUIDs()).thenReturn(guids);
+        when(invalidParameterHandler.getMaxPagingSize()).thenReturn(500);
 
         mockTypeDef(ENTITY_TYPE_NAME, ENTITY_TYPE_GUID);
         when(genericHandler.findEntities(USER, ENTITY_TYPE_GUID, guids, searchProperties, Collections.emptyList(),
                 null, null, null, null, true,
-                false, 0, 0, "findEntitiesByType")).thenReturn(null);
+                false, 0, 500, "addPagedEntities")).thenReturn(null);
 
         Optional<List<EntityDetail>> response = handlerHelper.findEntitiesByType(USER, ENTITY_TYPE_NAME, searchProperties, findEntitiesParameters);
-        assertTrue(response.isEmpty());
+        assertTrue(response.isPresent());
+        assertTrue(response.get().isEmpty());
     }
 
     @Test
