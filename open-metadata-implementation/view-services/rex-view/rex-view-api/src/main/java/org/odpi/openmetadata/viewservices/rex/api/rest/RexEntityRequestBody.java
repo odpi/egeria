@@ -5,6 +5,9 @@ package org.odpi.openmetadata.viewservices.rex.api.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -13,6 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+
 public class RexEntityRequestBody {
 
 
@@ -24,7 +28,7 @@ public class RexEntityRequestBody {
     private String                    platformName;                  // must be non-null
     private String                    entityGUID;                    // must be non-null, GUID of root of traversal
     private Boolean                   enterpriseOption;              // if not set will default to false
-
+    private long                      asOfTime = 0;                  // as of time to issue the query. 0 means now.
 
     public RexEntityRequestBody() {
        // No initialization yet
@@ -47,6 +51,10 @@ public class RexEntityRequestBody {
             return enterpriseOption;
     }
 
+    public long getAsOfTime() {
+        return asOfTime;
+    }
+
 
 
     public void setServerName(String serverName) { this.serverName = serverName; }
@@ -57,20 +65,33 @@ public class RexEntityRequestBody {
 
     public void setEnterpriseOption(Boolean enterpriseOption) { this.enterpriseOption = enterpriseOption; }
 
-
-
-
-    @Override
-    public String toString()
-    {
-        return "RexEntityRequestBody{" +
-                ", serverName=" + serverName +
-                ", platformName=" + platformName +
-                ", entityGUID=" + entityGUID +
-                ", enterpriseOption=" + enterpriseOption +
-                '}';
+    public void setAsOfTime(long asOfTime) {
+        this.asOfTime = asOfTime;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RexEntityRequestBody)) return false;
+        RexEntityRequestBody that = (RexEntityRequestBody) o;
 
 
+        return  Objects.equals(getAsOfTime(), that.getAsOfTime()) && Objects.equals(getServerName(), that.getServerName()) && Objects.equals(getPlatformName(), that.getPlatformName()) && Objects.equals(getEntityGUID(), that.getEntityGUID()) && Objects.equals(getEnterpriseOption(), that.getEnterpriseOption());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getServerName(), getPlatformName(), getEntityGUID(), getEnterpriseOption(), getAsOfTime());
+    }
+
+    @Override
+    public String toString() {
+        return "RexEntityRequestBody{" +
+                "serverName='" + serverName + '\'' +
+                ", platformName='" + platformName + '\'' +
+                ", entityGUID='" + entityGUID + '\'' +
+                ", enterpriseOption=" + enterpriseOption +
+                ", asOfTime=" + asOfTime +
+                '}';
+    }
 }
