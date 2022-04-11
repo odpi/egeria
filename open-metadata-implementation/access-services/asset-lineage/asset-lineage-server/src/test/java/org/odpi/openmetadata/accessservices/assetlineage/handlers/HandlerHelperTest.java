@@ -106,7 +106,7 @@ class HandlerHelperTest {
         relationships.add(relationship);
 
         when(genericHandler.getAttachmentLinks(USER, GUID, GUID_PARAMETER, ENTITY_TYPE_NAME, RELATIONSHIP_TYPE_GUID,
-                RELATIONSHIP_TYPE_NAME, null, 0, 1000, null, methodName))
+                RELATIONSHIP_TYPE_NAME, null, 0, 0, null, methodName))
                 .thenReturn(relationships);
 
         List<Relationship> response = handlerHelper.getRelationshipsByType(USER, GUID, RELATIONSHIP_TYPE_NAME, ENTITY_TYPE_NAME);
@@ -122,7 +122,7 @@ class HandlerHelperTest {
         mockTypeDef(RELATIONSHIP_TYPE_NAME, RELATIONSHIP_TYPE_GUID);
         List<Relationship> relationships = new ArrayList<>();
         when(genericHandler.getAttachmentLinks(USER, GUID, GUID_PARAMETER, ENTITY_TYPE_NAME, RELATIONSHIP_TYPE_GUID,
-                RELATIONSHIP_TYPE_NAME, null, 0, 1000, null, methodName)).thenReturn(relationships);
+                RELATIONSHIP_TYPE_NAME, null, 0, 0, null, methodName)).thenReturn(relationships);
 
         List<Relationship> response = handlerHelper.getRelationshipsByType(USER, GUID, RELATIONSHIP_TYPE_NAME, ENTITY_TYPE_NAME);
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);

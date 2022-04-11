@@ -107,7 +107,7 @@ public class HandlerHelper {
 
         List<Relationship> relationships = genericHandler.getAttachmentLinks(userId, entityGUID, GUID_PARAMETER,
                 entityTypeName, relationshipTypeGUID, relationshipTypeName, null,
-                0, 1000, null, methodName);
+                0, 0, null, methodName);
 
         if (CollectionUtils.isEmpty(relationships)) {
             return Collections.emptyList();
