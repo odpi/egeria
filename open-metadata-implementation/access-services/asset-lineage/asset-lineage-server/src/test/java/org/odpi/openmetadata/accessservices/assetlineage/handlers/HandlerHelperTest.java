@@ -336,7 +336,7 @@ class HandlerHelperTest {
         when(relationship.getType()).thenReturn(type);
         when(relationship.getGUID()).thenReturn(RELATIONSHIP_GUID);
         when(genericHandler.getAttachmentLinks(USER, ENTITY_ONE_GUID, GUID_PARAMETER, ENTITY_TYPE_NAME, RELATIONSHIP_TYPE_GUID,
-                RELATIONSHIP_TYPE_NAME, null, 0, 1000, null, "getRelationshipsByType"))
+                RELATIONSHIP_TYPE_NAME, null, 0, 0, null, "getRelationshipsByType"))
                 .thenReturn(relationships);
 
         mockLineageEntity(ENTITY_ONE_GUID);
