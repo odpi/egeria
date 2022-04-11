@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -200,20 +200,30 @@ extends <a href="RexViewOMVSAPIResponse.html" title="class in org.odpi.openmetad
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr id="i0" class="altColor">
+<td class="colFirst"><code>boolean</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#equals(java.lang.Object)">equals</a></span>&#8203;(java.lang.Object&nbsp;o)</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i1" class="rowColor">
 <td class="colFirst"><code><a href="../properties/RexPreTraversal.html" title="class in org.odpi.openmetadata.viewservices.rex.api.properties">RexPreTraversal</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRexPreTraversal()">getRexPreTraversal</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the rexTraversal result.</div>
 </td>
 </tr>
-<tr id="i1" class="rowColor">
+<tr id="i2" class="altColor">
+<td class="colFirst"><code>int</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hashCode()">hashCode</a></span>()</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setRexPreTraversal(org.odpi.openmetadata.viewservices.rex.api.properties.RexPreTraversal)">setRexPreTraversal</a></span>&#8203;(<a href="../properties/RexPreTraversal.html" title="class in org.odpi.openmetadata.viewservices.rex.api.properties">RexPreTraversal</a>&nbsp;rexPreTraversal)</code></th>
 <td class="colLast">
 <div class="block">Set the rexTraversal result.</div>
 </td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
 <td class="colLast">
@@ -226,7 +236,7 @@ extends <a href="RexViewOMVSAPIResponse.html" title="class in org.odpi.openmetad
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase</h3>
-<code>equals, getActionDescription, getExceptionCausedBy, getExceptionClassName, getExceptionErrorMessage, getExceptionErrorMessageId, getExceptionErrorMessageParameters, getExceptionProperties, getExceptionSystemAction, getExceptionUserAction, getRelatedHTTPCode, hashCode, setActionDescription, setExceptionCausedBy, setExceptionClassName, setExceptionErrorMessage, setExceptionErrorMessageId, setExceptionErrorMessageParameters, setExceptionProperties, setExceptionSystemAction, setExceptionUserAction, setRelatedHTTPCode</code></li>
+<code>getActionDescription, getExceptionCausedBy, getExceptionClassName, getExceptionErrorMessage, getExceptionErrorMessageId, getExceptionErrorMessageParameters, getExceptionProperties, getExceptionSystemAction, getExceptionUserAction, getRelatedHTTPCode, setActionDescription, setExceptionCausedBy, setExceptionClassName, setExceptionErrorMessage, setExceptionErrorMessageId, setExceptionErrorMessageParameters, setExceptionProperties, setExceptionSystemAction, setExceptionUserAction, setRelatedHTTPCode</code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
@@ -310,6 +320,32 @@ extends <a href="RexViewOMVSAPIResponse.html" title="class in org.odpi.openmetad
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>rexPreTraversal</code> - - bean</dd>
+</dl>
+</li>
+</ul>
+<a id="equals(java.lang.Object)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>equals</h4>
+<pre class="methodSignature">public&nbsp;boolean&nbsp;equals&#8203;(java.lang.Object&nbsp;o)</pre>
+<dl>
+<dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
+<dd><code>equals</code>&nbsp;in class&nbsp;<code>org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase</code></dd>
+</dl>
+</li>
+</ul>
+<a id="hashCode()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>hashCode</h4>
+<pre class="methodSignature">public&nbsp;int&nbsp;hashCode()</pre>
+<dl>
+<dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
+<dd><code>hashCode</code>&nbsp;in class&nbsp;<code>org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase</code></dd>
 </dl>
 </li>
 </ul>
