@@ -76,7 +76,18 @@ public class RexRelationshipRequestBody {
         if (this == o) return true;
         if (!(o instanceof RexRelationshipRequestBody)) return false;
         RexRelationshipRequestBody that = (RexRelationshipRequestBody) o;
-        return getAsOfTime() == that.getAsOfTime() && Objects.equals(getServerName(), that.getServerName()) && Objects.equals(getPlatformName(), that.getPlatformName()) && Objects.equals(getRelationshipGUID(), that.getRelationshipGUID()) && Objects.equals(getEnterpriseOption(), that.getEnterpriseOption());
+        Long myAsOfTime = getAsOfTime();
+        Long theirAsOfTime = that.getAsOfTime();
+        if (myAsOfTime == null && theirAsOfTime !=null) {
+            return false;
+        } else  if (myAsOfTime != null && theirAsOfTime ==null) {
+            return false;
+        } else  if (myAsOfTime != null && theirAsOfTime !=null) {
+            if (Long.valueOf(myAsOfTime) != Long.valueOf(theirAsOfTime)) {
+                return false;
+            }
+        }
+        return Objects.equals(getServerName(), that.getServerName()) && Objects.equals(getPlatformName(), that.getPlatformName()) && Objects.equals(getRelationshipGUID(), that.getRelationshipGUID()) && Objects.equals(getEnterpriseOption(), that.getEnterpriseOption());
     }
 
     @Override

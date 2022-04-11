@@ -208,7 +208,11 @@ public enum RexViewErrorCode implements ExceptionMessageSet
                      "The repository explorer view service operation {0} reported that a historical query cannot be issued",
                      "The system reported that the historical capability is not supported.",
                      "Either use repositories that support historical queries or queries for the current entities."),
-
+    HANDLER_INVALID
+            (400, "OMVS-REPOSITORY-EXPLORER-400-030",
+             "The repository explorer view service could not proceed as it could not create a handler for operation {0}.",
+             "The system could not perform the requested action.",
+             "Please check your view configuration exists for this tenant."),
     ;
     private ExceptionMessageDefinition messageDefinition;
 

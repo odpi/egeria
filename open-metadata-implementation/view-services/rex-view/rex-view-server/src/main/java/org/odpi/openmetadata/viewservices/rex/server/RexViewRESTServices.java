@@ -41,6 +41,7 @@ public class RexViewRESTServices {
 
     private static final Logger             log                   = LoggerFactory.getLogger(RexViewRESTServices.class);
 
+    private static String className = RexViewRESTServices.class.getName();
 
     /**
      * Default constructor
@@ -265,6 +266,13 @@ public class RexViewRESTServices {
 
             try {
 
+
+                if (handler == null) {
+
+                    throw new RexViewServiceException(RexViewErrorCode.HANDLER_INVALID.getMessageDefinition(methodName),
+                                                      className,
+                                                      methodName);
+                } else {
                     response.setExpandedEntityDetail(handler.getEntity(userId,
                                                                        requestBody.getServerName(),
                                                                        requestBody.getPlatformName(),
@@ -272,7 +280,7 @@ public class RexViewRESTServices {
                                                                        requestBody.getEntityGUID(),
                                                                        asOfTimeDate,
                                                                        methodName));
-
+                }
             }
             catch (RexViewServiceException exception)
             {

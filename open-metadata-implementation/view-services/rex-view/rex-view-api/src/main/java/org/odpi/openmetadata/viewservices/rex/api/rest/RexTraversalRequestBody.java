@@ -103,7 +103,18 @@ public class RexTraversalRequestBody {
         if (this == o) return true;
         if (!(o instanceof RexTraversalRequestBody)) return false;
         RexTraversalRequestBody that = (RexTraversalRequestBody) o;
-        return getAsOfTime() == that.getAsOfTime() && Objects.equals(getServerName(), that.getServerName()) && Objects.equals(getPlatformName(), that.getPlatformName()) && Objects.equals(getEntityGUID(), that.getEntityGUID()) && Objects.equals(getEnterpriseOption(), that.getEnterpriseOption()) && Objects.equals(getEntityTypeGUIDs(), that.getEntityTypeGUIDs()) && Objects.equals(getRelationshipTypeGUIDs(), that.getRelationshipTypeGUIDs()) && Objects.equals(getClassificationNames(), that.getClassificationNames()) && Objects.equals(getDepth(), that.getDepth());
+        Long myAsOfTime = getAsOfTime();
+        Long theirAsOfTime = that.getAsOfTime();
+        if (myAsOfTime == null && theirAsOfTime !=null) {
+            return false;
+        } else  if (myAsOfTime != null && theirAsOfTime ==null) {
+            return false;
+        } else  if (myAsOfTime != null && theirAsOfTime !=null) {
+            if (Long.valueOf(myAsOfTime) != Long.valueOf(theirAsOfTime)) {
+                return false;
+            }
+        }
+        return Objects.equals(getServerName(), that.getServerName()) && Objects.equals(getPlatformName(), that.getPlatformName()) && Objects.equals(getEntityGUID(), that.getEntityGUID()) && Objects.equals(getEnterpriseOption(), that.getEnterpriseOption()) && Objects.equals(getEntityTypeGUIDs(), that.getEntityTypeGUIDs()) && Objects.equals(getRelationshipTypeGUIDs(), that.getRelationshipTypeGUIDs()) && Objects.equals(getClassificationNames(), that.getClassificationNames()) && Objects.equals(getDepth(), that.getDepth());
     }
 
     @Override

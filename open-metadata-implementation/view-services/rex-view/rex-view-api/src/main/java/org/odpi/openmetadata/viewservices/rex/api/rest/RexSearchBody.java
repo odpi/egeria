@@ -86,7 +86,18 @@ public class RexSearchBody {
         if (this == o) return true;
         if (!(o instanceof RexSearchBody)) return false;
         RexSearchBody that = (RexSearchBody) o;
-        return getAsOfTime() == that.getAsOfTime() && Objects.equals(getServerName(), that.getServerName()) && Objects.equals(getPlatformName(), that.getPlatformName()) && Objects.equals(getSearchText(), that.getSearchText()) && Objects.equals(getEnterpriseOption(), that.getEnterpriseOption()) && Objects.equals(getTypeName(), that.getTypeName()) && Objects.equals(getClassificationNames(), that.getClassificationNames());
+        Long myAsOfTime = getAsOfTime();
+        Long theirAsOfTime = that.getAsOfTime();
+        if (myAsOfTime == null && theirAsOfTime !=null) {
+            return false;
+        } else  if (myAsOfTime != null && theirAsOfTime ==null) {
+            return false;
+        } else  if (myAsOfTime != null && theirAsOfTime !=null) {
+            if (Long.valueOf(myAsOfTime) != Long.valueOf(theirAsOfTime)) {
+                return false;
+            }
+        }
+        return Objects.equals(getServerName(), that.getServerName()) && Objects.equals(getPlatformName(), that.getPlatformName()) && Objects.equals(getSearchText(), that.getSearchText()) && Objects.equals(getEnterpriseOption(), that.getEnterpriseOption()) && Objects.equals(getTypeName(), that.getTypeName()) && Objects.equals(getClassificationNames(), that.getClassificationNames());
     }
 
     @Override
