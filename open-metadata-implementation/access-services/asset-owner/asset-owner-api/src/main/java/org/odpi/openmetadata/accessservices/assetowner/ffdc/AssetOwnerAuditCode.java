@@ -33,6 +33,13 @@ public enum AssetOwnerAuditCode implements AuditLogMessageSet
                                  "list in the configuration document for this server.  It will then not be started " +
                                  "the next time the server starts up."),
 
+    SERVICE_PUBLISHING("OMAS-ASSET-OWNER-0002",
+                       OMRSAuditLogRecordSeverity.STARTUP,
+                       "The Asset Owner Open Metadata Access Service (OMAS) is ready to publish asset notifications to topic {0}",
+                       "The local server has started up the event publisher for the Asset Owner OMAS.  " +
+                               "It will begin publishing asset configuration changes to its out topic.",
+                       "This is part of the normal start up of the service. Check that there are no errors from the event bus."),
+
     SERVICE_INITIALIZED("OMAS-ASSET-OWNER-0003",
              OMRSAuditLogRecordSeverity.STARTUP,
              "The Asset Owner Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
@@ -52,6 +59,47 @@ public enum AssetOwnerAuditCode implements AuditLogMessageSet
              "The Asset Owner Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
              "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
              "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
+
+    PUBLISHING_SHUTDOWN("OMAS-ASSET-OWNER-0010",
+                        OMRSAuditLogRecordSeverity.SHUTDOWN,
+                        "The Asset Owner Open Metadata Access Service (OMAS) is no longer publishing events to topic {0}",
+                        "The local administrator has requested shut down of an Asset Owner OMAS instance.  " +
+                                "No more configuration events will be published to the named topic.",
+                        "This is part of the normal shutdown of the service.   No action is required if this is service" +
+                                "shutdown was intentional."),
+
+    PUBLISHING_SHUTDOWN_ERROR("OMAS-ASSET-OWNER-0011",
+                              OMRSAuditLogRecordSeverity.SHUTDOWN,
+                              "The Asset Owner Open Metadata Access Service (OMAS) caught an unexpected {0} exception whilst shutting down the out " +
+                                      "topic {1}. The error message was: {2}",
+                              "The local administrator has requested shut down of an Asset Owner OMAS instance.  " +
+                                      "No more configuration events will be published to the named topic, although the connection to the event bus may " +
+                                      "not be released properly.",
+                              "This is part of the normal shutdown of the service. However, an exception is not expected at this point unless it " +
+                                      "is the consequence of a previous error. Review the error message and any other reported failures to " +
+                                      "determine if this exception needs special attention."),
+
+    OUT_TOPIC_EVENT("OMAS-ASSET-OWNER-0012",
+                    OMRSAuditLogRecordSeverity.EVENT,
+                    "The Asset Owner Open Metadata Access Service (OMAS) has sent event of type: {0}",
+                    "The access service sends out asset notifications to ensure connected tools have the most up to-date " +
+                            "knowledge about assets.  This audit log message is to create a record of the events that are being published.",
+                    "This event indicates that the metadata for an asset has changed.  This my or may not be significant to " +
+                            "the receiving tools."),
+
+    PROCESS_EVENT_EXCEPTION("OMAS-ASSET-OWNER-0014",
+                            OMRSAuditLogRecordSeverity.EXCEPTION,
+                            "Event {0} could not be published due to {1} exception with message: {2}",
+                            "The system is unable to publish the event to the Asset Owner OMAS's OutTopic.",
+                            "Verify the topic configuration and that the event broker is running."),
+
+    OUT_TOPIC_FAILURE("OMAS-ASSET-OWNER-0018",
+                      OMRSAuditLogRecordSeverity.EXCEPTION,
+                      "The Asset Owner Open Metadata Access Service (OMAS) is unable to send an event on its out topic {0}; exception {1} returned " +
+                              "error message: {2}",
+                      "The access service detected an error during the start up of the out topic.  Its services are not available for the server.",
+                      "Review the error message and any other reported failures to determine the cause of the problem.  Check the status of the event " +
+                              "bus.  Once this is resolved, restart the server."),
     ;
 
     private static final long    serialVersionUID = 1L;

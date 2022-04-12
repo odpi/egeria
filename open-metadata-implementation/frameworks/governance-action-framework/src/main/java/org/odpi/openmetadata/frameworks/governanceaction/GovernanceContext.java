@@ -6,10 +6,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
-import org.odpi.openmetadata.frameworks.governanceaction.search.*;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,61 +17,15 @@ import java.util.Map;
  * the governance request along with the open metadata repository interfaces.
  * The abstract methods are implemented by the technology that supports the real metadata store.
  */
-public class GovernanceContext
+public interface GovernanceContext
 {
-    private String                     userId;
-
-    private String                     requestType;
-    private Map<String, String>        requestParameters;
-
-    private List<RequestSourceElement> requestSourceElements;
-    private List<ActionTargetElement>  actionTargetElements;
-
-    private String                     governanceActionGUID;
-
-    private volatile CompletionStatus  completionStatus = null;
-
-    OpenMetadataClient       openMetadataStore;
-    PropertyHelper           propertyHelper = new PropertyHelper();
-
-    /**
-     * Constructor sets up the key parameters for processing the request to the governance action service.
-     *
-     * @param userId calling user
-     * @param governanceActionGUID unique identifier of the governance action that triggered this governance service
-     * @param requestType unique identifier of the asset that the annotations should be attached to
-     * @param requestParameters name-value properties to control the governance action service
-     * @param requestSourceElements metadata elements associated with the request to the governance action service
-     * @param actionTargetElements metadata elements that need to be worked on by the governance action service
-     * @param openMetadataStore client to the metadata store for use by the governance action service
-     */
-    public GovernanceContext(String                     userId,
-                             String                     governanceActionGUID,
-                             String                     requestType,
-                             Map<String, String>        requestParameters,
-                             List<RequestSourceElement> requestSourceElements,
-                             List<ActionTargetElement>  actionTargetElements,
-                             OpenMetadataClient         openMetadataStore)
-    {
-        this.userId = userId;
-        this.governanceActionGUID = governanceActionGUID;
-        this.requestType = requestType;
-        this.requestParameters = requestParameters;
-        this.requestSourceElements = requestSourceElements;
-        this.actionTargetElements = actionTargetElements;
-        this.openMetadataStore = openMetadataStore;
-    }
-
 
     /**
      * Return the unique identifier of the asset being discovered.
      *
      * @return string guid
      */
-    public String getRequestType()
-    {
-        return requestType;
-    }
+    String getRequestType();
 
 
     /**
@@ -81,10 +33,7 @@ public class GovernanceContext
      *
      * @return property map
      */
-    public Map<String, String> getRequestParameters()
-    {
-        return requestParameters;
-    }
+    Map<String, String> getRequestParameters();
 
 
     /**
@@ -93,10 +42,7 @@ public class GovernanceContext
      *
      * @return list of request source elements
      */
-    public List<RequestSourceElement> getRequestSourceElements()
-    {
-        return requestSourceElements;
-    }
+    List<RequestSourceElement> getRequestSourceElements();
 
 
     /**
@@ -104,10 +50,7 @@ public class GovernanceContext
      *
      * @return cached list of action target metadata elements
      */
-    public List<ActionTargetElement> getActionTargetElements()
-    {
-        return actionTargetElements;
-    }
+    List<ActionTargetElement> getActionTargetElements();
 
 
     /**
@@ -117,10 +60,7 @@ public class GovernanceContext
      *
      * @return  metadata store client
      */
-    public OpenMetadataStore getOpenMetadataStore()
-    {
-        return openMetadataStore;
-    }
+    OpenMetadataStore getOpenMetadataStore();
 
 
     /**
@@ -141,24 +81,15 @@ public class GovernanceContext
      * @throws UserNotAuthorizedException this governance action service is not authorized to create a incident report
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public String createIncidentReport(String                        qualifiedName,
-                                       int                           domainIdentifier,
-                                       String                        background,
-                                       List<IncidentImpactedElement> impactedResources,
-                                       List<IncidentDependency>      previousIncidents,
-                                       Map<String, Integer>          incidentClassifiers,
-                                       Map<String, String>           additionalProperties) throws InvalidParameterException,
-                                                                                                  UserNotAuthorizedException,
-                                                                                                  PropertyServerException
-    {
-        return openMetadataStore.createIncidentReport(qualifiedName,
-                                                      domainIdentifier,
-                                                      background,
-                                                      impactedResources,
-                                                      previousIncidents,
-                                                      incidentClassifiers,
-                                                      additionalProperties);
-    }
+    String createIncidentReport(String                        qualifiedName,
+                                int                           domainIdentifier,
+                                String                        background,
+                                List<IncidentImpactedElement> impactedResources,
+                                List<IncidentDependency>      previousIncidents,
+                                Map<String, Integer>          incidentClassifiers,
+                                Map<String, String>           additionalProperties) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException;
 
 
     /**
@@ -176,15 +107,12 @@ public class GovernanceContext
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the action target properties
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
-    public void updateActionTargetStatus(String                 actionTargetGUID,
-                                         GovernanceActionStatus status,
-                                         Date                   startDate,
-                                         Date                   completionDate) throws InvalidParameterException,
+    void updateActionTargetStatus(String                 actionTargetGUID,
+                                  GovernanceActionStatus status,
+                                  Date                   startDate,
+                                  Date                   completionDate) throws InvalidParameterException,
                                                                                        UserNotAuthorizedException,
-                                                                                       PropertyServerException
-    {
-        openMetadataStore.updateActionTargetStatus(actionTargetGUID, status, startDate, completionDate);
-    }
+                                                                                       PropertyServerException;
 
 
     /**
@@ -198,15 +126,10 @@ public class GovernanceContext
      *                                     action service completion status
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
-    public synchronized  void recordCompletionStatus(CompletionStatus    status,
-                                                     List<String>        outputGuards) throws InvalidParameterException,
-                                                                                              UserNotAuthorizedException,
-                                                                                              PropertyServerException
-    {
-        this.completionStatus = status;
-
-        openMetadataStore.recordCompletionStatus(status, outputGuards, requestParameters, null);
-    }
+    void recordCompletionStatus(CompletionStatus    status,
+                                List<String>        outputGuards) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException;
 
 
     /**
@@ -221,16 +144,12 @@ public class GovernanceContext
      *                                     action service completion status
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
-    public synchronized  void recordCompletionStatus(CompletionStatus      status,
-                                                     List<String>          outputGuards,
-                                                     List<NewActionTarget> newActionTargets) throws InvalidParameterException,
-                                                                                                  UserNotAuthorizedException,
-                                                                                                  PropertyServerException
-    {
-        this.completionStatus = status;
+    void recordCompletionStatus(CompletionStatus      status,
+                                List<String>          outputGuards,
+                                List<NewActionTarget> newActionTargets) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException;
 
-        openMetadataStore.recordCompletionStatus(status, outputGuards, requestParameters, newActionTargets);
-    }
 
 
     /**
@@ -246,29 +165,12 @@ public class GovernanceContext
      *                                     action service completion status
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
-    public synchronized  void recordCompletionStatus(CompletionStatus      status,
-                                                     List<String>          outputGuards,
-                                                     Map<String, String>   newRequestParameters,
-                                                     List<NewActionTarget> newActionTargets) throws InvalidParameterException,
-                                                                                                    UserNotAuthorizedException,
-                                                                                                    PropertyServerException
-    {
-        this.completionStatus = status;
-
-        Map<String, String> combinedRequestParameters = new HashMap<>();
-
-        if (requestParameters != null)
-        {
-            combinedRequestParameters.putAll(requestParameters);
-        }
-
-        if (newRequestParameters != null)
-        {
-            combinedRequestParameters.putAll(newRequestParameters);
-        }
-
-        openMetadataStore.recordCompletionStatus(status, outputGuards, combinedRequestParameters, newActionTargets);
-    }
+    void recordCompletionStatus(CompletionStatus      status,
+                                List<String>          outputGuards,
+                                Map<String, String>   newRequestParameters,
+                                List<NewActionTarget> newActionTargets) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException;
 
 
     /**
@@ -276,29 +178,5 @@ public class GovernanceContext
      *
      * @return completion status enum
      */
-    public synchronized CompletionStatus getCompletionStatus()
-    {
-        return completionStatus;
-    }
-
-
-    /**
-     * Standard toString method.
-     *
-     * @return print out of variables in a JSON-style
-     */
-    @Override
-    public String toString()
-    {
-        return "GovernanceContext{" +
-                       "userId='" + userId + '\'' +
-                       ", requestType='" + requestType + '\'' +
-                       ", requestParameters=" + requestParameters +
-                       ", requestSourceElements=" + requestSourceElements +
-                       ", actionTargetElements=" + actionTargetElements +
-                       ", completionStatus=" + completionStatus +
-                       ", openMetadataStore=" + openMetadataStore +
-                       ", propertyHelper=" + propertyHelper +
-                       '}';
-    }
+    CompletionStatus getCompletionStatus();
 }

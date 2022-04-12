@@ -115,7 +115,7 @@ public enum IntegrationDaemonServicesErrorCode implements ExceptionMessageSet
                          "Add a suitable value for this configuration property in the integration service configuration."),
 
     NO_PERMITTED_SYNCHRONIZATION( 400,"INTEGRATION-DAEMON-SERVICES-400-012",
-                                 "The integration service {0} does not have a default permitted synchronization value set.",
+                                 "The integration service {0} in integration daemon {1} does not have a default permitted synchronization value set.",
                                  "The integration daemon is not able to initialize one of the configured integration because its defaultPermittedSynchronization value is null.  " +
                                  "The integration daemon shuts down, this error is reported to the caller and a similar message is written to the audit log.",
                                   "Update the configuration for the integration service to include a value for the default permitted synchronization."),

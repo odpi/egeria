@@ -39,7 +39,6 @@ dependencies {
     implementation 'ch.qos.logback:logback-core'
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
     implementation 'org.slf4j:slf4j-api'
-    implementation 'jakarta.annotation:jakarta.annotation-api'
     implementation 'org.springdoc:springdoc-openapi-ui'
     implementation 'io.swagger.core.v3:swagger-annotations'
     implementation 'org.hibernate:hibernate-validator'
@@ -78,7 +77,7 @@ dependencies {
     runtimeOnly project(':open-metadata-implementation:governance-servers:integration-daemon-services:integration-daemon-services-spring')
     runtimeOnly project(':open-metadata-implementation:governance-servers:engine-host-services:engine-host-services-spring')
     runtimeOnly project(':open-metadata-implementation:engine-services:asset-analysis:asset-analysis-spring')
-    runtimeOnly project(':open-metadata-implementation:engine-services:archive-manager:archive-manager-spring')
+    runtimeOnly project(':open-metadata-implementation:engine-services:repository-governance:repository-governance-spring')
     runtimeOnly project(':open-metadata-implementation:engine-services:governance-action:governance-action-spring')
     runtimeOnly project(':open-metadata-implementation:integration-services:analytics-integrator:analytics-integrator-spring')
     runtimeOnly project(':open-metadata-implementation:integration-services:api-integrator:api-integrator-spring')
@@ -86,9 +85,10 @@ dependencies {
     runtimeOnly project(':open-metadata-implementation:integration-services:database-integrator:database-integrator-spring')
     runtimeOnly project(':open-metadata-implementation:integration-services:display-integrator:display-integrator-spring')
     runtimeOnly project(':open-metadata-implementation:integration-services:files-integrator:files-integrator-spring')
+    runtimeOnly project(':open-metadata-implementation:integration-services:infrastructure-integrator:infrastructure-integrator-spring')
     runtimeOnly project(':open-metadata-implementation:integration-services:lineage-integrator:lineage-integrator-spring')
-    runtimeOnly project(':open-metadata-implementation:integration-services:search-integrator:search-integrator-spring')
     runtimeOnly project(':open-metadata-implementation:integration-services:organization-integrator:organization-integrator-spring')
+    runtimeOnly project(':open-metadata-implementation:integration-services:search-integrator:search-integrator-spring')
     runtimeOnly project(':open-metadata-implementation:integration-services:security-integrator:security-integrator-spring')
     runtimeOnly project(':open-metadata-implementation:integration-services:topic-integrator:topic-integrator-spring')
     runtimeOnly project(':open-metadata-implementation:view-services:glossary-author-view:glossary-author-view-spring')

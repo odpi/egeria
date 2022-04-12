@@ -18,10 +18,9 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
  * governanceContext.recordCompletionStatus() and then return. The recordCompletionStatus() call will include guards that are used to determine
  * the next step.
  */
-public abstract class VerificationGovernanceActionService extends GovernanceActionService
+public abstract class VerificationGovernanceActionService extends GovernanceActionServiceConnector
 {
     protected VerificationGovernanceContext governanceContext = null;
-
 
     /**
      * Set up details of the the governance action request and access to the metadata store.
@@ -29,7 +28,7 @@ public abstract class VerificationGovernanceActionService extends GovernanceActi
      *
      * @param governanceContext specialist context for this type of governance action.
      */
-    public synchronized void setGovernanceContext(VerificationGovernanceContext governanceContext)
+    public synchronized void setGovernanceContext(GovernanceActionContext governanceContext)
     {
         this.governanceContext = governanceContext;
     }

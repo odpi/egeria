@@ -5,8 +5,8 @@ package org.odpi.openmetadata.accessservices.assetconsumer.admin;
 import org.odpi.openmetadata.accessservices.assetconsumer.connectors.outtopic.AssetConsumerOutTopicServerConnector;
 import org.odpi.openmetadata.accessservices.assetconsumer.connectors.outtopic.AssetConsumerOutTopicServerProvider;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerAuditCode;
-import org.odpi.openmetadata.accessservices.assetconsumer.listener.AssetConsumerOMRSTopicListener;
-import org.odpi.openmetadata.accessservices.assetconsumer.outtopic.AssetConsumerPublisher;
+import org.odpi.openmetadata.accessservices.assetconsumer.outtopic.AssetConsumerOMRSTopicListener;
+import org.odpi.openmetadata.accessservices.assetconsumer.outtopic.AssetConsumerOutTopicPublisher;
 import org.odpi.openmetadata.accessservices.assetconsumer.server.AssetConsumerServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
@@ -27,10 +27,10 @@ import java.util.List;
  */
 public class AssetConsumerAdmin extends AccessServiceAdmin
 {
-    private AuditLog                      auditLog       = null;
-    private AssetConsumerServicesInstance instance       = null;
-    private String                        serverName     = null;
-    private AssetConsumerPublisher        eventPublisher = null;
+    private AuditLog                       auditLog       = null;
+    private AssetConsumerServicesInstance  instance       = null;
+    private String                         serverName     = null;
+    private AssetConsumerOutTopicPublisher eventPublisher = null;
     
 
     /**
@@ -88,26 +88,27 @@ public class AssetConsumerAdmin extends AccessServiceAdmin
                                                                                      AssetConsumerOutTopicServerProvider.class.getName(),
                                                                                      auditLog);
                 AssetConsumerOutTopicServerConnector outTopicServerConnector = super.getTopicConnector(serverSideOutTopicConnection,
-                                                                                                       AssetConsumerOutTopicServerConnector.class,
-                                                                                                       outTopicAuditLog,
-                                                                                                       AccessServiceDescription.ASSET_CONSUMER_OMAS.getAccessServiceFullName(),
-                                                                                                       actionDescription);
-                eventPublisher = new AssetConsumerPublisher(outTopicServerConnector, endpoint.getAddress(), outTopicAuditLog);
+                                                                                                          AssetConsumerOutTopicServerConnector.class,
+                                                                                                          outTopicAuditLog,
+                                                                                                          AccessServiceDescription.ASSET_CONSUMER_OMAS.getAccessServiceFullName(),
+                                                                                                          actionDescription);
+                eventPublisher = new AssetConsumerOutTopicPublisher(outTopicServerConnector,
+                                                                       endpoint.getAddress(),
+                                                                       outTopicAuditLog,
+                                                                       repositoryConnector.getRepositoryHelper(),
+                                                                       AccessServiceDescription.ASSET_CONSUMER_OMAS.getAccessServiceName(),
+                                                                       serverName);
 
                 this.registerWithEnterpriseTopic(AccessServiceDescription.ASSET_CONSUMER_OMAS.getAccessServiceFullName(),
                                                  serverName,
                                                  omrsTopicConnector,
-                                                 new AssetConsumerOMRSTopicListener(instance.getAssetHandler(),
-                                                                                    eventPublisher,
-                                                                                    repositoryConnector.getRepositoryHelper(),
-                                                                                    repositoryConnector.getRepositoryValidator(),
-                                                                                    accessServiceConfig.getAccessServiceName(),
-                                                                                    serverName,
-                                                                                    serverUserName,
-                                                                                    supportedZones,
-                                                                                    auditLog),
+                                                 new AssetConsumerOMRSTopicListener(AccessServiceDescription.ASSET_CONSUMER_OMAS.getAccessServiceFullName(),
+                                                                                       serverUserName,
+                                                                                       eventPublisher,
+                                                                                       instance.getAssetHandler(),
+                                                                                       supportedZones,
+                                                                                       outTopicAuditLog),
                                                  auditLog);
-
             }
 
             /*
@@ -142,7 +143,7 @@ public class AssetConsumerAdmin extends AccessServiceAdmin
     @Override
     public void shutdown()
     {
-        final String            actionDescription = "shutdown";
+        final String actionDescription = "shutdown";
 
         if (instance != null)
         {

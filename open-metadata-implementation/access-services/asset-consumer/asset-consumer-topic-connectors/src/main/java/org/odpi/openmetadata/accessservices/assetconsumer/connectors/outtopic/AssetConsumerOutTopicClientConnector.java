@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.assetconsumer.connectors.outtopic;
 
 import org.odpi.openmetadata.accessservices.assetconsumer.api.AssetConsumerEventInterface;
 import org.odpi.openmetadata.accessservices.assetconsumer.api.AssetConsumerEventListener;
-import org.odpi.openmetadata.accessservices.assetconsumer.events.AssetConsumerEvent;
+import org.odpi.openmetadata.accessservices.assetconsumer.events.AssetConsumerOutTopicEvent;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListenerConnectorBase;
@@ -66,7 +66,7 @@ public class AssetConsumerOutTopicClientConnector extends OpenMetadataTopicListe
         {
             try
             {
-                AssetConsumerEvent eventObject = super.getEventBean(event, AssetConsumerEvent.class);
+                AssetConsumerOutTopicEvent eventObject = super.getEventBean(event, AssetConsumerOutTopicEvent.class);
 
                 for (AssetConsumerEventListener listener : internalEventListeners)
                 {

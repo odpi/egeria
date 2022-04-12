@@ -121,7 +121,10 @@ public class IntegrationDaemonInstance extends GovernanceServerServiceInstance
         /*
          * Shutdown the threads running the connectors.
          */
-        integrationDaemonThread.stop();
+        if (integrationDaemonThread != null)
+        {
+            integrationDaemonThread.stop();
+        }
 
         super.shutdown();
     }

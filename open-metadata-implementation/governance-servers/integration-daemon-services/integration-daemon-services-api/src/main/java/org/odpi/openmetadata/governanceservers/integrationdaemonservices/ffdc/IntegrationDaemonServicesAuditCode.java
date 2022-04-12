@@ -288,13 +288,19 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                              "The thread is about to call refresh() on the integration connectors hosted in this daemon.",
                              "Ensure that the connector does not report any errors during the refresh processing."),
 
-    DAEMON_THREAD_TERMINATING("INTEGRATION-DAEMON-SERVICES-0043",
+    DAEMON_CONNECTOR_REFRESH_COMPLETE("INTEGRATION-DAEMON-SERVICES-0043",
+                             OMRSAuditLogRecordSeverity.INFO,
+                             "The integration connector {0} in integration daemon {1} has completed refresh processing in {2} millisecond",
+                             "The to call refresh() has returned.",
+                             "Verify that the time between refresh calls is appropriate for the connector."),
+
+    DAEMON_THREAD_TERMINATING("INTEGRATION-DAEMON-SERVICES-0044",
                            OMRSAuditLogRecordSeverity.SHUTDOWN,
                            "The integration daemon thread for integration daemon {0} is shutting down",
                            "The thread will stop calling refresh() on the integration connectors hosted in this daemon and stop running.",
                            "Ensure that the thread terminates without errors."),
 
-    DAEMON_THREAD_CONNECTOR_ERROR("INTEGRATION-DAEMON-SERVICES-0044",
+    DAEMON_THREAD_CONNECTOR_ERROR("INTEGRATION-DAEMON-SERVICES-0045",
                     OMRSAuditLogRecordSeverity.EXCEPTION,
                     "The integration daemon thread for integration daemon {0} caught a {1} exception from an integration connector containing message {2}",
                     "The integration daemon thread will move to the next connector and revisit this connector at the next refresh time.",

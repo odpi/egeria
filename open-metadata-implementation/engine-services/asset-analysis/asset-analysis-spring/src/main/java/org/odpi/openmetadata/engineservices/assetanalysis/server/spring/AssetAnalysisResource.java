@@ -25,7 +25,7 @@ public class AssetAnalysisResource
 
 
     /**
-     * Validate the connector and return its connector type.  The integration service does not need to
+     * Validate the connector and return its connector type.  The engine service does not need to
      * be running in the integration daemon in order for this call to be successful.  It only needs to be registered with the
      * integration daemon.
      *

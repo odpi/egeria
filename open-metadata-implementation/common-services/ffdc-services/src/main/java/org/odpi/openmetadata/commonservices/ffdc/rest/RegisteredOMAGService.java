@@ -5,6 +5,7 @@ package org.odpi.openmetadata.commonservices.ffdc.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 
 import java.io.Serializable;
@@ -24,6 +25,7 @@ public class RegisteredOMAGService implements Serializable
 {
     private static final long     serialVersionUID    = 1L;
 
+    private int                        serviceId                = 0;
     private String                     serviceName              = null;
     private ComponentDevelopmentStatus serviceDevelopmentStatus = null;
     private String                     serviceURLMarker         = null;
@@ -48,6 +50,7 @@ public class RegisteredOMAGService implements Serializable
     {
         if (template != null)
         {
+            this.serviceId = template.getServiceId();
             this.serviceName = template.getServiceName();
             this.serviceDevelopmentStatus = template.getServiceDevelopmentStatus();
             this.serviceURLMarker = template.getServiceURLMarker();
@@ -56,6 +59,27 @@ public class RegisteredOMAGService implements Serializable
         }
     }
 
+
+    /**
+     * Return the component identifier used by the service
+     *
+     * @return int
+     */
+    public int getServiceId()
+    {
+        return serviceId;
+    }
+
+
+    /**
+     * Set up the component identifier used by the service.
+     *
+     * @param serviceId int
+     */
+    public void setServiceId(int serviceId)
+    {
+        this.serviceId = serviceId;
+    }
 
 
     /**
@@ -181,7 +205,8 @@ public class RegisteredOMAGService implements Serializable
     public String toString()
     {
         return "RegisteredOMAGService{" +
-                       "serviceName='" + serviceName + '\'' +
+                       "serviceId=" + serviceId +
+                       ", serviceName='" + serviceName + '\'' +
                        ", serviceDevelopmentStatus=" + serviceDevelopmentStatus +
                        ", serviceURLMarker='" + serviceURLMarker + '\'' +
                        ", serviceDescription='" + serviceDescription + '\'' +
@@ -208,7 +233,8 @@ public class RegisteredOMAGService implements Serializable
             return false;
         }
         RegisteredOMAGService that = (RegisteredOMAGService) objectToCompare;
-        return Objects.equals(serviceName, that.serviceName) &&
+        return serviceId == that.serviceId &&
+                       Objects.equals(serviceName, that.serviceName) &&
                        serviceDevelopmentStatus == that.serviceDevelopmentStatus &&
                        Objects.equals(serviceURLMarker, that.serviceURLMarker) &&
                        Objects.equals(serviceDescription, that.serviceDescription) &&
@@ -224,7 +250,7 @@ public class RegisteredOMAGService implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(serviceName, serviceDevelopmentStatus, serviceURLMarker, serviceDescription, serviceWiki);
+        return Objects.hash(serviceId, serviceName, serviceDevelopmentStatus, serviceURLMarker, serviceDescription, serviceWiki);
     }
 }
 

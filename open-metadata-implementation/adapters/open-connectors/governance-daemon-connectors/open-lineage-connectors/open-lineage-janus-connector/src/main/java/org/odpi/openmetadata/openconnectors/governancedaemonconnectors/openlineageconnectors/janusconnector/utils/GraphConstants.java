@@ -12,6 +12,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ASSET_LINEAGE_VARIABLES;
+
 public class GraphConstants {
 
     private GraphConstants() {
@@ -165,7 +167,7 @@ public class GraphConstants {
         corePropertyTypes.put(PROPERTY_NAME_PROXY, "java.lang.Boolean");
         corePropertyTypes.put(PROPERTY_NAME_NODE_ID, JAVA_STRING);
         corePropertyTypes.put(PROPERTY_NAME_METADATA_ID, JAVA_STRING);
-        corePropertyTypes.put(PROPERTY_NAME_ASSET_LINEAGE_LAST_UPDATE_TIMESTAMP, JAVA_STRING);
+        corePropertyTypes.put(ASSET_LINEAGE_VARIABLES, JAVA_STRING);
     }
 
     public static final ImmutableMap<String, String> immutableCorePropertyTypes = ImmutableMap.copyOf(corePropertyTypes);

@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.scheduler;
 
-import org.odpi.openmetadata.governanceservers.openlineage.graph.LineageGraph;
+import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraphConnector;
 import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
@@ -24,7 +24,7 @@ public class LineageGraphJob implements Job {
         log.debug("Run LineageGraphJob task at {} GMT", localTime);
 
         JobDataMap dataMap = context.getJobDetail().getJobDataMap();
-        LineageGraph lineageGraph = (LineageGraph) dataMap.get(JobConstants.OPEN_LINEAGE_GRAPH_STORE);
+        OpenLineageGraphConnector lineageGraph = (OpenLineageGraphConnector) dataMap.get(JobConstants.OPEN_LINEAGE_GRAPH_STORE);
         performTask(lineageGraph);
     }
 
@@ -32,7 +32,7 @@ public class LineageGraphJob implements Job {
      * Delegates the call for the scheduler to the connector.
      *
      */
-    private void performTask(LineageGraph lineageGraph){
+    private void performTask(OpenLineageGraphConnector lineageGraph){
         lineageGraph.performLineageGraphJob();
     }
 }

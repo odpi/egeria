@@ -3,6 +3,8 @@
 
 package org.odpi.openmetadata.commonservices.repositoryhandler;
 
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
@@ -42,20 +44,22 @@ public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEnt
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName  name of calling method
      */
-    public RepositorySelectedEntitiesIterator(RepositoryHandler  repositoryHandler,
-                                              String             userId,
-                                              String             entityTypeGUID,
-                                              InstanceProperties properties,
-                                              MatchCriteria      matchCriteria,
-                                              String             sequencingPropertyName,
-                                              boolean            forLineage,
-                                              boolean            forDuplicateProcessing,
-                                              int                startingFrom,
-                                              int                pageSize,
-                                              Date               effectiveTime,
-                                              String             methodName)
+    public RepositorySelectedEntitiesIterator(RepositoryHandler       repositoryHandler,
+                                              InvalidParameterHandler invalidParameterHandler,
+                                              String                  userId,
+                                              String                  entityTypeGUID,
+                                              InstanceProperties      properties,
+                                              MatchCriteria           matchCriteria,
+                                              String                  sequencingPropertyName,
+                                              boolean                 forLineage,
+                                              boolean                 forDuplicateProcessing,
+                                              int                     startingFrom,
+                                              int                     pageSize,
+                                              Date                    effectiveTime,
+                                              String                  methodName) throws InvalidParameterException
     {
         super(repositoryHandler,
+              invalidParameterHandler,
               userId,
               entityTypeGUID,
               null,
@@ -88,19 +92,21 @@ public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEnt
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName  name of calling method
      */
-    public RepositorySelectedEntitiesIterator(RepositoryHandler repositoryHandler,
-                                              String            userId,
-                                              String            entityTypeGUID,
-                                              String            searchCriteria,
-                                              String            sequencingPropertyName,
-                                              boolean           forLineage,
-                                              boolean           forDuplicateProcessing,
-                                              int               startingFrom,
-                                              int               pageSize,
-                                              Date              effectiveTime,
-                                              String            methodName)
+    public RepositorySelectedEntitiesIterator(RepositoryHandler       repositoryHandler,
+                                              InvalidParameterHandler invalidParameterHandler,
+                                              String                   userId,
+                                              String                   entityTypeGUID,
+                                              String                   searchCriteria,
+                                              String                   sequencingPropertyName,
+                                              boolean                  forLineage,
+                                              boolean                  forDuplicateProcessing,
+                                              int                      startingFrom,
+                                              int                      pageSize,
+                                              Date                     effectiveTime,
+                                              String                   methodName) throws InvalidParameterException
     {
         super(repositoryHandler,
+              invalidParameterHandler,
               userId,
               entityTypeGUID,
               null,

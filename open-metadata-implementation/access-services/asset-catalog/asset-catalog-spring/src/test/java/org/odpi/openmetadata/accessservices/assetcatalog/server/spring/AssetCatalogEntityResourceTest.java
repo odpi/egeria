@@ -23,7 +23,6 @@ class AssetCatalogEntityResourceTest {
     private static final String USER = "user";
     private static final String SERVER_NAME = "serverName";
     private static final String ASSET_GUID = "b1c497ce.60641b50.0v9mgsb1m.9vbkmkr";
-    private static final String SECOND_ASSET_GUID = "b1c497ce.60641b50.0v9mgsb1m.ab12343";
     private static final String ASSET_TYPE = "GlossaryTerm";
     private static final String SEMANTIC_ASSIGMENT = "SemanticAssigment";
     private static final Integer FROM = 0;
@@ -62,28 +61,6 @@ class AssetCatalogEntityResourceTest {
         assetCatalogEntityResource.getClassificationsForAsset(SERVER_NAME, USER, ASSET_GUID, ASSET_TYPE, CONFIDENTIALITY);
 
         verify(assetCatalogService, times(1)).getClassificationByAssetGUID(SERVER_NAME, USER, ASSET_GUID, ASSET_TYPE, CONFIDENTIALITY);
-    }
-
-    @Test
-    void testGetAssetsFromNeighborhood() {
-        SearchParameters searchParameters = mockSearchParameters();
-        assetCatalogEntityResource.getAssetsFromNeighborhood(SERVER_NAME, USER, ASSET_GUID, searchParameters);
-
-        verify(assetCatalogService, times(1)).getAssetsFromNeighborhood(SERVER_NAME, USER, ASSET_GUID, searchParameters);
-    }
-
-    @Test
-    void testGetLinkingAssets() {
-        assetCatalogEntityResource.getLinkingAssets(SERVER_NAME, USER, ASSET_GUID, SECOND_ASSET_GUID);
-
-        verify(assetCatalogService, times(1)).getLinkingAssets(SERVER_NAME, USER, ASSET_GUID, SECOND_ASSET_GUID);
-    }
-
-    @Test
-    void testGetLinkingRelationships() {
-        assetCatalogEntityResource.getLinkingRelationships(SERVER_NAME, USER, ASSET_GUID, SECOND_ASSET_GUID);
-
-        verify(assetCatalogService, times(1)).getLinkingRelationships(SERVER_NAME, USER, ASSET_GUID, SECOND_ASSET_GUID);
     }
 
     @Test

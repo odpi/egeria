@@ -5,6 +5,8 @@ package org.odpi.openmetadata.accessservices.communityprofile.events;
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ElementStub;
 
+import java.util.Date;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -23,13 +25,25 @@ public class CommunityProfileOutboundEvent extends CommunityProfileEventHeader
     /*
      * Always set up
      */
-    private CommunityProfileOutboundEventType eventType          = null;
-    private ElementStub                       principleElement   = null;
+    private long                              eventVersionId    = 1L;
+
+    private CommunityProfileOutboundEventType eventType         = null;
+    private ElementStub                       principleElement  = null;
+    private Date                              eventTime         = null;
+
+    /*
+     * For element events
+     */
+    private Map<String, Object>               elementProperties = null;
+
+    private ElementStub                       previousElementHeader     = null;
+    private Map<String, Object>               previousElementProperties = null;
 
     /*
      * For classification events
      */
     private String                            classificationName = null;
+    private Map<String, Object>               previousClassificationProperties = null;
 
     /*
      * for relationship events

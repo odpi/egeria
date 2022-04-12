@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.scheduler;
 
-import org.odpi.openmetadata.governanceservers.openlineage.graph.LineageGraph;
+import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraphConnector;
 import org.quartz.Job;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
@@ -29,7 +29,7 @@ public class JobConfiguration {
     private static final String JOB_RUNNING_ERROR = "The job did not start because of an error with message: {}";
     private static final String SCHEDULER_SHUTDOWN_ERROR = "Exception while attempting to shutdown the scheduler instance, the message is: {}";
 
-    private final LineageGraph lineageGraph;
+    private final OpenLineageGraphConnector openLineageGraphConnector;
     private final int jobInterval;
     private final String jobName;
     private final Class <? extends Job> jobClass;
@@ -42,13 +42,13 @@ public class JobConfiguration {
     /**
      * Instantiates a new Job configuration.
      *
-     * @param lineageGraph the lineage graph
+     * @param openLineageGraphConnector the lineage graph
      * @param jobName      the job name
      * @param jobClass     the job class
      * @param jobInterval  the job interval
      */
-    public JobConfiguration(LineageGraph lineageGraph, String jobName, Class <? extends Job> jobClass, int jobInterval) {
-        this.lineageGraph = lineageGraph;
+    public JobConfiguration(OpenLineageGraphConnector openLineageGraphConnector, String jobName, Class <? extends Job> jobClass, int jobInterval) {
+        this.openLineageGraphConnector = openLineageGraphConnector;
         this.jobName = jobName;
         this.jobClass = jobClass;
         this.jobInterval = jobInterval;
@@ -91,8 +91,8 @@ public class JobConfiguration {
     }
 
     private void scheduleJob(Trigger trigger) throws SchedulerException {
-        if (lineageGraph != null) {
-            jobDetail.getJobDataMap().put(JobConstants.OPEN_LINEAGE_GRAPH_STORE, lineageGraph);
+        if (openLineageGraphConnector != null) {
+            jobDetail.getJobDataMap().put(JobConstants.OPEN_LINEAGE_GRAPH_STORE, openLineageGraphConnector);
             scheduler.scheduleJob(jobDetail, trigger);
         }
     }

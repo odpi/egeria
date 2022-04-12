@@ -11,6 +11,7 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -296,6 +297,33 @@ public class ExchangeClientBase
             requestBody.setAssetManagerGUID(assetManagerGUID);
             requestBody.setAssetManagerName(assetManagerName);
         }
+
+        return requestBody;
+    }
+
+
+
+    /**
+     * Return the asset manager identifiers packaged in an appropriate request body (or null is assetManagerGUID is null).
+     *
+     * @param assetManagerGUID unique identifier for the asset manager
+     * @param assetManagerName unique name for the asset manager
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @return request body
+     */
+    EffectiveTimeQueryRequestBody getEffectiveTimeQueryRequestBody(String assetManagerGUID,
+                                                                   String assetManagerName,
+                                                                   Date   effectiveTime)
+    {
+        EffectiveTimeQueryRequestBody requestBody = new EffectiveTimeQueryRequestBody();
+
+        if (assetManagerGUID != null)
+        {
+            requestBody.setAssetManagerGUID(assetManagerGUID);
+            requestBody.setAssetManagerName(assetManagerName);
+        }
+
+        requestBody.setEffectiveTime(effectiveTime);
 
         return requestBody;
     }

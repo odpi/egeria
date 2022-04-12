@@ -18,36 +18,8 @@ import java.util.Map;
  * the request, open metadata store, the ability to register a listener to receive governance events and initiate
  * new governance activity.
  */
-public class WatchdogGovernanceContext extends GovernanceContext
+public interface WatchdogGovernanceContext extends GovernanceContext
 {
-    private WatchdogGovernanceListener registeredListener = null;
-    private List<WatchdogEventType>    interestingEvents  = null;
-    private List<String>               interestingTypes   = null;
-
-
-    /**
-     * Constructor sets up the key parameters for processing the request to the governance action service.
-     *
-     * @param userId calling user
-     * @param governanceActionGUID unique identifier of the governance action that triggered this governance service
-     * @param requestType unique identifier of the asset that the annotations should be attached to
-     * @param requestParameters name-value properties to control the governance action service
-     * @param requestSourceElements metadata elements associated with the request to the governance action service
-     * @param actionTargetElements metadata elements that need to be worked on by the governance action service
-     * @param openMetadataStore client to the metadata store for use by the governance action service
-     */
-    public WatchdogGovernanceContext(String                     userId,
-                                     String                     governanceActionGUID,
-                                     String                     requestType,
-                                     Map<String, String>        requestParameters,
-                                     List<RequestSourceElement> requestSourceElements,
-                                     List<ActionTargetElement>  actionTargetElements,
-                                     OpenMetadataClient         openMetadataStore)
-    {
-        super(userId, governanceActionGUID, requestType, requestParameters, requestSourceElements, actionTargetElements, openMetadataStore);
-    }
-
-
     /**
      * Register a listener to receive events about changes to metadata elements in the open metadata store.
      * There can be only one registered listener.  If this method is called more than once, the new parameters
@@ -71,22 +43,16 @@ public class WatchdogGovernanceContext extends GovernanceContext
      *
      * @throws InvalidParameterException one or more of the type names are unrecognized
      */
-    public void registerListener(WatchdogGovernanceListener listener,
-                                 List<WatchdogEventType>    interestingEventTypes,
-                                 List<String>               interestingMetadataTypes,
-                                 String                     specificInstance) throws InvalidParameterException
-    {
-        openMetadataStore.registerListener(listener, interestingEventTypes, interestingMetadataTypes, specificInstance);
-    }
+    void registerListener(WatchdogGovernanceListener listener,
+                          List<WatchdogEventType>    interestingEventTypes,
+                          List<String>               interestingMetadataTypes,
+                          String                     specificInstance) throws InvalidParameterException;
 
 
     /**
      * Unregister the listener permanently from the event infrastructure.
      */
-    void disconnectListener()
-    {
-        openMetadataStore.disconnectListener();
-    }
+    void disconnectListener();
 
 
     /**
@@ -111,30 +77,18 @@ public class WatchdogGovernanceContext extends GovernanceContext
      * @throws UserNotAuthorizedException this governance action service is not authorized to create a governance action
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public String initiateGovernanceAction(String                qualifiedName,
-                                           int                   domainIdentifier,
-                                           String                displayName,
-                                           String                description,
-                                           List<String>          requestSourceGUIDs,
-                                           List<NewActionTarget> actionTargets,
-                                           Date                  startTime,
-                                           String                governanceEngineName,
-                                           String                requestType,
-                                           Map<String, String>   requestParameters) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException
-    {
-        return openMetadataStore.initiateGovernanceAction(qualifiedName,
-                                                          domainIdentifier,
-                                                          displayName,
-                                                          description,
-                                                          requestSourceGUIDs,
-                                                          actionTargets,
-                                                          startTime,
-                                                          governanceEngineName,
-                                                          requestType,
-                                                          requestParameters);
-    }
+    String initiateGovernanceAction(String                qualifiedName,
+                                    int                   domainIdentifier,
+                                    String                displayName,
+                                    String                description,
+                                    List<String>          requestSourceGUIDs,
+                                    List<NewActionTarget> actionTargets,
+                                    Date                  startTime,
+                                    String                governanceEngineName,
+                                    String                requestType,
+                                    Map<String, String>   requestParameters) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException;
 
 
     /**
@@ -152,35 +106,11 @@ public class WatchdogGovernanceContext extends GovernanceContext
      * @throws UserNotAuthorizedException this governance action service is not authorized to create a governance action process
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public String initiateGovernanceActionProcess(String                processQualifiedName,
-                                                  Map<String, String>   requestParameters,
-                                                  List<String>          requestSourceGUIDs,
-                                                  List<NewActionTarget> actionTargets,
-                                                  Date                  startTime) throws InvalidParameterException,
-                                                                                          UserNotAuthorizedException,
-                                                                                          PropertyServerException
-    {
-        return openMetadataStore.initiateGovernanceActionProcess(processQualifiedName, requestParameters, requestSourceGUIDs, actionTargets, startTime);
-    }
-
-
-    /**
-     * Standard toString method.
-     *
-     * @return print out of variables in a JSON-style
-     */
-    @Override
-    public String toString()
-    {
-        return "WatchdogGovernanceContext{" +
-                       "registeredListener=" + registeredListener +
-                       ", interestingEvents=" + interestingEvents +
-                       ", interestingTypes=" + interestingTypes +
-                       ", requestType='" + getRequestType() + '\'' +
-                       ", requestParameters=" + getRequestParameters() +
-                       ", requestSourceElements=" + getRequestSourceElements() +
-                       ", actionTargetElements=" + getActionTargetElements() +
-                       ", openMetadataStore=" + getOpenMetadataStore() +
-                       '}';
-    }
+    String initiateGovernanceActionProcess(String                processQualifiedName,
+                                           Map<String, String>   requestParameters,
+                                           List<String>          requestSourceGUIDs,
+                                           List<NewActionTarget> actionTargets,
+                                           Date                  startTime) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException;
 }
