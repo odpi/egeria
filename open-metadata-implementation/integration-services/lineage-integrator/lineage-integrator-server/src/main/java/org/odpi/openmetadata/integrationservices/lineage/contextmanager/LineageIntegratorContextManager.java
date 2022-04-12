@@ -35,10 +35,10 @@ import java.util.Map;
  */
 public class LineageIntegratorContextManager extends IntegrationContextManager implements OpenLineageListenerManager
 {
-    private AssetManagerClient       assetManagerClient;
-    private DataAssetExchangeClient  dataAssetExchangeClient;
-    private LineageExchangeClient    lineageExchangeClient;
-    private GovernanceExchangeClient governanceExchangeClient;
+    private ExternalAssetManagerClient assetManagerClient;
+    private DataAssetExchangeClient    dataAssetExchangeClient;
+    private LineageExchangeClient      lineageExchangeClient;
+    private GovernanceExchangeClient   governanceExchangeClient;
 
     private ObjectMapper                   objectMapper             = new ObjectMapper();
     private List<OpenLineageEventListener> registeredEventListeners = new ArrayList<>();
@@ -103,11 +103,11 @@ public class LineageIntegratorContextManager extends IntegrationContextManager i
                                                     auditLog);
         }
 
-        assetManagerClient = new AssetManagerClient(partnerOMASServerName,
-                                                    partnerOMASPlatformRootURL,
-                                                    restClient,
-                                                    maxPageSize,
-                                                    auditLog);
+        assetManagerClient = new ExternalAssetManagerClient(partnerOMASServerName,
+                                                            partnerOMASPlatformRootURL,
+                                                            restClient,
+                                                            maxPageSize,
+                                                            auditLog);
 
         dataAssetExchangeClient = new DataAssetExchangeClient(partnerOMASServerName,
                                                               partnerOMASPlatformRootURL,

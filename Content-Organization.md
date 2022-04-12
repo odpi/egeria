@@ -52,6 +52,7 @@ The Egeria core repository contains the core Egeria functionality, and is organi
       * **[connector-configuration-factory](open-metadata-implementation/adapters/open-connectors/connector-configuration-factory)** creates **Connection** objects to configure the open connectors.
       * **[data-store-connectors](open-metadata-implementation/adapters/open-connectors/data-store-connectors)** contain OCF connectors to data stores on different data platforms.
       * **[discovery-service-connectors](open-metadata-implementation/adapters/open-connectors/discovery-service-connectors)** contain ODF discovery service implementations.
+      * **[dynamic-archiver-connectors](open-metadata-implementation/adapters/open-connectors/dynamic-archiver-connectors)** contains dynamic archiver services implementations.
       * **[event-bus-connectors](open-metadata-implementation/adapters/open-connectors/event-bus-connectors)** supports different event/messaging infrastructures.  They can be plugged into the topic connectors from the access-service-connectors and repository-service-connectors.
       * **[governance-action-connectors](open-metadata-implementation/adapters/open-connectors/governance-action-connectors)** contains GAF governance action implementations.
       * **[governance-daemon-connectors](open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors)** contains connectors for the governance daemon servers that monitor activity or synchronize metadata and configuration asynchronously between different tools.
@@ -78,6 +79,7 @@ The Egeria core repository contains the core Egeria functionality, and is organi
   
   * **[engine-services](open-metadata-implementation/engine-services)** - services that host data management and governance engines.  These run in the [Engine Host](open-metadata-implementation/admin-services/docs/concepts/engine-host.md) OMAG Server.
     * **[asset-analysis](open-metadata-implementation/engine-services/asset-analysis)** - services that host [Open Discovery Framework (ODF)](open-metadata-implementation/frameworks/open-discovery-framework) discovery services.
+    * **[repository-governance](open-metadata-implementation/engine-services/repository-governance)** - services that host dynamic governance services for open metadata repositories.
     * **[governance-action](open-metadata-implementation/engine-services/governance-action)** - services that host [Governance Action Framework (GAF)](open-metadata-implementation/frameworks/governance-action-framework) governance action services.
 
   * **[frameworks](open-metadata-implementation/frameworks)** - frameworks that support pluggable components.
@@ -93,12 +95,15 @@ The Egeria core repository contains the core Egeria functionality, and is organi
     * **[open-lineage-services](open-metadata-implementation/governance-servers/open-lineage-services)** - provides historic warehouse for lineage.
  
   * **[integration-services](open-metadata-implementation/integration-services)** - services that host integration connectors.  These run in the [Integration Daemon](open-metadata-implementation/admin-services/docs/concepts/integration-daemon.md) OMAG Server.
+    * **[analytics-integrator](open-metadata-implementation/integration-services/analytics-integrator)** - services to catalog analytics services.
     * **[api-integrator](open-metadata-implementation/integration-services/api-integrator)** - services to catalog APIs supported by API Managers.
     * **[catalog-integrator](open-metadata-implementation/integration-services/catalog-integrator)** - services to exchange metadata with asset managers and catalogs.
     * **[database-integrator](open-metadata-implementation/integration-services/database-integrator)** - services to capture metadata from file systems and file management applications.
     * **[files-integrator](open-metadata-implementation/integration-services/files-integrator)** - services to exchange metadata with relational databases.
-    * **[organization-integrator](open-metadata-implementation/integration-services/organization-integrator)** - services to load metadata about the organization, including user identifiers, profiles, team structures and department hierarchy.
+    * **[infrastructure-integrator](open-metadata-implementation/integration-services/infrastructure-integrator)** - services to describe deployed IT infrastructure as metadata.
     * **[lineage-integrator](open-metadata-implementation/integration-services/lineage-integrator)** - services to load lineage metadata.
+    * **[organization-integrator](open-metadata-implementation/integration-services/organization-integrator)** - services to load metadata about the organization, including user identifiers, profiles, team structures and department hierarchy.
+    * **[search-integrator](open-metadata-implementation/integration-services/search-integrator)** - services to maintain search indexes about open metadata.
     * **[security-integrator](open-metadata-implementation/integration-services/security-integrator)** - services to push security tags to an external security enforcement point.
     * **[topic-integrator](open-metadata-implementation/integration-services/topic-integrator)** - services to catalog topics and their event types from an Event Broker.
 

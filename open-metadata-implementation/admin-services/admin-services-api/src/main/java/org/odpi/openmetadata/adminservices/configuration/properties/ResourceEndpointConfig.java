@@ -22,7 +22,7 @@ public class ResourceEndpointConfig extends AdminServicesConfigHeader
 {
     private static final long    serialVersionUID = 1L;
 
-    private String              resourceCategory       = null;  // should be set to { "platform" | "server" }
+    private String              resourceCategory       = null;  // should be set to { "Platform" | "Server" }
     private String              description            = null;  // a descriptive string that describes the endpoint - can be displayed to a UI user
     private String              platformRootURL        = null;  // the root URL of the platform - always "platform" whether the resource is a platform or server running on the platform
     private String              serverName             = null;  // always null for a platform, but for a server this MUST contain the real server name to use in URL construction
@@ -74,7 +74,7 @@ public class ResourceEndpointConfig extends AdminServicesConfigHeader
     /**
      * Set the category of resource - indicating whether the resource is a platform or server.
      *
-     * @param resourceCategory
+     * @param resourceCategory string value
      */
     public void setResourceCategory(String resourceCategory)
     {
@@ -96,7 +96,7 @@ public class ResourceEndpointConfig extends AdminServicesConfigHeader
     /**
      * Set the displayName of resource.
      *
-     * @param description
+     * @param description string value
      */
     public void setDescription(String description)
     {
@@ -118,7 +118,7 @@ public class ResourceEndpointConfig extends AdminServicesConfigHeader
     /**
      * Set the platformRootURL of resource.
      *
-     * @param platformRootURL
+     * @param platformRootURL string value
      */
     public void setPlatformRootURL(String platformRootURL)
     {
@@ -140,7 +140,7 @@ public class ResourceEndpointConfig extends AdminServicesConfigHeader
     /**
      * Set the serverName of resource.
      *
-     * @param serverName
+     * @param serverName string value
      */
     public void setServerName(String serverName)
     {
@@ -161,7 +161,7 @@ public class ResourceEndpointConfig extends AdminServicesConfigHeader
     /**
      * Set the serverInstanceName of resource.
      *
-     * @param serverInstanceName
+     * @param serverInstanceName string value
      */
     public void setServerInstanceName(String serverInstanceName)
     {
@@ -183,7 +183,7 @@ public class ResourceEndpointConfig extends AdminServicesConfigHeader
     /**
      * Set the platformName of resource.
      *
-     * @param platformName
+     * @param platformName string value
      */
     public void setPlatformName(String platformName)
     {

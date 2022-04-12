@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/engine-host-services/users/{userId}")
 
-@Tag(name="Engine Host Services", description="The Engine Host Services provide the core subsystem for the Engine Host OMAG Server.", externalDocs=@ExternalDocumentation(description="Engine Host Services",url="https://odpi.github.io/egeria-docs/services/engine-host-services/"))
+@Tag(name="Engine Host Services", description="The Engine Host Services provide the core subsystem for the Engine Host OMAG Server.", externalDocs=@ExternalDocumentation(description="Engine Host Services",url="https://egeria-project.org/services/engine-host-services/"))
 
 public class EngineHostServicesResource
 {

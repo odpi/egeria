@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.accessservices.assetmanager.fvt.externalidentifiers;
 
-import org.odpi.openmetadata.accessservices.assetmanager.client.AssetManagerClient;
+import org.odpi.openmetadata.accessservices.assetmanager.client.ExternalAssetManagerClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.GlossaryExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.fvt.common.AssetManagerTestBase;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryElement;
@@ -19,7 +19,7 @@ import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
 import java.util.List;
 
 /**
- * ManageExternalIdsTest calls the AssetManagerClient to ensure it is possible to manage
+ * ManageExternalIdsTest calls the AssetManagerClientBase to ensure it is possible to manage
  * many-to-many relationships between elements in open metadata and external metadata sources.
  */
 public class ManageExternalIdsTest extends AssetManagerTestBase
@@ -101,6 +101,7 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
 
         AuditLog auditLog = new AuditLog(auditLogDestination,
                                          AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceCode(),
+                                         AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceDevelopmentStatus(),
                                          AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceName(),
                                          AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceDescription(),
                                          AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceWiki());
@@ -241,7 +242,7 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -264,8 +265,8 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
     {
         String activityName = "testMultipleAssetManagers("+ assetManagerOneName +", "+assetManagerTwoName+")";
 
-        GlossaryExchangeClient glossaryExchangeClient = this.getGlossaryExchangeClient(serverName, serverPlatformRootURL, auditLog, testCaseName);
-        AssetManagerClient     assetManagerClient     = this.getAssetManagerClient(serverName, serverPlatformRootURL, auditLog, testCaseName);
+        GlossaryExchangeClient     glossaryExchangeClient = this.getGlossaryExchangeClient(serverName, serverPlatformRootURL, auditLog, testCaseName);
+        ExternalAssetManagerClient assetManagerClient     = this.getAssetManagerClient(serverName, serverPlatformRootURL, auditLog, testCaseName);
 
         String assetManagerOneGUID = this.getAssetManager(assetManagerOneName, serverName, serverPlatformRootURL, userId, auditLog, testCaseName);
         String assetManagerTwoGUID = this.getAssetManager(assetManagerTwoName, serverName, serverPlatformRootURL, userId, auditLog, testCaseName);
@@ -480,7 +481,7 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -504,8 +505,8 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
     {
         String activityName = "testMultipleAssetManagersSameExtId("+ assetManagerOneName +", "+assetManagerTwoName+")";
 
-        GlossaryExchangeClient glossaryExchangeClient = this.getGlossaryExchangeClient(serverName, serverPlatformRootURL, auditLog, testCaseName);
-        AssetManagerClient     assetManagerClient     = this.getAssetManagerClient(serverName, serverPlatformRootURL, auditLog, testCaseName);
+        GlossaryExchangeClient     glossaryExchangeClient = this.getGlossaryExchangeClient(serverName, serverPlatformRootURL, auditLog, testCaseName);
+        ExternalAssetManagerClient assetManagerClient     = this.getAssetManagerClient(serverName, serverPlatformRootURL, auditLog, testCaseName);
 
         String assetManagerOneGUID = this.getAssetManager(assetManagerOneName, serverName, serverPlatformRootURL, userId, auditLog, testCaseName);
         String assetManagerTwoGUID = this.getAssetManager(assetManagerTwoName, serverName, serverPlatformRootURL, userId, auditLog, testCaseName);
@@ -724,7 +725,7 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -749,8 +750,8 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
     {
         String activityName = "testManyToOne("+ assetManagerOneName+")";
 
-        GlossaryExchangeClient glossaryExchangeClient = this.getGlossaryExchangeClient(serverName, serverPlatformRootURL, auditLog, testCaseName);
-        AssetManagerClient     assetManagerClient     = this.getAssetManagerClient(serverName, serverPlatformRootURL, auditLog, testCaseName);
+        GlossaryExchangeClient     glossaryExchangeClient = this.getGlossaryExchangeClient(serverName, serverPlatformRootURL, auditLog, testCaseName);
+        ExternalAssetManagerClient assetManagerClient     = this.getAssetManagerClient(serverName, serverPlatformRootURL, auditLog, testCaseName);
 
         String assetManagerOneGUID = this.getAssetManager(assetManagerOneName, serverName, serverPlatformRootURL, userId, auditLog, testCaseName);
 
@@ -835,7 +836,7 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -1037,7 +1038,7 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
         {
             throw testCaseError;
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }

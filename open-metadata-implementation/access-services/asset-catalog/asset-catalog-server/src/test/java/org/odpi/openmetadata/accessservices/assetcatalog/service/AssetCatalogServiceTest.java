@@ -8,13 +8,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.odpi.openmetadata.accessservices.assetcatalog.admin.AssetCatalogInstanceHandler;
-import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogException;
 import org.odpi.openmetadata.accessservices.assetcatalog.handlers.AssetCatalogHandler;
 import org.odpi.openmetadata.accessservices.assetcatalog.handlers.CommonHandler;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.*;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogBean;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Element;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Elements;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogListResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetListResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetResponse;
@@ -180,74 +182,6 @@ public class AssetCatalogServiceTest {
 
         assertEquals(CLASSIFICATION_NAME, classificationByAssetGUID.getClassifications().get(0).getName());
         assertEquals(response.get(0).getName(), classificationByAssetGUID.getClassifications().get(0).getName());
-    }
-
-    @Test
-    public void testGetIntermediateAssets() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, AssetCatalogException {
-        List<AssetCatalogBean> response = new ArrayList<>();
-        response.add(mockAssetDescription(FIRST_GUID));
-
-        when(instanceHandler.getAssetCatalogHandler(USER,
-                SERVER_NAME,
-                "getLinkingAssets"))
-                .thenReturn(assetCatalogHandler);
-
-        when(assetCatalogHandler
-                .getIntermediateAssets(USER, FIRST_GUID, SECOND_GUID))
-                .thenReturn(response);
-
-        AssetCatalogListResponse assetCatalogListResponse = assetCatalogRESTService.getLinkingAssets(SERVER_NAME,
-                USER,
-                FIRST_GUID,
-                SECOND_GUID);
-
-        assertEquals(response.get(0).getGuid(), assetCatalogListResponse.getAssetCatalogBeanList().get(0).getGuid());
-    }
-
-    @Test
-    public void testGetLinkingRelationships() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, AssetCatalogException {
-        List<Relationship> response = new ArrayList<>();
-        response.add(mockRelationshipResponse());
-
-        when(instanceHandler.getAssetCatalogHandler(USER,
-                SERVER_NAME,
-                "getLinkingRelationships"))
-                .thenReturn(assetCatalogHandler);
-
-        when(assetCatalogHandler
-                .getLinkingRelationshipsBetweenAssets(SERVER_NAME, USER, FIRST_GUID, SECOND_GUID))
-                .thenReturn(response);
-
-        RelationshipListResponse linkingRelationships = assetCatalogRESTService.getLinkingRelationships(SERVER_NAME,
-                USER,
-                FIRST_GUID,
-                SECOND_GUID);
-
-        assertEquals(response.get(0).getGuid(), linkingRelationships.getRelationships().get(0).getGuid());
-    }
-
-    @Test
-    public void testGetAssetsFromNeighborhood()
-            throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, AssetCatalogException {
-        SearchParameters searchParameters = mockSearchParams();
-        List<AssetCatalogBean> response = new ArrayList<>();
-        response.add(mockAssetDescription(FIRST_GUID));
-
-        when(instanceHandler.getAssetCatalogHandler(USER,
-                SERVER_NAME,
-                "getAssetsFromNeighborhood"))
-                .thenReturn(assetCatalogHandler);
-
-        when(assetCatalogHandler
-                .getEntitiesFromNeighborhood(USER, FIRST_GUID, searchParameters))
-                .thenReturn(response);
-
-        AssetCatalogListResponse assetsFromNeighborhood = assetCatalogRESTService.getAssetsFromNeighborhood(SERVER_NAME,
-                USER,
-                FIRST_GUID,
-                searchParameters);
-
-        assertEquals(response.get(0).getGuid(), assetsFromNeighborhood.getAssetCatalogBeanList().get(0).getGuid());
     }
 
     @Test

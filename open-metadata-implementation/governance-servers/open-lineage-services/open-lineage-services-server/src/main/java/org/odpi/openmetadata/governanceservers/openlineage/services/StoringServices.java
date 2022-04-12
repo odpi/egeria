@@ -108,8 +108,7 @@ public class StoringServices {
         }
         // updateSummary...
         if (lineageSyncEvent.getSyncUpdateContext() != null) {
-            lineageGraph.updateNeighbours(lineageSyncEvent.getSyncUpdateContext().getEntityGUID(),
-                    lineageSyncEvent.getSyncUpdateContext().getNeighboursGUID());
+            lineageGraph.updateNeighbours(lineageSyncEvent.getSyncUpdateContext());
         }
     }
 
@@ -119,7 +118,7 @@ public class StoringServices {
      * @param guid the guid
      * @return the boolean
      */
-    public boolean isEntityInGraph(String guid) {
+    public Boolean isEntityInGraph(String guid) {
         return lineageGraph.isEntityInGraph(guid);
     }
 }

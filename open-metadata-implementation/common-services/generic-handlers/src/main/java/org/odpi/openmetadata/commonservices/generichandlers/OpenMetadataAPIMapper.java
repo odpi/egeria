@@ -153,7 +153,7 @@ public class OpenMetadataAPIMapper
     public static final String URL_PROPERTY_NAME                         = "url";                 /* from ExternalReference entity */
     public static final String REFERENCE_VERSION_PROPERTY_NAME           = "referenceVersion";    /* from ExternalReference entity */
 
-    public static final String REFERENCE_ID_PROPERTY_NAME                = "referenceId";          /* from ExternalReferenceLink relationship */
+    public static final String REFERENCE_ID_PROPERTY_NAME                = "referenceId";         /* from ExternalReferenceLink relationship */
     /* also description property */
 
     public static final String RELATED_MEDIA_TYPE_GUID                   = "747f8b86-fe7c-4c9b-ba75-979e093cc307";
@@ -921,8 +921,6 @@ public class OpenMetadataAPIMapper
 
     public static final String DEPLOYED_DATABASE_SCHEMA_TYPE_GUID        = "eab811ec-556a-45f1-9091-bc7ac8face0f";  /* from Area 2 */
     public static final String DEPLOYED_DATABASE_SCHEMA_TYPE_NAME        = "DeployedDatabaseSchema";
-
-
     /* DataSet */
 
     public static final String DATA_CONTENT_FOR_DATA_SET_TYPE_GUID       = "b827683c-2924-4df3-a92d-7be1888e23c0";  /* from Area 2 */
@@ -933,33 +931,33 @@ public class OpenMetadataAPIMapper
     public static final String DATABASE_MANAGER_TYPE_NAME                = "DatabaseManager";
     /* SoftwareServerCapability */
 
-    public static final String FILE_SYSTEM_CLASSIFICATION_TYPE_GUID = "cab5ba1d-cfd3-4fca-857d-c07711fc4157";
-    public static final String FILE_SYSTEM_CLASSIFICATION_TYPE_NAME = "FileSystem";
+    public static final String FILE_SYSTEM_CLASSIFICATION_TYPE_GUID      = "cab5ba1d-cfd3-4fca-857d-c07711fc4157";
+    public static final String FILE_SYSTEM_CLASSIFICATION_TYPE_NAME      = "FileSystem";
     /* SoftwareCapability */
 
-    public static final String FORMAT_PROPERTY_NAME                  = "format";                /* from FileSystem */
-    public static final String ENCRYPTION_PROPERTY_NAME              = "encryption";            /* from FileSystem */
+    public static final String FORMAT_PROPERTY_NAME                      = "format";                /* from FileSystem */
+    public static final String ENCRYPTION_PROPERTY_NAME                  = "encryption";            /* from FileSystem */
 
-    public static final String FILE_MANAGER_CLASSIFICATION_TYPE_GUID = "eadec807-02f0-4d6f-911c-261eddd0c2f5";
-    public static final String FILE_MANAGER_CLASSIFICATION_TYPE_NAME = "FileManager";
+    public static final String FILE_MANAGER_CLASSIFICATION_TYPE_GUID     = "eadec807-02f0-4d6f-911c-261eddd0c2f5";
+    public static final String FILE_MANAGER_CLASSIFICATION_TYPE_NAME     = "FileManager";
     /* SoftwareCapability */
 
-    public static final String NOTIFICATION_MANAGER_CLASSIFICATION_GUID   = "3e7502a7-396a-4737-a106-378c9c94c1057";
-    public static final String NOTIFICATION_MANAGER_CLASSIFICATION_NAME   = "NotificationManager";
+    public static final String NOTIFICATION_MANAGER_CLASSIFICATION_GUID  = "3e7502a7-396a-4737-a106-378c9c94c1057";
+    public static final String NOTIFICATION_MANAGER_CLASSIFICATION_NAME  = "NotificationManager";
     /* SoftwareCapability */
 
-    public static final String ENTERPRISE_ACCESS_LAYER_TYPE_GUID     = "39444bf9-638e-4124-a5f9-1b8f3e1b008b";
-    public static final String ENTERPRISE_ACCESS_LAYER_TYPE_NAME     = "EnterpriseAccessLayer";
+    public static final String ENTERPRISE_ACCESS_LAYER_TYPE_GUID         = "39444bf9-638e-4124-a5f9-1b8f3e1b008b";
+    public static final String ENTERPRISE_ACCESS_LAYER_TYPE_NAME         = "EnterpriseAccessLayer";
     /* SoftwareServerCapability */
 
-    public static final String TOPIC_ROOT_PROPERTY_NAME              = "topicRoot";            /* from EnterpriseAccessLayer */
-    public static final String METADATA_COLLECTION_ID_PROPERTY_NAME  = "accessedMetadataCollectionId"; /* from EnterpriseAccessLayer */
+    public static final String TOPIC_ROOT_PROPERTY_NAME                  = "topicRoot";            /* from EnterpriseAccessLayer */
+    public static final String METADATA_COLLECTION_ID_PROPERTY_NAME      = "accessedMetadataCollectionId"; /* from EnterpriseAccessLayer */
 
-    public static final String COHORT_MEMBER_TYPE_GUID               = "42063797-a78a-4720-9353-52026c75f667";
-    public static final String COHORT_MEMBER_TYPE_NAME               = "CohortMember";
+    public static final String COHORT_MEMBER_TYPE_GUID                   = "42063797-a78a-4720-9353-52026c75f667";
+    public static final String COHORT_MEMBER_TYPE_NAME                   = "CohortMember";
     /* SoftwareServerCapability */
 
-    public static final String PROTOCOL_VERSION_PROPERTY_NAME           = "protocolVersion";            /* from CohortMember */
+    public static final String PROTOCOL_VERSION_PROPERTY_NAME            = "protocolVersion";            /* from CohortMember */
 
     public static final String DEPLOYED_API_TYPE_GUID                    = "7dbb3e63-138f-49f1-97b4-66313871fc14";  /* from Area 2 */
     public static final String DEPLOYED_API_TYPE_NAME                    = "DeployedAPI";
@@ -985,6 +983,10 @@ public class OpenMetadataAPIMapper
     public static final String TOPIC_SUBSCRIBERS_TYPE_GUID               = "bc91a28c-afb9-41a7-8eb2-fc8b5271fe9e";  /* from Area 2 */
     public static final String TOPIC_SUBSCRIBERS_TYPE_NAME               = "TopicSubscribers";
     /* End1 = SubscriberList; End 2 = Topic */
+
+    public static final String ASSOCIATED_LOG_TYPE_GUID                  = "0999e2b9-45d6-42c4-9767-4b74b0b48b89";  /* from Area 2 */
+    public static final String ASSOCIATED_LOG_TYPE_NAME                  = "AssociatedLog";
+    /* End1 = Referenceable; End 2 = Asset */
 
     public static final String INFORMATION_VIEW_TYPE_GUID                = "68d7b905-6438-43be-88cf-5de027b4aaaf";  /* from Area 2 */
     public static final String INFORMATION_VIEW_TYPE_NAME                = "InformationView";

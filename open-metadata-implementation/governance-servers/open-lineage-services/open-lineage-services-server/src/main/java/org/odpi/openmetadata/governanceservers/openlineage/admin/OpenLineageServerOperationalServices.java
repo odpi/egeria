@@ -21,6 +21,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraphConnector;
+import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageQueryService;
 import org.odpi.openmetadata.governanceservers.openlineage.auditlog.OpenLineageServerAuditCode;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode;
 import org.odpi.openmetadata.governanceservers.openlineage.graph.LineageGraph;
@@ -62,7 +63,7 @@ public class OpenLineageServerOperationalServices {
     private OpenLineageServerConfig openLineageServerConfig;
     private OpenLineageServerInstance openLineageServerInstance;
     private OMRSAuditLog auditLog;
-    private LineageGraph lineageGraphConnector;
+    private OpenLineageGraphConnector lineageGraphConnector;
     private AssetLineageOutTopicClientConnector inTopicConnector;
     private AssetLineage assetLineageClient;
     private List<JobConfiguration> backgroundJobs;
@@ -139,14 +140,16 @@ public class OpenLineageServerOperationalServices {
 
         Connection inTopicConnection = getAssetLineageOutTopicConnection(methodName, accessServiceConfig);
 
-        this.lineageGraphConnector = (LineageGraph) getConnector(lineageGraphConnection, OpenLineageServerErrorCode.ERROR_OBTAINING_LINEAGE_GRAPH_CONNECTOR,
+        this.lineageGraphConnector = (OpenLineageGraphConnector) getConnector(lineageGraphConnection, OpenLineageServerErrorCode.ERROR_OBTAINING_LINEAGE_GRAPH_CONNECTOR,
                 OpenLineageServerAuditCode.ERROR_OBTAINING_LINEAGE_GRAPH_CONNECTOR);
         this.inTopicConnector = (AssetLineageOutTopicClientConnector) getConnector(inTopicConnection, OpenLineageServerErrorCode.ERROR_OBTAINING_IN_TOPIC_CONNECTOR,
                 OpenLineageServerAuditCode.ERROR_OBTAINING_IN_TOPIC_CONNECTOR);
 
         initializeAndStartConnectors();
 
-        OpenLineageHandler openLineageHandler = new OpenLineageHandler(lineageGraphConnector);
+        OpenLineageQueryService openLineageQueryService = lineageGraphConnector.getLineageQueryService();
+
+        OpenLineageHandler openLineageHandler = new OpenLineageHandler(openLineageQueryService);
 
         initializeAndStartBackgroundJobs();
 
@@ -257,7 +260,7 @@ public class OpenLineageServerOperationalServices {
         final String methodName = "getGraphConnector";
         Connector connector = null;
         try {
-            connector = new ConnectorBroker().getConnector(connection);
+            connector = new ConnectorBroker(auditLog).getConnector(connection);
         } catch (OCFCheckedExceptionBase e) {
             OCFCheckedExceptionToOMAGConfigurationError(e, auditCode, actionDescription);
         } catch (Exception e) {
@@ -337,7 +340,8 @@ public class OpenLineageServerOperationalServices {
         final String methodName = "startIntopicConnector";
         final OpenLineageServerAuditCode auditCode = OpenLineageServerAuditCode.ERROR_STARTING_IN_TOPIC_CONNECTOR;
         inTopicConnector.setAuditLog(auditLog);
-        StoringServices storingServices = new StoringServices(lineageGraphConnector);
+        LineageGraph lineageGraph = lineageGraphConnector.getLineageStorageService();
+        StoringServices storingServices = new StoringServices(lineageGraph);
         OLSSimplifiedAccessServiceConfig accessServiceConfig = openLineageServerConfig.getAccessServiceConfig();
         assetLineageClient = new AssetLineage(accessServiceConfig.getServerName(), accessServiceConfig.getServerPlatformUrlRoot());
         OpenLineageAssetContextHandler assetContextHandler = new OpenLineageAssetContextHandler(localServerUserId, assetLineageClient);

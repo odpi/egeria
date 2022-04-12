@@ -133,12 +133,11 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
         {
             try
             {
-                ConnectorBroker connectorBroker = new ConnectorBroker();
+                ConnectorBroker connectorBroker = new ConnectorBroker(auditLog);
                 Connector       connector       = connectorBroker.getConnector(connection);
 
                 serverSecurityConnector = (OpenMetadataServerSecurityConnector)connector;
 
-                serverSecurityConnector.setAuditLog(auditLog);
                 serverSecurityConnector.setServerName(serverName);
                 serverSecurityConnector.setLocalServerUserId(localServerUserId);
                 serverSecurityConnector.start();
@@ -1104,17 +1103,17 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     @Override
     public void  validateUserForEntityClassificationAdd(String               userId,
                                                         String               metadataCollectionName,
-                                                        EntityDetail         instance,
+                                                        EntitySummary        instance,
                                                         String               classificationName,
                                                         InstanceProperties   properties) throws UserNotAuthorizedException
     {
         if (repositorySecurityConnector != null)
         {
             repositorySecurityConnector.validateUserForEntityClassificationAdd(userId,
-                                                             metadataCollectionName,
-                                                             instance,
-                                                             classificationName,
-                                                             properties);
+                                                                               metadataCollectionName,
+                                                                               instance,
+                                                                               classificationName,
+                                                                               properties);
         }
     }
 
@@ -1133,17 +1132,17 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     @Override
     public void  validateUserForEntityClassificationUpdate(String               userId,
                                                            String               metadataCollectionName,
-                                                           EntityDetail         instance,
+                                                           EntitySummary        instance,
                                                            String               classificationName,
                                                            InstanceProperties   properties) throws UserNotAuthorizedException
     {
         if (repositorySecurityConnector != null)
         {
             repositorySecurityConnector.validateUserForEntityClassificationUpdate(userId,
-                                                                metadataCollectionName,
-                                                                instance,
-                                                                classificationName,
-                                                                properties);
+                                                                                  metadataCollectionName,
+                                                                                  instance,
+                                                                                  classificationName,
+                                                                                  properties);
         }
     }
 
@@ -1161,15 +1160,15 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     @Override
     public void  validateUserForEntityClassificationDelete(String               userId,
                                                            String               metadataCollectionName,
-                                                           EntityDetail         instance,
+                                                           EntitySummary        instance,
                                                            String               classificationName) throws UserNotAuthorizedException
     {
         if (repositorySecurityConnector != null)
         {
             repositorySecurityConnector.validateUserForEntityClassificationDelete(userId,
-                                                                metadataCollectionName,
-                                                                instance,
-                                                                classificationName);
+                                                                                  metadataCollectionName,
+                                                                                  instance,
+                                                                                  classificationName);
         }
     }
 

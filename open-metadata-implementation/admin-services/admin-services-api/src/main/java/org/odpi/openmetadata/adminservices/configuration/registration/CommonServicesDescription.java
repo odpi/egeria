@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices.configuration.registration;
 
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,38 +13,43 @@ import java.util.List;
  */
 public enum CommonServicesDescription implements Serializable
 {
-    REPOSITORY_SERVICES              (3000,
+    REPOSITORY_SERVICES              (180,
+                                      ComponentDevelopmentStatus.STABLE,
                                       "Open Metadata Repository Services (OMRS)",
                                       "repository-services",
                                       "Manages the synchronization, retrieval and maintenance of metadata stored in open metadata repositories",
-                                      "https://odpi.github.io/egeria-docs/services/omrs"),
+                                      "https://egeria-project.org/services/omrs"),
 
-    ADMIN_OPERATIONAL_SERVICES       (3001,
+    ADMIN_OPERATIONAL_SERVICES       (181,
+                                      ComponentDevelopmentStatus.STABLE,
                                       "OMAG Server Operational Services",
                                       "admin-services",
                                       "Management of services active in an Open Metadata and governance server (OMAG Server)",
-                                      "https://odpi.github.io/egeria-docs/services/admin-services"),
+                                      "https://egeria-project.org/services/admin-services"),
 
-    OCF_METADATA_MANAGEMENT          (3002,
+    OCF_METADATA_MANAGEMENT          (182,
+                                      ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                                       "Connected Asset Services",
                                       "connected-asset",
                                       "Common metadata services for the Open Connector Framework (OCF)",
-                                      "https://odpi.github.io/egeria-docs/services/ocf-metadata-management"),
+                                      "https://egeria-project.org/services/ocf-metadata-management"),
 
-    OPEN_METADATA_SECURITY           (3003,
+    OPEN_METADATA_SECURITY           (183,
+                                      ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                                       "Open Metadata Security Services",
                                       null,
                                       "Authorization services for Open Metadata and Governance",
-                                      "https://odpi.github.io/egeria-docs/services/metadata-security-services");
+                                      "https://egeria-project.org/services/metadata-security-services");
 
 
     private static final long     serialVersionUID    = 1L;
 
-    private int    serviceCode;
-    private String serviceName;
-    private String serviceURLMarker;
-    private String serviceDescription;
-    private String serviceWiki;
+    private int                        serviceCode;
+    private ComponentDevelopmentStatus serviceDevelopmentStatus;
+    private String                     serviceName;
+    private String                     serviceURLMarker;
+    private String                     serviceDescription;
+    private String                     serviceWiki;
 
 
     /**
@@ -67,18 +74,21 @@ public enum CommonServicesDescription implements Serializable
      * Default Constructor
      *
      * @param serviceCode ordinal for this access service
+     * @param serviceDevelopmentStatus development status
      * @param serviceName symbolic name for this access service
      * @param serviceURLMarker string used in URLs
      * @param serviceDescription short description for this access service
      * @param serviceWiki wiki page for the access service for this access service
      */
-    CommonServicesDescription(int    serviceCode,
-                              String serviceName,
-                              String serviceURLMarker,
-                              String serviceDescription,
-                              String serviceWiki)
+    CommonServicesDescription(int                        serviceCode,
+                              ComponentDevelopmentStatus serviceDevelopmentStatus,
+                              String                     serviceName,
+                              String                     serviceURLMarker,
+                              String                     serviceDescription,
+                              String                     serviceWiki)
     {
         this.serviceCode = serviceCode;
+        this.serviceDevelopmentStatus = serviceDevelopmentStatus;
         this.serviceName = serviceName;
         this.serviceURLMarker = serviceURLMarker;
         this.serviceDescription = serviceDescription;
@@ -94,6 +104,18 @@ public enum CommonServicesDescription implements Serializable
     public int getServiceCode()
     {
         return serviceCode;
+    }
+
+
+
+    /**
+     * Return the development status of the component.
+     *
+     * @return enum describing the status
+     */
+    public ComponentDevelopmentStatus getServiceDevelopmentStatus()
+    {
+        return serviceDevelopmentStatus;
     }
 
 

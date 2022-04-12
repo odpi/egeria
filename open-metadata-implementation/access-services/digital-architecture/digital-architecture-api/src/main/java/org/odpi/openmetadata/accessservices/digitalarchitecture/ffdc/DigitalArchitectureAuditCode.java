@@ -29,7 +29,15 @@ public enum DigitalArchitectureAuditCode implements AuditLogMessageSet
                                  "This service supports architects setting up the common definitions for a new project or digital service.",
              "No action is needed if this service is required.  This is part of the configured operation of the server."),
 
-    SERVICE_INITIALIZED("OMAS-DIGITAL-ARCHITECTURE-0002",
+    SERVICE_PUBLISHING("OMAS-DIGITAL-ARCHITECTURE-0002",
+                       OMRSAuditLogRecordSeverity.STARTUP,
+                       "The Digital Architecture Open Metadata Access Service (OMAS) is ready to publish asset notifications to topic {0}",
+                       "The local server has started up the event publisher for the Digital Architecture OMAS.  " +
+                               "It will begin publishing asset configuration changes to its out topic.",
+                       "This is part of the normal start up of the service. Check that there are no errors from the event bus."),
+
+
+    SERVICE_INITIALIZED("OMAS-DIGITAL-ARCHITECTURE-0003",
              OMRSAuditLogRecordSeverity.STARTUP,
              "The Digital Architecture Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
              "The access service has completed initialization of a new instance.  It should have both an inTopic and an outTopic operating" +
@@ -37,19 +45,59 @@ public enum DigitalArchitectureAuditCode implements AuditLogMessageSet
              "Verify that the service has initialized its topics, it has successfully registered with the repository services and there were no " +
                                 "errors reported as the service started."),
 
-    SERVICE_SHUTDOWN("OMAS-DIGITAL-ARCHITECTURE-0003",
+    SERVICE_SHUTDOWN("OMAS-DIGITAL-ARCHITECTURE-0004",
              OMRSAuditLogRecordSeverity.SHUTDOWN,
              "The Digital Architecture Open Metadata Access Service (OMAS) is shutting down its instance for server {0}",
              "The local administrator has requested shut down of an Digital Architecture OMAS instance.",
              "Verify that all resources have been released."),
 
-    SERVICE_INSTANCE_FAILURE("OMAS-DIGITAL-ARCHITECTURE-0004",
+    SERVICE_INSTANCE_FAILURE("OMAS-DIGITAL-ARCHITECTURE-0005",
              OMRSAuditLogRecordSeverity.EXCEPTION,
              "The Digital Architecture Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
              "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
                              "Review the error message and any other reported failures to determine the cause of the problem.  " +
                                      "Once this is resolved, restart the server."),
 
+    PUBLISHING_SHUTDOWN("OMAS-DIGITAL-ARCHITECTURE-0010",
+                        OMRSAuditLogRecordSeverity.SHUTDOWN,
+                        "The Digital Architecture Open Metadata Access Service (OMAS) is no longer publishing events to topic {0}",
+                        "The local administrator has requested shut down of an Digital Architecture OMAS instance.  " +
+                                "No more configuration events will be published to the named topic.",
+                        "This is part of the normal shutdown of the service.   No action is required if this is service" +
+                                "shutdown was intentional."),
+
+    PUBLISHING_SHUTDOWN_ERROR("OMAS-DIGITAL-ARCHITECTURE-0011",
+                              OMRSAuditLogRecordSeverity.SHUTDOWN,
+                              "The Digital Architecture Open Metadata Access Service (OMAS) caught an unexpected {0} exception whilst shutting down the out " +
+                                      "topic {1}. The error message was: {2}",
+                              "The local administrator has requested shut down of an Digital Architecture OMAS instance.  " +
+                                      "No more configuration events will be published to the named topic, although the connection to the event bus may " +
+                                      "not be released properly.",
+                              "This is part of the normal shutdown of the service. However, an exception is not expected at this point unless it " +
+                                      "is the consequence of a previous error. Review the error message and any other reported failures to " +
+                                      "determine if this exception needs special attention."),
+
+    OUT_TOPIC_EVENT("OMAS-DIGITAL-ARCHITECTURE-0012",
+                    OMRSAuditLogRecordSeverity.EVENT,
+                    "The Digital Architecture Open Metadata Access Service (OMAS) has sent event of type: {0}",
+                    "The access service sends out asset notifications to ensure connected tools have the most up to-date " +
+                            "knowledge about assets.  This audit log message is to create a record of the events that are being published.",
+                    "This event indicates that the metadata for an asset has changed.  This my or may not be significant to " +
+                            "the receiving tools."),
+
+    PROCESS_EVENT_EXCEPTION("OMAS-DIGITAL-ARCHITECTURE-0014",
+                            OMRSAuditLogRecordSeverity.EXCEPTION,
+                            "Event {0} could not be published due to {1} exception with message: {2}",
+                            "The system is unable to publish the event to the Digital Architecture OMAS's OutTopic.",
+                            "Verify the topic configuration and that the event broker is running."),
+
+    OUT_TOPIC_FAILURE("OMAS-DIGITAL-ARCHITECTURE-0018",
+                      OMRSAuditLogRecordSeverity.EXCEPTION,
+                      "The Digital Architecture Open Metadata Access Service (OMAS) is unable to send an event on its out topic {0}; exception {1} returned " +
+                              "error message: {2}",
+                      "The access service detected an error during the start up of the out topic.  Its services are not available for the server.",
+                      "Review the error message and any other reported failures to determine the cause of the problem.  Check the status of the event " +
+                              "bus.  Once this is resolved, restart the server."),
 
     ;
 

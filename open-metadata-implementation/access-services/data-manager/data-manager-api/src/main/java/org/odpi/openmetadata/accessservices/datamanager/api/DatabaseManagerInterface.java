@@ -460,13 +460,57 @@ public interface DatabaseManagerInterface
      * A database schema may contain multiple database tables and database views.
      */
 
+
+    /**
+     * Create a database top-level schema type used to attach tables and views to the database/database schema.
+     *
+     * @param userId calling user
+     * @param databaseManagerGUID guid of the software server capability entity that represented the external source - null for local
+     * @param databaseManagerName name of the software server capability entity that represented the external source - null for local
+     * @param qualifiedName qualified name ofr the schema type - suggest "SchemaOf:" + asset's qualified name
+     * @return unique identifier of the database schema type
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public String createDatabaseSchemaType(String userId,
+                                           String databaseManagerGUID,
+                                           String databaseManagerName,
+                                           String qualifiedName) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException;
+
+
+
+    /**
+     * Link the schema type and asset.  This is called from outside of AssetHandler.  The databaseAssetGUID is checked to ensure the
+     * asset exists and updates are allowed.  If there is already a schema attached, it is deleted.
+     *
+     * @param userId calling user
+     * @param databaseManagerGUID guid of the software server capability entity that represented the external source - null for local
+     * @param databaseManagerName name of the software server capability entity that represented the external source - null for local
+     * @param databaseAssetGUID unique identifier of the asset to connect the schema to
+     * @param schemaTypeGUID identifier for schema Type object
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    void attachSchemaTypeToDatabaseAsset(String  userId,
+                                         String  databaseManagerGUID,
+                                         String  databaseManagerName,
+                                         String  databaseAssetGUID,
+                                         String  schemaTypeGUID) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException;
+
+
     /**
      * Create a new metadata element to represent a database table.
      *
      * @param userId calling user
      * @param databaseManagerGUID unique identifier of software server capability representing the caller
      * @param databaseManagerName unique name of software server capability representing the caller
-     * @param databaseSchemaGUID unique identifier of the database schema where the database table is located.
+     * @param databaseAssetGUID unique identifier of the database or schema where the database table is located.
      * @param databaseTableProperties properties for the database table
      *
      * @return unique identifier of the new metadata element for the database table
@@ -478,7 +522,7 @@ public interface DatabaseManagerInterface
     String createDatabaseTable(String                  userId,
                                String                  databaseManagerGUID,
                                String                  databaseManagerName,
-                               String                  databaseSchemaGUID,
+                               String                  databaseAssetGUID,
                                DatabaseTableProperties databaseTableProperties) throws InvalidParameterException,
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException;
@@ -491,7 +535,7 @@ public interface DatabaseManagerInterface
      * @param databaseManagerGUID unique identifier of software server capability representing the caller
      * @param databaseManagerName unique name of software server capability representing the caller
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param databaseSchemaGUID unique identifier of the database schema where the database table is located.
+     * @param databaseAssetGUID unique identifier of the database or database schema where the database table is located.
      * @param templateProperties properties that override the template
      *
      * @return unique identifier of the new metadata element for the database table
@@ -504,10 +548,34 @@ public interface DatabaseManagerInterface
                                            String             databaseManagerGUID,
                                            String             databaseManagerName,
                                            String             templateGUID,
-                                           String             databaseSchemaGUID,
+                                           String             databaseAssetGUID,
                                            TemplateProperties templateProperties) throws InvalidParameterException,
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException;
+
+
+    /**
+     * Create a new metadata element to represent a database table.
+     *
+     * @param userId calling user
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseSchemaTypeGUID unique identifier of the database or database schema where the database table is located
+     * @param databaseTableProperties properties for the database table
+     *
+     * @return unique identifier of the new metadata element for the database table
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    String createDatabaseTableForSchemaType(String                  userId,
+                                            String                  databaseManagerGUID,
+                                            String                  databaseManagerName,
+                                            String                  databaseSchemaTypeGUID,
+                                            DatabaseTableProperties databaseTableProperties) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException;
 
 
     /**
@@ -591,12 +659,35 @@ public interface DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Deprecated
     List<DatabaseTableElement>    getTablesForDatabaseSchema(String userId,
                                                              String databaseSchemaGUID,
                                                              int    startFrom,
                                                              int    pageSize) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException;
+
+
+    /**
+     * Retrieve the list of database tables associated with a database or database schema.
+     *
+     * @param userId calling user
+     * @param databaseAssetGUID unique identifier of the database or database schema of interest
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of associated metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<DatabaseTableElement>    getTablesForDatabaseAsset(String userId,
+                                                            String databaseAssetGUID,
+                                                            int    startFrom,
+                                                            int    pageSize) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException;
 
 
     /**
@@ -646,7 +737,7 @@ public interface DatabaseManagerInterface
      * @param userId calling user
      * @param databaseManagerGUID unique identifier of software server capability representing the caller
      * @param databaseManagerName unique name of software server capability representing the caller
-     * @param databaseSchemaGUID unique identifier of the database schema where the database view is located.
+     * @param databaseAssetGUID unique identifier of the database or database schema where the database view is located.
      * @param databaseViewProperties properties for the new view
      *
      * @return unique identifier of the new metadata element for the database view
@@ -658,7 +749,7 @@ public interface DatabaseManagerInterface
     String createDatabaseView(String                 userId,
                               String                 databaseManagerGUID,
                               String                 databaseManagerName,
-                              String                 databaseSchemaGUID,
+                              String                 databaseAssetGUID,
                               DatabaseViewProperties databaseViewProperties) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException;
@@ -672,7 +763,7 @@ public interface DatabaseManagerInterface
      * @param databaseManagerGUID unique identifier of software server capability representing the caller
      * @param databaseManagerName unique name of software server capability representing the caller
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param databaseSchemaGUID unique identifier of the database schema where the database view is located.
+     * @param databaseAssetGUID unique identifier of the database or database schema where the database view is located.
      * @param templateProperties properties that override the template
      *
      * @return unique identifier of the new metadata element for the database view
@@ -685,10 +776,35 @@ public interface DatabaseManagerInterface
                                           String             databaseManagerGUID,
                                           String             databaseManagerName,
                                           String             templateGUID,
-                                          String             databaseSchemaGUID,
+                                          String             databaseAssetGUID,
                                           TemplateProperties templateProperties) throws InvalidParameterException,
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException;
+
+
+
+    /**
+     * Create a new metadata element to represent a database view.
+     *
+     * @param userId calling user
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseSchemaTypeGUID unique identifier of the schema type where the database view is located.
+     * @param databaseViewProperties properties for the new view
+     *
+     * @return unique identifier of the new metadata element for the database view
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    String createDatabaseViewForSchemaType(String                 userId,
+                                           String                 databaseManagerGUID,
+                                           String                 databaseManagerName,
+                                           String                 databaseSchemaTypeGUID,
+                                           DatabaseViewProperties databaseViewProperties) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException;
 
 
     /**
@@ -772,12 +888,35 @@ public interface DatabaseManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Deprecated
     List<DatabaseViewElement>    getViewsForDatabaseSchema(String userId,
                                                            String databaseSchemaGUID,
                                                            int    startFrom,
                                                            int    pageSize) throws InvalidParameterException,
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException;
+
+
+    /**
+     * Retrieve the list of database views associated with a database or database schema.
+     *
+     * @param userId calling user
+     * @param databaseAssetGUID unique identifier of the database or database schema of interest
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of associated metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<DatabaseViewElement>    getViewsForDatabaseAsset(String userId,
+                                                          String databaseAssetGUID,
+                                                          int    startFrom,
+                                                          int    pageSize) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException;
 
 
     /**

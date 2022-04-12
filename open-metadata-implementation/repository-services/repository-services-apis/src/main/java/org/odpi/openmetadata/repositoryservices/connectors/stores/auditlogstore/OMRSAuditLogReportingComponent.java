@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -23,26 +24,30 @@ public class OMRSAuditLogReportingComponent implements Serializable, ComponentDe
 {
     private static final long    serialVersionUID = 1L;
 
-    private  int      componentId = 0;
-    private  String   componentName = null;
-    private  String   componentDescription = null;
-    private  String   componentWikiURL = null;
+    private  int                        componentId = 0;
+    private  ComponentDevelopmentStatus componentDevelopmentStatus = ComponentDevelopmentStatus.IN_DEVELOPMENT;
+    private  String                     componentName = null;
+    private  String                     componentDescription = null;
+    private  String                     componentWikiURL = null;
 
 
     /**
      * Construct the description of the reporting component.
      *
      * @param componentId  numerical identifier for the component.
+     * @param componentDevelopmentStatus status of the component's implementation
      * @param componentName  display name for the component.
      * @param componentDescription  description of the component.
      * @param componentWikiURL  link to more information.
      */
-    public OMRSAuditLogReportingComponent(int    componentId,
-                                          String componentName,
-                                          String componentDescription,
-                                          String componentWikiURL)
+    public OMRSAuditLogReportingComponent(int                        componentId,
+                                          ComponentDevelopmentStatus componentDevelopmentStatus,
+                                          String                     componentName,
+                                          String                     componentDescription,
+                                          String                     componentWikiURL)
     {
         this.componentId = componentId;
+        this.componentDevelopmentStatus = componentDevelopmentStatus;
         this.componentName = componentName;
         this.componentDescription = componentDescription;
         this.componentWikiURL = componentWikiURL;
@@ -59,10 +64,11 @@ public class OMRSAuditLogReportingComponent implements Serializable, ComponentDe
     {
         if (template != null)
         {
-            this.componentId          = template.getComponentId();
-            this.componentName        = template.getComponentName();
-            this.componentDescription = template.getComponentType();
-            this.componentWikiURL     = template.getComponentWikiURL();
+            this.componentId                = template.getComponentId();
+            this.componentDevelopmentStatus = template.getComponentDevelopmentStatus();
+            this.componentName              = template.getComponentName();
+            this.componentDescription       = template.getComponentType();
+            this.componentWikiURL           = template.getComponentWikiURL();
         }
     }
 
@@ -76,6 +82,17 @@ public class OMRSAuditLogReportingComponent implements Serializable, ComponentDe
     public int getComponentId()
     {
         return componentId;
+    }
+
+
+    /**
+     * Return the development status of the component.
+     *
+     * @return enum describing the status
+     */
+    public ComponentDevelopmentStatus getComponentDevelopmentStatus()
+    {
+        return componentDevelopmentStatus;
     }
 
 
@@ -124,11 +141,13 @@ public class OMRSAuditLogReportingComponent implements Serializable, ComponentDe
     public String toString()
     {
         return "OMRSAuditLogReportingComponent{" +
-                "componentId=" + componentId +
-                ", componentName='" + componentName + '\'' +
-                ", componentDescription='" + componentDescription + '\'' +
-                ", componentWikiURL='" + componentWikiURL + '\'' +
-                '}';
+                       "componentId=" + componentId +
+                       ", componentDevelopmentStatus=" + componentDevelopmentStatus +
+                       ", componentName='" + componentName + '\'' +
+                       ", componentDescription='" + componentDescription + '\'' +
+                       ", componentWikiURL='" + componentWikiURL + '\'' +
+                       ", componentType='" + getComponentType() + '\'' +
+                       '}';
     }
 
 
@@ -150,10 +169,11 @@ public class OMRSAuditLogReportingComponent implements Serializable, ComponentDe
             return false;
         }
         OMRSAuditLogReportingComponent that = (OMRSAuditLogReportingComponent) objectToCompare;
-        return getComponentId() == that.getComponentId() &&
-                Objects.equals(getComponentName(), that.getComponentName()) &&
-                Objects.equals(getComponentType(), that.getComponentType()) &&
-                Objects.equals(getComponentWikiURL(), that.getComponentWikiURL());
+        return componentId == that.componentId &&
+                       componentDevelopmentStatus == that.componentDevelopmentStatus &&
+                       Objects.equals(componentName, that.componentName) &&
+                       Objects.equals(componentDescription, that.componentDescription) &&
+                       Objects.equals(componentWikiURL, that.componentWikiURL);
     }
 
 
@@ -165,6 +185,6 @@ public class OMRSAuditLogReportingComponent implements Serializable, ComponentDe
     @Override
     public int hashCode()
     {
-        return Objects.hash(getComponentId(), getComponentName(), getComponentType(), getComponentWikiURL());
+        return Objects.hash(getComponentId(), getComponentDevelopmentStatus(), getComponentName(), getComponentType(), getComponentWikiURL());
     }
 }

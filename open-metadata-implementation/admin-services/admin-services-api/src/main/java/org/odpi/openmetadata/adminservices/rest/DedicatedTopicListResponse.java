@@ -37,6 +37,8 @@ public class DedicatedTopicListResponse extends AdminServicesAPIResponse
 
     /**
      * Copy/clone constructor
+     *
+     * @param template object to copy
      */
     public DedicatedTopicListResponse(DedicatedTopicListResponse template)
     {

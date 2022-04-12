@@ -12,6 +12,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.Elemen
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 /**
@@ -127,8 +128,69 @@ public class AssetManagerOutTopicPublisher
                 }
 
                 outTopicServerConnector.sendEvent(event);
+            }
+            catch (Exception error)
+            {
+                outTopicAuditLog.logException(methodName,
+                                              AssetManagerAuditCode.PROCESS_EVENT_EXCEPTION.getMessageDefinition(event.toString(),
+                                                                                                                 error.getClass().getName(),
+                                                                                                                 error.getMessage()),
+                                              error);
+            }
+        }
+    }
 
-                outTopicAuditLog.logMessage(methodName, AssetManagerAuditCode.OUT_TOPIC_EVENT.getMessageDefinition(event.toString()));
+
+    /**
+     * Send the event to the embedded event bus connector(s).
+     *
+     * @param eventType type of event
+     * @param relationship relationship that is the subject of the event
+     * @param previousRelationship previous version of the relationship
+     * @param end1 entity from end 1 of the relationship
+     * @param end2 entity from end 2 of the relationship
+     */
+    public void publishRelationshipEvent(AssetManagerEventType eventType,
+                                         Relationship          relationship,
+                                         Relationship          previousRelationship,
+                                         EntityDetail          end1,
+                                         EntityDetail          end2)
+    {
+        final String methodName = "publishRelationshipEvent";
+
+        if (outTopicServerConnector != null)
+        {
+            AssetManagerOutTopicEvent event = new AssetManagerOutTopicEvent();
+
+            try
+            {
+                event.setEventType(eventType);
+
+                if (relationship.getUpdateTime() == null)
+                {
+                    event.setEventTime(relationship.getCreateTime());
+                }
+                else
+                {
+                    event.setEventTime(relationship.getUpdateTime());
+                }
+
+                event.setElementHeader(headerConverter.getNewBean(ElementHeader.class, relationship, methodName));
+                event.setElementProperties(repositoryHelper.getInstancePropertiesAsMap(relationship.getProperties()));
+
+                if (previousRelationship != null)
+                {
+                    event.setPreviousElementHeader(headerConverter.getNewBean(ElementHeader.class, previousRelationship, methodName));
+                    event.setPreviousElementProperties(repositoryHelper.getInstancePropertiesAsMap(previousRelationship.getProperties()));
+                }
+
+                event.setEndOneElementHeader(headerConverter.getNewBean(ElementHeader.class, end1, methodName));
+                event.setEndOneElementProperties(repositoryHelper.getInstancePropertiesAsMap(end1.getProperties()));
+
+                event.setEndTwoElementHeader(headerConverter.getNewBean(ElementHeader.class, end2, methodName));
+                event.setEndTwoElementProperties(repositoryHelper.getInstancePropertiesAsMap(end2.getProperties()));
+
+                outTopicServerConnector.sendEvent(event);
             }
             catch (Exception error)
             {

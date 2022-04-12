@@ -10,7 +10,7 @@
     <parent>
         <artifactId>governance-action</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.5-SNAPSHOT</version>
+        <version>3.8-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -31,11 +31,6 @@
     <artifactId>governance-action-api</artifactId>
 
     <dependencies>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>

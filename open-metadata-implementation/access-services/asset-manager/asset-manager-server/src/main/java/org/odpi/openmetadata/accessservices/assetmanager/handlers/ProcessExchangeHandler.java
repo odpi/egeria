@@ -234,6 +234,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
      * @param correlationProperties  properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param assetManagerIsHome ensure that only the process manager can update this process
      * @param processProperties properties about the process to store
+     * @param processStatus initial status of the process
      * @param methodName calling method
      *
      * @return unique identifier of the new process
@@ -246,6 +247,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                 MetadataCorrelationProperties correlationProperties,
                                 boolean                       assetManagerIsHome,
                                 ProcessProperties             processProperties,
+                                ProcessStatus                 processStatus,
                                 String                        methodName) throws InvalidParameterException,
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
@@ -275,7 +277,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                                           processProperties.getAdditionalProperties(),
                                                           typeName,
                                                           processProperties.getExtendedProperties(),
-                                                          this.getInstanceStatus(processProperties.getProcessStatus()),
+                                                          this.getInstanceStatus(processStatus),
                                                           methodName);
 
         if (processGUID != null)
@@ -552,6 +554,8 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                           parentProcessGUIDParameterName,
                                           childProcessGUID,
                                           childProcessGUIDParameterName,
+                                          null,
+                                          null,
                                           containmentTypeOrdinal,
                                           methodName);
     }
@@ -864,6 +868,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                                                          nameParameterName,
                                                                          startFrom,
                                                                          validatedPageSize,
+                                                                         null,
                                                                          methodName);
 
         addCorrelationPropertiesToProcesses(userId, assetManagerGUID, assetManagerName, results, methodName);
@@ -898,7 +903,11 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processGUID, processGUIDParameterName, methodName);
 
-        ProcessElement element = processHandler.getProcessByGUID(userId, processGUID, processGUIDParameterName, methodName);
+        ProcessElement element = processHandler.getProcessByGUID(userId,
+                                                                 processGUID,
+                                                                 processGUIDParameterName,
+                                                                 null,
+                                                                 methodName);
 
         if (element != null)
         {
@@ -942,7 +951,11 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processGUID, processGUIDParameterName, methodName);
 
-        ProcessElement element = processHandler.getProcessParent(userId, processGUID, processGUIDParameterName, methodName);
+        ProcessElement element = processHandler.getProcessParent(userId,
+                                                                 processGUID,
+                                                                 processGUIDParameterName,
+                                                                 null,
+                                                                 methodName);
 
         if (element != null)
         {
@@ -987,16 +1000,12 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
     {
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(processGUID, processGUIDParameterName, methodName);
-
-        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
-
         List<ProcessElement> results = processHandler.getSubProcesses(userId,
                                                                       processGUID,
                                                                       processGUIDParameterName,
                                                                       startFrom,
-                                                                      validatedPageSize,
+                                                                      pageSize,
+                                                                      null,
                                                                       methodName);
 
         addCorrelationPropertiesToProcesses(userId, assetManagerGUID, assetManagerName, results, methodName);
@@ -1850,10 +1859,6 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
         final String dataSupplierGUIDParameterName = "dataSupplierGUID";
         final String dataConsumerGUIDParameterName = "dataConsumerGUID";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(dataSupplierGUID, dataSupplierGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(dataConsumerGUID, dataConsumerGUIDParameterName, methodName);
-
         String externalSourceGUID = null;
         String externalSourceName = null;
 
@@ -1869,7 +1874,9 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                             dataSupplierGUID,
                                             dataSupplierGUIDParameterName,
                                             dataConsumerGUID,
-                                            dataSupplierGUIDParameterName,
+                                            dataConsumerGUIDParameterName,
+                                            null,
+                                            null,
                                             qualifiedName,
                                             description,
                                             formula,
@@ -1905,15 +1912,12 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
         final String dataSupplierGUIDParameterName = "dataSupplierGUID";
         final String dataConsumerGUIDParameterName = "dataConsumerGUID";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(dataSupplierGUID, dataSupplierGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(dataConsumerGUID, dataConsumerGUIDParameterName, methodName);
-
         return processHandler.getDataFlow(userId,
                                           dataSupplierGUID,
                                           dataSupplierGUIDParameterName,
                                           dataConsumerGUID,
                                           dataConsumerGUIDParameterName,
+                                          null,
                                           qualifiedName,
                                           methodName);
     }
@@ -1948,14 +1952,13 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
     {
         final String dataFlowGUIDParameterName = "dataFlowGUID";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(dataFlowGUID, dataFlowGUIDParameterName, methodName);
-
         processHandler.updateDataFlow(userId,
                                       assetManagerGUID,
                                       assetManagerName,
                                       dataFlowGUID,
                                       dataFlowGUIDParameterName,
+                                      null,
+                                      null,
                                       qualifiedName,
                                       description,
                                       formula,
@@ -1986,14 +1989,12 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
     {
         final String dataFlowGUIDParameterName = "dataFlowGUID";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(dataFlowGUID, dataFlowGUIDParameterName, methodName);
-
         processHandler.clearDataFlow(userId,
                                      assetManagerGUID,
                                      assetManagerName,
                                      dataFlowGUID,
                                      dataFlowGUIDParameterName,
+                                     null,
                                      methodName);
     }
 
@@ -2019,10 +2020,11 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
     {
         final String dataSupplierGUIDParameterName = "dataSupplierGUID";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(dataSupplierGUID, dataSupplierGUIDParameterName, methodName);
-
-        return processHandler.getDataFlowConsumers(userId, dataSupplierGUID, dataSupplierGUIDParameterName, methodName);
+        return processHandler.getDataFlowConsumers(userId,
+                                                   dataSupplierGUID,
+                                                   dataSupplierGUIDParameterName,
+                                                   null,
+                                                   methodName);
     }
 
 
@@ -2047,10 +2049,11 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
     {
         final String dataConsumerGUIDParameterName = "dataConsumerGUID";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(dataConsumerGUID, dataConsumerGUIDParameterName, methodName);
-
-        return processHandler.getDataFlowSuppliers(userId, dataConsumerGUID, dataConsumerGUIDParameterName, methodName);
+        return processHandler.getDataFlowSuppliers(userId,
+                                                   dataConsumerGUID,
+                                                   dataConsumerGUIDParameterName,
+                                                   null,
+                                                   methodName);
     }
 
 
@@ -2090,10 +2093,6 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
         final String currentStepGUIDParameterName = "currentStepGUID";
         final String nextStepGUIDParameterName    = "nextStepGUID";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(currentStepGUID, currentStepGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(nextStepGUID, nextStepGUIDParameterName, methodName);
-
         String externalSourceGUID = null;
         String externalSourceName = null;
 
@@ -2110,6 +2109,8 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                                currentStepGUIDParameterName,
                                                nextStepGUID,
                                                nextStepGUIDParameterName,
+                                               null,
+                                               null,
                                                qualifiedName,
                                                description,
                                                guard,
@@ -2145,15 +2146,12 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
         final String currentStepGUIDParameterName = "currentStepGUID";
         final String nextStepGUIDParameterName    = "nextStepGUID";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(currentStepGUID, currentStepGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(nextStepGUID, nextStepGUIDParameterName, methodName);
-
         return processHandler.getControlFlow(userId,
                                              currentStepGUID,
                                              currentStepGUIDParameterName,
                                              nextStepGUID,
                                              nextStepGUIDParameterName,
+                                             null,
                                              qualifiedName,
                                              methodName);
     }
@@ -2188,14 +2186,13 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
     {
         final String controlFlowGUIDParameterName = "controlFlowGUID";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(controlFlowGUID, controlFlowGUIDParameterName, methodName);
-
         processHandler.updateControlFlow(userId,
                                          assetManagerGUID,
                                          assetManagerName,
                                          controlFlowGUID,
                                          controlFlowGUIDParameterName,
+                                         null,
+                                         null,
                                          qualifiedName,
                                          description,
                                          guard,
@@ -2226,14 +2223,12 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
     {
         final String controlFlowGUIDParameterName = "controlFlowGUID";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(controlFlowGUID, controlFlowGUIDParameterName, methodName);
-
         processHandler.clearControlFlow(userId,
                                          assetManagerGUID,
                                          assetManagerName,
                                          controlFlowGUID,
                                          controlFlowGUIDParameterName,
+                                         null,
                                          methodName);
     }
 
@@ -2259,10 +2254,11 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
     {
         final String currentStepGUIDParameterName = "currentStepGUID";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(currentStepGUID, currentStepGUIDParameterName, methodName);
-
-        return processHandler.getControlFlowNextSteps(userId, currentStepGUID, currentStepGUIDParameterName, methodName);
+        return processHandler.getControlFlowNextSteps(userId,
+                                                      currentStepGUID,
+                                                      currentStepGUIDParameterName,
+                                                      null,
+                                                      methodName);
     }
 
 
@@ -2287,10 +2283,11 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
     {
         final String currentStepGUIDParameterName = "currentStepGUID";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(currentStepGUID, currentStepGUIDParameterName, methodName);
-
-        return processHandler.getControlFlowPreviousSteps(userId, currentStepGUID, currentStepGUIDParameterName, methodName);
+        return processHandler.getControlFlowPreviousSteps(userId,
+                                                          currentStepGUID,
+                                                          currentStepGUIDParameterName,
+                                                          null,
+                                                          methodName);
     }
 
 
@@ -2330,10 +2327,6 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
         final String callerGUIDParameterName = "callerGUID";
         final String calledGUIDParameterName = "calledGUID";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(callerGUID, callerGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(calledGUID, calledGUIDParameterName, methodName);
-
         String externalSourceGUID = null;
         String externalSourceName = null;
 
@@ -2350,6 +2343,8 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                                callerGUIDParameterName,
                                                calledGUID,
                                                calledGUIDParameterName,
+                                               null,
+                                               null,
                                                qualifiedName,
                                                description,
                                                formula,
@@ -2385,15 +2380,12 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
         final String callerGUIDParameterName    = "callerGUID";
         final String calledGUIDParameterName    = "calledGUID";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(callerGUID, callerGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(calledGUID, calledGUIDParameterName, methodName);
-
         return processHandler.getProcessCall(userId,
                                              callerGUID,
                                              callerGUIDParameterName,
                                              calledGUID,
                                              calledGUIDParameterName,
+                                             null,
                                              qualifiedName,
                                              methodName);
     }
@@ -2428,14 +2420,13 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
     {
         final String processCallGUIDParameterName = "processCallGUID";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(processCallGUID, processCallGUIDParameterName, methodName);
-
         processHandler.updateProcessCall(userId,
                                          assetManagerGUID,
                                          assetManagerName,
                                          processCallGUID,
                                          processCallGUIDParameterName,
+                                         null,
+                                         null,
                                          qualifiedName,
                                          description,
                                          formula,
@@ -2466,14 +2457,12 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
     {
         final String processCallGUIDParameterName = "processCallGUID";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(processCallGUID, processCallGUIDParameterName, methodName);
-
         processHandler.clearProcessCall(userId,
                                         assetManagerGUID,
                                         assetManagerName,
                                         processCallGUID,
                                         processCallGUIDParameterName,
+                                        null,
                                         methodName);
     }
 
@@ -2499,12 +2488,10 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
     {
         final String callerGUIDParameterName    = "callerGUID";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(callerGUID, callerGUIDParameterName, methodName);
-
         return processHandler.getProcessCallers(userId,
                                                 callerGUID,
                                                 callerGUIDParameterName,
+                                                null,
                                                 methodName);
     }
 
@@ -2530,12 +2517,10 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
     {
         final String calledGUIDParameterName    = "calledGUID";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(calledGUID, calledGUIDParameterName, methodName);
-
         return processHandler.getProcessCallers(userId,
                                                 calledGUID,
                                                 calledGUIDParameterName,
+                                                null,
                                                 methodName);
     }
 
@@ -2568,15 +2553,13 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
         final String sourceElementGUIDParameterName      = "sourceElementGUID";
         final String destinationElementGUIDParameterName = "destinationElementGUID";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(sourceElementGUID, sourceElementGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(destinationElementGUID, destinationElementGUIDParameterName, methodName);
-
         processHandler.setupLineageMapping(userId,
                                            sourceElementGUID,
                                            sourceElementGUIDParameterName,
                                            destinationElementGUID,
                                            destinationElementGUIDParameterName,
+                                           null,
+                                           null,
                                            methodName);
 
         externalIdentifierHandler.logRelationshipCreation(assetManagerGUID,
@@ -2616,15 +2599,12 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
         final String sourceElementGUIDParameterName      = "sourceElementGUID";
         final String destinationElementGUIDParameterName = "destinationElementGUID";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(sourceElementGUID, sourceElementGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(destinationElementGUID, destinationElementGUIDParameterName, methodName);
-
         processHandler.clearLineageMapping(userId,
                                            sourceElementGUID,
                                            sourceElementGUIDParameterName,
                                            destinationElementGUID,
                                            destinationElementGUIDParameterName,
+                                           null,
                                            methodName);
 
         externalIdentifierHandler.logRelationshipRemoval(assetManagerGUID,
@@ -2659,12 +2639,10 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
     {
         final String sourceElementGUIDParameterName      = "sourceElementGUID";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(sourceElementGUID, sourceElementGUIDParameterName, methodName);
-
         return processHandler.getDestinationLineageMappings(userId,
                                                             sourceElementGUID,
                                                             sourceElementGUIDParameterName,
+                                                            null,
                                                             methodName);
     }
 
@@ -2690,12 +2668,10 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
     {
         final String destinationElementGUIDParameterName = "destinationElementGUID";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(destinationElementGUID, destinationElementGUIDParameterName, methodName);
-
         return processHandler.getSourceLineageMappings(userId,
                                                        destinationElementGUID,
                                                        destinationElementGUIDParameterName,
+                                                       null,
                                                        methodName);
     }
 }

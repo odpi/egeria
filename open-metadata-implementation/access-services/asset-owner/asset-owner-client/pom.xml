@@ -10,7 +10,7 @@
     <parent>
         <artifactId>asset-owner</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.5-SNAPSHOT</version>
+        <version>3.8-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -37,6 +37,11 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>asset-owner-topic-connectors</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>ffdc-services</artifactId>
         </dependency>
 
@@ -53,6 +58,11 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>open-discovery-framework</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>ocf-metadata-api</artifactId>
         </dependency>
 
         <dependency>

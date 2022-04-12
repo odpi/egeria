@@ -694,6 +694,7 @@ public class FilesIntegratorContext
      * @param schemaTypeProperties properties about the schema type to store
      *
      * @return unique identifier of the new schema type
+     * @param schemaTypeOptionGUIDs list of unique identifiers of schema types that represent the options to link to
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1394,6 +1395,7 @@ public class FilesIntegratorContext
      * Retrieve the list of metadata elements with a matching qualified or display name.
      * There are no wildcards supported on this request.
      *
+     * @param name name of the connection to retrieve
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *

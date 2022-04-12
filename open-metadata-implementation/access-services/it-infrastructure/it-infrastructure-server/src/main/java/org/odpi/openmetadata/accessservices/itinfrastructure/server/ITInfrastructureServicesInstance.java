@@ -2,12 +2,20 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.itinfrastructure.server;
 
+import org.odpi.openmetadata.accessservices.itinfrastructure.connectors.outtopic.ITInfrastructureOutTopicClientProvider;
 import org.odpi.openmetadata.accessservices.itinfrastructure.converters.AssetConverter;
 import org.odpi.openmetadata.accessservices.itinfrastructure.converters.ConnectionConverter;
 import org.odpi.openmetadata.accessservices.itinfrastructure.converters.ConnectorTypeConverter;
 import org.odpi.openmetadata.accessservices.itinfrastructure.converters.ContactMethodConverter;
+import org.odpi.openmetadata.accessservices.itinfrastructure.converters.ControlFlowConverter;
+import org.odpi.openmetadata.accessservices.itinfrastructure.converters.DataFlowConverter;
 import org.odpi.openmetadata.accessservices.itinfrastructure.converters.EndpointConverter;
 import org.odpi.openmetadata.accessservices.itinfrastructure.converters.ITProfileConverter;
+import org.odpi.openmetadata.accessservices.itinfrastructure.converters.LineageMappingConverter;
+import org.odpi.openmetadata.accessservices.itinfrastructure.converters.PortConverter;
+import org.odpi.openmetadata.accessservices.itinfrastructure.converters.ProcessCallConverter;
+import org.odpi.openmetadata.accessservices.itinfrastructure.converters.ProcessConverter;
+import org.odpi.openmetadata.accessservices.itinfrastructure.converters.RelatedAssetConverter;
 import org.odpi.openmetadata.accessservices.itinfrastructure.converters.SoftwareCapabilityConverter;
 import org.odpi.openmetadata.accessservices.itinfrastructure.converters.UserIdentityConverter;
 import org.odpi.openmetadata.accessservices.itinfrastructure.ffdc.ITInfrastructureErrorCode;
@@ -15,8 +23,15 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.As
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ConnectionElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ConnectorTypeElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ContactMethodElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ControlFlowElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.DataFlowElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.EndpointElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ITProfileElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.LineageMappingElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.PortElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ProcessCallElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ProcessElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.RelatedAssetElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareCapabilityElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.UserIdentityElement;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
@@ -26,12 +41,15 @@ import org.odpi.openmetadata.commonservices.generichandlers.ConnectionHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ConnectorTypeHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ContactDetailsHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.EndpointHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.ProcessHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.RelatedAssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.SoftwareCapabilityHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.UserIdentityHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.List;
@@ -52,32 +70,49 @@ public class ITInfrastructureServicesInstance extends OMASServiceInstance
     private ContactDetailsHandler<ContactMethodElement>          contactDetailsHandler;
     private SoftwareCapabilityHandler<SoftwareCapabilityElement> softwareCapabilityHandler;
     private AssetHandler<AssetElement>                           assetHandler;
+    private RelatedAssetHandler<RelatedAssetElement>             relatedAssetHandler;
+    private ProcessHandler<ProcessElement,
+                                  PortElement,
+                                  DataFlowElement,
+                                  ControlFlowElement,
+                                  ProcessCallElement,
+                                  LineageMappingElement>         processHandler;
 
 
     /**
-     * Set up the handlers for this server.
+     * Set up the local repository connector that will service the REST Calls.
      *
      * @param repositoryConnector link to the repository responsible for servicing the REST calls.
-     * @param supportedZones list of zones that ITInfrastructure is allowed to serve Assets from.
-     * @param auditLog destination for audit log events.
+     * @param supportedZones list of zones that IT Infrastructure is allowed to serve Assets from.
+     * @param defaultZones list of zones that IT Infrastructure sets up in new Asset instances.
+     * @param publishZones list of zones that IT Infrastructure sets up in published Asset instances.
+     * @param auditLog logging destination
      * @param localServerUserId userId used for server initiated actions
-     * @param maxPageSize maximum number of results that can be returned on a single call
+     * @param maxPageSize max number of results to return on single request.
+     * @param outTopicConnection topic of the client side listener
      * @throws NewInstanceException a problem occurred during initialization
      */
     public ITInfrastructureServicesInstance(OMRSRepositoryConnector repositoryConnector,
                                             List<String>            supportedZones,
+                                            List<String>            defaultZones,
+                                            List<String>            publishZones,
                                             AuditLog                auditLog,
                                             String                  localServerUserId,
-                                            int                     maxPageSize) throws NewInstanceException
+                                            int                     maxPageSize,
+                                            Connection outTopicConnection) throws NewInstanceException
     {
         super(myDescription.getAccessServiceFullName(),
               repositoryConnector,
               supportedZones,
-              null,
-              null,
+              defaultZones,
+              publishZones,
               auditLog,
               localServerUserId,
-              maxPageSize);
+              maxPageSize,
+              null,
+              null,
+              ITInfrastructureOutTopicClientProvider.class.getName(),
+              outTopicConnection);
 
         final String methodName = "new ServiceInstance";
 
@@ -194,6 +229,44 @@ public class ITInfrastructureServicesInstance extends OMASServiceInstance
                                                    defaultZones,
                                                    publishZones,
                                                    auditLog);
+
+            this.relatedAssetHandler = new RelatedAssetHandler<>(new RelatedAssetConverter<>(repositoryHelper, serviceName, serverName),
+                                                                 RelatedAssetElement.class,
+                                                                 serviceName,
+                                                                 serverName,
+                                                                 invalidParameterHandler,
+                                                                 repositoryHandler,
+                                                                 repositoryHelper,
+                                                                 localServerUserId,
+                                                                 securityVerifier,
+                                                                 supportedZones,
+                                                                 defaultZones,
+                                                                 publishZones,
+                                                                 auditLog);
+
+            processHandler = new ProcessHandler<>(new ProcessConverter<>(repositoryHelper, serviceName, serverName),
+                                                  ProcessElement.class,
+                                                  new PortConverter<>(repositoryHelper, serviceName, serverName),
+                                                  PortElement.class,
+                                                  new DataFlowConverter<>(repositoryHelper, serviceName, serverName),
+                                                  DataFlowElement.class,
+                                                  new ControlFlowConverter<>(repositoryHelper, serviceName, serverName),
+                                                  ControlFlowElement.class,
+                                                  new ProcessCallConverter<>(repositoryHelper, serviceName, serverName),
+                                                  ProcessCallElement.class,
+                                                  new LineageMappingConverter<>(repositoryHelper, serviceName, serverName),
+                                                  LineageMappingElement.class,
+                                                  serviceName,
+                                                  serverName,
+                                                  invalidParameterHandler,
+                                                  repositoryHandler,
+                                                  repositoryHelper,
+                                                  localServerUserId,
+                                                  securityVerifier,
+                                                  supportedZones,
+                                                  defaultZones,
+                                                  publishZones,
+                                                  auditLog);
         }
         else
         {
@@ -311,13 +384,29 @@ public class ITInfrastructureServicesInstance extends OMASServiceInstance
      * @return  handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    AssetHandler<AssetElement> getAssetHandler() throws PropertyServerException
+    public AssetHandler<AssetElement> getAssetHandler() throws PropertyServerException
     {
         final String methodName = "getAssetHandler";
 
         validateActiveRepository(methodName);
 
         return assetHandler;
+    }
+
+
+    /**
+     * Return the handler for managing related asset objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    RelatedAssetHandler<RelatedAssetElement> getRelatedAssetHandler() throws PropertyServerException
+    {
+        final String methodName = "getRelatedAssetHandler";
+
+        validateActiveRepository(methodName);
+
+        return relatedAssetHandler;
     }
 
 
@@ -334,5 +423,26 @@ public class ITInfrastructureServicesInstance extends OMASServiceInstance
         validateActiveRepository(methodName);
 
         return softwareCapabilityHandler;
+    }
+
+
+    /**
+     * Return the handler for managing processes objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    ProcessHandler<ProcessElement,
+                   PortElement,
+                   DataFlowElement,
+                   ControlFlowElement,
+                   ProcessCallElement,
+                   LineageMappingElement> getProcessHandler() throws PropertyServerException
+    {
+        final String methodName = "getProcessHandler";
+
+        validateActiveRepository(methodName);
+
+        return processHandler;
     }
 }

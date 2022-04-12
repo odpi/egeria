@@ -33,7 +33,7 @@ class CreateRoleInvalidParameterTest
             testCreateRoleNoQualifiedName(client, userId);
             testCreateRoleNoTitle(client, userId);
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -61,7 +61,7 @@ class CreateRoleInvalidParameterTest
         {
             // ignore
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -89,7 +89,7 @@ class CreateRoleInvalidParameterTest
         {
             // ignore
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -121,7 +121,7 @@ class CreateRoleInvalidParameterTest
         {
             // ignore
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -154,7 +154,7 @@ class CreateRoleInvalidParameterTest
         {
             // ignore
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }

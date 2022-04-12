@@ -105,6 +105,27 @@ public enum OCFErrorCode implements ExceptionMessageSet
             "Virtual connection {0} has no embedded connections",
             "The virtual connection properties object is invalid because it does not include any embedded connections.",
             "Add embedded connections to the virtual connection and retry the request."),
+
+
+    /*
+     * Invalid use of statistics methods.
+     */
+    ALREADY_COUNTER_NAME(400, "OCF-STATISTICS-400-001",
+                         "The {0} is already in use as a counter statistic and can not be used by the {1} method to {2}",
+                         "The integration context returns an exception on the invalid request.",
+                         "Change the connector logic to use a different name for the statistic."),
+
+    ALREADY_PROPERTY_NAME(400, "OCF-STATISTICS-400-002",
+                          "The {0} is already in use as a property statistic and can not be used by the {1} method to {2}",
+                          "The integration context returns an exception on the invalid request.",
+                          "Change the connector logic to use a different name for the statistic."),
+
+    ALREADY_TIMESTAMP_NAME(400, "OCF-STATISTICS-400-003",
+                           "The {0} is already in use as a timestamp statistic and can not be used by the {1} method to {2}",
+                           "The integration context returns an exception on the invalid request.",
+                           "Change the connector logic to use a different name for the statistic."),
+
+
     UNKNOWN_ENDPOINT(404, "OCF-CONNECTOR-404-001",
             "Endpoint {0} in connection {1} for connector instance {2} is either unknown or unavailable",
             "The requested action is not able to complete because the remote endpoint where the assets are located is not responding.  It may be unavailable or unknown.",

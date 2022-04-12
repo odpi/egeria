@@ -121,18 +121,28 @@ public class IntegrationDaemonOperationalServices
                                             IntegrationDaemonServicesAuditCode.NO_PERMITTED_SYNCHRONIZATION.getMessageDefinition(localServerName),
                                             integrationServiceConfig.toString());
 
-                        throw new OMAGConfigurationErrorException(IntegrationDaemonServicesErrorCode.NO_PERMITTED_SYNCHRONIZATION.getMessageDefinition(localServerName),
+                        throw new OMAGConfigurationErrorException(IntegrationDaemonServicesErrorCode.NO_PERMITTED_SYNCHRONIZATION.getMessageDefinition(integrationServiceConfig.getIntegrationServiceFullName(),
+                                                                                                                                                       localServerName),
                                                                   this.getClass().getName(),
                                                                   methodName);
                     }
 
+                    /*
+                     * Each integration service has its own audit log instance.
+                     */
+                    AuditLog integrationServicesAuditLog
+                            = auditLog.createNewAuditLog(integrationServiceConfig.getIntegrationServiceId(),
+                                                         integrationServiceConfig.getIntegrationServiceDevelopmentStatus(),
+                                                         integrationServiceConfig.getIntegrationServiceFullName(),
+                                                         integrationServiceConfig.getIntegrationServiceDescription(),
+                                                         integrationServiceConfig.getIntegrationServiceWiki());
                     contextManager.initializeContextManager(partnerOMASServerName,
                                                             partnerOMASRootURL,
                                                             localServerUserId,
                                                             localServerPassword,
                                                             integrationServiceConfig.getIntegrationServiceOptions(),
                                                             maxPageSize,
-                                                            auditLog);
+                                                            integrationServicesAuditLog);
 
                     contextManager.createClients();
 
@@ -423,7 +433,10 @@ public class IntegrationDaemonOperationalServices
             serviceStatusMap.put(serviceName, ServerActiveStatus.STOPPING);
         }
 
-        integrationDaemonInstance.shutdown();
+        if (integrationDaemonInstance != null)
+        {
+            integrationDaemonInstance.shutdown();
+        }
 
         for (String serviceName : serviceStatusMap.keySet())
         {

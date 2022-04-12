@@ -22,7 +22,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
  * It is through these guards that either the triage decision is communicated, or another governance action service is initiated to
  * take the next step.
  */
-public abstract class TriageGovernanceActionService extends GovernanceActionService
+public abstract class TriageGovernanceActionService extends GovernanceActionServiceConnector
 {
     protected TriageGovernanceContext governanceContext = null;
 
@@ -33,7 +33,7 @@ public abstract class TriageGovernanceActionService extends GovernanceActionServ
      *
      * @param governanceContext specialist context for this type of governance action.
      */
-    public synchronized void setGovernanceContext(TriageGovernanceContext governanceContext)
+    public synchronized void setGovernanceContext(GovernanceActionContext governanceContext)
     {
         this.governanceContext = governanceContext;
     }

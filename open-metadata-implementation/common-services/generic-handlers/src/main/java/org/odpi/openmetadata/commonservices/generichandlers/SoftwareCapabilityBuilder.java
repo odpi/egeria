@@ -160,7 +160,7 @@ public class SoftwareCapabilityBuilder extends ReferenceableBuilder
         }
         catch (TypeErrorException error)
         {
-            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_NAME);
+            errorHandler.handleUnsupportedType(error, methodName, classificationName);
         }
     }
 
@@ -220,7 +220,7 @@ public class SoftwareCapabilityBuilder extends ReferenceableBuilder
         }
         catch (TypeErrorException error)
         {
-            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_NAME);
+            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataAPIMapper.FILE_SYSTEM_CLASSIFICATION_TYPE_NAME);
         }
     }
 

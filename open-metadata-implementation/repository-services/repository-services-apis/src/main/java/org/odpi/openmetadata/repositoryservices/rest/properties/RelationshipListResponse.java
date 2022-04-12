@@ -104,7 +104,6 @@ public class RelationshipListResponse extends OMRSAPIPagedResponse
     {
         return "RelationshipListResponse{" +
                 "relationships=" + relationships +
-                ", nextPageURL='" + nextPageURL + '\'' +
                 ", offset=" + offset +
                 ", pageSize=" + pageSize +
                 ", relatedHTTPCode=" + relatedHTTPCode +

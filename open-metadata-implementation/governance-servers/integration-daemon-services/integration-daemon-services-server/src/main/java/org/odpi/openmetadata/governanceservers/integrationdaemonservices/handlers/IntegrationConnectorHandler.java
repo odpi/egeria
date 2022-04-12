@@ -51,12 +51,12 @@ public class IntegrationConnectorHandler implements Serializable
     /*
      * These values change as the connector handler operates
      */
+    private Connector                           genericConnector                    = null;
     private IntegrationConnector                integrationConnector                = null;
     private IntegrationConnectorDedicatedThread integrationConnectorDedicatedThread = null;
     private IntegrationConnectorStatus          integrationConnectorStatus          = null;
     private Date                                lastStatusChange                    = null;
     private String                              failingExceptionMessage             = null;
-    private Map<String, Object>                 statistics                          = null;
     private Date                                lastRefreshTime                     = null;
 
 
@@ -97,6 +97,17 @@ public class IntegrationConnectorHandler implements Serializable
 
 
     /**
+     * Return the unique identifier of the connector from the configuration.
+     *
+     * @return String name
+     */
+    public String getIntegrationConnectorId()
+    {
+        return integrationConnectorId;
+    }
+
+
+    /**
      * Return the name of the connector.  This name is used for routing refresh calls to the connector as well
      * as being used for diagnostics.  Ideally it should be unique amongst the connectors for the integration service.
      *
@@ -105,6 +116,32 @@ public class IntegrationConnectorHandler implements Serializable
     public String getIntegrationConnectorName()
     {
         return integrationConnectorName;
+    }
+
+
+    /**
+     * Return the connection used to create the connector.
+     *
+     * @return connection
+     */
+    public Connection getConnection()
+    {
+        return connection;
+    }
+
+    /**
+     * Return the unique instance identifier of the connector.
+     *
+     * @return String name
+     */
+    public String getIntegrationConnectorInstanceId()
+    {
+        if (genericConnector != null)
+        {
+            return genericConnector.getConnectorInstanceId();
+        }
+
+        return null;
     }
 
 
@@ -143,13 +180,18 @@ public class IntegrationConnectorHandler implements Serializable
 
 
     /**
-     * Return the statistics logged by the connector through the context.
+     * Return the statistics logged by the connector.
      *
      * @return name value pairs for the statistics
      */
     Map<String, Object> getStatistics()
     {
-        return statistics;
+        if (genericConnector != null)
+        {
+            return genericConnector.getConnectorStatistics();
+        }
+
+        return null;
     }
 
 
@@ -224,7 +266,8 @@ public class IntegrationConnectorHandler implements Serializable
                                                                                                                        integrationDaemonName,
                                                                                                                        permittedSynchronization.getName()));
 
-        Connector genericConnector = null;
+        integrationConnector = null;
+        integrationConnector = null;
 
         try
         {
@@ -423,6 +466,8 @@ public class IntegrationConnectorHandler implements Serializable
             }
             if (integrationConnectorStatus == IntegrationConnectorStatus.RUNNING)
             {
+                Date refreshStart = new Date();
+
                 if (auditLog != null)
                 {
                     if (firstCall)
@@ -440,6 +485,16 @@ public class IntegrationConnectorHandler implements Serializable
                 }
 
                 integrationConnector.refresh();
+
+                if (auditLog != null)
+                {
+                    Date refreshEnd = new Date();
+
+                    auditLog.logMessage(actionDescription,
+                                        IntegrationDaemonServicesAuditCode.DAEMON_CONNECTOR_REFRESH_COMPLETE.getMessageDefinition(integrationConnectorName,
+                                                                                                                                  integrationDaemonName,
+                                                                                                                                  Long.toString(refreshEnd.getTime() - refreshStart.getTime())));
+                }
             }
 
             this.lastRefreshTime = new Date();
@@ -528,10 +583,10 @@ public class IntegrationConnectorHandler implements Serializable
         }
 
         this.updateStatus(null);
+        this.genericConnector                    = null;
         this.integrationConnector                = null;
         this.integrationConnectorDedicatedThread = null;
         this.failingExceptionMessage             = null;
-        this.statistics                          = null;
         this.lastRefreshTime                     = null;
     }
 

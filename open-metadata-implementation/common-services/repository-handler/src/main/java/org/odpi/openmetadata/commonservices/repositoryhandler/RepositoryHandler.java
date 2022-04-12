@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.repositoryhandler;
 
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -47,11 +48,12 @@ public class RepositoryHandler
 
     private static final String memento                       = "Memento";
 
-    private RepositoryErrorHandler errorHandler;
-    private OMRSRepositoryHelper   repositoryHelper;
-    private OMRSMetadataCollection metadataCollection;
-    private int                    maxPageSize;
-    private AuditLog               auditLog;
+    private InvalidParameterHandler invalidParameterHandler;
+    private RepositoryErrorHandler  errorHandler;
+    private OMRSRepositoryHelper    repositoryHelper;
+    private OMRSMetadataCollection  metadataCollection;
+    private int                     maxPageSize;
+    private AuditLog                auditLog;
 
     private static final Logger log = LoggerFactory.getLogger(RepositoryHandler.class);
 
@@ -76,6 +78,8 @@ public class RepositoryHandler
         this.errorHandler = errorHandler;
         this.metadataCollection = metadataCollection;
         this.maxPageSize = maxPageSize;
+        this.invalidParameterHandler = new InvalidParameterHandler();
+        invalidParameterHandler.setMaxPagingSize(maxPageSize);
     }
 
 
@@ -693,6 +697,7 @@ public class RepositoryHandler
                             if (deduplicationNeeded)
                             {
                                 peerIterator = new RepositoryRelationshipsIterator(repositoryHandler,
+                                                                                   invalidParameterHandler,
                                                                                    userId,
                                                                                    this.principleEntity.getGUID(),
                                                                                    entityTypeName,
@@ -1880,19 +1885,23 @@ public class RepositoryHandler
                 /*
                  * This is to check that the entity is in an appropriate state to add the classification.
                  */
-               this.getEntityByGUID(userId, entityGUID, entityGUIDParameterName, entityTypeName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+               entityDetail = this.getEntityByGUID(userId, entityGUID, entityGUIDParameterName, entityTypeName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
             }
 
-            EntityDetail newEntity = metadataCollection.classifyEntity(userId,
-                                                                       entityGUID,
-                                                                       classificationTypeName,
-                                                                       externalSourceGUID,
-                                                                       externalSourceName,
-                                                                       classificationOrigin,
-                                                                       classificationOriginGUID,
-                                                                       properties);
+            // create a proxy representation to allow classification of entities incoming from other metadata collections
+            EntityProxy entityProxy = repositoryHelper.getNewEntityProxy(userId, entityDetail);
 
-            if (newEntity == null)
+            Classification newClassification = metadataCollection.classifyEntity(userId,
+                                                                                 entityProxy,
+                                                                                 classificationTypeName,
+                                                                                 externalSourceGUID,
+                                                                                 externalSourceName,
+                                                                                 classificationOrigin,
+                                                                                 classificationOriginGUID,
+                                                                                 properties);
+
+
+            if (newClassification == null)
             {
                 errorHandler.handleNoEntityForClassification(entityGUID,
                                                              classificationTypeGUID,
@@ -1902,7 +1911,14 @@ public class RepositoryHandler
             }
             else
             {
-                return newEntity;
+                // update the entity's classifications list with the one we just added
+                List<Classification> classifications = entityDetail.getClassifications() == null
+                                                            ? new ArrayList<>()
+                                                            : entityDetail.getClassifications();
+                classifications.add(newClassification);
+                entityDetail.setClassifications(classifications);
+
+                return entityDetail;
             }
         }
         catch (UserNotAuthorizedException | PropertyServerException error)
@@ -2005,12 +2021,23 @@ public class RepositoryHandler
                                                 externalSourceName,
                                                 methodName);
 
-                EntityDetail newEntity = metadataCollection.updateEntityClassification(userId,
-                                                                                       entityGUID,
-                                                                                       classificationTypeName,
-                                                                                       newProperties);
+                EntityDetail entityDetail = this.getEntityByGUID(userId,
+                                                                 entityGUID,
+                                                                 entityGUIDParameterName,
+                                                                 entityTypeName,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 effectiveTime,
+                                                                 methodName);
 
-                if (newEntity == null)
+                EntityProxy entityProxy = repositoryHelper.getNewEntityProxy(userId, entityDetail);
+
+                Classification newClassification = metadataCollection.updateEntityClassification(userId,
+                                                                                                 entityProxy,
+                                                                                                 classificationTypeName,
+                                                                                                 newProperties);
+
+                if (newClassification == null)
                 {
                     errorHandler.handleNoEntityForClassification(entityGUID,
                                                                  classificationTypeGUID,
@@ -2136,9 +2163,21 @@ public class RepositoryHandler
                                                 externalSourceName,
                                                 methodName);
 
-                EntityDetail newEntity = metadataCollection.declassifyEntity(userId, entityGUID, classificationTypeName);
+                EntityDetail entityDetail = this.getEntityByGUID(userId,
+                                                                 entityGUID,
+                                                                 entityGUIDParameterName,
+                                                                 entityTypeName,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 effectiveTime,
+                                                                 methodName);
 
-                if (newEntity == null)
+                // create a proxy representation to allow declassification of entities incoming from other metadata collections
+                EntityProxy entityProxy = repositoryHelper.getNewEntityProxy(userId, entityDetail);
+
+                Classification removedClassification = metadataCollection.declassifyEntity(userId, entityProxy, classificationTypeName);
+
+                if (removedClassification == null)
                 {
                     errorHandler.handleNoEntityForClassification(entityGUID,
                                                                  classificationTypeGUID,
@@ -2429,7 +2468,8 @@ public class RepositoryHandler
                                         String  entityTypeName,
                                         boolean forDuplicateProcessing,
                                         String  methodName) throws UserNotAuthorizedException,
-                                                                  PropertyServerException
+                                                                   PropertyServerException,
+                                                                   InvalidParameterException
     {
         final String localMethodName = "isolateAndRemoveEntity";
 
@@ -5475,6 +5515,7 @@ public class RepositoryHandler
                 }
 
                 RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(this,
+                                                                                               invalidParameterHandler,
                                                                                                userId,
                                                                                                startingEntityGUID,
                                                                                                startingEntityTypeName,
@@ -6209,7 +6250,8 @@ public class RepositoryHandler
                                              boolean forDuplicateProcessing,
                                              Date    effectiveTime,
                                              String  methodName) throws UserNotAuthorizedException,
-                                                                        PropertyServerException
+                                                                        PropertyServerException,
+                                                                        InvalidParameterException
     {
         final String localMethodName = "removeAllRelationshipsOfType";
         final String typeGUIDParameterName = "relationshipTypeGUID";
@@ -6223,6 +6265,7 @@ public class RepositoryHandler
                                              localMethodName);
 
         RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(this,
+                                                                                       invalidParameterHandler,
                                                                                        userId,
                                                                                        startingEntityGUID,
                                                                                        startingEntityTypeName,

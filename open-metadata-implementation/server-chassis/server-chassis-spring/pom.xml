@@ -10,7 +10,7 @@
     <parent>
         <artifactId>server-chassis</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.5-SNAPSHOT</version>
+        <version>3.8-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -157,7 +157,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>archive-manager-spring</artifactId>
+            <artifactId>repository-governance-spring</artifactId>
             <scope>runtime</scope>
         </dependency>
 
@@ -260,6 +260,12 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>lineage-integrator-spring</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>infrastructure-integrator-spring</artifactId>
             <scope>runtime</scope>
         </dependency>
 
@@ -442,11 +448,6 @@
         </dependency>
 
         <dependency>
-            <groupId>jakarta.annotation</groupId>
-            <artifactId>jakarta.annotation-api</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
         </dependency>
@@ -462,12 +463,6 @@
             <groupId>io.swagger.core.v3</groupId>
             <artifactId>swagger-annotations</artifactId>
         </dependency>
-
-        <!--dependency>
-            <groupId>javax.annotation</groupId>
-            <artifactId>javax.annotation-api</artifactId>
-            <scope>provided</scope>
-        </dependency-->
 
     </dependencies>
 
@@ -523,9 +518,6 @@
                             <ignoredDependencies>
                                 <ignoreDependency>
                                     javax.annotation:javax.annotation-api:*
-                                </ignoreDependency>
-                                <ignoreDependency>
-                                    jakarta.annotation:jakarta.annotation-api:*
                                 </ignoreDependency>
                             </ignoredDependencies>
                         </configuration>
@@ -590,7 +582,7 @@
 
                 <dependency>
                     <groupId>org.odpi.egeria</groupId>
-                    <artifactId>archive-manager-spring</artifactId>
+                    <artifactId>repository-governance-spring</artifactId>
                     <scope>runtime</scope>
                 </dependency>
 
@@ -668,6 +660,18 @@
 
                 <dependency>
                     <groupId>org.odpi.egeria</groupId>
+                    <artifactId>api-integrator-spring</artifactId>
+                    <scope>runtime</scope>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.odpi.egeria</groupId>
+                    <artifactId>analytics-integrator-spring</artifactId>
+                    <scope>runtime</scope>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.odpi.egeria</groupId>
                     <artifactId>catalog-integrator-spring</artifactId>
                     <scope>runtime</scope>
                 </dependency>
@@ -680,6 +684,12 @@
 
                 <dependency>
                     <groupId>org.odpi.egeria</groupId>
+                    <artifactId>display-integrator-spring</artifactId>
+                    <scope>runtime</scope>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.odpi.egeria</groupId>
                     <artifactId>files-integrator-spring</artifactId>
                     <scope>runtime</scope>
                 </dependency>
@@ -687,6 +697,12 @@
                 <dependency>
                     <groupId>org.odpi.egeria</groupId>
                     <artifactId>lineage-integrator-spring</artifactId>
+                    <scope>runtime</scope>
+                </dependency>
+
+                <dependency>
+                    <groupId>org.odpi.egeria</groupId>
+                    <artifactId>infrastructure-integrator-spring</artifactId>
                     <scope>runtime</scope>
                 </dependency>
 

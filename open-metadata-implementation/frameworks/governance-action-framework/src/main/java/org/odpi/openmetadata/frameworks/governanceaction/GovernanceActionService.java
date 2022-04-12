@@ -2,12 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.governanceaction;
 
-import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
-import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
+
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GAFErrorCode;
-import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GovernanceServiceException;
+
 
 /**
  * GovernanceActionService describes the base class for a specific type of connector that is responsible for preforming
@@ -25,69 +22,56 @@ import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GovernanceServiceE
  * When you build a governance action service, you extend the governance action service class that matches the purpose of your governance action
  * to ensure your code receives a context with the appropriate interface.
  */
-public abstract class GovernanceActionService extends ConnectorBase implements AuditLoggingComponent
+public abstract class GovernanceActionService extends GovernanceActionServiceConnector
 {
-    protected String   governanceServiceName = "<Unknown>";
-    protected AuditLog auditLog = null;
+    protected GovernanceActionContext governanceContext = null;
+
 
     /**
-     * Receive an audit log object that can be used to record audit log messages.  The caller has initialized it
-     * with the correct component description and log destinations.
+     * Set up details of the the governance action request and access to the metadata store.
+     * This method is called before start and should not be null
      *
-     * @param auditLog audit log object
+     * @param governanceContext specialist context for this type of governance action.
      */
-    public void setAuditLog(AuditLog auditLog)
+    public synchronized void setGovernanceContext(GovernanceActionContext governanceContext)
     {
-        this.auditLog = auditLog;
+        this.governanceContext = governanceContext;
     }
 
 
     /**
-     * Set up the governance action service name.  This is used in error messages.
+     * Indicates that the governance action service is completely configured and can begin processing.
      *
-     * @param governanceServiceName name of the service
+     * This is a standard method from the Open Connector Framework (OCF) so
+     * be sure to call super.start() in your version.
+     *
+     * @throws ConnectorCheckedException there is a problem within the governance action service.
      */
-    public void setGovernanceServiceName(String governanceServiceName)
+    @Override
+    public void start() throws ConnectorCheckedException
     {
-        this.governanceServiceName = governanceServiceName;
+        super.start();
+        super.validateContext(governanceContext);
     }
 
 
     /**
-     * Provide a common exception for unexpected errors.
+     * Disconnect is called either because this governance action service called governanceContext.recordCompletionStatus()
+     * or the administer requested this governance action service stop running or the hosting server is shutting down.
      *
-     * @param methodName calling method
-     * @param error caught exception
-     * @throws GovernanceServiceException wrapped exception
-     */
-    protected void handleUnexpectedException(String      methodName,
-                                             Throwable   error) throws ConnectorCheckedException
-    {
-        throw new GovernanceServiceException(GAFErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(governanceServiceName,
-                                                                                                    error.getClass().getName(),
-                                                                                                    methodName,
-                                                                                                    error.getMessage()),
-                                             this.getClass().getName(),
-                                             methodName);
-    }
-
-
-    /**
-     * Verify that the context has been set up in the subclass
+     * If disconnect completes before the governance action service records
+     * its completion status then the governance action service is restarted either at the administrator's request
+     * or the next time the server starts.
+     * If you do not want this governance action service restarted, be sure to record the completion status in disconnect().
      *
-     * @param governanceContext context from the subclass
-     * @throws ConnectorCheckedException error to say that the connector (governance action service) is not able to proceed because
-     * it has not been set up correctly.
+     * The disconnect() method is a standard method from the Open Connector Framework (OCF).  If you need to override this method
+     * be sure to call super.disconnect() in your version.
+     *
+     * @throws ConnectorCheckedException there is a problem within the governance action service.
      */
-    public void validateContext(GovernanceContext governanceContext) throws ConnectorCheckedException
+    @Override
+    public  void disconnect() throws ConnectorCheckedException
     {
-        final String methodName = "start";
-
-        if (governanceContext == null)
-        {
-            throw new GovernanceServiceException(GAFErrorCode.NULL_GOVERNANCE_CONTEXT.getMessageDefinition(governanceServiceName),
-                                                 this.getClass().getName(),
-                                                 methodName);
-        }
+        super.disconnect();
     }
 }

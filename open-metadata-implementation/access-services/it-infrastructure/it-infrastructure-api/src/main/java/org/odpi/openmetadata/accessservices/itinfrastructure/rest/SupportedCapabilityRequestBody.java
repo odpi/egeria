@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.SupportedCapabilityProperties;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.CapabilityDeploymentProperties;
 
 import java.util.Objects;
 
@@ -23,7 +23,7 @@ public class SupportedCapabilityRequestBody extends MetadataSourceRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
-    private SupportedCapabilityProperties properties = null;
+    private CapabilityDeploymentProperties properties = null;
 
     /**
      * Default constructor
@@ -54,7 +54,7 @@ public class SupportedCapabilityRequestBody extends MetadataSourceRequestBody
      *
      * @return properties bean
      */
-    public SupportedCapabilityProperties getProperties()
+    public CapabilityDeploymentProperties getProperties()
     {
         return properties;
     }
@@ -65,7 +65,7 @@ public class SupportedCapabilityRequestBody extends MetadataSourceRequestBody
      *
      * @param properties properties bean
      */
-    public void setProperties(SupportedCapabilityProperties properties)
+    public void setProperties(CapabilityDeploymentProperties properties)
     {
         this.properties = properties;
     }

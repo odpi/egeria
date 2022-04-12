@@ -22,44 +22,48 @@ import java.util.Map;
  */
 public class CatalogIntegratorContext
 {
-    private static String collaborationExchangeServiceName  = "CollaborationExchangeService";
-    private static String connectionExchangeServiceName     = "ConnectionExchangeService";
-    private static String dataAssetExchangeServiceName      = "DataAssetExchangeService";
-    private static String glossaryExchangeServiceName       = "GlossaryExchangeService";
-    private static String governanceExchangeServiceName     = "GovernanceExchangeService";
-    private static String infrastructureExchangeServiceName = "InfrastructureExchangeService";
-    private static String lineageExchangeServiceName        = "LineageExchangeService";
-    private static String stewardshipExchangeServiceName    = "StewardshipExchangeService";
-    private static String validValuesExchangeServiceName    = "ValidValuesExchangeService";
+    private static String collaborationExchangeServiceName     = "CollaborationExchangeService";
+    private static String connectionExchangeServiceName        = "ConnectionExchangeService";
+    private static String dataAssetExchangeServiceName         = "DataAssetExchangeService";
+    private static String externalReferenceExchangeServiceName = "ExternalReferenceExchangeService";
+    private static String glossaryExchangeServiceName          = "GlossaryExchangeService";
+    private static String governanceExchangeServiceName        = "GovernanceExchangeService";
+    private static String infrastructureExchangeServiceName    = "InfrastructureExchangeService";
+    private static String lineageExchangeServiceName           = "LineageExchangeService";
+    private static String stewardshipExchangeServiceName       = "StewardshipExchangeService";
+    private static String validValuesExchangeServiceName       = "ValidValuesExchangeService";
 
 
-    private AssetManagerClient            assetManagerClient;
-    private AssetManagerEventClient       eventClient;
-    private CollaborationExchangeService  collaborationExchangeService;
-    private ConnectionExchangeService     connectionExchangeService;
-    private DataAssetExchangeService      dataAssetExchangeService;
-    private GlossaryExchangeService       glossaryExchangeService;
-    private GovernanceExchangeService     governanceExchangeService;
-    private InfrastructureExchangeService infrastructureExchangeService;
-    private LineageExchangeService        lineageExchangeService;
-    private StewardshipExchangeService    stewardshipExchangeService;
-    private ValidValuesExchangeService    validValuesExchangeService;
-    private String                        userId;
-    private String                        assetManagerGUID;
-    private String                        assetManagerName;
-    private String                        connectorName;
-    private String                        integrationServiceName;
-    private SynchronizationDirection      synchronizationDirection;
+    private ExternalAssetManagerClient       assetManagerClient;
+    private AssetManagerEventClient          eventClient;
+    private CollaborationExchangeService     collaborationExchangeService;
+    private ConnectionExchangeService        connectionExchangeService;
+    private DataAssetExchangeService         dataAssetExchangeService;
+    private ExternalReferenceExchangeService externalReferenceExchangeService;
+    private GlossaryExchangeService          glossaryExchangeService;
+    private GovernanceExchangeService        governanceExchangeService;
+    private InfrastructureExchangeService    infrastructureExchangeService;
+    private LineageExchangeService           lineageExchangeService;
+    private StewardshipExchangeService       stewardshipExchangeService;
+    private ValidValuesExchangeService       validValuesExchangeService;
+    private String                           userId;
+    private String                           assetManagerGUID;
+    private String                           assetManagerName;
+    private String                           connectorName;
+    private String                           integrationServiceName;
+    private SynchronizationDirection         synchronizationDirection;
 
-    private boolean glossaryExchangeActive       = true;
-    private boolean dataAssetExchangeActive      = false;
-    private boolean collaborationExchangeActive  = false;
-    private boolean connectionExchangeActive     = false;
-    private boolean infrastructureExchangeActive = false;
-    private boolean lineageExchangeActive        = false;
-    private boolean stewardshipExchangeActive    = false;
-    private boolean governanceExchangeActive     = false;
-    private boolean validValuesExchangeActive    = false;
+    private boolean glossaryExchangeActive          = true;
+    private boolean externalReferenceExchangeActive = true;
+    private boolean dataAssetExchangeActive         = true;
+    private boolean collaborationExchangeActive     = true;
+    private boolean connectionExchangeActive        = true;
+    private boolean infrastructureExchangeActive    = true;
+    private boolean lineageExchangeActive           = true;
+    private boolean stewardshipExchangeActive       = true;
+    private boolean governanceExchangeActive        = true;
+    private boolean validValuesExchangeActive       = true;
+
 
     /**
      * Create a new context for a connector.
@@ -68,7 +72,7 @@ public class CatalogIntegratorContext
      * @param eventClient client to register for events
      * @param collaborationExchangeClient client for collaboration requests
      * @param connectionExchangeClient client for connection requests
-     * @param dataAssetExchangeClient client for data asset requests
+     * @param externalReferenceExchangeClient client for data asset requests
      * @param glossaryExchangeClient client for glossary requests
      * @param governanceExchangeClient client for governance requests
      * @param infrastructureExchangeClient client for infrastructure requests
@@ -84,25 +88,26 @@ public class CatalogIntegratorContext
      * @param integrationServiceName name of this service
      * @param auditLog logging destination
      */
-    public CatalogIntegratorContext(AssetManagerClient           assetManagerClient,
-                                    AssetManagerEventClient      eventClient,
-                                    CollaborationExchangeClient  collaborationExchangeClient,
-                                    ConnectionExchangeClient     connectionExchangeClient,
-                                    DataAssetExchangeClient      dataAssetExchangeClient,
-                                    GlossaryExchangeClient       glossaryExchangeClient,
-                                    GovernanceExchangeClient     governanceExchangeClient,
-                                    InfrastructureExchangeClient infrastructureExchangeClient,
-                                    LineageExchangeClient        lineageExchangeClient,
-                                    StewardshipExchangeClient    stewardshipExchangeClient,
-                                    ValidValuesExchangeClient    validValuesExchangeClient,
-                                    String                       userId,
-                                    String                       assetManagerGUID,
-                                    String                       assetManagerName,
-                                    String                       connectorName,
-                                    String                       integrationServiceName,
-                                    SynchronizationDirection     synchronizationDirection,
-                                    List<String>                 disabledExchangeServices,
-                                    AuditLog                     auditLog)
+    public CatalogIntegratorContext(ExternalAssetManagerClient      assetManagerClient,
+                                    AssetManagerEventClient         eventClient,
+                                    CollaborationExchangeClient     collaborationExchangeClient,
+                                    ConnectionExchangeClient        connectionExchangeClient,
+                                    DataAssetExchangeClient         dataAssetExchangeClient,
+                                    ExternalReferenceExchangeClient externalReferenceExchangeClient,
+                                    GlossaryExchangeClient          glossaryExchangeClient,
+                                    GovernanceExchangeClient        governanceExchangeClient,
+                                    InfrastructureExchangeClient    infrastructureExchangeClient,
+                                    LineageExchangeClient           lineageExchangeClient,
+                                    StewardshipExchangeClient       stewardshipExchangeClient,
+                                    ValidValuesExchangeClient       validValuesExchangeClient,
+                                    String                          userId,
+                                    String                          assetManagerGUID,
+                                    String                          assetManagerName,
+                                    String                          connectorName,
+                                    String                          integrationServiceName,
+                                    SynchronizationDirection        synchronizationDirection,
+                                    List<String>                    disabledExchangeServices,
+                                    AuditLog                        auditLog)
     {
         final String methodName = "CatalogIntegratorContext";
 
@@ -129,6 +134,13 @@ public class CatalogIntegratorContext
                                                                       assetManagerName,
                                                                       connectorName,
                                                                       auditLog);
+        this.externalReferenceExchangeService  = new ExternalReferenceExchangeService(externalReferenceExchangeClient,
+                                                                                      synchronizationDirection,
+                                                                                      userId,
+                                                                                      assetManagerGUID,
+                                                                                      assetManagerName,
+                                                                                      connectorName,
+                                                                                      auditLog);
         this.glossaryExchangeService  = new GlossaryExchangeService(glossaryExchangeClient,
                                                                     synchronizationDirection,
                                                                     userId,
@@ -201,6 +213,10 @@ public class CatalogIntegratorContext
                 else if (dataAssetExchangeServiceName.equals(exchangeServiceName))
                 {
                     dataAssetExchangeActive = false;
+                }
+                else if (externalReferenceExchangeServiceName.equals(exchangeServiceName))
+                {
+                    externalReferenceExchangeActive = false;
                 }
                 else if (infrastructureExchangeServiceName.equals(exchangeServiceName))
                 {

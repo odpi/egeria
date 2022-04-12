@@ -4,6 +4,7 @@ package org.odpi.openmetadata.repositoryservices.auditlog;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogRecord;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogReportingComponent;
 
@@ -42,21 +43,24 @@ public class OMRSAuditLog extends AuditLog
      * will push log records to it.
      *
      * @param omrsDestination destination for the log records
-     * @param componentId numerical identifier for the component.
-     * @param componentName display name for the component.
-     * @param componentDescription description of the component.
-     * @param componentWikiURL link to more information.
+     * @param componentId numerical identifier for the component
+     * @param componentDevelopmentStatus status of the component's implementation
+     * @param componentName display name for the component
+     * @param componentDescription description of the component
+     * @param componentWikiURL link to more information
      */
-    public OMRSAuditLog(OMRSAuditLogDestination omrsDestination,
-                        int                     componentId,
-                        String                  componentName,
-                        String                  componentDescription,
-                        String                  componentWikiURL)
+    public OMRSAuditLog(OMRSAuditLogDestination    omrsDestination,
+                        int                        componentId,
+                        ComponentDevelopmentStatus componentDevelopmentStatus,
+                        String                     componentName,
+                        String                     componentDescription,
+                        String                     componentWikiURL)
     {
-        super(omrsDestination, componentId, componentName, componentDescription, componentWikiURL);
+        super(omrsDestination, componentId, componentDevelopmentStatus, componentName, componentDescription, componentWikiURL);
 
         this.omrsDestination        = omrsDestination;
         this.omrsReportingComponent = new OMRSAuditLogReportingComponent(componentId,
+                                                                         componentDevelopmentStatus,
                                                                          componentName,
                                                                          componentDescription,
                                                                          componentWikiURL);
@@ -76,6 +80,7 @@ public class OMRSAuditLog extends AuditLog
 
         this.omrsDestination        = omrsDestination;
         this.omrsReportingComponent = new OMRSAuditLogReportingComponent(omrsReportingComponent.getComponentId(),
+                                                                         omrsReportingComponent.getComponentDevelopmentStatus(),
                                                                          omrsReportingComponent.getComponentName(),
                                                                          omrsReportingComponent.getComponentType(),
                                                                          omrsReportingComponent.getComponentWikiURL());
@@ -85,19 +90,22 @@ public class OMRSAuditLog extends AuditLog
     /**
      * Clone request is used to create an audit log for a component outside of OMRS.
      *
-     * @param componentId numerical identifier for the component.
-     * @param componentName display name for the component.
-     * @param componentDescription description of the component.
-     * @param componentWikiURL link to more information.
+     * @param componentId numerical identifier for the component
+     * @param componentDevelopmentStatus status of the component's implementation
+     * @param componentName display name for the component
+     * @param componentDescription description of the component
+     * @param componentWikiURL link to more information
      * @return new logging destination
      */
-    public OMRSAuditLog  createNewAuditLog(int    componentId,
-                                           String componentName,
-                                           String componentDescription,
-                                           String componentWikiURL)
+    public OMRSAuditLog  createNewAuditLog(int                        componentId,
+                                           ComponentDevelopmentStatus componentDevelopmentStatus,
+                                           String                     componentName,
+                                           String                     componentDescription,
+                                           String                     componentWikiURL)
     {
         OMRSAuditLog childAuditLog = new OMRSAuditLog(omrsDestination,
                                                       componentId,
+                                                      componentDevelopmentStatus,
                                                       componentName,
                                                       componentDescription,
                                                       componentWikiURL);
@@ -117,6 +125,7 @@ public class OMRSAuditLog extends AuditLog
     public OMRSAuditLog  createNewAuditLog(OMRSAuditingComponent reportingComponent)
     {
         return createNewAuditLog(reportingComponent.getComponentId(),
+                                 reportingComponent.getComponentDevelopmentStatus(),
                                  reportingComponent.getComponentName(),
                                  reportingComponent.getComponentType(),
                                  reportingComponent.getComponentWikiURL());

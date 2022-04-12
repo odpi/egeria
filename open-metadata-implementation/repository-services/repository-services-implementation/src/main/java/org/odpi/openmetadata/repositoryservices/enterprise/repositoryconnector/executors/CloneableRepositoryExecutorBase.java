@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors;
 
-
 import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.accumulators.QueryAccumulatorBase;
 
 

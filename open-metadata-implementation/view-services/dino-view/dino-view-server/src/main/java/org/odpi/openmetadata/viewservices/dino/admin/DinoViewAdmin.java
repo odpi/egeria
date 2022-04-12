@@ -74,7 +74,7 @@ public class DinoViewAdmin extends ViewServiceAdmin {
         this.auditLog = auditLog;
 
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + actionDescription + ", userid=" + serverUserName);
+            log.debug("==> Method: " + actionDescription);
         }
 
         /*
@@ -128,7 +128,7 @@ public class DinoViewAdmin extends ViewServiceAdmin {
                                 viewServiceConfig.toString());
 
             if (log.isDebugEnabled()) {
-                log.debug("<== Method: " + actionDescription + ",userid=" + serverUserName);
+                log.debug("<== Method: " + actionDescription);
             }
 
         }
@@ -158,7 +158,7 @@ public class DinoViewAdmin extends ViewServiceAdmin {
     {
         final String actionDescription = "shutdown";
 
-        log.debug("==> Method: " + actionDescription + ", userid=" + serverUserName);
+        log.debug("==> Method: " + actionDescription);
 
         auditLog.logMessage(actionDescription, DinoViewAuditCode.SERVICE_TERMINATING.getMessageDefinition(serverName));
 
@@ -169,7 +169,7 @@ public class DinoViewAdmin extends ViewServiceAdmin {
 
         auditLog.logMessage(actionDescription, DinoViewAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(serverName));
 
-        log.debug("<== Method: " + actionDescription + ", userid=" + serverUserName);
+        log.debug("<== Method: " + actionDescription);
 
     }
 

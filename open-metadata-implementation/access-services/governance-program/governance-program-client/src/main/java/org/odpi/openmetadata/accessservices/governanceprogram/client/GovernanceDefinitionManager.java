@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.governanceprogram.api.GovernanceDefi
 import org.odpi.openmetadata.accessservices.governanceprogram.client.rest.GovernanceProgramRESTClient;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceDefinitionRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
@@ -219,6 +220,7 @@ public class GovernanceDefinitionManager implements GovernanceDefinitionsInterfa
      *
      * @param userId calling user
      * @param properties properties of the definition
+     * @param initialStatus what is the initial status for the governance definition - default value is DRAFT
      *
      * @return unique identifier of the definition
      *
@@ -228,9 +230,10 @@ public class GovernanceDefinitionManager implements GovernanceDefinitionsInterfa
      */
     @Override
     public String createGovernanceDefinition(String                         userId,
-                                             GovernanceDefinitionProperties properties) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException
+                                             GovernanceDefinitionProperties properties,
+                                             GovernanceDefinitionStatus     initialStatus) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
     {
         final String   methodName = "createGovernanceDefinition";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-definitions";
@@ -244,9 +247,14 @@ public class GovernanceDefinitionManager implements GovernanceDefinitionsInterfa
         invalidParameterHandler.validateName(properties.getDocumentIdentifier(), docIdParameterName, methodName);
         invalidParameterHandler.validateName(properties.getTitle(), titleParameterName, methodName);
 
+        GovernanceDefinitionRequestBody requestBody = new GovernanceDefinitionRequestBody();
+
+        requestBody.setProperties(properties);
+        requestBody.setInitialStatus(initialStatus);
+
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   serverPlatformURLRoot + urlTemplate,
-                                                                  properties,
+                                                                  requestBody,
                                                                   serverName,
                                                                   userId);
 

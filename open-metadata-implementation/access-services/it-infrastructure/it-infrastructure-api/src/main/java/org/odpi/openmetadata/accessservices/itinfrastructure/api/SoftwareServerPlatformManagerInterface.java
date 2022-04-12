@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.itinfrastructure.api;
 
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.PlatformDeploymentElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.DeploymentElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareServerPlatformElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.PlatformDeploymentProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.SoftwareServerPlatformProperties;
@@ -93,79 +93,6 @@ public interface SoftwareServerPlatformManagerInterface
                                       SoftwareServerPlatformProperties platformProperties) throws InvalidParameterException,
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException;
-
-
-
-    /**
-     * Create a relationship between a platform and a host.
-     *
-     * @param userId calling user
-     * @param infrastructureManagerGUID unique identifier of software server capability representing the infrastructure manager
-     * @param infrastructureManagerName unique name of software server capability representing the infrastructure manager
-     * @param platformGUID unique identifier of the platform 
-     * @param hostGUID unique identifier of the host
-     * @param deploymentProperties relationship properties
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    void   deploySoftwareServerPlatformToHost(String                       userId,
-                                              String                       infrastructureManagerGUID,
-                                              String                       infrastructureManagerName,
-                                              String                       platformGUID,
-                                              String                       hostGUID,
-                                              PlatformDeploymentProperties deploymentProperties) throws InvalidParameterException,
-                                                                                                        UserNotAuthorizedException,
-                                                                                                        PropertyServerException;
-
-    /**
-     * Update a relationship between a platform and a host.
-     *
-     * @param userId calling user
-     * @param infrastructureManagerGUID unique identifier of software server capability representing the infrastructure manager
-     * @param infrastructureManagerName unique name of software server capability representing the infrastructure manager
-     * @param platformGUID unique identifier of the platform
-     * @param hostGUID unique identifier of the host
-     * @param isMergeUpdate are unspecified properties unchanged (true) or removed?
-     * @param deploymentProperties properties for the relationship
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    void updateSoftwareServerPlatformOnHost(String                       userId,
-                                            String                       infrastructureManagerGUID,
-                                            String                       infrastructureManagerName,
-                                            String                       platformGUID,
-                                            String                       hostGUID,
-                                            boolean                      isMergeUpdate,
-                                            PlatformDeploymentProperties deploymentProperties) throws InvalidParameterException,
-                                                                                                      UserNotAuthorizedException,
-                                                                                                      PropertyServerException;
-
-
-
-    /**
-     * Remove a relationship between a platform and a host.
-     *
-     * @param userId calling user
-     * @param infrastructureManagerGUID unique identifier of software server capability representing the infrastructure manager
-     * @param infrastructureManagerName unique name of software server capability representing the infrastructure manager
-     * @param platformGUID unique identifier of the platform 
-     * @param hostGUID unique identifier of the host
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    void clearSoftwareServerPlatformFromHost(String userId,
-                                             String infrastructureManagerGUID,
-                                             String infrastructureManagerName,
-                                             String platformGUID,
-                                             String hostGUID) throws InvalidParameterException,
-                                                                     UserNotAuthorizedException,
-                                                                     PropertyServerException;
 
 
     /**
@@ -299,53 +226,6 @@ public interface SoftwareServerPlatformManagerInterface
                                                                                            int    pageSize) throws InvalidParameterException,
                                                                                                                    UserNotAuthorizedException,
                                                                                                                    PropertyServerException;
-
-
-    /**
-     * Return the list of software server platforms deployed on a particular host.
-     *
-     * @param userId calling user
-     * @param hostGUID unique identifier of the platform to query
-     * @param effectiveTime effective time for the query
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     *
-     * @return list of matching metadata elements
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    List<PlatformDeploymentElement> getSoftwareServerPlatformsForHost(String userId,
-                                                                      String hostGUID,
-                                                                      Date   effectiveTime,
-                                                                      int    startFrom,
-                                                                      int    pageSize) throws InvalidParameterException,
-                                                                                                  UserNotAuthorizedException,
-                                                                                                  PropertyServerException;
-
-    /**
-     * Return the list of hosts where a software server platform is deployed to.
-     *
-     * @param userId calling user
-     * @param platformGUID unique identifier of the platform to query
-     * @param effectiveTime effective time for the query
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     *
-     * @return list of matching metadata elements
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    List<PlatformDeploymentElement> getHostsForSoftwareServerPlatform(String userId,
-                                                                      String platformGUID,
-                                                                      Date   effectiveTime,
-                                                                      int    startFrom,
-                                                                      int    pageSize) throws InvalidParameterException,
-                                                                                                  UserNotAuthorizedException,
-                                                                                                  PropertyServerException;
 
 
     /**

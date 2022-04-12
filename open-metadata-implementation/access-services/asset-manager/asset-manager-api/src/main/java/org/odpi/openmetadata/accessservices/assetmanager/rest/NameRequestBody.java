@@ -20,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class NameRequestBody extends AssetManagerIdentifiersRequestBody
+public class NameRequestBody extends EffectiveTimeQueryRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
@@ -109,6 +109,7 @@ public class NameRequestBody extends AssetManagerIdentifiersRequestBody
         return "NameRequestBody{" +
                        "name='" + name + '\'' +
                        ", nameParameterName='" + nameParameterName + '\'' +
+                       ", effectiveTime=" + getEffectiveTime() +
                        ", assetManagerGUID='" + getAssetManagerGUID() + '\'' +
                        ", assetManagerName='" + getAssetManagerName() + '\'' +
                        '}';

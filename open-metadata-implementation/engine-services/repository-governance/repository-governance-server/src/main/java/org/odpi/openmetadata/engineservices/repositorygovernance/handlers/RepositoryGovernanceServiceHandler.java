@@ -1,0 +1,182 @@
+/* SPDX-License-Identifier: Apache 2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+package org.odpi.openmetadata.engineservices.repositorygovernance.handlers;
+
+import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient;
+import org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceEngineProperties;
+import org.odpi.openmetadata.engineservices.repositorygovernance.connector.RepositoryGovernanceContext;
+import org.odpi.openmetadata.engineservices.repositorygovernance.connector.RepositoryGovernanceService;
+import org.odpi.openmetadata.engineservices.repositorygovernance.ffdc.RepositoryGovernanceErrorCode;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.engineservices.repositorygovernance.ffdc.RepositoryGovernanceAuditCode;
+import org.odpi.openmetadata.frameworks.connectors.Connector;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
+import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceServiceHandler;
+
+import java.util.Date;
+
+/**
+ * RepositoryGovernanceServiceHandler provides the support to run a repository governance service.  A new instance is created for each request and it is assigned its
+ * own thread.
+ */
+public class RepositoryGovernanceServiceHandler extends GovernanceServiceHandler
+{
+    private RepositoryGovernanceService repositoryGovernanceService;
+    private RepositoryGovernanceContext repositoryGovernanceContext;
+
+
+    /**
+     * Constructor sets up the key parameters for running the repository governance service.
+     * This call is made on the REST call's thread so the properties are just cached.
+     * The action happens in the run() method.
+     *
+     * @param repositoryGovernanceEngineProperties properties of the repository governance engine - used for message logging
+     * @param repositoryGovernanceEngineGUID unique Identifier of the repository governance engine - used for message logging
+     * @param engineHostUserId userId for making updates to the governance actions
+     * @param governanceActionGUID unique identifier of the governance action that triggered this governance service
+     * @param governanceActionClient client for processing governance actions
+     * @param requestType requestType - used for message logging
+     * @param repositoryGovernanceServiceGUID name of this repository governance service - used for message logging
+     * @param repositoryGovernanceServiceName name of this repository governance service - used for message logging
+     * @param repositoryGovernanceServiceConnector connector that does the work
+     * @param repositoryGovernanceContext context for the connector
+     * @param auditLog destination for log messages
+     */
+    RepositoryGovernanceServiceHandler(GovernanceEngineProperties  repositoryGovernanceEngineProperties,
+                                       String                      repositoryGovernanceEngineGUID,
+                                       String                      engineHostUserId,
+                                       String                      governanceActionGUID,
+                                       GovernanceEngineClient      governanceActionClient,
+                                       String                      requestType,
+                                       String                      repositoryGovernanceServiceGUID,
+                                       String                      repositoryGovernanceServiceName,
+                                       Connector                   repositoryGovernanceServiceConnector,
+                                       RepositoryGovernanceContext repositoryGovernanceContext,
+                                       AuditLog                    auditLog) throws InvalidParameterException
+    {
+        super(repositoryGovernanceEngineProperties,
+              repositoryGovernanceEngineGUID,
+              engineHostUserId,
+              governanceActionGUID,
+              governanceActionClient,
+              requestType,
+              repositoryGovernanceServiceGUID,
+              repositoryGovernanceServiceName,
+              repositoryGovernanceServiceConnector,
+              auditLog);
+
+
+        this.requestType    = requestType;
+        this.repositoryGovernanceContext = repositoryGovernanceContext;
+        this.auditLog       = auditLog;
+
+        try
+        {
+            this.repositoryGovernanceService = (RepositoryGovernanceService) repositoryGovernanceServiceConnector;
+        }
+        catch (Exception error)
+        {
+            final String repositoryGovernanceServiceConnectorParameterName = "repositoryGovernanceServiceConnector";
+            final String actionDescription = "Cast connector to RepositoryGovernanceService";
+
+            auditLog.logException(actionDescription,
+                                  RepositoryGovernanceAuditCode.INVALID_REPOSITORY_GOVERNANCE_SERVICE.getMessageDefinition(repositoryGovernanceServiceName,
+                                                                                                        requestType,
+                                                                                                        error.getClass().getName(),
+                                                                                                        error.getMessage()),
+                                  error);
+            throw new InvalidParameterException(RepositoryGovernanceErrorCode.INVALID_REPOSITORY_GOVERNANCE_SERVICE.getMessageDefinition(repositoryGovernanceServiceName,
+                                                                                                                      requestType,
+                                                                                                                      error.getClass().getName(),
+                                                                                                                      error.getMessage()),
+                                                this.getClass().getName(),
+                                                actionDescription,
+                                                error,
+                                                repositoryGovernanceServiceConnectorParameterName);
+        }
+    }
+
+
+    /**
+     * This is the method that provides the behaviour of the thread.
+     */
+    @Override
+    public void run()
+    {
+        Date startTime;
+        Date endTime;
+
+        final String actionDescription = "Maintain an repository governance service";
+
+        try
+        {
+            auditLog.logMessage(actionDescription,
+                                RepositoryGovernanceAuditCode.REPOSITORY_GOVERNANCE_SERVICE_STARTING.getMessageDefinition(governanceServiceName,
+                                                                                                      requestType,
+                                                                                                      governanceEngineProperties.getQualifiedName(),
+                                                                                                      governanceEngineGUID));
+
+
+
+            repositoryGovernanceService.setRepositoryGovernanceContext(repositoryGovernanceContext);
+            repositoryGovernanceService.setRepositoryGovernanceServiceName(governanceServiceName);
+
+            startTime = new Date();
+            repositoryGovernanceService.start();
+            endTime = new Date();
+
+            CompletionStatus completionStatus = repositoryGovernanceContext.getCompletionStatus();
+
+            if (completionStatus == null)
+            {
+                auditLog.logMessage(actionDescription,
+                                    RepositoryGovernanceAuditCode.REPOSITORY_GOVERNANCE_SERVICE_RETURNED.getMessageDefinition(governanceServiceName,
+                                                                                                          requestType,
+                                                                                                          Long.toString(endTime.getTime() - startTime.getTime())));
+            }
+            else
+            {
+                auditLog.logMessage(actionDescription,
+                                    RepositoryGovernanceAuditCode.REPOSITORY_GOVERNANCE_SERVICE_COMPLETE.getMessageDefinition(governanceServiceName,
+                                                                                                          requestType,
+                                                                                                          completionStatus.getName(),
+                                                                                                          Long.toString(endTime.getTime() - startTime.getTime())));
+                super.disconnect();
+                repositoryGovernanceService.setRepositoryGovernanceContext(null);
+            }
+        }
+        catch (Exception  error)
+        {
+            auditLog.logException(actionDescription,
+                                  RepositoryGovernanceAuditCode.REPOSITORY_GOVERNANCE_SERVICE_FAILED.getMessageDefinition(governanceServiceName,
+                                                                                                      error.getClass().getName(),
+                                                                                                      requestType,
+                                                                                                      governanceEngineProperties.getQualifiedName(),
+                                                                                                      governanceEngineGUID,
+                                                                                                      error.getMessage()),
+                                  error.toString(),
+                                  error);
+            try
+            {
+                CompletionStatus completionStatus = repositoryGovernanceContext.getCompletionStatus();
+
+                if (completionStatus == null)
+                {
+                    repositoryGovernanceContext.recordCompletionStatus(CompletionStatus.FAILED, null, null, null);
+                    super.disconnect();
+                }
+            }
+            catch (Exception statusError)
+            {
+                auditLog.logException(actionDescription,
+                                      RepositoryGovernanceAuditCode.EXC_ON_ERROR_STATUS_UPDATE.getMessageDefinition(governanceEngineProperties.getDisplayName(),
+                                                                                                                governanceServiceName,
+                                                                                                                statusError.getClass().getName(),
+                                                                                                                statusError.getMessage()),
+                                      statusError.toString(),
+                                      statusError);
+            }
+        }
+    }
+}

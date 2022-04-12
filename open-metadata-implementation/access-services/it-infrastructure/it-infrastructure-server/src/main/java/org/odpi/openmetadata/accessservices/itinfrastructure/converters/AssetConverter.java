@@ -16,7 +16,7 @@ import java.lang.reflect.InvocationTargetException;
 
 /**
  * AssetConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- * EntityDetail object into a bean that inherits from AssetProperties.
+ * EntityDetail object into a bean that inherits from AssetElement.
  */
 public class AssetConverter<B> extends ITInfrastructureOMASConverter<B>
 {

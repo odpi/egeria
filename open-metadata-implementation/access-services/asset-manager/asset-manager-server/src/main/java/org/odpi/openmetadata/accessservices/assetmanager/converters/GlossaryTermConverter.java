@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetmanager.converters;
 
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryCategoryElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryCategoryProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryTermElement;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -14,8 +14,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import java.lang.reflect.InvocationTargetException;
 
 /**
- * GlossaryCategoryConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- * EntityDetail object into a GlossaryCategoryElement bean.
+ * GlossaryTermConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
+ * EntityDetail object into a GlossaryTermElement bean.
  */
 public class GlossaryTermConverter<B> extends AssetManagerOMASConverter<B>
 {
@@ -56,34 +56,38 @@ public class GlossaryTermConverter<B> extends AssetManagerOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof GlossaryCategoryElement)
+            if (returnBean instanceof GlossaryTermElement)
             {
-                GlossaryCategoryElement bean = (GlossaryCategoryElement) returnBean;
+                GlossaryTermElement bean = (GlossaryTermElement) returnBean;
 
                 if (entity != null)
                 {
                     bean.setElementHeader(this.getMetadataElementHeader(beanClass, entity, methodName));
-                    GlossaryCategoryProperties glossaryCategoryProperties = new GlossaryCategoryProperties();
+                    GlossaryTermProperties glossaryTermProperties = new GlossaryTermProperties();
 
                     /*
                      * The initial set of values come from the entity.
                      */
                     InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
 
-                    glossaryCategoryProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
-                    glossaryCategoryProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    glossaryCategoryProperties.setDisplayName(this.removeDisplayName(instanceProperties));
-                    glossaryCategoryProperties.setDescription(this.removeDescription(instanceProperties));
+                    glossaryTermProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    glossaryTermProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                    glossaryTermProperties.setDisplayName(this.removeDisplayName(instanceProperties));
+                    glossaryTermProperties.setDescription(this.removeDescription(instanceProperties));
+                    glossaryTermProperties.setAbbreviation(this.removeAbbreviation(instanceProperties));
+                    glossaryTermProperties.setUsage(this.removeUsage(instanceProperties));
+                    glossaryTermProperties.setExamples(this.removeExamples(instanceProperties));
+                    glossaryTermProperties.setSummary(this.removeSummary(instanceProperties));
 
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are
                      * assumed to be defined in a subtype.
                      */
-                    glossaryCategoryProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
-                    glossaryCategoryProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+                    glossaryTermProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+                    glossaryTermProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
-                    bean.setGlossaryCategoryProperties(glossaryCategoryProperties);
+                    bean.setGlossaryTermProperties(glossaryTermProperties);
                 }
                 else
                 {

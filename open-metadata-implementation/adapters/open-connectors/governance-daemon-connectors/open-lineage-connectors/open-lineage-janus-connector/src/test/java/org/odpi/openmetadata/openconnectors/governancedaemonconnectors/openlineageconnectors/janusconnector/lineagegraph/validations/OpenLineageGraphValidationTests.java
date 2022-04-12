@@ -12,7 +12,6 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.janusgraph.core.JanusGraphFactory;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -311,7 +310,7 @@ public class OpenLineageGraphValidationTests {
         g.getGraph().close();
     }
 
-    @Disabled
+        //@Disabled
     @ParameterizedTest
     @MethodSource("getProcesses")
     void validateProcess(String processQualifiedName){
@@ -335,14 +334,14 @@ public class OpenLineageGraphValidationTests {
         log.debug("Validated process with qualifiedName " + processQualifiedName);
     }
 
-    @Disabled
+        //@Disabled
     @ParameterizedTest
     @MethodSource("getInTables")
     void validateInTables(String tableQualifiedName){
         validateTable(tableQualifiedName);
     }
 
-    @Disabled
+        //@Disabled
     @ParameterizedTest
     @MethodSource("getOutTables")
     void validateOutTables(String tableQualifiedName){
@@ -353,7 +352,7 @@ public class OpenLineageGraphValidationTests {
         GraphTraversal<Vertex, Vertex> tableTraversal = g.V().has(VERTEX_QUALIFIED_NAME, tableQualifiedName)
                 .or(__.has(PROPERTY_KEY_LABEL, DATA_FILE),
                         __.has(PROPERTY_KEY_LABEL, RELATIONAL_TABLE));
-
+        System.out.println("chiar testez, nu ma caca pe mibne");
         assertTrue(tableTraversal.hasNext(), "Table not found by qualifiedName " + tableQualifiedName);
         Vertex tableAsVertex = tableTraversal.next();
 
@@ -388,7 +387,7 @@ public class OpenLineageGraphValidationTests {
                 __.has(PROPERTY_KEY_LABEL, DATA_FILE)).hasNext();
     }
 
-    @Disabled
+        //@Disabled
     @ParameterizedTest
     @MethodSource("getColumns")
     void validateColumns(String inputColumnQualifiedName, List<String> outputColumnsQualifiedNames) {
@@ -447,7 +446,7 @@ public class OpenLineageGraphValidationTests {
         log.debug("Validated column with qualifiedName " + columnQualifiedName);
     }
 
-    @Disabled
+        //@Disabled
     @ParameterizedTest
     @MethodSource("getGlossaryTerms")
     void validateGlossaryTermGlossary(String glossaryTermQualifiedName, GlossaryValidations validations) {
@@ -456,7 +455,7 @@ public class OpenLineageGraphValidationTests {
         log.debug("Validated glossaryTerm with qualifiedName " + glossaryTermQualifiedName + " and relations to Glossary");
     }
 
-    @Disabled
+        //@Disabled
     @ParameterizedTest
     @MethodSource("getGlossaryTerms")
     void validateGlossaryTermGlossaryCategory(String glossaryTermQualifiedName, GlossaryValidations validations) {
@@ -465,7 +464,7 @@ public class OpenLineageGraphValidationTests {
         log.debug("Validated glossaryTerm with qualifiedName " + glossaryTermQualifiedName + " and relations to GlossaryCategories");
     }
 
-    @Disabled
+        //@Disabled
     @ParameterizedTest
     @MethodSource("getGlossaryTerms")
     void validateGlossaryTermTabularColumn(String glossaryTermQualifiedName, GlossaryValidations validations) {
@@ -474,7 +473,7 @@ public class OpenLineageGraphValidationTests {
         log.debug("Validated glossaryTerm with qualifiedName " + glossaryTermQualifiedName + " and relations to TabularColumn");
     }
 
-    @Disabled
+        //@Disabled
     @ParameterizedTest
     @MethodSource("getGlossaryTerms")
     void validateGlossaryTermRelationalColumn(String glossaryTermQualifiedName, GlossaryValidations validations) {
@@ -509,7 +508,7 @@ public class OpenLineageGraphValidationTests {
         }
     }
 
-    @Disabled
+        //@Disabled
     @ParameterizedTest
     @MethodSource("getGlossaryCategories")
     void validateGlossaryCategories(String glossaryCategoryQualifiedName, List<String> glossaryTermQualifiedNames) {

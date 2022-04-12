@@ -31,7 +31,7 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
     private InvalidParameterHandler                                invalidParameterHandler;
     private SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE>  dataContainerHandler;
 
-    protected RepositoryErrorHandler errorHandler;
+    protected RepositoryErrorHandler errorHandler; /* initialized in constructor */
 
 
     /**
@@ -88,8 +88,6 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
         this.invalidParameterHandler         = invalidParameterHandler;
         this.repositoryHelper                = repositoryHelper;
 
-
-
         this.dataContainerHandler = new SchemaAttributeHandler<>(dataContainerConverter,
                                                                  dataContainerClass,
                                                                  schemaTypeConverter,
@@ -123,6 +121,9 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
      * @param displayName the stored display name property for the data container
      * @param description the stored description property associated with the data container
      * @param isDeprecated is this table deprecated?
+     * @param elementPosition which order is the element when listing from parent's perspective
+     * @param maxCardinality maximum number of instances of this element
+     * @param minCardinality minimum number of instances of this element
      * @param additionalProperties any arbitrary properties not part of the type system
      * @param typeName name of the type that is a subtype of DisplayDataContainer - or null to create standard type
      * @param extendedProperties properties from any subtype
@@ -165,7 +166,7 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                                                     externalSourceName,
                                                                                     parentGUID,
                                                                                     parentElementGUIDParameterName,
-                                                                                    OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                                     OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID,
                                                                                     OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
                                                                                     effectiveTime,
@@ -308,9 +309,9 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                                                     externalSourceName,
                                                                                     parentGUID,
                                                                                     parentElementGUIDParameterName,
-                                                                                    OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
-                                                                                    OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID,
-                                                                                    OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
+                                                                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                                    OpenMetadataAPIMapper.DISPLAY_DATA_SCHEMA_TYPE_TYPE_GUID,
+                                                                                    OpenMetadataAPIMapper.DISPLAY_DATA_SCHEMA_TYPE_TYPE_NAME,
                                                                                     effectiveTime,
                                                                                     methodName);
 
@@ -339,15 +340,15 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
 
             if (dataContainerGUID != null)
             {
-                final String databaseSchemaTypeGUIDParameterName = "databaseSchemaTypeGUID";
+                final String displaySchemaTypeGUIDParameterName = "displaySchemaTypeGUID";
                 final String dataContainerGUIDParameterName = "dataContainerGUID";
 
                 dataContainerHandler.linkElementToElement(userId,
                                                           externalSourceGUID,
                                                           externalSourceName,
                                                           databaseSchemaTypeGUID,
-                                                          databaseSchemaTypeGUIDParameterName,
-                                                          OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
+                                                          displaySchemaTypeGUIDParameterName,
+                                                          OpenMetadataAPIMapper.DISPLAY_DATA_SCHEMA_TYPE_TYPE_NAME,
                                                           dataContainerGUID,
                                                           dataContainerGUIDParameterName,
                                                           OpenMetadataAPIMapper.DISPLAY_DATA_CONTAINER_TYPE_NAME,
@@ -630,19 +631,19 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                                                     null,
                                                                                     parentGUID,
                                                                                     parentElementGUIDParameterName,
-                                                                                    OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
-                                                                                    OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID,
-                                                                                    OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
+                                                                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                                    OpenMetadataAPIMapper.DISPLAY_DATA_SCHEMA_TYPE_TYPE_GUID,
+                                                                                    OpenMetadataAPIMapper.DISPLAY_DATA_SCHEMA_TYPE_TYPE_NAME,
                                                                                     effectiveTime,
                                                                                     methodName);
 
         if (databaseSchemaTypeGUID != null)
         {
-            final String databaseSchemaTypeGUIDParameterName = "databaseSchemaTypeGUID";
+            final String displaySchemaTypeGUIDParameterName = "displaySchemaTypeGUID";
 
             return dataContainerHandler.getSchemaAttributesForComplexSchemaType(userId,
                                                                                 databaseSchemaTypeGUID,
-                                                                                databaseSchemaTypeGUIDParameterName,
+                                                                                displaySchemaTypeGUIDParameterName,
                                                                                 null,
                                                                                 OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
                                                                                 startFrom,

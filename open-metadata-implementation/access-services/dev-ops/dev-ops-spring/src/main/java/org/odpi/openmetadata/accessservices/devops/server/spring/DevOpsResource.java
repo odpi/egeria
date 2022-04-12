@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name="DevOps OMAS", description="The DevOps OMAS provides APIs and events for tools that play a role in a DevOps pipeline.",
      externalDocs=@ExternalDocumentation(description="DevOps Open Metadata Access Service (OMAS)",
-                                         url="https://odpi.github.io/egeria-docs/services/omas/dev-ops/overview/"))
+                                         url="https://egeria-project.org/services/omas/dev-ops/overview/"))
 
 public class DevOpsResource
 {

@@ -103,7 +103,6 @@ public class ClassificationListResponse extends OMRSAPIPagedResponse
     {
         return "ClassificationListResponse{" +
                 "classifications=" + classifications +
-                ", nextPageURL='" + nextPageURL + '\'' +
                 ", offset=" + offset +
                 ", pageSize=" + pageSize +
                 ", relatedHTTPCode=" + relatedHTTPCode +

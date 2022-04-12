@@ -132,7 +132,7 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
                               "Set the maximum page size in the configuration document to an appropriate value and restart the server."),
 
     ENTERPRISE_TOPIC_START_FAILED(400, "OMAG-ADMIN-400-015",
-            "The OMAG server {0} is unable to start the enterprise OMRS topic connector, error message was {1}",
+            "The OMAG server {0} is unable to start the {1} enterprise OMRS topic connector, {2} exception with error message {3} occurred",
             "The open metadata access services will not be able to receive events from the connected repositories.",
             "Review the error messages and once the source of the problem is resolved, restart the server and retry the request."),
 
@@ -179,7 +179,7 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
     INCOMPATIBLE_CONFIG_FILE(400, "OMAG-ADMIN-400-023",
             "The configuration document for OMAG server {0} is at version {1} which is not compatible with this OMAG Server Platform which supports versions {2}",
             "The system is unable to configure the local server because it can not read the configuration document.",
-            "Migrate the configuration document to a compatible version (or delete and recreate it).  See https://odpi.github.io/egeria-docs/guides/migration/migrating-configuration-documents/"),
+            "Migrate the configuration document to a compatible version (or delete and recreate it).  See https://egeria-project.org/guides/migration/migrating-configuration-documents/"),
 
     BAD_CONFIG_PROPERTIES(400, "OMAG-ADMIN-400-024",
             "The {0} Open Metadata Access Service (OMAS) has been passed an invalid value of {1} in the {2} property.  The resulting exception of {3} included the following message: {4}",

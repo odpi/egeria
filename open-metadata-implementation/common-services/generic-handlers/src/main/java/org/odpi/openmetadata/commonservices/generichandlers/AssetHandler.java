@@ -226,8 +226,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
     }
 
 
-
-
     /**
      * Link the schema type and asset.  This is called from outside of AssetHandler.  The assetGUID is checked to ensure the
      * asset exists and updates are allowed.  If there is already a schema attached, it is deleted.
@@ -1724,6 +1722,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                               UserNotAuthorizedException
     {
         RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
+                                                                                       invalidParameterHandler,
                                                                                        userId,
                                                                                        assetGUID,
                                                                                        assetTypeName,
@@ -2134,13 +2133,15 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                   EntitySummary connectionEntity,
                                                                   Date          effectiveTime,
                                                                   String        methodName) throws PropertyServerException,
-                                                                                                   UserNotAuthorizedException
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   InvalidParameterException
     {
         List<Relationship> supplementaryRelationships = new ArrayList<>();
 
         if ((connectionEntity != null) && (connectionEntity.getType() != null))
         {
             RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
+                                                                                           invalidParameterHandler,
                                                                                            userId,
                                                                                            connectionEntity.getGUID(),
                                                                                            connectionEntity.getType().getTypeDefName(),
@@ -2417,6 +2418,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         if ((zoneName == null) || (suppliedSupportedZones == null) || (suppliedSupportedZones.contains(zoneName)))
         {
             RepositoryEntitiesIterator iterator = new RepositoryEntitiesIterator(repositoryHandler,
+                                                                                 invalidParameterHandler,
                                                                                  userId,
                                                                                  resultTypeGUID,
                                                                                  resultTypeName,
@@ -2511,6 +2513,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         if ((zoneName == null) || (suppliedSupportedZones == null) || (suppliedSupportedZones.contains(zoneName)))
         {
             RepositoryEntitiesIterator iterator = new RepositoryEntitiesIterator(repositoryHandler,
+                                                                                 invalidParameterHandler,
                                                                                  userId,
                                                                                  resultTypeGUID,
                                                                                  resultTypeName,

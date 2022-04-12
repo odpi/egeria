@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.accessservices.governanceprogram.fvt.errorhandling;
 
 import org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceDefinitionManager;
-import org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceDefinitionManager;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionProperties;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
 
@@ -33,7 +33,7 @@ class CreateGovernanceDefinitionInvalidParameterTest
             testCreateGovernanceDefinitionNoProperties(client, userId);
             testCreateGovernanceDefinitionNoQualifiedName(client, userId);
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -54,14 +54,14 @@ class CreateGovernanceDefinitionInvalidParameterTest
 
         try
         {
-            client.createGovernanceDefinition(null, properties);
+            client.createGovernanceDefinition(null, properties, GovernanceDefinitionStatus.ACTIVE);
             throw new FVTUnexpectedCondition(testCaseName, activityName);
         }
         catch (InvalidParameterException expectedException)
         {
             // ignore
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -82,14 +82,14 @@ class CreateGovernanceDefinitionInvalidParameterTest
 
         try
         {
-            client.createGovernanceDefinition(userId,null);
+            client.createGovernanceDefinition(userId,null, GovernanceDefinitionStatus.ACTIVE);
             throw new FVTUnexpectedCondition(testCaseName, activityName);
         }
         catch (InvalidParameterException expectedException)
         {
             // ignore
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
@@ -112,14 +112,14 @@ class CreateGovernanceDefinitionInvalidParameterTest
         {
             GovernanceDefinitionProperties properties = new GovernanceDefinitionProperties();
 
-            client.createGovernanceDefinition(userId, properties);
+            client.createGovernanceDefinition(userId, properties, GovernanceDefinitionStatus.ACTIVE);
             throw new FVTUnexpectedCondition(testCaseName, activityName);
         }
         catch (InvalidParameterException expectedException)
         {
             // ignore
         }
-        catch (Throwable unexpectedError)
+        catch (Exception unexpectedError)
         {
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }

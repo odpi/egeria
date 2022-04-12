@@ -2,8 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.itinfrastructure.api;
 
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.RelatedAssetElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ServerAssetUseElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareCapabilityElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.CapabilityDeploymentProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ServerAssetUseProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ServerAssetUseType;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.SoftwareCapabilityProperties;
@@ -38,7 +40,7 @@ public interface SoftwareCapabilityManagerInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    String createSoftwareCapability(String userId,
+    String createSoftwareCapability(String                       userId,
                                     String                       infrastructureManagerGUID,
                                     String                       infrastructureManagerName,
                                     boolean                      infrastructureManagerIsHome,
@@ -96,6 +98,80 @@ public interface SoftwareCapabilityManagerInterface
                                   SoftwareCapabilityProperties capabilityProperties) throws InvalidParameterException,
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException;
+
+
+    /**
+     * Link a software capability to a software server.
+     *
+     * @param userId calling user
+     * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
+     * @param infrastructureManagerName unique name of software server capability representing the caller
+     * @param infrastructureManagerIsHome should the software server capability be marked as owned by the infrastructure manager so others can not update?
+     * @param capabilityGUID unique identifier of the software server capability
+     * @param infrastructureAssetGUID unique identifier of the software server
+     * @param properties describes the deployment of the capability onto the server
+     *
+     * @throws InvalidParameterException one of the guids is null or not known
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    void deployCapability(String                         userId,
+                          String                         infrastructureManagerGUID,
+                          String                         infrastructureManagerName,
+                          boolean                        infrastructureManagerIsHome,
+                          String                         capabilityGUID,
+                          String                         infrastructureAssetGUID,
+                          CapabilityDeploymentProperties properties) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException;
+
+
+    /**
+     * Update the properties of a server capability's deployment.
+     *
+     * @param userId calling user
+     * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
+     * @param infrastructureManagerName unique name of software server capability representing the caller
+     * @param deploymentGUID unique identifier of the relationship
+     * @param isMergeUpdate are unspecified properties unchanged (true) or removed?
+     * @param properties describes the deployment of the capability onto the server
+     *
+     * @throws InvalidParameterException one of the guids is null or not known
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    void updateCapabilityDeployment(String                         userId,
+                                    String                         infrastructureManagerGUID,
+                                    String                         infrastructureManagerName,
+                                    String                         deploymentGUID,
+                                    boolean                        isMergeUpdate,
+                                    CapabilityDeploymentProperties properties) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException;
+
+
+    /**
+     * Remove the link between a software server capability and a software server.
+     *
+     * @param userId calling user
+     * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
+     * @param infrastructureManagerName unique name of software server capability representing the caller
+     * @param itAssetGUID unique identifier of the software server/platform/host
+     * @param capabilityGUID unique identifier of the software server capability
+     * @param effectiveTime time that the relationship is effective
+     *
+     * @throws InvalidParameterException one of the guids is null or not known
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    void removeCapabilityDeployment(String userId,
+                                    String infrastructureManagerGUID,
+                                    String infrastructureManagerName,
+                                    String itAssetGUID,
+                                    String capabilityGUID,
+                                    Date   effectiveTime) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException;
 
 
     /**
@@ -166,6 +242,81 @@ public interface SoftwareCapabilityManagerInterface
                                                                   int    pageSize) throws InvalidParameterException,
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException;
+
+
+    /**
+     * Retrieve the IT asset metadata elements where the software with the supplied unique identifier is deployed.
+     *
+     * @param userId calling user
+     * @param guid unique identifier of the requested metadata element
+     * @param effectiveTime effective time for the query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of related IT Assets
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<RelatedAssetElement> getSoftwareCapabilityDeployments(String userId,
+                                                               String guid,
+                                                               Date   effectiveTime,
+                                                               int    startFrom,
+                                                               int    pageSize) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException;
+
+
+
+    /**
+     * Retrieve the software capabilities that are deployed to an IT asset.
+     *
+     * @param userId calling user
+     * @param itAssetGUID unique identifier of the hosting metadata element
+     * @param effectiveTime effective time for the query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of related IT Assets
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<SoftwareCapabilityElement> getDeployedSoftwareCapabilities(String userId,
+                                                                    String itAssetGUID,
+                                                                    Date   effectiveTime,
+                                                                    int    startFrom,
+                                                                    int    pageSize) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException;
+
+
+    /**
+     * Retrieve the list of capabilities created by this caller.
+     *
+     * @param userId calling user
+     * @param infrastructureManagerGUID unique identifier of software server capability representing the infrastructure manager
+     * @param infrastructureManagerName unique name of software server capability representing the infrastructure manager
+     * @param effectiveTime effective time for the query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<SoftwareCapabilityElement> getSoftwareCapabilitiesForInfrastructureManager(String userId,
+                                                                                    String infrastructureManagerGUID,
+                                                                                    String infrastructureManagerName,
+                                                                                    Date   effectiveTime,
+                                                                                    int    startFrom,
+                                                                                    int    pageSize) throws InvalidParameterException,
+                                                                                                            UserNotAuthorizedException,
+                                                                                                            PropertyServerException;
 
 
     /**

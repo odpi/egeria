@@ -4,16 +4,13 @@ package org.odpi.openmetadata.engineservices.governanceaction.client;
 
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.ffdc.properties.ConnectorReport;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
 import org.odpi.openmetadata.engineservices.governanceaction.api.GovernanceActionAPI;
 import org.odpi.openmetadata.engineservices.governanceaction.client.rest.GovernanceActionRESTClient;
-import org.odpi.openmetadata.engineservices.governanceaction.properties.ProviderReport;
-import org.odpi.openmetadata.engineservices.governanceaction.rest.ProviderReportResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 
 
 /**
@@ -79,10 +76,10 @@ public class GovernanceActionEngineClient implements GovernanceActionAPI
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException there was a problem detected by the integration service
      */
-    public ProviderReport validateConnector(String userId,
-                                            String connectorProviderClassName) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+    public ConnectorReport validateConnector(String userId,
+                                             String connectorProviderClassName) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
     {
         final String   methodName = "validateConnector";
         final String   nameParameter = "connectorProviderClassName";
@@ -91,12 +88,12 @@ public class GovernanceActionEngineClient implements GovernanceActionAPI
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(connectorProviderClassName, nameParameter, methodName);
 
-        ProviderReportResponse restResult = restClient.callProviderReportGetRESTCall(methodName,
+        ConnectorTypeResponse restResult = restClient.callOCFConnectorTypeGetRESTCall(methodName,
                                                                                     serverPlatformRootURL + urlTemplate,
-                                                                                    serverName,
-                                                                                    userId,
-                                                                                    connectorProviderClassName);
+                                                                                     serverName,
+                                                                                     userId,
+                                                                                     connectorProviderClassName);
 
-        return restResult.getProviderReport();
+        return new ConnectorReport(restResult);
     }
 }

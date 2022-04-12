@@ -259,7 +259,6 @@ public class OMRSMetadataDefaultRepositorySecurity implements OpenMetadataReposi
     {
     }
 
-
     /**
      * Tests for whether a specific user should have the right to add a classification to an entity instance
      * within a repository.
@@ -273,7 +272,7 @@ public class OMRSMetadataDefaultRepositorySecurity implements OpenMetadataReposi
     @Override
     public void  validateUserForEntityClassificationAdd(String               userId,
                                                         String               metadataCollectionName,
-                                                        EntityDetail         instance,
+                                                        EntitySummary        instance,
                                                         String               classificationName,
                                                         InstanceProperties   properties)
     {
@@ -293,7 +292,7 @@ public class OMRSMetadataDefaultRepositorySecurity implements OpenMetadataReposi
     @Override
     public void  validateUserForEntityClassificationUpdate(String               userId,
                                                            String               metadataCollectionName,
-                                                           EntityDetail         instance,
+                                                           EntitySummary        instance,
                                                            String               classificationName,
                                                            InstanceProperties   properties)
     {
@@ -312,7 +311,7 @@ public class OMRSMetadataDefaultRepositorySecurity implements OpenMetadataReposi
     @Override
     public void  validateUserForEntityClassificationDelete(String               userId,
                                                            String               metadataCollectionName,
-                                                           EntityDetail         instance,
+                                                           EntitySummary        instance,
                                                            String               classificationName)
     {
     }

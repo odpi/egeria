@@ -93,7 +93,10 @@ public class OMAGServerAdminForViewServices
                         if (viewServiceConfig.getViewServiceOperationalStatus() == ServiceOperationalStatus.ENABLED)
                         {
                             RegisteredOMAGService service = new RegisteredOMAGService();
+
+                            service.setServiceId(viewServiceConfig.getViewServiceId());
                             service.setServiceName(viewServiceConfig.getViewServiceFullName());
+                            service.setServiceDevelopmentStatus(viewServiceConfig.getViewServiceDevelopmentStatus());
                             service.setServiceDescription(viewServiceConfig.getViewServiceDescription());
                             service.setServiceURLMarker(viewServiceConfig.getViewServiceURLMarker());
                             service.setServiceWiki(viewServiceConfig.getViewServiceWiki());

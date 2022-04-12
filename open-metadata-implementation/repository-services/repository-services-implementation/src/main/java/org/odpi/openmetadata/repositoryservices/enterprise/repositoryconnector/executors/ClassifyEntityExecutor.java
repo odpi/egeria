@@ -5,8 +5,10 @@ package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationOrigin;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.accumulators.MaintenanceAccumulator;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
@@ -24,6 +26,7 @@ public class ClassifyEntityExecutor extends RepositoryExecutorBase
 {
     private MaintenanceAccumulator accumulator;
     private String                 entityGUID;
+    private EntityProxy            entityProxy;
     private String                 classificationName;
     private String                 externalSourceGUID;
     private String                 externalSourceName;
@@ -32,6 +35,7 @@ public class ClassifyEntityExecutor extends RepositoryExecutorBase
     private InstanceProperties     classificationProperties;
 
     private EntityDetail updatedEntity = null;
+    private Classification addedClassification = null;
 
 
     /**
@@ -50,6 +54,7 @@ public class ClassifyEntityExecutor extends RepositoryExecutorBase
      */
     public ClassifyEntityExecutor(String               userId,
                                   String               entityGUID,
+                                  EntityProxy          entityProxy,
                                   String               classificationName,
                                   String               externalSourceGUID,
                                   String               externalSourceName,
@@ -64,6 +69,7 @@ public class ClassifyEntityExecutor extends RepositoryExecutorBase
         this.accumulator              = new MaintenanceAccumulator(auditLog);
 
         this.entityGUID               = entityGUID;
+        this.entityProxy              = entityProxy;
         this.classificationName       = classificationName;
         this.externalSourceGUID       = externalSourceGUID;
         this.externalSourceName       = externalSourceName;
@@ -97,21 +103,48 @@ public class ClassifyEntityExecutor extends RepositoryExecutorBase
              */
             if ((externalSourceGUID == null) && (classificationOrigin == ClassificationOrigin.ASSIGNED))
             {
-                updatedEntity = metadataCollection.classifyEntity(userId, entityGUID, classificationName, classificationProperties);
+                if (entityProxy == null)
+                {
+                    updatedEntity = metadataCollection.classifyEntity(userId,
+                                                                      entityGUID,
+                                                                      classificationName,
+                                                                      classificationProperties);
+                }
+                else
+                {
+                    addedClassification = metadataCollection.classifyEntity(userId,
+                                                                            entityProxy,
+                                                                            classificationName,
+                                                                            classificationProperties);
+                }
             }
             else
             {
-                updatedEntity = metadataCollection.classifyEntity(userId,
-                                                                  entityGUID,
-                                                                  classificationName,
-                                                                  externalSourceGUID,
-                                                                  externalSourceName,
-                                                                  classificationOrigin,
-                                                                  classificationOriginGUID,
-                                                                  classificationProperties);
+                if (entityProxy == null)
+                {
+                    updatedEntity = metadataCollection.classifyEntity(userId,
+                                                                      entityGUID,
+                                                                      classificationName,
+                                                                      externalSourceGUID,
+                                                                      externalSourceName,
+                                                                      classificationOrigin,
+                                                                      classificationOriginGUID,
+                                                                      classificationProperties);
+                }
+                else
+                {
+                    addedClassification = metadataCollection.classifyEntity(userId,
+                                                                            entityProxy,
+                                                                            classificationName,
+                                                                            externalSourceGUID,
+                                                                            externalSourceName,
+                                                                            classificationOrigin,
+                                                                            classificationOriginGUID,
+                                                                            classificationProperties);
+                }
             }
 
-            result        = true;
+            result = true;
         }
         catch (InvalidParameterException error)
         {
@@ -178,6 +211,47 @@ public class ClassifyEntityExecutor extends RepositoryExecutorBase
         if (updatedEntity != null)
         {
             return updatedEntity;
+        }
+
+        accumulator.throwCapturedRepositoryErrorException();
+        accumulator.throwCapturedUserNotAuthorizedException();
+        accumulator.throwCapturedGenericException(methodName);
+        accumulator.throwCapturedEntityNotKnownException();
+        accumulator.throwCapturedInvalidParameterException();
+        accumulator.throwCapturedFunctionNotSupportedException();
+        accumulator.throwCapturedClassificationErrorException();
+        accumulator.throwCapturedPropertyErrorException();
+
+        return null;
+    }
+
+    /**
+     * Return the result of the execution.  Hopefully this is a result - but may be an exception
+     *
+     * @return Classification newly added classification into the entity.
+     *
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws ClassificationErrorException the requested classification is either not known or not valid
+     *                                         for the entity.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     */
+    public Classification getAddedClassification() throws InvalidParameterException,
+                                                          RepositoryErrorException,
+                                                          EntityNotKnownException,
+                                                          ClassificationErrorException,
+                                                          PropertyErrorException,
+                                                          UserNotAuthorizedException,
+                                                          FunctionNotSupportedException
+    {
+        if (addedClassification != null)
+        {
+            return addedClassification;
         }
 
         accumulator.throwCapturedRepositoryErrorException();

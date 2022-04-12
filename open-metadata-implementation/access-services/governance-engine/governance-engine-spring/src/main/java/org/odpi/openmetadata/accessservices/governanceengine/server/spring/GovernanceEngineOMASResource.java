@@ -4,13 +4,41 @@ package org.odpi.openmetadata.accessservices.governanceengine.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-
-import org.odpi.openmetadata.accessservices.governanceengine.rest.*;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.ActionTargetStatusRequestBody;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.CompletionStatusRequestBody;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.DuplicatesRequestBody;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.FindRequestBody;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.GovernanceActionElementResponse;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.GovernanceActionElementsResponse;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.GovernanceActionProcessRequestBody;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.GovernanceActionRequestBody;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.IncidentReportRequestBody;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.NewClassificationRequestBody;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.NewMetadataElementRequestBody;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.NewRelatedElementsRequestBody;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.OpenMetadataElementResponse;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.OpenMetadataElementsResponse;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.RelatedMetadataElementListResponse;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.RelatedMetadataElementsListResponse;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.StatusRequestBody;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.UpdateEffectivityDatesRequestBody;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.UpdatePropertiesRequestBody;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.UpdateRequestBody;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.UpdateStatusRequestBody;
 import org.odpi.openmetadata.accessservices.governanceengine.server.GovernanceEngineRESTServices;
-import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Date;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * GovernanceEngineOMASResource supports the REST APIs for running Governance Action Service
@@ -21,7 +49,7 @@ import java.util.Date;
 @Tag(name="Governance Engine OMAS",
      description="The Governance Engine Open Metadata Access Service (OMAS) provides support for governance engines, services and actions.",
      externalDocs=@ExternalDocumentation(description="Governance Engine Open Metadata Access Service (OMAS)",
-                                         url="https://odpi.github.io/egeria-docs/services/omas/governance-engine/overview/"))
+                                         url="https://egeria-project.org/services/omas/governance-engine/overview/"))
 
 public class GovernanceEngineOMASResource
 {
@@ -546,6 +574,27 @@ public class GovernanceEngineOMASResource
                                                      @RequestBody  NewRelatedElementsRequestBody requestBody)
     {
         return restAPI.createRelatedElementsInStore(serverName, userId, requestBody);
+    }
+
+    /**
+     * Create a simple relationship between two elements. If the relationship already exists,
+     * the properties are updated.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param userId calling user
+     * @param requestBody parameters for the relationship
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid, or the elements are of different types
+     * PropertyServerException problem accessing property server
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/open-metadata-store/related-elements/link-as-peer-duplicate")
+    public VoidResponse linkElementsAsPeerDuplicates(@PathVariable String                        serverName,
+                                                     @PathVariable String                        userId,
+                                                     @RequestBody  DuplicatesRequestBody         requestBody)
+    {
+        return restAPI.linkElementsAsDuplicates(serverName, userId, requestBody);
     }
 
 

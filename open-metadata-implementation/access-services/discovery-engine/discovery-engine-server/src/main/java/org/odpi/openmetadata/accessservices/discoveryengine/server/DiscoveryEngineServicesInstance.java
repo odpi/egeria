@@ -7,7 +7,6 @@ import org.odpi.openmetadata.accessservices.discoveryengine.converters.Annotatio
 import org.odpi.openmetadata.accessservices.discoveryengine.converters.DataFieldConverter;
 import org.odpi.openmetadata.accessservices.discoveryengine.converters.DiscoveryAnalysisReportConverter;
 import org.odpi.openmetadata.accessservices.discoveryengine.ffdc.DiscoveryEngineErrorCode;
-import org.odpi.openmetadata.accessservices.discoveryengine.handlers.DiscoveryConfigurationHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
@@ -35,7 +34,6 @@ public class DiscoveryEngineServicesInstance extends OMASServiceInstance
     private AnnotationHandler<Annotation>                           annotationHandler;
     private DataFieldHandler                                        dataFieldHandler;
     private DiscoveryAnalysisReportHandler<DiscoveryAnalysisReport> discoveryAnalysisReportHandler;
-    private DiscoveryConfigurationHandler                           discoveryConfigurationHandler;
     private Connection                                              outTopicConnection;
 
 
@@ -112,30 +110,20 @@ public class DiscoveryEngineServicesInstance extends OMASServiceInstance
                                                            defaultZones,
                                                            publishZones,
                                                            auditLog);
-            this.discoveryAnalysisReportHandler = new DiscoveryAnalysisReportHandler<>(new DiscoveryAnalysisReportConverter<>(repositoryHelper, serviceName, serverName),
-                                                                                       DiscoveryAnalysisReport.class,
-                                                                                       serviceName,
-                                                                                       serverName,
-                                                                                       invalidParameterHandler,
-                                                                                       repositoryHandler,
-                                                                                       repositoryHelper,
-                                                                                       localServerUserId,
-                                                                                       securityVerifier,
-                                                                                       supportedZones,
-                                                                                       defaultZones,
-                                                                                       publishZones,
-                                                                                       auditLog);
-            this.discoveryConfigurationHandler = new DiscoveryConfigurationHandler(serviceName,
-                                                                                   serverName,
-                                                                                   invalidParameterHandler,
-                                                                                   repositoryHandler,
-                                                                                   repositoryHelper,
-                                                                                   localServerUserId,
-                                                                                   securityVerifier,
-                                                                                   supportedZones,
-                                                                                   defaultZones,
-                                                                                   publishZones,
-                                                                                   auditLog);
+            this.discoveryAnalysisReportHandler = new DiscoveryAnalysisReportHandler<>(
+                    new DiscoveryAnalysisReportConverter<>(repositoryHelper, serviceName, serverName),
+                    DiscoveryAnalysisReport.class,
+                    serviceName,
+                    serverName,
+                    invalidParameterHandler,
+                    repositoryHandler,
+                    repositoryHelper,
+                    localServerUserId,
+                    securityVerifier,
+                    supportedZones,
+                    defaultZones,
+                    publishZones,
+                    auditLog);
         }
         else
         {
@@ -143,17 +131,6 @@ public class DiscoveryEngineServicesInstance extends OMASServiceInstance
                                            this.getClass().getName(),
                                            methodName);
         }
-    }
-
-
-    /**
-     * Return the handler for configuration requests.
-     *
-     * @return handler object
-     */
-    DiscoveryConfigurationHandler getDiscoveryConfigurationHandler()
-    {
-        return discoveryConfigurationHandler;
     }
 
 

@@ -21,7 +21,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
  * Once the provisioning work is complete, and any lineage metadata is created, your start() method should call
  * governanceContext.recordCompletionStatus() and then return.
  */
-public abstract class ProvisioningGovernanceActionService extends GovernanceActionService
+public abstract class ProvisioningGovernanceActionService extends GovernanceActionServiceConnector
 {
     protected ProvisioningGovernanceContext governanceContext = null;
 
@@ -32,7 +32,7 @@ public abstract class ProvisioningGovernanceActionService extends GovernanceActi
      *
      * @param governanceContext specialist context for this type of governance action.
      */
-    public synchronized void setGovernanceContext(ProvisioningGovernanceContext governanceContext)
+    public synchronized void setGovernanceContext(GovernanceActionContext governanceContext)
     {
         this.governanceContext = governanceContext;
     }

@@ -26,6 +26,7 @@ public class LineageVertex implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    private Object id;
     private String nodeID;
     private String nodeType;
     private String displayName;
@@ -85,6 +86,14 @@ public class LineageVertex implements Serializable {
         this.qualifiedName = qualifiedName;
     }
 
+    public Object getId() {
+        return id;
+    }
+
+    public void setId(Object id) {
+        this.id = id;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -96,5 +105,18 @@ public class LineageVertex implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(nodeID, nodeType, displayName, guid, qualifiedName, properties);
+    }
+
+    @Override
+    public String toString() {
+        return "LineageVertex{" +
+                "id=" + id +
+                ", nodeID='" + nodeID + '\'' +
+                ", nodeType='" + nodeType + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", guid='" + guid + '\'' +
+                ", qualifiedName='" + qualifiedName + '\'' +
+                ", properties=" + properties +
+                '}';
     }
 }

@@ -431,7 +431,6 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * Create a new metadata element to represent a schema type.
      *
      * @param assetManagerIsHome ensure that only the asset manager can update this schema element
-     * @param schemaTypeGUID unique identifier of the schemaType where the schema type is located
      * @param schemaTypeProperties properties about the schema type to store
      *
      * @return unique identifier of the new schema type
@@ -441,7 +440,6 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public String createSchemaType(boolean              assetManagerIsHome,
-                                   String               schemaTypeGUID,
                                    SchemaTypeProperties schemaTypeProperties) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
@@ -1092,6 +1090,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * Create a new metadata element to represent a process.
      *
      * @param assetManagerIsHome ensure that only the asset manager can update this process
+     * @param processStatus initial status of the process
      * @param processProperties properties about the process to store
      *
      * @return unique identifier of the new process
@@ -1101,6 +1100,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public String createProcess(boolean           assetManagerIsHome,
+                                ProcessStatus     processStatus,
                                 ProcessProperties processProperties) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException
@@ -1115,6 +1115,7 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
                                                    null,
                                                    null,
                                                    null,
+                                                   processStatus,
                                                    processProperties);
     }
 
@@ -1882,12 +1883,12 @@ public class LineageIntegratorContext implements OpenLineageListenerManager
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void  updateDataFlow(String dataFlowGUID,
-                                 String qualifiedName,
-                                 String description,
-                                 String formula) throws InvalidParameterException,
-                                                        UserNotAuthorizedException,
-                                                        PropertyServerException
+    public void updateDataFlow(String dataFlowGUID,
+                               String qualifiedName,
+                               String description,
+                               String formula) throws InvalidParameterException,
+                                                      UserNotAuthorizedException,
+                                                      PropertyServerException
     {
         lineageExchangeClient.updateDataFlow(userId, assetManagerGUID, assetManagerName, dataFlowGUID, qualifiedName, description, formula);
     }

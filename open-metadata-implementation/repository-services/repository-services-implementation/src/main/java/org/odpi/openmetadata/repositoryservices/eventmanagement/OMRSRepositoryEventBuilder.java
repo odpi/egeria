@@ -14,7 +14,8 @@ import org.odpi.openmetadata.repositoryservices.events.*;
 /**
  * OMRSRepositoryEventBuilder creates OMRS Events ready to be distributed.
  */
-public abstract class OMRSRepositoryEventBuilder extends OMRSRepositoryEventProcessor
+public abstract class OMRSRepositoryEventBuilder extends OMRSRepositoryEventProcessor implements
+                                                         OMRSInstanceEventProcessorClassificationExtension
 {
     /**
      * Constructor to update the event processor name.
@@ -757,7 +758,7 @@ public abstract class OMRSRepositoryEventBuilder extends OMRSRepositoryEventProc
                                                String         originatorServerName,
                                                String         originatorServerType,
                                                String         originatorOrganizationName,
-                                               EntityProxy   entity,
+                                               EntityProxy    entity,
                                                Classification originalClassification,
                                                Classification classification)
     {

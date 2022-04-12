@@ -251,11 +251,11 @@ public class OCFMetadataInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
-    ExternalReferenceHandler<ExternalReference> getExternalReferenceHandler(String userId,
-                                                                            String serverName,
-                                                                            String serviceOperationName) throws InvalidParameterException,
-                                                                                                                UserNotAuthorizedException,
-                                                                                                                PropertyServerException
+    ExternalReferenceLinkHandler<ExternalReference> getExternalReferenceHandler(String userId,
+                                                                                String serverName,
+                                                                                String serviceOperationName) throws InvalidParameterException,
+                                                                                                                    UserNotAuthorizedException,
+                                                                                                                    PropertyServerException
     {
         OCFMetadataServicesInstance instance = (OCFMetadataServicesInstance)super.getServerServiceInstance(userId,
                                                                                                            serverName,

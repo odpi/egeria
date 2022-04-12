@@ -10,8 +10,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
-import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.EnterpriseOMRSRepositoryConnector;
-import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.accumulators.EntityAccumulator;
+import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.accumulators.EntitiesAccumulator;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
 import java.util.Date;
@@ -21,14 +20,11 @@ import java.util.List;
  * FindEntitiesExecutor is the executor for the findEntities request.
  * This request can be issued in parallel - the call to each request potentially running in a different thread.
  */
-public class FindEntitiesExecutor extends PageableRepositoryExecutorBase
+public class FindEntitiesExecutor extends PageableEntityRepositoryExecutorBase
 {
-
     private SearchProperties      matchProperties;
     private SearchClassifications matchClassifications;
     private List<String>          instanceSubtypeGUIDs;
-
-    private EntityAccumulator accumulator;
 
     /**
      * Create the executor.  The parameters provide the parameters for issuing the requests and
@@ -84,7 +80,7 @@ public class FindEntitiesExecutor extends PageableRepositoryExecutorBase
              sequencingProperty,
              sequencingOrder,
              pageSize,
-             new EntityAccumulator(localMetadataCollectionId, auditLog, repositoryValidator),
+             new EntitiesAccumulator(localMetadataCollectionId, auditLog, repositoryValidator),
              methodName);
     }
 
@@ -125,17 +121,17 @@ public class FindEntitiesExecutor extends PageableRepositoryExecutorBase
                                  String                sequencingProperty,
                                  SequencingOrder       sequencingOrder,
                                  int                   pageSize,
-                                 EntityAccumulator     accumulator,
+                                 EntitiesAccumulator accumulator,
                                  String                methodName)
     {
         super(userId,
               entityTypeGUID,
               fromEntityElement,
               limitResultsByStatus,
+              asOfTime,
               sequencingProperty,
               sequencingOrder,
               pageSize,
-              asOfTime,
               accumulator,
               methodName);
 
@@ -234,45 +230,6 @@ public class FindEntitiesExecutor extends PageableRepositoryExecutorBase
             accumulator.captureGenericException(methodName, metadataCollectionId, error);
         }
 
-        return true;
-    }
-
-
-    /**
-     * Return the results or exception.
-     *
-     * @param repositoryConnector enterprise connector
-     * @param metadataCollection enterprise metadata collection
-     *
-     * @return a list of entities matching the supplied criteria; null means no matching entities in the metadata
-     * collection.
-     * @throws InvalidParameterException a parameter is invalid or null.
-     * @throws TypeErrorException the type guid passed on the request is not known by the
-     *                              metadata collection.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                    the metadata collection is stored.
-     * @throws PropertyErrorException the properties specified are not valid for any of the requested types of
-     *                                  entity.
-     * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
-     * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    public List<EntityDetail> getResults(EnterpriseOMRSRepositoryConnector repositoryConnector,
-                                         OMRSMetadataCollection            metadataCollection) throws InvalidParameterException,
-                                                                                                      RepositoryErrorException,
-                                                                                                      TypeErrorException,
-                                                                                                      PropertyErrorException,
-                                                                                                      PagingErrorException,
-                                                                                                      FunctionNotSupportedException,
-                                                                                                      UserNotAuthorizedException
-    {
-        if (accumulator.resultsReturned())
-        {
-            return accumulator.getResults(repositoryConnector, metadataCollection);
-        }
-
-        handleCommonPagingRequestExceptions();
-
-        return null;
+        return false;
     }
 }

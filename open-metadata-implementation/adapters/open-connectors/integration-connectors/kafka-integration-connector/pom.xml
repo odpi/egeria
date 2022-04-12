@@ -10,7 +10,7 @@
     <parent>
         <artifactId>integration-connectors</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.5-SNAPSHOT</version>
+        <version>3.8-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -48,6 +48,11 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>data-manager-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>integration-daemon-services-api</artifactId>
         </dependency>
 
         <dependency>

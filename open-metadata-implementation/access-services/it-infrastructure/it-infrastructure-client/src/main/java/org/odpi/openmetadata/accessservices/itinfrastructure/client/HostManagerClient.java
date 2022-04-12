@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.api.HostManagerInte
 import org.odpi.openmetadata.accessservices.itinfrastructure.client.rest.ITInfrastructureRESTClient;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.AssetElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.HostElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.RelatedAssetElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.AssetProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.HostProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.TemplateProperties;
@@ -21,10 +22,10 @@ import java.util.List;
 /**
  * HostManagerClient supports the APIs to maintain hosts and their related objects.
  */
-public class HostManagerClient extends AssetManagerClient implements HostManagerInterface
+public class HostManagerClient extends AssetManagerClientBase implements HostManagerInterface
 {
     private static final String hostEntityType                = "Host";
-    private static final String hostedHostRelationship        = "HostedHost";
+    private static final String hostClusterEntityType         = "HostCluster";
     private static final String hostClusterMemberRelationship = "HostClusterMember";
 
 
@@ -152,9 +153,11 @@ public class HostManagerClient extends AssetManagerClient implements HostManager
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException
     {
+        final String methodName = "createHost";
+
         AssetProperties assetProperties = hostProperties.cloneToAsset();
 
-        return super.createAsset(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, assetProperties);
+        return super.createAsset(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, assetProperties, null, methodName);
     }
 
 
@@ -184,7 +187,9 @@ public class HostManagerClient extends AssetManagerClient implements HostManager
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
-        return super.createAssetFromTemplate(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, templateGUID, templateProperties);
+        final String methodName = "createHost";
+
+        return super.createAssetFromTemplate(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, templateGUID, templateProperties, methodName);
     }
 
 
@@ -212,62 +217,11 @@ public class HostManagerClient extends AssetManagerClient implements HostManager
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
     {
+        final String methodName = "updateHost";
+
         AssetProperties assetProperties = hostProperties.cloneToAsset();
 
-        super.updateAsset(userId, infrastructureManagerGUID, infrastructureManagerName, hostGUID, isMergeUpdate, assetProperties);
-    }
-
-
-
-    /**
-     * Create a relationship between a host and a hosted host.
-     *
-     * @param userId calling user
-     * @param infrastructureManagerGUID unique identifier of software server capability representing the infrastructure manager
-     * @param infrastructureManagerName unique name of software server capability representing the infrastructure manager
-     * @param hostGUID unique identifier of the host
-     * @param hostedHostGUID unique identifier of the hosted host
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @Override
-    public void setupHostedHost(String userId,
-                                String infrastructureManagerGUID,
-                                String infrastructureManagerName,
-                                String hostGUID,
-                                String hostedHostGUID) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException
-    {
-        super.setupRelatedAsset(userId, infrastructureManagerGUID, infrastructureManagerName, hostGUID, hostedHostRelationship, hostedHostGUID, null);
-    }
-
-
-    /**
-     * Remove a relationship between a host and a hosted host.
-     *
-     * @param userId calling user
-     * @param infrastructureManagerGUID unique identifier of software server capability representing the infrastructure manager
-     * @param infrastructureManagerName unique name of software server capability representing the infrastructure manager
-     * @param hostGUID unique identifier of the host
-     * @param hostedHostGUID unique identifier of the hosted host
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @Override
-    public void clearHostedHost(String userId,
-                                String infrastructureManagerGUID,
-                                String infrastructureManagerName,
-                                String hostGUID,
-                                String hostedHostGUID) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException
-    {
-        super.clearRelatedAsset(userId, infrastructureManagerGUID, infrastructureManagerName, hostGUID, hostedHostRelationship, hostedHostGUID);
+        super.updateAsset(userId, infrastructureManagerGUID, infrastructureManagerName, hostGUID, isMergeUpdate, assetProperties, methodName);
     }
 
 
@@ -277,23 +231,31 @@ public class HostManagerClient extends AssetManagerClient implements HostManager
      * @param userId calling user
      * @param infrastructureManagerGUID unique identifier of software server capability representing the infrastructure manager
      * @param infrastructureManagerName unique name of software server capability representing the infrastructure manager
+     * @param infrastructureManagerIsHome ensure that only the infrastructure manager can update this asset
      * @param hostGUID unique identifier of the host
      * @param clusterMemberGUID unique identifier of the cluster member host
+     * @param effectiveFrom time when this hosting is effective - null means immediately
+     * @param effectiveTo time when this hosting is no longer effective - null means forever
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void setupClusterMember(String userId,
-                                   String infrastructureManagerGUID,
-                                   String infrastructureManagerName,
-                                   String hostGUID,
-                                   String clusterMemberGUID) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
+    public void setupClusterMember(String  userId,
+                                   String  infrastructureManagerGUID,
+                                   String  infrastructureManagerName,
+                                   boolean infrastructureManagerIsHome,
+                                   String  hostGUID,
+                                   String  clusterMemberGUID,
+                                   Date    effectiveFrom,
+                                   Date    effectiveTo) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
     {
-        super.setupRelatedAsset(userId, infrastructureManagerGUID, infrastructureManagerName, hostGUID, hostClusterMemberRelationship, clusterMemberGUID, null);
+        final String methodName = "setupClusterMember";
+
+        super.setupRelatedAsset(userId, infrastructureManagerGUID, infrastructureManagerName, infrastructureManagerIsHome, hostClusterEntityType, hostGUID, hostClusterMemberRelationship, hostEntityType, clusterMemberGUID, effectiveFrom, effectiveTo,null, methodName);
     }
 
 
@@ -305,6 +267,7 @@ public class HostManagerClient extends AssetManagerClient implements HostManager
      * @param infrastructureManagerName unique name of software server capability representing the infrastructure manager
      * @param hostGUID unique identifier of the host
      * @param clusterMemberGUID unique identifier of the cluster member host
+     * @param effectiveTime time when the hosting is effective
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -315,11 +278,14 @@ public class HostManagerClient extends AssetManagerClient implements HostManager
                                    String infrastructureManagerGUID,
                                    String infrastructureManagerName,
                                    String hostGUID,
-                                   String clusterMemberGUID) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
+                                   String clusterMemberGUID,
+                                   Date   effectiveTime) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException
     {
-        super.clearRelatedAsset(userId, infrastructureManagerGUID, infrastructureManagerName, hostGUID, hostClusterMemberRelationship, clusterMemberGUID);
+        final String methodName = "clearClusterMember";
+
+        super.clearRelatedAsset(userId, infrastructureManagerGUID, infrastructureManagerName, hostClusterEntityType, hostGUID, hostClusterMemberRelationship, hostEntityType, clusterMemberGUID, effectiveTime, methodName);
     }
 
 
@@ -342,7 +308,9 @@ public class HostManagerClient extends AssetManagerClient implements HostManager
                                                     UserNotAuthorizedException,
                                                     PropertyServerException
     {
-        super.publishAsset(userId, hostGUID);
+        final String methodName = "publishHost";
+
+        super.publishAsset(userId, hostGUID, methodName);
     }
 
 
@@ -364,7 +332,9 @@ public class HostManagerClient extends AssetManagerClient implements HostManager
                                                      UserNotAuthorizedException,
                                                      PropertyServerException
     {
-        super.withdrawAsset(userId, hostGUID);
+        final String methodName = "withdrawHost";
+
+        super.withdrawAsset(userId, hostGUID, methodName);
     }
 
 
@@ -388,7 +358,9 @@ public class HostManagerClient extends AssetManagerClient implements HostManager
                                                    UserNotAuthorizedException,
                                                    PropertyServerException
     {
-        super.removeAsset(userId, infrastructureManagerGUID, infrastructureManagerName, hostGUID);
+        final String methodName = "removeHost";
+
+        super.removeAsset(userId, infrastructureManagerGUID, infrastructureManagerName, hostGUID, methodName);
     }
 
 
@@ -418,7 +390,9 @@ public class HostManagerClient extends AssetManagerClient implements HostManager
                                                                UserNotAuthorizedException,
                                                                PropertyServerException
     {
-        return this.convertAssetElements(super.findAssets(userId, searchString, hostEntityType, effectiveTime, startFrom, pageSize));
+        final String methodName = "findHosts";
+
+        return this.convertAssetElements(super.findAssets(userId, searchString, hostEntityType, effectiveTime, startFrom, pageSize, methodName));
     }
 
 
@@ -447,7 +421,9 @@ public class HostManagerClient extends AssetManagerClient implements HostManager
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        return this.convertAssetElements(super.getAssetsByName(userId, name, hostEntityType, effectiveTime, startFrom, pageSize));
+        final String methodName = "getHostsByName";
+
+        return this.convertAssetElements(super.getAssetsByName(userId, name, hostEntityType, effectiveTime, startFrom, pageSize, methodName));
     }
 
 
@@ -477,57 +453,9 @@ public class HostManagerClient extends AssetManagerClient implements HostManager
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
     {
-        return this.convertAssetElements(super.getAssetsForInfrastructureManager(userId, infrastructureManagerGUID, infrastructureManagerName, hostEntityType, effectiveTime, startFrom, pageSize));
-    }
+        final String methodName = "getHostsForInfrastructureManager";
 
-
-    /**
-     * Retrieve the host metadata element with the supplied unique identifier.
-     *
-     * @param userId calling user
-     * @param guid unique identifier of the requested metadata element
-     *
-     * @return matching metadata element
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @Override
-    public HostElement getHostByGUID(String userId,
-                                     String guid) throws InvalidParameterException,
-                                                         UserNotAuthorizedException,
-                                                         PropertyServerException
-    {
-        return this.convertAssetElement(super.getAssetByGUID(userId, hostEntityType, guid));
-    }
-
-
-    /**
-     * Return the list of hosts hosted by another host.
-     *
-     * @param userId calling user
-     * @param supportingHostGUID unique identifier of the host to query
-     * @param effectiveTime effective time for the query
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     *
-     * @return list of matching metadata elements
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @Override
-    public List<HostElement> getHostedHosts(String userId,
-                                            String supportingHostGUID,
-                                            Date   effectiveTime,
-                                            int    startFrom,
-                                            int    pageSize) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
-    {
-        return this.convertAssetElements(super.getRelatedAssets(userId, supportingHostGUID, 1, hostedHostRelationship, effectiveTime, startFrom, pageSize));
+        return this.convertAssetElements(super.getAssetsForInfrastructureManager(userId, infrastructureManagerGUID, infrastructureManagerName, hostEntityType, effectiveTime, startFrom, pageSize, methodName));
     }
 
 
@@ -555,7 +483,60 @@ public class HostManagerClient extends AssetManagerClient implements HostManager
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException
     {
-        return this.convertAssetElements(super.getRelatedAssets(userId, hostGUID, 1, hostClusterMemberRelationship, effectiveTime, startFrom, pageSize));
+        final String methodName = "getClusterMembersForHost";
+
+        return this.convertRelatedAssetElements(super.getRelatedAssets(userId, hostClusterEntityType, hostGUID, 1, hostClusterMemberRelationship, hostEntityType, effectiveTime, startFrom, pageSize, methodName));
+    }
+
+
+    /**
+     * Retrieve the host metadata element with the supplied unique identifier.
+     *
+     * @param userId calling user
+     * @param guid unique identifier of the requested metadata element
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public HostElement getHostByGUID(String userId,
+                                     String guid) throws InvalidParameterException,
+                                                         UserNotAuthorizedException,
+                                                         PropertyServerException
+    {
+        final String methodName = "getHostByGUID";
+
+        return this.convertAssetElement(super.getAssetByGUID(userId, hostEntityType, guid, null, methodName));
+    }
+
+
+    /**
+     * Convert a list of RelatedAssetElements into a list of HostElements.
+     *
+     * @param relatedAssetElements returned assets
+     * @return result for caller
+     */
+    private List<HostElement> convertRelatedAssetElements(List<RelatedAssetElement> relatedAssetElements)
+    {
+        if (relatedAssetElements != null)
+        {
+            List<HostElement> hostElements = new ArrayList<>();
+
+            for (RelatedAssetElement relatedAssetElement : relatedAssetElements)
+            {
+                hostElements.add(this.convertAssetElement(relatedAssetElement.getRelatedAsset()));
+            }
+
+            if (! hostElements.isEmpty())
+            {
+                return hostElements;
+            }
+        }
+
+        return null;
     }
 
 

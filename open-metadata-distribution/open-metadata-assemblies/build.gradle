@@ -38,6 +38,7 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openlineage-integration-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:elasticsearch-integration-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:discovery-service-connectors')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:dynamic-archiver-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:governance-action-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:inmemory-open-metadata-topic-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:kafka-open-metadata-topic-connector')
@@ -51,6 +52,7 @@ dependencies {
     implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-reader-avro-sample')
     implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-reader-csv-sample')
     implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-leadership-sample')
+    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-subject-area-sample')
     implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-zone-create-sample')
     implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:subject-area-client-samples:subject-area-definition-sample')
     implementation project(':open-metadata-implementation:access-services:asset-catalog:asset-catalog-client')
@@ -72,7 +74,7 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:security-manager:security-manager-client')
     implementation project(':open-metadata-implementation:access-services:software-developer:software-developer-client')
     implementation project(':open-metadata-implementation:access-services:subject-area:subject-area-client')
-    implementation project(':open-metadata-implementation:engine-services:archive-manager:archive-manager-client')
+    implementation project(':open-metadata-implementation:engine-services:repository-governance:repository-governance-client')
     implementation project(':open-metadata-implementation:engine-services:asset-analysis:asset-analysis-client')
     implementation project(':open-metadata-implementation:engine-services:governance-action:governance-action-client')
     implementation project(':open-metadata-implementation:integration-services:analytics-integrator:analytics-integrator-client')
@@ -100,6 +102,10 @@ dependencies {
     implementation project(':open-metadata-resources:open-metadata-samples:governance-services-sample')
 
 }
+// Path to the SSL key for OMAG server to function as a client to itself
+String keyDirPath = project(':open-metadata-implementation:server-chassis:server-chassis-spring').projectDir.getAbsolutePath() +  '/src/main/resources'
+File keyDir = file(keyDirPath)
+//println keyDirPath
 
 distributions {
     egeriaomag {
@@ -129,6 +135,7 @@ distributions {
                 from { project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-encrypted-file-store-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-file-store-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:discovery-service-connectors').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:dynamic-archiver-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:governance-action-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:files-integration-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:kafka-integration-connector').jar }
@@ -155,6 +162,7 @@ distributions {
                 from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-reader-avro-sample').shadowJar }
                 from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-reader-csv-sample').shadowJar }
                 from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-leadership-sample').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-subject-area-sample').shadowJar }
                 from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-zone-create-sample').shadowJar }
                 from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:subject-area-client-samples:subject-area-definition-sample').shadowJar }
                 from { project(':open-metadata-resources:open-metadata-samples:admin-services-samples:admin-services-config-metadata-server-sample').shadowJar }
@@ -176,6 +184,10 @@ distributions {
                     include 'content-packs'
                     include 'sample-data'
                 }
+//               copy key to root of targz file
+                from (keyDir) {
+                    include 'keystore.p12'
+                }
                 fileMode = 0755
             }
         }
@@ -194,11 +206,6 @@ distributions {
                 exclude '**/target/**'
                 exclude '**/build/**'
                 exclude 'build.gradle'
-                fileMode = 0755
-            }
-            into('docker-compose') {
-                from("${project(':open-metadata-resources:open-metadata-deployment:compose').projectDir}")
-
                 fileMode = 0755
             }
         }

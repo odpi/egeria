@@ -22,6 +22,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.io.IOException;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * FVT resource to call subject area relationships client API
@@ -46,6 +48,8 @@ public class RelationshipsFVT {
     private String url = null;
     private String serverName = null;
     private String userId = null;
+    private static Logger log = LoggerFactory.getLogger(RelationshipsFVT.class);
+
 
     public RelationshipsFVT(String url, String serverName, String userId) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         this.url = url;
@@ -83,9 +87,9 @@ public class RelationshipsFVT {
         } catch (IOException e1) {
             System.out.println("Error getting user input");
         } catch (SubjectAreaFVTCheckedException e) {
-            System.out.println("ERROR: " + e.getMessage());
+            log.error("ERROR: " + e.getMessage());
         } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
-            System.out.println("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
+            log.error("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
         }
 
     }
@@ -111,7 +115,9 @@ public class RelationshipsFVT {
     }
 
     public void run() throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        System.out.println("Create a glossary");
+        if (log.isDebugEnabled()) {
+            log.debug("Create a glossary");
+        }
 
         int term1relationshipcount = 0;
         int term2relationshipcount = 0;
@@ -121,7 +127,9 @@ public class RelationshipsFVT {
         int cat2RelationshipCount = 0;
 
         Glossary glossary = glossaryFVT.createGlossary(DEFAULT_TEST_GLOSSARY_NAME);
-        System.out.println("Create a term called " + DEFAULT_TEST_TERM_NAME + " using glossary GUID");
+        if (log.isDebugEnabled()) {
+            log.debug("Create a term called " + DEFAULT_TEST_TERM_NAME + " using glossary GUID");
+        }
         String glossaryGuid = glossary.getSystemAttributes().getGUID();
         Term term1 = termFVT.createTerm(DEFAULT_TEST_TERM_NAME, glossaryGuid);
 
@@ -130,14 +138,18 @@ public class RelationshipsFVT {
         checkRelationshipNumberforGlossary(glossaryRelationshipCount, glossary);
         checkRelationshipNumberforTerm(term1relationshipcount, term1);
         FVTUtils.validateNode(term1);
-        System.out.println("Create a term called " + DEFAULT_TEST_TERM_NAME2 + " using glossary GUID");
+        if (log.isDebugEnabled()) {
+            log.debug("Create a term called " + DEFAULT_TEST_TERM_NAME2 + " using glossary GUID");
+        }
         Term term2 = termFVT.createTerm(DEFAULT_TEST_TERM_NAME2, glossaryGuid);
         term2relationshipcount++;
         glossaryRelationshipCount++;
         checkRelationshipNumberforGlossary(glossaryRelationshipCount, glossary);
         checkRelationshipNumberforTerm(term2relationshipcount, term2);
         FVTUtils.validateNode(term2);
-        System.out.println("Create a term called " + DEFAULT_TEST_TERM_NAME3 + " using glossary GUID");
+        if (log.isDebugEnabled()) {
+            log.debug("Create a term called " + DEFAULT_TEST_TERM_NAME3 + " using glossary GUID");
+        }
         Term term3 = termFVT.createTerm(DEFAULT_TEST_TERM_NAME3, glossaryGuid);
         FVTUtils.validateNode(term3);
         term3relationshipcount++;
@@ -195,15 +207,21 @@ public class RelationshipsFVT {
         checkRelationshipNumberforTerm(term1relationshipcount, term1);
         checkRelationshipNumberforTerm(term2relationshipcount, term2);
         checkRelationshipNumberforTerm(term3relationshipcount, term3);
-        System.out.println("get term relationships");
+        if (log.isDebugEnabled()) {
+            log.debug("get term relationships");
+        }
         List<Relationship> term1Relationships = termFVT.getTermRelationships(term1);
 
-        System.out.println("Get paged term relationships");
+        if (log.isDebugEnabled()) {
+            log.debug("Get paged term relationships");
+        }
         int offset = 0;
 
         int numberofrelationships = 0;
         while (offset < term1relationshipcount) {
-            System.out.println("Get paged term relationships offset = " + offset + ",pageSize=3");
+            if (log.isDebugEnabled()) {
+                log.debug("Get paged term relationships offset = " + offset + ",pageSize=3");
+            }
             List<Relationship> term1PagedRelationships = termFVT.getTermRelationships(term1, null, offset, 3, SequencingOrder.GUID, null);
             numberofrelationships = numberofrelationships + term1PagedRelationships.size();
             offset += 3;
@@ -264,7 +282,9 @@ public class RelationshipsFVT {
 
         IsATypeOfDeprecated gotisATypeOfDeprecated = subjectAreaRelationship.isaTypeOfDeprecated().getByGUID(this.userId, guid);
         FVTUtils.validateRelationship(gotisATypeOfDeprecated);
-        System.out.println("Got IsaTypeOf " + createdisATypeOfDeprecated);
+        if (log.isDebugEnabled()) {
+            log.debug("Got IsaTypeOf " + createdisATypeOfDeprecated);
+        }
 
         IsATypeOfDeprecated updateisATypeOfDeprecated = new IsATypeOfDeprecated();
         updateisATypeOfDeprecated.setDescription("ddd2");
@@ -280,7 +300,9 @@ public class RelationshipsFVT {
             throw new SubjectAreaFVTCheckedException("ERROR: IsaTypeOf update steward not as expected");
         }
         FVTUtils.checkEnds(updatedisATypeOfDeprecated,createdisATypeOfDeprecated,"IsATypeOf","update");
-        System.out.println("Updated IsaTypeOf " + createdisATypeOfDeprecated);
+        if (log.isDebugEnabled()) {
+            log.debug("Updated IsaTypeOf " + createdisATypeOfDeprecated);
+        }
         IsATypeOfDeprecated replaceisATypeOfDeprecated = new IsATypeOfDeprecated();
         replaceisATypeOfDeprecated.setDescription("ddd3");
         IsATypeOfDeprecated replacedisATypeOfDeprecated = subjectAreaRelationship.isaTypeOfDeprecated().replace(this.userId, guid, replaceisATypeOfDeprecated);
@@ -300,16 +322,24 @@ public class RelationshipsFVT {
         if (!replacedisATypeOfDeprecated.getEnd2().getNodeGuid().equals(createdisATypeOfDeprecated.getEnd2().getNodeGuid())) {
             throw new SubjectAreaFVTCheckedException("ERROR: IsaTypeOf replace end 2 not as expected");
         }
-        System.out.println("Replaced IsaTypeOf " + createdisATypeOfDeprecated);
+        if (log.isDebugEnabled()) {
+            log.debug("Replaced IsaTypeOf " + createdisATypeOfDeprecated);
+        }
         subjectAreaRelationship.isaTypeOfDeprecated().delete(this.userId, guid);
         //FVTUtils.validateLine(gotisATypeOfDeprecated);
-        System.out.println("Deleted IsaTypeOf with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted IsaTypeOf with userId=" + guid);
+        }
         gotisATypeOfDeprecated = subjectAreaRelationship.isaTypeOfDeprecated().restore(this.userId, guid);
         FVTUtils.validateRelationship(gotisATypeOfDeprecated);
-        System.out.println("Restored IsaTypeOf with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Restored IsaTypeOf with userId=" + guid);
+        }
         subjectAreaRelationship.isaTypeOfDeprecated().delete(this.userId, guid);
         //FVTUtils.validateLine(gotisATypeOfDeprecated);
-        System.out.println("Deleted IsaTypeOf with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted IsaTypeOf with userId=" + guid);
+        }
 
     }
     private void isATypeOfFVT(Term term1, Term term2) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException, SubjectAreaFVTCheckedException {
@@ -318,7 +348,9 @@ public class RelationshipsFVT {
 
         IsATypeOf gotisATypeOf = subjectAreaRelationship.isATypeOf().getByGUID(this.userId, guid);
         FVTUtils.validateRelationship(gotisATypeOf);
-        System.out.println("Got isATypeOf " + createdisATypeOf);
+        if (log.isDebugEnabled()) {
+            log.debug("Got isATypeOf " + createdisATypeOf);
+        }
 
         IsATypeOf updateisATypeOf = new IsATypeOf();
         updateisATypeOf.setDescription("ddd2");
@@ -334,7 +366,9 @@ public class RelationshipsFVT {
             throw new SubjectAreaFVTCheckedException("ERROR: isATypeOf update steward not as expected");
         }
         FVTUtils.checkEnds(updatedisATypeOf,createdisATypeOf,"isATypeOf","update");
-        System.out.println("Updated isATypeOf " + createdisATypeOf);
+        if (log.isDebugEnabled()) {
+            log.debug("Updated isATypeOf " + createdisATypeOf);
+        }
         IsATypeOf replaceisATypeOf = new IsATypeOf();
         replaceisATypeOf.setDescription("ddd3");
         IsATypeOf replacedisATypeOf = subjectAreaRelationship.isATypeOf().replace(this.userId, guid, replaceisATypeOf);
@@ -354,16 +388,24 @@ public class RelationshipsFVT {
         if (!replacedisATypeOf.getEnd2().getNodeGuid().equals(createdisATypeOf.getEnd2().getNodeGuid())) {
             throw new SubjectAreaFVTCheckedException("ERROR: isATypeOf replace end 2 not as expected");
         }
-        System.out.println("Replaced isATypeOf " + createdisATypeOf);
+        if (log.isDebugEnabled()) {
+            log.debug("Replaced isATypeOf " + createdisATypeOf);
+        }
         subjectAreaRelationship.isATypeOf().delete(this.userId, guid);
         //FVTUtils.validateLine(gotisATypeOf);
-        System.out.println("Deleted isATypeOf with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted isATypeOf with userId=" + guid);
+        }
         gotisATypeOf = subjectAreaRelationship.isATypeOf().restore(this.userId, guid);
         FVTUtils.validateRelationship(gotisATypeOf);
-        System.out.println("Restored isATypeOf with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Restored isATypeOf with userId=" + guid);
+        }
         subjectAreaRelationship.isATypeOf().delete(this.userId, guid);
         //FVTUtils.validateLine(gotisATypeOf);
-        System.out.println("Deleted isATypeOf with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted isATypeOf with userId=" + guid);
+        }
     }
 
 
@@ -371,12 +413,16 @@ public class RelationshipsFVT {
     private void isaFVT(Term term1, Term term2) throws InvalidParameterException, PropertyServerException, SubjectAreaFVTCheckedException, UserNotAuthorizedException {
         IsA createdIsA = createIsaRelationship(term1, term2);
         FVTUtils.validateRelationship(createdIsA);
-        System.out.println("Created Isa " + createdIsA);
+        if (log.isDebugEnabled()) {
+            log.debug("Created Isa " + createdIsA);
+        }
         String guid = createdIsA.getGuid();
 
         IsA gotIsA = subjectAreaRelationship.isA().getByGUID(this.userId, guid);
         FVTUtils.validateRelationship(gotIsA);
-        System.out.println("Got Isa " + createdIsA);
+        if (log.isDebugEnabled()) {
+            log.debug("Got Isa " + createdIsA);
+        }
 
         IsA updateIsA = new IsA();
         updateIsA.setDescription("ddd2");
@@ -399,7 +445,9 @@ public class RelationshipsFVT {
         if (!updatedIsA.getEnd2().getNodeGuid().equals(createdIsA.getEnd2().getNodeGuid())) {
             throw new SubjectAreaFVTCheckedException("ERROR: isa update end 2 not as expected");
         }
-        System.out.println("Updated Isa " + createdIsA);
+        if (log.isDebugEnabled()) {
+            log.debug("Updated Isa " + createdIsA);
+        }
         IsA replaceIsA = new IsA();
         replaceIsA.setDescription("ddd3");
         IsA replacedIsA = subjectAreaRelationship.isA().replace(this.userId, guid, replaceIsA);
@@ -422,16 +470,24 @@ public class RelationshipsFVT {
         if (!replacedIsA.getEnd2().getNodeGuid().equals(createdIsA.getEnd2().getNodeGuid())) {
             throw new SubjectAreaFVTCheckedException("ERROR: isa replace end 2 not as expected");
         }
-        System.out.println("Replaced Isa " + createdIsA);
+        if (log.isDebugEnabled()) {
+            log.debug("Replaced Isa " + createdIsA);
+        }
         subjectAreaRelationship.isA().delete(this.userId, guid);
         //FVTUtils.validateLine(gotIsa);
-        System.out.println("Deleted Isa with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted Isa with userId=" + guid);
+        }
         gotIsA = subjectAreaRelationship.isA().restore(this.userId, guid);
         FVTUtils.validateRelationship(gotIsA);
-        System.out.println("Restored Isa with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Restored Isa with userId=" + guid);
+        }
         subjectAreaRelationship.isA().delete(this.userId, guid);
         //FVTUtils.validateLine(gotIsa);
-        System.out.println("Deleted Isa with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted Isa with userId=" + guid);
+        }
     }
 
     private IsA createIsaRelationship(Term term1, Term term2) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
@@ -452,12 +508,16 @@ public class RelationshipsFVT {
     private void typedByFVT(Term term1, Term term2) throws InvalidParameterException, PropertyServerException, SubjectAreaFVTCheckedException, UserNotAuthorizedException {
         TypedBy createdTermTYPEDBYRelationship = createTermTYPEDBYRelationship(term1, term2);
         FVTUtils.validateRelationship(createdTermTYPEDBYRelationship);
-        System.out.println("Created TypedBy " + createdTermTYPEDBYRelationship);
+        if (log.isDebugEnabled()) {
+            log.debug("Created TypedBy " + createdTermTYPEDBYRelationship);
+        }
         String guid = createdTermTYPEDBYRelationship.getGuid();
 
         TypedBy gotTermTYPEDBYRelationship = subjectAreaRelationship.typedBy().getByGUID(this.userId, guid);
         FVTUtils.validateRelationship(gotTermTYPEDBYRelationship);
-        System.out.println("Got TypedBy " + createdTermTYPEDBYRelationship);
+        if (log.isDebugEnabled()) {
+            log.debug("Got TypedBy " + createdTermTYPEDBYRelationship);
+        }
 
         TypedBy updateTermTYPEDBYRelationship = new TypedBy();
         updateTermTYPEDBYRelationship.setDescription("ddd2");
@@ -473,7 +533,9 @@ public class RelationshipsFVT {
             throw new SubjectAreaFVTCheckedException("ERROR: termTYPEDBYRelationship update steward not as expected");
         }
         FVTUtils.checkEnds(updatedTermTYPEDBYRelationship,createdTermTYPEDBYRelationship,"TYPEDBY","update");
-        System.out.println("Updated TypedBy " + createdTermTYPEDBYRelationship);
+        if (log.isDebugEnabled()) {
+            log.debug("Updated TypedBy " + createdTermTYPEDBYRelationship);
+        }
         TypedBy replaceTermTYPEDBYRelationship = new TypedBy();
         replaceTermTYPEDBYRelationship.setDescription("ddd3");
         TypedBy replacedTermTYPEDBYRelationship = subjectAreaRelationship.typedBy().replace(this.userId, guid, replaceTermTYPEDBYRelationship);
@@ -489,16 +551,24 @@ public class RelationshipsFVT {
         }
 
         FVTUtils.checkEnds(replacedTermTYPEDBYRelationship,createdTermTYPEDBYRelationship,"TYPEDBY","replace");
-        System.out.println("Replaced TypedBy " + createdTermTYPEDBYRelationship);
+        if (log.isDebugEnabled()) {
+            log.debug("Replaced TypedBy " + createdTermTYPEDBYRelationship);
+        }
         subjectAreaRelationship.typedBy().delete(this.userId, guid);
         //FVTUtils.validateLine(gotTermTYPEDBYRelationship);
-        System.out.println("Deleted TypedBy with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted TypedBy with userId=" + guid);
+        }
         gotTermTYPEDBYRelationship = subjectAreaRelationship.typedBy().restore(this.userId, guid);
         FVTUtils.validateRelationship(gotTermTYPEDBYRelationship);
-        System.out.println("Restored TypedBy with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Restored TypedBy with userId=" + guid);
+        }
         subjectAreaRelationship.typedBy().delete(this.userId, guid);
         //FVTUtils.validateLine(gotTermTYPEDBYRelationship);
-        System.out.println("Deleted TypedBy with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted TypedBy with userId=" + guid);
+        }
     }
 
     private TypedBy createTermTYPEDBYRelationship(Term term1, Term term2) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
@@ -518,12 +588,16 @@ public class RelationshipsFVT {
     private void replacementTermFVT(Term term1, Term term2) throws InvalidParameterException, PropertyServerException, SubjectAreaFVTCheckedException, UserNotAuthorizedException {
         ReplacementTerm createdReplacementTerm = createReplacementTerm(term1, term2);
         FVTUtils.validateRelationship(createdReplacementTerm);
-        System.out.println("Created ReplacementTerm " + createdReplacementTerm);
+        if (log.isDebugEnabled()) {
+            log.debug("Created ReplacementTerm " + createdReplacementTerm);
+        }
         String guid = createdReplacementTerm.getGuid();
 
         ReplacementTerm gotReplacementTerm = subjectAreaRelationship.replacementTerm().getByGUID(this.userId, guid);
         FVTUtils.validateRelationship(gotReplacementTerm);
-        System.out.println("Got ReplacementTerm " + createdReplacementTerm);
+        if (log.isDebugEnabled()) {
+            log.debug("Got ReplacementTerm " + createdReplacementTerm);
+        }
 
         ReplacementTerm updateReplacementTerm = new ReplacementTerm();
         updateReplacementTerm.setDescription("ddd2");
@@ -542,7 +616,9 @@ public class RelationshipsFVT {
             throw new SubjectAreaFVTCheckedException("ERROR: replacementTerm update steward not as expected");
         }
         FVTUtils.checkEnds(updatedReplacementTerm,createdReplacementTerm,"replacementTerm","update");
-        System.out.println("Updated ReplacementTerm " + createdReplacementTerm);
+        if (log.isDebugEnabled()) {
+            log.debug("Updated ReplacementTerm " + createdReplacementTerm);
+        }
         ReplacementTerm replaceReplacementTerm = new ReplacementTerm();
         replaceReplacementTerm.setDescription("ddd3");
         ReplacementTerm replacedReplacementTerm = subjectAreaRelationship.replacementTerm().replace(this.userId, guid, replaceReplacementTerm);
@@ -561,16 +637,24 @@ public class RelationshipsFVT {
         }
 
         FVTUtils.checkEnds(replacedReplacementTerm,createdReplacementTerm,"replacementTerm","replace");
-        System.out.println("Replaced ReplacementTerm " + createdReplacementTerm);
+        if (log.isDebugEnabled()) {
+            log.debug("Replaced ReplacementTerm " + createdReplacementTerm);
+        }
         subjectAreaRelationship.replacementTerm().delete(this.userId, guid);
         //FVTUtils.validateLine(gotReplacementTerm);
-        System.out.println("Deleted ReplacementTerm with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted ReplacementTerm with userId=" + guid);
+        }
         gotReplacementTerm = subjectAreaRelationship.replacementTerm().restore(this.userId, guid);
         FVTUtils.validateRelationship(gotReplacementTerm);
-        System.out.println("Restored ReplacementTerm with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Restored ReplacementTerm with userId=" + guid);
+        }
         subjectAreaRelationship.replacementTerm().delete(this.userId, guid);
         //FVTUtils.validateLine(gotReplacementTerm);
-        System.out.println("Deleted ReplacementTerm with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted ReplacementTerm with userId=" + guid);
+        }
     }
 
     private ReplacementTerm createReplacementTerm(Term term1, Term term2) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
@@ -591,12 +675,16 @@ public class RelationshipsFVT {
     private void validvalueFVT(Term term1, Term term2) throws InvalidParameterException, PropertyServerException, SubjectAreaFVTCheckedException, UserNotAuthorizedException {
         ValidValue createdValidValue = createValidValue(term1, term2);
         FVTUtils.validateRelationship(createdValidValue);
-        System.out.println("Created ValidValue " + createdValidValue);
+        if (log.isDebugEnabled()) {
+            log.debug("Created ValidValue " + createdValidValue);
+        }
         String guid = createdValidValue.getGuid();
 
         ValidValue gotValidValue = subjectAreaRelationship.validValue().getByGUID(this.userId, guid);
         FVTUtils.validateRelationship(gotValidValue);
-        System.out.println("Got ValidValue " + createdValidValue);
+        if (log.isDebugEnabled()) {
+            log.debug("Got ValidValue " + createdValidValue);
+        }
 
         ValidValue updateValidValue = new ValidValue();
         updateValidValue.setDescription("ddd2");
@@ -616,7 +704,9 @@ public class RelationshipsFVT {
 
         FVTUtils.checkEnds(updatedValidValue, createdValidValue, "ValidValue", "update");
 
-        System.out.println("Updated ValidValue " + createdValidValue);
+        if (log.isDebugEnabled()) {
+            log.debug("Updated ValidValue " + createdValidValue);
+        }
         ValidValue replaceValidValue = new ValidValue();
         replaceValidValue.setDescription("ddd3");
         replaceValidValue.setGuid(createdValidValue.getGuid());
@@ -635,16 +725,24 @@ public class RelationshipsFVT {
         }
         FVTUtils.checkEnds(replacedValidValue, createdValidValue, "ValidValue", "replace");
 
-        System.out.println("Replaced ValidValue " + createdValidValue);
+        if (log.isDebugEnabled()) {
+            log.debug("Replaced ValidValue " + createdValidValue);
+        }
         subjectAreaRelationship.validValue().delete(this.userId, guid);
         //FVTUtils.validateLine(gotValidValue);
-        System.out.println("Deleted ValidValue with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted ValidValue with userId=" + guid);
+        }
         gotValidValue = subjectAreaRelationship.validValue().restore(this.userId, guid);
         FVTUtils.validateRelationship(gotValidValue);
-        System.out.println("Restored ValidValue with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Restored ValidValue with userId=" + guid);
+        }
         subjectAreaRelationship.validValue().delete(this.userId, guid);
         //FVTUtils.validateLine(gotValidValue);
-        System.out.println("Deleted ValidValue with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted ValidValue with userId=" + guid);
+        }
     }
 
     private ValidValue createValidValue(Term term1, Term term2) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
@@ -665,12 +763,16 @@ public class RelationshipsFVT {
     private void preferredtermFVT(Term term1, Term term2) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException, SubjectAreaFVTCheckedException {
         PreferredTerm createdPreferredTerm = createPreferredTerm(term1, term2);
         FVTUtils.validateRelationship(createdPreferredTerm);
-        System.out.println("Created PreferredTerm " + createdPreferredTerm);
+        if (log.isDebugEnabled()) {
+            log.debug("Created PreferredTerm " + createdPreferredTerm);
+        }
         String guid = createdPreferredTerm.getGuid();
 
         PreferredTerm gotPreferredTerm = subjectAreaRelationship.preferredTerm().getByGUID(this.userId, guid);
         FVTUtils.validateRelationship(gotPreferredTerm);
-        System.out.println("Got PreferredTerm " + createdPreferredTerm);
+        if (log.isDebugEnabled()) {
+            log.debug("Got PreferredTerm " + createdPreferredTerm);
+        }
 
         PreferredTerm updatePreferredTerm = new PreferredTerm();
         updatePreferredTerm.setDescription("ddd2");
@@ -689,7 +791,9 @@ public class RelationshipsFVT {
             throw new SubjectAreaFVTCheckedException("ERROR: preferredTerm update steward not as expected");
         }
         FVTUtils.checkEnds(updatedPreferredTerm,createdPreferredTerm,"PreferredTerm","update");
-        System.out.println("Updated PreferredTerm " + createdPreferredTerm);
+        if (log.isDebugEnabled()) {
+            log.debug("Updated PreferredTerm " + createdPreferredTerm);
+        }
         PreferredTerm replacePreferredTerm = new PreferredTerm();
         replacePreferredTerm.setDescription("ddd3");
         PreferredTerm replacedPreferredTerm = subjectAreaRelationship.preferredTerm().replace(this.userId, guid, replacePreferredTerm);
@@ -707,16 +811,24 @@ public class RelationshipsFVT {
             throw new SubjectAreaFVTCheckedException("ERROR: preferredTerm replace steward not as expected");
         }
         FVTUtils.checkEnds(replacedPreferredTerm,createdPreferredTerm,"PreferredTerm","replace");
-        System.out.println("Replaced PreferredTerm " + createdPreferredTerm);
+        if (log.isDebugEnabled()) {
+            log.debug("Replaced PreferredTerm " + createdPreferredTerm);
+        }
         subjectAreaRelationship.preferredTerm().delete(this.userId, guid);
         //FVTUtils.validateLine(gotPreferredTerm);
-        System.out.println("Deleted PreferredTerm with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted PreferredTerm with userId=" + guid);
+        }
         gotPreferredTerm = subjectAreaRelationship.preferredTerm().restore(this.userId, guid);
         FVTUtils.validateRelationship(gotPreferredTerm);
-        System.out.println("restored PreferredTerm with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("restored PreferredTerm with userId=" + guid);
+        }
         subjectAreaRelationship.preferredTerm().delete(this.userId, guid);
         //FVTUtils.validateLine(gotPreferredTerm);
-        System.out.println("Deleted PreferredTerm with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted PreferredTerm with userId=" + guid);
+        }
     }
 
     private PreferredTerm createPreferredTerm(Term term1, Term term2) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
@@ -737,12 +849,16 @@ public class RelationshipsFVT {
     private void usedincontextFVT(Term term1, Term term2) throws InvalidParameterException, PropertyServerException, SubjectAreaFVTCheckedException, UserNotAuthorizedException {
         UsedInContext createdUsedInContext = createUsedInContext(term1, term2);
         FVTUtils.validateRelationship(createdUsedInContext);
-        System.out.println("Created UsedInContext " + createdUsedInContext);
+        if (log.isDebugEnabled()) {
+            log.debug("Created UsedInContext " + createdUsedInContext);
+        }
         String guid = createdUsedInContext.getGuid();
 
         UsedInContext gotUsedInContext = subjectAreaRelationship.usedInContext().getByGUID(this.userId, guid);
         FVTUtils.validateRelationship(gotUsedInContext);
-        System.out.println("Got UsedInContext " + createdUsedInContext);
+        if (log.isDebugEnabled()) {
+            log.debug("Got UsedInContext " + createdUsedInContext);
+        }
 
         UsedInContext updateUsedInContext = new UsedInContext();
         updateUsedInContext.setDescription("ddd2");
@@ -762,7 +878,9 @@ public class RelationshipsFVT {
         }
 
         FVTUtils.checkEnds(updatedUsedInContext,createdUsedInContext,"UsedInContext","update");
-        System.out.println("Updated UsedInContext " + createdUsedInContext);
+        if (log.isDebugEnabled()) {
+            log.debug("Updated UsedInContext " + createdUsedInContext);
+        }
         UsedInContext replaceUsedInContext = new UsedInContext();
         replaceUsedInContext.setDescription("ddd3");
         UsedInContext replacedUsedInContext = subjectAreaRelationship.usedInContext().replace(this.userId, guid, replaceUsedInContext);
@@ -780,16 +898,24 @@ public class RelationshipsFVT {
             throw new SubjectAreaFVTCheckedException("ERROR: usedInContext replace steward not as expected");
         }
         FVTUtils.checkEnds(replacedUsedInContext,createdUsedInContext,"UsedInContext","replace");
-        System.out.println("Replaced UsedInContext " + createdUsedInContext);
+        if (log.isDebugEnabled()) {
+            log.debug("Replaced UsedInContext " + createdUsedInContext);
+        }
         subjectAreaRelationship.usedInContext().delete(this.userId, guid);
         //FVTUtils.validateLine(gotUsedInContext);
-        System.out.println("Deleted UsedInContext with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted UsedInContext with userId=" + guid);
+        }
         gotUsedInContext = subjectAreaRelationship.usedInContext().restore(this.userId, guid);
         FVTUtils.validateRelationship(gotUsedInContext);
-        System.out.println("Restored UsedInContext with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Restored UsedInContext with userId=" + guid);
+        }
         subjectAreaRelationship.usedInContext().delete(this.userId, guid);
         //FVTUtils.validateLine(gotUsedInContext);
-        System.out.println("Deleted UsedInContext with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted UsedInContext with userId=" + guid);
+        }
     }
 
     private UsedInContext createUsedInContext(Term term1, Term term2) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
@@ -809,12 +935,16 @@ public class RelationshipsFVT {
     private void translationFVT(Term term1, Term term2) throws InvalidParameterException, PropertyServerException, SubjectAreaFVTCheckedException, UserNotAuthorizedException {
         Translation createdTranslation = createTranslation(term1, term2);
         FVTUtils.validateRelationship(createdTranslation);
-        System.out.println("Created Translation " + createdTranslation);
+        if (log.isDebugEnabled()) {
+            log.debug("Created Translation " + createdTranslation);
+        }
         String guid = createdTranslation.getGuid();
 
         Translation gotTranslation = subjectAreaRelationship.translation().getByGUID(this.userId, guid);
         FVTUtils.validateRelationship(gotTranslation);
-        System.out.println("Got Translation " + createdTranslation);
+        if (log.isDebugEnabled()) {
+            log.debug("Got Translation " + createdTranslation);
+        }
 
         Translation updateTranslation = new Translation();
         updateTranslation.setDescription("ddd2");
@@ -834,7 +964,9 @@ public class RelationshipsFVT {
         }
         FVTUtils.checkEnds(updatedTranslation, createdTranslation, "translation", "update");
 
-        System.out.println("Updated Translation " + createdTranslation);
+        if (log.isDebugEnabled()) {
+            log.debug("Updated Translation " + createdTranslation);
+        }
         Translation replaceTranslation = new Translation();
         replaceTranslation.setDescription("ddd3");
         Translation replacedTranslation = subjectAreaRelationship.translation().replace(this.userId, guid, replaceTranslation);
@@ -853,16 +985,24 @@ public class RelationshipsFVT {
         }
         FVTUtils.checkEnds(replacedTranslation, updatedTranslation, "translation", "replace");
 
-        System.out.println("Replaced Translation " + createdTranslation);
+        if (log.isDebugEnabled()) {
+            log.debug("Replaced Translation " + createdTranslation);
+        }
         subjectAreaRelationship.translation().delete(this.userId, guid);
         //FVTUtils.validateLine(gotTranslation);
-        System.out.println("Deleted Translation with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted Translation with userId=" + guid);
+        }
         gotTranslation = subjectAreaRelationship.translation().restore(this.userId, guid);
         FVTUtils.validateRelationship(gotTranslation);
-        System.out.println("Restored Translation with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Restored Translation with userId=" + guid);
+        }
         subjectAreaRelationship.translation().delete(this.userId, guid);
         //FVTUtils.validateLine(gotTranslation);
-        System.out.println("Deleted Translation with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted Translation with userId=" + guid);
+        }
     }
 
     private Translation createTranslation(Term term1, Term term2) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
@@ -884,12 +1024,16 @@ public class RelationshipsFVT {
         HasA createdHasA = createHasA(term1, term3);
 
         FVTUtils.validateRelationship(createdHasA);
-        System.out.println("Created Hasa " + createdHasA);
+        if (log.isDebugEnabled()) {
+            log.debug("Created Hasa " + createdHasA);
+        }
         String guid = createdHasA.getGuid();
 
         HasA gotHasATerm = subjectAreaRelationship.hasA().getByGUID(this.userId, guid);
         FVTUtils.validateRelationship(gotHasATerm);
-        System.out.println("Got Hasa " + createdHasA);
+        if (log.isDebugEnabled()) {
+            log.debug("Got Hasa " + createdHasA);
+        }
         HasA updateHasATerm = new HasA();
         updateHasATerm.setDescription("ddd2");
         HasA updatedHasATerm = subjectAreaRelationship.hasA().update(this.userId, guid, updateHasATerm);
@@ -905,7 +1049,9 @@ public class RelationshipsFVT {
         }
         FVTUtils.checkEnds(updatedHasATerm, createdHasA, "has-a", "update");
 
-        System.out.println("Updated HASARelationship " + createdHasA);
+        if (log.isDebugEnabled()) {
+            log.debug("Updated HASARelationship " + createdHasA);
+        }
         HasA replaceHasA = new HasA();
         replaceHasA.setDescription("ddd3");
         HasA replacedHasA = subjectAreaRelationship.hasA().replace(this.userId, guid, replaceHasA);
@@ -921,7 +1067,9 @@ public class RelationshipsFVT {
         }
         FVTUtils.checkEnds(updatedHasATerm, replacedHasA, "has-a", "replace");
 
-        System.out.println("Replaced HASARelationship " + createdHasA);
+        if (log.isDebugEnabled()) {
+            log.debug("Replaced HASARelationship " + createdHasA);
+        }
 
         // check that term1 and term3 have the spine object and attribute flags sets
 
@@ -936,13 +1084,19 @@ public class RelationshipsFVT {
 
         subjectAreaRelationship.hasA().delete(this.userId, guid);
         //FVTUtils.validateLine(gotHASATerm);
-        System.out.println("Deleted Hasa with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted Hasa with userId=" + guid);
+        }
         gotHasATerm = subjectAreaRelationship.hasA().restore(this.userId, guid);
         FVTUtils.validateRelationship(gotHasATerm);
-        System.out.println("Restored Hasa with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Restored Hasa with userId=" + guid);
+        }
         subjectAreaRelationship.hasA().delete(this.userId, guid);
         //FVTUtils.validateLine(gotHASATerm);
-        System.out.println("Deleted Hasa with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted Hasa with userId=" + guid);
+        }
     }
 
     private HasA createHasA(Term term1, Term term2) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
@@ -964,12 +1118,16 @@ public class RelationshipsFVT {
     private void relatedtermFVT(Term term1, Term term3) throws InvalidParameterException, PropertyServerException, SubjectAreaFVTCheckedException, UserNotAuthorizedException {
         RelatedTerm createdRelatedTerm = createRelatedTerm(term1, term3);
         FVTUtils.validateRelationship(createdRelatedTerm);
-        System.out.println("Created RelatedTerm " + createdRelatedTerm);
+        if (log.isDebugEnabled()) {
+            log.debug("Created RelatedTerm " + createdRelatedTerm);
+        }
         String guid = createdRelatedTerm.getGuid();
 
         RelatedTerm gotRelatedTerm = subjectAreaRelationship.relatedTerm().getByGUID(this.userId, guid);
         FVTUtils.validateRelationship(gotRelatedTerm);
-        System.out.println("Got RelatedTerm " + createdRelatedTerm);
+        if (log.isDebugEnabled()) {
+            log.debug("Got RelatedTerm " + createdRelatedTerm);
+        }
         RelatedTerm updateRelatedTerm = new RelatedTerm();
         updateRelatedTerm.setDescription("ddd2");
         updateRelatedTerm.setGuid(createdRelatedTerm.getGuid());
@@ -988,7 +1146,9 @@ public class RelationshipsFVT {
             throw new SubjectAreaFVTCheckedException("ERROR: RelatedTerm update steward not as expected");
         }
         FVTUtils.checkEnds(updatedRelatedTerm,createdRelatedTerm,"RelatedTerm","update");
-        System.out.println("Updated RelatedTerm " + createdRelatedTerm);
+        if (log.isDebugEnabled()) {
+            log.debug("Updated RelatedTerm " + createdRelatedTerm);
+        }
         RelatedTerm replaceRelatedTerm = new RelatedTerm();
         replaceRelatedTerm.setDescription("ddd3");
         replaceRelatedTerm.setGuid(createdRelatedTerm.getGuid());
@@ -1007,17 +1167,25 @@ public class RelationshipsFVT {
             throw new SubjectAreaFVTCheckedException("ERROR: RelatedTerm replace steward not as expected");
         }
         FVTUtils.checkEnds(replacedRelatedTerm,createdRelatedTerm,"RelatedTerm","replace");
-        System.out.println("Replaced RelatedTerm " + createdRelatedTerm);
+        if (log.isDebugEnabled()) {
+            log.debug("Replaced RelatedTerm " + createdRelatedTerm);
+        }
 
         subjectAreaRelationship.relatedTerm().delete(this.userId, guid);
         //FVTUtils.validateLine(gotRelatedTerm);
-        System.out.println("Deleted RelatedTerm with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted RelatedTerm with userId=" + guid);
+        }
         gotRelatedTerm = subjectAreaRelationship.relatedTerm().restore(this.userId, guid);
         FVTUtils.validateRelationship(gotRelatedTerm);
-        System.out.println("Restored RelatedTerm with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Restored RelatedTerm with userId=" + guid);
+        }
         subjectAreaRelationship.relatedTerm().delete(this.userId, guid);
         //FVTUtils.validateLine(gotRelatedTerm);
-        System.out.println("Deleted RelatedTerm with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted RelatedTerm with userId=" + guid);
+        }
     }
 
     private RelatedTerm createRelatedTerm(Term term1, Term term2) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
@@ -1039,12 +1207,16 @@ public class RelationshipsFVT {
     private void antonymFVT(Term term1, Term term3) throws InvalidParameterException, PropertyServerException, SubjectAreaFVTCheckedException, UserNotAuthorizedException {
         Antonym createdAntonym = createAntonym(term1, term3);
         FVTUtils.validateRelationship(createdAntonym);
-        System.out.println("Created Antonym " + createdAntonym);
+        if (log.isDebugEnabled()) {
+            log.debug("Created Antonym " + createdAntonym);
+        }
         String guid = createdAntonym.getGuid();
 
         Antonym gotAntonym = subjectAreaRelationship.antonym().getByGUID(this.userId, guid);
         FVTUtils.validateRelationship(gotAntonym);
-        System.out.println("Got Antonym " + createdAntonym);
+        if (log.isDebugEnabled()) {
+            log.debug("Got Antonym " + createdAntonym);
+        }
         Antonym updateAntonym = new Antonym();
         updateAntonym.setDescription("ddd2");
         Antonym updatedAntonym = subjectAreaRelationship.antonym().update(this.userId, guid, updateAntonym);
@@ -1062,7 +1234,9 @@ public class RelationshipsFVT {
             throw new SubjectAreaFVTCheckedException("ERROR: Antonym update steward not as expected");
         }
         FVTUtils.checkEnds(updatedAntonym,createdAntonym,"Antonym","update");
-        System.out.println("Updated Antonym " + createdAntonym);
+        if (log.isDebugEnabled()) {
+            log.debug("Updated Antonym " + createdAntonym);
+        }
         Antonym replaceAntonym = new Antonym();
         replaceAntonym.setDescription("ddd3");
         replaceAntonym.setGuid(createdAntonym.getGuid());
@@ -1081,17 +1255,25 @@ public class RelationshipsFVT {
             throw new SubjectAreaFVTCheckedException("ERROR: Antonym replace steward not as expected");
         }
         FVTUtils.checkEnds(updatedAntonym,createdAntonym,"Antonym","replace");
-        System.out.println("Replaced Antonym " + createdAntonym);
+        if (log.isDebugEnabled()) {
+            log.debug("Replaced Antonym " + createdAntonym);
+        }
 
         subjectAreaRelationship.antonym().delete(this.userId, guid);
         //FVTUtils.validateLine(gotAntonym);
-        System.out.println("Deleted Antonym with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted Antonym with userId=" + guid);
+        }
         gotAntonym = subjectAreaRelationship.antonym().restore(this.userId, guid);
         FVTUtils.validateRelationship(gotAntonym);
-        System.out.println("Restored Antonym with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Restored Antonym with userId=" + guid);
+        }
         subjectAreaRelationship.antonym().delete(this.userId, guid);
         //FVTUtils.validateLine(gotAntonym);
-        System.out.println("Deleted Antonym with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted Antonym with userId=" + guid);
+        }
     }
 
     private Antonym createAntonym(Term term1, Term term2) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
@@ -1111,12 +1293,16 @@ public class RelationshipsFVT {
     private void synonymFVT(Term term1, Term term2) throws InvalidParameterException, PropertyServerException, SubjectAreaFVTCheckedException, UserNotAuthorizedException {
         Synonym createdSynonym = createSynonym(term1, term2);
         FVTUtils.validateRelationship(createdSynonym);
-        System.out.println("Created Synonym " + createdSynonym);
+        if (log.isDebugEnabled()) {
+            log.debug("Created Synonym " + createdSynonym);
+        }
         String guid = createdSynonym.getGuid();
 
         Synonym gotSynonym = subjectAreaRelationship.synonym().getByGUID(this.userId, guid);
         FVTUtils.validateRelationship(gotSynonym);
-        System.out.println("Got Synonym " + createdSynonym);
+        if (log.isDebugEnabled()) {
+            log.debug("Got Synonym " + createdSynonym);
+        }
 
         Synonym updateSynonym = new Synonym();
         updateSynonym.setDescription("ddd2");
@@ -1137,7 +1323,9 @@ public class RelationshipsFVT {
 
         FVTUtils.checkEnds(updatedSynonym, createdSynonym, "synonym", "update");
 
-        System.out.println("Updated Synonym " + createdSynonym);
+        if (log.isDebugEnabled()) {
+            log.debug("Updated Synonym " + createdSynonym);
+        }
         Synonym replaceSynonym = new Synonym();
         replaceSynonym.setDescription("ddd3");
         Synonym replacedSynonym = subjectAreaRelationship.synonym().replace(this.userId, guid, replaceSynonym);
@@ -1156,17 +1344,25 @@ public class RelationshipsFVT {
         }
         FVTUtils.checkEnds(updatedSynonym, replacedSynonym, "synonym", "replace");
 
-        System.out.println("Replaced Synonym " + createdSynonym);
+        if (log.isDebugEnabled()) {
+            log.debug("Replaced Synonym " + createdSynonym);
+        }
         subjectAreaRelationship.synonym().delete(this.userId, guid);
         //FVTUtils.validateLine(gotSynonym);
-        System.out.println("Deleted Synonym with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted Synonym with userId=" + guid);
+        }
         gotSynonym = subjectAreaRelationship.synonym().restore(this.userId, guid);
         FVTUtils.validateRelationship(gotSynonym);
-        System.out.println("Restored Synonym with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Restored Synonym with userId=" + guid);
+        }
         subjectAreaRelationship.synonym().delete(this.userId, guid);
         //FVTUtils.validateLine(gotSynonym);
 
-        System.out.println("Hard deleted Synonym with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Hard deleted Synonym with userId=" + guid);
+        }
     }
 
     public Synonym createSynonym(Term term1, Term term2) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
@@ -1195,7 +1391,9 @@ public class RelationshipsFVT {
         FVTUtils.validateRelationship(createdisATypeOfDeprecated);
         FVTUtils.checkEnds(isATypeOfDeprecated, createdisATypeOfDeprecated, "IsaTypeOfDeprecated", "create");
 
-        System.out.println("Created isATypeOfDeprecated " + createdisATypeOfDeprecated);
+        if (log.isDebugEnabled()) {
+            log.debug("Created isATypeOfDeprecated " + createdisATypeOfDeprecated);
+        }
         return createdisATypeOfDeprecated;
     }
 
@@ -1210,19 +1408,25 @@ public class RelationshipsFVT {
         FVTUtils.validateRelationship(createdisATypeOf);
         FVTUtils.checkEnds(isATypeOf, createdisATypeOf, "isATypeOf", "create");
 
-        System.out.println("Created isATypeOf Relationship " + createdisATypeOf);
+        if (log.isDebugEnabled()) {
+            log.debug("Created isATypeOf Relationship " + createdisATypeOf);
+        }
         return createdisATypeOf;
     }
 
     private void termCategorizationFVT(Term term, Category category) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException, SubjectAreaFVTCheckedException {
         Categorization createdTermCategorizationRelationship = createTermCategorization(term, category);
         FVTUtils.validateRelationship(createdTermCategorizationRelationship);
-        System.out.println("Created TermCategorizationRelationship " + createdTermCategorizationRelationship);
+        if (log.isDebugEnabled()) {
+            log.debug("Created TermCategorizationRelationship " + createdTermCategorizationRelationship);
+        }
         String guid = createdTermCategorizationRelationship.getGuid();
 
         Categorization gotTermCategorizationRelationship = subjectAreaRelationship.termCategorization().getByGUID(this.userId, guid);
         FVTUtils.validateRelationship(gotTermCategorizationRelationship);
-        System.out.println("Got TermCategorizationRelationship " + createdTermCategorizationRelationship);
+        if (log.isDebugEnabled()) {
+            log.debug("Got TermCategorizationRelationship " + createdTermCategorizationRelationship);
+        }
 
         Categorization updateTermCategorizationRelationship = new Categorization();
         updateTermCategorizationRelationship.setDescription("ddd2");
@@ -1237,7 +1441,9 @@ public class RelationshipsFVT {
             throw new SubjectAreaFVTCheckedException("ERROR: TermCategorization update status not as expected");
         }
 
-        System.out.println("Updated TermCategorizationRelationship " + createdTermCategorizationRelationship);
+        if (log.isDebugEnabled()) {
+            log.debug("Updated TermCategorizationRelationship " + createdTermCategorizationRelationship);
+        }
         Categorization replaceTermCategorizationRelationship = new Categorization();
         replaceTermCategorizationRelationship.setDescription("ddd3");
         Categorization replacedTermCategorizationRelationship = subjectAreaRelationship.termCategorization().replace(this.userId, guid, replaceTermCategorizationRelationship);
@@ -1250,16 +1456,24 @@ public class RelationshipsFVT {
         }
 
         FVTUtils.checkEnds(replacedTermCategorizationRelationship,createdTermCategorizationRelationship,"TermCategorization","replace");
-        System.out.println("Replaced TermCategorizationRelationship " + createdTermCategorizationRelationship);
+        if (log.isDebugEnabled()) {
+            log.debug("Replaced TermCategorizationRelationship " + createdTermCategorizationRelationship);
+        }
         subjectAreaRelationship.termCategorization().delete(this.userId, guid);
         //FVTUtils.validateLine(gotTermCategorizationRelationship);
-        System.out.println("Deleted TermCategorizationRelationship with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted TermCategorizationRelationship with userId=" + guid);
+        }
         gotTermCategorizationRelationship = subjectAreaRelationship.termCategorization().restore(this.userId, guid);
         FVTUtils.validateRelationship(gotTermCategorizationRelationship);
-        System.out.println("Restored TermCategorizationRelationship with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Restored TermCategorizationRelationship with userId=" + guid);
+        }
         subjectAreaRelationship.termCategorization().delete(this.userId, guid);
         //FVTUtils.validateLine(gotTermCategorizationRelationship);
-        System.out.println("Deleted TermCategorization with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted TermCategorization with userId=" + guid);
+        }
     }
 
 
@@ -1270,7 +1484,9 @@ public class RelationshipsFVT {
         Categorization createdTermCategorization = subjectAreaRelationship.termCategorization().create(this.userId, termCategorization);
         FVTUtils.validateRelationship(createdTermCategorization);
         FVTUtils.checkEnds(termCategorization, createdTermCategorization, "TermCategorizationRelationship", "create");
-        System.out.println("Created TermCategorizationRelationship " + createdTermCategorization);
+        if (log.isDebugEnabled()) {
+            log.debug("Created TermCategorizationRelationship " + createdTermCategorization);
+        }
 
         return createdTermCategorization;
     }
@@ -1282,12 +1498,16 @@ public class RelationshipsFVT {
 //            throw new SubjectAreaFVTCheckedException("ERROR: Project terms were not as expected");
 //        }
 
-        System.out.println("Created ProjectScopeRelationship " + createdProjectScope);
+        if (log.isDebugEnabled()) {
+            log.debug("Created ProjectScopeRelationship " + createdProjectScope);
+        }
         String guid = createdProjectScope.getGuid();
 
         ProjectScope gotProjectScopeRelationship = subjectAreaRelationship.projectScope().getByGUID(this.userId, guid);
         FVTUtils.validateRelationship(gotProjectScopeRelationship);
-        System.out.println("Got ProjectScopeRelationship " + gotProjectScopeRelationship);
+        if (log.isDebugEnabled()) {
+            log.debug("Got ProjectScopeRelationship " + gotProjectScopeRelationship);
+        }
 
         ProjectScope updateProjectScope = new ProjectScope();
         updateProjectScope.setDescription("ddd2");
@@ -1300,7 +1520,9 @@ public class RelationshipsFVT {
 
         FVTUtils.checkEnds(updatedProjectScope,createdProjectScope,"ProjectScope","update");
 
-        System.out.println("Updated ProjectScopeRelationship " + createdProjectScope);
+        if (log.isDebugEnabled()) {
+            log.debug("Updated ProjectScopeRelationship " + createdProjectScope);
+        }
         ProjectScope replaceProjectScope = new ProjectScope();
         replaceProjectScope.setDescription("ddd3");
         ProjectScope replacedProjectScope = subjectAreaRelationship.projectScope().replace(this.userId, guid, replaceProjectScope);
@@ -1310,17 +1532,25 @@ public class RelationshipsFVT {
         }
         FVTUtils.checkEnds(replacedProjectScope,createdProjectScope,"ProjectScope","replace");
 
-        System.out.println("Replaced ProjectScopeRelationship " + createdProjectScope);
+        if (log.isDebugEnabled()) {
+            log.debug("Replaced ProjectScopeRelationship " + createdProjectScope);
+        }
         subjectAreaRelationship.projectScope().delete(this.userId, guid);
         //FVTUtils.validateLine(gotProjectScopeRelationship);
-        System.out.println("Deleted ProjectScopeRelationship with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted ProjectScopeRelationship with userId=" + guid);
+        }
         gotProjectScopeRelationship = subjectAreaRelationship.projectScope().restore(this.userId, guid);
         FVTUtils.validateRelationship(gotProjectScopeRelationship);
-        System.out.println("Restored ProjectScopeRelationship with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Restored ProjectScopeRelationship with userId=" + guid);
+        }
         subjectAreaRelationship.projectScope().delete(this.userId, guid);
         //FVTUtils.validateLine(gotProjectScopeRelationship);
 
-        System.out.println("Hard deleted ProjectScopeRelationship with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Hard deleted ProjectScopeRelationship with userId=" + guid);
+        }
     }
 
     protected ProjectScope createProjectScope(Project project, Term term) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
@@ -1329,7 +1559,9 @@ public class RelationshipsFVT {
         projectScope.getEnd2().setNodeGuid(term.getSystemAttributes().getGUID());
         ProjectScope createdProjectScope = subjectAreaRelationship.projectScope().create(this.userId, projectScope);
         FVTUtils.validateRelationship(createdProjectScope);
-        System.out.println("CreatedProjectScopeRelationship " + createdProjectScope);
+        if (log.isDebugEnabled()) {
+            log.debug("CreatedProjectScopeRelationship " + createdProjectScope);
+        }
         return createdProjectScope;
     }
 
@@ -1338,16 +1570,24 @@ public class RelationshipsFVT {
         String guid = categoryHierarchyLink.getGuid();
         CategoryHierarchyLink gotCategoryHierarchyLink = subjectAreaRelationship.categoryHierarchyLink().getByGUID(this.userId, guid);
         FVTUtils.validateRelationship(gotCategoryHierarchyLink);
-        System.out.println("Got CategoryHierarchyLink " + categoryHierarchyLink);
+        if (log.isDebugEnabled()) {
+            log.debug("Got CategoryHierarchyLink " + categoryHierarchyLink);
+        }
         Category gotChild = subjectAreaCategory.getByGUID(userId, child.getSystemAttributes().getGUID());
         checkParent(parent, gotChild);
         subjectAreaRelationship.categoryHierarchyLink().delete(this.userId, guid);
-        System.out.println("Deleted CategoryHierarchyLink with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted CategoryHierarchyLink with userId=" + guid);
+        }
         gotCategoryHierarchyLink = subjectAreaRelationship.categoryHierarchyLink().restore(this.userId, guid);
         FVTUtils.validateRelationship(gotCategoryHierarchyLink);
-        System.out.println("Restored CategoryHierarchyLink with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Restored CategoryHierarchyLink with userId=" + guid);
+        }
         subjectAreaRelationship.categoryHierarchyLink().delete(this.userId, guid);
-        System.out.println("Deleted CategoryHierarchyLink with userId=" + guid);
+        if (log.isDebugEnabled()) {
+            log.debug("Deleted CategoryHierarchyLink with userId=" + guid);
+        }
     }
 
     public CategoryHierarchyLink createCategoryHierarchyLink(Category parent, Category child) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
@@ -1358,7 +1598,9 @@ public class RelationshipsFVT {
         FVTUtils.validateRelationship(createdCategoryHierarchyLink);
         FVTUtils.checkEnds(categoryHierarchyLink, createdCategoryHierarchyLink, "CategoryHierarchyLink", "create");
 
-        System.out.println("Created CategoryHierarchyLink " + createdCategoryHierarchyLink);
+        if (log.isDebugEnabled()) {
+            log.debug("Created CategoryHierarchyLink " + createdCategoryHierarchyLink);
+        }
 
         return createdCategoryHierarchyLink;
     }

@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices.configuration.registration;
 
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
+
 import java.io.Serializable;
 
 /**
@@ -9,48 +11,53 @@ import java.io.Serializable;
  */
 public enum EngineServiceDescription implements Serializable
 {
-    ASSET_ANALYSIS_OMES(6000,
+    ASSET_ANALYSIS_OMES(400,
+                        ComponentDevelopmentStatus.IN_DEVELOPMENT,
                         "Asset Analysis",
                         "Asset Analysis OMES",
                         "asset-analysis",
                         "Analyses the content of an asset's real world counterpart, generates annotations " +
                                 "in an open discovery report that is attached to the asset in the open metadata repositories.",
-                        "https://odpi.github.io/egeria-docs/services/omes/asset-analysis/overview/",
+                        "https://egeria-project.org/services/omes/asset-analysis/overview/",
                         "Discovery Engine OMAS"),
 
-    GOVERNANCE_ACTION_OMES(6001,
+    GOVERNANCE_ACTION_OMES(401,
+                           ComponentDevelopmentStatus.IN_DEVELOPMENT,
                            "Governance Action",
                            "Governance Action OMES",
                            "governance-action",
                            "Executes requested governance action services to monitor, assess and maintain metadata and its " +
                                    "real-world counterparts.",
-                           "https://odpi.github.io/egeria-docs/services/omes/governance-action/overview/",
+                           "https://egeria-project.org/services/omes/governance-action/overview/",
                            "Governance Engine OMAS"),
 
-    ARCHIVE_MANAGER_OMES(6002,
-                           "Archive Manager",
-                           "Archive Manager OMES",
-                           "archive-manager",
-                           "Maintains open metadata archives based on the activity in the connected cohorts.",
-                           "https://odpi.github.io/egeria-docs/services/omes/archive-manager/overview/",
-                           "Open Metadata Repository Services (OMRS)"),
+    REPOSITORY_GOVERNANCE_OMES(402,
+                               ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                               "Repository Governance",
+                               "Repository Governance OMES",
+                               "repository-governance",
+                               "Dynamically governance open metadata repositories in the connected cohorts.",
+                               "https://egeria-project.org/services/omes/repository-governance/overview/",
+                               "Open Metadata Repository Services (OMRS)"),
     ;
 
     private static final long     serialVersionUID    = 1L;
 
-    private int    engineServiceCode;
-    private String engineServiceName;
-    private String engineServiceFullName;
-    private String engineServiceURLMarker;
-    private String engineServiceDescription;
-    private String engineServiceWiki;
-    private String engineServicePartnerService;
+    private int                        engineServiceCode;
+    private ComponentDevelopmentStatus engineServiceDevelopmentStatus;
+    private String                     engineServiceName;
+    private String                     engineServiceFullName;
+    private String                     engineServiceURLMarker;
+    private String                     engineServiceDescription;
+    private String                     engineServiceWiki;
+    private String                     engineServicePartnerService;
 
 
     /**
      * Default Constructor
      *
      * @param engineServiceCode ordinal for this engine service
+     * @param engineServiceDevelopmentStatus development status
      * @param engineServiceName symbolic name for this engine service
      * @param engineServiceFullName full name for this engine service
      * @param engineServiceURLMarker string used in URLs
@@ -58,24 +65,45 @@ public enum EngineServiceDescription implements Serializable
      * @param engineServiceWiki wiki page for the engine service for this engine service
      * @param engineServicePartnerService name of the OMAS that is partnered with this engine service
      */
-    EngineServiceDescription(int    engineServiceCode,
-                             String engineServiceName,
-                             String engineServiceFullName,
-                             String engineServiceURLMarker,
-                             String engineServiceDescription,
-                             String engineServiceWiki,
-                             String engineServicePartnerService)
+    EngineServiceDescription(int                        engineServiceCode,
+                             ComponentDevelopmentStatus engineServiceDevelopmentStatus,
+                             String                     engineServiceName,
+                             String                     engineServiceFullName,
+                             String                     engineServiceURLMarker,
+                             String                     engineServiceDescription,
+                             String                     engineServiceWiki,
+                             String                     engineServicePartnerService)
     {
         /*
          * Save the values supplied
          */
-        this.engineServiceCode         = engineServiceCode;
-        this.engineServiceName         = engineServiceName;
-        this.engineServiceFullName     = engineServiceFullName;
-        this.engineServiceURLMarker    = engineServiceURLMarker;
-        this.engineServiceDescription  = engineServiceDescription;
-        this.engineServiceWiki         = engineServiceWiki;
-        this.engineServicePartnerService = engineServicePartnerService;
+        this.engineServiceCode              = engineServiceCode;
+        this.engineServiceDevelopmentStatus = engineServiceDevelopmentStatus;
+        this.engineServiceName              = engineServiceName;
+        this.engineServiceFullName          = engineServiceFullName;
+        this.engineServiceURLMarker         = engineServiceURLMarker;
+        this.engineServiceDescription       = engineServiceDescription;
+        this.engineServiceWiki              = engineServiceWiki;
+        this.engineServicePartnerService    = engineServicePartnerService;
+    }
+
+
+    /**
+     * Return the enum that corresponds with the supplied code.
+     *
+     * @param engineServiceCode requested code
+     * @return enum
+     */
+    public static EngineServiceDescription getEngineServiceDefinition(int engineServiceCode)
+    {
+        for (EngineServiceDescription description : EngineServiceDescription.values())
+        {
+            if (engineServiceCode == description.getEngineServiceCode())
+            {
+                return description;
+            }
+        }
+        return null;
     }
 
 
@@ -87,6 +115,17 @@ public enum EngineServiceDescription implements Serializable
     public int getEngineServiceCode()
     {
         return engineServiceCode;
+    }
+
+
+    /**
+     * Return the development status of the service.
+     *
+     * @return enum describing the status
+     */
+    public ComponentDevelopmentStatus getEngineServiceDevelopmentStatus()
+    {
+        return engineServiceDevelopmentStatus;
     }
 
 

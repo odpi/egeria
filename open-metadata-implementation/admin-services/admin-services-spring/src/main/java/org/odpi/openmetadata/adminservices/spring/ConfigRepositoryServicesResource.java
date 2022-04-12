@@ -32,7 +32,7 @@ import java.util.Map;
         " of the open metadata and governance services within an OMAG Server. This configuration determines which of the Open Metadata and " +
         "Governance (OMAG) services are active.",
         externalDocs=@ExternalDocumentation(description="Further information",
-                url="https://odpi.github.io/egeria-docs/guides/admin/servers/"))
+                url="https://egeria-project.org/guides/admin/servers/"))
 
 public class ConfigRepositoryServicesResource
 {
@@ -156,6 +156,8 @@ public class ConfigRepositoryServicesResource
     {
         return adminAPI.addAuditLogDestination(userId, serverName, connection);
     }
+
+
     /**
      * Update an audit log destination that is identified with the supplied destination name with
      * the supplied connection object.
@@ -168,7 +170,7 @@ public class ConfigRepositoryServicesResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName parameter.
      */
-    @PutMapping(path = "/audit-log-destinations/connection/{connectionName}")
+    @PostMapping(path = "/audit-log-destinations/connection/{connectionName}")
     public VoidResponse updateAuditLogDestination(@PathVariable String     userId,
                                                   @PathVariable String     serverName,
                                                   @PathVariable String     connectionName,
@@ -176,6 +178,8 @@ public class ConfigRepositoryServicesResource
     {
         return adminAPI.updateAuditLogDestination(userId, serverName, connectionName, connection);
     }
+
+
     /**
      * Delete an audit log destination that is identified with the supplied destination name
      *
@@ -187,12 +191,13 @@ public class ConfigRepositoryServicesResource
      * OMAGInvalidParameterException invalid serverName.
      */
     @DeleteMapping(path = "/audit-log-destinations/connection/{connectionName}")
-    public VoidResponse deleteAuditLogDestination(@PathVariable String     userId,
+    public VoidResponse clearAuditLogDestination(@PathVariable String     userId,
                                                   @PathVariable String     serverName,
                                                   @PathVariable String     connectionName)
     {
-        return adminAPI.deleteAuditLogDestination(userId, serverName, connectionName);
+        return adminAPI.clearAuditLogDestination(userId, serverName, connectionName);
     }
+
 
     /**
      * Add a new open metadata archive to load at startup.

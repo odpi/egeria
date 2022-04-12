@@ -1,0 +1,169 @@
+# SPDX-License-Identifier: CC-BY-4.0
+# Copyright Contributors to the Egeria project.
+---
+name: Repository
+description: Request a new Repository
+title: "[REPOSITORY] New Repository"
+labels: [repo]
+assignees:
+  - planetf1
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please try and fill in useful information in the form to explain why a new repository is needed, and to help get the task moving.
+        Come back and update the text in these sections as the discussion progresses, or add notes below.        
+        Egeria's current github repositories are documented [here](https://egeria-project.org/education/tutorials/git-and-git-hub-tutorial/egeria-git-repositories/?h=repositori)
+        
+        If you have any ideas on how to improve this form, please open up an issue!
+  - type: input
+    id: reponame
+    attributes:
+      label: Name
+      description: |
+        What should the repo be called?
+        Look at the existing names and try and follow an appropriate pattern, ie egeria-connector-xxx
+      placeholder: egeria-connector-xxx
+    validations:
+      required: true
+  - type: input
+    id: repoowner
+    attributes:
+      label: Owner
+      placeholder: my-github-id
+      description: |
+        github id(s) of main owner(s)
+        This user should be responsible to manage the repo content, handle maintainance tasks like
+        dependency updates, security scans, release process. They will be expected to participate in discussions and meetings around release, security as determined by the TSC.
+        If this user is not already an Egeria maintainer, they will be added as a 'local' maintainer, for this repo only.
+    validations:
+      required: true
+  - type: textarea
+    id: deliverable
+    attributes:
+      label: Deliverable
+      placeholder: |
+        Provides an integration connector for magic database X so that metadata on tables and columns can be made available to other cohort members.
+      description: |
+        What are the deliverables, or outputs, of this repo, and how will someone use them, for what purpose?
+    validations:
+      required: true
+  - type: textarea
+    id: build
+    attributes:
+      label: Build, test and CI-CD process
+      description: |
+        How will the deliverables identified above be created & distributed?
+        Will maven, gradle (preferred for new repos) be used?
+        What languages are used - Python, Java, Go, .... are particular versions needed?
+        will a container image be required? 
+        What should be checked before a PR can be merged?
+        How about after merging, on main?
+        Are additional tests needed?
+      placeholder: |
+        Provide a high level overview -- exact details aren't essential
+    validations:
+      required: true
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies
+      description: |
+        Does this depend on other Egeria repos, or them on this? ie for building, testing?
+      placeholder: |
+        No dependencies directly on other repos, All egeria dependencies are via maven/gradle.
+    validations:
+      required: true
+  - type: textarea
+    id: justification
+    attributes:
+      label: Justification
+      description: |
+        Why do we need another repo? Were alternatives looked at using existing repos?
+      placeholder: |
+        Add justification here
+    validations:
+      required: true
+  - type: textarea
+    id: assumptions
+    attributes:
+      label: Assumptions
+      description: |
+        Are all of the following assumptions true? If not please explain why
+          - DCO is required
+          - Apache 2.0 / CC-BY-4.0 licensed
+          - Issue tracking, projects enabled, wikis/discussions disabled
+          - Security scanning will be enabled
+          - code scanning will be enabled
+          - User docs are in egeria-docs, some technical detailed docs/designs in this repo
+          - initial CODEOWNERS will list repository owner primarily
+          - Dependabot dependency updates will be set up
+          - nominated owner will be responsible for managing the repo content
+          - repo is public with same group/permissions as the main Egeria repo
+          - If using maven/gradle, snapshots will be published to oss.sonatype.org and releases to maven central
+          - If using containers, they will be published to quay.io & docker.io & built for arm64 + amd64 with same release versions as other artifacts
+          - If using maven, versioning should follow 1.1 / 1.1-SNAPSHOT convention. For javascript etc use semver, ie 1.1.1 / 1.1.1-rc.0
+          - Follows egeria branching-strategy ie branch just before release
+          - Security policy aligned with egeria - common mailing list for reporting vulnarabilities
+      placeholder: |
+        Yes - all true
+    validations:
+      required: true
+  - type: textarea
+    id: extra
+    attributes:
+      label: Additional Information
+      description: |
+        Any other information?
+      placeholder: |
+        add any other information here
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+        label: Work Plan
+        description: | 
+          DO NOT FILL THIS IN NOW
+          
+          This is a checklist to guide the work needed to complete getting the repository and code into an appropriate state for ongoing development. 
+                
+          Where these items may not be undertaken soon after creation, an issue should be opened to track.
+        value: |
+            Before creating the repo
+            - [ ] review overall request & get clarifications
+            - [ ] get approval on developer/TSC call from maintainers
+          
+            Creating the repo
+            - [ ] Create the repo under the odpi organization (default gitignore, license, readme)
+            - [ ] Setup branch protection rules
+            - [ ] Set pull request options (allow merge, squash, rebase, suggest updating, allow automerge, do not delete head)
+            - [ ] Update security settings in repo (policy, advisories, alerts)
+            - [ ] set up permissions
+          
+            First steps
+            - [ ] Initial code-drop (author)
+          
+            Getting CI/CD started & refining settings
+            - [ ] Add initial build script for PR (including gradle wrapper if required)
+            - [ ] Add initial build script for merge
+          
+            Further Refinement
+            - [ ] Add link in egeria docs to new repo describing purpose ( https://github.com/odpi/egeria-docs/blob/main/site/docs/education/tutorials/git-and-git-hub-tutorial/egeria-git-repositories.md ) 
+            - [ ] Add to connector catalog, if new repo is for connector ( https://github.com/odpi/egeria-docs/blob/main/site/docs/connectors/index.md )
+            - [ ] Add to release process docs ( https://github.com/odpi/egeria-docs/blob/main/site/docs/guides/contributor/release-process/index.md )
+            - [ ] Add required credentials for publishing to container repos, maven central etc
+            - [ ] Add artifact signing if needed
+            - [ ] Add dependabot config        
+            - [ ] Add CodeQL 
+            - [ ] Add to LFX ( https://projectadmin.lfx.linuxfoundation.org/project/a092M00001IV4JtQAL  ) for
+              - [ ] LFXSecurity
+              - [ ] LFAnalytics
+            - [ ] Add check for stale defects
+            - [ ] Add any required issue tags
+          
+            Release
+            - [ ] Add release pipeline
+          
+          
+            
+  

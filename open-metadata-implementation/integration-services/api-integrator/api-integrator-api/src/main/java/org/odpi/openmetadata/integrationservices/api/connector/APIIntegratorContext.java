@@ -32,6 +32,7 @@ public class APIIntegratorContext
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param apiManagerClient client to map request to
+     * @param connectionManagerClient client to manage connections in the metadata server
      * @param eventClient client to register for events
      * @param userId integration daemon's userId
      * @param apiManagerGUID unique identifier of the software server capability for the api manager
@@ -1265,6 +1266,7 @@ public class APIIntegratorContext
      * @param schemaTypeProperties properties about the schema type to store
      *
      * @return unique identifier of the new schema type
+     * @param schemaTypeOptionGUIDs list of unique identifiers for schema types to link to
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
