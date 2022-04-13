@@ -59,7 +59,7 @@ public class OpenLineageHandler {
      * @return the available entities types
      */
     public LineageTypesResponse getTypes() {
-        return lineageGraph.getTypes();
+        return openLineageQueryService.getTypes();
     }
 
     /**
@@ -69,6 +69,6 @@ public class OpenLineageHandler {
      * @return the node names that match criteria
      */
     public LineageNodeNamesResponse getNodes(NodeNamesSearchCriteria searchCriteria) {
-        return lineageGraph.getNodes(searchCriteria);
+        return openLineageQueryService.getNodes(searchCriteria);
     }
 }

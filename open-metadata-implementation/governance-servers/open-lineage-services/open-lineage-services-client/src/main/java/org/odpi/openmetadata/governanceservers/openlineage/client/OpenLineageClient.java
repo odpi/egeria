@@ -98,7 +98,6 @@ public class OpenLineageClient extends FFDCRESTClient implements OpenLineageInte
         return nodeNamesResponse.getNames();
     }
 
-    private void detectExceptions(String methodName, FFDCResponseBase response)
     public List<LineageVertex> search(String userId, LineageSearchRequest lineageSearchRequest) throws InvalidParameterException, PropertyServerException, OpenLineageException {
         String methodName = "OpenLineageClient.getEntityDetails";
         LineageSearchResponse lineageSearchResponse = callPostRESTCall(methodName, LineageSearchResponse.class,
