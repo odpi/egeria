@@ -687,6 +687,9 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
      * @return the traversal with the added filtering needed
      */
     private GraphTraversal<Vertex, Vertex> buildQueryWithRelatedNodes(GraphTraversal<Vertex, Vertex> searchTraversal, List<Node> relatedNodes, List<String> edges) {
+        if (CollectionUtils.isEmpty(relatedNodes)) {
+            return searchTraversal;
+        }
         String[] edgeLabels = edges.toArray(new String[0]);
         for (Node node : relatedNodes) {
             if (node.getName() != null) {
