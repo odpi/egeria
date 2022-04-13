@@ -23,7 +23,7 @@ The endpoint for the available entities types is /lineage/types.
 
 # Get a limited list of node names based on requested type and search value 
 
-The endpoint for the limited list of node names based on requested type and search value that should be contained in the qualified name
+The endpoint for the limited list of node names based on requested type and search value that should be contained in the display name
 is /lineage/nodes.
 
 More payloads examples are available in the [postman samples](../../../docs/samples/OLS.postman_collection.json)

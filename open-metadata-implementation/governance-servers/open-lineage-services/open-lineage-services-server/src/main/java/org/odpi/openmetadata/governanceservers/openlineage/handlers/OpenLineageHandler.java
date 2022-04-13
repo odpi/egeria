@@ -4,6 +4,7 @@ package org.odpi.openmetadata.governanceservers.openlineage.handlers;
 
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageQueryService;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
+import org.odpi.openmetadata.governanceservers.openlineage.model.NodeNamesSearchCriteria;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageNodeNamesResponse;
@@ -62,14 +63,12 @@ public class OpenLineageHandler {
     }
 
     /**
-     * Gets nodes names of certain type with qualified name containing a certain value.
-     * @param type the type of the node names to search for
-     * @param searchValue part of the qualified name of the nodes - case insensitive
-     * @param limit the maximum number of node names to retrieve
-     *
+     * Gets nodes names of certain type with display name containing a certain value - case insensitive
+     * @param searchCriteria contains the type of the node names to search for, a search string being part
+     *                      of the display name of the nodes, the maximum number of node names to retrieve
      * @return the node names that match criteria
      */
-    public LineageNodeNamesResponse getNodes(String type, String searchValue, int limit) {
-        return lineageGraph.getNodes(type, searchValue, limit);
+    public LineageNodeNamesResponse getNodes(NodeNamesSearchCriteria searchCriteria) {
+        return lineageGraph.getNodes(searchCriteria);
     }
 }

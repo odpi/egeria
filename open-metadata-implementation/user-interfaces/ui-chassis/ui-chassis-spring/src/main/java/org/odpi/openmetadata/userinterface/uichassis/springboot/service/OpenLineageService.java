@@ -206,12 +206,12 @@ public class OpenLineageService {
     }
 
     /**
-     * Gets available entities types from lineage repository.
+     * Gets nodes names of certain type with display name containing a certain value.
      * @param userId      user ID
      * @param type        the type of the nodes name to search for
      * @param searchValue the string to be contained in the qualified name of the node - case insensitive
      * @param limit       the maximum number of node names to retrieve
-     * @return the available entities types
+     * @return the list of node names
      */
     public List<String> getNodes(String userId, String type, String searchValue, int limit) {
         try {

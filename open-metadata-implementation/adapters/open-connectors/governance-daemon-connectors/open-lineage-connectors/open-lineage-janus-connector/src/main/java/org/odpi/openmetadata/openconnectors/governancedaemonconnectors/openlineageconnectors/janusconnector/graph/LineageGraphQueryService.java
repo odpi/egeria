@@ -21,6 +21,7 @@ import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServe
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageEdge;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
+import org.odpi.openmetadata.governanceservers.openlineage.model.NodeNamesSearchCriteria;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest;
 import org.odpi.openmetadata.governanceservers.openlineage.requests.Node;
@@ -110,7 +111,8 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
     private static final Logger LOGGER = LoggerFactory.getLogger(LineageGraphQueryService.class);
 
     private static final String ASSET_LINEAGE_VARIABLES = "ASSET_LINEAGE_VARIABLES";
-    private static final String QUALIFIED_NAME_PROPERTY = "vertex--InstancePropqualifiedName";
+    private static final String SUB_PROCESS = "subProcess";
+    private static final String DISPLAY_NAME_PROPERTY = "vertex--InstancePropdisplayName";
 
     private final GraphHelper graphHelper;
     private final LineageGraphQueryHelper lineageGraphQueryHelper;
@@ -232,8 +234,9 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
         auditLog.logException(TYPES_NOT_FOUND.getErrorMessage(), TYPES_NOT_FOUND.getMessageDefinition(), e);
     }
 
-    private void handleNodeNamesNotFoundException(Exception e, String type, String searchValue) {
-        auditLog.logException(NODES_NOT_FOUND.getFormattedErrorMessage(type, searchValue), NODES_NOT_FOUND.getMessageDefinition(), e);
+    private void handleNodeNamesNotFoundException(Exception e, NodeNamesSearchCriteria searchCriteria) {
+        auditLog.logException(NODES_NOT_FOUND.getFormattedErrorMessage(searchCriteria.getType(), searchCriteria.getSearchValue()),
+                NODES_NOT_FOUND.getMessageDefinition(), e);
     }
 
     /**
@@ -570,24 +573,25 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
     }
 
     private List<String> getTypes(GraphTraversalSource g) {
-       return g.V().not(hasLabel(ASSET_LINEAGE_VARIABLES)).label().dedup().toList();
+       return g.V().not(hasLabel(ASSET_LINEAGE_VARIABLES, SUB_PROCESS)).label().dedup().toList();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public LineageNodeNamesResponse getNodes(String type, String searchValue, int limit) {
-        List<String> nodeNames = this.graphHelper.getResult(this::getNodes, type, searchValue, limit,
+    public LineageNodeNamesResponse getNodes(NodeNamesSearchCriteria searchCriteria) {
+        List<String> nodeNames = this.graphHelper.getResult(this::getNodes, searchCriteria,
                 this::handleNodeNamesNotFoundException);
         LineageNodeNamesResponse nodeNamesResponse = new LineageNodeNamesResponse();
         nodeNamesResponse.setNames(nodeNames);
         return nodeNamesResponse;
     }
 
-    private List<String> getNodes(GraphTraversalSource g, String type, String searchValue, int limit) {
-        return g.V().hasLabel(type).has(QUALIFIED_NAME_PROPERTY, Text.textContains(searchValue.toLowerCase()))
-                .values(QUALIFIED_NAME_PROPERTY).limit(limit).map(Object::toString).toList();
+    private List<String> getNodes(GraphTraversalSource g, NodeNamesSearchCriteria searchCriteria) {
+        return g.V().hasLabel(searchCriteria.getType()).has(DISPLAY_NAME_PROPERTY,
+                Text.textContains(searchCriteria.getSearchValue().toLowerCase()))
+                .values(DISPLAY_NAME_PROPERTY).limit(searchCriteria.getLimit()).map(Object::toString).toList();
     }
 
     /**

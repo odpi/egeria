@@ -140,7 +140,7 @@ public enum JanusConnectorErrorCode implements AuditLogMessageSet {
             "Check the status of the application and try again"),
     NODES_NOT_FOUND("OPEN-LINEAGE-SERVICES-037",
             OMRSAuditLogRecordSeverity.ERROR,
-            "Could not find nodes of type {0} with qualified name containing {1} in the lineage repository",
+            "Could not find nodes of type {0} with display name containing {1} in the lineage repository",
             "Could not find nodes in lineage repository",
             "Check the status of the application and try again")
             "Check the input data and try again"),

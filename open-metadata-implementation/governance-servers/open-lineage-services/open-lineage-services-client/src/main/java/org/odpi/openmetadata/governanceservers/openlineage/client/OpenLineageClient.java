@@ -92,7 +92,7 @@ public class OpenLineageClient extends FFDCRESTClient implements OpenLineageInte
             InvalidParameterException, OpenLineageException {
         String methodName = "OpenLineageClient.getNodes";
         LineageNodeNamesResponse nodeNamesResponse = callGetRESTCall(methodName, LineageNodeNamesResponse.class,
-                serverPlatformURLRoot + BASE_PATH + LINEAGE + NODES, serverName, userId);
+                serverPlatformURLRoot + BASE_PATH + LINEAGE + NODES, serverName, userId, type, searchValue, limit);
 
         detectExceptions(methodName, nodeNamesResponse);
         return nodeNamesResponse.getNames();

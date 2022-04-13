@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageQueryParameters;
 import org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest;
+import org.odpi.openmetadata.governanceservers.openlineage.model.NodeNamesSearchCriteria;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageNodeNamesResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageSearchResponse;
@@ -85,12 +86,12 @@ public class OpenLineageResource {
 
 
     /**
-     * Gets nodes names of certain type with qualified name containing a certain value.
+     * Gets nodes names of certain type with display name containing a certain value.
      *
      * @param serverName  the server name
      * @param userId      the user id
      * @param type        the type of the nodes name to search for
-     * @param searchValue the string to be contained in the qualified name of the node - case insensitive
+     * @param searchValue the string to be contained in the display name of the node - case insensitive
      * @param limit       the maximum number of node names to retrieve
      * @return the node names that match criteria
      */
@@ -101,7 +102,7 @@ public class OpenLineageResource {
             @RequestParam("type") String type,
             @RequestParam("name") String searchValue,
             @RequestParam("limit") int limit) {
-        return restAPI.getNodes(serverName, userId, type, searchValue, limit);
+        return restAPI.getNodes(serverName, userId, new NodeNamesSearchCriteria(type, searchValue, limit));
     }
 
     @PostMapping(path = "lineage/search", produces = MediaType.APPLICATION_JSON_VALUE)

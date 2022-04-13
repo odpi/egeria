@@ -117,7 +117,7 @@ public class OpenLineageController {
     }
 
     /**
-     * Gets nodes names of certain type with qualified name containing a certain value.
+     * Gets nodes names of certain type with display name containing a certain value.
      * @param type        the type of the nodes name to search for
      * @param searchValue the string to be contained in the qualified name of the node - case insensitive
      * @param limit       the maximum number of node names to retrieve
