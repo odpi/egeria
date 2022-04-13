@@ -5,6 +5,9 @@ package org.odpi.openmetadata.viewservices.rex.api.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -13,6 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+
 public class RexRelationshipRequestBody {
 
 
@@ -24,7 +28,7 @@ public class RexRelationshipRequestBody {
     private String                    platformName;                  // must be non-null
     private String                    relationshipGUID;              // must be non-null, GUID of root of traversal
     private Boolean                   enterpriseOption;
-
+    private long                      asOfTime = 0;                  // as of time to issue the query. 0 means now.
 
     public RexRelationshipRequestBody() {
        // No initialization yet
@@ -48,6 +52,10 @@ public class RexRelationshipRequestBody {
             return enterpriseOption;
     }
 
+    public long getAsOfTime() {
+        return asOfTime;
+    }
+
 
 
     public void setServerName(String serverName) { this.serverName = serverName; }
@@ -58,8 +66,22 @@ public class RexRelationshipRequestBody {
 
     public void setEnterpriseOption(Boolean enterpriseOption) { this.enterpriseOption = enterpriseOption; }
 
+    public void setAsOfTime(long asOfTime) {
+        this.asOfTime = asOfTime;
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RexRelationshipRequestBody)) return false;
+        RexRelationshipRequestBody that = (RexRelationshipRequestBody) o;
+        return getAsOfTime() != that.getAsOfTime() && Objects.equals(getServerName(), that.getServerName()) && Objects.equals(getPlatformName(), that.getPlatformName()) && Objects.equals(getRelationshipGUID(), that.getRelationshipGUID()) && Objects.equals(getEnterpriseOption(), that.getEnterpriseOption());
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(getServerName(), getPlatformName(), getRelationshipGUID(), getEnterpriseOption(), getAsOfTime());
+    }
 
     @Override
     public String toString()
@@ -69,6 +91,7 @@ public class RexRelationshipRequestBody {
                 ", platformName=" + platformName +
                 ", relationshipGUID=" + relationshipGUID +
                 ", enterpriseOption=" + enterpriseOption +
+                ", asOfTime=" + asOfTime +
                 '}';
     }
 

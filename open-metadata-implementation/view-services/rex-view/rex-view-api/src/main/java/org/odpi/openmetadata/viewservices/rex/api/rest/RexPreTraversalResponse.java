@@ -8,6 +8,7 @@ package org.odpi.openmetadata.viewservices.rex.api.rest;
 import org.odpi.openmetadata.viewservices.rex.api.properties.RexPreTraversal;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class RexPreTraversalResponse extends RexViewOMVSAPIResponse {
 
@@ -56,6 +57,20 @@ public class RexPreTraversalResponse extends RexViewOMVSAPIResponse {
     public void setRexPreTraversal(RexPreTraversal rexPreTraversal)
     {
         this.rexPreTraversal = rexPreTraversal;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RexPreTraversalResponse)) return false;
+        if (!super.equals(o)) return false;
+        RexPreTraversalResponse that = (RexPreTraversalResponse) o;
+        return Objects.equals(getRexPreTraversal(), that.getRexPreTraversal());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getRexPreTraversal());
     }
 
 

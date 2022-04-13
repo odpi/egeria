@@ -1469,6 +1469,12 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
      * @param qualifiedNameParameterName name of parameter supplying the qualified name
      * @param displayName the stored display name property for the database table
      * @param description the stored description property associated with the database table
+     * @param externalSchemaTypeGUID unique identifier of an external schema identifier
+     * @param dataType data type name - for stored values
+     * @param defaultValue string containing default value - for stored values
+     * @param fixedValue string containing fixed value - for literals
+     * @param validValuesSetGUID unique identifier for a valid values set to support
+     * @param formula String formula - for derived values
      * @param isDeprecated is this table deprecated?
      * @param elementPosition the position of this column in its parent table.
      * @param minCardinality minimum number of repeating instances allowed for this column - typically 1
@@ -1501,6 +1507,12 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                         String               qualifiedNameParameterName,
                                         String               displayName,
                                         String               description,
+                                        String               externalSchemaTypeGUID,
+                                        String               dataType,
+                                        String               defaultValue,
+                                        String               fixedValue,
+                                        String               validValuesSetGUID,
+                                        String               formula,
                                         boolean              isDeprecated,
                                         int                  elementPosition,
                                         int                  minCardinality,
@@ -1516,6 +1528,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                         String               nativeJavaClass,
                                         List<String>         aliases,
                                         Map<String, String>  additionalProperties,
+                                        String               typeName,
                                         Map<String, Object>  extendedProperties,
                                         boolean              isMergeUpdate,
                                         String               methodName) throws InvalidParameterException,
@@ -1530,45 +1543,128 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
             invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
         }
 
-
         /*
-         * Load up the builder objects.  The builders manage the properties of the metadata elements that make up the schema attribute,
-         * and the schemaTypeHandler manages the type.
+         * Check that the type name requested is valid.
          */
-        SchemaAttributeBuilder schemaAttributeBuilder = new SchemaAttributeBuilder(qualifiedName,
-                                                                                   displayName,
-                                                                                   description,
-                                                                                   elementPosition,
-                                                                                   minCardinality,
-                                                                                   maxCardinality,
-                                                                                   isDeprecated,
-                                                                                   defaultValueOverride,
-                                                                                   allowsDuplicateValues,
-                                                                                   orderedValues,
-                                                                                   sortOrder,
-                                                                                   minimumLength,
-                                                                                   length,
-                                                                                   significantDigits,
-                                                                                   isNullable,
-                                                                                   nativeJavaClass,
-                                                                                   aliases,
-                                                                                   additionalProperties,
-                                                                                   OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_GUID,
-                                                                                   OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
-                                                                                   extendedProperties,
-                                                                                   repositoryHelper,
-                                                                                   serviceName,
-                                                                                   serverName);
+        String attributeTypeName = OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME;
+        String attributeTypeId   = OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_GUID;
+
+        if (typeName != null)
+        {
+            attributeTypeName = typeName;
+            attributeTypeId   = invalidParameterHandler.validateTypeName(typeName,
+                                                                         OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                         serviceName,
+                                                                         methodName,
+                                                                         repositoryHelper);
+        }
+
+        EntityDetail schemaAttributeEntity = this.getEntityFromRepository(userId,
+                                                                          schemaAttributeGUID,
+                                                                          schemaAttributeGUIDParameterName,
+                                                                          attributeTypeName,
+                                                                          null,
+                                                                          null,
+                                                                          false,
+                                                                          false,
+                                                                          null,
+                                                                          methodName);
+
+        if (schemaAttributeEntity != null)
+        {
+            /*
+             * Load up the builder objects.  The builders manage the properties of the metadata elements that make up the schema attribute,
+             * and the schemaTypeHandler manages the type.
+             */
+            SchemaAttributeBuilder schemaAttributeBuilder = new SchemaAttributeBuilder(qualifiedName,
+                                                                                       displayName,
+                                                                                       description,
+                                                                                       elementPosition,
+                                                                                       minCardinality,
+                                                                                       maxCardinality,
+                                                                                       isDeprecated,
+                                                                                       defaultValueOverride,
+                                                                                       allowsDuplicateValues,
+                                                                                       orderedValues,
+                                                                                       sortOrder,
+                                                                                       minimumLength,
+                                                                                       length,
+                                                                                       significantDigits,
+                                                                                       isNullable,
+                                                                                       nativeJavaClass,
+                                                                                       aliases,
+                                                                                       additionalProperties,
+                                                                                       attributeTypeId,
+                                                                                       attributeTypeName,
+                                                                                       extendedProperties,
+                                                                                       repositoryHelper,
+                                                                                       serviceName,
+                                                                                       serverName);
 
 
-        this.updateSchemaAttribute(userId,
-                                   externalSourceGUID,
-                                   externalSourceName,
-                                   schemaAttributeGUID,
-                                   schemaAttributeGUIDParameterName,
-                                   schemaAttributeBuilder.getInstanceProperties(methodName),
-                                   isMergeUpdate,
-                                   methodName);
+            InstanceProperties instanceProperties = schemaAttributeBuilder.getInstanceProperties(methodName);
+
+            this.updateBeanInRepository(userId,
+                                        externalSourceGUID,
+                                        externalSourceName,
+                                        schemaAttributeGUID,
+                                        schemaAttributeGUIDParameterName,
+                                        OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_GUID,
+                                        OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                        false,
+                                        false,
+                                        supportedZones,
+                                        instanceProperties,
+                                        true,
+                                        this.getEffectiveTime(instanceProperties),
+                                        methodName);
+
+            SchemaTypeBuilder schemaTypeBuilder = this.getSchemaTypeBuilder(qualifiedName,
+                                                                            externalSchemaTypeGUID,
+                                                                            dataType,
+                                                                            defaultValue,
+                                                                            fixedValue,
+                                                                            validValuesSetGUID);
+
+            // todo this logic assumes the schema type is stored as a classification
+            setClassificationInRepository(userId,
+                                          externalSourceGUID,
+                                          externalSourceName,
+                                          schemaAttributeEntity,
+                                          schemaAttributeGUIDParameterName,
+                                          attributeTypeName,
+                                          OpenMetadataAPIMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_GUID,
+                                          OpenMetadataAPIMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,
+                                          schemaTypeBuilder.getTypeEmbeddedInstanceProperties(methodName),
+                                          isMergeUpdate,
+                                          false,
+                                          false,
+                                          null,
+                                          methodName);
+
+            /*
+             * The formula is set if the column is derived
+             */
+            if (formula != null)
+            {
+                schemaAttributeBuilder.setCalculatedValue(userId, externalSourceGUID, externalSourceName, formula, methodName);
+
+                setClassificationInRepository(userId,
+                                              externalSourceGUID,
+                                              externalSourceName,
+                                              schemaAttributeEntity,
+                                              schemaAttributeGUIDParameterName,
+                                              attributeTypeName,
+                                              OpenMetadataAPIMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_GUID,
+                                              OpenMetadataAPIMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,
+                                              schemaTypeBuilder.getTypeEmbeddedInstanceProperties(methodName),
+                                              isMergeUpdate,
+                                              false,
+                                              false,
+                                              null,
+                                              methodName);
+            }
+        }
     }
 
 

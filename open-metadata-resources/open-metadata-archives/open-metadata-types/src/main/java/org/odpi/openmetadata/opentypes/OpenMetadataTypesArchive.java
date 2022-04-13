@@ -8,6 +8,7 @@ import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelp
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.ClassificationPropagationRule;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndDef;
@@ -43,7 +44,7 @@ public class OpenMetadataTypesArchive
     private static final String                  archiveName        = "Open Metadata Types";
     private static final String                  archiveDescription = "Standard types for open metadata repositories.";
     private static final OpenMetadataArchiveType archiveType        = OpenMetadataArchiveType.CONTENT_PACK;
-    private static final String                  archiveVersion     = "3.7";
+    private static final String                  archiveVersion     = "3.8";
     private static final String                  originatorName     = "Egeria";
     private static final String                  originatorLicense  = "Apache 2.0";
     private static final Date                    creationDate       = new Date(1588261366992L);
@@ -151,7 +152,7 @@ public class OpenMetadataTypesArchive
      */
     public void getOriginalTypes()
     {
-        OpenMetadataTypesArchive3_5 previousTypes = new OpenMetadataTypesArchive3_5(archiveBuilder);
+        OpenMetadataTypesArchive3_7 previousTypes = new OpenMetadataTypesArchive3_7(archiveBuilder);
 
         /*
          * Pull the types from previous releases.
@@ -161,9 +162,13 @@ public class OpenMetadataTypesArchive
         /*
          * Calls for new and changed types go here
          */
-        update003040ITAssetDeployments();
-        update0233EventsAndLogs();
-        updateArea7LineageRelationships();
+        update0011ManagingReferenceables();
+        update0015LinkedMediaTypes();
+        update0160NoteLogs();
+        update0030OperatingPlatforms();
+        update0057SoftwareServices();
+        update0070NetworksAndGateways();
+        update0461GovernanceEngines();
     }
 
 
@@ -172,422 +177,24 @@ public class OpenMetadataTypesArchive
      */
 
     /**
-     * Allow software capabilities to be supported by any type of IT Infrastructure - not just SoftwareServers
+     * SourcedFrom relationship has its cardinality the wrong way around
      */
-    private void update003040ITAssetDeployments()
+    private void update0011ManagingReferenceables()
     {
-        this.archiveBuilder.addRelationshipDef(getDeployedOnRelationship());
-        this.archiveBuilder.addRelationshipDef(getOperatingPlatformUseRelationship());
-        this.archiveBuilder.addTypeDefPatch(deprecateSoftwareServerPlatformDeploymentRelationship());
-        this.archiveBuilder.addTypeDefPatch(deprecateSoftwareServerDeploymentRelationship());
-        this.archiveBuilder.addTypeDefPatch(deprecateHostOperatingPlatformRelationship());
+        this.archiveBuilder.addTypeDefPatch(updateSourcedFromRelationship());
     }
 
-
-    private RelationshipDef getDeployedOnRelationship()
-    {
-        final String guid            = "6932ba75-9522-4a06-a4a4-ee60a4df6aab";
-        final String name            = "DeployedOn";
-        final String description     = "Identifies an IT Infrastructure asset that is deployed to a specific destination.";
-        final String descriptionGUID = null;
-
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
-                                                                                null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                classificationPropagationRule);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1EntityType               = "ITInfrastructure";
-        final String                     end1AttributeName            = "deployedElement";
-        final String                     end1AttributeDescription     = "IT infrastructure deployed to this asset.";
-        final String                     end1AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 end1Cardinality);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2EntityType               = "Asset";
-        final String                     end2AttributeName            = "deployedTo";
-        final String                     end2AttributeDescription     = "Deployment destination.";
-        final String                     end2AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 end2Cardinality);
-        relationshipDef.setEndDef2(relationshipEndDef);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "deploymentTime";
-        final String attribute1Description     = "Time that the IT Infrastructure was deployed.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "deployer";
-        final String attribute2Description     = "Person, organization or engine that deployed the IT Infrastructure.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "deployerTypeName";
-        final String attribute3Description     = "Type name of deployer.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "deployerPropertyName";
-        final String attribute4Description     = "Identifying property name of deployer.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "deploymentStatus";
-        final String attribute5Description     = "The operational status of the the IT Infrastructure on the specific destination.";
-        final String attribute5DescriptionGUID = null;
-
-        property = archiveHelper.getDateTypeDefAttribute(attribute1Name,
-                                                         attribute1Description,
-                                                         attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
-                                                           attribute4Description,
-                                                           attribute4DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute("OperationalStatus",
-                                                         attribute5Name,
-                                                         attribute5Description,
-                                                         attribute5DescriptionGUID);
-        properties.add(property);
-
-        relationshipDef.setPropertiesDefinition(properties);
-
-        return relationshipDef;
-    }
-
-
-
-    private RelationshipDef getOperatingPlatformUseRelationship()
-    {
-        final String guid            = "0943e0ba-73ac-476b-8ebe-2ef30ba44976";
-        final String name            = "OperatingPlatformUse";
-        final String description     = "Identifies the operating platform installed on the IT Infrastructure asset.";
-        final String descriptionGUID = null;
-
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
-                                                                                null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                classificationPropagationRule);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1EntityType               = "OperatingPlatform";
-        final String                     end1AttributeName            = "operatingPlatforms";
-        final String                     end1AttributeDescription     = "Software installed.";
-        final String                     end1AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 end1Cardinality);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2EntityType               = "ITInfrastructure";
-        final String                     end2AttributeName            = "installedOn";
-        final String                     end2AttributeDescription     = "Where the operating platform is running.";
-        final String                     end2AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 end2Cardinality);
-        relationshipDef.setEndDef2(relationshipEndDef);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "installTime";
-        final String attribute1Description     = "Time that the software was installed on the IT Infrastructure.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "deployer";
-        final String attribute2Description     = "Person, organization or engine that installed the software.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "deployerTypeName";
-        final String attribute3Description     = "Type name of deployer.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "deployerPropertyName";
-        final String attribute4Description     = "Identifying property name of deployer.";
-        final String attribute4DescriptionGUID = null;
-
-        property = archiveHelper.getDateTypeDefAttribute(attribute1Name,
-                                                         attribute1Description,
-                                                         attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
-                                                           attribute4Description,
-                                                           attribute4DescriptionGUID);
-        properties.add(property);
-
-        relationshipDef.setPropertiesDefinition(properties);
-
-        return relationshipDef;
-    }
-
-    private TypeDefPatch deprecateSoftwareServerPlatformDeploymentRelationship()
+    private TypeDefPatch updateSourcedFromRelationship()
     {
         /*
          * Create the Patch
          */
-        final String typeName = "SoftwareServerPlatformDeployment";
+        final String typeName = "SourcedFrom";
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch deprecateSoftwareServerDeploymentRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "SoftwareServerDeployment";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch deprecateHostOperatingPlatformRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "HostOperatingPlatform";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
-
-        return typeDefPatch;
-    }
-
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * Change the lineage relationships to allow multiLink and add missing properties.
-     */
-    private void updateArea7LineageRelationships()
-    {
-        this.archiveBuilder.addTypeDefPatch(enableMultiLinkOnLineageMappingRelationship());
-        this.archiveBuilder.addTypeDefPatch(enableMultiLinkOnDataFlowRelationship());
-        this.archiveBuilder.addTypeDefPatch(enableMultiLinkOnControlFlowRelationship());
-        this.archiveBuilder.addTypeDefPatch(enableMultiLinkOnProcessCallRelationship());
-    }
-
-
-    private TypeDefPatch enableMultiLinkOnLineageMappingRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "LineageMapping";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setUpdateMultiLink(true);
-        typeDefPatch.setMultiLink(true);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "qualifiedName";
-        final String attribute1Description     = "Unique name of the lineage flow.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "description";
-        final String attribute2Description     = "Description and purpose of the lineage flow.";
-        final String attribute2DescriptionGUID = null;
-
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch enableMultiLinkOnDataFlowRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "DataFlow";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setUpdateMultiLink(true);
-        typeDefPatch.setMultiLink(true);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch enableMultiLinkOnControlFlowRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "ControlFlow";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setUpdateMultiLink(true);
-        typeDefPatch.setMultiLink(true);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch enableMultiLinkOnProcessCallRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "ProcessCall";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setUpdateMultiLink(true);
-        typeDefPatch.setMultiLink(true);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "lineNumber";
-        final String attribute1Description     = "Location of the call in the implementation.";
-        final String attribute1DescriptionGUID = null;
-
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * Add associated log relationship
-     */
-    private void update0233EventsAndLogs()
-    {
-        this.archiveBuilder.addRelationshipDef(addAssociatedLogRelationship());
-    }
-
-    private RelationshipDef addAssociatedLogRelationship()
-    {
-        final String guid            = "0999e2b9-45d6-42c4-9767-4b74b0b48b89";
-        final String name            = "AssociatedLog";
-        final String description     = "Defines destination information for the log of activity associated with an element.";
-        final String descriptionGUID = null;
-
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
-                                                                                null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                classificationPropagationRule);
 
         RelationshipEndDef relationshipEndDef;
 
@@ -595,8 +202,173 @@ public class OpenMetadataTypesArchive
          * Set up end 1.
          */
         final String                     end1EntityType               = "Referenceable";
-        final String                     end1AttributeName            = "logSubjects";
-        final String                     end1AttributeDescription     = "Elements that the log records describe.";
+        final String                     end1AttributeName            = "resultingElement";
+        final String                     end1AttributeDescription     = "Element created from the template.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        typeDefPatch.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "Referenceable";
+        final String                     end2AttributeName            = "templateElement";
+        final String                     end2AttributeDescription     = "Template element providing information.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        typeDefPatch.setEndDef2(relationshipEndDef);
+
+        return typeDefPatch;
+    }
+
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    /**
+     * Add multi-link flags
+     */
+    private void update0015LinkedMediaTypes()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateExternalReferenceLinkRelationship());
+        this.archiveBuilder.addTypeDefPatch(updateMediaReferenceRelationship());
+    }
+
+    private TypeDefPatch updateExternalReferenceLinkRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "ExternalReferenceLink";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setUpdateMultiLink(true);
+        typeDefPatch.setMultiLink(true);
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch updateMediaReferenceRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "MediaReference";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setUpdateMultiLink(true);
+        typeDefPatch.setMultiLink(true);
+
+        return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    /**
+     * Add new software services
+     */
+    private void update0057SoftwareServices()
+    {
+        this.archiveBuilder.addEntityDef(addMetadataRepositoryServiceEntity());
+        this.archiveBuilder.addEntityDef(addSecurityServiceEntity());
+    }
+
+    private EntityDef addMetadataRepositoryServiceEntity()
+    {
+        final String guid            = "27891e52-1255-4a33-98a2-377717a25334";
+        final String name            = "MetadataRepositoryService";
+        final String description     = "Provides access to a metadata repository - either local or remote.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "SoftwareService";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+    }
+
+
+    private EntityDef addSecurityServiceEntity()
+    {
+        final String guid            = "2df2069f-6475-400c-bf8c-6d2072a55d47";
+        final String name            = "SecurityService";
+        final String description     = "Provides security services - classifications identify specific capabilities.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "SoftwareService";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+    }
+
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    /**
+     * Add software package dependency relationship
+     */
+    private void update0030OperatingPlatforms()
+    {
+        this.archiveBuilder.addRelationshipDef(addSoftwarePackageDependencyRelationship());
+    }
+
+    private RelationshipDef addSoftwarePackageDependencyRelationship()
+    {
+        final String guid            = "2c05beaf-e313-47f8-ac18-2298140b2ad9";
+        final String name            = "SoftwarePackageDependency";
+        final String description     = "Shows the software packages being used within an asset.";
+        final String descriptionGUID = null;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "Asset";
+        final String                     end1AttributeName            = "runningWithAsset";
+        final String                     end1AttributeDescription     = "Assets making use of software package.";
         final String                     end1AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
@@ -611,9 +383,9 @@ public class OpenMetadataTypesArchive
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Asset";
-        final String                     end2AttributeName            = "associatedLogs";
-        final String                     end2AttributeDescription     = "Destinations for log records.";
+        final String                     end2EntityType               = "Collection";
+        final String                     end2AttributeName            = "dependsOnSoftwarePackages";
+        final String                     end2AttributeDescription     = "Collection of software packages.";
         final String                     end2AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
@@ -625,6 +397,329 @@ public class OpenMetadataTypesArchive
         relationshipDef.setEndDef2(relationshipEndDef);
 
         return relationshipDef;
+    }
+
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    /**
+     * Simplify modelling networks
+     */
+    private void update0070NetworksAndGateways()
+    {
+        this.archiveBuilder.addRelationshipDef(getVisibleEndpointRelationship());
+        this.archiveBuilder.addTypeDefPatch(deprecateHostNetworkRelationship());
+        this.archiveBuilder.addTypeDefPatch(updateNetworkGatewayLinkRelationship());
+    }
+
+    private RelationshipDef getVisibleEndpointRelationship()
+    {
+        final String guid            = "5e1722c7-0167-49a0-bd77-fbf9dc5eb5bb";
+        final String name            = "VisibleEndpoint";
+        final String description     = "Shows that network that an endpoint is visible through.";
+        final String descriptionGUID = null;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "Endpoint";
+        final String                     end1AttributeName            = "visibleEndpoints";
+        final String                     end1AttributeDescription     = "Endpoint callable through network.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "Network";
+        final String                     end2AttributeName            = "visibleInNetwork";
+        final String                     end2AttributeDescription     = "Networks from which the endpoint can be called.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        return relationshipDef;
+    }
+
+    private TypeDefPatch deprecateHostNetworkRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "HostNetwork";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch updateNetworkGatewayLinkRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "NetworkGatewayLink";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setUpdateMultiLink(true);
+        typeDefPatch.setMultiLink(true);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "name";
+        final String attribute1Description     = "Name for the network mapping.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "description";
+        final String attribute2Description     = "Description and purpose of the network mapping.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "externalEndpointAddress";
+        final String attribute3Description     = "Network address used by callers to the network gateway.";
+        final String attribute3DescriptionGUID = null;
+        final String attribute4Name            = "externalEndpointAddress";
+        final String attribute4Description     = "Network address that the network gateway maps the request to.";
+        final String attribute4DescriptionGUID = null;
+
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
+                                                           attribute4Description,
+                                                           attribute4DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    /**
+     * Enable any person role to author note logs.
+     */
+    private void update0160NoteLogs()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateNoteLogAuthorshipRelationship());
+    }
+
+
+    private TypeDefPatch updateNoteLogAuthorshipRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "NoteLogAuthorship";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "PersonRole";
+        final String                     end1AttributeName            = "authors";
+        final String                     end1AttributeDescription     = "Person contributing to the note log.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        typeDefPatch.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "NoteLog";
+        final String                     end2AttributeName            = "authoredNoteLogs";
+        final String                     end2AttributeDescription     = "Note log containing contributions.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        typeDefPatch.setEndDef2(relationshipEndDef);
+
+        return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    /**
+     * Make supported governance service multi-link and add support for RepositoryGovernanceEngine and RepositoryGovernanceService.
+     * ArchiveEngine and ArchiveService are deprecated in favour of these new entity types
+     */
+    private void update0461GovernanceEngines()
+    {
+        this.archiveBuilder.addEntityDef(getRepositoryGovernanceEngineEntity());
+        this.archiveBuilder.addEntityDef(getRepositoryGovernanceServiceEntity());
+        this.archiveBuilder.addTypeDefPatch(updateSupportedGovernanceServiceRelationship());
+        this.archiveBuilder.addTypeDefPatch(deprecateArchiveEngine());
+        this.archiveBuilder.addTypeDefPatch(deprecateArchiveService());
+    }
+
+
+    private TypeDefPatch updateSupportedGovernanceServiceRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "SupportedGovernanceService";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setUpdateMultiLink(true);
+        typeDefPatch.setMultiLink(true);
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch deprecateArchiveEngine()
+    {
+        /*
+         * Create the Patch - the super type is updated so that existing archive engines will run in the repository governance OMES
+         */
+        final String typeName = "ArchiveEngine";
+        final String superTypeName = "RepositoryGovernanceEngine";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(superTypeName));
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch deprecateArchiveService()
+    {
+        /*
+         * Create the Patch - the super type is updated so that existing archive services will run in the repository governance OMES
+         */
+        final String typeName = "ArchiveService";
+        final String superTypeName = "RepositoryGovernanceService";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(superTypeName));
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+        return typeDefPatch;
+    }
+
+
+    private EntityDef getRepositoryGovernanceEngineEntity()
+    {
+        /*
+         * Build the Entity
+         */
+        final String guid            = "2b3bed05-c227-47d7-87a3-139ab0568361";
+        final String name            = "RepositoryGovernanceEngine";
+        final String description     = "A governance engine for open metadata repositories.";
+        final String descriptionGUID = null;
+        final String superTypeName   = "GovernanceEngine";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+
+    }
+
+
+    private EntityDef getRepositoryGovernanceServiceEntity()
+    {
+        /*
+         * Build the Entity
+         */
+        final String guid            = "978e7674-8231-4158-a4e3-a5ccdbcad60e";
+        final String name            = "RepositoryGovernanceService";
+        final String description     = "A governance service for open metadata repositories.";
+        final String descriptionGUID = null;
+        final String superTypeName   = "GovernanceService";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+
     }
 
 

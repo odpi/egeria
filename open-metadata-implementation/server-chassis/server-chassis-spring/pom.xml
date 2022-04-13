@@ -157,7 +157,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>archive-manager-spring</artifactId>
+            <artifactId>repository-governance-spring</artifactId>
             <scope>runtime</scope>
         </dependency>
 
@@ -448,11 +448,6 @@
         </dependency>
 
         <dependency>
-            <groupId>jakarta.annotation</groupId>
-            <artifactId>jakarta.annotation-api</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
         </dependency>
@@ -468,12 +463,6 @@
             <groupId>io.swagger.core.v3</groupId>
             <artifactId>swagger-annotations</artifactId>
         </dependency>
-
-        <!--dependency>
-            <groupId>javax.annotation</groupId>
-            <artifactId>javax.annotation-api</artifactId>
-            <scope>provided</scope>
-        </dependency-->
 
     </dependencies>
 
@@ -529,9 +518,6 @@
                             <ignoredDependencies>
                                 <ignoreDependency>
                                     javax.annotation:javax.annotation-api:*
-                                </ignoreDependency>
-                                <ignoreDependency>
-                                    jakarta.annotation:jakarta.annotation-api:*
                                 </ignoreDependency>
                             </ignoredDependencies>
                         </configuration>
@@ -596,7 +582,7 @@
 
                 <dependency>
                     <groupId>org.odpi.egeria</groupId>
-                    <artifactId>archive-manager-spring</artifactId>
+                    <artifactId>repository-governance-spring</artifactId>
                     <scope>runtime</scope>
                 </dependency>
 

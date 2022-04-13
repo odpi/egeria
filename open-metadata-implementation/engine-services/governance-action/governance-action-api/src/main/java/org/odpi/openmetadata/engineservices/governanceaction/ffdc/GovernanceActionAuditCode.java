@@ -184,6 +184,13 @@ public enum GovernanceActionAuditCode implements AuditLogMessageSet
                                                "Its class is {2} rather than a subclass of {3}",
                                        "The governance action request is not run and an error is returned to the caller.  Subsequent calls to this service will fail in the same way",
                                        "Correct the configuration for the Governance Action OMES to only include valid governance action service implementations."),
+
+    GOVERNANCE_ACTION_INITIALIZED("OMES-GOVERNANCE-ACTION-0032",
+                                  OMRSAuditLogRecordSeverity.STARTUP,
+                                  "{0} governance service {1} with request type {2} has initialized in governance engine {3}",
+                                  "The governance engine is starting a governance action request.",
+                                  "Validate that the governance action ran to successful completion."),
+
     ;
 
 

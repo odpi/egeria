@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
+import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHostServicesAuditCode;
 
 import java.util.Date;
 import java.util.List;
@@ -133,10 +134,40 @@ public abstract class GovernanceServiceHandler implements Runnable
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
-        if (governanceActionGUID != null)
+        final String methodName = "updateActionTargetStatus";
+
+        if (auditLog != null)
         {
-            governanceActionClient.updateActionTargetStatus(engineHostUserId, actionTargetGUID, status, startDate, completionDate);
+            String statusString   = "<null>";
+            String startTime      = "<null>";
+            String completionTime = "<null>";
+
+            if (status != null)
+            {
+                statusString = status.getName();
+            }
+
+            if (startDate != null)
+            {
+                startTime = startDate.toString();
+            }
+
+            if (completionDate != null)
+            {
+                completionTime = completionDate.toString();
+            }
+
+            auditLog.logMessage(methodName, EngineHostServicesAuditCode.GOVERNANCE_ACTION_TARGET_COMPLETION.getMessageDefinition(governanceActionGUID,
+                                                                                                                                 governanceServiceName,
+                                                                                                                                 getGovernanceEngineName(),
+                                                                                                                                 requestType,
+                                                                                                                                 actionTargetGUID,
+                                                                                                                                 statusString,
+                                                                                                                                 startTime,
+                                                                                                                                 completionTime));
         }
+
+        governanceActionClient.updateActionTargetStatus(engineHostUserId, actionTargetGUID, status, startDate, completionDate);
     }
 
 
@@ -159,15 +190,51 @@ public abstract class GovernanceServiceHandler implements Runnable
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
     {
-        if (governanceActionGUID != null)
+        final String methodName = "recordCompletionStatus";
+
+        if (auditLog != null)
         {
-            governanceActionClient.recordCompletionStatus(engineHostUserId,
-                                                          governanceActionGUID,
-                                                          requestParameters,
-                                                          status,
-                                                          outputGuards,
-                                                          newActionTargets);
+            String statusString          = "<null>";
+            String guardsString          = "<null>";
+            String requestParameterNames = "<null>";
+            String actionTargets         = "<null>";
+
+            if (status != null)
+            {
+                statusString = status.getName();
+            }
+
+            if (outputGuards != null)
+            {
+                guardsString = outputGuards.toString();
+            }
+
+            if (requestParameters != null)
+            {
+                requestParameterNames = requestParameters.keySet().toString();
+            }
+
+            if (newActionTargets != null)
+            {
+                actionTargets = newActionTargets.toString();
+            }
+
+            auditLog.logMessage(methodName, EngineHostServicesAuditCode.GOVERNANCE_ACTION_RECORD_COMPLETION.getMessageDefinition(governanceActionGUID,
+                                                                                                                                 governanceServiceName,
+                                                                                                                                 getGovernanceEngineName(),
+                                                                                                                                 requestType,
+                                                                                                                                 statusString,
+                                                                                                                                 guardsString,
+                                                                                                                                 requestParameterNames,
+                                                                                                                                 actionTargets));
         }
+
+        governanceActionClient.recordCompletionStatus(engineHostUserId,
+                                                      governanceActionGUID,
+                                                      requestParameters,
+                                                      status,
+                                                      outputGuards,
+                                                      newActionTargets);
     }
 
 

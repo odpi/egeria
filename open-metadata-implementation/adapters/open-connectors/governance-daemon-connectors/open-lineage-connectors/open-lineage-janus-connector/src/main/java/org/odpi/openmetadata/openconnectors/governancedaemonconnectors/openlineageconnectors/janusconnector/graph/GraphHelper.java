@@ -10,6 +10,7 @@ import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageExcep
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.factory.GraphFactory;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.GraphDetails;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.ffdc.JanusConnectorException;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.QuadFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -177,6 +178,37 @@ public class GraphHelper {
         U result = null;
         try {
             result = function.apply(g, argument1, argument2);
+            if (isSupportingTransactions()) {
+                g.tx().commit();
+            }
+        } catch (Exception e) {
+            g.tx().rollback();
+            errorHandler.accept(e, argument1, argument2);
+        }
+        return result;
+    }
+
+
+    /**
+     * Helper method that gets a traversal and executes the code that queries the graph
+     *
+     * @param function     must accept a GraphTraversalSource as the first parameter and has two more parameters
+     * @param argument1    the first argument of the function
+     * @param argument2    the second argument of the function
+     * @param argument3    the third argument of the function
+     * @param errorHandler consumer that is called when an error occurs while executing the function
+     * @param <T>          the type of the second parameter of the function
+     * @param <U>          the type of the third parameter of the function
+     * @param <V>          the type of the fourth parameter of the function
+     * @param <W>          type of the returned result
+     * @return the result of the function
+     */
+    public <W, T, U, V> W getResult(QuadFunction<GraphTraversalSource, T, U, V, W> function, T argument1, U argument2,
+                                 V argument3, TriConsumer<Exception, T, U> errorHandler) {
+        GraphTraversalSource g = this.getGraphTraversalSource();
+        W result = null;
+        try {
+            result = function.apply(g, argument1, argument2, argument3);
             if (isSupportingTransactions()) {
                 g.tx().commit();
             }

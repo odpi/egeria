@@ -77,18 +77,33 @@ public class ComplexSchemaTypeProperties extends SchemaTypeProperties
     @Override
     public String toString()
     {
-        return "ComplexSchemaType{" +
-                "attributeCount='" + attributeCount + '\'' +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", versionNumber='" + getVersionNumber() + '\'' +
-                ", author='" + getAuthor() + '\'' +
-                ", usage='" + getUsage() + '\'' +
-                ", encodingStandard='" + getEncodingStandard() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+        return "ComplexSchemaTypeProperties{" +
+                       "attributeCount=" + attributeCount +
+                       ", versionNumber='" + getVersionNumber() + '\'' +
+                       ", author='" + getAuthor() + '\'' +
+                       ", usage='" + getUsage() + '\'' +
+                       ", encodingStandard='" + getEncodingStandard() + '\'' +
+                       ", namespace='" + getNamespace() + '\'' +
+                       ", formula='" + getFormula() + '\'' +
+                       ", queries=" + getQueries() +
+                       ", isDeprecated=" + getIsDeprecated() +
+                       ", technicalName='" + getTechnicalName() + '\'' +
+                       ", technicalDescription='" + getTechnicalDescription() + '\'' +
+                       ", displayName='" + getDisplayName() + '\'' +
+                       ", summary='" + getSummary() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", abbreviation='" + getAbbreviation() + '\'' +
+                       ", usage='" + getUsage() + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
+                       ", vendorProperties=" + getVendorProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
+
 
     /**
      * Compare the values of the supplied object with those stored in the current object.

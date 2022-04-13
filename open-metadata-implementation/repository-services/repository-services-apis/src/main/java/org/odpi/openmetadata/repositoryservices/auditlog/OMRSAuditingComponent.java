@@ -193,11 +193,11 @@ public enum OMRSAuditingComponent implements ComponentDescription
                                         "A connector that coordinates governance of digital resources and metadata.",
                                         "https://egeria-project.org/guides/developer/governance-action-services/overview/"),
 
-    ARCHIVE_SERVICE_CONNECTOR(30,
-                              ComponentDevelopmentStatus.IN_DEVELOPMENT,
-                              "Archive Service Connector",
-                              "A connector that dynamically manages open metadata archives.",
-                              "https://egeria-project.org/guides/developer/archive-services/overview/"),
+    REPOSITORY_GOVERNANCE_SERVICE_CONNECTOR(30,
+                                            ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                                            "Repository Governance Service Connector",
+                                            "A connector that dynamically governs the activity of the open metadata repositories.",
+                                            "https://egeria-project.org/guides/developer/repository-governance-services/overview/"),
 
     INTEGRATION_CONNECTOR(31,
                           ComponentDevelopmentStatus.IN_DEVELOPMENT,

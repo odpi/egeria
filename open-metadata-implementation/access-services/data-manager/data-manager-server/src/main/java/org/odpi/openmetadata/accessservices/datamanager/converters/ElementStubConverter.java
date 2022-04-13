@@ -161,6 +161,7 @@ public class ElementStubConverter<B> extends DataManagerOMASConverter<B>
      * @return bean populated with properties from the entity supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
+    @SuppressWarnings(value = "unchecked")
     public B getNewBean(Class<B>     beanClass,
                         EntityDetail entity,
                         String       methodName) throws PropertyServerException

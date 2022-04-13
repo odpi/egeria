@@ -29,7 +29,7 @@
     <artifactId>engine-services</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>archive-manager</module>
+        <module>repository-governance</module>
         <module>asset-analysis</module>
         <module>governance-action</module>
     </modules>

@@ -35,6 +35,7 @@ public class OMRSAuditLogReportingComponent implements Serializable, ComponentDe
      * Construct the description of the reporting component.
      *
      * @param componentId  numerical identifier for the component.
+     * @param componentDevelopmentStatus status of the component's implementation
      * @param componentName  display name for the component.
      * @param componentDescription  description of the component.
      * @param componentWikiURL  link to more information.

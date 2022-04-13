@@ -106,6 +106,32 @@ public class OpenLineageController {
     }
 
     /**
+     * Gets available entities types from lineage repository.
+     *
+     * @return the available entities types
+     */
+    @GetMapping( value = "types")
+    public List<String> getTypes() {
+        String user = SecurityContextHolder.getContext().getAuthentication().getName();
+        return openLineageService.getTypes(user);
+    }
+
+    /**
+     * Gets nodes names of certain type with qualified name containing a certain value.
+     * @param type        the type of the nodes name to search for
+     * @param searchValue the string to be contained in the qualified name of the node - case insensitive
+     * @param limit       the maximum number of node names to retrieve
+     *
+     * @return the list of node names
+     */
+    @GetMapping( value = "nodes")
+    public List<String> getNodes(@RequestParam("type") String type, @RequestParam("name") String searchValue,
+                                 @RequestParam("limit") int limit) {
+        String user = SecurityContextHolder.getContext().getAuthentication().getName();
+        return openLineageService.getNodes(user, type, searchValue, limit);
+    }
+
+    /**
      * @param searchRequest filtering details for the search
      * @return the entity details
      */

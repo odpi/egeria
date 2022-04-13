@@ -12,8 +12,10 @@ import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest;
+import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageNodeNamesResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageSearchResponse;
+import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageTypesResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageVertexResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.util.OpenLineageExceptionHandler;
 
@@ -27,6 +29,8 @@ public class OpenLineageClient extends FFDCRESTClient implements OpenLineageInte
     private static final String LINEAGE = "/lineage/";
     private static final String ENTITIES = "/entities/{2}";
     private static final String DETAILS = "/details";
+    public static final String TYPES = "types";
+    public static final String NODES = "nodes";
     private static final String SEARCH = "/search";
     private OpenLineageExceptionHandler openLineageExceptionHandler = new OpenLineageExceptionHandler();
 
@@ -75,6 +79,26 @@ public class OpenLineageClient extends FFDCRESTClient implements OpenLineageInte
         return lineageVertexResponse.getLineageVertex();
     }
 
+    public List<String> getTypes(String userId) throws PropertyServerException, InvalidParameterException, OpenLineageException {
+        String methodName = "OpenLineageClient.getTypes";
+        LineageTypesResponse lineageTypesResponse = callGetRESTCall(methodName, LineageTypesResponse.class,
+                serverPlatformURLRoot + BASE_PATH + LINEAGE + TYPES, serverName, userId);
+
+        detectExceptions(methodName, lineageTypesResponse);
+        return lineageTypesResponse.getTypes();
+    }
+
+    public List<String> getNodes(String userId, String type, String searchValue, int limit) throws PropertyServerException,
+            InvalidParameterException, OpenLineageException {
+        String methodName = "OpenLineageClient.getNodes";
+        LineageNodeNamesResponse nodeNamesResponse = callGetRESTCall(methodName, LineageNodeNamesResponse.class,
+                serverPlatformURLRoot + BASE_PATH + LINEAGE + NODES, serverName, userId);
+
+        detectExceptions(methodName, nodeNamesResponse);
+        return nodeNamesResponse.getNames();
+    }
+
+    private void detectExceptions(String methodName, FFDCResponseBase response)
     public List<LineageVertex> search(String userId, LineageSearchRequest lineageSearchRequest) throws InvalidParameterException, PropertyServerException, OpenLineageException {
         String methodName = "OpenLineageClient.getEntityDetails";
         LineageSearchResponse lineageSearchResponse = callPostRESTCall(methodName, LineageSearchResponse.class,

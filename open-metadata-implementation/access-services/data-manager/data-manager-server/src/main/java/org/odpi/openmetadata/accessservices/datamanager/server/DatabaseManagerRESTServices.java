@@ -1239,6 +1239,130 @@ public class DatabaseManagerRESTServices
      * A database schema may contain multiple database tables and database views.
      */
 
+
+    /**
+     * Create a database top-level schema type used to attach tables and views to the database/database schema.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param userId calling user
+     * @param databaseManagerGUID guid of the software server capability entity that represented the external source - null for local
+     * @param databaseManagerName name of the software server capability entity that represented the external source - null for local
+     * @param requestBody qualified name of the schema type - suggest "SchemaOf:" + asset's qualified name
+     * @return unique identifier of the database schema type or
+     *  InvalidParameterException the bean properties are invalid
+     *  UserNotAuthorizedException user not authorized to issue this request
+     *  PropertyServerException problem accessing the property server
+     */
+    public GUIDResponse createDatabaseSchemaType(String          serverName,
+                                                 String          userId,
+                                                 String          databaseManagerGUID,
+                                                 String          databaseManagerName,
+                                                 NameRequestBody requestBody)
+    {
+        final String methodName = "createDatabaseSchemaType";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                RelationalDataHandler<DatabaseElement,
+                                             DatabaseSchemaElement,
+                                             DatabaseTableElement,
+                                             DatabaseViewElement,
+                                             DatabaseColumnElement,
+                                             SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+
+                String databaseTableGUID = handler.createDatabaseSchemaType(userId,
+                                                                            databaseManagerGUID,
+                                                                            databaseManagerName,
+                                                                            requestBody.getName(),
+                                                                            methodName);
+
+                response.setGUID(databaseTableGUID);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Link the schema type and asset.  This is called from outside of AssetHandler.  The databaseAssetGUID is checked to ensure the
+     * asset exists and updates are allowed.  If there is already a schema attached, it is deleted.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param userId calling user
+     * @param databaseManagerGUID guid of the software server capability entity that represented the external source - null for local
+     * @param databaseManagerName name of the software server capability entity that represented the external source - null for local
+     * @param databaseAssetGUID unique identifier of the asset to connect the schema to
+     * @param schemaTypeGUID identifier for schema Type object
+     * @return void or
+     *  InvalidParameterException the bean properties are invalid
+     *  UserNotAuthorizedException user not authorized to issue this request
+     *  PropertyServerException problem accessing the property server
+     */
+    @SuppressWarnings(value = "unused")
+    public  VoidResponse attachSchemaTypeToDatabaseAsset(String          serverName,
+                                                         String          userId,
+                                                         String          databaseManagerGUID,
+                                                         String          databaseManagerName,
+                                                         String          databaseAssetGUID,
+                                                         String          schemaTypeGUID,
+                                                         NullRequestBody requestBody)
+    {
+        final String methodName = "attachSchemaTypeToDatabaseAsset";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            RelationalDataHandler<DatabaseElement,
+                                         DatabaseSchemaElement,
+                                         DatabaseTableElement,
+                                         DatabaseViewElement,
+                                         DatabaseColumnElement,
+                                         SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+
+            handler.attachSchemaTypeToDatabaseAsset(userId,
+                                                    databaseManagerGUID,
+                                                    databaseManagerName,
+                                                    databaseAssetGUID,
+                                                    schemaTypeGUID,
+                                                    methodName);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
     /**
      * Create a new metadata element to represent a database table.
      *
@@ -1311,7 +1435,7 @@ public class DatabaseManagerRESTServices
     /**
      * Create a new metadata element to represent a database table using an existing metadata element as a template.
      *
-     * @param serverName name of the service to route the request to.
+     * @param serverName name of the service to route the request to
      * @param userId calling user
      * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
      * @param databaseManagerName unique name of software server capability representing the DBMS
@@ -1370,6 +1494,78 @@ public class DatabaseManagerRESTServices
 
         return response;
     }
+
+
+
+
+    /**
+     * Create a new metadata element to represent a database table.
+     *
+     * @param serverName name of the service to route the request to
+     * @param userId calling user
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseSchemaTypeGUID unique identifier of the database or database schema where the database table is located
+     * @param databaseTableProperties properties for the database table
+     *
+     * @return unique identifier of the new metadata element for the database table or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public GUIDResponse createDatabaseTableForSchemaType(String                  serverName,
+                                                         String                  userId,
+                                                         String                  databaseManagerGUID,
+                                                         String                  databaseManagerName,
+                                                         String                  databaseSchemaTypeGUID,
+                                                         DatabaseTableProperties databaseTableProperties)
+    {
+        final String methodName = "createDatabaseTableForSchemaType";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            RelationalDataHandler<DatabaseElement,
+                                         DatabaseSchemaElement,
+                                         DatabaseTableElement,
+                                         DatabaseViewElement,
+                                         DatabaseColumnElement,
+                                         SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+
+            String databaseTableGUID = handler.createDatabaseTableForSchemaType(userId,
+                                                                                databaseManagerGUID,
+                                                                                databaseManagerName,
+                                                                                databaseSchemaTypeGUID,
+                                                                                databaseTableProperties.getQualifiedName(),
+                                                                                databaseTableProperties.getDisplayName(),
+                                                                                databaseTableProperties.getDescription(),
+                                                                                databaseTableProperties.getIsDeprecated(),
+                                                                                databaseTableProperties.getAliases(),
+                                                                                databaseTableProperties.getAdditionalProperties(),
+                                                                                databaseTableProperties.getTypeName(),
+                                                                                databaseTableProperties.getExtendedProperties(),
+                                                                                databaseTableProperties.getVendorProperties(),
+                                                                                new Date(),
+                                                                                methodName);
+
+            response.setGUID(databaseTableGUID);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
 
 
     /**
@@ -1875,20 +2071,90 @@ public class DatabaseManagerRESTServices
 
 
     /**
-     * Update the metadata element representing a database table.
+     * Create a new metadata element to represent a database view.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
      * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
      * @param databaseManagerName unique name of software server capability representing the DBMS
-     * @param databaseViewGUID unique identifier of the database view to update
-     * @param databaseViewProperties properties for the new database view
+     * @param databaseSchemaTypeGUID unique identifier of the schema type where the database view is located.
+     * @param databaseViewProperties properties for the new view
      *
-     * @return void or
-     * InvalidParameterException  one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to issue this request or
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @return unique identifier of the new metadata element for the database view or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    public GUIDResponse createDatabaseViewForSchemaType(String                 serverName,
+                                                        String                 userId,
+                                                        String                 databaseManagerGUID,
+                                                        String                 databaseManagerName,
+                                                        String                 databaseSchemaTypeGUID,
+                                                        DatabaseViewProperties databaseViewProperties)
+    {
+        final String methodName = "createDatabaseViewForSchemaType";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            RelationalDataHandler<DatabaseElement,
+                                         DatabaseSchemaElement,
+                                         DatabaseTableElement,
+                                         DatabaseViewElement,
+                                         DatabaseColumnElement,
+                                         SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+
+            String databaseViewGUID = handler.createDatabaseViewForSchemaType(userId,
+                                                                              databaseManagerGUID,
+                                                                              databaseManagerName,
+                                                                              databaseSchemaTypeGUID,
+                                                                              databaseViewProperties.getQualifiedName(),
+                                                                              databaseViewProperties.getDisplayName(),
+                                                                              databaseViewProperties.getDescription(),
+                                                                              databaseViewProperties.getIsDeprecated(),
+                                                                              databaseViewProperties.getAliases(),
+                                                                              databaseViewProperties.getFormula(),
+                                                                              databaseViewProperties.getAdditionalProperties(),
+                                                                              databaseViewProperties.getTypeName(),
+                                                                              databaseViewProperties.getExtendedProperties(),
+                                                                              databaseViewProperties.getVendorProperties(),
+                                                                              new Date(),
+                                                                              methodName);
+
+            response.setGUID(databaseViewGUID);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+        /**
+         * Update the metadata element representing a database table.
+         *
+         * @param serverName name of the service to route the request to.
+         * @param userId calling user
+         * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+         * @param databaseManagerName unique name of software server capability representing the DBMS
+         * @param databaseViewGUID unique identifier of the database view to update
+         * @param databaseViewProperties properties for the new database view
+         *
+         * @return void or
+         * InvalidParameterException  one of the parameters is invalid or
+         * UserNotAuthorizedException the user is not authorized to issue this request or
+         * PropertyServerException    there is a problem reported in the open metadata server(s)
+         */
     public VoidResponse updateDatabaseView(String                 serverName,
                                            String                 userId,
                                            String                 databaseManagerGUID,

@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/api/about")
 public class AboutController {
 
-    @Autowired
+    @Autowired( required=false )
     BuildProperties buildProperties;
 
     @GetMapping

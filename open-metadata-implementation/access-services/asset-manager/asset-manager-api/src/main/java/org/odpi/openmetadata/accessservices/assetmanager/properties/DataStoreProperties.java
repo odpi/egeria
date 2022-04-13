@@ -253,9 +253,9 @@ public class DataStoreProperties extends DataAssetProperties
                        ", encodingLanguage='" + encodingLanguage + '\'' +
                        ", encodingDescription='" + encodingDescription + '\'' +
                        ", encodingProperties=" + encodingProperties +
+                       ", isReferenceAsset=" + getIsReferenceAsset() +
                        ", technicalName='" + getTechnicalName() + '\'' +
                        ", technicalDescription='" + getTechnicalDescription() + '\'' +
-                       ", isReferenceAsset=" + getIsReferenceAsset() +
                        ", displayName='" + getDisplayName() + '\'' +
                        ", summary='" + getSummary() + '\'' +
                        ", description='" + getDescription() + '\'' +
@@ -263,6 +263,8 @@ public class DataStoreProperties extends DataAssetProperties
                        ", usage='" + getUsage() + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
                        ", vendorProperties=" + getVendorProperties() +
                        ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +

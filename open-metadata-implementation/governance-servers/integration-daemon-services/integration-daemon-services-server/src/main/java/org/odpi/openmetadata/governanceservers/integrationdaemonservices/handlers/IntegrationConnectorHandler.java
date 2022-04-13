@@ -466,6 +466,8 @@ public class IntegrationConnectorHandler implements Serializable
             }
             if (integrationConnectorStatus == IntegrationConnectorStatus.RUNNING)
             {
+                Date refreshStart = new Date();
+
                 if (auditLog != null)
                 {
                     if (firstCall)
@@ -483,6 +485,16 @@ public class IntegrationConnectorHandler implements Serializable
                 }
 
                 integrationConnector.refresh();
+
+                if (auditLog != null)
+                {
+                    Date refreshEnd = new Date();
+
+                    auditLog.logMessage(actionDescription,
+                                        IntegrationDaemonServicesAuditCode.DAEMON_CONNECTOR_REFRESH_COMPLETE.getMessageDefinition(integrationConnectorName,
+                                                                                                                                  integrationDaemonName,
+                                                                                                                                  Long.toString(refreshEnd.getTime() - refreshStart.getTime())));
+                }
             }
 
             this.lastRefreshTime = new Date();

@@ -16,7 +16,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
  * Once the remediation work is complete, your start() method should call
  * governanceContext.recordCompletionStatus() and then return.
  */
-public abstract class RemediationGovernanceActionService extends GovernanceActionService
+public abstract class RemediationGovernanceActionService extends GovernanceActionServiceConnector
 {
     protected RemediationGovernanceContext governanceContext = null;
 
@@ -27,7 +27,7 @@ public abstract class RemediationGovernanceActionService extends GovernanceActio
      *
      * @param governanceContext specialist context for this type of governance action.
      */
-    public synchronized void setGovernanceContext(RemediationGovernanceContext governanceContext)
+    public synchronized void setGovernanceContext(GovernanceActionContext governanceContext)
     {
         this.governanceContext = governanceContext;
     }

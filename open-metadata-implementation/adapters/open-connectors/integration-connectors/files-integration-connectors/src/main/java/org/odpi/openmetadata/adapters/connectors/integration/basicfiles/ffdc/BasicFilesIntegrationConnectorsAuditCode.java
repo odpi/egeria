@@ -32,11 +32,11 @@ public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageS
                           "No specific action is required.  This message is to confirm the configuration for the integration connector."),
 
     BAD_CONFIGURATION("BASIC-FILES-INTEGRATION-CONNECTORS-0002",
-                          OMRSAuditLogRecordSeverity.EXCEPTION,
+                          OMRSAuditLogRecordSeverity.ERROR,
                           "The {0} integration connector encountered an {1} exception when opening directory {2} during the {3} method.  The exception message included was {4}",
                           "The exception is passed back to the Files Integrator OMIS in the integration daemon that is hosting " +
                                   "this connector to enable it to perform error handling.  More messages are likely to follow describing the " +
-                                  "error handling that was performed.  These can help to determine how to recover from this error",
+                                  "error handling that was performed.  These can help to determine how to recover from this error.",
                           "This message contains the exception that was the original cause of the problem. Use the information from the " +
                                   "exception stack trace to determine why the connector is not able to access the directory and resolve that issue.  " +
                                   "Use the messages that where subsequently logged during the error handling to discover how to restart the " +
@@ -52,7 +52,7 @@ public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageS
                                "ask the Egeria community for help to determine why the FileFolder asset is incomplete."),
 
     UNEXPECTED_EXC_RETRIEVING_FOLDER("BASIC-FILES-INTEGRATION-CONNECTORS-0004",
-                            OMRSAuditLogRecordSeverity.EXCEPTION,
+                            OMRSAuditLogRecordSeverity.ERROR,
                             "An unexpected {0} exception was returned to the {1} integration connector by the Files Integrator OMIS {2} " +
                                     "method when trying to retrieve the FileFolder asset for directory {3} (absolute path {4}).  The error message was {5}",
                                      "The exception is returned to the integration daemon that is hosting this connector to enable it to perform error handling.",
@@ -68,7 +68,7 @@ public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageS
                               "No action is required unless there are errors that follow indicating that the monitoring of the directory failed to start."),
 
     UNEXPECTED_EXC_MONITOR_START("BASIC-FILES-INTEGRATION-CONNECTORS-0006",
-                                     OMRSAuditLogRecordSeverity.EXCEPTION,
+                                     OMRSAuditLogRecordSeverity.ERROR,
                                      "An unexpected {0} exception was returned to the {1} integration connector by the Apache Commons " +
                                              "FileAlterationMonitor for directory {2} while it was starting the monitoring service.  The error message was {3}",
                                      "The exception is logged and the integration connector continues to synchronize metadata " +
@@ -86,7 +86,7 @@ public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageS
                                   "No action is required unless there are errors that follow indicating that the monitoring failed to stop."),
 
     UNEXPECTED_EXC_MONITOR_STOP("BASIC-FILES-INTEGRATION-CONNECTORS-0008",
-                                 OMRSAuditLogRecordSeverity.EXCEPTION,
+                                 OMRSAuditLogRecordSeverity.ERROR,
                                  "An unexpected {0} exception was returned to the {1} integration connector by the Apache Commons " +
                                          "FileAlterationMonitor for directory {2} while it stopping the monitoring service.  The error message was {3}",
                                  "The exception is logged and the integration connector continues to shutdown.",
@@ -112,7 +112,7 @@ public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageS
                         "No action is required.  This message is to record the reason why the DataFolder was updated."),
 
     UNEXPECTED_EXC_FOLDER_UPDATE("BASIC-FILES-INTEGRATION-CONNECTORS-0012",
-                                OMRSAuditLogRecordSeverity.EXCEPTION,
+                                OMRSAuditLogRecordSeverity.ERROR,
                                 "An unexpected {0} exception was returned to the {1} integration connector when it tried to update the " +
                                         "DataFolder {2} in the metadata repositories for directory {3}.  The error message was {4}",
                                 "The exception is logged and the integration connector continues to synchronize metadata.",
@@ -129,7 +129,7 @@ public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageS
                                "ask the Egeria community for help to determine why the DataFile element is incomplete."),
 
     UNEXPECTED_EXC_DATA_FILE_UPDATE("BASIC-FILES-INTEGRATION-CONNECTORS-0014",
-                                 OMRSAuditLogRecordSeverity.EXCEPTION,
+                                 OMRSAuditLogRecordSeverity.ERROR,
                                  "An unexpected {0} exception was returned to the {1} integration connector when it tried to update the " +
                                          "DataFile in the metadata repositories for file {2}.  The error message was {3}",
                                  "The exception is logged and the integration connector continues to synchronize metadata.  " +

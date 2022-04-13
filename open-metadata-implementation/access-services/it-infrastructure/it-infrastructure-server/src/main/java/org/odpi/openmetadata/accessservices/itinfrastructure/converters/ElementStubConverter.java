@@ -118,10 +118,10 @@ public class ElementStubConverter<B> extends ITInfrastructureOMASConverter<B>
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
-    public List<B> getNewBeans(Class<B>           beanClass,
-                               List<Relationship> relationships,
-                               boolean            useEnd1,
-                               String             methodName) throws PropertyServerException
+    public List<B> getNewBean(Class<B>           beanClass,
+                              List<Relationship> relationships,
+                              boolean            useEnd1,
+                              String             methodName) throws PropertyServerException
     {
         if (relationships != null)
         {
@@ -161,6 +161,7 @@ public class ElementStubConverter<B> extends ITInfrastructureOMASConverter<B>
      * @return bean populated with properties from the entity supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
+    @SuppressWarnings(value = "unchecked")
     public B getNewBean(Class<B>     beanClass,
                         EntityDetail entity,
                         String       methodName) throws PropertyServerException

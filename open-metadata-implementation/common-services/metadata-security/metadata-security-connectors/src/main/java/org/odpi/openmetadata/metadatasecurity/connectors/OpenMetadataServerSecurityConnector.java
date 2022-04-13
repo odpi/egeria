@@ -10,16 +10,11 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.metadatasecurity.OpenMetadataAssetSecurity;
-import org.odpi.openmetadata.metadatasecurity.OpenMetadataConnectionSecurity;
-import org.odpi.openmetadata.metadatasecurity.OpenMetadataServerSecurity;
-import org.odpi.openmetadata.metadatasecurity.OpenMetadataServiceSecurity;
 import org.odpi.openmetadata.metadatasecurity.ffdc.OpenMetadataSecurityAuditCode;
 import org.odpi.openmetadata.metadatasecurity.ffdc.OpenMetadataSecurityErrorCode;
 import org.odpi.openmetadata.metadatasecurity.properties.AssetAuditHeader;
 import org.odpi.openmetadata.metadatasecurity.properties.Asset;
 import org.odpi.openmetadata.metadatasecurity.properties.Connection;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OpenMetadataRepositorySecurity;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
@@ -1366,7 +1361,7 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      */
     protected void  validateUserForEntityClassificationAdd(String               userId,
                                                            String               metadataCollectionName,
-                                                           EntityDetail         instance,
+                                                           EntitySummary        instance,
                                                            String               classificationName,
                                                            InstanceProperties   properties) throws UserNotAuthorizedException
     {
@@ -1398,7 +1393,7 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      */
     protected void  validateUserForEntityClassificationUpdate(String               userId,
                                                               String               metadataCollectionName,
-                                                              EntityDetail         instance,
+                                                              EntitySummary        instance,
                                                               String               classificationName,
                                                               InstanceProperties   properties) throws UserNotAuthorizedException
     {
@@ -1429,7 +1424,7 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      */
     protected void  validateUserForEntityClassificationDelete(String               userId,
                                                               String               metadataCollectionName,
-                                                              EntityDetail         instance,
+                                                              EntitySummary        instance,
                                                               String               classificationName) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForEntityClassificationDelete";

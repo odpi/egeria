@@ -20,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ExternalGlossaryElementLinkProperties implements Serializable
+public class ExternalGlossaryElementLinkProperties extends RelationshipProperties
 {
     private static final long     serialVersionUID = 1L;
 
@@ -45,6 +45,8 @@ public class ExternalGlossaryElementLinkProperties implements Serializable
      */
     public ExternalGlossaryElementLinkProperties(ExternalGlossaryElementLinkProperties template)
     {
+        super(template);
+
         if (template != null)
         {
             elementIdentifier = template.getElementIdentifier();

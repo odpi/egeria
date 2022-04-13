@@ -284,6 +284,34 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @param scopeGUID unique identifier of the element representing the scope
      * @param scopeQualifiedName unique name of the element representing the scope
      * @param relationshipType type of relationship
+     * @param relationshipGUID unique identifier for the relationship
+     * @param methodName calling method
+     */
+    public  void logRelationshipUpdate(String scopeGUID,
+                                       String scopeQualifiedName,
+                                       String relationshipType,
+                                       String relationshipGUID,
+                                       String methodName)
+    {
+        if (scopeGUID != null)
+        {
+            auditLog.logMessage(methodName,
+                                GenericHandlersAuditCode.EXTERNAL_RELATIONSHIP_UPDATED.getMessageDefinition(serviceName,
+                                                                                                            relationshipType,
+                                                                                                            relationshipGUID,
+                                                                                                            methodName,
+                                                                                                            scopeGUID,
+                                                                                                            scopeQualifiedName));
+        }
+    }
+
+
+    /**
+     * Create an audit log record to document that an external metadata source has created a relationship.
+     *
+     * @param scopeGUID unique identifier of the element representing the scope
+     * @param scopeQualifiedName unique name of the element representing the scope
+     * @param relationshipType type of relationship
      * @param end1GUID unique identifier for the entity at end 1 of the relationship
      * @param end1TypeName type of the entity at end 1 of the relationship
      * @param end2GUID unique identifier for the entity at end 2 of the relationship

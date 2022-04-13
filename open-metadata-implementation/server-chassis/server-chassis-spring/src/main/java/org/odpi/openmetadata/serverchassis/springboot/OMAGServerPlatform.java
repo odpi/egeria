@@ -26,8 +26,6 @@ import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
 import java.util.*;
 
 
@@ -57,13 +55,13 @@ import java.util.*;
                         "\n" +
                         "NOTE: many REST APIS are not guaranteed to be backward-compatible from release to release since they have supported Java clients.  " +
                         "REST APIs may be used for development, testing, evaluation.  Click on the documentation for each module to discover more ...",
-                license = @License(name = "Apache 2.0", url = "https://www.apache.org/licenses/LICENSE-2.0"),
-                contact = @Contact(url = "https://odpi.github.io/egeria-docs", name = "Egeria Project",
+                license = @License(name = "Apache 2.0 License", url = "https://www.apache.org/licenses/LICENSE-2.0"),
+                contact = @Contact(url = "https://egeria-project.org", name = "Egeria Project",
                                    email = "egeria-technical-discuss@lists.lfaidata.foundation")
         ),
 
         externalDocs = @ExternalDocumentation(description = "OMAG Server Platform documentation",
-                url="https://egeria-project.org/guides/admin/")
+                url="https://egeria-project.org/concepts/omag-server-platform/")
         )
 
 
@@ -103,6 +101,11 @@ public class OMAGServerPlatform
             {
                 log.warn("strict.ssl is set to false! Invalid certificates will be accepted for connection!");
                 HttpHelper.noStrictSSL();
+            } else if( System.getProperty("javax.net.ssl.trustStore")==null ) {
+                //load the 'javax.net.ssl.trustStore' and
+                //'javax.net.ssl.trustStorePassword' from application.properties
+                System.setProperty("javax.net.ssl.trustStore", env.getProperty("server.ssl.trust-store"));
+                System.setProperty("javax.net.ssl.trustStorePassword", env.getProperty("server.ssl.trust-store-password"));
             }
         };
     }
@@ -208,19 +211,6 @@ public class OMAGServerPlatform
             temporaryDeactivateServers();
         }
 
-    }
-
-    @PostConstruct
-    private void configureTrustStore() {
-
-        //making sure truststore was not set using JVM options
-        // and strict.ssl is true ( if false, truststore will ignored anyway )
-        if(strictSSL && System.getProperty("javax.net.ssl.trustStore")==null) {
-            //load the 'javax.net.ssl.trustStore' and
-            //'javax.net.ssl.trustStorePassword' from application.properties
-            System.setProperty("javax.net.ssl.trustStore", env.getProperty("server.ssl.trust-store"));
-            System.setProperty("javax.net.ssl.trustStorePassword", env.getProperty("server.ssl.trust-store-password"));
-        }
     }
 
 }
