@@ -132,7 +132,12 @@ public enum JanusConnectorErrorCode implements AuditLogMessageSet {
             OMRSAuditLogRecordSeverity.ERROR,
             "Could not find classification, vertexIds {0}",
             "Could not find classification",
-            "Check the input data and try again")
+            "Check the input data and try again"),
+    SEARCH_ERROR("OPEN-LINEAGE-SERVICES-036",
+            OMRSAuditLogRecordSeverity.ERROR,
+            "Could not execute search request {0}",
+            "Searching in the database produced an error",
+            "Check the search input and try again")
     ;
 
     private static final Logger log = LoggerFactory.getLogger(JanusConnectorErrorCode.class);

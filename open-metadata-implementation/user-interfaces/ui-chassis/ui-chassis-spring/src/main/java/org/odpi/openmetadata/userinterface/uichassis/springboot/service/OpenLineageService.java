@@ -11,6 +11,7 @@ import org.odpi.openmetadata.governanceservers.openlineage.model.LineageEdge;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
+import org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.LineageNotFoundException;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.OpenLineageServiceException;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.beans.Edge;
@@ -167,6 +168,25 @@ public class OpenLineageService {
             throw e;
         } catch (OpenLineageException e) {
             LOG.error("Error while calling open lineage services {}", guid);
+            throw new OpenLineageServiceException("entity details error", e);
+        }
+    }
+
+    /**
+     * Gets node details.
+     *
+     * @param userId the user id
+     * @param lineageSearchRequest the body for search
+     * @return the node details
+     */
+    public List<LineageVertex> search(String userId, LineageSearchRequest lineageSearchRequest) throws InvalidParameterException, PropertyServerException, OpenLineageException {
+        try {
+            return openLineageClient.search(userId, lineageSearchRequest);
+        } catch (InvalidParameterException | PropertyServerException e) {
+            LOG.error("Error during search with request {}", lineageSearchRequest);
+            throw e;
+        } catch (OpenLineageException e) {
+            LOG.error("Error while calling open lineage services {}", lineageSearchRequest);
             throw new OpenLineageServiceException("entity details error", e);
         }
     }

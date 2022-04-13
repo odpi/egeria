@@ -11,9 +11,13 @@ import org.odpi.openmetadata.governanceservers.openlineage.model.LineageQueryPar
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
+import org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
+import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageSearchResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageVertexResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.util.OpenLineageExceptionHandler;
+
+import java.util.List;
 
 
 public class OpenLineageClient extends FFDCRESTClient implements OpenLineageInterface {
@@ -23,6 +27,7 @@ public class OpenLineageClient extends FFDCRESTClient implements OpenLineageInte
     private static final String LINEAGE = "/lineage/";
     private static final String ENTITIES = "/entities/{2}";
     private static final String DETAILS = "/details";
+    private static final String SEARCH = "/search";
     private OpenLineageExceptionHandler openLineageExceptionHandler = new OpenLineageExceptionHandler();
 
     /**
@@ -68,6 +73,15 @@ public class OpenLineageClient extends FFDCRESTClient implements OpenLineageInte
 
         detectExceptions(methodName, lineageVertexResponse);
         return lineageVertexResponse.getLineageVertex();
+    }
+
+    public List<LineageVertex> search(String userId, LineageSearchRequest lineageSearchRequest) throws InvalidParameterException, PropertyServerException, OpenLineageException {
+        String methodName = "OpenLineageClient.getEntityDetails";
+        LineageSearchResponse lineageSearchResponse = callPostRESTCall(methodName, LineageSearchResponse.class,
+                serverPlatformURLRoot + BASE_PATH + LINEAGE + SEARCH, lineageSearchRequest, serverName, userId);
+
+        detectExceptions(methodName, lineageSearchResponse);
+        return lineageSearchResponse.getVertices();
     }
 
     private void detectExceptions(String methodName,

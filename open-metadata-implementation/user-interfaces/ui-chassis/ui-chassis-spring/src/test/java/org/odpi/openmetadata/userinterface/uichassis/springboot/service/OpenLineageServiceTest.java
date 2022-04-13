@@ -19,6 +19,7 @@ import org.odpi.openmetadata.governanceservers.openlineage.model.LineageEdge;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
+import org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.beans.Graph;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.beans.Node;
 import org.slf4j.Logger;
@@ -26,6 +27,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -119,6 +121,27 @@ public class OpenLineageServiceTest {
         checkResponse(response);
     }
 
+    @Test
+    @DisplayName("Search")
+    public void search() throws PropertyServerException, InvalidParameterException, OpenLineageException {
+        LineageSearchRequest searchRequest = new LineageSearchRequest();
+        try {
+            List<LineageVertex> lineageVertices = new ArrayList<>(lineageVerticesAndEdges.getLineageVertices());
+            when(openLineageClient.search(USER_ID, searchRequest))
+                    .thenReturn(lineageVertices);
+        } catch (OpenLineageException e) {
+            e.printStackTrace();
+        }
+        List<LineageVertex> response = openLineageService.search(USER_ID, searchRequest);
+        checkSerchResponse(response);
+    }
+
+    private void checkSerchResponse(List<LineageVertex> nodes) {
+        assertNotNull("List of nodes is null", nodes);
+        assertEquals("Response should contain 4 nodes", 4, nodes.size());
+        List<String> nodesIds = nodes.stream().map(LineageVertex::getNodeID).collect(Collectors.toList());
+        assertTrue("Response doesn't contain all nodes", nodesIds.containsAll(Arrays.asList("p0","p30", "p2")));
+    }
 
     @SuppressWarnings("unchecked")
     private void checkResponse(Graph responseGraph) {

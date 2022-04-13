@@ -5,27 +5,29 @@ package org.odpi.openmetadata.governanceservers.openlineage.handlers;
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageQueryService;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
+import org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
+import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageSearchResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageVertexResponse;
 
 public class OpenLineageHandler {
 
-    private OpenLineageQueryService lineageGraph;
+    private OpenLineageQueryService openLineageQueryService;
 
-    public OpenLineageHandler(OpenLineageQueryService lineageGraph) {
-        this.lineageGraph = lineageGraph;
+    public OpenLineageHandler(OpenLineageQueryService openLineageQueryService) {
+        this.openLineageQueryService = openLineageQueryService;
     }
 
     /**
      * Returns a lineage subgraph.
      *
-     * @param scope                  source-and-destination, end-to-end, ultimate-source, ultimate-destination, glossary.
-     * @param guid                   The guid of the node of which the lineage is queried from.
+     * @param scope            source-and-destination, end-to-end, ultimate-source, ultimate-destination, glossary.
+     * @param guid             The guid of the node of which the lineage is queried from.
      * @param includeProcesses
      * @return A subgraph containing all relevant paths, in graphSON format.
      */
     public LineageResponse lineage(Scope scope, String guid, boolean includeProcesses) throws OpenLineageException {
-        return lineageGraph.lineage(scope, guid, includeProcesses);
+        return openLineageQueryService.lineage(scope, guid, includeProcesses);
     }
 
     /**
@@ -35,6 +37,16 @@ public class OpenLineageHandler {
      * @return the entity details
      */
     public LineageVertexResponse getEntityDetails(String guid) {
-        return lineageGraph.getEntityDetails(guid);
+        return openLineageQueryService.getEntityDetails(guid);
+    }
+
+    /**
+     * Gets entity details.
+     *
+     * @param request the request
+     * @return the entity details
+     */
+    public LineageSearchResponse search(LineageSearchRequest request) {
+        return openLineageQueryService.search(request);
     }
 }
