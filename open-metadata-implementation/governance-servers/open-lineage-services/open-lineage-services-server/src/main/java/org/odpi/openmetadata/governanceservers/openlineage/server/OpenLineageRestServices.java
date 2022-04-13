@@ -6,6 +6,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.handlers.OpenLineageHandler;
+import org.odpi.openmetadata.governanceservers.openlineage.model.NodeNamesSearchCriteria;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageNodeNamesResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
@@ -104,13 +105,13 @@ public class OpenLineageRestServices {
         return response;
     }
 
-    public LineageNodeNamesResponse getNodes(String serverName, String userId, String type, String searchValue, int limit) {
+    public LineageNodeNamesResponse getNodes(String serverName, String userId, NodeNamesSearchCriteria searchCriteria) {
         LineageNodeNamesResponse response = new LineageNodeNamesResponse();
         final String methodName = "OpenLineageRestServices.getNodes";
         final String debugMessage = "An exception occurred during a getNodes HTTP request";
         try {
             OpenLineageHandler openLineageHandler = instanceHandler.getOpenLineageHandler(userId, serverName, methodName);
-            response = openLineageHandler.getNodes(type, searchValue, limit);
+            response = openLineageHandler.getNodes(searchCriteria);
         } catch (InvalidParameterException e) {
             openLineageExceptionHandler.captureInvalidParameterException(response, e);
             log.debug(debugMessage, e);
