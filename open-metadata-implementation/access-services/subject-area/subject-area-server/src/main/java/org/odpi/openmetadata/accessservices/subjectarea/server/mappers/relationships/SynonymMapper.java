@@ -43,9 +43,7 @@ public class SynonymMapper extends RelationshipMapper<Synonym> {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, synonym.getSource(), OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME);
         }
         if (synonym.getStatus() != null) {
-            EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
-            enumPropertyValue.setOrdinal(synonym.getStatus().getOrdinal());
-            instanceProperties.setProperty(OpenMetadataAPIMapper.STATUS_PROPERTY_NAME, enumPropertyValue);
+            SubjectAreaUtils.setStatusPropertyInInstanceProperties(instanceProperties, synonym.getStatus(), OpenMetadataAPIMapper.STATUS_PROPERTY_NAME);
         }
     }
 
