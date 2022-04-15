@@ -10,7 +10,6 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Property;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.VertexProperty;
-import org.janusgraph.core.attribute.Text;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageQueryService;
@@ -578,10 +577,10 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
     }
 
     private List<String> getNodes(GraphTraversalSource g, NodeNamesSearchCriteria searchCriteria) {
-        return g.V().has(PROPERTY_KEY_LABEL, searchCriteria.getType()).has(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME,
-                Text.textContains(searchCriteria.getSearchValue().toLowerCase()))
-                .values(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).limit(searchCriteria.getLimit())
-                .map(Object::toString).toList();
+        return g.V().has(PROPERTY_KEY_LABEL, searchCriteria.getType()).values(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME)
+                .filter(x -> x.toString().toLowerCase().contains(searchCriteria.getSearchValue().toLowerCase()))
+                .limit(searchCriteria.getLimit()).map(Object::toString).toList();
+
     }
 
     /**
