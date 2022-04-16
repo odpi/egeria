@@ -124,6 +124,7 @@ allprojects {
         tomcatVersion = '9.0.62'
         validationVersion = '2.0.1.Final'
         cassandraVersion = '3.11.12'
+        antVersion = '1.10.9'
     }
 
     dependencies {
@@ -237,6 +238,7 @@ allprojects {
             implementation("org.hibernate:hibernate-validator:${hibernatevalidatorVersion}")
             implementation("org.apache.thrift:libthrift:${thriftVersion}")
             implementation("org.apache.cassandra:cassandra-all:${cassandraVersion}")
+            implementation("org.apache.ant:ant:${antVersion}")
 
             // testng also used in our 'source' code to support unit tests
             implementation("org.testng:testng:${testngVersion}")

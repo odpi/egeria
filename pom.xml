@@ -260,6 +260,7 @@
         <openlineage.version>0.6.2</openlineage.version>
         <properties.plugin.version>1.1.0</properties.plugin.version>
         <cassandra.version>3.11.12</cassandra.version>
+        <ant.version>1.10.12</ant.version>
 
         <!-- Configuration of sonar code scanning-->
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
@@ -3321,6 +3322,12 @@
                 <groupId>org.apache.cassandra</groupId>
                 <artifactId>cassandra-all</artifactId>
                 <version>${cassandra.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.ant</groupId>
+                <artifactId>ant</artifactId>
+                <version>${ant.version}</version>
             </dependency>
 
         </dependencies>
