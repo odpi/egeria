@@ -261,6 +261,7 @@
         <properties.plugin.version>1.1.0</properties.plugin.version>
         <cassandra.version>3.11.12</cassandra.version>
         <ant.version>1.10.12</ant.version>
+        <protobuf.version>3.19.2</protobuf.version>
 
         <!-- Configuration of sonar code scanning-->
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
@@ -3328,6 +3329,12 @@
                 <groupId>org.apache.ant</groupId>
                 <artifactId>ant</artifactId>
                 <version>${ant.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.protobuf</groupId>
+                <artifactId>protobuf-java</artifactId>
+                <version>${protobuf.version}</version>
             </dependency>
 
         </dependencies>
