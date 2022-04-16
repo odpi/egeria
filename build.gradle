@@ -284,6 +284,10 @@ allprojects {
         withJavadocJar()
     }
 
+    jacoco {
+        toolVersion = "0.8.8"
+    }
+
     publishing {
         publications {
             maven(MavenPublication) {
