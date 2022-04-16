@@ -200,7 +200,8 @@
         <sleepycat.version>18.3.12</sleepycat.version>
         <joda.version>2.10.14</joda.version>
         <jackson-asl.version>1.9.14-atlassian-6</jackson-asl.version>
-        <antlr.version>3.5.2</antlr.version>
+        <antlr.version>3.5.3</antlr.version>
+        <ST4.version>4.3.3</ST4.version>
         <snappy.version>1.1.8.4</snappy.version>
         <swagger.version>2.1.13</swagger.version>
         <snakeyaml.version>1.30</snakeyaml.version>
@@ -3098,6 +3099,13 @@
                 <groupId>org.antlr</groupId>
                 <artifactId>antlr-runtime</artifactId>
                 <version>${antlr.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.antlr</groupId>
+                <artifactId>ST4</artifactId>
+                <version>${ST4.version}</version>
                 <scope>runtime</scope>
             </dependency>
 

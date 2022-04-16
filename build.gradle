@@ -54,7 +54,8 @@ allprojects {
     // Assign variables for any constraints
 
     ext {
-        antlrVersion = '3.5.2'
+        antlrVersion = '3.5.3'
+        ST4Version = '4.3.3'
         avroVersion = '1.11.0'
         classgraphVersion = '4.8.143'
         classmateVersion = '1.5.1'
@@ -251,6 +252,7 @@ allprojects {
             runtimeOnly("joda-time:joda-time:${jodatimeVersion}")
             implementation("org.yaml:snakeyaml:${snakeyamlVersion}")
             runtimeOnly("org.antlr:antlr-runtime:${antlrVersion}")
+            runtimeOnly("org.antlr:ST4:${ST4Version}")
             runtimeOnly("org.apache.jena:jena-arq:${jenaVersion}")
             runtimeOnly("org.codehaus.jackson:jackson-mapper-asl:${jacksonaslVersion}")
             runtimeOnly("org.codehaus.jackson:jackson-core-asl:${jacksonaslVersion}")
