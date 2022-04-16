@@ -259,6 +259,7 @@
         <groovy-plugin.version>2.1.1</groovy-plugin.version>
         <openlineage.version>0.6.2</openlineage.version>
         <properties.plugin.version>1.1.0</properties.plugin.version>
+        <cassandra.version>3.11.12</cassandra.version>
 
         <!-- Configuration of sonar code scanning-->
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
@@ -3314,6 +3315,12 @@
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-validator</artifactId>
                 <version>${hibernate-validator.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.cassandra</groupId>
+                <artifactId>cassandra-all</artifactId>
+                <version>${cassandra.version}</version>
             </dependency>
 
         </dependencies>

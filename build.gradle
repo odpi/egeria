@@ -123,6 +123,7 @@ allprojects {
         tinkVersion = '1.6.1'
         tomcatVersion = '9.0.62'
         validationVersion = '2.0.1.Final'
+        cassandraVersion = '3.11.12'
     }
 
     dependencies {
@@ -234,6 +235,8 @@ allprojects {
 	        implementation("commons-configuration:commons-configuration:${commonsconfigurationVersion}")
 	        implementation("org.apache.commons:commons-configuration2:${commonsconfiguration2Version}")
             implementation("org.hibernate:hibernate-validator:${hibernatevalidatorVersion}")
+            implementation("org.apache.thrift:libthrift:${thriftVersion}")
+            implementation("org.apache.cassandra:cassandra-all:${cassandraVersion}")
 
             // testng also used in our 'source' code to support unit tests
             implementation("org.testng:testng:${testngVersion}")
@@ -263,7 +266,6 @@ allprojects {
             testImplementation("org.slf4j:slf4j-simple:${slf4jVersion}")
             testImplementation("org.testng:testng:${testngVersion}")
             testImplementation("org.hamcrest:hamcrest:${hamcrestVersion}")
-            implementation("org.apache.thrift:libthrift:${thriftVersion}")
         }
     }
 
