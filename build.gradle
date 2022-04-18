@@ -54,7 +54,8 @@ allprojects {
     // Assign variables for any constraints
 
     ext {
-        antlrVersion = '3.5.2'
+        antlrVersion = '3.5.3'
+        ST4Version = '4.3.3'
         avroVersion = '1.11.0'
         classgraphVersion = '4.8.143'
         classmateVersion = '1.5.1'
@@ -68,7 +69,7 @@ allprojects {
         elasticsearchVersion = '7.17.1'
         findbugsVersion = '3.0.2'
         glassfishVersion = '1.1.4'
-        gremlinVersion = '3.5.1'
+        gremlinVersion = '3.5.2'
         groovyVersion = '3.0.9'
         guavaVersion = '31.1-jre'
         hamcrestVersion = '2.2'
@@ -117,12 +118,17 @@ allprojects {
         springldapVersion = '2.3.5.RELEASE'
         springsecurityVersion = '5.6.2'
         swaggerVersion = '2.1.13'
-        springwebVersion = '5.3.18'
+        springwebVersion = '5.3.19'
         testngVersion = '7.5'
         thriftVersion = '0.16.0'
         tinkVersion = '1.6.1'
         tomcatVersion = '9.0.62'
         validationVersion = '2.0.1.Final'
+        cassandraVersion = '3.11.12'
+        antVersion = '1.10.9'
+        protobufVersion = '3.19.2'
+        gsonVersion = '2.8.9'
+        jnrVersion = '3.1.8'
     }
 
     dependencies {
@@ -234,12 +240,19 @@ allprojects {
 	        implementation("commons-configuration:commons-configuration:${commonsconfigurationVersion}")
 	        implementation("org.apache.commons:commons-configuration2:${commonsconfiguration2Version}")
             implementation("org.hibernate:hibernate-validator:${hibernatevalidatorVersion}")
+            implementation("org.apache.thrift:libthrift:${thriftVersion}")
+            implementation("org.apache.cassandra:cassandra-all:${cassandraVersion}")
+            implementation("org.apache.ant:ant:${antVersion}")
+            implementation("com.google.protobuf:protobuf-java:${protobufVersion}")
+            implementation("com.google.code.gson:gson:${gsonVersion}")
+            implementation("com.github.jnr:jnr-posix:${jnrVersion}")
 
             // testng also used in our 'source' code to support unit tests
             implementation("org.testng:testng:${testngVersion}")
             runtimeOnly("joda-time:joda-time:${jodatimeVersion}")
             implementation("org.yaml:snakeyaml:${snakeyamlVersion}")
             runtimeOnly("org.antlr:antlr-runtime:${antlrVersion}")
+            runtimeOnly("org.antlr:ST4:${ST4Version}")
             runtimeOnly("org.apache.jena:jena-arq:${jenaVersion}")
             runtimeOnly("org.codehaus.jackson:jackson-mapper-asl:${jacksonaslVersion}")
             runtimeOnly("org.codehaus.jackson:jackson-core-asl:${jacksonaslVersion}")
@@ -263,13 +276,16 @@ allprojects {
             testImplementation("org.slf4j:slf4j-simple:${slf4jVersion}")
             testImplementation("org.testng:testng:${testngVersion}")
             testImplementation("org.hamcrest:hamcrest:${hamcrestVersion}")
-            implementation("org.apache.thrift:libthrift:${thriftVersion}")
         }
     }
 
     java {
         withSourcesJar()
         withJavadocJar()
+    }
+
+    jacoco {
+        toolVersion = "0.8.8"
     }
 
     publishing {
