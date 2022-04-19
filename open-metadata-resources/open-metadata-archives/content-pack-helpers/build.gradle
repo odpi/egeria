@@ -3,23 +3,19 @@
  * Copyright Contributors to the ODPi Egeria project.
  */
 
-plugins {
-    id 'application'
-    id "com.github.johnrengelman.shadow"
-}
 
 dependencies {
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
     implementation project(':open-metadata-implementation:repository-services:repository-services-archive-utilities')
-    implementation project(':open-metadata-resources:open-metadata-archives:catalog-builder')
-    implementation 'com.github.jsonld-java:jsonld-java'
-    implementation 'ch.qos.logback:logback-classic'
+    implementation project(':open-metadata-resources:open-metadata-archives:open-metadata-types')
+    implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     testImplementation 'org.testng:testng'
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
 
 }
 
-description = 'Cloud Information Model'
+description = 'Content Pack Helpers'
 
 java {
     withJavadocJar()
@@ -27,10 +23,5 @@ java {
 
 test {
     useTestNG()
-}
-
-shadowJar {
-    mainClassName = 'org.odpi.openmetadata.archiveutilities.designmodels.cloudinformationmodel.CloudInformationModelArchiveWriter'
-    archiveClassifier = 'jar-with-dependencies'
 }
 

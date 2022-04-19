@@ -15,13 +15,13 @@ dependencies {
     implementation 'ch.qos.logback:logback-classic'
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
-//    implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:cassandra-data-store-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:avro-file-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:csv-file-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:data-folder-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:kafka-open-metadata-topic-connector')
     implementation project(':open-metadata-resources:open-metadata-archives:catalog-builder')
+    implementation project(':open-metadata-resources:open-metadata-archives:content-pack-helpers')
     testImplementation 'org.testng:testng'
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
 
@@ -38,6 +38,6 @@ test {
 }
 
 shadowJar {
-    mainClassName = 'org.odpi.openmetadata.archiveutilities.openconnectors.datastoreconnectors.DataStoreConnectorsArchiveWriter'
+    mainClassName = 'org.odpi.openmetadata.archiveutilities.openconnectors.OpenConnectorArchiveWriter'
     archiveClassifier = 'jar-with-dependencies'
 }

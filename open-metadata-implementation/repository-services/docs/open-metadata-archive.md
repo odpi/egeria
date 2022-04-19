@@ -31,9 +31,8 @@ structure.
 ![Figure 2](open-metadata-archive-instances.png)
 > **Figure 2:** Instance structures in an Open Metadata Archive
 
-Typically open metadata archives are encoded in JSON format and stored in a file.
-Figure 3 show an example of the `archiveProperties` header from the
-[Common Information Model Archive](../../../open-metadata-resources/open-metadata-archives/design-model-archives/cloud-information-model).
+Typically, open metadata archives are encoded in JSON format and stored in a file.
+Figure 3 show an example of the `archiveProperties` header from the Cloud Information Model Archive
 
 ```json
 {

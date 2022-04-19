@@ -352,10 +352,6 @@
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>cloud-information-model</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
             <artifactId>glossary-canonical-model</artifactId>
         </dependency>
 
