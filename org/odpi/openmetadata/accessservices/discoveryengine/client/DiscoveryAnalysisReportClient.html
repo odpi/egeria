@@ -176,10 +176,11 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAnalysisReportStore<
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr class="altColor">
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus,java.lang.String,java.util.Map,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.discoveryengine.client.DiscoveryEngineClient)">DiscoveryAnalysisReportClient</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus,java.lang.String,java.util.Map,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.discoveryengine.client.DiscoveryEngineClient)">DiscoveryAnalysisReportClient</a></span>&#8203;(java.lang.String&nbsp;userId,
                              org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus&nbsp;discoveryRequestStatus,
                              java.lang.String&nbsp;assetGUID,
                              java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;analysisParameters,
+                             java.lang.String&nbsp;firstAnalysisStepName,
                              java.lang.String&nbsp;reportQualifiedName,
                              java.lang.String&nbsp;reportDisplayName,
                              java.lang.String&nbsp;reportDescription,
@@ -253,7 +254,7 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAnalysisReportStore<
 <!--   -->
 </a>
 <h3>Constructor Detail</h3>
-<a id="&lt;init&gt;(java.lang.String,org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus,java.lang.String,java.util.Map,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.discoveryengine.client.DiscoveryEngineClient)">
+<a id="&lt;init&gt;(java.lang.String,org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus,java.lang.String,java.util.Map,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.discoveryengine.client.DiscoveryEngineClient)">
 <!--   -->
 </a>
 <ul class="blockListLast">
@@ -263,6 +264,7 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAnalysisReportStore<
                                      org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus&nbsp;discoveryRequestStatus,
                                      java.lang.String&nbsp;assetGUID,
                                      java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;analysisParameters,
+                                     java.lang.String&nbsp;firstAnalysisStepName,
                                      java.lang.String&nbsp;reportQualifiedName,
                                      java.lang.String&nbsp;reportDisplayName,
                                      java.lang.String&nbsp;reportDescription,
@@ -279,6 +281,7 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAnalysisReportStore<
 <dd><code>discoveryRequestStatus</code> - current status</dd>
 <dd><code>assetGUID</code> - linked asset</dd>
 <dd><code>analysisParameters</code> - parameters that configured the analysis</dd>
+<dd><code>firstAnalysisStepName</code> - name of the first analysis step performed by the discovery service</dd>
 <dd><code>reportQualifiedName</code> - qualified name of report</dd>
 <dd><code>reportDisplayName</code> - display name of report</dd>
 <dd><code>reportDescription</code> - description of report</dd>

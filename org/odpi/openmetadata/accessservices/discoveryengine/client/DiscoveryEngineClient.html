@@ -249,12 +249,13 @@ extends <a href="../../../commonservices/ocf/metadatamanagement/client/Connected
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDiscoveryAnalysisReport(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Map,org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus,java.lang.String,java.lang.String,java.lang.String,java.util.Map)">createDiscoveryAnalysisReport</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDiscoveryAnalysisReport(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Map,java.lang.String,org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus,java.lang.String,java.lang.String,java.lang.String,java.util.Map)">createDiscoveryAnalysisReport</a></span>&#8203;(java.lang.String&nbsp;userId,
                              java.lang.String&nbsp;qualifiedName,
                              java.lang.String&nbsp;displayName,
                              java.lang.String&nbsp;description,
                              java.util.Date&nbsp;creationDate,
                              java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;analysisParameters,
+                             java.lang.String&nbsp;analysisStep,
                              org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus&nbsp;discoveryRequestStatus,
                              java.lang.String&nbsp;assetGUID,
                              java.lang.String&nbsp;discoveryEngineGUID,
@@ -772,7 +773,7 @@ extends <a href="../../../commonservices/ocf/metadatamanagement/client/Connected
 </dl>
 </li>
 </ul>
-<a id="createDiscoveryAnalysisReport(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Map,org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus,java.lang.String,java.lang.String,java.lang.String,java.util.Map)">
+<a id="createDiscoveryAnalysisReport(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Map,java.lang.String,org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus,java.lang.String,java.lang.String,java.lang.String,java.util.Map)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -784,6 +785,7 @@ extends <a href="../../../commonservices/ocf/metadatamanagement/client/Connected
                                                       java.lang.String&nbsp;description,
                                                       java.util.Date&nbsp;creationDate,
                                                       java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;analysisParameters,
+                                                      java.lang.String&nbsp;analysisStep,
                                                       org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus&nbsp;discoveryRequestStatus,
                                                       java.lang.String&nbsp;assetGUID,
                                                       java.lang.String&nbsp;discoveryEngineGUID,
@@ -801,6 +803,7 @@ extends <a href="../../../commonservices/ocf/metadatamanagement/client/Connected
 <dd><code>description</code> - description of the report</dd>
 <dd><code>creationDate</code> - date of the report</dd>
 <dd><code>analysisParameters</code> - analysis parameters passed to the discovery service</dd>
+<dd><code>analysisStep</code> - name of the first analysis step</dd>
 <dd><code>discoveryRequestStatus</code> - current status of the discovery processing</dd>
 <dd><code>assetGUID</code> - unique identifier of the asset being analysed</dd>
 <dd><code>discoveryEngineGUID</code> - unique identifier of the discovery engine that is running the discovery service</dd>
