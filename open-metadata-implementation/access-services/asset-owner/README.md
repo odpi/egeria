@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-![Released](../../../open-metadata-publication/website/images/egeria-content-status-released.png#pagewidth)
+![Released](../../../images/egeria-content-status-released.png#pagewidth)
 
 # Asset Owner Open Metadata Access Service (OMAS)
 
@@ -16,6 +16,8 @@ terms and declares the asset's associated licenses and certifications.
 Asset owners can maintain a note log for each of their assets.  They can view the feedback and
 respond to it.  The Asset Owner OMAS generates notifications about new feedback linked to an
 asset.
+
+* [Documentation](https://egeria-project.org/services/omas/asset-owner/overview)
 
 
 ----

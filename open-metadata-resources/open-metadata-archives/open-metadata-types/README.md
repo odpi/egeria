@@ -6,7 +6,7 @@
 The Open Metadata Types provides the type definitions for open metadata.
 They are packaged into an open metadata archive.
 
-The open metadata types are [documented here](../../../open-metadata-publication/website/open-metadata-types).
+The open metadata types are [documented here](https://egeria-project.org/types).
 
 The open metadata archive for these types is built by the `OpenMetadataTypesArchive` Java class.
 It uses the Open Metadata Repository Services (OMRS) archive building

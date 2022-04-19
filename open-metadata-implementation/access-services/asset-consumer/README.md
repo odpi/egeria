@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-![Released](../../../open-metadata-publication/website/images/egeria-content-status-released.png#pagewidth)
+![Released](../../../images/egeria-content-status-released.png#pagewidth)
 
 # Asset Consumer Open Metadata Access Service (OMAS)
 
@@ -12,6 +12,8 @@ with [assets](../docs/concepts/assets) such as:
 * reports
 * APIs
 * functions such as analytical services
+
+* [Documentation](https://egeria-project.org/services/omas/asset-consumer/overview)
 
 It supports:
 

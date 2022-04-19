@@ -20,7 +20,7 @@ For example payloads and endpoints, see the [Postman samples](../samples/OLS.pos
 
     Add the jar to the classpath of the server-chassis-spring module.
 
-2. Start the [OMAG Server Platform](../../../../../open-metadata-resources/open-metadata-tutorials/omag-server-tutorial) and run the default calls for
+2. Start the [OMAG Server Platform](https://egeria-project.org/education/tutorials/omag-server-tutorial/overview/) and run the default calls for
  setting the server URL, eventbus and the cohort.
 
 3. Configure the Open Lineage Service, by POSTing a payload like the following

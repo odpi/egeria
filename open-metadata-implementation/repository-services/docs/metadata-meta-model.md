@@ -367,7 +367,7 @@ omrsRelationship.setGUID("...");
 ## More information on types
 
 For more information on the OpenMetadataTypes that are covered by and included 
-with Egeria, see [the open metadata type system](../../../open-metadata-publication/website/open-metadata-types).
+with Egeria, see [the open metadata type system](https://egeria-project.org/types).
 
 
 

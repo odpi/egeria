@@ -72,8 +72,8 @@ that is not connected to an [open metadata repository cohort](open-metadata-repo
 
 Figure 4 shows the OMRS supporting a server with no local repository - so that all
 metadata for the OMASs is coming through the cohort services from remote metadata repositories.
-This is the [caller integration pattern](../../../open-metadata-publication/website/open-metadata-integration-patterns/caller-integration-pattern.md)
-supported by the [Metadata Access Point OMAG Server](../../admin-services/docs/concepts/metadata-access-point.md).
+This is the **caller integration pattern**
+supported by the [Metadata Access Point OMAG Server](https://egeria-project.org/concepts/metadata-access-point).
 
 ![Figure 4: Access services](omrs-role-access-layer.png)
 > Figure 4: Metadata Access Point OMAG Server
@@ -83,25 +83,25 @@ the OMASs are not deployed and the local repository is configured
 to connect as an adapter for a non-native open metadata repository.
 The cohort services connect this metadata repository with other
 members in one or more cohorts.
-This is called the **[adapter integration pattern](../../../open-metadata-publication/website/open-metadata-integration-patterns/adapter-integration-pattern.md)**
+This is called the **adapter integration pattern**
 and is used in a [Repository Proxy OMAG Server](../../admin-services/docs/concepts/repository-proxy.md).
 
 ![Figure 5: Repository proxy](omrs-role-repository-proxy.png)
 > Figure 5: Repository proxy
 
-Figure 6 shows all of the OMRS components in operation, supporting
+Figure 6 shows all the OMRS components in operation, supporting
 the OMASs with a local repository and connectivity to other
 repositories through the cohort servers.
 
-This is what runs in a [Metadata Server](../../admin-services/docs/concepts/metadata-server.md)
+This is what runs in a [Metadata Access Server](https://egeria-project.org//concepts/metadata-access-server)
 that is connected to an [open metadata repository cohort](open-metadata-repository-cohort.md).
 
 ![Figure 6: Connected Metadata Server](omrs-role-complete.png)
 > Figure 6: Metadata Server
 
 Finally, the administration subsystem alone is active in the servers that are not
-[cohort members](cohort-member.md), that is the 
-[Governance Servers](../../admin-services/docs/concepts/governance-server-types.md)
+[cohort members](https://egeria-project.org/concepts/cohort-member), that is the 
+[Governance Servers](https://egeria-project.org/concepts/governance-server)
 and the
 [View Servers](../../admin-services/docs/concepts/view-server.md).
 

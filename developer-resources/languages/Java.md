@@ -36,7 +36,7 @@ Also you must ensure JAVA_HOME is set, and pointing to a JDK. If this is not don
 
 ----
 * Return to [Programming Languages](.)
-* Link to [Building Egeria Tutorial](../../open-metadata-resources/open-metadata-tutorials/building-egeria-tutorial)
+* Link to [Building Egeria Tutorial](https://egeria-project.org/education/tutorials/building-egeria-tutorial/overview/)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

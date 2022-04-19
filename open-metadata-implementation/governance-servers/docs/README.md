@@ -3,7 +3,7 @@
 
 # Open Metadata Governance Servers Documentation
 
-A governance server is a specialized [OMAG Server](../../../open-metadata-publication/website/omag-server/omag-server.md).
+A governance server is a specialized [OMAG Server](https://egeria-project.org/concepts/omag-server).
 It is designed to host connectors that manage metadata in different technologies.
 
 Each type of governance server is paired with an Open Metadata Access Service (OMAS) that supports

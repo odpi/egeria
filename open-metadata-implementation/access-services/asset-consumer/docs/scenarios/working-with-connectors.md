@@ -29,12 +29,12 @@ It has 2 parts to its interface:
   as the **connected asset properties**.  This interface is documented [here](retrieving-asset-properties.md).
   
 An application creates a connector using the [Asset Consumer OMAS client](creating-a-connector.md).
-When an [Asset is cataloged](../../../../../open-metadata-publication/website/cataloging-assets) in the open metadata repository,
-there is a [Connection](../../../../frameworks/open-connector-framework/docs/concepts/connection.md) object
-linked to it.  This defines all of the properties required to create the connector.
+When an [Asset is cataloged](https://egeria-project.org/patterns/metadata-manager/overview/) in the open metadata repository,
+there is a [Connection](https://egeria-project.org/concepts/connection) object
+linked to it.  This defines all the properties required to create the connector.
 
-See [Creating a connector](creating-a-connector.md) for step by step instructions on creating connectors.
-Asset Consumer OMAS looks up the Connection object and calls the [Connector Broker](../../../../frameworks/open-connector-framework/docs/concepts/connector-broker.md)
+See [Creating a connector](creating-a-connector.md) for step-by-step instructions on creating connectors.
+Asset Consumer OMAS looks up the Connection object and calls the [Connector Broker](https://egeria-project.org/concepts/connector-broker)
 to create the connector.
 
 Once the connector is created, an application may use it to retrieve the content of the asset and the connected

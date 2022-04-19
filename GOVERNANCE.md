@@ -4,7 +4,7 @@
 # Egeria Governance
 
 The Egeria project's governance processes are described in
-the [Egeria Operations Guide](./Egeria-Operations.md).
+the [Egeria Operations Guide](https://egeria-project.org/guides/project-operations/).
 This includes the requirements to earn either of Egeria's two
 [Acclaim badges](developer-resources/badges).
 
@@ -20,7 +20,7 @@ The operation of the Egeria project is overseen by the
 [ODPi's technical steering committee (TSC)](https://github.com/odpi/tsc).
 
 If you are interested in joining the Egeria community,
-see the [community guide](./Community-Guide.md) to find out more.
+see the [community guide](https://egeria-project.org/guides/community/) to find out more.
 
 
 ----

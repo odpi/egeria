@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-![Released](../../../open-metadata-publication/website/images/egeria-content-status-released.png#pagewidth)
+![Released](../../../images/egeria-content-status-released.png#pagewidth)
 
 # Open Connector Framework (OCF)
 
@@ -81,16 +81,16 @@ It is hosted by a metadata server.  See [docs](docs/concepts/connected-asset-pro
 ## Implementation scenarios
 
 For further information on implementing can be found in the
-[Developer's Guide](../../../open-metadata-publication/website/developer-guide).
+[Developer's Guide](https://egeria-project.org/guides/developer/overview).
 
 
 ## Open Metadata Types
 
 Open metadata repositories are able to store information needed to use OCF connectors.  Details of the types involved are as follows:
 
-* [Model 0040](../../../open-metadata-publication/website/open-metadata-types/0040-Software-Servers.png) defines the structure of an Endpoint.
-* [Model 0201](../../../open-metadata-publication/website/open-metadata-types/0201-Connectors-and-Connections.png) defines the structures for Connections and Connector Types.
-* [Model 0205](../../../open-metadata-publication/website/open-metadata-types/0205-Connection-Linkage.png) defines the linkage between the connection and the connected asset.
+* [Model 0040](https://egeria-project.org/types/0/0040-Software-Servers) defines the structure of an Endpoint.
+* [Model 0201](https://egeria-project.org/types/2/0201-Connectors-and-Connections) defines the structures for Connections and Connector Types.
+* [Model 0205](https://egeria-project.org/types/2/0205-Connection-Linkage) defines the linkage between the connection and the connected asset.
 
 ## Java Implementation
 
@@ -124,10 +124,10 @@ These connectors are collectively called the [OMRS Connectors](../../repository-
 Many of the [Open Metadata Governance Servers](../../admin-services/docs/concepts/governance-server-types.md) make use of OCF connectors to
 loosely-couple integration with a variety of underlying technologies.
 
-The [Developer Guide](../../../open-metadata-publication/website/developer-guide) provides more
+The [Developer Guide](https://egeria-project.org/guides/developer/overview) provides more
 information on writing connectors for Egeria.
 
-The [Connector Catalog](../../../open-metadata-publication/website/connector-catalog) lists the
+The [Connector Catalog](https://egeria-project.org/connectors) lists the
 pre-built connectors supplied by Egeria.
 
 
