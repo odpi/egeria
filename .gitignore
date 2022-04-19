@@ -97,8 +97,8 @@ egeria-lineage-repositories/**
 *-graph-repository/**
 
 # Ignore archives if they are in the top level directory
-/CloudInformationModel.json
 /DataStoreConnectorTypes.json
+/OpenConnectorsArchive.json
 /OpenMetadataTypes.json
 /SimpleAPICatalog.json
 /SimpleDataCatalog.json

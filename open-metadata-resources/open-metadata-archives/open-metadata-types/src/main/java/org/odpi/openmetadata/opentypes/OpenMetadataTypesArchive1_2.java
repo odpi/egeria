@@ -18046,7 +18046,7 @@ public class OpenMetadataTypesArchive1_2
     {
         final String guid            = "eed5565d-7ac2-46fe-9a26-4722fad8d993";
         final String name            = "SchemaTypeImplementation";
-        final String description     = "Link between a schema type and an implementation snippet.";
+        final String description     = "Link between a schema type and an implementation.";
         final String descriptionGUID = null;
 
         final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
@@ -21798,7 +21798,7 @@ public class OpenMetadataTypesArchive1_2
          * Set up end 2.
          */
         final String                     end2EntityType               = "ConceptBead";
-        final String                     end2AttributeName            = "anchorBeads";
+        final String                     end2AttributeName            = "endBeads";
         final String                     end2AttributeDescription     = "The concept beads that are linked via this relationship.";
         final String                     end2AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
