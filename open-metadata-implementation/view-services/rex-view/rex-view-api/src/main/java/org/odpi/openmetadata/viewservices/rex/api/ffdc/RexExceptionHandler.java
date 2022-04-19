@@ -158,6 +158,21 @@ public class RexExceptionHandler {
                                            className,
                                            methodName);
     }
+    public static RexViewServiceException mapOMRSEntityHistoricalNotSupportedException(String className,
+                                                                          String methodName,
+                                                                          FunctionNotSupportedException repositoryException)
+    {
+        /*
+         * The positional parameters to this exception's message vary depending on which
+         * connector raised the original error code. Rather than trying to unpick this
+         * just include the original exception's formatted message.
+         */
+        String  exceptionMessage = repositoryException.getReportedErrorMessage();
+        return new RexViewServiceException(RexViewErrorCode.HISTORICAL_FUNCTION_NOT_SUPPORTED.getMessageDefinition(methodName, exceptionMessage),
+                                           className,
+                                           methodName);
+    }
+
 
     public static RexViewServiceException mapOMRSRelationshipNotKnownException(String className,
                                                                                String methodName,
