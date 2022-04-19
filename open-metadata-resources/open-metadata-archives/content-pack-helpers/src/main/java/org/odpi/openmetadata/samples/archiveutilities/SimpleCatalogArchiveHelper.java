@@ -6,6 +6,8 @@ import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveGUID
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EnumDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EnumElementDef;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,11 +16,14 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * SimpleCatalogArchiveHelper creates elements used when creating a simple catalog.  This includes assets, their schemas and connections.
+ * SimpleCatalogArchiveHelper creates elements used when creating a simple catalog.  This includes assets, their schemas and connections, design models.
  */
 public class SimpleCatalogArchiveHelper
 {
     protected static final String guidMapFileNamePostFix    = "GUIDMap.json";
+
+    private static final String ANCHORS_CLASSIFICATION_NAME              = "Anchors";
+    private static final String ANCHOR_GUID_PROPERTY                     = "anchorGUID";
 
     private static final String CONNECTION_TYPE_NAME                     = "Connection";
     private static final String CONNECTOR_TYPE_TYPE_NAME                 = "ConnectorType";
@@ -51,6 +56,59 @@ public class SimpleCatalogArchiveHelper
     private static final String HAS_A_RELATIONSHIP_NAME                  = "TermHASARelationship";
     private static final String RELATED_TERM_RELATIONSHIP_NAME           = "RelatedTerm";
 
+    private static final String DESIGN_MODEL_TYPE_NAME                   = "DesignModel";
+    private static final String CONCEPT_MODEL_CLASSIFICATION_NAME        = "ConceptModel";
+
+    private static final String DESIGN_MODEL_SCOPE_TYPE_NAME             = "DesignModelScope";
+    private static final String DESIGN_MODEL_ELEMENTS_IN_SCOPE_TYPE_NAME = "DesignModelElementsInScope";
+    private static final String DESIGN_MODEL_ELEMENT_TYPE_NAME           = "DesignModelElement";
+    private static final String DESIGN_MODEL_GROUP_TYPE_NAME             = "DesignModelGroup";
+    private static final String DESIGN_MODEL_GROUP_MEMBERSHIP_NAME       = "DesignModelGroupMembership";
+    private static final String DESIGN_MODEL_OWNERSHIP_RELATIONSHIP_NAME = "DesignModelOwnership";
+    private static final String DESIGN_MODEL_IMPL_RELATIONSHIP_NAME      = "DesignModelImplementation";
+
+    private static final String METAMODEL_INSTANCE_CLASSIFICATION_NAME   = "MetamodelInstance";
+    private static final String METAMODEL_ELEMENT_GUID_PROPERTY_NAME     = "metamodelElementGUID";
+
+    private static final String CONCEPT_BEAD_TYPE_NAME                   = "ConceptBead";
+    private static final String CONCEPT_BEAD_LINK_TYPE_NAME              = "ConceptBeadLink";
+    private static final String CONCEPT_BEAD_ATTRIBUTE_TYPE_NAME         = "ConceptBeadAttribute";
+    private static final String CONCEPT_BEAD_RELATIONSHIP_END_NAME       = "ConceptBeadRelationshipEnd";
+    private static final String CONCEPT_BEAD_ATTRIBUTE_LINK_TYPE_NAME    = "ConceptBeadAttributeLink";
+    private static final String CONCEPT_MODEL_DECORATION_ENUM_NAME       = "ConceptModelDecoration";
+    private static final int      CONCEPT_MODEL_DECORATION_NONE          = 0;
+    private static final int      CONCEPT_MODEL_DECORATION_AGGREGATION   = 1;
+    private static final int      CONCEPT_MODEL_DECORATION_COMPOSITION   = 2;
+    private static final int      CONCEPT_MODEL_DECORATION_EXTENSION     = 3;
+
+    private static final String CONCEPT_BEAD_COVERAGE_CATEGORY_ENUM_NAME     = "ConceptBeadAttributeCoverageCategory";
+    private static final int      CONCEPT_BEAD_COVERAGE_UNKNOWN              = 0;
+    private static final int      CONCEPT_BEAD_COVERAGE_UNIQUE_IDENTIFIER    = 1;
+    private static final int      CONCEPT_BEAD_COVERAGE_IDENTIFIER           = 2;
+    private static final int      CONCEPT_BEAD_COVERAGE_CORE_DETAIL          = 3;
+    private static final int      CONCEPT_BEAD_COVERAGE_EXTENDED_DETAIL      = 4;
+    private static final String CONCEPT_BEAD_COVERAGE_CLASSIFICATION_NAME    = "ConceptBeadAttributeCoverage";
+    private static final String CONCEPT_BEAD_COVERAGE_CATEGORY_PROPERTY      = "coverageCategory";
+
+    private static final String QUALIFIED_NAME_PROPERTY                      = "qualifiedName";
+    private static final String ADDITIONAL_PROPERTIES_PROPERTY               = "additionalProperties";
+
+    private static final String NAME_PROPERTY            = "name";
+    private static final String ATTRIBUTE_NAME_PROPERTY  = "attributeName";
+    private static final String DISPLAY_NAME_PROPERTY    = "displayName";
+    private static final String TECHNICAL_NAME_PROPERTY  = "technicalName";
+    private static final String DESCRIPTION_PROPERTY     = "description";
+    private static final String DECORATION_PROPERTY      = "decoration";
+    private static final String VERSION_NUMBER_PROPERTY  = "versionNumber";
+    private static final String AUTHOR_PROPERTY          = "author";
+    private static final String POSITION_PROPERTY        = "position";
+    private static final String MIN_CARDINALITY_PROPERTY = "minCardinality";
+    private static final String MAX_CARDINALITY_PROPERTY = "maxCardinality";
+    private static final String UNIQUE_VALUES_PROPERTY   = "uniqueValues";
+    private static final String ORDERED_VALUES_PROPERTY  = "orderedValues";
+    private static final String NAVIGABLE_PROPERTY       = "navigable";
+
+
     private static final String SOFTWARE_CAPABILITY_TYPE_NAME            = "SoftwareCapability";
 
     private static final String ASSET_TYPE_NAME                          = "Asset";
@@ -80,12 +138,6 @@ public class SimpleCatalogArchiveHelper
     private static final String API_PARAMETER_TYPE_NAME                  = "APIParameter";
     private static final String API_PARAMETER_LIST_TYPE_NAME             = "APIParameterList";
 
-    private static final String QUALIFIED_NAME_PROPERTY                      = "qualifiedName";
-    private static final String ADDITIONAL_PROPERTIES_PROPERTY               = "additionalProperties";
-
-    private static final String NAME_PROPERTY                                = "name";
-    private static final String DISPLAY_NAME_PROPERTY                        = "displayName";
-    private static final String DESCRIPTION_PROPERTY                         = "description";
 
     private static final String ASSET_SUMMARY_PROPERTY                       = "assetSummary";
     private static final String ZONE_MEMBERSHIP_PROPERTY                     = "zoneMembership";
@@ -128,11 +180,7 @@ public class SimpleCatalogArchiveHelper
     private static final String FORMULA_PROPERTY                             = "formula";
     private static final String QUERY_ID_PROPERTY                            = "queryId";
     private static final String QUERY_PROPERTY                               = "query";
-    private static final String POSITION_PROPERTY                            = "position";
-    private static final String MIN_CARDINALITY_PROPERTY                     = "minCardinality";
-    private static final String MAX_CARDINALITY_PROPERTY                     = "maxCardinality";
     private static final String ALLOWS_DUPLICATE_VALUES_PROPERTY             = "allowsDuplicateValues";
-    private static final String ORDERED_VALUES_PROPERTY                      = "orderedValues";
     private static final String DEFAULT_VALUE_OVERRIDE_PROPERTY              = "defaultValueOverride";
     private static final String MINIMUM_LENGTH_PROPERTY                      = "minimumLength";
     private static final String LENGTH_PROPERTY                              = "length";
@@ -143,9 +191,7 @@ public class SimpleCatalogArchiveHelper
     private static final String ALIASES_PROPERTY                             = "aliases";
     private static final String SORT_ORDER_PROPERTY                          = "sortOrder";
     private static final String SCHEMA_TYPE_NAME_PROPERTY                    = "schemaTypeName";
-    private static final String VERSION_NUMBER_PROPERTY                      = "versionNumber";
     private static final String IS_DEPRECATED_PROPERTY                       = "isDeprecated";
-    private static final String AUTHOR_PROPERTY                              = "author";
     private static final String USAGE_PROPERTY                               = "usage";
     private static final String ENCODING_STANDARD_PROPERTY                   = "encodingStandard";
     private static final String NAMESPACE_PROPERTY                           = "namespace";
@@ -154,7 +200,6 @@ public class SimpleCatalogArchiveHelper
     private static final String FIXED_VALUE_PROPERTY                         = "fixedValue";
 
     private static final String EXAMPLES_PROPERTY                            = "examples";
-    private static final String TECHNICAL_NAME_PROPERTY                      = "technicalName";
     private static final String LANGUAGE_PROPERTY                            = "language";
     private static final String SCOPE_PROPERTY                               = "scope";
     private static final String URL_PROPERTY                                 = "url";
@@ -162,10 +207,7 @@ public class SimpleCatalogArchiveHelper
     private static final String VERSION_PROPERTY                             = "version";
     private static final String STATUS_IDENTIFIER_PROPERTY                   = "statusIdentifier";
     private static final String CONFIDENCE_PROPERTY                          = "confidence";
-    private static final String ATTRIBUTE_NAME_PROPERTY                      = "attribute";
-    private static final String DECORATION_PROPERTY                          = "decoration";
-    private static final String UNIQUE_VALUES_PROPERTY                       = "uniqueValues";
-    private static final String NAVIGABLE_PROPERTY                           = "navigable";
+    private static final String ATTRIBUTE_PROPERTY                           = "attribute";
 
     protected OpenMetadataArchiveBuilder archiveBuilder;
     protected OMRSArchiveHelper          archiveHelper;
@@ -222,6 +264,292 @@ public class SimpleCatalogArchiveHelper
 
 
     /**
+     * Create a design model entity.
+     *
+     * @param typeName name of element subtype to use - default is DesignModel
+     * @param classificationName name of classification the identifies the type of design model
+     * @param qualifiedName unique name for the element
+     * @param displayName display name for the element
+     * @param technicalName technical name for the element
+     * @param description description about the element
+     * @param versionNumber version number for the element
+     * @param author author of the element
+     * @param additionalProperties any other properties
+     * @param extendedProperties additional properties defined in the subtype
+     *
+     * @return unique identifier for new design model (designModelGUID)
+     */
+    public String addDesignModel(String               typeName,
+                                 String               classificationName,
+                                 String               qualifiedName,
+                                 String               displayName,
+                                 String               technicalName,
+                                 String               description,
+                                 String               versionNumber,
+                                 String               author,
+                                 Map<String, String>  additionalProperties,
+                                 Map<String, Object>  extendedProperties)
+    {
+        final String methodName = "addDesignModel";
+
+        String elementTypeName = DESIGN_MODEL_TYPE_NAME;
+
+        if (typeName != null)
+        {
+            elementTypeName = typeName;
+        }
+
+        List<Classification> entityClassifications = null;
+
+        if (classificationName != null)
+        {
+            entityClassifications = new ArrayList<>();
+
+            Classification classification = archiveHelper.getClassification(classificationName, null, InstanceStatus.ACTIVE);
+
+            entityClassifications.add(classification);
+        }
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, NAME_PROPERTY, displayName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, TECHNICAL_NAME_PROPERTY, technicalName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, VERSION_NUMBER_PROPERTY, versionNumber, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, AUTHOR_PROPERTY, author, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, ADDITIONAL_PROPERTIES_PROPERTY, additionalProperties, methodName);
+        properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
+
+        EntityDetail newEntity = archiveHelper.getEntityDetail(elementTypeName,
+                                                               idToGUIDMap.getGUID(qualifiedName),
+                                                               properties,
+                                                               InstanceStatus.ACTIVE,
+                                                               entityClassifications);
+
+        archiveBuilder.addEntity(newEntity);
+
+        return newEntity.getGUID();
+    }
+
+
+    /**
+     * Create a design model element entity.
+     *
+     * @param designModelGUID unique identifier of model that owns this element
+     * @param typeName name of element subtype to use - default is DesignModelElement
+     * @param qualifiedName unique name for the element
+     * @param displayName display name for the element
+     * @param technicalName technical name for the element
+     * @param description description about the element
+     * @param versionNumber version number for the element
+     * @param author author of the element
+     * @param additionalProperties any other properties
+     * @param extendedProperties additional properties defined in the subtype
+     * @param classifications list of classifications (if any)
+     *
+     * @return unique identifier for the new model element
+     */
+    public String addDesignModelElement(String               designModelGUID,
+                                        String               typeName,
+                                        String               qualifiedName,
+                                        String               displayName,
+                                        String               technicalName,
+                                        String               description,
+                                        String               versionNumber,
+                                        String               author,
+                                        Map<String, String>  additionalProperties,
+                                        Map<String, Object>  extendedProperties,
+                                        List<Classification> classifications)
+    {
+        final String methodName = "addDesignModelElement";
+
+        String elementTypeName = DESIGN_MODEL_ELEMENT_TYPE_NAME;
+
+        if (typeName != null)
+        {
+            elementTypeName = typeName;
+        }
+
+        List<Classification> entityClassifications = classifications;
+
+        if (designModelGUID != null)
+        {
+            if (entityClassifications == null)
+            {
+                entityClassifications = new ArrayList<>();
+            }
+
+            InstanceProperties classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, ANCHOR_GUID_PROPERTY, designModelGUID, methodName);
+            Classification     classification           = archiveHelper.getClassification(ANCHORS_CLASSIFICATION_NAME, classificationProperties, InstanceStatus.ACTIVE);
+
+            entityClassifications.add(classification);
+        }
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DISPLAY_NAME_PROPERTY, displayName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, TECHNICAL_NAME_PROPERTY, technicalName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, VERSION_NUMBER_PROPERTY, versionNumber, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, AUTHOR_PROPERTY, author, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, ADDITIONAL_PROPERTIES_PROPERTY, additionalProperties, methodName);
+        properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
+
+        EntityDetail newEntity = archiveHelper.getEntityDetail(elementTypeName,
+                                                               idToGUIDMap.getGUID(qualifiedName),
+                                                               properties,
+                                                               InstanceStatus.ACTIVE,
+                                                               entityClassifications);
+
+        archiveBuilder.addEntity(newEntity);
+
+        if (designModelGUID != null)
+        {
+            EntityDetail designModelEntity = archiveBuilder.getEntity(designModelGUID);
+            EntityDetail designModelElementEntity = archiveBuilder.getEntity(newEntity.getGUID());
+
+            EntityProxy end1 = archiveHelper.getEntityProxy(designModelEntity);
+            EntityProxy end2 = archiveHelper.getEntityProxy(designModelElementEntity);
+
+            archiveBuilder.addRelationship(archiveHelper.getRelationship(DESIGN_MODEL_GROUP_MEMBERSHIP_NAME,
+                                                                         idToGUIDMap.getGUID(designModelGUID + "_to_" + newEntity.getGUID() + "_design_model_group_membership_relationship"),
+                                                                         null,
+                                                                         InstanceStatus.ACTIVE,
+                                                                         end1,
+                                                                         end2));
+        }
+
+        return newEntity.getGUID();
+    }
+
+
+    /**
+     * Create the relationship between a design mode group and one of its members.
+     *
+     * @param groupGUID unique identifier of the design model group
+     * @param memberGUID unique identifier of the member
+     */
+    public void addDesignModelGroupMembership(String groupGUID,
+                                              String memberGUID)
+    {
+        EntityDetail designModelGroupEntity = archiveBuilder.getEntity(groupGUID);
+        EntityDetail designModelElementEntity = archiveBuilder.getEntity(memberGUID);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(designModelGroupEntity);
+        EntityProxy end2 = archiveHelper.getEntityProxy(designModelElementEntity);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(DESIGN_MODEL_GROUP_MEMBERSHIP_NAME,
+                                                                     idToGUIDMap.getGUID(groupGUID + "_to_" + memberGUID + "_design_model_group_membership_relationship"),
+                                                                     null,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+
+    /**
+     * Create the relationship between a concept bead link and the concept bead at one of its ends.
+     *
+     * @param conceptBeadLinkGUID unique identifier of the concept bead link entity
+     * @param conceptBeadGUID unique identifier of the concept bead
+     * @param attributeName name of the attribute for this end
+     * @param conceptModelDecoration what type of relationship end
+     * @param position in the attributes for the bead
+     * @param minCardinality minimum number of the relationships
+     * @param maxCardinality maximum number of the relationships
+     * @param uniqueValues are the relationship values unique
+     * @param orderedValues are the relationship values in any order (using position)
+     * @param navigable is it possible to navigate to the concept bead
+     */
+    public void addConceptBeadRelationshipEnd(String  conceptBeadLinkGUID,
+                                              String  conceptBeadGUID,
+                                              String  attributeName,
+                                              int     conceptModelDecoration,
+                                              int     position,
+                                              int     minCardinality,
+                                              int     maxCardinality,
+                                              boolean uniqueValues,
+                                              boolean orderedValues,
+                                              boolean navigable)
+    {
+        final String methodName = "addConceptBeadRelationshipEnd";
+
+        EntityDetail   entityOne                  = archiveBuilder.getEntity(conceptBeadLinkGUID);
+        EntityDetail   entityTwo                  = archiveBuilder.getEntity(conceptBeadGUID);
+        EnumDef        enumDef                    = archiveBuilder.getEnumDef(CONCEPT_MODEL_DECORATION_ENUM_NAME);
+        EnumElementDef conceptModelDecorationEnum = null;
+
+        for (EnumElementDef enumElementDef : enumDef.getElementDefs())
+        {
+            if (enumElementDef.getOrdinal() == conceptModelDecoration)
+            {
+                conceptModelDecorationEnum = enumElementDef;
+            }
+        }
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(entityOne);
+        EntityProxy end2 = archiveHelper.getEntityProxy(entityTwo);
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, ATTRIBUTE_NAME_PROPERTY, attributeName, methodName);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, POSITION_PROPERTY, position, methodName);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, MIN_CARDINALITY_PROPERTY, minCardinality, methodName);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, MAX_CARDINALITY_PROPERTY, maxCardinality, methodName);
+        properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, DECORATION_PROPERTY, conceptModelDecorationEnum.getOrdinal(), conceptModelDecorationEnum.getValue(), conceptModelDecorationEnum.getDescription(), methodName);
+        properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, UNIQUE_VALUES_PROPERTY, uniqueValues, methodName);
+        properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, ORDERED_VALUES_PROPERTY, orderedValues, methodName);
+        properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, NAVIGABLE_PROPERTY, navigable, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(DESIGN_MODEL_GROUP_MEMBERSHIP_NAME,
+                                                                     idToGUIDMap.getGUID(conceptBeadLinkGUID + "_to_" + conceptBeadGUID + "_concept_bead_relationship_end_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Create the relationship between a concept bead link and the concept bead at one of its ends.
+     *
+     * @param conceptBeadGUID unique identifier of the concept bead entity
+     * @param conceptBeadAttributeGUID unique identifier of the concept bead attribute entity
+     * @param position in the attributes for the bead
+     * @param minCardinality minimum number of the relationships
+     * @param maxCardinality maximum number of the relationships
+     * @param uniqueValues are the relationship values unique
+     * @param orderedValues are the relationship values in any order (using position)
+     */
+    public void addConceptBeadAttributeLink(String  conceptBeadGUID,
+                                            String  conceptBeadAttributeGUID,
+                                            int     position,
+                                            int     minCardinality,
+                                            int     maxCardinality,
+                                            boolean uniqueValues,
+                                            boolean orderedValues)
+    {
+        final String methodName = "addConceptBeadAttributeLink";
+
+        EntityDetail   entityOne   = archiveBuilder.getEntity(conceptBeadGUID);
+        EntityDetail   entityTwo   = archiveBuilder.getEntity(conceptBeadAttributeGUID);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(entityOne);
+        EntityProxy end2 = archiveHelper.getEntityProxy(entityTwo);
+
+        InstanceProperties properties = archiveHelper.addIntPropertyToInstance(archiveRootName, null, POSITION_PROPERTY, position, methodName);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, MIN_CARDINALITY_PROPERTY, minCardinality, methodName);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, MAX_CARDINALITY_PROPERTY, maxCardinality, methodName);
+        properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, UNIQUE_VALUES_PROPERTY, uniqueValues, methodName);
+        properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, ORDERED_VALUES_PROPERTY, orderedValues, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(DESIGN_MODEL_GROUP_MEMBERSHIP_NAME,
+                                                                     idToGUIDMap.getGUID(conceptBeadGUID + "_to_" + conceptBeadAttributeGUID + "_concept_bead_attribute_link_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
      * Create an asset entity.
      *
      * @param typeName name of asset subtype to use - default is Asset
@@ -229,7 +557,7 @@ public class SimpleCatalogArchiveHelper
      * @param displayName display name for the asset
      * @param description description about the asset
      * @param additionalProperties any other properties
-     * @param extendedProperties additional properties defined in the sub type
+     * @param extendedProperties additional properties defined in the subtype
      * @param classifications list of classifications (if any)
      *
      * @return id for the asset
@@ -415,7 +743,7 @@ public class SimpleCatalogArchiveHelper
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, ASSET_SUMMARY_PROPERTY, assetSummary, methodName);
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(CONNECTION_TO_ASSET_TYPE_NAME,
-                                                                     idToGUIDMap.getGUID(assetGUID + "_to_" + connectionGUID + "_data_consumer_relationship"),
+                                                                     idToGUIDMap.getGUID(assetGUID + "_to_" + connectionGUID + "_asset_connection_relationship"),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
@@ -496,7 +824,7 @@ public class SimpleCatalogArchiveHelper
             EntityProxy end2 = archiveHelper.getEntityProxy(schemaTypeEntity);
 
             archiveBuilder.addRelationship(archiveHelper.getRelationship(ASSET_SCHEMA_TYPE_TYPE_NAME,
-                                                                         idToGUIDMap.getGUID(qualifiedName + "_asset_relationship"),
+                                                                         idToGUIDMap.getGUID(qualifiedName + "_asset_schema_relationship"),
                                                                          null,
                                                                          InstanceStatus.ACTIVE,
                                                                          end1,
@@ -1047,7 +1375,7 @@ public class SimpleCatalogArchiveHelper
      *
      * @return id for the connector type
      */
-    protected String addConnectorCategory(String               connectorTypeDirectoryGUID,
+    public    String addConnectorCategory(String               connectorTypeDirectoryGUID,
                                           String               qualifiedName,
                                           String               displayName,
                                           String               description,
@@ -1107,10 +1435,10 @@ public class SimpleCatalogArchiveHelper
      *
      * @return id for the connector type
      */
-    protected String addConnectorTypeDirectory(String              qualifiedName,
-                                               String              displayName,
-                                               String              description,
-                                               Map<String, String> additionalProperties)
+    public String addConnectorTypeDirectory(String              qualifiedName,
+                                            String              displayName,
+                                            String              description,
+                                            Map<String, String> additionalProperties)
     {
         final String methodName = "addConnectorTypeDirectory";
 

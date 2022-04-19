@@ -11,7 +11,7 @@ pluginManagement {
         id 'gradle-aggregate-javadocs-plugin' version '3.0.1'
         id 'org.siouan.frontend-jdk11' version '6.0.0'
         id 'com.github.johnrengelman.shadow' version '7.1.2'
-        id 'com.github.psxpaul.execfork' version '0.1.15'
+        id 'com.github.psxpaul.execfork' version '0.2.0'
 
 
         // For reference we use these, but they are internal so no version spec needed
@@ -393,11 +393,11 @@ include(':open-metadata-distribution')
 include(':open-metadata-publication:website')
 include(':open-metadata-publication')
 include(':open-metadata-resources:open-metadata-archives:design-model-archives:design-model-archive-base')
-include(':open-metadata-resources:open-metadata-archives:design-model-archives:cloud-information-model')
 include(':open-metadata-resources:open-metadata-archives:design-model-archives:glossary-canonical-model')
 include(':open-metadata-resources:open-metadata-archives:design-model-archives')
 include(':open-metadata-resources:open-metadata-archives:open-connector-archives')
 include(':open-metadata-resources:open-metadata-archives:catalog-builder')
+include(':open-metadata-resources:open-metadata-archives:content-pack-helpers')
 include(':open-metadata-resources:open-metadata-archives:open-metadata-types')
 include(':open-metadata-resources:open-metadata-archives:open-metadata-types-utility')
 include(':open-metadata-resources:open-metadata-archives')
@@ -812,11 +812,11 @@ project(':open-metadata-distribution:open-metadata-packages').projectDir = file(
 project(':open-metadata-distribution:open-metadata-assemblies').projectDir = file('open-metadata-distribution/open-metadata-assemblies')
 project(':open-metadata-publication:website').projectDir = file('open-metadata-publication/website')
 project(':open-metadata-resources:open-metadata-archives:design-model-archives:design-model-archive-base').projectDir = file('open-metadata-resources/open-metadata-archives/design-model-archives/design-model-archive-base')
-project(':open-metadata-resources:open-metadata-archives:design-model-archives:cloud-information-model').projectDir = file('open-metadata-resources/open-metadata-archives/design-model-archives/cloud-information-model')
 project(':open-metadata-resources:open-metadata-archives:design-model-archives:glossary-canonical-model').projectDir = file('open-metadata-resources/open-metadata-archives/design-model-archives/glossary-canonical-model')
 project(':open-metadata-resources:open-metadata-archives:design-model-archives').projectDir = file('open-metadata-resources/open-metadata-archives/design-model-archives')
 project(':open-metadata-resources:open-metadata-archives:open-connector-archives').projectDir = file('open-metadata-resources/open-metadata-archives/open-connector-archives')
 project(':open-metadata-resources:open-metadata-archives:catalog-builder').projectDir = file('open-metadata-resources/open-metadata-archives/catalog-builder')
+project(':open-metadata-resources:open-metadata-archives:content-pack-helpers').projectDir = file('open-metadata-resources/open-metadata-archives/content-pack-helpers')
 project(':open-metadata-resources:open-metadata-archives:open-metadata-types').projectDir = file('open-metadata-resources/open-metadata-archives/open-metadata-types')
 project(':open-metadata-resources:open-metadata-archives').projectDir = file('open-metadata-resources/open-metadata-archives')
 project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-reader-avro-sample').projectDir = file('open-metadata-resources/open-metadata-samples/access-services-samples/asset-management-samples/asset-reader-avro-sample')

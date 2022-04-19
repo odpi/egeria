@@ -14,7 +14,7 @@ They are as follows:
 * **CloudInformationModel.json** - extracted metadata from the [Cloud Information Model](https://cloudinformationmodel.org)'s
 [JSONLD formatted model](https://raw.githubusercontent.com/cloudinformationmodel/cloudinformationmodel/master/dist/model.jsonld).
 
-* **DataStoreConnectorTypes** - Connector type metadata for connecting to data sources.
+* **OpenConnectorsArchive** - Connector type metadata for connecting to data sources and other third party technology.
 
 * **OpenMetadataTypes** - Archive of all of the open metadata types defined by Egeria.
 
