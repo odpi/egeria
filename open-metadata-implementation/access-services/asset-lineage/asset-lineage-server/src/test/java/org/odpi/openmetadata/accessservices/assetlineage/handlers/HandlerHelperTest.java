@@ -106,7 +106,7 @@ class HandlerHelperTest {
         relationships.add(relationship);
 
         when(genericHandler.getAttachmentLinks(USER, GUID, GUID_PARAMETER, ENTITY_TYPE_NAME, RELATIONSHIP_TYPE_GUID,
-                RELATIONSHIP_TYPE_NAME, null, 0, 1000, null, methodName))
+                RELATIONSHIP_TYPE_NAME, null, 0, 0, null, methodName))
                 .thenReturn(relationships);
 
         List<Relationship> response = handlerHelper.getRelationshipsByType(USER, GUID, RELATIONSHIP_TYPE_NAME, ENTITY_TYPE_NAME);
@@ -122,7 +122,7 @@ class HandlerHelperTest {
         mockTypeDef(RELATIONSHIP_TYPE_NAME, RELATIONSHIP_TYPE_GUID);
         List<Relationship> relationships = new ArrayList<>();
         when(genericHandler.getAttachmentLinks(USER, GUID, GUID_PARAMETER, ENTITY_TYPE_NAME, RELATIONSHIP_TYPE_GUID,
-                RELATIONSHIP_TYPE_NAME, null, 0, 1000, null, methodName)).thenReturn(relationships);
+                RELATIONSHIP_TYPE_NAME, null, 0, 0, null, methodName)).thenReturn(relationships);
 
         List<Relationship> response = handlerHelper.getRelationshipsByType(USER, GUID, RELATIONSHIP_TYPE_NAME, ENTITY_TYPE_NAME);
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
@@ -201,14 +201,15 @@ class HandlerHelperTest {
         List<String> guids = Arrays.asList(ENTITY_ONE_GUID, ENTITY_TWO_GUID);
         FindEntitiesParameters findEntitiesParameters = mock(FindEntitiesParameters.class);
         when(findEntitiesParameters.getEntitySubtypeGUIDs()).thenReturn(guids);
+        when(invalidParameterHandler.getMaxPagingSize()).thenReturn(500);
 
         mockTypeDef(ENTITY_TYPE_NAME, ENTITY_TYPE_GUID);
         List<EntityDetail> entities = new ArrayList<>();
         EntityDetail entityDetail = mock(EntityDetail.class);
         entities.add(entityDetail);
         when(genericHandler.findEntities(USER, ENTITY_TYPE_GUID, guids, searchProperties, Collections.emptyList(),
-                null, null, null, null, true, false, 0, 0,
-                "findEntitiesByType")).thenReturn(entities);
+                null, null, null, null, true, false, 0, 500,
+                "addPagedEntities")).thenReturn(entities);
 
         Optional<List<EntityDetail>> response = handlerHelper.findEntitiesByType(USER, ENTITY_TYPE_NAME, searchProperties, findEntitiesParameters);
         assertTrue(response.isPresent());
@@ -221,14 +222,16 @@ class HandlerHelperTest {
         List<String> guids = Arrays.asList(ENTITY_ONE_GUID, ENTITY_TWO_GUID);
         FindEntitiesParameters findEntitiesParameters = mock(FindEntitiesParameters.class);
         when(findEntitiesParameters.getEntitySubtypeGUIDs()).thenReturn(guids);
+        when(invalidParameterHandler.getMaxPagingSize()).thenReturn(500);
 
         mockTypeDef(ENTITY_TYPE_NAME, ENTITY_TYPE_GUID);
         when(genericHandler.findEntities(USER, ENTITY_TYPE_GUID, guids, searchProperties, Collections.emptyList(),
                 null, null, null, null, true,
-                false, 0, 0, "findEntitiesByType")).thenReturn(null);
+                false, 0, 500, "addPagedEntities")).thenReturn(null);
 
         Optional<List<EntityDetail>> response = handlerHelper.findEntitiesByType(USER, ENTITY_TYPE_NAME, searchProperties, findEntitiesParameters);
-        assertTrue(response.isEmpty());
+        assertTrue(response.isPresent());
+        assertTrue(response.get().isEmpty());
     }
 
     @Test
@@ -333,7 +336,7 @@ class HandlerHelperTest {
         when(relationship.getType()).thenReturn(type);
         when(relationship.getGUID()).thenReturn(RELATIONSHIP_GUID);
         when(genericHandler.getAttachmentLinks(USER, ENTITY_ONE_GUID, GUID_PARAMETER, ENTITY_TYPE_NAME, RELATIONSHIP_TYPE_GUID,
-                RELATIONSHIP_TYPE_NAME, null, 0, 1000, null, "getRelationshipsByType"))
+                RELATIONSHIP_TYPE_NAME, null, 0, 0, null, "getRelationshipsByType"))
                 .thenReturn(relationships);
 
         mockLineageEntity(ENTITY_ONE_GUID);
