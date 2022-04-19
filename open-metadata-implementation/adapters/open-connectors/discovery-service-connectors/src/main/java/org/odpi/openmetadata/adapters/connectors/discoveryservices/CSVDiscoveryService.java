@@ -14,7 +14,8 @@ import java.util.Map;
 
 
 /**
- * CSVDiscoveryService is a discovery service implementation for analysing CSF Files.
+ * CSVDiscoveryService is a discovery service implementation for analysing CSV Files to
+ * discovery columns and profile the data in them.
  */
 public class CSVDiscoveryService extends AuditableDiscoveryService
 {

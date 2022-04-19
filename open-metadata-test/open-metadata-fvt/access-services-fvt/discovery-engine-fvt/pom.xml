@@ -40,7 +40,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>discovery-engine-client</artifactId>
+            <artifactId>audit-log-framework</artifactId>
         </dependency>
 
         <dependency>
@@ -50,7 +50,22 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>audit-log-framework</artifactId>
+            <artifactId>open-discovery-framework</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>discovery-engine-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>asset-owner-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>asset-owner-client</artifactId>
         </dependency>
 
         <dependency>
