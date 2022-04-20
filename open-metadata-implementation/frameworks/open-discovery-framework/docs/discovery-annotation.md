@@ -34,13 +34,13 @@ The annotation types defined in the  [Open Discovery Framework (ODF)](.) are as 
 
 ## Open Metadata Types for Discovery Annotations
 
-The open metadata types for a discovery annotations are describe in
-[Area 6](../../../../open-metadata-publication/website/open-metadata-types/Area-6-models.md).
+The open metadata types for a discovery annotations are described in
+[Area 6](https://egeria-project.org/types).
 
 The main entity type is called
-[Annotation](../../../../open-metadata-publication/website/open-metadata-types/0610-Annotations.md).
+[Annotation](https://egeria-project.org/types/6/0610-Annotations).
 It is extended by
-[DataFieldAnnotation](../../../../open-metadata-publication/website/open-metadata-types/0617-Data-Field-Analysis.md)
+[DataFieldAnnotation](https://egeria-project.org/types/6/0617-Data-Field-Analysis)
 to distinguish annotations that refer, primarily to a data field.
 Other more specialist annotations extend these two basic annotation types.
 

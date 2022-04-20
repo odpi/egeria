@@ -1,12 +1,14 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-![Released](../../open-metadata-publication/website/images/egeria-content-status-released.png#pagewidth)
+![Released](../../images/egeria-content-status-released.png#pagewidth)
 
 # Open Metadata Repository Services (OMRS)
 
 The Open Metadata Repository Services (OMRS) enable metadata repositories to exchange metadata
 irrespective of the technology, or technology supplier.
+
+## Overview
 
 Traditional metadata management technology tends to centralize metadata into a single repository.
 An organization often begins with a single metadata repository, typically deployed to support a
@@ -72,7 +74,7 @@ consisting of Entities, Classifications and Relationships.
 
 ## Understanding more of the design
 
-See the **[documentation](docs)**.
+See the [Documentation](https://egeria-project.org/services/omrs).
 
 ## What about the code?
 

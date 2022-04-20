@@ -45,8 +45,7 @@ module.
 
 ## Related information
 
-* [Open Metadata Archive Store Connectors in the Connector Catalog](../../../../../open-metadata-publication/website/connector-catalog/runtime-connectors.md)
-* 
+* [Open Metadata Archive Store Connectors in the Connector Catalog](https://egeria-project.org/connectors)
 
 ----
 Return to [repository services connectors](.).

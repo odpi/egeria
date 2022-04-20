@@ -3,7 +3,7 @@
   
 # Open Metadata View Services (OMVS)
 
-![In Development](../../../open-metadata-publication/website/images/egeria-content-status-in-development.png)
+![In Development](../../../images/egeria-content-status-in-development.png)
 
 Develop a user interface to support the Dino UI, which enables a technical user (such as an Egeria Operator) to 
 retrieve information about servers, services, cohorts and platforms. 

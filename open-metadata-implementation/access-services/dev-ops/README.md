@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-![InDev](../../../open-metadata-publication/website/images/egeria-content-status-in-development.png#pagewidth)
+![InDev](../../../images/egeria-content-status-in-development.png#pagewidth)
 
 # DevOps Open Metadata Access Service (OMAS)
 
@@ -9,6 +9,10 @@ The DevOps OMAS provides APIs and events for tools that play a role in a
 DevOps pipeline.  It enables these tools to query information about the assets it
 is deploying, the infrastructure options and any governance actions that need
 to be performed.
+
+* [Documentation](https://egeria-project.org/services/omas/dev-ops/overview)
+
+## Design Information
 
 The module structure for the DevOps OMAS is as follows:
 

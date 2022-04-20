@@ -29,7 +29,7 @@ The current Egeria maintainers are:
 | Cezar Sirbu | sirbunicolaecezar@gmail.com |
 
 To understand how to become an Egeria maintainer
-see the [Egeria Operations Guide](Egeria-Operations.md).
+see the [Egeria Operations Guide](https://egeria-project.org/guides/project-operations/).
 
 
 ## Emeritus Maintainers

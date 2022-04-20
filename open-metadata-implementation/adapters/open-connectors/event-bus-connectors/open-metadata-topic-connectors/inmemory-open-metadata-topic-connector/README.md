@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project 2020. -->
 
-![Released](../../../../../../open-metadata-publication/website/images/egeria-content-status-released.png#pagewidth)
+![Released](../../../../../../images/egeria-content-status-released.png#pagewidth)
   
 # In Memory Open Metadata Topic Connector
 
