@@ -62,16 +62,11 @@ open-metadata-implementation/user-interface/ui-chassis @bogdan-sava
 open-metadata-implementation/view-services/ @davidradl
 
 
-# Publication
-
-open-metadata-publication/ @mandy-chessell
-
 # Resources
 
 open-metadata-resources/ @mandy-chessell
 open-metadata-resources/open-metadata-deployment/ @planetf1
 open-metadata-resources/open-metadata-deployment/sample-data/ @cmgrote
-open-metadata-resources/open-metadata-tutorials/ @mandy-chessell
 
 open-metadata-resources/open-metadata-samples/ @mandy-chessell
 open-metadata-resources/open-metadata-samples/postman-rest-samples/ @planetf1
@@ -120,7 +115,6 @@ gradle/ @planetf1
 .m2/ @planetf1
 .gitignore @planetf1
 .sonarcloud* @planetf1
-Community-Guide.md @mandy-chessell @planetf1
 INFO.yaml @planetf1
 spotbugs* @planetf1
 CODEOWNERS @mandy-chessell @planetf1

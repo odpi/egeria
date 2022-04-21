@@ -27,6 +27,7 @@ public class DiscoveryAnalysisReportClient extends DiscoveryAnalysisReportStore
      * @param discoveryRequestStatus current status
      * @param assetGUID linked asset
      * @param analysisParameters parameters that configured the analysis
+     * @param firstAnalysisStepName name of the first analysis step performed by the discovery service
      * @param reportQualifiedName qualified name of report
      * @param reportDisplayName display name of report
      * @param reportDescription description of report
@@ -41,6 +42,7 @@ public class DiscoveryAnalysisReportClient extends DiscoveryAnalysisReportStore
                                          DiscoveryRequestStatus discoveryRequestStatus,
                                          String                 assetGUID,
                                          Map<String, String>    analysisParameters,
+                                         String                 firstAnalysisStepName,
                                          String                 reportQualifiedName,
                                          String                 reportDisplayName,
                                          String                 reportDescription,
@@ -64,7 +66,8 @@ public class DiscoveryAnalysisReportClient extends DiscoveryAnalysisReportStore
                                                                                         reportDescription,
                                                                                         super.creationDate,
                                                                                         analysisParameters,
-                                                                                        DiscoveryRequestStatus.WAITING,
+                                                                                        firstAnalysisStepName,
+                                                                                        discoveryRequestStatus,
                                                                                         assetGUID,
                                                                                         discoveryEngineGUID,
                                                                                         discoveryServiceGUID,

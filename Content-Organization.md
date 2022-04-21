@@ -117,14 +117,11 @@ The Egeria core repository contains the core Egeria functionality, and is organi
  
   * **[view-services](open-metadata-implementation/view-services)** - services that provide services for user interfaces.  These run in the [View Server](open-metadata-implementation/admin-services/docs/concepts/view-server.md) OMAG Server.
 
-* **[open-metadata-publication](open-metadata-publication)** - contains many of the general articles for Egeria's website.
-
 * **[open-metadata-resources](open-metadata-resources)** - contains the open metadata demos and samples.
   * **[open-metadata-archives](open-metadata-resources/open-metadata-archives)** - contains pre-canned collections of metadata for loading into an open metadata server.
-  * **[open-metadata-deployment](open-metadata-resources/open-metadata-deployment)** - contains resources for deploying ODPi Egeria and related technology.
-  * **[open-metadata-labs](open-metadata-resources/open-metadata-labs)** - contains Jupyter Notebooks to guide you through using ODPi Egeria.
+  * **[open-metadata-deployment](open-metadata-resources/open-metadata-deployment)** - contains resources for deploying Egeria and related technology.
+  * **[open-metadata-labs](open-metadata-resources/open-metadata-labs)** - contains Jupyter Notebooks to guide you through using Egeria.
   * **[open-metadata-samples](open-metadata-resources/open-metadata-samples)** - contains coding samples for Egeria APIs.
-  * **[open-metadata-tutorials](open-metadata-resources/open-metadata-tutorials)** - contains tutorials for managing your own ODPi Egeria environment.
 
 * **[open-metadata-test](open-metadata-test)** - supports additional test cases beyond unit test.
 

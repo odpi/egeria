@@ -3,14 +3,14 @@
 
 # Governance Action Connector Catalog
 
-These are the [Connector Catalog](../../../../../open-metadata-publication/website/connector-catalog) entries for 
+These are the [Connector Catalog](https://egeria-project.org/connectors/#governance-action-services) entries for 
 Egeria's supplied governance action service implementations.
 They can be used in an Egeria deployment, or as a template for your own implementations.
 
-* [Move/Copy File Provisioning Governance Action Service](../../../../../open-metadata-publication/website/connector-catalog/move-copy-file-provisioning-governance-action-service.md)
-* [Generic Element Watchdog Governance Action Service](../../../../../open-metadata-publication/website/connector-catalog/generic-element-watchdog-governance-action-service.md)
-* [Generic Folder Watchdog Governance Action Service](../../../../../open-metadata-publication/website/connector-catalog/generic-folder-watchdog-governance-action-service.md)
-* [Origin Seeker Remediation Governance Action Service](../../../../../open-metadata-publication/website/connector-catalog/origin-seeker-remediation-governance-action-service.md)
+* Move/Copy File Provisioning Governance Action Service
+* Generic Element Watchdog Governance Action Service
+* Generic Folder Watchdog Governance Action Service
+* Origin Seeker Remediation Governance Action Service
 
 
 ----

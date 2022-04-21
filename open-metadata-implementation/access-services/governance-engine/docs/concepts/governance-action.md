@@ -9,7 +9,7 @@ that needs to be performed on one or more metadata elements, or
 their counterparts in the digital landscape.
 
 A governance action is 
-[represented as a metadata entity](../../../../../open-metadata-publication/website/open-metadata-types/0463-Governance-Actions.md)
+[represented as a metadata entity](https://egeria-project.org/types/4/0463-Governance-Actions)
 in the open metadata repositories and linked to:
 
 * The source (cause) of the governance action.

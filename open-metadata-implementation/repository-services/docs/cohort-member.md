@@ -21,8 +21,7 @@ exchange of messages called [Registry Events](event-descriptions/registry-events
 
 ## Further Information
 
-* [Configuring a cohort member](../../admin-services/docs/concepts/cohort-member.md)
-* [Creating your own cohort](../../../open-metadata-publication/website/solutions/metadata-server-exchange)
+* [Configuring a cohort member](https://egeria-project.org/concepts/cohort-member)
 * [REST API showing the status of a cohort member](component-descriptions/omrs-rest-services.md)
 
 ----

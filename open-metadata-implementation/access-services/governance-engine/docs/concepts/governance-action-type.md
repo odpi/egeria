@@ -16,7 +16,7 @@ governance action process.
 ## Open metadata type definition
 
 The governance action type is defined in the
-[0462 Governance Action Type](../../../../../open-metadata-publication/website/open-metadata-types/0462-Governance-Action-Types.md)
+[0462 Governance Action Type](https://egeria-project.org/types/4/0462-Governance-Action-Types)
 model of the Open Metadata Types.
 
 

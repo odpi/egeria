@@ -1,12 +1,12 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-![TechPreview](../../../open-metadata-publication/website/images/egeria-content-status-tech-preview.png#pagewidth)
+![TechPreview](../../../images/egeria-content-status-tech-preview.png#pagewidth)
 
 # Open Discovery Framework (ODF)
   
 The Open Discovery Framework (ODF) enables
-[metadata discovery tools](../../../open-metadata-publication/website/metadata-discovery)
+[metadata discovery tools](https://egeria-project.org/features/discovery-and-stewardship/overview)
 to integrate with open metadata repositories by defining the interfaces
 for metadata discovery components (called discovery services) to:
 

@@ -167,9 +167,8 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
                                                            UserNotAuthorizedException,
                                                            PropertyServerException
     {
-        final String   urlTemplate
-                = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/assets?startFrom={2}&pageSize={3}";
-        final String   methodName = "getAssets";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/assets?startFrom={2}&pageSize={3}";
+        final String methodName = "getAssets";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
@@ -244,10 +243,9 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException
     {
-        final String   urlTemplate
-                = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/assets/by-qualified-name?startFrom={2}&pageSize={3}";
-        final String   methodName = "getAssetsByQualifiedName";
-        final String   searchParameterName = "name";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/assets/by-qualified-name?startFrom={2}&pageSize={3}";
+        final String methodName = "getAssetsByQualifiedName";
+        final String searchParameterName = "name";
 
         return retrieveAssetGUIDList(userId, urlTemplate, name, searchParameterName, startFrom, pageSize, methodName);
     }
@@ -273,10 +271,9 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException
     {
-        final String   urlTemplate
-                = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/assets/by-name?startFrom={2}&pageSize={3}";
-        final String   methodName = "getAssetsByName";
-        final String   searchParameterName = "name";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/assets/by-name?startFrom={2}&pageSize={3}";
+        final String methodName = "getAssetsByName";
+        final String searchParameterName = "name";
 
         return retrieveAssetGUIDList(userId, urlTemplate, name, searchParameterName, startFrom, pageSize, methodName);
     }
@@ -297,17 +294,16 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * @throws PropertyServerException there is a problem access in the property server
      * @throws UserNotAuthorizedException the user does not have access to the properties
      */
-    public List<String>  findAssets(String   userId,
-                                    String   searchString,
-                                    int      startFrom,
-                                    int      pageSize) throws InvalidParameterException,
+    public List<String> findAssets(String   userId,
+                                   String   searchString,
+                                   int      startFrom,
+                                   int      pageSize) throws InvalidParameterException,
                                                               PropertyServerException,
                                                               UserNotAuthorizedException
     {
-        final String   urlTemplate
-                = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/assets/by-search-string?startFrom={2}&pageSize={3}";
-        final String   methodName = "findAssets";
-        final String   searchParameterName = "searchString";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/assets/by-search-string?startFrom={2}&pageSize={3}";
+        final String methodName = "findAssets";
+        final String searchParameterName = "searchString";
 
         return retrieveAssetGUIDList(userId, urlTemplate, searchString, searchParameterName, startFrom, pageSize, methodName);
     }
@@ -325,17 +321,16 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * @throws UserNotAuthorizedException the user is not authorized to access the asset and/or connection
      * @throws PropertyServerException there was a problem in the store whether the asset/connection properties are kept.
      */
-    public  List<String>  findAssetsByEndpoint(String   userId,
-                                               String   networkAddress,
-                                               int      startFrom,
-                                               int      pageSize) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
+    public List<String> findAssetsByEndpoint(String userId,
+                                             String networkAddress,
+                                             int    startFrom,
+                                             int    pageSize) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
     {
-        final String   urlTemplate
-                = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/assets/by-endpoint-address?startFrom={2}&pageSize={3}";
-        final String   methodName = "findAssetsByEndpoint";
-        final String   searchParameterName = "networkAddress";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/assets/by-endpoint-address?startFrom={2}&pageSize={3}";
+        final String methodName = "findAssetsByEndpoint";
+        final String searchParameterName = "networkAddress";
 
         return retrieveAssetGUIDList(userId, urlTemplate, networkAddress, searchParameterName, startFrom, pageSize, methodName);
     }
@@ -352,13 +347,13 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * @throws UserNotAuthorizedException the user is not authorized to access the asset and/or connection
      * @throws PropertyServerException there was a problem in the store whether the asset/connection properties are kept.
      */
-    Connection getConnectionForAsset(String    userId,
-                                     String    assetGUID) throws InvalidParameterException,
+    Connection getConnectionForAsset(String userId,
+                                     String assetGUID) throws InvalidParameterException,
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
     {
-        final String   methodName = "getConnectionForAsset";
-        final String   guidParameterName = "assetGUID";
+        final String methodName = "getConnectionForAsset";
+        final String guidParameterName = "assetGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, guidParameterName, methodName);
@@ -434,11 +429,11 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
                                                                PropertyServerException,
                                                                UserNotAuthorizedException
     {
-        final String   methodName = "logAssetAuditMessage";
-        final String   guidParameter = "assetGUID";
-        final String   discoveryServiceParameter = "discoveryService";
+        final String methodName = "logAssetAuditMessage";
+        final String guidParameter = "assetGUID";
+        final String discoveryServiceParameter = "discoveryService";
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/assets/{2}/log-records/{3}";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/assets/{2}/log-records/{3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, guidParameter, methodName);
@@ -463,6 +458,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * @param description description of the report
      * @param creationDate date of the report
      * @param analysisParameters analysis parameters passed to the discovery service
+     * @param analysisStep name of the first analysis step
      * @param discoveryRequestStatus current status of the discovery processing
      * @param assetGUID unique identifier of the asset being analysed
      * @param discoveryEngineGUID unique identifier of the discovery engine that is running the discovery service
@@ -480,6 +476,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
                                                   String                  description,
                                                   Date                    creationDate,
                                                   Map<String, String>     analysisParameters,
+                                                  String                  analysisStep,
                                                   DiscoveryRequestStatus  discoveryRequestStatus,
                                                   String                  assetGUID,
                                                   String                  discoveryEngineGUID,
@@ -508,6 +505,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         requestBody.setDescription(description);
         requestBody.setCreationDate(creationDate);
         requestBody.setAnalysisParameters(analysisParameters);
+        requestBody.setAnalysisStep(analysisStep);
         requestBody.setDiscoveryRequestStatus(discoveryRequestStatus);
         requestBody.setDiscoveryEngineGUID(discoveryEngineGUID);
         requestBody.setDiscoveryServiceGUID(discoveryServiceGUID);

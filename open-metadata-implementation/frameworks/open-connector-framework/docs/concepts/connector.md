@@ -28,7 +28,7 @@ It is called a virtual connector.
 
 ## Further Information
 
-See the [Egeria Developer Guide](../../../../../open-metadata-publication/website/developer-guide)
+See the [Egeria Developer Guide](https://egeria-project.org/guides/developer/overview)
 for information on writing connectors.
 
 

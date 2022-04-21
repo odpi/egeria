@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project 2020. -->
 
-![InDev](../../../open-metadata-publication/website/images/egeria-content-status-in-development.png#pagewidth)
+![InDev](../../../images/egeria-content-status-in-development.png#pagewidth)
 
 # Security Integrator Open Metadata Integration Service (OMIS)
 
@@ -9,6 +9,8 @@ The Security Integrator OMIS supports distribution of security
 parameters to access control enforcement engines such as Apache Ranger.
 Its API simplifies the internal models and structures of
 the open metadata type model and related structure for the consumers.
+
+* [Documentation](https://egeria-project.org/services/omis/security-integrator/overview)
 
 ## Module Implementation
 

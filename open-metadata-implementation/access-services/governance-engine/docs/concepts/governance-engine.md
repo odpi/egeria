@@ -76,7 +76,7 @@ is created using the
 
 Figure 1 shows the structure of a governance engine definition.
 The open metadata types for this definition are in
-model [0461 - Governance Engines](../../../../../open-metadata-publication/website/open-metadata-types/0461-Governance-Engines.md)
+model [0461 - Governance Engines](https://egeria-project.org/types/4/0461-Governance-Engines.md)
 (see **Governance Engine**, **GovernanceService** linked by the **SupportedGovernanceService** relationship.
 
 
