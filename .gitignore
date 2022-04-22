@@ -62,6 +62,10 @@ maven-eclipse.xml
 .cache-main
 .cache-tests
 
+# DrawIO temporary files
+*.dtmp
+*.bkp
+
 # emacs files
 *#
 *~

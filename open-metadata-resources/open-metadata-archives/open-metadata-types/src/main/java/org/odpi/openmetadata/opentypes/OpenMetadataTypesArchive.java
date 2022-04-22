@@ -519,7 +519,7 @@ public class OpenMetadataTypesArchive
         final String attribute3Name            = "externalEndpointAddress";
         final String attribute3Description     = "Network address used by callers to the network gateway.";
         final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "externalEndpointAddress";
+        final String attribute4Name            = "internalEndpointAddress";
         final String attribute4Description     = "Network address that the network gateway maps the request to.";
         final String attribute4DescriptionGUID = null;
 
