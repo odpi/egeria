@@ -3373,17 +3373,6 @@
         </repository>
     </distributionManagement>
 
-    <!-- Most dependencies pushed down to keep components minimal -->
-    <dependencies>
-        <!-- Use slf4f-simple anywhere as logging implementation in TEST scope only -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>${slf4j.version}</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-
     <build>
 
         <pluginManagement>
