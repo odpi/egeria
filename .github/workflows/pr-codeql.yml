@@ -21,7 +21,6 @@ jobs:
   analyze:
     if: ${{ github.repository == 'odpi/egeria'}}
     name: CodeQL Build
-    if: startsWith(github.repository,'odpi/')
     runs-on: ubuntu-latest
     permissions:
        actions: read
