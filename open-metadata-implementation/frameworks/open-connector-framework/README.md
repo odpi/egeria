@@ -6,10 +6,10 @@
 # Open Connector Framework (OCF)
 
 The OCF, as the name suggests, is an open framework for supporting connectors.
-Connector provide client-side access to remote digital [Assets](../../../open-metadata-implementation/access-services/docs/concepts/assets)
+Connector provide client-side access to remote digital [Assets](https://egeria-project.org/concepts/asset)
 such as data sets, APIs and software components.
 OCF Connectors also provide access to metadata about the asset and they may call
-the [Governance Action Framework (GAF)](../governance-action-framework) to log audit messages and execute
+the [Governance Action Framework (GAF)](https://egeria-project.org/frameworks/gaf/overview) to log audit messages and execute
 appropriate governance actions related to the use of these assets
 in real-time.
 
@@ -110,18 +110,18 @@ These are read only facades around the beans.
 
 ## Related Modules
 
-The [OCF Metadata Management](../../common-services/ocf-metadata-management) supports the retrieval
+The [OCF Metadata Management](https://egeria-project.org/services/ocf-metadata-management) supports the retrieval
 of connection and connected asset properties from the open metadata
 repository/repositories.
 
-The [Asset Consumer OMAS](../../access-services/asset-consumer) embeds the OCF to provide
+The [Asset Consumer OMAS](https://egeria-project.org/services/omas/asset-consumer/overivew) embeds the OCF to provide
 client-side support for connectors.
 
-The [Open Metadata Repository Services (OMRS)](../../repository-services)
+The [Open Metadata Repository Services (OMRS)](https://egeria-project.org/services/omrs)
 makes extensive use of OCF connectors for accessing open metadata repository servers and other resources.
 These connectors are collectively called the [OMRS Connectors](../../repository-services/docs/component-descriptions/connectors).
 
-Many of the [Open Metadata Governance Servers](../../admin-services/docs/concepts/governance-server-types.md) make use of OCF connectors to
+Many of the [Open Metadata Governance Servers](https://egeria-project.org/concepts/governance-server) make use of OCF connectors to
 loosely-couple integration with a variety of underlying technologies.
 
 The [Developer Guide](https://egeria-project.org/guides/developer/overview) provides more

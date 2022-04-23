@@ -34,7 +34,7 @@ Every event has a:
   The only time this is not set is when a message is sent from a server that does not have a
   local metadata repository configured.
   * The server name, type and organization are optional descriptive fields used in audit logging and problem determination.
-  These values are set up through the **[administration services](../../../admin-services/docs/user)**.
+  These values are set up through the **[administration services](.https://egeria-project.org/guides/admin/servers)**.
   * Version - the version number of the event (set to "OMRS V1.0" in the initial version).
 
 Next is the category.  There are three categories of OMRS Events:

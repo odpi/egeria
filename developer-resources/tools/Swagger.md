@@ -4,7 +4,7 @@
 # Swagger
 
 Swagger automatically generates a website that documents the REST APIs supported by the
-[OMAG Server Platform](../../open-metadata-implementation/admin-services/docs/concepts/omag-server-platform.md).
+[OMAG Server Platform](https://egeria-project.org/omag-server-platform).
 It is based on the [Open API Specification (V3)](http://spec.openapis.org/oas/v3.0.3).
 
 The website is found at  `<serverURLroot>/swagger-ui.html`.

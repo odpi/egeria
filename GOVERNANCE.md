@@ -17,7 +17,7 @@ The Egeria Conformance program is supported by the
 ![Egeria Conformant Mark](open-metadata-conformance-suite/docs/egeria-conformance-mark.png)
 
 The operation of the Egeria project is overseen by the
-[ODPi's technical steering committee (TSC)](https://github.com/odpi/tsc).
+[Egeria's technical steering committee (TSC)](https://wiki.lfaidata.foundation/display/EG/Egeria+Technical+Steering+Committee+%28TSC%29+Home).
 
 If you are interested in joining the Egeria community,
 see the [community guide](https://egeria-project.org/guides/community/) to find out more.

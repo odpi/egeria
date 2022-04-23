@@ -31,7 +31,6 @@
 
     <packaging>pom</packaging>
     <modules>
-        <module>security-officer-connectors</module>
         <module>open-lineage-connectors</module>
     </modules>
 

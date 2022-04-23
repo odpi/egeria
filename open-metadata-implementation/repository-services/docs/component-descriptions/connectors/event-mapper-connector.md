@@ -6,7 +6,7 @@
 The Event Mapper connector provides a common API for
 specific implementations of OMRS Event Mappers to implement.
 
-Event mappers are needed in [repository proxy](../../../../admin-services/docs/concepts/repository-proxy.md)
+Event mappers are needed in [repository proxy](https://egeria-project.org/concepts/repository-proxy)
 servers if the third party technology that it is
 integrating into the open metadata repository cohort
 also has its own mechanisms for maintaining metadata.

@@ -6,7 +6,7 @@
 # Open Lineage Connectors
 
 The Open Lineage connectors provide plugins to the 
-[Open Lineage Server](../../../../admin-services/docs/concepts/open-lineage-server.md)
+[Open Lineage Server](https://egeria-project.org/concepts/open-lineage-server)
 that allow the Open Lineage Services to connect with databases.
 
 ----

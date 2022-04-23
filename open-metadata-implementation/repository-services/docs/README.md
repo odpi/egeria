@@ -58,13 +58,13 @@ server's membership in one or more open metadata repository cohorts.
 * **[Local Repository Services](subsystem-descriptions/local-repository-services.md)** manage the local
 server's open metadata repository.
 
-The OMRS is highly configurable and runs in every type of [OMAG Server](../../admin-services/docs/concepts/omag-server.md).
+The OMRS is highly configurable and runs in every type of [OMAG Server](https://egeria-project.org/concepts/omag-server).
 The figures below show the different combinations.
 
 
 Figure 3 shows the OMRS supporting the OMASs with access to a single,
 local-only repository - with no connectivity to other open metadata repositories.
-This is what runs in a [Metadata Server](../../admin-services/docs/concepts/metadata-server.md)
+This is what runs in a [Metadata Access Store](https://egeria-project.org/concepts/metadata-access-store)
 that is not connected to an [open metadata repository cohort](open-metadata-repository-cohort.md).
 
 ![Figure 3: Local only](omrs-role-local-only.png)
@@ -84,7 +84,7 @@ to connect as an adapter for a non-native open metadata repository.
 The cohort services connect this metadata repository with other
 members in one or more cohorts.
 This is called the **adapter integration pattern**
-and is used in a [Repository Proxy OMAG Server](../../admin-services/docs/concepts/repository-proxy.md).
+and is used in a [Repository Proxy OMAG Server](https://egeria-project.org/concepts/repository-proxy).
 
 ![Figure 5: Repository proxy](omrs-role-repository-proxy.png)
 > Figure 5: Repository proxy
@@ -103,7 +103,7 @@ Finally, the administration subsystem alone is active in the servers that are no
 [cohort members](https://egeria-project.org/concepts/cohort-member), that is the 
 [Governance Servers](https://egeria-project.org/concepts/governance-server)
 and the
-[View Servers](../../admin-services/docs/concepts/view-server.md).
+[View Servers](https://egeria-project.org/concepts/view-server.md).
 
 ![Figure 7: Governance Servers and View Servers](omrs-role-minimal.png)
 > Figure 7: Minimal OMRS for Governance Servers and View Servers

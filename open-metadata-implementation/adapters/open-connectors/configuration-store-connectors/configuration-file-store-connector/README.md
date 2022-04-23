@@ -6,8 +6,8 @@
 # Configuration File Store Connector
 
 The configuration file store connector supports managing the
-[Configuration Document](../../../../admin-services/docs/concepts/configuration-document.md) for an
-[OMAG Server](../../../../admin-services/docs/concepts/omag-server.md) as a JSON file
+[Configuration Document](https://egeria-project.org/concepts/configuration-document) for an
+[OMAG Server](https://egeria-project.org/concepts/omag-server) as a JSON file
 called
 
 ```
@@ -15,8 +15,8 @@ omag.server.{serverName}.config
 ```
 
 This is the default
-[Configuration Document Store Connector](../../../../admin-services/docs/concepts/configuration-document-store-connector.md)
-used in the [OMAG Server Platform](../../../../admin-services/docs/concepts/omag-server-platform.md).
+[Configuration Document Store Connector](https://egeria-project.org/concepts/configuration-document-store-connector)
+used in the [OMAG Server Platform](https://egeria-project.org/concepts/omag-server-platform).
 
 
 Return to [configuration-store-connectors](..).

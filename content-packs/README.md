@@ -6,17 +6,17 @@
 The Egeria content packs provide a means to distribute standard metadata to different organizations.
 They are formatted as [Open Metadata Archives](../open-metadata-resources/open-metadata-archives)
 and can be loaded using the Administration Services
-[at server start up](../open-metadata-implementation/admin-services/docs/user/configuring-the-startup-archives.md)
-or [while the server is running](../open-metadata-implementation/admin-services/docs/user/operating-omag-server.md).
+[at server start up](https://egeria-project.org/guides/admin/servers/configuring-the-startup-archives)
+or [while the server is running](.https://egeria-project.org/guides/operations/adding-archive-to-running-server).
 
 They are as follows:
 
-* **CloudInformationModel.json** - extracted metadata from the [Cloud Information Model](https://cloudinformationmodel.org)'s
+* **CloudInformationModel.json** - extracted metadata from the **Cloud Information Model**'s
 [JSONLD formatted model](https://raw.githubusercontent.com/cloudinformationmodel/cloudinformationmodel/master/dist/model.jsonld).
 
 * **OpenConnectorsArchive** - Connector type metadata for connecting to data sources and other third party technology.
 
-* **OpenMetadataTypes** - Archive of all of the open metadata types defined by Egeria.
+* **OpenMetadataTypes** - Archive of the open metadata types defined by Egeria.
 
 * **SimpleAPICatalog** - API metadata typically found in an API catalog.
 

@@ -67,14 +67,14 @@ These frameworks provide the guidance to developers of new governance services.
 ## Support for running governance services
 
 Related governance services are configured together as a
-[governance engine](governance-engine.md) and they run in
+[governance engine](https://egeria-project.org/concepts/governance-engine) and they run in
 the appropriate [Open Metadata Engine Service (OMES)](../../../../engine-services).
 
 The [Governance Engine OMAS](..) provides:
 * The API to create [governance engine definitions](governance-engine.md) for the governance services.
-* The API to link governance services together into [governance action processes](governance-action-process.md).
+* The API to link governance services together into [governance action processes](https://egeria-project.org/concepts/governance-action-process).
 * The metadata support for the [Engine Host Services](../../../../governance-servers/engine-host-services)
-  to drive the governance services in an [Engine Host](../../../../admin-services/docs/concepts/engine-host.md)
+  to drive the governance services in an [Engine Host](https://egeria-project.org/concepts/engine-host)
   OMAG Server.
 
 

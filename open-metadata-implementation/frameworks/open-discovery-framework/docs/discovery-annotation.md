@@ -4,13 +4,13 @@
 # Discovery Annotations
 
 A discovery annotation describes one or more related properties about an
-[Asset](../../../../open-metadata-implementation/access-services/docs/concepts/assets) that has been
-discovered by a [discovery service](discovery-service.md).
+[Asset](https://egeria-project.org/concepts/asset) that has been
+discovered by a [discovery service](https://egeria-project.org/concepts/open-discovery-service).
 
 Some discovery annotations refer to an entire asset and others refer to a data field within
 an asset.   The annotations that describe a single data field are called **data field annotations**.
 
-The annotation types defined in the  [Open Discovery Framework (ODF)](.) are as follows:
+The annotation types defined in the  [Open Discovery Framework (ODF)](https://egeria-project.org/) are as follows:
 
 * **Classification Annotation** - Captures a recommendation of which classifications to
   attach to this asset.  It can be made at the asset or data field level.
