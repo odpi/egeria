@@ -178,7 +178,7 @@ January 9th and 10th: Egeria Working Group meeting to discuss projects and archi
 
 ### Role of Spine objects: (Maryna)
 
-- [Tag Propagation](../../../../open-metadata-implementation/access-services/governance-engine/docs/TagPropogation/TagPropogation.md).
+- Tag Propagation.
 - typedBy in the role of spine objects.
 - 9 Concepts/subjects (customer, sales, finance, operations, legal,... )
 - Semantic modeling vs. structural modeling w/spine objects.
