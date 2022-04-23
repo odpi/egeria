@@ -2410,14 +2410,7 @@
                 <version>${open-metadata.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>security-officer-tag-connector</artifactId>
-                <scope>compile</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
+             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>software-developer-api</artifactId>
                 <scope>compile</scope>

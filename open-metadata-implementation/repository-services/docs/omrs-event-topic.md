@@ -52,7 +52,7 @@ all events twice.  This configuration should only be used when absolutely needed
 paid to upgrading the back-level server so it can use the three topics.
 
 Details of configuring the different topic options can be found in the
-[Administration Guide](../../admin-services/docs/user/configuring-registration-to-a-cohort.md).
+[Administration Guide](https://egeria-project.org/guides/admin/servers).
 
 
 ## Enterprise OMRS Event Topic

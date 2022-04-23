@@ -5,7 +5,7 @@
 
 The integration connectors are responsible for exchanging metadata with third
 party technologies through the [Open Metadata Integration Services (OMISs)](../../../integration-services).
-They run in the [Integration Daemon](../../../admin-services/docs/concepts/integration-daemon.md)
+They run in the [Integration Daemon](https://egeria-project.org/concepts/integration-daemon)
 OMAG Server.
 
 An integration connector implements the specific connector interface from the integration
