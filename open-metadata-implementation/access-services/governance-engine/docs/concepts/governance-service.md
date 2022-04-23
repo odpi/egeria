@@ -3,20 +3,19 @@
 
 # Governance Service
 
-A governance service is a specialized
-[connector](../../../../frameworks/open-connector-framework/docs/concepts/connector.md)
+A governance service is a specialized [connector](https://egeria-project.org/concepts/connector)
 that implements a specific governance activity.
 
 There are six types of governance services:
 
-* [Open Discovery Service](../../../../frameworks/open-discovery-framework/docs/discovery-service.md) for
-  analysing the content of an [Asset's](../../../docs/concepts/assets) real-world counterpart
+* [Open Discovery Service](https://egeria-project.org/concepts/open-discovery-service) for
+  analysing the content of an [Asset's](https://egeria-project.org/concepts/asset) real-world counterpart
   in the digital landscape. (For example, if the asset describes a file, the discovery service
   analyses the data stored in the file).
   
 * [Watchdog Governance Service](../../../../frameworks/governance-action-framework/docs/watchdog-governance-service.md) for
   monitoring changes to open metadata elements and when certain changes occur
-  (such as the creation of a new [Asset](../../../docs/concepts/assets))
+  (such as the creation of a new [Asset](https://egeria-project.org/concepts/asset))
   the watchdog service requests action from
   other governance services by creating either a
   [Governance Action](../../../../frameworks/governance-action-framework/docs/governance-action.md),

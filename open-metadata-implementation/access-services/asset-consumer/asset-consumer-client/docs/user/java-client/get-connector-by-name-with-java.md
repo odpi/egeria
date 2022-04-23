@@ -33,7 +33,7 @@
 This operation retrieves a [connection](../../../../../../frameworks/open-connector-framework/docs/concepts/connection.md) object
 from the [open metadata repositories](../../../../../../repository-services/docs/open-metadata-repository.md)
 and uses it to create a [connector](../../../../../../frameworks/open-connector-framework/docs/concepts/connector.md) object.
-The connector can be used to interact with a specific [Asset](../../../../../docs/concepts/assets).
+The connector can be used to interact with a specific [Asset](https://egeria-project.org/concepts/asset).
 
 ```java
    import org.odpi.openmetadata.accessservices.assetconsumer.client.AssetConsumer;

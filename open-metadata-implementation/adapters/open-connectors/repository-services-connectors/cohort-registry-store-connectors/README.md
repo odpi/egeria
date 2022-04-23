@@ -9,7 +9,7 @@ The cohort registry store connectors are connectors that store the
 membership details used and maintained by the [cohort registry](https://egeria-project.org/concepts/cohort-registry).
 The cohort protocols are peer-to-peer and hence there is a cohort registry
 (with a [cohort registry store](https://egeria-project.org/concepts/cohort-registry-store-connector))
-for each [member of a cohort](.https://egeria-project.org/concepts/cohort-member).
+for each [member of a cohort](https://egeria-project.org/concepts/cohort-member).
 
 Egeria provides a single implementation of a
 cohort registry store connector:
