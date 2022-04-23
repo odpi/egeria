@@ -14,10 +14,6 @@ called
 omag.server.{serverName}.config
 ```
 
-This is the default
-[Configuration Document Store Connector](https://egeria-project.org/concepts/configuration-document-store-connector)
-used in the [OMAG Server Platform](https://egeria-project.org/concepts/omag-server-platform).
-
 
 Return to [configuration-store-connectors](..).
 
