@@ -7,7 +7,7 @@ The Egeria content packs provide a means to distribute standard metadata to diff
 They are formatted as [Open Metadata Archives](../open-metadata-resources/open-metadata-archives)
 and can be loaded using the Administration Services
 [at server start up](https://egeria-project.org/guides/admin/servers/configuring-the-startup-archives)
-or [while the server is running](.https://egeria-project.org/guides/operations/adding-archive-to-running-server).
+or [while the server is running](https://egeria-project.org/guides/operations/adding-archive-to-running-server).
 
 They are as follows:
 
