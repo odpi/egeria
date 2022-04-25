@@ -12,7 +12,6 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Property;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.VertexProperty;
-import org.janusgraph.core.attribute.Text;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageQueryService;
@@ -60,6 +59,7 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.TYPES_NOT_FOUND;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.SEARCH_ERROR;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ASSETS;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ASSET_LINEAGE_VARIABLES;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ASSET_SCHEMA_TYPE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.AVRO_FILE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.CLASSIFICATION_GRAPH;
@@ -97,6 +97,7 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_CONDENSED;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_TABLE_DATA_FLOW;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.NODE_LABEL_CONDENSED;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.NODE_LABEL_SUB_PROCESS;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_GUID;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_LABEL;
@@ -109,10 +110,6 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 public class LineageGraphQueryService implements OpenLineageQueryService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LineageGraphQueryService.class);
-
-    private static final String ASSET_LINEAGE_VARIABLES = "ASSET_LINEAGE_VARIABLES";
-    private static final String SUB_PROCESS = "subProcess";
-    private static final String DISPLAY_NAME_PROPERTY = "vertex--InstancePropdisplayName";
 
     private final GraphHelper graphHelper;
     private final LineageGraphQueryHelper lineageGraphQueryHelper;
@@ -573,7 +570,7 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
     }
 
     private List<String> getTypes(GraphTraversalSource g) {
-       return g.V().not(hasLabel(ASSET_LINEAGE_VARIABLES, SUB_PROCESS)).label().dedup().toList();
+       return g.V().not(hasLabel(ASSET_LINEAGE_VARIABLES, NODE_LABEL_SUB_PROCESS)).label().dedup().toList();
     }
 
     /**
@@ -589,9 +586,10 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
     }
 
     private List<String> getNodes(GraphTraversalSource g, NodeNamesSearchCriteria searchCriteria) {
-        return g.V().hasLabel(searchCriteria.getType()).has(DISPLAY_NAME_PROPERTY,
-                Text.textContains(searchCriteria.getSearchValue().toLowerCase()))
-                .values(DISPLAY_NAME_PROPERTY).limit(searchCriteria.getLimit()).map(Object::toString).toList();
+        return g.V().has(PROPERTY_KEY_LABEL, searchCriteria.getType()).values(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME)
+                .filter(x -> x.toString().toLowerCase().contains(searchCriteria.getSearchValue().toLowerCase()))
+                .limit(searchCriteria.getLimit()).map(Object::toString).toList();
+
     }
 
     /**
