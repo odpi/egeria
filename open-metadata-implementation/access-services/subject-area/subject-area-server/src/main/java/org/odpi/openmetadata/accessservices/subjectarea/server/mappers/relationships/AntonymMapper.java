@@ -44,9 +44,7 @@ public class AntonymMapper extends RelationshipMapper<Antonym> {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, antonym.getSource(), OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME);
         }
         if (antonym.getStatus() != null) {
-            EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
-            enumPropertyValue.setOrdinal(antonym.getStatus().getOrdinal());
-            instanceProperties.setProperty("status", enumPropertyValue);
+            SubjectAreaUtils.setStatusPropertyInInstanceProperties(instanceProperties, antonym.getStatus(), OpenMetadataAPIMapper.STATUS_PROPERTY_NAME);
         }
     }
 

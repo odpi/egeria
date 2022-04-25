@@ -36,7 +36,7 @@ The connector type is linked to the
 ## Further information
 
  * The open metadata type for a connector type is defined in 
-   [model 0201](../../../../../open-metadata-publication/website/open-metadata-types/0201-Connectors-and-Connections.md).
+   [model 0201](https://egeria-project.org/types/2/0201-Connectors-and-Connections.md).
 
  * The [open connector archives](../../../../../open-metadata-resources/open-metadata-archives/open-connector-archives) 
    module provides an open metadata archive that contains connector types for connectors supported by Egeria.

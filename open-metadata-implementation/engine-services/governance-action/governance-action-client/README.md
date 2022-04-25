@@ -6,7 +6,7 @@
 The governance action engine services client module contains the client
 implementation of the calls to the governance action engine
 that request that a particular
-[governance action service](../../../frameworks/governance-action-framework/docs/governance-action-service.md)
+[governance action service](https://egeria-project.org/concepts/governance-action-service)
 is run.
 
 It also supports the ability to query the status of such a governance action request and

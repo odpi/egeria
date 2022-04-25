@@ -34,9 +34,9 @@ or requests will fail.
 ## Next steps
 
 If you are working through the Egeria Dojo, you can
-return to the guide for [Day 1 of the Egeria Dojo](../../open-metadata-resources/open-metadata-tutorials/egeria-dojo/egeria-dojo-day-1-3-1-1-platform-set-up-prerequisites.md).
+return to the guide for [Day 1 of the Egeria Dojo](https://egeria-project.org/education/egeria-dojo/).
 
-If you are only interested in learning more about Postman, consider the [Postman tutorial](../../open-metadata-resources/open-metadata-tutorials/postman-tutorial).
+If you are only interested in learning more about Postman, consider the [Postman tutorial](https://egeria-project.org/education/tutorials/postman-tutorial/overview/).
 
 If you would like to create and contribute postman collections, there are instructions
 in the [developer resources](../Postman-Samples.md).
@@ -46,8 +46,8 @@ in the [developer resources](../Postman-Samples.md).
 * Return to [Developer Tools](.)
 
 
-* Link to [Egeria's Community Guide](../../Community-Guide.md)
-* Link to the [Egeria Dojo Education](../../open-metadata-resources/open-metadata-tutorials/egeria-dojo)
+* Link to [Egeria's Community Guide](https://egeria-project.org/guides/community/)
+* Link to the [Egeria Dojo Education](https://egeria-project.org/education/egeria-dojo/)
 
 
 ----

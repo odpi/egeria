@@ -11,7 +11,7 @@ plus the Open Metadata Repository Services (OMRS).
 The OMRS includes the capability to join an open metadata repository cohort. 
 
 This package supports the development of metadata repositories that
-implement the **[Native Integration Pattern](../../../open-metadata-publication/website/open-metadata-integration-patterns/native-integration-pattern.md)**.
+implement the **[Native Integration Pattern](https://egeria-project.org/concepts/repository-connector/)**.
 
 
 

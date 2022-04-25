@@ -43,9 +43,7 @@ public class RelatedTermMapper extends RelationshipMapper<RelatedTerm> {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, relatedTerm.getSource(), OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME);
         }
         if (relatedTerm.getStatus() != null) {
-            EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
-            enumPropertyValue.setOrdinal(relatedTerm.getStatus().getOrdinal());
-            instanceProperties.setProperty(OpenMetadataAPIMapper.STATUS_PROPERTY_NAME, enumPropertyValue);
+            SubjectAreaUtils.setStatusPropertyInInstanceProperties(instanceProperties, relatedTerm.getStatus(), OpenMetadataAPIMapper.STATUS_PROPERTY_NAME);
         }
     }
 

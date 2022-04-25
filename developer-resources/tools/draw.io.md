@@ -49,8 +49,8 @@ there is freestanding text as the shadow makes this text hard to read.
 * Return to [Developer Tools](.)
 
 
-* Link to [Egeria's Community Guide](../../Community-Guide.md)
-* Link to the [Egeria Dojo Education](../../open-metadata-resources/open-metadata-tutorials/egeria-dojo)
+* Link to [Egeria's Community Guide](https://egeria-project.org/guides/community/)
+* Link to the [Egeria Dojo Education](https://egeria-project.org/education/egeria-dojo/)
 
 
 ----

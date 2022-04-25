@@ -13,7 +13,7 @@ to run.
 ## Related Information
 
 The Open Metadata Type model 
-**[0461 Governance Action Engines](../../../../open-metadata-publication/website/open-metadata-types/0461-Governance-Engines.md)**
+**[0461 Governance Action Engines](https://egeria-project.org/types/4/0461-Governance-Engines.md)**
 shows how the request type links the governance action engine to the
 governance action service via the **SupportedGovernanceActionService** relationship.
 

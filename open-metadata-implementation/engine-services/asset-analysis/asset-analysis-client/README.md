@@ -6,12 +6,12 @@
 The asset analysis engine services client module contains the client
 implementation of the calls to the discovery engine
 that request that a particular
-[open discovery service](../../../frameworks/open-discovery-framework/docs/discovery-service.md)
-is run against an Asset.
+[open discovery service](https://egeria-project.org/concepts/open-discovery-service)
+is run against a resource.
 
 It also supports the ability to query the status of such a discovery request and
 retrieve the resulting 
-[discovery analysis report](../../../frameworks/open-discovery-framework/docs/discovery-analysis-report.md).
+[discovery analysis report](https://egeria-project.org/concepts/discovery-analysis-report).
 
 ----
 * Return to [module overview](..)

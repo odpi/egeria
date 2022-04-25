@@ -16,8 +16,8 @@ You can download IntelliJ from this site:
 https://www.jetbrains.com/idea/download/index.html
 ```
 
-There is a [tutorial for IntelliJ](../../open-metadata-resources/open-metadata-tutorials/intellij-tutorial) as part of the
-[Egeria Dojo](../../open-metadata-resources/open-metadata-tutorials/egeria-dojo).
+There is a [tutorial for IntelliJ](https://egeria-project.org/education/tutorials/intellij-tutorial/overview/) as part of the
+[Egeria Dojo](https://egeria-project.org/education/egeria-dojo/).
 
 ## Lombok Plugin
 
@@ -38,14 +38,14 @@ If you find any hits such as:
 
 then either remove those lines WITH INTELLIJ NOT RUNNING, or go into File->Project Structure->Modules, and remove ’target/delombok' from the ‘Source Folders’ list
 
-Explanation - In addition to importing module defintions from maven pom.xml, IntelliJ also tries to look for any generated source. It finds the delombok directory causing duplicates — in fact we only use this directory for generating javadoc of lombok-enabled modules. Switching the setting/removing these source folders prevents duplicate classes.
+Explanation - In addition to importing module definitions from maven pom.xml, IntelliJ also tries to look for any generated source. It finds the delombok directory causing duplicates — in fact we only use this directory for generating javadoc of lombok-enabled modules. Switching the setting/removing these source folders prevents duplicate classes.
 
 ----
 * Return to [Developer Tools](.)
 
 
-* Link to [Egeria's Community Guide](../../Community-Guide.md)
-* Link to the [Egeria Dojo Education](../../open-metadata-resources/open-metadata-tutorials/egeria-dojo)
+* Link to [Egeria's Community Guide](https://egeria-project.org/guides/community/)
+* Link to the [Egeria Dojo Education](https://egeria-project.org/education/egeria-dojo/)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

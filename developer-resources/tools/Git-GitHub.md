@@ -41,14 +41,14 @@ to create a GitHub account.  This can be done from the top of the [GitHub home p
 
 Interested to learn more?
 * GitHub provides some great [introductory guides](https://guides.github.com/introduction/git-handbook/).
-* Egeria provides specific tutorials for [working with Egeria's git repositories](../../open-metadata-resources/open-metadata-tutorials/git-and-git-hub-tutorial).
+* Egeria provides specific tutorials for [working with Egeria's git repositories](https://egeria-project.org/education/tutorials/git-and-git-hub-tutorial/overview/).
 
 ----
 * Return to [Developer Tools](.)
 
 
-* Link to [Egeria's Community Guide](../../Community-Guide.md)
-* Link to the [Egeria Dojo Education](../../open-metadata-resources/open-metadata-tutorials/egeria-dojo)
+* Link to [Egeria's Community Guide](https://egeria-project.org/guides/community/)
+* Link to the [Egeria Dojo Education](https://egeria-project.org/education/egeria-dojo/)
 
 
 ----
