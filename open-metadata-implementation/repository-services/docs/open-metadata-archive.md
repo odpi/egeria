@@ -111,10 +111,10 @@ The archive loads in the following order:
 More information about open metadata archives can be found in the
 [open-metadata-archives](../../../open-metadata-resources/open-metadata-archives) module.
 
-In addition these articles may be of interest:
+In addition, these articles may be of interest:
 
-* [Configuring an open metadata archive in an OMAG Server](../../admin-services/docs/user/configuring-the-startup-archives.md)
-* [Adding an open metadata archive to a running OMAG Server](../../admin-services/docs/user/adding-archive-to-running-server.md)
+* [Configuring an open metadata archive in an OMAG Server](https://egeria-project.org/guides/admin/servers/configuring-the-startup-archives)
+* [Adding an open metadata archive to a running OMAG Server](https://egeria-project.org/guides/operations/adding-archive-to-running-server)
 
 
 ----

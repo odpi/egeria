@@ -22,7 +22,7 @@
 
     <groupId>org.odpi.egeria</groupId>
     <artifactId>egeria</artifactId>
-    <version>3.8-SNAPSHOT</version>
+    <version>3.9-SNAPSHOT</version>
 
     <url>https://odpi.github.io/egeria-docs/</url>
 
@@ -2410,14 +2410,7 @@
                 <version>${open-metadata.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>security-officer-tag-connector</artifactId>
-                <scope>compile</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
+             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>software-developer-api</artifactId>
                 <scope>compile</scope>
@@ -3756,6 +3749,7 @@
                         <exclude>**/*.p12</exclude>
                         <exclude>**/*.crt</exclude>
                         <exclude>**/*.key</exclude>
+                        <exclude>.github/pull_request_template.md</exclude>
                     </excludes>
                     <licenseFamilies>
                         <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">

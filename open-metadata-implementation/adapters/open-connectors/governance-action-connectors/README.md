@@ -9,7 +9,7 @@ This module contains the implementation of the
 governance action service connectors that run in the
 [Governance Action Open Metadata Engine Service (OMES)](../../../engine-services/governance-action)
 hosted by the
-[Engine Host OMAG Server](../../../admin-services/docs/concepts/engine-host.md).
+[Engine Host OMAG Server](https://egeria-project.org/concepts/engine-host).
 
 
 

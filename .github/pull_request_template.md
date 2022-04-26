@@ -1,14 +1,22 @@
-<!-- SPDX-License-Identifier: CC-BY-4.0 -->
-<!-- Copyright Contributors to the Egeria project. -->
-# Description
+<!-- Provide a general summary of your changes in the Title above -->
 
-Please include a summary of the change and which issue is fixed. Please also include relevant motivation and context. List any dependencies that are required for this change. Note that there should always be a related issue alongside a PR as that enables appropriate discussion.
+## Description
 
-Fixes # (issue)
+<!-- Include a summary of the change, reason why it's being done and context. For anything non-trivial and ongoing, an Issue should be open to enable discussion -->
 
-# How Has This Been Tested?
+## Related Issue(s)
 
-Please describe the tests that you ran to verify your changes. Provide instructions so we can reproduce. Please also list any relevant details for your test configuration. Consider any more risky areas that you need advice on.
+<!-- Please link to the issue(s) here:  Uses Fixes #1234 to automatically close issue when PR merged -->
 
-# Any additional notes for reviewers?
+## Testing
+
+<!-- What testing has been done ? Build, UT, FVT, UI, manual? k8s/container deployment? Coco Pharma? -->
+
+## Release Notes & Documentation
+
+<!-- Is there anything about this change that should be added to the release notes. If so, please update egeria-docs -->
+
+## Additional notes
+
+<!-- Any Additional notes for reviewers? -->
 

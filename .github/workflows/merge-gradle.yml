@@ -18,6 +18,7 @@ jobs:
       contents: write  # for JamesIves/github-pages-deploy-action to push changes in repo
     runs-on: ubuntu-latest
     name: "Javadoc"
+    if: startsWith(github.repository,'odpi/')
     steps:
       - uses: actions/checkout@v2
         name: Checkout source

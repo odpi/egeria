@@ -3,7 +3,7 @@
 
 # Working with connectors
 
-An **open connector** is a Java client to an [Asset](../../../docs/concepts/assets) that implements the **Connector** interface
+An **open connector** is a Java client to an [Asset](https://egeria-project.org/concepts/asset) that implements the **Connector** interface
 defined in the [Open Connector Framework (OCF)](../../../../frameworks/open-connector-framework).
 It has 2 parts to its interface:
 
@@ -25,7 +25,7 @@ It has 2 parts to its interface:
     * **[data-folder-connector](../../../../adapters/open-connectors/data-store-connectors/file-connectors/data-folder-connector)** provides connector to read a data set that is made up of many files
       stored within a data folder.
 
-* A generalized interface to extract all of the open metadata known about the asset.  This is referred to
+* A generalized interface to extract all the open metadata known about the asset.  This is referred to
   as the **connected asset properties**.  This interface is documented [here](retrieving-asset-properties.md).
   
 An application creates a connector using the [Asset Consumer OMAS client](creating-a-connector.md).

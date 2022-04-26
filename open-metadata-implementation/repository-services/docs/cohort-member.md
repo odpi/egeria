@@ -4,7 +4,7 @@
 
 # Cohort member
 
-A cohort member is an [OMAG server](../../admin-services/docs/concepts/omag-server.md) that is configured to register
+A cohort member is an [OMAG server](https://egeria-project.org/concepts/omag-server) that is configured to register
 with at least one **[Open Metadata Repository Cohort](open-metadata-repository-cohort.md)**.
 This registration enables the server to exchange metadata with other cohort members either through the
 cohort topics or via federated queries that make use of the cohort member's local repository REST services.

@@ -4,7 +4,7 @@
 # Asset Consumer's Asset Interface (AssetConsumerAssetInterface)
 
 AssetConsumerAssetInterface provides the ability to query information about an
-[asset](../../../../docs/concepts/assets).
+[asset](https://egeria-project.org/concepts/asset).
 
 The first 3 methods provide the ability to locate assets by names and descriptions.
 

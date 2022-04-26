@@ -58,10 +58,6 @@ include(':open-metadata-implementation:adapters:open-connectors:integration-conn
 include(':open-metadata-implementation:adapters:open-connectors:integration-connectors:elasticsearch-integration-connector')
 include(':open-metadata-implementation:adapters:open-connectors:integration-connectors')
 include(':open-metadata-test:open-metadata-fvt:view-services-fvt:glossary-author-fvt')
-// todo - convert to integration connectors and governance action connectors
-//include(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:view-generator-connectors')
-//include(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:security-officer-connectors:security-officer-tag-connector')
-//include(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:security-officer-connectors')
 include(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:open-lineage-connectors:open-lineage-janus-connector')
 include(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:open-lineage-connectors')
 include(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors')
@@ -475,10 +471,6 @@ project(':open-metadata-implementation:adapters:open-connectors:integration-conn
 project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openlineage-integration-connectors').projectDir = file('open-metadata-implementation/adapters/open-connectors/integration-connectors/openlineage-integration-connectors')
 project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:elasticsearch-integration-connector').projectDir = file('open-metadata-implementation/adapters/open-connectors/integration-connectors/elasticsearch-integration-connector')
 project(':open-metadata-implementation:adapters:open-connectors:integration-connectors').projectDir = file('open-metadata-implementation/adapters/open-connectors/integration-connectors')
-// todo convert to integration connectors and governance action connectors
-//project(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:view-generator-connectors').projectDir = file('open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors/view-generator-connectors')
-//project(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:security-officer-connectors:security-officer-tag-connector').projectDir = file('open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors/security-officer-connectors/security-officer-tag-connector')
-//project(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:security-officer-connectors').projectDir = file('open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors/security-officer-connectors')
 project(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:open-lineage-connectors:open-lineage-janus-connector').projectDir = file('open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors/open-lineage-connectors/open-lineage-janus-connector')
 project(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:open-lineage-connectors').projectDir = file('open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors/open-lineage-connectors')
 project(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors').projectDir = file('open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors')
