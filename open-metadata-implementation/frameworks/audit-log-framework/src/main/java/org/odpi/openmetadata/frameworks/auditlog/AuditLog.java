@@ -75,12 +75,13 @@ public class AuditLog extends MessageFormatter
 
 
     /**
-     * Clone request is used to create an audit log for a component outside of OMRS.
+     * Clone request is used to create an audit log for a component outside the OMRS.
      *
-     * @param componentId numerical identifier for the component.
-     * @param componentName display name for the component.
-     * @param componentDescription description of the component.
-     * @param componentWikiURL link to more information.
+     * @param componentId numerical identifier for the component
+     * @param componentDevelopmentStatus  development status
+     * @param componentName display name for the component
+     * @param componentDescription description of the component
+     * @param componentWikiURL link to more information
      * @return new logging destination
      */
     public AuditLog  createNewAuditLog(int                        componentId,

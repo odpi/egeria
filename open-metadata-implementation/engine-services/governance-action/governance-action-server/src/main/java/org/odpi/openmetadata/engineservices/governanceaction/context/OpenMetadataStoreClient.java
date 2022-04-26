@@ -58,8 +58,9 @@ public class OpenMetadataStoreClient extends OpenMetadataClient
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
-     * @param governanceEngineClient client that does all of the work
+     * @param governanceEngineClient client that does all the work
      * @param governanceListenerManager governance listener manager
+     * @param governanceServiceHandler handler for this service
      * @param engineUserId engine userId
      * @throws InvalidParameterException the server name of platform URL root is null.
      */
