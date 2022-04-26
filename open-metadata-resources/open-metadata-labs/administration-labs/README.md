@@ -6,7 +6,7 @@
 
 The administration notebooks define how to configure and manage Egeria OMAG servers
 (such as metadata servers and governance servers) on the
-[OMAG Server Platform](../../../open-metadata-publication/website/omag-server).
+[OMAG Server Platform](https://egeria-project.org/concepts/omag-server).
 
 ## Basic Setup
 

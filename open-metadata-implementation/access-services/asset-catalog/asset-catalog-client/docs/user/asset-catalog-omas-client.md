@@ -10,8 +10,8 @@ There is a single client called `AssetCatalog`.  It has two constructors:
 * No authentication embedded in the HTTP request - for test systems.
 * Basic authentication using a userId and password embedded in the HTTP request.
 
-Both constructors take the [URL root for the server platform](../../../../docs/concepts/client-server/omas-server-url-root.md)
-where the Data Engine OMAS is running and its [server name](../../../../docs/concepts/client-server/omas-server-name.md).
+Both constructors take the [URL root for the server platform](https://egeria-project.org/concepts/platform-url-root/)
+where the Data Engine OMAS is running and its [server name](https://egeria-project.org/concepts/server-name/).
 
 Here is a code example with the user id and password specified:
 

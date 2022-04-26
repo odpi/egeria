@@ -14,6 +14,8 @@ by the [Software Developer OMAS](../software-developer), [Digital Architecture O
 and [DevOps OMAS](../dev-ops) since the models ultimately provide the implementation of software
 components that form part of the implementation of a [digital service](../digital-service).
 
+* [Documentation](https://egeria-project.org/services/omas/data-science/overview)
+
 
 ## Design
 

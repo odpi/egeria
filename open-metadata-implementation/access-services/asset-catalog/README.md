@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-![InDev](../../../open-metadata-publication/website/images/egeria-content-status-in-development.png#pagewidth)
+![InDev](../../../images/egeria-content-status-in-development.png#pagewidth)
 
 # Asset Catalog Open Metadata Access Service (OMAS)
 
@@ -27,6 +27,10 @@ The Asset Catalog REST API supports:
 * the retrieval of assets based on known classification or relationship
 * to query for related assets and to retrieve an asset neighborhood
 
+* [Documentation](https://egeria-project.org/services/omas/asset-catalog/overview)
+
+## Design Information
+
 The module structure for the Asset Catalog OMAS is as follows:
 
 * [asset-catalog-client](asset-catalog-client) supports the client library.
@@ -36,12 +40,12 @@ The module structure for the Asset Catalog OMAS is as follows:
   * interaction with the [administration services](../../admin-services) for
     registration, configuration, initialization and termination of the access service.
   * interaction with the [repository services](../../repository-services) to work with open metadata from the
-    [cohort](../../repository-services/docs/open-metadata-repository-cohort.md).
+    [cohort](https://egeria-project.org/concepts/cohort-member).
   * support for the access service's API and its related event management.
 * [asset-catalog-spring](asset-catalog-spring) supports the REST API using the [Spring](../../../developer-resources/Spring.md) libraries.
 
 
-###Search solution
+### Search solution
 The search will return Assets, Glossary Terms and Schema Elements that match the search criteria.
 As the asset search is to be performed against on one or more repositories a search engine will be used. 
 The search will be performed using the existing properties of the asset, glossary terms and/or schema elements.
@@ -60,7 +64,7 @@ This call is using the asset global identifier and the asset type.
 Asset Catalog OMAS provides services to fetch the asset 
 * classifications
 * relationships
-* specific entities that connects two assets
+* specific entities that connect two assets
 * relationships between two known entities 
 * related assets 
 

@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
   
-![Released](../../../../../open-metadata-publication/website/images/egeria-content-status-released.png#pagewidth)
+![Released](../../../../../images/egeria-content-status-released.png#pagewidth)
 
 [![javadoc](https://javadoc.io/badge2/org.odpi.egeria/configuration-encrypted-file-store-connector/javadoc.svg)](https://javadoc.io/doc/org.odpi.egeria/configuration-encrypted-file-store-connector)
 

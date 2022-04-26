@@ -86,7 +86,7 @@ public interface OMRSRepositoryEventMapper
 
     /**
      * Set up the repository event processor for this connector to use.  The connector should pass
-     * each typeDef or instance metadata change reported by its metadata repository's metadata on to the
+     * each typeDef or instance metadata change reported by its metadata repository to the
      * repository event processor.
      *
      * @param repositoryEventProcessor listener responsible for distributing notifications of local

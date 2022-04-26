@@ -3,7 +3,7 @@
   
 # Open Metadata View Services (OMVS)
 
-![In Development](../../../open-metadata-publication/website/images/egeria-content-status-in-development.png)
+![In Development](../../../images/egeria-content-status-in-development.png)
 
 Develop an explorer interface to support the Type Explorer UI, which enables a technical user (such as an Enterprise Architect) to 
 retrieve open metadata type information from repositories and explore the attributes of each type and the possible combinations of 

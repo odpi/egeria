@@ -5,7 +5,7 @@
 # Content pack helpers
 
 The content pack helpers provide helper classes for building a specific type of 
-[open metadata archive](https://odpi.github.io/egeria-docs/concepts/open-metadata-archive/) 
+[open metadata archive](https://egeria-project.org/concepts/open-metadata-archive/) 
 called a **Content Pack**.
 
 The *simple catalog archive helper* provides methods for building assets, 

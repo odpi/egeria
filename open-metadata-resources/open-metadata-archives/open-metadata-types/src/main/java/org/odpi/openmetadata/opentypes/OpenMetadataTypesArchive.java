@@ -29,7 +29,7 @@ import java.util.List;
  * produce the same content.
  * <p>
  * Details of the open metadata types are documented on the wiki:
- * <a href="https://egeria.odpi.org/open-metadata-publication/website/open-metadata-types/">The Open Metadata Type System</a>
+ * <a href="https://egeria-project.org/types/">The Open Metadata Type System</a>
  * </p>
  * <p>
  * There are 8 areas, each covering a different topic area of metadata.  The module breaks down the process of creating
@@ -519,7 +519,7 @@ public class OpenMetadataTypesArchive
         final String attribute3Name            = "externalEndpointAddress";
         final String attribute3Description     = "Network address used by callers to the network gateway.";
         final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "externalEndpointAddress";
+        final String attribute4Name            = "internalEndpointAddress";
         final String attribute4Description     = "Network address that the network gateway maps the request to.";
         final String attribute4DescriptionGUID = null;
 

@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-![InDev](../../../open-metadata-publication/website/images/egeria-content-status-in-development.png#pagewidth)
+![InDev](../../../images/egeria-content-status-in-development.png#pagewidth)
 
 # Data Privacy Open Metadata Access Service (OMAS)
 
@@ -17,6 +17,10 @@ personal data.
 compliance to the data privacy program.
 * Recording data processing impact assessments.
 * Managing incidents relating to data privacy.
+
+* [Documentation](https://egeria-project.org/services/omas/data-privacy/overview)
+
+## Design Information
 
 The module structure for the Data Privacy OMAS is as follows:
 

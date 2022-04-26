@@ -23,10 +23,10 @@ can be found in the [open-metadata-archives](../../../../open-metadata-resources
 modules.
 
 Details for configuring a metadata server to load archives can be found in the
-[Administration Guide](../../../admin-services/docs/user).
+[Administration Guide](https://egeria-project.org/guides/admin/servers).
 
-* [Configuring an open metadata archive in an OMAG Server](../../../admin-services/docs/user/configuring-the-startup-archives.md)
-* [Adding an open metadata archive to a running OMAG Server](../../../admin-services/docs/user/adding-archive-to-running-server.md)
+* [Configuring an open metadata archive in an OMAG Server](https://egeria-project.org/guides/admin/servers/configuring-the-startup-archives)
+* [Adding an open metadata archive to a running OMAG Server](https://egeria-project.org/guides/operations/adding-archive-to-running-server)
 
 ----
 * Return to [repository services component descriptions](.)
