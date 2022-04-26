@@ -598,7 +598,7 @@ extends java.lang.Object</pre>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException</code> - the supplied userId is not authorized to issue this command.</dd>
 <dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</code> - invalid parameter.</dd>
-<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</code></dd>
+<dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</code> - unusual state in the admin server.</dd>
 </dl>
 </li>
 </ul>
@@ -988,6 +988,8 @@ extends java.lang.Object</pre>
                                     org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</pre>
 <div class="block">Set up all audit log destinations for this server.  Any existing definitions are overwritten</div>
 <dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>auditLogDestinations</code> - list of connections</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException</code> - the supplied userId is not authorized to issue this command.</dd>
 <dd><code>org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException</code> - invalid parameter.</dd>
