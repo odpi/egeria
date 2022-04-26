@@ -42,7 +42,12 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>catalog-builder</artifactId>
+            <artifactId>content-pack-helpers</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-metadata-types</artifactId>
         </dependency>
 
         <dependency>

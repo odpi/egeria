@@ -6,14 +6,12 @@ import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveGUID
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EnumDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EnumElementDef;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * SimpleCatalogArchiveHelper creates elements used when creating a simple catalog.  This includes assets, their schemas and connections, design models.
@@ -37,12 +35,39 @@ public class SimpleCatalogArchiveHelper
     private static final String COLLECTION_TYPE_NAME                     = "Collection";
     private static final String COLLECTION_MEMBER_TYPE_NAME              = "CollectionMembership";
 
+    private static final String SEARCH_KEYWORD_TYPE_NAME                 = "SearchKeyword";
+    private static final String SEARCH_KEYWORD_LINK_RELATIONSHIP_NAME    = "SearchKeywordLink";
+
+    private static final String EXTERNAL_REFERENCE_TYPE_NAME             = "ExternalReference";
+    public  static final String EXTERNAL_GLOSSARY_LINK_TYPE_NAME         = "ExternalGlossaryLink"; // subtype
+    public  static final String RELATED_MEDIA_TYPE_NAME                  = "RelatedMedia";         // subtype
+
+    private static final String EXTERNAL_REFERENCE_LINK_RELATIONSHIP_NAME = "ExternalReferenceLink";
+    private static final String MEDIA_REFERENCE_RELATIONSHIP_NAME         = "MediaReference";
+    private static final String MEDIA_USAGE_ENUM_NAME                     = "MediaUsage";
+    public  static final int       MEDIA_USAGE_ICON                       = 0;
+    public  static final int       MEDIA_USAGE_THUMBNAIL                  = 1;
+    public  static final int       MEDIA_USAGE_ILLUSTRATION               = 2;
+    public  static final int       MEDIA_USAGE_USAGE_GUIDANCE             = 3;
+    public  static final int       MEDIA_USAGE_OTHER                      = 99;
+    private static final String MEDIA_TYPE_ENUM_NAME                      = "MediaType";
+    public  static final int       MEDIA_TYPE_IMAGE                       = 0;
+    public  static final int       MEDIA_TYPE_AUDIO                       = 1;
+    public  static final int       MEDIA_TYPE_DOCUMENT                    = 2;
+    public  static final int       MEDIA_TYPE_VIDEO                       = 3;
+    public  static final int       MEDIA_TYPE_OTHER                       = 99;
+
+    private static final String EXTERNALLY_SOURCED_GLOSSARY_RELATIONSHIP_NAME = "ExternallySourcedGlossary";
+    private static final String LIBRARY_CATEGORY_REFERENCE_RELATIONSHIP_NAME  = "LibraryCategoryReference";
+    private static final String LIBRARY_TERM_REFERENCE_RELATIONSHIP_NAME      = "LibraryTermReference";
+
+    private static final String SUBJECT_AREA_DEFINITION_TYPE_NAME        = "SubjectAreaDefinition";
+    private static final String SUBJECT_AREA_HIERARCHY_RELATIONSHIP_NAME = "SubjectAreaHierarchy";
+    private static final String SUBJECT_AREA_CLASSIFICATION_NAME         = "SubjectArea";
+
     private static final String GLOSSARY_TYPE_NAME                       = "Glossary";
-    private static final String EXTERNAL_GLOSSARY_LINK_TYPE_NAME         = "ExternalGlossaryLink";
-    private static final String EXTERNALLY_SOURCED_GLOSSARY_TYPE_NAME    = "ExternallySourcedGlossary";
     private static final String CANONICAL_VOCABULARY_TYPE_NAME           = "CanonicalVocabulary";
     private static final String GLOSSARY_CATEGORY_TYPE_NAME              = "GlossaryCategory";
-    private static final String SUBJECT_AREA_TYPE_NAME                   = "SubjectArea";
     private static final String CATEGORY_ANCHOR_TYPE_NAME                = "CategoryAnchor";
     private static final String CATEGORY_HIERARCHY_LINK_TYPE_NAME        = "CategoryHierarchyLink";
     private static final String GLOSSARY_TERM_TYPE_NAME                  = "GlossaryTerm";
@@ -55,6 +80,16 @@ public class SimpleCatalogArchiveHelper
     private static final String IS_A_TYPE_OF_RELATIONSHIP_NAME           = "IsATypeOfRelationship";
     private static final String HAS_A_RELATIONSHIP_NAME                  = "TermHASARelationship";
     private static final String RELATED_TERM_RELATIONSHIP_NAME           = "RelatedTerm";
+
+    private static final String TERM_RELATIONSHIP_STATUS_ENUM_NAME       = "TermRelationshipStatus";
+    public static final int      TERM_RELATIONSHIP_STATUS_DRAFT          = 0;
+    public static final int      TERM_RELATIONSHIP_STATUS_ACTIVE         = 1;
+    public static final int      TERM_RELATIONSHIP_STATUS_DEPRECATED     = 2;
+    public static final int      TERM_RELATIONSHIP_STATUS_OBSOLETE       = 3;
+    public static final int      TERM_RELATIONSHIP_STATUS_OTHER          = 4;
+
+    private static final String CONTEXT_DEFINITION_CLASSIFICATION_NAME   = "ContextDefinition";
+    private static final String USED_IN_CONTEXT_RELATIONSHIP_NAME        = "UsedInContext";
 
     private static final String DESIGN_MODEL_TYPE_NAME                   = "DesignModel";
     private static final String CONCEPT_MODEL_CLASSIFICATION_NAME        = "ConceptModel";
@@ -76,38 +111,19 @@ public class SimpleCatalogArchiveHelper
     private static final String CONCEPT_BEAD_RELATIONSHIP_END_NAME       = "ConceptBeadRelationshipEnd";
     private static final String CONCEPT_BEAD_ATTRIBUTE_LINK_TYPE_NAME    = "ConceptBeadAttributeLink";
     private static final String CONCEPT_MODEL_DECORATION_ENUM_NAME       = "ConceptModelDecoration";
-    private static final int      CONCEPT_MODEL_DECORATION_NONE          = 0;
-    private static final int      CONCEPT_MODEL_DECORATION_AGGREGATION   = 1;
-    private static final int      CONCEPT_MODEL_DECORATION_COMPOSITION   = 2;
-    private static final int      CONCEPT_MODEL_DECORATION_EXTENSION     = 3;
+    public static final int      CONCEPT_MODEL_DECORATION_NONE          = 0;
+    public static final int      CONCEPT_MODEL_DECORATION_AGGREGATION   = 1;
+    public static final int      CONCEPT_MODEL_DECORATION_COMPOSITION   = 2;
+    public static final int      CONCEPT_MODEL_DECORATION_EXTENSION     = 3;
 
-    private static final String CONCEPT_BEAD_COVERAGE_CATEGORY_ENUM_NAME     = "ConceptBeadAttributeCoverageCategory";
-    private static final int      CONCEPT_BEAD_COVERAGE_UNKNOWN              = 0;
-    private static final int      CONCEPT_BEAD_COVERAGE_UNIQUE_IDENTIFIER    = 1;
-    private static final int      CONCEPT_BEAD_COVERAGE_IDENTIFIER           = 2;
-    private static final int      CONCEPT_BEAD_COVERAGE_CORE_DETAIL          = 3;
-    private static final int      CONCEPT_BEAD_COVERAGE_EXTENDED_DETAIL      = 4;
-    private static final String CONCEPT_BEAD_COVERAGE_CLASSIFICATION_NAME    = "ConceptBeadAttributeCoverage";
-    private static final String CONCEPT_BEAD_COVERAGE_CATEGORY_PROPERTY      = "coverageCategory";
-
-    private static final String QUALIFIED_NAME_PROPERTY                      = "qualifiedName";
-    private static final String ADDITIONAL_PROPERTIES_PROPERTY               = "additionalProperties";
-
-    private static final String NAME_PROPERTY            = "name";
-    private static final String ATTRIBUTE_NAME_PROPERTY  = "attributeName";
-    private static final String DISPLAY_NAME_PROPERTY    = "displayName";
-    private static final String TECHNICAL_NAME_PROPERTY  = "technicalName";
-    private static final String DESCRIPTION_PROPERTY     = "description";
-    private static final String DECORATION_PROPERTY      = "decoration";
-    private static final String VERSION_NUMBER_PROPERTY  = "versionNumber";
-    private static final String AUTHOR_PROPERTY          = "author";
-    private static final String POSITION_PROPERTY        = "position";
-    private static final String MIN_CARDINALITY_PROPERTY = "minCardinality";
-    private static final String MAX_CARDINALITY_PROPERTY = "maxCardinality";
-    private static final String UNIQUE_VALUES_PROPERTY   = "uniqueValues";
-    private static final String ORDERED_VALUES_PROPERTY  = "orderedValues";
-    private static final String NAVIGABLE_PROPERTY       = "navigable";
-
+    private static final String CONCEPT_BEAD_COVERAGE_CATEGORY_ENUM_NAME  = "ConceptBeadAttributeCoverageCategory";
+    public static final int      CONCEPT_BEAD_COVERAGE_UNKNOWN            = 0;
+    public static final int      CONCEPT_BEAD_COVERAGE_UNIQUE_IDENTIFIER  = 1;
+    public static final int      CONCEPT_BEAD_COVERAGE_IDENTIFIER         = 2;
+    public static final int      CONCEPT_BEAD_COVERAGE_CORE_DETAIL        = 3;
+    public static final int      CONCEPT_BEAD_COVERAGE_EXTENDED_DETAIL    = 4;
+    private static final String CONCEPT_BEAD_COVERAGE_CLASSIFICATION_NAME = "ConceptBeadAttributeCoverage";
+    private static final String CONCEPT_BEAD_COVERAGE_CATEGORY_PROPERTY   = "coverageCategory";
 
     private static final String SOFTWARE_CAPABILITY_TYPE_NAME            = "SoftwareCapability";
 
@@ -132,12 +148,32 @@ public class SimpleCatalogArchiveHelper
 
     private static final String API_OPERATION_TYPE_NAME                  = "APIOperation";
     private static final String API_OPERATIONS_TYPE_NAME                 = "APIOperations";
-    protected static final String API_HEADER_TYPE_NAME                     = "APIHeader";
-    protected static final String API_REQUEST_TYPE_NAME                    = "APIRequest";
-    protected static final String API_RESPONSE_TYPE_NAME                   = "APIResponse";
+    public  static final String API_HEADER_TYPE_NAME                     = "APIHeader";
+    public  static final String API_REQUEST_TYPE_NAME                    = "APIRequest";
+    public  static final String API_RESPONSE_TYPE_NAME                   = "APIResponse";
     private static final String API_PARAMETER_TYPE_NAME                  = "APIParameter";
     private static final String API_PARAMETER_LIST_TYPE_NAME             = "APIParameterList";
 
+    /*
+     * Properties
+     */
+    private static final String QUALIFIED_NAME_PROPERTY                      = "qualifiedName";
+    private static final String ADDITIONAL_PROPERTIES_PROPERTY               = "additionalProperties";
+
+    private static final String NAME_PROPERTY                                = "name";
+    private static final String ATTRIBUTE_NAME_PROPERTY                      = "attributeName";
+    private static final String DISPLAY_NAME_PROPERTY                        = "displayName";
+    private static final String TECHNICAL_NAME_PROPERTY                      = "technicalName";
+    private static final String DESCRIPTION_PROPERTY                         = "description";
+    private static final String DECORATION_PROPERTY                          = "decoration";
+    private static final String VERSION_NUMBER_PROPERTY                      = "versionNumber";
+    private static final String AUTHOR_PROPERTY                              = "author";
+    private static final String POSITION_PROPERTY                            = "position";
+    private static final String MIN_CARDINALITY_PROPERTY                     = "minCardinality";
+    private static final String MAX_CARDINALITY_PROPERTY                     = "maxCardinality";
+    private static final String UNIQUE_VALUES_PROPERTY                       = "uniqueValues";
+    private static final String ORDERED_VALUES_PROPERTY                      = "orderedValues";
+    private static final String NAVIGABLE_PROPERTY                           = "navigable";
 
     private static final String ASSET_SUMMARY_PROPERTY                       = "assetSummary";
     private static final String ZONE_MEMBERSHIP_PROPERTY                     = "zoneMembership";
@@ -172,10 +208,13 @@ public class SimpleCatalogArchiveHelper
     private static final String PATH_TYPE_PROPERTY                           = "path";
     private static final String COMMAND_TYPE_PROPERTY                        = "command";
     private static final String CONFIDENCE_TYPE_PROPERTY                     = "confidence";
+    private static final String SCOPE_PROPERTY                               = "scope";
+    private static final String STATUS_PROPERTY                              = "status";
     private static final String STEWARD_PROPERTY                             = "steward";
     private static final String STEWARD_TYPE_NAME_PROPERTY                   = "stewardTypeName";
     private static final String STEWARD_PROPERTY_NAME_PROPERTY               = "stewardPropertyName";
     private static final String SOURCE_PROPERTY                              = "source";
+    private static final String EXPRESSION_PROPERTY                          = "expression";
     private static final String NOTES_PROPERTY                               = "notes";
     private static final String FORMULA_PROPERTY                             = "formula";
     private static final String QUERY_ID_PROPERTY                            = "queryId";
@@ -199,12 +238,46 @@ public class SimpleCatalogArchiveHelper
     private static final String DEFAULT_VALUE_PROPERTY                       = "defaultValue";
     private static final String FIXED_VALUE_PROPERTY                         = "fixedValue";
 
+    private static final String DOMAIN_IDENTIFIER_PROPERTY                   = "domainIdentifier";
     private static final String EXAMPLES_PROPERTY                            = "examples";
     private static final String LANGUAGE_PROPERTY                            = "language";
-    private static final String SCOPE_PROPERTY                               = "scope";
-    private static final String URL_PROPERTY                                 = "url";
+    private static final String IDENTIFIER_PROPERTY                          = "identifier";
+    private static final String LAST_VERIFIED_PROPERTY                       = "lastVerified";
+
+    private static final String REFERENCE_ID_PROPERTY                        = "referenceId";
+    private static final String PAGES_PROPERTY                               = "pages";
+    private static final String MEDIA_ID_PROPERTY                            = "mediaId";
+    private static final String MEDIA_USAGE_PROPERTY                         = "mediaUsage";
+    private static final String MEDIA_USAGE_OTHER_ID_PROPERTY                = "mediaUsageOtherId";
+
+    private static final String KEYWORD_PROPERTY                             = "keyword";
+
+    private static final String REFERENCE_TITLE_PROPERTY                     = "referenceTitle";
+    private static final String REFERENCE_ABSTRACT_PROPERTY                  = "referenceAbstract";
+    private static final String AUTHORS_PROPERTY                             = "authors";
+    private static final String NUMBER_OF_PAGES_PROPERTY                     = "numberOfPages";
+    private static final String PAGE_RANGE_PROPERTY                          = "pageRange";
     private static final String ORGANIZATION_PROPERTY                        = "organization";
-    private static final String VERSION_PROPERTY                             = "version";
+    private static final String PUBLICATION_SERIES_PROPERTY                  = "publicationSeries";
+    private static final String PUBLICATION_SERIES_VOLUME_PROPERTY           = "publicationSeriesVolume";
+    private static final String EDITION_PROPERTY                             = "edition";
+    private static final String REFERENCE_VERSION_PROPERTY                   = "referenceVersion";
+    private static final String URL_PROPERTY                                 = "url";
+    private static final String PUBLISHER_PROPERTY                           = "publisher";
+    private static final String FIRST_PUBLICATION_DATE_PROPERTY              = "firstPublicationDate";
+    private static final String PUBLICATION_DATE_PROPERTY                    = "publicationDate";
+    private static final String PUBLICATION_CITY_PROPERTY                    = "publicationCity";
+    private static final String PUBLICATION_YEAR_PROPERTY                    = "publicationYear";
+    private static final String PUBLICATION_NUMBERS_PROPERTY                 = "publicationNumbers";
+    private static final String LICENSE_PROPERTY                             = "license";
+    private static final String COPYRIGHT_PROPERTY                           = "copyright";
+    private static final String ATTRIBUTION_PROPERTY                         = "attribution";
+
+    private static final String MEDIA_TYPE_PROPERTY                          = "mediaType";
+    private static final String MEDIA_TYPE_OTHER_ID_PROPERTY                 = "mediaTypeOtherId";
+    private static final String DEFAULT_MEDIA_USAGE_PROPERTY                 = "defaultMediaUsage";
+    private static final String DEFAULT_MEDIA_USAGE_OTHER_ID_PROPERTY        = "defaultMediaUsageOtherId";
+
     private static final String STATUS_IDENTIFIER_PROPERTY                   = "statusIdentifier";
     private static final String CONFIDENCE_PROPERTY                          = "confidence";
     private static final String ATTRIBUTE_PROPERTY                           = "attribute";
@@ -216,10 +289,13 @@ public class SimpleCatalogArchiveHelper
     protected String             archiveRootName;
     protected String             originatorName;
     protected String             versionName;
+    protected EnumElementDef     activeStatus;
+
 
     /**
      * Typical constructor passes parameters used to build the open metadata archive's property header.
      *
+     * @param archiveBuilder builder where content is cached
      * @param archiveGUID unique identifier for this open metadata archive.
      * @param archiveRootName non-spaced root name of the open metadata archive elements.
      * @param originatorName name of the originator (person or organization) of the archive.
@@ -249,6 +325,21 @@ public class SimpleCatalogArchiveHelper
         this.archiveRootName = archiveRootName;
         this.originatorName = originatorName;
         this.versionName = versionName;
+
+        this.activeStatus = archiveHelper.getEnumElement(TERM_RELATIONSHIP_STATUS_ENUM_NAME, 1);
+    }
+
+
+    /**
+     * Return the guid of an element based on its qualified name.  This is a look up in the GUID map not the archive.
+     * This means if the qualified name is not known, a new GUID is generated.
+     *
+     * @param qualifiedName qualified name ot look up
+     * @return guid.
+     */
+    public String getGUID(String qualifiedName)
+    {
+        return idToGUIDMap.getGUID(qualifiedName);
     }
 
 
@@ -260,6 +351,285 @@ public class SimpleCatalogArchiveHelper
         System.out.println("GUIDs map size: " + idToGUIDMap.getSize());
 
         idToGUIDMap.saveGUIDs();
+    }
+
+
+    /**
+     * Create an external reference entity.  This typically describes a publication, webpage book or reference source of information
+     * that is from an external organization.
+     *
+     * @param typeName name of element subtype to use - default is ExternalReference
+     * @param qualifiedName unique name for the element
+     * @param displayName display name for the element
+     * @param referenceTitle full title from the publication
+     * @param referenceAbstract full abstract from the publication
+     * @param description description about the element
+     * @param authors authors of the element
+     * @param numberOfPages number of pages in the external source
+     * @param pageRange range of pages that is significant
+     * @param authorOrganization organization that the information is from
+     * @param publicationSeries publication series or journal that the external source is from.
+     * @param publicationSeriesVolume volume of the publication series where the external source is found
+     * @param edition edition where the external source is from
+     * @param versionNumber version number for the element
+     * @param referenceURL link to the external source
+     * @param publisher publisher of the external source
+     * @param firstPublicationDate date this material was first published (ie first version's publication date)
+     * @param publicationDate date that this version was published
+     * @param publicationCity city that the publisher operates from
+     * @param publicationYear year that this version was published
+     * @param publicationNumbers list of ISBNs for this external source
+     * @param license name of the license associated with this external source
+     * @param copyright copyright statement associated with this external source
+     * @param attribution attribution statement to use when consuming this external source
+     * @param searchKeywords list of keywords
+     * @param additionalProperties any other properties
+     * @param extendedProperties additional properties defined in the subtype
+     * @return unique identifier for new external reference (externalReferenceGUID)
+     */
+    public String addExternalReference(String               typeName,
+                                       String               qualifiedName,
+                                       String               displayName,
+                                       String               referenceTitle,
+                                       String               referenceAbstract,
+                                       String               description,
+                                       List<String>         authors,
+                                       int                  numberOfPages,
+                                       String               pageRange,
+                                       String               authorOrganization,
+                                       String               publicationSeries,
+                                       String               publicationSeriesVolume,
+                                       String               edition,
+                                       String               versionNumber,
+                                       String               referenceURL,
+                                       String               publisher,
+                                       Date                 firstPublicationDate,
+                                       Date                 publicationDate,
+                                       String               publicationCity,
+                                       String               publicationYear,
+                                       List<String>         publicationNumbers,
+                                       String               license,
+                                       String               copyright,
+                                       String               attribution,
+                                       List<String>         searchKeywords,
+                                       Map<String, String>  additionalProperties,
+                                       Map<String, Object>  extendedProperties)
+    {
+        final String methodName = "addExternalReference";
+
+        String elementTypeName = EXTERNAL_REFERENCE_TYPE_NAME;
+
+        if (typeName != null)
+        {
+            elementTypeName = typeName;
+        }
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DISPLAY_NAME_PROPERTY, displayName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, REFERENCE_TITLE_PROPERTY, referenceTitle, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, REFERENCE_ABSTRACT_PROPERTY, referenceAbstract, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+        properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName, properties, AUTHORS_PROPERTY, authors, methodName);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, NUMBER_OF_PAGES_PROPERTY, numberOfPages, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, PAGE_RANGE_PROPERTY, pageRange, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, ORGANIZATION_PROPERTY, authorOrganization, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, REFERENCE_VERSION_PROPERTY, versionNumber, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, PUBLICATION_SERIES_PROPERTY, publicationSeries, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, PUBLICATION_SERIES_VOLUME_PROPERTY, publicationSeriesVolume, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, EDITION_PROPERTY, edition, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, URL_PROPERTY, referenceURL, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, PUBLISHER_PROPERTY, publisher, methodName);
+        properties = archiveHelper.addDatePropertyToInstance(archiveRootName, properties, FIRST_PUBLICATION_DATE_PROPERTY, firstPublicationDate, methodName);
+        properties = archiveHelper.addDatePropertyToInstance(archiveRootName, properties, PUBLICATION_DATE_PROPERTY, publicationDate, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, PUBLICATION_CITY_PROPERTY, publicationCity, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, PUBLICATION_YEAR_PROPERTY, publicationYear, methodName);
+        properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName, properties, PUBLICATION_NUMBERS_PROPERTY, publicationNumbers, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, LICENSE_PROPERTY, license, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, COPYRIGHT_PROPERTY, copyright, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, ATTRIBUTION_PROPERTY, attribution, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, ADDITIONAL_PROPERTIES_PROPERTY, additionalProperties, methodName);
+        properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
+
+        EntityDetail externalReferenceEntity = archiveHelper.getEntityDetail(elementTypeName,
+                                                                             idToGUIDMap.getGUID(qualifiedName),
+                                                                             properties,
+                                                                             InstanceStatus.ACTIVE,
+                                                                             null);
+
+        archiveBuilder.addEntity(externalReferenceEntity);
+
+        if (searchKeywords != null)
+        {
+            for (String keyword : searchKeywords)
+            {
+                if (keyword != null)
+                {
+                    String keywordGUID = idToGUIDMap.queryGUID(SEARCH_KEYWORD_TYPE_NAME + ":" + keyword);
+                    EntityDetail keywordEntity;
+
+                    if (keywordGUID != null)
+                    {
+                        keywordEntity = archiveBuilder.getEntity(keywordGUID);
+                    }
+                    else
+                    {
+                        keywordEntity  = archiveHelper.getEntityDetail(SEARCH_KEYWORD_TYPE_NAME,
+                                                                       idToGUIDMap.getGUID(SEARCH_KEYWORD_TYPE_NAME + ":" + keyword),
+                                                                       properties,
+                                                                       InstanceStatus.ACTIVE,
+                                                                       null);
+                    }
+
+                    if (keywordEntity != null)
+                    {
+                        EntityProxy end1 = archiveHelper.getEntityProxy(externalReferenceEntity);
+                        EntityProxy end2 = archiveHelper.getEntityProxy(keywordEntity);
+
+                        archiveBuilder.addRelationship(archiveHelper.getRelationship(SEARCH_KEYWORD_LINK_RELATIONSHIP_NAME,
+                                                                                     idToGUIDMap.getGUID(externalReferenceEntity.getGUID() + "_to_" + keywordGUID + "_search_keyword_link_relationship"),
+                                                                                     null,
+                                                                                     InstanceStatus.ACTIVE,
+                                                                                     end1,
+                                                                                     end2));
+                    }
+                }
+            }
+        }
+
+        return externalReferenceEntity.getGUID();
+    }
+
+
+    /**
+     * Create the relationship between a design mode group and one of its members.
+     *
+     * @param referenceableGUID unique identifier of the element making the reference
+     * @param externalReferenceGUID unique identifier of the external reference
+     * @param referenceId unique reference id for this referenceable
+     * @param description description of the relevance of the external reference
+     * @param pages relevant pages in the external reference
+     */
+    public void addExternalReferenceLink(String referenceableGUID,
+                                         String externalReferenceGUID,
+                                         String referenceId,
+                                         String description,
+                                         String pages)
+    {
+        final String methodName = "addExternalReferenceLink";
+
+        EntityDetail referenceableEntity = archiveBuilder.getEntity(referenceableGUID);
+        EntityDetail externalReferenceEntity = archiveBuilder.getEntity(externalReferenceGUID);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(referenceableEntity);
+        EntityProxy end2 = archiveHelper.getEntityProxy(externalReferenceEntity);
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, REFERENCE_ID_PROPERTY, referenceId, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, PAGES_PROPERTY, pages, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(EXTERNAL_GLOSSARY_LINK_TYPE_NAME,
+                                                                     idToGUIDMap.getGUID(referenceableGUID + "_to_" + externalReferenceGUID + "_external_reference_link_relationship" + referenceId),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Create a subject area entity.
+     *
+     * @param qualifiedName unique name for the subject area
+     * @param displayName display name for the subject area
+     * @param description description about the subject area
+     * @param scope scope where the subject area is used
+     * @param usage how is the subject area used
+     * @param domainIdentifier unique identifier of the governance domain
+     * @param additionalProperties any other properties
+     * @param extendedProperties additional properties defined in the subtype
+     *
+     * @return unique identifier for subject area (subjectAreaGUID)
+     */
+    public String addSubjectAreaDefinition(String               qualifiedName,
+                                           String               displayName,
+                                           String               description,
+                                           String               scope,
+                                           String               usage,
+                                           int                  domainIdentifier,
+                                           Map<String, String>  additionalProperties,
+                                           Map<String, Object>  extendedProperties)
+    {
+        final String methodName = "addSubjectAreaDefinition";
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DISPLAY_NAME_PROPERTY, displayName, methodName); // it's an asset
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, SCOPE_PROPERTY, scope, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, USAGE_PROPERTY, usage, methodName);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, DOMAIN_IDENTIFIER_PROPERTY, domainIdentifier, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, ADDITIONAL_PROPERTIES_PROPERTY, additionalProperties, methodName);
+        properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
+
+        EntityDetail newEntity = archiveHelper.getEntityDetail(SUBJECT_AREA_DEFINITION_TYPE_NAME,
+                                                               idToGUIDMap.getGUID(qualifiedName),
+                                                               properties,
+                                                               InstanceStatus.ACTIVE,
+                                                               null);
+
+        archiveBuilder.addEntity(newEntity);
+
+        return newEntity.getGUID();
+    }
+
+
+    /**
+     * Create the relationship between a design mode group and one of its members.
+     *
+     * @param broaderSubjectAreaGUID unique identifier of the broader subject area
+     * @param nestedSubjectAreaGUID unique identifier of the nested (narrower) subject area
+     */
+    public void addSubjectAreaHierarchy(String broaderSubjectAreaGUID,
+                                        String nestedSubjectAreaGUID)
+    {
+        EntityDetail referenceableEntity = archiveBuilder.getEntity(broaderSubjectAreaGUID);
+        EntityDetail externalReferenceEntity = archiveBuilder.getEntity(nestedSubjectAreaGUID);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(referenceableEntity);
+        EntityProxy end2 = archiveHelper.getEntityProxy(externalReferenceEntity);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(SUBJECT_AREA_HIERARCHY_RELATIONSHIP_NAME,
+                                                                     idToGUIDMap.getGUID(broaderSubjectAreaGUID + "_to_" + nestedSubjectAreaGUID + "_subject_area_hierarchy_relationship"),
+                                                                     null,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Add the subject area classification to the requested element.
+     *
+     * @param referenceableGUID unique identifier of the element to classify
+     * @param subjectAreaQualifiedName name of the subject area.  The suggestion is that the name used is the qualified name.
+     */
+    public void addSubjectAreaClassification(String referenceableGUID,
+                                             String subjectAreaQualifiedName)
+    {
+        final String methodName = "addSubjectAreaClassification";
+
+        EntityDetail referenceableEntity = archiveBuilder.getEntity(referenceableGUID);
+
+        EntityProxy referenceableEntityProxy = archiveHelper.getEntityProxy(referenceableEntity);
+
+        Classification  subjectAreaClassification = archiveHelper.getClassification(SUBJECT_AREA_CLASSIFICATION_NAME,
+                                                                                    archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                                                                                              null,
+                                                                                                                              NAME_PROPERTY,
+                                                                                                                              subjectAreaQualifiedName,
+                                                                                                                              methodName),
+                                                                                    InstanceStatus.ACTIVE);
+
+        archiveBuilder.addClassification(archiveHelper.getClassificationEntityExtension(referenceableEntityProxy, subjectAreaClassification));
     }
 
 
@@ -311,7 +681,7 @@ public class SimpleCatalogArchiveHelper
         }
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, NAME_PROPERTY, displayName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, NAME_PROPERTY, displayName, methodName); // it's an asset
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, TECHNICAL_NAME_PROPERTY, technicalName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, VERSION_NUMBER_PROPERTY, versionNumber, methodName);
@@ -332,7 +702,7 @@ public class SimpleCatalogArchiveHelper
 
 
     /**
-     * Create a design model element entity.
+     * Create a design model element entity.  This may be a group or an element in the model.
      *
      * @param designModelGUID unique identifier of model that owns this element
      * @param typeName name of element subtype to use - default is DesignModelElement
@@ -422,7 +792,7 @@ public class SimpleCatalogArchiveHelper
 
 
     /**
-     * Create the relationship between a design mode group and one of its members.
+     * Create the relationship between a design model group and one of its members.
      *
      * @param groupGUID unique identifier of the design model group
      * @param memberGUID unique identifier of the member
@@ -443,7 +813,6 @@ public class SimpleCatalogArchiveHelper
                                                                      end1,
                                                                      end2));
     }
-
 
 
     /**
@@ -475,16 +844,7 @@ public class SimpleCatalogArchiveHelper
 
         EntityDetail   entityOne                  = archiveBuilder.getEntity(conceptBeadLinkGUID);
         EntityDetail   entityTwo                  = archiveBuilder.getEntity(conceptBeadGUID);
-        EnumDef        enumDef                    = archiveBuilder.getEnumDef(CONCEPT_MODEL_DECORATION_ENUM_NAME);
-        EnumElementDef conceptModelDecorationEnum = null;
-
-        for (EnumElementDef enumElementDef : enumDef.getElementDefs())
-        {
-            if (enumElementDef.getOrdinal() == conceptModelDecoration)
-            {
-                conceptModelDecorationEnum = enumElementDef;
-            }
-        }
+        EnumElementDef conceptModelDecorationEnum = archiveHelper.getEnumElement(CONCEPT_MODEL_DECORATION_ENUM_NAME, conceptModelDecoration);
 
         EntityProxy end1 = archiveHelper.getEntityProxy(entityOne);
         EntityProxy end2 = archiveHelper.getEntityProxy(entityTwo);
@@ -675,7 +1035,12 @@ public class SimpleCatalogArchiveHelper
      * @param qualifiedName unique name for the capability
      * @param displayName display name for the capability
      * @param description description about the capability
-     * @param additionalProperties any other properties.
+     * @param capabilityType type
+     * @param capabilityVersion version
+     * @param patchLevel patch level
+     * @param source source
+     * @param additionalProperties any other properties
+     * @param extendedProperties properties for subtype
      *
      * @return id for the capability
      */
@@ -767,7 +1132,7 @@ public class SimpleCatalogArchiveHelper
         EntityProxy end2 = archiveHelper.getEntityProxy(dataSetEntity);
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(DATA_CONTENT_FOR_DATA_SET_TYPE_NAME,
-                                                                     idToGUIDMap.getGUID(dataContentGUID + "_to_" + dataSetGUID + "_data_consumer_relationship"),
+                                                                     idToGUIDMap.getGUID(dataContentGUID + "_to_" + dataSetGUID + "_data_content_for_data_set_relationship"),
                                                                      null,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
@@ -858,8 +1223,6 @@ public class SimpleCatalogArchiveHelper
     {
         final String methodName = "addAPIOperation";
 
-        String schemaTypeTypeName = API_OPERATION_TYPE_NAME;
-
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DISPLAY_NAME_PROPERTY, displayName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
@@ -867,7 +1230,7 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, COMMAND_TYPE_PROPERTY, command, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, ADDITIONAL_PROPERTIES_PROPERTY, additionalProperties, methodName);
 
-        EntityDetail schemaTypeEntity = archiveHelper.getEntityDetail(schemaTypeTypeName,
+        EntityDetail schemaTypeEntity = archiveHelper.getEntityDetail(API_OPERATION_TYPE_NAME,
                                                                       idToGUIDMap.getGUID(qualifiedName),
                                                                       properties,
                                                                       InstanceStatus.ACTIVE,
@@ -946,7 +1309,7 @@ public class SimpleCatalogArchiveHelper
             EntityProxy end2 = archiveHelper.getEntityProxy(parameterListEntity);
 
             archiveBuilder.addRelationship(archiveHelper.getRelationship(typeName,
-                                                                         idToGUIDMap.getGUID(qualifiedName + "_operation_relationship"),
+                                                                         idToGUIDMap.getGUID(qualifiedName + "_api_parameter_to_operation_relationship"),
                                                                          null,
                                                                          InstanceStatus.ACTIVE,
                                                                          end1,
@@ -1015,10 +1378,10 @@ public class SimpleCatalogArchiveHelper
                                          String childSchemaAttributeGUID)
     {
         EntityDetail parentSchemaAttributeEntity = archiveBuilder.getEntity(parentSchemaAttributeGUID);
-        EntityDetail childSchemaAtrributeEntity = archiveBuilder.getEntity(childSchemaAttributeGUID);
+        EntityDetail childSchemaAttributeEntity = archiveBuilder.getEntity(childSchemaAttributeGUID);
 
         EntityProxy end1 = archiveHelper.getEntityProxy(parentSchemaAttributeEntity);
-        EntityProxy end2 = archiveHelper.getEntityProxy(childSchemaAtrributeEntity);
+        EntityProxy end2 = archiveHelper.getEntityProxy(childSchemaAttributeEntity);
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(NESTED_SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                                      idToGUIDMap.getGUID(parentSchemaAttributeGUID + "_to_" + childSchemaAttributeGUID + "_nested_schema_attribute_relationship"),
@@ -1030,7 +1393,7 @@ public class SimpleCatalogArchiveHelper
 
 
     /**
-     * Create the a schema attribute with a TypeEmbeddedAttribute classification.
+     * Create a schema attribute with a TypeEmbeddedAttribute classification.
      *
      * @param typeName name of schema attribute subtype to use - default is SchemaAttribute
      * @param schemaTypeName name of schema type subtype to use - default is PrimitiveSchemaType
@@ -1504,8 +1867,6 @@ public class SimpleCatalogArchiveHelper
     }
 
 
-
-
     /**
      * Create a glossary entity.  If the external link is specified, the glossary entity is linked to an
      * ExternalGlossaryLink entity.  If the scope is specified, the glossary entity is classified as
@@ -1530,6 +1891,7 @@ public class SimpleCatalogArchiveHelper
                               String   scope)
     {
         final String methodName = "addGlossary";
+
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName,null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DISPLAY_NAME_PROPERTY, displayName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
@@ -1566,7 +1928,7 @@ public class SimpleCatalogArchiveHelper
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, externalLinkQualifiedName, methodName);
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, URL_PROPERTY, externalLink, methodName);
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, ORGANIZATION_PROPERTY, originatorName, methodName);
-            properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, VERSION_PROPERTY, versionName, methodName);
+            properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, REFERENCE_VERSION_PROPERTY, versionName, methodName);
 
             EntityDetail  externalLinkEntity = archiveHelper.getEntityDetail(EXTERNAL_GLOSSARY_LINK_TYPE_NAME,
                                                                              idToGUIDMap.getGUID(externalLinkQualifiedName),
@@ -1579,7 +1941,7 @@ public class SimpleCatalogArchiveHelper
             EntityProxy end1 = archiveHelper.getEntityProxy(glossaryEntity);
             EntityProxy end2 = archiveHelper.getEntityProxy(externalLinkEntity);
 
-            archiveBuilder.addRelationship(archiveHelper.getRelationship(EXTERNALLY_SOURCED_GLOSSARY_TYPE_NAME,
+            archiveBuilder.addRelationship(archiveHelper.getRelationship(EXTERNALLY_SOURCED_GLOSSARY_RELATIONSHIP_NAME,
                                                                          idToGUIDMap.getGUID(qualifiedName + "_link_relationship"),
                                                                          null,
                                                                          InstanceStatus.ACTIVE,
@@ -1594,7 +1956,7 @@ public class SimpleCatalogArchiveHelper
     /**
      * Add a glossary category to the archive and connect it to glossary.
      *
-     * @param glossaryId identifier of the glossary.
+     * @param glossaryGUID identifier of the glossary.
      * @param qualifiedName unique name for the category.
      * @param displayName display name for the category.
      * @param description description of the category.
@@ -1602,13 +1964,14 @@ public class SimpleCatalogArchiveHelper
      *
      * @return identifier of the category
      */
-    public String addCategory(String   glossaryId,
+    public String addCategory(String   glossaryGUID,
                               String   qualifiedName,
                               String   displayName,
                               String   description,
                               String   subjectArea)
     {
         final String methodName = "addCategory";
+
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName,null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DISPLAY_NAME_PROPERTY, displayName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
@@ -1617,7 +1980,7 @@ public class SimpleCatalogArchiveHelper
 
         if (subjectArea != null)
         {
-            Classification  subjectAreaClassification = archiveHelper.getClassification(SUBJECT_AREA_TYPE_NAME,
+            Classification  subjectAreaClassification = archiveHelper.getClassification(SUBJECT_AREA_CLASSIFICATION_NAME,
                                                                                         archiveHelper.addStringPropertyToInstance(archiveRootName,
                                                                                                                                   null,
                                                                                                                                   NAME_PROPERTY,
@@ -1637,7 +2000,7 @@ public class SimpleCatalogArchiveHelper
 
         archiveBuilder.addEntity(categoryEntity);
 
-        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(glossaryId));
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(glossaryGUID));
         EntityProxy end2 = archiveHelper.getEntityProxy(categoryEntity);
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(CATEGORY_ANCHOR_TYPE_NAME,
@@ -1654,27 +2017,28 @@ public class SimpleCatalogArchiveHelper
     /**
      * Add a term and link it to the glossary and an arbitrary number of categories.
      *
-     * @param glossaryId unique identifier of the glossary
-     * @param categoryIds unique identifiers of the categories
+     * @param glossaryGUID unique identifier of the glossary
+     * @param categoryGUIDs unique identifiers of the categories
      * @param qualifiedName unique name of the term
      * @param displayName display name of the term
      * @param description description of the term
      *
      * @return unique identifier of the term
      */
-    public String addTerm(String       glossaryId,
-                          List<String> categoryIds,
+    public String addTerm(String       glossaryGUID,
+                          List<String> categoryGUIDs,
                           String       qualifiedName,
                           String       displayName,
                           String       description)
     {
-        return addTerm(glossaryId, categoryIds, qualifiedName, displayName, description,null,false,false,false);
+        return addTerm(glossaryGUID, categoryGUIDs, false, qualifiedName, displayName, description,null,false, false, false, null, null);
     }
+
 
     /**
      * Add a term and link it to the glossary and an arbitrary number of categories.
      *
-     * @param glossaryId unique identifier of the glossary
+     * @param glossaryGUID unique identifier of the glossary
      * @param categoryIds unique identifiers of the categories
      * @param qualifiedName unique name of the term
      * @param displayName display name of the term
@@ -1685,7 +2049,7 @@ public class SimpleCatalogArchiveHelper
      * @param categoriesAsNames when true the categories are specified as qualified names, otherwise they are guids.
      * @return unique identifier of the term
      */
-    public String addTerm(String       glossaryId,
+    public String addTerm(String       glossaryGUID,
                           List<String> categoryIds,
                           String       qualifiedName,
                           String       displayName,
@@ -1695,7 +2059,54 @@ public class SimpleCatalogArchiveHelper
                           boolean      isSpineAttribute,
                           boolean      categoriesAsNames)
     {
+        return addTerm(glossaryGUID,
+                       categoryIds,
+                       categoriesAsNames,
+                       qualifiedName,
+                       displayName,
+                       description,
+                       examples,
+                       isSpineObject,
+                       isSpineAttribute,
+                       false,
+                       null,
+                       null);
+    }
+
+
+    /**
+     * Add a term and link it to the glossary and an arbitrary number of categories.  Add requested classifications
+     *
+     * @param glossaryGUID unique identifier of the glossary
+     * @param categoryIds unique identifiers of the categories
+     * @param categoriesAsNames when true the categories are specified as qualified names, otherwise they are guids.
+     * @param qualifiedName unique name of the term
+     * @param displayName display name of the term
+     * @param description description of the term
+     * @param examples examples of the term
+     * @param isSpineObject term is a spine object
+     * @param isSpineAttribute term is a spine attribute
+     * @param isContext is this term a context definition?
+     * @param contextDescription description to add to the ContextDefinition classification
+     * @param contextScope scope to add to the context classification
+     *
+     * @return unique identifier of the term
+     */
+    public String addTerm(String       glossaryGUID,
+                          List<String> categoryIds,
+                          boolean      categoriesAsNames,
+                          String       qualifiedName,
+                          String       displayName,
+                          String       description,
+                          String       examples,
+                          boolean      isSpineObject,
+                          boolean      isSpineAttribute,
+                          boolean      isContext,
+                          String       contextDescription,
+                          String       contextScope)
+    {
         final String methodName = "addTerm";
+
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DISPLAY_NAME_PROPERTY, displayName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
@@ -1723,7 +2134,28 @@ public class SimpleCatalogArchiveHelper
                                                                                         null,
                                                                                         InstanceStatus.ACTIVE);
 
-            classifications = new ArrayList<>();
+            if (classifications == null)
+            {
+                classifications = new ArrayList<>();
+            }
+
+            classifications.add(subjectAreaClassification);
+        }
+
+        if (isContext)
+        {
+            InstanceProperties classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, DESCRIPTION_PROPERTY, contextDescription, methodName);
+            classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, classificationProperties, SCOPE_PROPERTY, contextScope, methodName);
+
+            Classification  subjectAreaClassification = archiveHelper.getClassification(CONTEXT_DEFINITION_CLASSIFICATION_NAME,
+                                                                                        classificationProperties,
+                                                                                        InstanceStatus.ACTIVE);
+
+            if (classifications == null)
+            {
+                classifications = new ArrayList<>();
+            }
+
             classifications.add(subjectAreaClassification);
         }
 
@@ -1735,7 +2167,7 @@ public class SimpleCatalogArchiveHelper
 
         archiveBuilder.addEntity(termEntity);
 
-        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(glossaryId));
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(glossaryGUID));
         EntityProxy end2 = archiveHelper.getEntityProxy(termEntity);
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(TERM_ANCHOR_TYPE_NAME,
@@ -1747,19 +2179,27 @@ public class SimpleCatalogArchiveHelper
 
         if (categoryIds != null)
         {
+            InstanceProperties categorizationProperties = archiveHelper.addEnumPropertyToInstance(archiveRootName, null, STATUS_PROPERTY, activeStatus.getOrdinal(), activeStatus.getValue(), activeStatus.getDescription(), methodName);
+
             for (String  categoryId : categoryIds)
             {
                 if (categoryId != null)
                 {
+                    String categoryGUID = categoryId;
+
                     if (categoriesAsNames)
                     {
-                        categoryId = idToGUIDMap.getGUID(categoryId);
+                        categoryGUID = idToGUIDMap.getGUID(categoryId);
                     }
-                    end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(categoryId));
 
+                    end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(categoryGUID));
+
+                    /*
+                     * Note properties set to ACTIVE - if you need different properties use addTermToCategory
+                     */
                     archiveBuilder.addRelationship(archiveHelper.getRelationship(TERM_CATEGORIZATION_TYPE_NAME,
-                                                                                 idToGUIDMap.getGUID(qualifiedName + "_category_" + categoryId + "_relationship"),
-                                                                                 null,
+                                                                                 idToGUIDMap.getGUID(qualifiedName + "_category_" + categoryId + "_term_categorization_relationship"),
+                                                                                 categorizationProperties,
                                                                                  InstanceStatus.ACTIVE,
                                                                                  end1,
                                                                                  end2));
@@ -1774,18 +2214,150 @@ public class SimpleCatalogArchiveHelper
     /**
      * Link two categories together as part of the parent child hierarchy.
      *
-     * @param parentCategoryId unique identifier for the parent category
-     * @param childCategoryId unique identifier for the child category
+     * @param parentCategoryGUID unique identifier for the parent category
+     * @param childCategoryGUID unique identifier for the child category
      */
-    public void addCategoryToCategory(String  parentCategoryId,
-                                      String  childCategoryId)
+    public void addCategoryToCategory(String  parentCategoryGUID,
+                                      String  childCategoryGUID)
     {
-        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(parentCategoryId));
-        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(childCategoryId));
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(parentCategoryGUID));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(childCategoryGUID));
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(CATEGORY_HIERARCHY_LINK_TYPE_NAME,
-                                                                     idToGUIDMap.getGUID(parentCategoryId + "_to_" + childCategoryId),
+                                                                     idToGUIDMap.getGUID(parentCategoryGUID + "_to_" + childCategoryGUID + "_category_hierarchy_relationship"),
                                                                      null,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+
+
+    /**
+     * Link two categories together as part of the parent child hierarchy.
+     *
+     * @param categoryGUID unique identifier for the parent category
+     * @param termGUID unique identifier for the child category
+     * @param status ordinal for the relationship status
+     * @param description description of the relationship between the term and the category.
+     */
+    public void addTermToContext(String  categoryGUID,
+                                 String  termGUID,
+                                 int     status,
+                                 String  description)
+    {
+        final String methodName = "addTermToContext";
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(categoryGUID));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(termGUID));
+
+        EnumElementDef termStatus = archiveHelper.getEnumElement(TERM_RELATIONSHIP_STATUS_ENUM_NAME, status);
+
+        InstanceProperties properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, null, STATUS_PROPERTY, termStatus.getOrdinal(), termStatus.getValue(), termStatus.getDescription(), methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(USED_IN_CONTEXT_RELATIONSHIP_NAME,
+                                                                     idToGUIDMap.getGUID(categoryGUID + "_to_" + termGUID + "_used_in_context_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Link two categories together as part of the parent child hierarchy.
+     *
+     * @param categoryGUID unique identifier for the parent category
+     * @param termGUID unique identifier for the child category
+     * @param status ordinal for the relationship status
+     * @param description description of the relationship between the term and the category.
+     */
+    public void addTermToCategory(String  categoryGUID,
+                                  String  termGUID,
+                                  int     status,
+                                  String  description)
+    {
+        final String methodName = "addTermToCategory";
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(categoryGUID));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(termGUID));
+
+        EnumElementDef termStatus = archiveHelper.getEnumElement(TERM_RELATIONSHIP_STATUS_ENUM_NAME, status);
+
+        InstanceProperties properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, null, STATUS_PROPERTY, termStatus.getOrdinal(), termStatus.getValue(), termStatus.getDescription(), methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(TERM_CATEGORIZATION_TYPE_NAME,
+                                                                     idToGUIDMap.getGUID(categoryGUID + "_to_" + termGUID + "_term_categorization_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Link a category to an external glossary link with information on which category in the external glossary it corresponds to.
+     *
+     * @param categoryGUID unique identifier for the category
+     * @param externalGlossaryLinkGUID unique identifier for the description of the external glossary (a type of external reference)
+     */
+    public void addLibraryCategoryReference(String categoryGUID,
+                                            String externalGlossaryLinkGUID,
+                                            String identifier,
+                                            String description,
+                                            String steward,
+                                            Date   lastVerified)
+    {
+        final String methodName = "addLibraryCategoryReference";
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(categoryGUID));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(externalGlossaryLinkGUID));
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, IDENTIFIER_PROPERTY, identifier, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, STEWARD_PROPERTY, steward, methodName);
+        properties = archiveHelper.addDatePropertyToInstance(archiveRootName, properties, LAST_VERIFIED_PROPERTY, lastVerified, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(LIBRARY_CATEGORY_REFERENCE_RELATIONSHIP_NAME,
+                                                                     idToGUIDMap.getGUID(categoryGUID + "_to_" + externalGlossaryLinkGUID + "_library_category_reference_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+
+
+    /**
+     * Link a glossary term to an external glossary link with information on which term in the external glossary it corresponds to.
+     *
+     * @param termGUID unique identifier for the term
+     * @param externalGlossaryLinkGUID unique identifier for the description of the external glossary (a type of external reference)
+     */
+    public void addLibraryTermReference(String termGUID,
+                                        String externalGlossaryLinkGUID,
+                                        String identifier,
+                                        String description,
+                                        String steward,
+                                        Date   lastVerified)
+    {
+        final String methodName = "addLibraryTermReference";
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(termGUID));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(externalGlossaryLinkGUID));
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, IDENTIFIER_PROPERTY, identifier, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, STEWARD_PROPERTY, steward, methodName);
+        properties = archiveHelper.addDatePropertyToInstance(archiveRootName, properties, LAST_VERIFIED_PROPERTY, lastVerified, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(LIBRARY_TERM_REFERENCE_RELATIONSHIP_NAME,
+                                                                     idToGUIDMap.getGUID(termGUID + "_to_" + externalGlossaryLinkGUID + "_library_term_reference_relationship"),
+                                                                     properties,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
                                                                      end2));
@@ -1805,7 +2377,7 @@ public class SimpleCatalogArchiveHelper
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(describerElementId));
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(MORE_INFORMATION_TYPE_NAME,
-                                                                     idToGUIDMap.getGUID(describedElementId + "_to_" + describerElementId),
+                                                                     idToGUIDMap.getGUID(describedElementId + "_to_" + describerElementId + "_more_information_relationship"),
                                                                      null,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
@@ -1826,7 +2398,7 @@ public class SimpleCatalogArchiveHelper
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(termId));
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(SEMANTIC_ASSIGNMENT_TYPE_NAME,
-                                                                     idToGUIDMap.getGUID(referenceableId + "_to_" + termId),
+                                                                     idToGUIDMap.getGUID(referenceableId + "_to_" + termId + "_semantic_assignment_relationship"),
                                                                      null,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
@@ -1849,7 +2421,7 @@ public class SimpleCatalogArchiveHelper
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(generalizedTermId));
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(IS_A_TYPE_OF_RELATIONSHIP_NAME,
-                                                                     idToGUIDMap.getGUID(specializedTermId + "_to_" + generalizedTermId ),
+                                                                     idToGUIDMap.getGUID(specializedTermId + "_to_" + generalizedTermId + "_isatypeof_relationship"),
                                                                      null,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
@@ -1864,7 +2436,7 @@ public class SimpleCatalogArchiveHelper
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(conceptId));
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(HAS_A_RELATIONSHIP_NAME,
-                                                                     idToGUIDMap.getGUID(conceptId + "_to_" + propertyId + "_hasa"),
+                                                                     idToGUIDMap.getGUID(conceptId + "_to_" + propertyId + "_hasa_relationship"),
                                                                      null,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
@@ -1881,28 +2453,10 @@ public class SimpleCatalogArchiveHelper
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(propertyId));
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(RELATED_TERM_RELATIONSHIP_NAME,
-                                                                     idToGUIDMap.getGUID(conceptId + "_to_" + propertyId + "_related"),
+                                                                     idToGUIDMap.getGUID(conceptId + "_to_" + propertyId + "_related_term_relationship"),
                                                                      null,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
                                                                      end2));
-    }
-
-
-    /**
-     * Add Category hierarchy relationship
-     *
-     * @param childCategoryName name of the child category
-     * @param parentNames set of the names of the parent categories qualified names
-     */
-    public void addCategoryHierarchy(String childCategoryName, Set<String> parentNames)
-    {
-        String childId= idToGUIDMap.getGUID(childCategoryName);
-
-        for (String parentName:parentNames)
-        {
-            String parentId  = idToGUIDMap.getGUID(parentName);
-            addCategoryToCategory(parentId,childId);
-        }
     }
 }

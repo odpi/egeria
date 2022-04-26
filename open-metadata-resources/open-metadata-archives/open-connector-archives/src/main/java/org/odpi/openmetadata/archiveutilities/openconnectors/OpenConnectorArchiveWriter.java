@@ -68,8 +68,8 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
     private static final long   versionNumber = 1L;
     private static final String versionName   = "1.0";
 
-    private OMRSArchiveBuilder         archiveBuilder;
-    private SimpleCatalogArchiveHelper archiveHelper;
+    private final OMRSArchiveBuilder         archiveBuilder;
+    private final SimpleCatalogArchiveHelper archiveHelper;
 
     /**
      * Default constructor initializes the archive.

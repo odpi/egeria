@@ -78,6 +78,7 @@ public class OMRSArchiveGUIDMap
 
     /**
      * Retrieve the guid for an element based on its id.
+     * If no GUID exists, a new one is created and returned
      *
      * @param id id of element
      * @return guid mapped to Id
@@ -94,6 +95,18 @@ public class OMRSArchiveGUIDMap
         }
 
         return guid;
+    }
+
+
+    /**
+     * Retrieve the guid for an element based on its id.
+     *
+     * @param id id of element
+     * @return guid mapped to Id
+     */
+    public String  queryGUID(String id)
+    {
+        return idToGUIDMap.get(id);
     }
 
 
