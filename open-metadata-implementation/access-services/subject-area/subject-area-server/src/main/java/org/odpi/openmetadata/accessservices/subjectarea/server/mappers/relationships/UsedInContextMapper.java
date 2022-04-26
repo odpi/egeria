@@ -43,9 +43,7 @@ public class UsedInContextMapper extends RelationshipMapper<UsedInContext> {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, usedInContext.getSource(), OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME);
         }
         if (usedInContext.getStatus() != null) {
-            EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
-            enumPropertyValue.setOrdinal(usedInContext.getStatus().getOrdinal());
-            instanceProperties.setProperty(OpenMetadataAPIMapper.STATUS_PROPERTY_NAME, enumPropertyValue);
+            SubjectAreaUtils.setStatusPropertyInInstanceProperties(instanceProperties, usedInContext.getStatus(), OpenMetadataAPIMapper.STATUS_PROPERTY_NAME);
         }
     }
 

@@ -4,23 +4,26 @@
 package org.odpi.openmetadata.archiveutilities.simplecatalogs.catalogcontent;
 
 
-import org.odpi.openmetadata.archiveutilities.catalogbuilder.CatalogTypesArchiveBuilder;
+import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchive;
+import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
+import org.odpi.openmetadata.samples.archiveutilities.SimpleCatalogArchiveHelper;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * SimpleEventCatalogArchiveBuilder provides event and topic metadata.
  */
-public class SimpleEventCatalogArchiveBuilder extends CatalogTypesArchiveBuilder
+public class SimpleEventCatalogArchiveBuilder
 {
     /*
      * This is the header information for the archive.
      */
     private static final String                  archiveGUID        = "e5114849-4341-4eab-b1b7-5a4b037363c4";
-    private static final String                  archiveRootName    = "SimpleEventCatalog";
-    private static final String                  archiveName        = "Simple Event Catalog";
+    private static final String                  archiveName        = "SimpleEventCatalog";
     private static final String                  archiveLicense     = "Apache 2.0";
     private static final String                  archiveDescription = "Sample metadata showing topic assets and event types.";
     private static final OpenMetadataArchiveType archiveType        = OpenMetadataArchiveType.CONTENT_PACK;
@@ -72,92 +75,111 @@ public class SimpleEventCatalogArchiveBuilder extends CatalogTypesArchiveBuilder
     private static final long   versionNumber = 1L;
     private static final String versionName   = "1.0";
 
+    private final OMRSArchiveBuilder         archiveBuilder;
+    private final SimpleCatalogArchiveHelper archiveHelper;
 
     /**
      * Constructor pushes all archive header values to the superclass
+     *
+     * @param archiveRootName common name for the guid map
      */
-    public SimpleEventCatalogArchiveBuilder()
+    public SimpleEventCatalogArchiveBuilder(String archiveRootName)
     {
-        super(archiveGUID,
-              archiveName,
-              archiveDescription,
-              archiveType,
-              archiveRootName,
-              originatorName,
-              archiveLicense,
-              creationDate,
-              versionNumber,
-              versionName,
-              null);
+        List<OpenMetadataArchive> dependentOpenMetadataArchives = new ArrayList<>();
+
+        /*
+         * This value allows the archive to be based on the existing open metadata types
+         */
+        dependentOpenMetadataArchives.add(new OpenMetadataTypesArchive().getOpenMetadataArchive());
+
+        this.archiveBuilder = new OMRSArchiveBuilder(archiveGUID,
+                                                     archiveName,
+                                                     archiveDescription,
+                                                     archiveType,
+                                                     originatorName,
+                                                     archiveLicense,
+                                                     creationDate,
+                                                     dependentOpenMetadataArchives);
+
+        this.archiveHelper = new SimpleCatalogArchiveHelper(archiveBuilder,
+                                                            archiveGUID,
+                                                            archiveRootName,
+                                                            originatorName,
+                                                            creationDate,
+                                                            versionNumber,
+                                                            versionName);
     }
 
 
     /**
-     * Returns the open metadata type archive containing all of the elements extracted from the connector
+     * Returns the open metadata type archive containing all the elements extracted from the connector
      * providers of the featured open connectors.
      *
      * @return populated open metadata archive object
      */
     public OpenMetadataArchive getOpenMetadataArchive()
     {
-        String assetGUID = super.addAsset(topicAssetTypeName,
-                                          customerChangeQualifiedName,
-                                          customerChangeDisplayName,
-                                          customerChangeDescription,
-                                          null);
+        String assetGUID = archiveHelper.addAsset(topicAssetTypeName,
+                                                  customerChangeQualifiedName,
+                                                  customerChangeDisplayName,
+                                                  customerChangeDescription,
+                                                  null,
+                                                  null);
 
-        String eventTypeListGUID = super.addTopLevelSchemaType(assetGUID,
-                                                               eventTypeListTypeName,
-                                                               customerChangeQualifiedName + "_event_type_list",
-                                                               customerChangeDisplayName + " Event Type List",
-                                                               null,
-                                                               null);
+        String eventTypeListGUID = archiveHelper.addTopLevelSchemaType(assetGUID,
+                                                                       eventTypeListTypeName,
+                                                                       customerChangeQualifiedName + "_event_type_list",
+                                                                       customerChangeDisplayName + " Event Type List",
+                                                                       null,
+                                                                       null);
 
-        String eventTypeGUID  = super.addTopLevelSchemaType(null,
-                                                            eventTypeTypeName,
-                                                            newCustomerStatusQualifiedName,
-                                                            newCustomerStatusDisplayName,
-                                                            newCustomerStatusDescription,
-                                                            null);
+        String eventTypeGUID  = archiveHelper.addTopLevelSchemaType(null,
+                                                                    eventTypeTypeName,
+                                                                    newCustomerStatusQualifiedName,
+                                                                    newCustomerStatusDisplayName,
+                                                                    newCustomerStatusDescription,
+                                                                    null);
 
-        super.addSchemaTypeOption(eventTypeListGUID, eventTypeGUID);
+        archiveHelper.addSchemaTypeOption(eventTypeListGUID, eventTypeGUID);
 
-        String eventAttributeGUID = super.addSchemaAttribute(eventAttributeTypeName,
-                                                             null,
-                                                             customerIdQualifiedName,
-                                                             customerIdDisplayName,
-                                                             customerIdDescription,
-                                                             customerIdDataType,
-                                                             customerIdLength,
-                                                             0,
-                                                             null);
+        String eventAttributeGUID = archiveHelper.addSchemaAttribute(eventAttributeTypeName,
+                                                                     null,
+                                                                     customerIdQualifiedName,
+                                                                     customerIdDisplayName,
+                                                                     customerIdDescription,
+                                                                     customerIdDataType,
+                                                                     customerIdLength,
+                                                                     0,
+                                                                     null);
 
-        super.addAttributeForSchemaType(eventTypeGUID, eventAttributeGUID);
+        archiveHelper.addAttributeForSchemaType(eventTypeGUID, eventAttributeGUID);
 
-        eventAttributeGUID = super.addSchemaAttribute(eventAttributeTypeName,
-                                                      null,
-                                                      customerNameQualifiedName,
-                                                      customerNameDisplayName,
-                                                      customerNameDescription,
-                                                      customerNameDataType,
-                                                      customerNameLength,
-                                                      1,
-                                                      null);
+        eventAttributeGUID = archiveHelper.addSchemaAttribute(eventAttributeTypeName,
+                                                              null,
+                                                              customerNameQualifiedName,
+                                                              customerNameDisplayName,
+                                                              customerNameDescription,
+                                                              customerNameDataType,
+                                                              customerNameLength,
+                                                              1,
+                                                              null);
 
-        super.addAttributeForSchemaType(eventTypeGUID, eventAttributeGUID);
+        archiveHelper.addAttributeForSchemaType(eventTypeGUID, eventAttributeGUID);
 
-        eventAttributeGUID = super.addSchemaAttribute(eventAttributeTypeName,
-                                                      null,
-                                                      customerStatusQualifiedName,
-                                                      customerStatusDisplayName,
-                                                      customerStatusDescription,
-                                                      customerStatusDataType,
-                                                      customerStatusLength,
-                                                      2,
-                                                      null);
+        eventAttributeGUID = archiveHelper.addSchemaAttribute(eventAttributeTypeName,
+                                                              null,
+                                                              customerStatusQualifiedName,
+                                                              customerStatusDisplayName,
+                                                              customerStatusDescription,
+                                                              customerStatusDataType,
+                                                              customerStatusLength,
+                                                              2,
+                                                              null);
 
-        super.addAttributeForSchemaType(eventTypeGUID, eventAttributeGUID);
+        archiveHelper.addAttributeForSchemaType(eventTypeGUID, eventAttributeGUID);
 
-        return super.getOpenMetadataArchive();
+        archiveHelper.saveGUIDs();
+
+        return archiveBuilder.getOpenMetadataArchive();
     }
 }

@@ -5,7 +5,7 @@
 
 The **governance-action-server** module contains the server-side
 implementation of the engine services that hosts one or more
-[governance action engines](../../../frameworks/governance-action-framework/docs/governance-action-engine.md).
+[governance action engines](https://egeria-project.org/concepts/governance-action-engine).
 
 It is shown in figure 1:
 

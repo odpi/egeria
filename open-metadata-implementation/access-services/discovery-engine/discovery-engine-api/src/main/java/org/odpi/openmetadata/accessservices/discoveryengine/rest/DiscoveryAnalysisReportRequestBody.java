@@ -30,6 +30,7 @@ public class DiscoveryAnalysisReportRequestBody extends ReferenceableRequestBody
     protected String                 description            = null;
     protected Date                   creationDate           = null;
     protected Map<String, String>    analysisParameters     = null;
+    protected String                 analysisStep           = null;
     protected DiscoveryRequestStatus discoveryRequestStatus = null;
     protected String                 discoveryEngineGUID    = null;
     protected String                 discoveryServiceGUID   = null;
@@ -58,6 +59,7 @@ public class DiscoveryAnalysisReportRequestBody extends ReferenceableRequestBody
             description = template.getDescription();
             creationDate = template.getCreationDate();
             analysisParameters = template.getAnalysisParameters();
+            analysisStep = template.getAnalysisStep();
             discoveryRequestStatus = template.getDiscoveryRequestStatus();
             discoveryEngineGUID = template.getDiscoveryEngineGUID();
             discoveryServiceGUID = template.getDiscoveryServiceGUID();
@@ -154,6 +156,28 @@ public class DiscoveryAnalysisReportRequestBody extends ReferenceableRequestBody
 
 
     /**
+     * Return the current analysis step name.
+     *
+     * @return step name
+     */
+    public String getAnalysisStep()
+    {
+        return analysisStep;
+    }
+
+
+    /**
+     * Set up the analysis step name.
+     *
+     * @param analysisStep new step name
+     */
+    public void setAnalysisStep(String analysisStep)
+    {
+        this.analysisStep = analysisStep;
+    }
+
+
+    /**
      * Return the status of the discovery process.
      *
      * @return status enum
@@ -228,20 +252,27 @@ public class DiscoveryAnalysisReportRequestBody extends ReferenceableRequestBody
     public String toString()
     {
         return "DiscoveryAnalysisReportRequestBody{" +
-                "displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", creationDate=" + creationDate +
-                ", analysisParameters=" + analysisParameters +
-                ", discoveryRequestStatus=" + discoveryRequestStatus +
-                ", discoveryEngineGUID='" + discoveryEngineGUID + '\'' +
-                ", discoveryServiceGUID='" + discoveryServiceGUID + '\'' +
-                ", typeName='" + getTypeName() + '\'' +
-                ", classifications=" + getClassifications() +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", meanings=" + getMeanings() +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                       "displayName='" + displayName + '\'' +
+                       ", description='" + description + '\'' +
+                       ", creationDate=" + creationDate +
+                       ", analysisParameters=" + analysisParameters +
+                       ", analysisStep='" + analysisStep + '\'' +
+                       ", discoveryRequestStatus=" + discoveryRequestStatus +
+                       ", discoveryEngineGUID='" + discoveryEngineGUID + '\'' +
+                       ", discoveryServiceGUID='" + discoveryServiceGUID + '\'' +
+                       ", typeName='" + typeName + '\'' +
+                       ", classifications=" + classifications +
+                       ", qualifiedName='" + qualifiedName + '\'' +
+                       ", meanings=" + meanings +
+                       ", additionalProperties=" + additionalProperties +
+                       ", extendedProperties=" + extendedProperties +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", classifications=" + getClassifications() +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", meanings=" + getMeanings() +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 
 
@@ -268,12 +299,13 @@ public class DiscoveryAnalysisReportRequestBody extends ReferenceableRequestBody
         }
         DiscoveryAnalysisReportRequestBody that = (DiscoveryAnalysisReportRequestBody) objectToCompare;
         return Objects.equals(getDisplayName(), that.getDisplayName()) &&
-                Objects.equals(getDescription(), that.getDescription()) &&
-                Objects.equals(getCreationDate(), that.getCreationDate()) &&
-                Objects.equals(getAnalysisParameters(), that.getAnalysisParameters()) &&
-                Objects.equals(getDiscoveryRequestStatus(), that.getDiscoveryRequestStatus()) &&
-                Objects.equals(getDiscoveryEngineGUID(), that.getDiscoveryEngineGUID()) &&
-                Objects.equals(getDiscoveryServiceGUID(), that.getDiscoveryServiceGUID());
+                       Objects.equals(getDescription(), that.getDescription()) &&
+                       Objects.equals(getCreationDate(), that.getCreationDate()) &&
+                       Objects.equals(getAnalysisParameters(), that.getAnalysisParameters()) &&
+                       Objects.equals(getAnalysisStep(), that.getAnalysisStep()) &&
+                       Objects.equals(getDiscoveryRequestStatus(), that.getDiscoveryRequestStatus()) &&
+                       Objects.equals(getDiscoveryEngineGUID(), that.getDiscoveryEngineGUID()) &&
+                       Objects.equals(getDiscoveryServiceGUID(), that.getDiscoveryServiceGUID());
     }
 
 
@@ -287,7 +319,7 @@ public class DiscoveryAnalysisReportRequestBody extends ReferenceableRequestBody
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), getDisplayName(), getDescription(), getCreationDate(),
-                            getAnalysisParameters(), getDiscoveryRequestStatus(), getDiscoveryEngineGUID(),
+                            getAnalysisParameters(), getAnalysisStep(), getDiscoveryRequestStatus(), getDiscoveryEngineGUID(),
                             getDiscoveryServiceGUID());
     }
 }

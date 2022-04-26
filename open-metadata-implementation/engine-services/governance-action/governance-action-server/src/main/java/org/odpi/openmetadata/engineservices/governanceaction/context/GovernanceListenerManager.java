@@ -32,6 +32,7 @@ public class GovernanceListenerManager
      * Create a governance listener manager for watchdog listeners.
      *
      * @param auditLog audit log for the listener manager
+     * @param governanceEngineName engine name for messages
      */
     public GovernanceListenerManager(AuditLog auditLog,
                                      String   governanceEngineName)

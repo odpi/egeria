@@ -9,7 +9,7 @@ A governance engine is responsible for executing requests to a collection of rel
 
 The implementation of a governance engine is
 handled by an [Open Metadata Engine Service (OMES)](../../../../engine-services)
-running in an [Engine Host](../../../../admin-services/docs/concepts/engine-host.md) OMAG Server.
+running in an [Engine Host](https://egeria-project.org/concepts/engine-host) OMAG Server.
 
 There is a specific engine service for each type of governance engine/service pair.
 
@@ -20,27 +20,27 @@ services.  Governance services are specialized connectors that
 implement a single specialized governance activity.
 There are six types of governance service:
 
-* [Open Discovery Service](../../../../frameworks/open-discovery-framework/docs/discovery-service.md) for
-  analysing the content of an [Asset's](../../../../access-services/docs/concepts/assets) real-world counterpart
-  in the digital landscape. (For example, if the asset describes a file, the discovery service
+* [Open Discovery Service](https://egeria-project.org/concepts/open-discovery-service) for
+  analysing the content of an [Asset's](https://egeria-project.org/concepts/asset) real-world counterpart
+  in the digital landscape called a [digital resource](https://egeria-project.org/concepts/resource). (For example, if the asset describes a file, the discovery service
   analyses the data stored in the file).
   
 * [Open Watchdog Service](../../../../frameworks/governance-action-framework/docs/open-watchdog-service.md) for
   monitoring changes to open metadata elements and when certain changes occur
-  (such as the creation of a new [Asset](../../../../access-services/docs/concepts/assets))
+  (such as the creation of a new [Asset](https://egeria-project.org/concepts/asset))
   the watchdog service requests action from
   other governance services by creating either a
-  [Governance Action](../../../../frameworks/governance-action-framework/docs/governance-action.md),
-  a [Governance Action Process](../../../../frameworks/governance-action-framework/docs/governance-action-process.md)
+  [Governance Action](https://egeria-project.org/concepts/governance-action),
+  a [Governance Action Process](https://egeria-project.org/conceepts/governance-action-process)
   or an [Incident Report](../../../../frameworks/governance-action-framework/docs/incident-report.md).
   
 * [Open Verification Service](../../../../frameworks/governance-action-framework/docs/open-verification-service.md)
   for testing the properties of specific open metadata elements  
   to ensure they are set up correctly or
   do not indicate a situation where governance activity is required.
-  The [results](../../../../frameworks/governance-action-framework/docs/guard.md) returned from the verification service
+  The [results](https://egeria-project.org/concepts/guard) returned from the verification service
   can be used to trigger other governance services as part of a
-  [Governance Action Process](../../../../frameworks/governance-action-framework/docs/governance-action-process.md).
+  [Governance Action Process](https://egeria-project.org/concepts/governance-action-process).
   
 * [Open Triage Service](../../../../frameworks/governance-action-framework/docs/open-triage-service.md) for making
   decisions on how to handle a specific situation or incident.  Often this involves
@@ -76,7 +76,7 @@ is created using the
 
 Figure 1 shows the structure of a governance engine definition.
 The open metadata types for this definition are in
-model [0461 - Governance Engines](../../../../../open-metadata-publication/website/open-metadata-types/0461-Governance-Engines.md)
+model [0461 - Governance Engines](https://egeria-project.org/types/4/0461-Governance-Engines.md)
 (see **Governance Engine**, **GovernanceService** linked by the **SupportedGovernanceService** relationship.
 
 

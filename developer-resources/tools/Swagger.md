@@ -4,7 +4,7 @@
 # Swagger
 
 Swagger automatically generates a website that documents the REST APIs supported by the
-[OMAG Server Platform](../../open-metadata-implementation/admin-services/docs/concepts/omag-server-platform.md).
+[OMAG Server Platform](https://egeria-project.org/omag-server-platform).
 It is based on the [Open API Specification (V3)](http://spec.openapis.org/oas/v3.0.3).
 
 The website is found at  `<serverURLroot>/swagger-ui.html`.
@@ -54,8 +54,8 @@ using the `@Operation` annotation.
 * Return to [Developer Tools](.)
 
 
-* Link to [Egeria's Community Guide](../../Community-Guide.md)
-* Link to the [Egeria Dojo Education](../../open-metadata-resources/open-metadata-tutorials/egeria-dojo)
+* Link to [Egeria's Community Guide](https://egeria-project.org/guides/community/)
+* Link to the [Egeria Dojo Education](https://egeria-project.org/education/egeria-dojo/)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

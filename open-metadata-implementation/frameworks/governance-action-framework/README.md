@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-![InDev](../../../open-metadata-publication/website/images/egeria-content-status-in-development.png#pagewidth)
+![InDev](../../../images/egeria-content-status-in-development.png#pagewidth)
 
 # Governance Action Framework (GAF)
   
@@ -26,14 +26,14 @@ The Governance Action Framework can be used for three purposes:
 There are five types of Governance Action Services.  Each type of service supports a specialist governance activity:
 
 * **Watchdog Governance Service** - monitors for specific types of instances, or changes to open metadata and initiates
-  appropriate follow on governance actions either by creating a 
-  [governance action](docs/governance-action.md), a
-  [governance action process](docs/governance-action-process.md) or an [incident report](docs/incident-report.md).
+  appropriate follow-on governance actions either by creating a 
+  [governance action](https://egeria-project.org/concepts/governance-action), a
+  [governance action process](https://egeria-project.org/concepts/governance-action-process) or an [incident report](https://egeria-project.org/concepts/incident-report).
   For example, a watchdog service may detect a new 
-  [asset](../../access-services/docs/concepts/assets) and kick off an asset onboarding governance action process.
+  [asset](https://egeria-project.org/concepts/asset) and kick off an asset onboarding governance action process.
     
 * **Verification Governance Service** - performs a series of tests around a specific metadata instance and depending on what it
-  finds, it publishes [guards](docs/guard.md) to report on any errors it finds.
+  finds, it publishes [guards](https://egeria-project.org/concepts/guard.md) to report on any errors it finds.
 
 * **Triage Governance Service** - evaluates a reported situation and makes a choice
   on the right action to proceed.  This may involve a human decision maker.
@@ -45,10 +45,10 @@ There are five types of Governance Action Services.  Each type of service suppor
   along with the appropriate open metadata.
 
 These are often used in conjunction with the
-[Open Discovery Services](../open-discovery-framework/docs/discovery-service.md)
-from the [Open Discovery Framework (ODF)](../open-discovery-framework).
+[Open Discovery Services](https://egeria-project.org/concepts/open-discovery-service)
+from the [Open Discovery Framework (ODF)](https://egeria-project.org/frameworks/odf/overview).
 Collectively they are called the **Governance Services** and they
-can be linked together into [governance action processes](docs/governance-action-process.md).
+can be linked together into [governance action processes](https://egeria-project.org/concepts/governance-action-process).
 
 Some governance action services invoke functions in external engines that are working with data and related assets.
 The GAF offers embeddable functions and APIs to simplify the implementation of governance action services,
@@ -103,14 +103,14 @@ Governance action engines are hosted by the
 
 The engine services run in dedicated OMAG Server called the **Engine Host**.
 Instructions for configuring the engine services in the Engine Host
-are found in the [Administration Guide](../../admin-services/docs/concepts/engine-host.md).
+are found in the [Administration Guide](https://egeria-project.org/guides/admin/server).
 
 The [Governance Engine OMAS](../../access-services/governance-engine)
 provides the services for:
 
-* setting up the definitions of a [governance action engine](docs/governance-action-engine.md).
-* configuring [governance action processes](docs/governance-action-process.md).
-* managing [governance actions](docs/governance-action.md) and [incident reports](docs/incident-report.md).
+* setting up the definitions of a [governance action engine](https://egeria-project.org/concepts/governance-action-engine).
+* configuring [governance action processes](https://egeria-project.org/concepts/governance-action-process).
+* managing [governance actions](https://egeria-project.org/concepts/governance-action) and [incident reports](https://egeria-project.org/concepts/incident-report).
 
 ----
 Return to [frameworks](..).

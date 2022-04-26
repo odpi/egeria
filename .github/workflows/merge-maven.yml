@@ -9,10 +9,14 @@ on:
   push:
     branches: [master,egeria-release-*,feature-*]
 
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
     name: "Merge master"
+    if: startsWith(github.repository,'odpi/')
     steps:
       - uses: actions/checkout@v2
         name: Checkout source

@@ -13,6 +13,8 @@ apply plugin: "com.github.psxpaul.execfork"
 apply plugin: 'groovy'
 
 dependencies {
+    implementation project(':open-metadata-implementation:access-services:asset-owner:asset-owner-api')
+    implementation project(':open-metadata-implementation:access-services:asset-owner:asset-owner-client')
     implementation project(':open-metadata-implementation:access-services:discovery-engine:discovery-engine-client')
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
@@ -66,8 +68,8 @@ task startServer(dependsOn: ['cleanData',':open-metadata-distribution:open-metad
              "${distdir}/server/server-chassis-spring-${project.version}.jar" ]
     // Setting the output directories to be the same for ALL FVTs acts as a synchronization mechanism
     // - alternatively we need to ensure the server port is unique per test
-    standardOutput = "${buildDir}/chassis.log"
-    errorOutput = "${buildDir}/chassis-error.log"
+    standardOutput = layout.buildDirectory.file("chassis.log")
+    errorOutput = layout.buildDirectory.file("chassis-error.log")
     //stopAfter = verify
     waitForPort = 10446
     timeout = 180
@@ -104,5 +106,5 @@ test {
     useJUnitPlatform()
     testLogging.showStandardStreams = true
     dependsOn configServer
-    finalizedBy stopServer
+
 }

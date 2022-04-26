@@ -17,7 +17,7 @@ The cohort registry maintains its record of the membership of the cohort in a
 
 ## Further information
 
-* [Configuring the cohort registry in an OMAG Server](../../../admin-services/docs/concepts/cohort-member.md)
+* [Configuring the cohort registry in an OMAG Server](https://egeria-project.org/concepts/cohort-member)
 * [Overview of a cohort](../open-metadata-repository-cohort.md)
 
 
