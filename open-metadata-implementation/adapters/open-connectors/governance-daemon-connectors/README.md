@@ -8,7 +8,7 @@ The governance daemon connectors contain specialist connectors for the [governan
 servers](../../../governance-servers) that make active use of open metadata.
 
 * **[open-lineage-connectors](open-lineage-connectors)** provide plugins to the
-[Open Lineage Server](../../../admin-services/docs/concepts/open-lineage-server.md)
+[Open Lineage Server](https://egeria-project.org/open-lineage-server)
 that allow the [Open Lineage Services](../../../governance-servers/open-lineage-services)
 to store lineage information.
 

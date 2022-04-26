@@ -59,6 +59,7 @@ public class IntegrationDaemonInstanceHandler extends GovernanceServerServiceIns
      *
      * @param userId calling user
      * @param serverName name of the server tied to the request
+     * @param serviceURLMarker marker that identifies the called service in the URL
      * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      * @return handler for use by the requested instance
      * @throws InvalidParameterException no available instance for the requested server
@@ -88,6 +89,7 @@ public class IntegrationDaemonInstanceHandler extends GovernanceServerServiceIns
      *
      * @param userId calling user
      * @param serverName name of the server tied to the request
+     * @param serviceURLMarker marker that identifies the called service in the URL
      * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      * @return handler for use by the requested instance
      * @throws InvalidParameterException no available instance for the requested server

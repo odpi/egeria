@@ -1643,6 +1643,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      *
      * @param userId caller's userId
      * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param metadataElementGUIDParameterName name of parameter for GUID
+     * @param metadataElementTypeName type of the metadata element
      * @param classificationName unique name of the classification to remove
      * @param forLineage the query is to support lineage retrieval
      * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
@@ -1779,6 +1781,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      *
      * @param properties packed properties
      * @return properties stored in Java map
+     * @throws InvalidParameterException the properties are invalid in some way
      */
     public Map<String, InstancePropertyValue> getElementPropertiesAsOMRSMap(ElementProperties    properties) throws InvalidParameterException
     {

@@ -10,7 +10,7 @@ The JVM is supported on most operating systems and so Java programs can run
 with the same behavior on almost any machine.
 This portability of code is why Java is used
 for the Egeria runtime - 
-the [OMAG Server Platform](../../open-metadata-implementation/admin-services/docs/concepts/omag-server-platform.md) -
+the [OMAG Server Platform](https://egeria-project.org/concepts/omag-server-platform) -
 and the clients.
 
 If you want to run Egeria you need to install the **Java Runtime Environment (JRE)**.
@@ -36,7 +36,7 @@ Also you must ensure JAVA_HOME is set, and pointing to a JDK. If this is not don
 
 ----
 * Return to [Programming Languages](.)
-* Link to [Building Egeria Tutorial](../../open-metadata-resources/open-metadata-tutorials/building-egeria-tutorial)
+* Link to [Building Egeria Tutorial](https://egeria-project.org/education/tutorials/building-egeria-tutorial/overview/)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

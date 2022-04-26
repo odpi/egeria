@@ -25,7 +25,7 @@ message to the audit log.
   It is permissible to correct typos in the other files but not change the shape of the types
   in the types created in previous releases (that is files called `OpenMetadataTypesArchiveX_X.java`.
   *  documented in
-[UML diagrams in the drawio files](../open-metadata-publication/website/open-metadata-types) and the
+[UML diagrams in the drawio files](https://egeria-project.org/types) and the
 diagram has been exported as an image.
 
 If you are also the code owner of the changed code then you also need to be sure that the changes are consistent

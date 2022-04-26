@@ -836,7 +836,7 @@ public class DisplayApplicationResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/elements/{parentGUID}/data-containers")
+    @PostMapping(path = "/schemas/elements/{parentGUID}/data-containers")
 
     public GUIDResponse createDataContainer(@PathVariable String                   serverName,
                                             @PathVariable String                   userId,
@@ -863,7 +863,7 @@ public class DisplayApplicationResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/elements/{parentGUID}/data-containers/from-template/{templateGUID}")
+    @PostMapping(path = "/schemas/elements/{parentGUID}/data-containers/from-template/{templateGUID}")
 
     public GUIDResponse createDataContainerFromTemplate(@PathVariable String              serverName,
                                                         @PathVariable String              userId,
@@ -890,7 +890,7 @@ public class DisplayApplicationResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/data-containers/{dataContainerGUID}")
+    @PostMapping(path = "/schemas/data-containers/{dataContainerGUID}")
 
     public VoidResponse updateDataContainer(@PathVariable String                   serverName,
                                             @PathVariable String                   userId,
@@ -916,7 +916,7 @@ public class DisplayApplicationResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/data-containers/{dataContainerGUID}/delete")
+    @PostMapping(path = "/schemas/data-containers/{dataContainerGUID}/delete")
 
     public VoidResponse removeDataContainer(@PathVariable String                    serverName,
                                             @PathVariable String                    userId,
@@ -943,7 +943,7 @@ public class DisplayApplicationResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/data-containers/by-search-string")
+    @PostMapping(path = "/schemas/data-containers/by-search-string")
 
     public DataContainersResponse findDataContainers(@PathVariable String                  serverName,
                                                      @PathVariable String                  userId,
@@ -969,7 +969,7 @@ public class DisplayApplicationResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/data-containers/by-parent-element/{parentGUID}")
+    @GetMapping(path = "/schemas/data-containers/by-parent-element/{parentGUID}")
 
     public DataContainersResponse getDataContainersForParent(@PathVariable String serverName,
                                                              @PathVariable String userId,
@@ -996,7 +996,7 @@ public class DisplayApplicationResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/data-containers/by-name")
+    @PostMapping(path = "/schemas/data-containers/by-name")
 
     public DataContainersResponse getDataContainersByName(@PathVariable String          serverName,
                                                           @PathVariable String          userId,
@@ -1020,7 +1020,7 @@ public class DisplayApplicationResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/data-containers/{dataContainerGUID}")
+    @GetMapping(path = "/schemas/data-containers/{dataContainerGUID}")
 
     public DataContainerResponse getDataContainerByGUID(@PathVariable String serverName,
                                                         @PathVariable String userId,

@@ -3,8 +3,8 @@
 
 # OMRS Event Topic
 
-The OMRS Topic is a [topic](../../../open-metadata-publication/website/basic-concepts/topic.md)
-provided through an [event broker](../../../open-metadata-publication/website/basic-concepts/event-broker.md) (typically Apache Kafka)
+The OMRS Topic is a [topic](https://egeria-project.org/concepts/basic-concepts/#topic)
+provided through an [event broker](https://egeria-project.org/concepts/basic-concepts/#event-broker) (typically Apache Kafka)
 that an [open metadata repository cohort](open-metadata-repository-cohort.md) uses to synchronize metadata
 between metadata repositories.
 
@@ -52,13 +52,13 @@ all events twice.  This configuration should only be used when absolutely needed
 paid to upgrading the back-level server so it can use the three topics.
 
 Details of configuring the different topic options can be found in the
-[Administration Guide](../../admin-services/docs/user/configuring-registration-to-a-cohort.md).
+[Administration Guide](https://egeria-project.org/guides/admin/servers).
 
 
 ## Enterprise OMRS Event Topic
 
 The [enterprise repository services](subsystem-descriptions/enterprise-repository-services.md)
-combine the OMRS events from all of the [open metadata repository cohorts](open-metadata-repository-cohort.md)
+combine the OMRS events from all the [open metadata repository cohorts](open-metadata-repository-cohort.md)
 that the server is connected to and makes them available to each local
 [Open Metadata Access Service (OMAS)](../../access-services).  This is called the
 enterprise OMRS event topic.  By default, it is implemented as an

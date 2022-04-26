@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-![InDev](../../../open-metadata-publication/website/images/egeria-content-status-in-development.png#pagewidth)
+![InDev](../../../images/egeria-content-status-in-development.png#pagewidth)
 
 # Software Developer Open Metadata Access Service (OMAS)
 
@@ -20,10 +20,12 @@ It also provides information about the most appropriate data sources
 to use for particular situations along with details of reference data values and sets.
 Using these services augments the software component model for the software capability.
 
-Finally it enables the documentation of the packaging as the components are moved into the
+Finally, it enables the documentation of the packaging as the components are moved into the
 [DevOps Pipeline](../dev-ops).
 
-## Design
+* [Documentation](https://egeria-project.org/services/omas/software-developer/overview)
+
+## Design Information
 
 The module structure for the Software Developer OMAS is as follows:
 

@@ -6,10 +6,14 @@ on:
   pull_request:
     branches: [master, feature-*, egeria-release-*]
 
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
     name: "Maven - latest release"
+    if: startsWith(github.repository,'odpi/')
     steps:
       - uses: actions/checkout@v2
         name: Checkout
