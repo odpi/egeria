@@ -51,22 +51,22 @@ import java.util.Map;
  */
 public class InfrastructureIntegratorContext
 {
-    private CapabilityManagerClient     capabilityManagerClient;
-    private ConnectionManagerClient     connectionManagerClient;
-    private ConnectorTypeManagerClient  connectorTypeManagerClient;
-    private DataAssetManagerClient      dataAssetManagerClient;
-    private EndpointManagerClient       endpointManagerClient;
-    private HostManagerClient           hostManagerClient;
-    private ITProfileManagerClient      itProfileManagerClient;
-    private PlatformManagerClient       platformManagerClient;
-    private ProcessManagerClient        processManagerClient;
-    private ServerManagerClient         serverManagerClient;
-    private ITInfrastructureEventClient eventClient;
-    private String                      userId;
-    private String                      infrastructureManagerGUID;
-    private String                      infrastructureManagerName;
+    private final CapabilityManagerClient     capabilityManagerClient;
+    private final ConnectionManagerClient     connectionManagerClient;
+    private final ConnectorTypeManagerClient  connectorTypeManagerClient;
+    private final DataAssetManagerClient      dataAssetManagerClient;
+    private final EndpointManagerClient       endpointManagerClient;
+    private final HostManagerClient           hostManagerClient;
+    private final ITProfileManagerClient      itProfileManagerClient;
+    private final PlatformManagerClient       platformManagerClient;
+    private final ProcessManagerClient        processManagerClient;
+    private final ServerManagerClient         serverManagerClient;
+    private final ITInfrastructureEventClient eventClient;
+    private final String                      userId;
+    private final String                      infrastructureManagerGUID;
+    private final String                      infrastructureManagerName;
 
-    private boolean                infrastructureManagerIsHome = true;
+    private boolean     infrastructureManagerIsHome = true;
 
     static final String assetTypeName         = "Asset";
 
@@ -1274,6 +1274,8 @@ public class InfrastructureIntegratorContext
      *
      * @param guid unique identifier of the requested metadata element
      * @param effectiveTime effective time for the query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
      *
      * @return list of related IT Assets
      *
@@ -1431,6 +1433,7 @@ public class InfrastructureIntegratorContext
      *
      * @param capabilityGUID unique identifier of the software server capability to query
      * @param useType value to search for.  Null means all use types.
+     * @param effectiveTime effective time for the query
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *

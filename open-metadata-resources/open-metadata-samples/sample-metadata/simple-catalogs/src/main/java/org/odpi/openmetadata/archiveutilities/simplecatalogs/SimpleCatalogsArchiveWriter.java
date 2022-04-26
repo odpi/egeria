@@ -6,6 +6,7 @@ import org.odpi.openmetadata.archiveutilities.simplecatalogs.catalogcontent.Simp
 import org.odpi.openmetadata.archiveutilities.simplecatalogs.catalogcontent.SimpleDataCatalogArchiveBuilder;
 import org.odpi.openmetadata.archiveutilities.simplecatalogs.catalogcontent.SimpleEventCatalogArchiveBuilder;
 import org.odpi.openmetadata.archiveutilities.simplecatalogs.catalogcontent.SimpleGovernanceCatalogArchiveBuilder;
+import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchive;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveWriter;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 
@@ -18,6 +19,7 @@ import java.util.List;
  */
 public class SimpleCatalogsArchiveWriter extends OMRSArchiveWriter
 {
+    private static final String openMetadataArchiveRootName           = "SimpleCatalog";
     private static final String eventOpenMetadataArchiveFileName      = "SimpleEventCatalog.json";
     private static final String apiOpenMetadataArchiveFileName        = "SimpleAPICatalog.json";
     private static final String dataOpenMetadataArchiveFileName       = "SimpleDataCatalog.json";
@@ -32,7 +34,7 @@ public class SimpleCatalogsArchiveWriter extends OMRSArchiveWriter
 
 
     /**
-     * Generates and writes out an open metadata archive containing all of the content for the simple catalogs.
+     * Generates and writes out an open metadata archive containing all the content for the simple catalogs.
      */
     private void writeOpenMetadataArchives()
     {
@@ -41,28 +43,33 @@ public class SimpleCatalogsArchiveWriter extends OMRSArchiveWriter
             List<OpenMetadataArchive> dependentArchives = new ArrayList<>();
             OpenMetadataArchive       newArchive;
 
-            SimpleEventCatalogArchiveBuilder eventArchiveBuilder = new SimpleEventCatalogArchiveBuilder();
+            /*
+             * This value allows the simple archive to be based on the existing open metadata types
+             */
+            dependentArchives.add(new OpenMetadataTypesArchive().getOpenMetadataArchive());
+
+            SimpleEventCatalogArchiveBuilder eventArchiveBuilder = new SimpleEventCatalogArchiveBuilder(openMetadataArchiveRootName);
 
             newArchive = eventArchiveBuilder.getOpenMetadataArchive();
             dependentArchives.add(newArchive);
 
             super.writeOpenMetadataArchive(eventOpenMetadataArchiveFileName, newArchive);
 
-            SimpleAPICatalogArchiveBuilder apiArchiveBuilder = new SimpleAPICatalogArchiveBuilder();
+            SimpleAPICatalogArchiveBuilder apiArchiveBuilder = new SimpleAPICatalogArchiveBuilder(openMetadataArchiveRootName);
 
             newArchive = apiArchiveBuilder.getOpenMetadataArchive();
             dependentArchives.add(newArchive);
 
             super.writeOpenMetadataArchive(apiOpenMetadataArchiveFileName, newArchive);
 
-            SimpleDataCatalogArchiveBuilder dataArchiveBuilder = new SimpleDataCatalogArchiveBuilder();
+            SimpleDataCatalogArchiveBuilder dataArchiveBuilder = new SimpleDataCatalogArchiveBuilder(openMetadataArchiveRootName);
 
             newArchive = dataArchiveBuilder.getOpenMetadataArchive();
             dependentArchives.add(newArchive);
 
             super.writeOpenMetadataArchive(dataOpenMetadataArchiveFileName, newArchive);
 
-            SimpleGovernanceCatalogArchiveBuilder governanceArchiveBuilder = new SimpleGovernanceCatalogArchiveBuilder(dependentArchives);
+            SimpleGovernanceCatalogArchiveBuilder governanceArchiveBuilder = new SimpleGovernanceCatalogArchiveBuilder(openMetadataArchiveRootName, dependentArchives);
 
             super.writeOpenMetadataArchive(governanceOpenMetadataArchiveFileName, governanceArchiveBuilder.getOpenMetadataArchive());
         }
