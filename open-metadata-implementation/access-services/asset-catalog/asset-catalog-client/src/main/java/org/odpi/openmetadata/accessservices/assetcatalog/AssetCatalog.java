@@ -40,6 +40,8 @@ public class AssetCatalog extends OCFRESTClient implements AssetCatalogInterface
     private static final String ASSET_CONTEXT = "/asset-context/{2}?assetType={3}";
     private static final String RELATIONSHIP_BETWEEN_ENTITIES = "/relationship-between-entities/{2}/{3}?relationshipType={4}";
     private static final String SUPPORTED_TYPES = "/supportedTypes?type={2}";
+    private static final String ASSETS_BY_TYPE_GUID = "/assets-by-type-guid/{2}";
+    private static final String ASSETS_BY_TYPE_NAME = "/assets-by-type-name/{2}";
 
     private static final String GUID_PARAMETER = "assetGUID";
     private static final String START_ASSET_GUID = "startAssetGUID";
@@ -166,6 +168,34 @@ public class AssetCatalog extends OCFRESTClient implements AssetCatalogInterface
 
         AssetListResponse assetResponse = callPostRESTCall(methodName, AssetListResponse.class,
                 serverPlatformURLRoot + BASE_PATH + SEARCH, searchParameters, serverName, userId, searchCriteria);
+
+        detectExceptions(assetResponse);
+
+        return assetResponse;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AssetListResponse searchByTypeNameOrGUID(String userId,
+                                              String typeName,
+                                              String typeGUID)
+            throws InvalidParameterException, PropertyServerException {
+        String methodName = "searchByTypeNameOrGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        AssetListResponse assetResponse = null;
+
+        if (typeName != null) {
+            invalidParameterHandler.validateSearchString(typeName, "typeName", methodName);
+            assetResponse = callGetRESTCall(methodName, AssetListResponse.class,
+                    serverPlatformURLRoot + BASE_PATH + ASSETS_BY_TYPE_NAME, serverName, userId, typeName);
+        } else if (typeGUID != null) {
+            invalidParameterHandler.validateSearchString(typeGUID, "typeGUID", methodName);
+            assetResponse = callGetRESTCall(methodName, AssetListResponse.class,
+                    serverPlatformURLRoot + BASE_PATH + ASSETS_BY_TYPE_GUID, serverName, userId, typeGUID);
+        }
 
         detectExceptions(assetResponse);
 
