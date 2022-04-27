@@ -1238,14 +1238,14 @@ public class RexViewHandler
                                   List<String>    entityTypeGUIDs,
                                   List<String>    relationshipTypeGUIDs,
                                   List<String>    classificationNames,
-                                  Long            asOfTime,
+                                  long            asOfTime,
                                   String          methodName)
     throws
     RexViewServiceException
 
     {
         Date asOfTimeDate = null;
-        if (asOfTime !=null) {
+        if (asOfTime != 0) {
             asOfTimeDate = new Date(asOfTime);
         }
 
