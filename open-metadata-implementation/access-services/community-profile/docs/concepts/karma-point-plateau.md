@@ -12,7 +12,7 @@ However the threshold for the karma point plateau can be
 The Community Profile OMAS generates a
 [Karma Point Plateau Event](../../community-profile-api/docs/events/karma-point-plateau-event.md)
 each time a person achieves a karma point plateau.
-This is sent on the Community Profile OMAS's [OutTopic](../../../docs/concepts/client-server/out-topic.md)
+This is sent on the Community Profile OMAS's [OutTopic](https://egeria-project.org/concepts/out-topic)
 
 
 

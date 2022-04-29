@@ -6,7 +6,7 @@
 # OMAG Multi-Tenant Services
 
 The Open Metadata and Governance (OMAG) Multi-Tenant Services supports the management of
-[OMAG Server](https://egeria-project.org/docs/concepts/omag-server) instances
+[OMAG Server](https://egeria-project.org/concepts/omag-server) instances
 running in an [OMAG Server Platform](https://egeria-project.org/concepts/omag-server-platform).
 
 It maintains a map of **server name** to **server instance** in the

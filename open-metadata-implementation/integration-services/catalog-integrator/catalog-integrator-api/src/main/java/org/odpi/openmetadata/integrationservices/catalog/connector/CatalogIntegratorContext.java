@@ -22,36 +22,36 @@ import java.util.Map;
  */
 public class CatalogIntegratorContext
 {
-    private static String collaborationExchangeServiceName     = "CollaborationExchangeService";
-    private static String connectionExchangeServiceName        = "ConnectionExchangeService";
-    private static String dataAssetExchangeServiceName         = "DataAssetExchangeService";
-    private static String externalReferenceExchangeServiceName = "ExternalReferenceExchangeService";
-    private static String glossaryExchangeServiceName          = "GlossaryExchangeService";
-    private static String governanceExchangeServiceName        = "GovernanceExchangeService";
-    private static String infrastructureExchangeServiceName    = "InfrastructureExchangeService";
-    private static String lineageExchangeServiceName           = "LineageExchangeService";
-    private static String stewardshipExchangeServiceName       = "StewardshipExchangeService";
-    private static String validValuesExchangeServiceName       = "ValidValuesExchangeService";
+    private final static String collaborationExchangeServiceName     = "CollaborationExchangeService";
+    private final static String connectionExchangeServiceName        = "ConnectionExchangeService";
+    private final static String dataAssetExchangeServiceName         = "DataAssetExchangeService";
+    private final static String externalReferenceExchangeServiceName = "ExternalReferenceExchangeService";
+    private final static String glossaryExchangeServiceName          = "GlossaryExchangeService";
+    private final static String governanceExchangeServiceName        = "GovernanceExchangeService";
+    private final static String infrastructureExchangeServiceName    = "InfrastructureExchangeService";
+    private final static String lineageExchangeServiceName           = "LineageExchangeService";
+    private final static String stewardshipExchangeServiceName       = "StewardshipExchangeService";
+    private final static String validValuesExchangeServiceName       = "ValidValuesExchangeService";
 
 
-    private ExternalAssetManagerClient       assetManagerClient;
-    private AssetManagerEventClient          eventClient;
-    private CollaborationExchangeService     collaborationExchangeService;
-    private ConnectionExchangeService        connectionExchangeService;
-    private DataAssetExchangeService         dataAssetExchangeService;
-    private ExternalReferenceExchangeService externalReferenceExchangeService;
-    private GlossaryExchangeService          glossaryExchangeService;
-    private GovernanceExchangeService        governanceExchangeService;
-    private InfrastructureExchangeService    infrastructureExchangeService;
-    private LineageExchangeService           lineageExchangeService;
-    private StewardshipExchangeService       stewardshipExchangeService;
-    private ValidValuesExchangeService       validValuesExchangeService;
-    private String                           userId;
-    private String                           assetManagerGUID;
-    private String                           assetManagerName;
-    private String                           connectorName;
-    private String                           integrationServiceName;
-    private SynchronizationDirection         synchronizationDirection;
+    private final ExternalAssetManagerClient       assetManagerClient;
+    private final AssetManagerEventClient          eventClient;
+    private final CollaborationExchangeService     collaborationExchangeService;
+    private final ConnectionExchangeService        connectionExchangeService;
+    private final DataAssetExchangeService         dataAssetExchangeService;
+    private final ExternalReferenceExchangeService externalReferenceExchangeService;
+    private final GlossaryExchangeService          glossaryExchangeService;
+    private final GovernanceExchangeService        governanceExchangeService;
+    private final InfrastructureExchangeService    infrastructureExchangeService;
+    private final LineageExchangeService           lineageExchangeService;
+    private final StewardshipExchangeService       stewardshipExchangeService;
+    private final ValidValuesExchangeService       validValuesExchangeService;
+    private final String                           userId;
+    private final String                           assetManagerGUID;
+    private final String                           assetManagerName;
+    private final String                           connectorName;
+    private final String                           integrationServiceName;
+    private final SynchronizationDirection         synchronizationDirection;
 
     private boolean glossaryExchangeActive          = true;
     private boolean externalReferenceExchangeActive = true;
@@ -72,6 +72,7 @@ public class CatalogIntegratorContext
      * @param eventClient client to register for events
      * @param collaborationExchangeClient client for collaboration requests
      * @param connectionExchangeClient client for connection requests
+     * @param dataAssetExchangeClient client for asset requests
      * @param externalReferenceExchangeClient client for data asset requests
      * @param glossaryExchangeClient client for glossary requests
      * @param governanceExchangeClient client for governance requests
@@ -522,6 +523,32 @@ public class CatalogIntegratorContext
         {
             throw new UserNotAuthorizedException(
                     CatalogIntegratorErrorCode.DISABLED_EXCHANGE_SERVICE.getMessageDefinition(dataAssetExchangeServiceName,
+                                                                                              integrationServiceName),
+                    this.getClass().getName(),
+                    methodName,
+                    userId);
+        }
+    }
+
+
+    /**
+     * Return the interface for exchanging data asset information (assets, schemas, connections).
+     *
+     * @return data asset exchange service
+     * @throws UserNotAuthorizedException this option is not enabled in the configuration
+     */
+    public ExternalReferenceExchangeService getExternalReferenceService() throws UserNotAuthorizedException
+    {
+        final String methodName = "getExternalReferenceService";
+
+        if (externalReferenceExchangeActive)
+        {
+            return externalReferenceExchangeService;
+        }
+        else
+        {
+            throw new UserNotAuthorizedException(
+                    CatalogIntegratorErrorCode.DISABLED_EXCHANGE_SERVICE.getMessageDefinition(externalReferenceExchangeServiceName,
                                                                                               integrationServiceName),
                     this.getClass().getName(),
                     methodName,

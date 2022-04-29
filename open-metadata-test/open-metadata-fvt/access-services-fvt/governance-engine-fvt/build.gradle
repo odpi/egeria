@@ -70,7 +70,7 @@ task startServer(dependsOn: ['cleanData',':open-metadata-distribution:open-metad
     standardOutput = layout.buildDirectory.file("chassis.log")
     errorOutput = layout.buildDirectory.file("chassis-error.log")
     //stopAfter = verify
-    waitForPort = 10446
+    waitForPort = 10451
     timeout = 180
 
     //waitForOutput = 'has started'
@@ -83,7 +83,7 @@ task configServer(dependsOn: ['startServer','classes'], type: JavaExec) {
     //TODO: These parms aren't currently correctly passed. We rely on defaults in the script
     systemProperties = [
             'name': 'Egeria chassis',
-            'baseURL': 'https://localhost:10446',
+            'baseURL': 'https://localhost:10451',
             'servermem': 'serverinmem',
             'delay': '2',
             'user': 'testUser'
@@ -100,7 +100,7 @@ test {
     group = 'verification'
     outputs.upToDateWhen {return false}
     systemProperties = [
-            'fvt.url': 'https://localhost:10446'
+            'fvt.url': 'https://localhost:10451'
     ]
     useJUnitPlatform()
     testLogging.showStandardStreams = true

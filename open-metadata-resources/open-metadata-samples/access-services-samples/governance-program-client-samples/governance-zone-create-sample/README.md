@@ -6,7 +6,7 @@
 As part of the set up of the [Coco Pharmaceuticals Governance Program](https://opengovernance.odpi.org/coco-pharmaceuticals/),
 [Erin Overview](https://opengovernance.odpi.org/coco-pharmaceuticals/personas/erin-overview.html), the Information Architect at
 Coco Pharmaceuticals, is setting up the
-[Governance Zone Definitions](../../../../../open-metadata-implementation/access-services/docs/concepts/governance-zones).
+[Governance Zone Definitions](https://egeria-project.org/concepts/governance-zone).
 
 The governance zones defines are as follows:
 

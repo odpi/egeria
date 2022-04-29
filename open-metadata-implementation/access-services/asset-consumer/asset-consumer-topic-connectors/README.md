@@ -6,7 +6,7 @@
 The asset consumer connectors are the interfaces of the
 connectors supported by the Asset Consumer OMAS.
 
-Currently there are two connectors, one for the client
+Currently, there are two connectors, one for the client
 and one for the server, that are used to exchange events
 over the Asset Consumer OMAS's out topic.
 

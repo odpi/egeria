@@ -34,6 +34,7 @@ public class AccessServiceRegistration implements Serializable
      * Complete Constructor
      *
      * @param accessServiceCode ordinal for this access service
+     * @param accessServiceDevelopmentStatus development status
      * @param accessServiceName symbolic name for this access service
      * @param accessServiceFullName full name for this access service
      * @param accessServiceURLMarker name of the part of the URL that is the name of the access service

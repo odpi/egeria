@@ -653,6 +653,7 @@ public class ITInfrastructureResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
+     * @param infrastructureGUID unique identifier of the infrastructure element that has this endpoint
      * @param requestBody properties about the endpoint
      *
      * @return unique identifier of the new endpoint  or
@@ -703,6 +704,7 @@ public class ITInfrastructureResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
+     * @param infrastructureGUID unique identifier of the infrastructure element that has this endpoint
      * @param networkAddress location of the endpoint
      * @param templateGUID unique identifier of the metadata element to copy
      * @param requestBody properties that override the template

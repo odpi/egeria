@@ -22,7 +22,7 @@ The **GovernanceAction** metadata entity is used to coordinate
 the desired activity in the governance engine, record its current state and
 act as a record of the activity for future audits.
 
-Governance actions can be created through the [Governance Engine OMAS API](../../../access-services/governance-engine).
+Governance actions can be created through the [Governance Engine OMAS API](https://egeria-project.org/services/omas/governance-engine/overview).
 Some governance services (for example, the 
 [Watchdog Governance Action Service](../../../frameworks/governance-action-framework/docs/watchdog-governance-service.md))
 can create governance actions when they run.  
