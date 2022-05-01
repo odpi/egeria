@@ -116,7 +116,7 @@ allprojects {
         spotbugsVersion = '4.6.0'
         springdocVersion = '1.6.6'
         springldapVersion = '2.3.5.RELEASE'
-        springsecurityVersion = '5.6.2'
+        springsecurityVersion = '5.6.3'
         swaggerVersion = '2.1.13'
         springwebVersion = '5.3.19'
         testngVersion = '7.5'
