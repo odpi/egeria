@@ -151,7 +151,7 @@
         <junit.jupiter.version>5.8.2</junit.jupiter.version>
         <hamcrest.version>2.2</hamcrest.version>
         <junit.version>4.13.2</junit.version>
-        <surefire.plugin.version>3.0.0-M5</surefire.plugin.version>
+        <surefire.plugin.version>3.0.0-M6</surefire.plugin.version>
         <mockito.version>4.4.0</mockito.version>
         <slf4j.version>1.7.36</slf4j.version>
         <testng.version>7.5</testng.version>
