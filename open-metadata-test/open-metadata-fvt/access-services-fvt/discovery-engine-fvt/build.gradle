@@ -58,7 +58,8 @@ sourceSets.test.groovy.srcDirs = ["src/test/java", "src/test/script"]
 task startServer(dependsOn: ['cleanData',':open-metadata-distribution:open-metadata-assemblies:unzip'], type: com.github.psxpaul.task.ExecFork) {
     // Start some external service
     executable = System.properties.'java.home' + '/bin/java'
-    workingDir = "${buildDir}"
+    mkdir "${buildDir}/fvtserver"
+workingDir = "${buildDir}"
     args = [ "-Dserver.port=10450",
              "-Dloader.path=${distdir}/server/lib",
              "-Dspringdoc.api-docs.enabled=false",
