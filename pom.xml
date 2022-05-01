@@ -164,9 +164,9 @@
         <janus.version>0.6.1</janus.version>
         <tomcat.version>9.0.62</tomcat.version>
         <spring.ldap.core>2.3.7.RELEASE</spring.ldap.core>
-        <gremlin.version>3.5.2</gremlin.version>
         <spring-data.version>2.6.4</spring-data.version>
         <springdoc.version>1.6.8</springdoc.version>
+        <gremlin.version>3.6.0</gremlin.version>
         <spring.version>5.3.19</spring.version>
         <spring-security.version>5.6.3</spring-security.version>
         <springdoc-plugin.version>1.4</springdoc-plugin.version>
