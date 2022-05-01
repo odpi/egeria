@@ -102,7 +102,7 @@ allprojects {
         openlineageVersion = '0.6.2'
         ossVersion = '4.14.0'
         plexusVersion = '3.4.1'
-        prometheusVersion = '1.8.4'
+        prometheusVersion = '1.8.5'
         quartzVersion = '2.3.2'
         reflectionsVersion = '0.10.2'
         sanitizerVersion = '1.2.3'
