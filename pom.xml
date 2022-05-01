@@ -3960,7 +3960,7 @@
                                 <plugin>
                                     <groupId>com.h3xstream.findsecbugs</groupId>
                                     <artifactId>findsecbugs-plugin</artifactId>
-                                    <version>1.11.0</version> <!-- Auto-update to the latest stable -->
+                                    <version>1.12.0</version> <!-- Auto-update to the latest stable -->
                                 </plugin>
                             </plugins>
                         </configuration>
