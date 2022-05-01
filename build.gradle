@@ -126,8 +126,8 @@ allprojects {
         validationVersion = '2.0.1.Final'
         cassandraVersion = '3.11.12'
         antVersion = '1.10.12'
-        protobufVersion = '3.19.2'
         gsonVersion = '2.9.0'
+        protobufVersion = '3.20.1'
         jnrVersion = '3.1.8'
     }
 
