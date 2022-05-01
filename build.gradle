@@ -111,7 +111,7 @@ allprojects {
         slf4jVersion = '1.7.36'
         snakeyamlVersion = '1.30'
         snappyVersion = '1.1.8.4'
-        springbootVersion = '2.6.6'
+        springbootVersion = '2.6.7'
         springdataVersion = '2.6.3'
         spotbugsVersion = '4.6.0'
         springdocVersion = '1.6.6'
