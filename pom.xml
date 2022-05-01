@@ -202,7 +202,7 @@
         <antlr.version>3.5.3</antlr.version>
         <ST4.version>4.3.3</ST4.version>
         <snappy.version>1.1.8.4</snappy.version>
-        <swagger.version>2.1.13</swagger.version>
+        <swagger.version>2.2.0</swagger.version>
         <snakeyaml.version>1.30</snakeyaml.version>
         <micrometer-registry-prometheus.version>1.8.4</micrometer-registry-prometheus.version>
         <groovy.version>3.0.10</groovy.version>
