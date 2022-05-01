@@ -31,7 +31,7 @@ jobs:
         # For a build machine environment, force a more clean build 
         run: ./gradlew clean build --no-build-cache --no-configure-on-demand --priority normal --no-watch-fs --refresh-dependencies
       - name: Upload Test coverage report
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Jacoco Coverage Report
           path: build/reports/jacoco/codeCoverageReport
