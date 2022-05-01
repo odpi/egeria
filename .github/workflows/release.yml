@@ -103,7 +103,7 @@ jobs:
 
       # Mostly for verification - not published to the release itself for now
       - name: Upload assemblies
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Assemblies
           path: open-metadata-distribution/open-metadata-assemblies/target/*.gz

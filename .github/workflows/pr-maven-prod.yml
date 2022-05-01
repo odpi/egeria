@@ -31,7 +31,7 @@ jobs:
       - name: Build with Maven
         run: mvn -B -DargLine="-XX:+TieredCompilation -XX:TieredStopAtLevel=1" clean verify --file pom.xml
       - name: Upload assemblies
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Assemblies
           path: open-metadata-distribution/open-metadata-assemblies/target/*.gz
