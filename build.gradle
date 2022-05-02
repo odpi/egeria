@@ -19,8 +19,8 @@ buildscript {
  */
 
 plugins {
-        id "io.freefair.aggregate-javadoc" version "6.4.1"
-        id "io.freefair.lombok" version "6.4.1"
+        id "io.freefair.aggregate-javadoc" version "6.4.3"
+        id "io.freefair.lombok" version "6.4.3"
     }
 
 /*
@@ -57,7 +57,7 @@ allprojects {
         antlrVersion = '3.5.3'
         ST4Version = '4.3.3'
         avroVersion = '1.11.0'
-        classgraphVersion = '4.8.143'
+        classgraphVersion = '4.8.146'
         classmateVersion = '1.5.1'
         collections4Version='4.4'
         commonscodecVersion = '1.15'
@@ -66,7 +66,8 @@ allprojects {
         commonsioVersion = '2.11.0'
         commonsloggingVersion = '1.2'
         commonstextVersion = '1.9'
-        elasticsearchVersion = '7.17.1'
+        commonscliVersion = '1.5.0'
+        elasticsearchVersion = '8.0.1'
         findbugsVersion = '3.0.2'
         glassfishVersion = '1.1.4'
         gremlinVersion = '3.5.2'
@@ -74,13 +75,13 @@ allprojects {
         guavaVersion = '31.1-jre'
         hamcrestVersion = '2.2'
         hdrhistogramVersion = '2.1.12'
-        hibernatevalidatorVersion = '6.2.0.Final'
+        hibernatevalidatorVersion = '6.2.3.Final'
         httpclientVersion = '4.5.13'
         httpcoreVersion = '4.4.15'
         jacksonVersion = '2.13.1'
         jacksonaslVersion = '1.9.14-atlassian-6'
         jakartaannotationVersion = '1.3.5'
-        jakartapersistenceVersion = '2.2.3'
+        jakartapersistenceVersion = '3.1.0'
         janusVersion = '0.6.1'
 	    jakartavalidationVersion = '3.0.1'
         javassistVersion = '3.28.0-GA'
@@ -97,12 +98,12 @@ allprojects {
         logbackVersion = '1.2.11'
         lettuceVersion = '6.1.8.RELEASE'
         luceneVersion = '8.11.1'
-        nettyVersion = '4.1.75.Final'
-        mockitoVersion = '4.4.0'
-        openlineageVersion = '0.6.2'
-        ossVersion = '4.14.0'
+        nettyVersion = '4.1.76.Final'
+        ossVersion = '4.14.1'
+        openlineageVersion = '0.8.1'
+        mockitoVersion = '4.5.1'
         plexusVersion = '3.4.1'
-        prometheusVersion = '1.8.4'
+        prometheusVersion = '1.8.5'
         quartzVersion = '2.3.2'
         reflectionsVersion = '0.10.2'
         sanitizerVersion = '1.2.3'
@@ -111,24 +112,24 @@ allprojects {
         slf4jVersion = '1.7.36'
         snakeyamlVersion = '1.30'
         snappyVersion = '1.1.8.4'
-        springbootVersion = '2.6.6'
-        springdataVersion = '2.6.3'
+        springdataVersion = '2.6.4'
+        springbootVersion = '2.6.7'
         spotbugsVersion = '4.6.0'
-        springdocVersion = '1.6.6'
+        springdocVersion = '1.6.8'
         springldapVersion = '2.3.5.RELEASE'
-        springsecurityVersion = '5.6.2'
-        swaggerVersion = '2.1.13'
+        swaggerVersion = '2.2.0'
+        springsecurityVersion = '5.6.3'
         springwebVersion = '5.3.19'
         testngVersion = '7.5'
         thriftVersion = '0.16.0'
         tinkVersion = '1.6.1'
         tomcatVersion = '9.0.62'
         validationVersion = '2.0.1.Final'
-        cassandraVersion = '3.11.12'
-        antVersion = '1.10.9'
-        protobufVersion = '3.19.2'
-        gsonVersion = '2.8.9'
-        jnrVersion = '3.1.8'
+        antVersion = '1.10.12'
+        gsonVersion = '2.9.0'
+        protobufVersion = '3.20.1'
+        jnrVersion = '3.1.15'
+        cassandraVersion = '4.0.3'
     }
 
     dependencies {
@@ -151,6 +152,7 @@ allprojects {
             implementation("com.sleepycat:je:${sleepycatVersion}")
             implementation("commons-codec:commons-codec:${commonscodecVersion}")
             implementation("commons-io:commons-io:${commonsioVersion}")
+            implementation("commons-cli:commons-cli:${commonscliVersion}")
             implementation("commons-logging:commons-logging:${commonsloggingVersion}")
             implementation("org.apache.commons:commons-text:${commonstextVersion}")
             implementation("io.github.classgraph:classgraph:${classgraphVersion}")
