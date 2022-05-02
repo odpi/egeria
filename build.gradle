@@ -66,6 +66,7 @@ allprojects {
         commonsioVersion = '2.11.0'
         commonsloggingVersion = '1.2'
         commonstextVersion = '1.9'
+        commonscliVersion = '1.5.0'
         elasticsearchVersion = '8.0.1'
         findbugsVersion = '3.0.2'
         glassfishVersion = '1.1.4'
@@ -151,6 +152,7 @@ allprojects {
             implementation("com.sleepycat:je:${sleepycatVersion}")
             implementation("commons-codec:commons-codec:${commonscodecVersion}")
             implementation("commons-io:commons-io:${commonsioVersion}")
+            implementation("commons-cli:commons-cli:${commonscliVersion}")
             implementation("commons-logging:commons-logging:${commonsloggingVersion}")
             implementation("org.apache.commons:commons-text:${commonstextVersion}")
             implementation("io.github.classgraph:classgraph:${classgraphVersion}")
