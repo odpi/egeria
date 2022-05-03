@@ -30,7 +30,7 @@ public class OpenLineageClient extends FFDCRESTClient implements OpenLineageInte
     private static final String ENTITIES = "/entities/{2}";
     private static final String DETAILS = "/details";
     public static final String TYPES = "types";
-    public static final String NODES = "nodes";
+    public static final String NODES = "nodes?type={2}&name={3}&limit={4}";
     private static final String SEARCH = "/search";
     private OpenLineageExceptionHandler openLineageExceptionHandler = new OpenLineageExceptionHandler();
 
