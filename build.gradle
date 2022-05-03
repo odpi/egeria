@@ -70,7 +70,7 @@ allprojects {
         elasticsearchVersion = '8.0.1'
         findbugsVersion = '3.0.2'
         glassfishVersion = '1.1.4'
-        gremlinVersion = '3.6.0'
+        gremlinVersion = '3.5.2'
         groovyVersion = '3.0.9'
         guavaVersion = '31.1-jre'
         hamcrestVersion = '2.2'
@@ -272,6 +272,7 @@ allprojects {
             testImplementation("org.junit.jupiter:junit-jupiter-engine:${junitjupiterVersion}")
             testImplementation("org.junit.jupiter:junit-platform-runner:${junitplatformVersion}")
             testImplementation("org.junit.jupiter:junit-platform-suite-api:${junitplatformVersion}")
+            testImplementation("org.junit.vintage:junit-vintage-engine:${junitplatformVersion}")
             testImplementation("org.mockito:mockito-core:${mockitoVersion}")
             testImplementation("org.mockito:mockito-junit-jupiter:${mockitoVersion}")
             testImplementation("org.mockito:mockito-inline:${mockitoVersion}")
@@ -288,6 +289,17 @@ allprojects {
 
     jacoco {
         toolVersion = "0.8.8"
+    }
+
+    // Allow for tests to be run in all projects
+    test {
+        useJUnitPlatform()
+    }
+    dependencies {
+        testImplementation("junit:junit")
+        testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
+        testImplementation 'org.junit.jupiter:junit-jupiter-api'
+        testImplementation 'org.junit.jupiter:junit-jupiter-engine'
     }
 
     publishing {
