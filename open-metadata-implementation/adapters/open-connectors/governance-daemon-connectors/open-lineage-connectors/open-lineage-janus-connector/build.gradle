@@ -42,3 +42,9 @@ description = 'Open Lineage Janus Connector'
 java {
     withJavadocJar()
 }
+
+test {
+    filter {
+        excludeTestsMatching "*.OpenLineageGraphValidationTests"
+    }
+}

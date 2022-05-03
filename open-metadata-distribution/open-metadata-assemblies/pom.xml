@@ -10,7 +10,7 @@
     <parent>
         <artifactId>open-metadata-distribution</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.8-SNAPSHOT</version>
+        <version>3.9-SNAPSHOT</version>
     </parent>
 
     <name>Open Metadata Assemblies</name>
@@ -349,10 +349,6 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>admin-services-config-metadata-server-sample</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>cloud-information-model</artifactId>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>

@@ -4,23 +4,29 @@
 package org.odpi.openmetadata.archiveutilities.simplecatalogs.catalogcontent;
 
 
-import org.odpi.openmetadata.archiveutilities.catalogbuilder.CatalogTypesArchiveBuilder;
+import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchive;
+import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
+import org.odpi.openmetadata.samples.archiveutilities.SimpleCatalogArchiveHelper;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import static org.odpi.openmetadata.samples.archiveutilities.SimpleCatalogArchiveHelper.API_REQUEST_TYPE_NAME;
+import static org.odpi.openmetadata.samples.archiveutilities.SimpleCatalogArchiveHelper.API_RESPONSE_TYPE_NAME;
 
 /**
  * SimpleAPICatalogArchiveBuilder provides API metadata.
  */
-public class SimpleAPICatalogArchiveBuilder extends CatalogTypesArchiveBuilder
+public class SimpleAPICatalogArchiveBuilder
 {
     /*
      * This is the header information for the archive.
      */
     private static final String                  archiveGUID        = "9e594f24-2494-4000-ac20-59f374eaa0e6";
-    private static final String                  archiveRootName    = "SimpleAPICatalog";
-    private static final String                  archiveName        = "Simple API Catalog";
+    private static final String                  archiveName        = "SimpleAPICatalog";
     private static final String                  archiveLicense     = "Apache 2.0";
     private static final String                  archiveDescription = "Sample metadata showing API assets and their payloads.";
     private static final OpenMetadataArchiveType archiveType        = OpenMetadataArchiveType.CONTENT_PACK;
@@ -73,23 +79,39 @@ public class SimpleAPICatalogArchiveBuilder extends CatalogTypesArchiveBuilder
     private static final long   versionNumber = 1L;
     private static final String versionName   = "1.0";
 
+    private final OMRSArchiveBuilder         archiveBuilder;
+    private final SimpleCatalogArchiveHelper archiveHelper;
 
     /**
      * Constructor pushes all archive header values to the superclass
+     *
+     * @param archiveRootName common name for the guid map
      */
-    public SimpleAPICatalogArchiveBuilder()
+    public SimpleAPICatalogArchiveBuilder(String archiveRootName)
     {
-        super(archiveGUID,
-              archiveName,
-              archiveDescription,
-              archiveType,
-              archiveRootName,
-              originatorName,
-              archiveLicense,
-              creationDate,
-              versionNumber,
-              versionName,
-              null);
+        List<OpenMetadataArchive> dependentOpenMetadataArchives = new ArrayList<>();
+
+        /*
+         * This value allows the archive to be based on the existing open metadata types
+         */
+        dependentOpenMetadataArchives.add(new OpenMetadataTypesArchive().getOpenMetadataArchive());
+
+        this.archiveBuilder = new OMRSArchiveBuilder(archiveGUID,
+                                                     archiveName,
+                                                     archiveDescription,
+                                                     archiveType,
+                                                     originatorName,
+                                                     archiveLicense,
+                                                     creationDate,
+                                                     dependentOpenMetadataArchives);
+
+        this.archiveHelper = new SimpleCatalogArchiveHelper(archiveBuilder,
+                                                            archiveGUID,
+                                                            archiveRootName,
+                                                            originatorName,
+                                                            creationDate,
+                                                            versionNumber,
+                                                            versionName);
     }
 
 
@@ -101,92 +123,95 @@ public class SimpleAPICatalogArchiveBuilder extends CatalogTypesArchiveBuilder
      */
     public OpenMetadataArchive getOpenMetadataArchive()
     {
-        String assetGUID = super.addAsset(apiAssetTypeName,
-                                          customerQualifiedName,
-                                          customerDisplayName,
-                                          customerDescription,
-                                          null);
+        String assetGUID = archiveHelper.addAsset(apiAssetTypeName,
+                                                  customerQualifiedName,
+                                                  customerDisplayName,
+                                                  customerDescription,
+                                                  null,
+                                                  null);
 
-        String apiSchemaTypeGUID = super.addTopLevelSchemaType(assetGUID,
-                                                               apiSchemaTypeTypeName,
-                                                               customerQualifiedName + "_api_schema_type",
-                                                               customerDisplayName + " API Schema Type",
+        String apiSchemaTypeGUID = archiveHelper.addTopLevelSchemaType(assetGUID,
+                                                                       apiSchemaTypeTypeName,
+                                                                       customerQualifiedName + "_api_schema_type",
+                                                                       customerDisplayName + " API Schema Type",
+                                                                       null,
+                                                                       null);
+
+        String apiOperationGUID = archiveHelper.addAPIOperation(apiSchemaTypeGUID,
+                                                                getCustomerQualifiedName,
+                                                                getCustomerDisplayName,
+                                                                getCustomerDescription,
+                                                                getCustomerPath,
+                                                                getCustomerCommand,
+                                                                null);
+
+        String requestGUID = archiveHelper.addAPIParameterList(apiOperationGUID,
+                                                               API_REQUEST_TYPE_NAME,
+                                                               getCustomerQualifiedName + "_request",
+                                                               getCustomerDisplayName + " Request Parameter List",
                                                                null,
+                                                               true,
                                                                null);
 
-        String apiOperationGUID = super.addAPIOperation(apiSchemaTypeGUID,
-                                                        getCustomerQualifiedName,
-                                                        getCustomerDisplayName,
-                                                        getCustomerDescription,
-                                                        getCustomerPath,
-                                                        getCustomerCommand,
-                                                        null);
 
-        String requestGUID = super.addAPIParameterList(apiOperationGUID,
-                                                       API_REQUEST_TYPE_NAME,
-                                                       getCustomerQualifiedName + "_request",
-                                                       getCustomerDisplayName + " Request Parameter List",
-                                                       null,
-                                                       true,
-                                                       null);
+        String parameterGUID = archiveHelper.addSchemaAttribute(apiSchemaAttributeTypeName,
+                                                                null,
+                                                                customerNoRequestQualifiedName,
+                                                                customerNoDisplayName,
+                                                                customerNoDescription,
+                                                                customerNoDataType,
+                                                                customerNoLength,
+                                                                0,
+                                                                null);
 
+        archiveHelper.addAttributeForSchemaType(requestGUID, parameterGUID);
 
-        String parameterGUID = super.addSchemaAttribute(apiSchemaAttributeTypeName,
-                                                        null,
-                                                        customerNoRequestQualifiedName,
-                                                        customerNoDisplayName,
-                                                        customerNoDescription,
-                                                        customerNoDataType,
-                                                        customerNoLength,
-                                                        0,
-                                                        null);
+        String responseGUID = archiveHelper.addAPIParameterList(apiOperationGUID,
+                                                                API_RESPONSE_TYPE_NAME,
+                                                                getCustomerQualifiedName + "_response",
+                                                                getCustomerDisplayName + " Response Parameter List",
+                                                                null,
+                                                                true,
+                                                                null);
 
-        super.addAttributeForSchemaType(requestGUID, parameterGUID);
+        parameterGUID = archiveHelper.addSchemaAttribute(apiSchemaAttributeTypeName,
+                                                         null,
+                                                         customerNoResponseQualifiedName,
+                                                         customerNoDisplayName,
+                                                         customerNoDescription,
+                                                         customerNoDataType,
+                                                         customerNoLength,
+                                                         0,
+                                                         null);
 
-        String responseGUID = super.addAPIParameterList(apiOperationGUID,
-                                                        API_RESPONSE_TYPE_NAME,
-                                                        getCustomerQualifiedName + "_response",
-                                                        getCustomerDisplayName + " Response Parameter List",
-                                                        null,
-                                                        true,
-                                                        null);
+        archiveHelper.addAttributeForSchemaType(responseGUID, parameterGUID);
 
-        parameterGUID = super.addSchemaAttribute(apiSchemaAttributeTypeName,
-                                                 null,
-                                                 customerNoResponseQualifiedName,
-                                                 customerNoDisplayName,
-                                                 customerNoDescription,
-                                                 customerNoDataType,
-                                                 customerNoLength,
-                                                 0,
-                                                 null);
+        parameterGUID = archiveHelper.addSchemaAttribute(apiSchemaAttributeTypeName,
+                                                         null,
+                                                         customerNameQualifiedName,
+                                                         customerNameDisplayName,
+                                                         customerNameDescription,
+                                                         customerNameDataType,
+                                                         customerNameLength,
+                                                         1,
+                                                         null);
 
-        super.addAttributeForSchemaType(responseGUID, parameterGUID);
+        archiveHelper.addAttributeForSchemaType(responseGUID, parameterGUID);
 
-        parameterGUID = super.addSchemaAttribute(apiSchemaAttributeTypeName,
-                                                 null,
-                                                 customerNameQualifiedName,
-                                                 customerNameDisplayName,
-                                                 customerNameDescription,
-                                                 customerNameDataType,
-                                                 customerNameLength,
-                                                 1,
-                                                 null);
+        parameterGUID = archiveHelper.addSchemaAttribute(apiSchemaAttributeTypeName,
+                                                         null,
+                                                         customerCardIdQualifiedName,
+                                                         customerCardIdDisplayName,
+                                                         customerCardIdDescription,
+                                                         customerCardIdDataType,
+                                                         customerCardIdLength,
+                                                         2,
+                                                         null);
 
-        super.addAttributeForSchemaType(responseGUID, parameterGUID);
+        archiveHelper.addAttributeForSchemaType(responseGUID, parameterGUID);
 
-        parameterGUID = super.addSchemaAttribute(apiSchemaAttributeTypeName,
-                                                 null,
-                                                 customerCardIdQualifiedName,
-                                                 customerCardIdDisplayName,
-                                                 customerCardIdDescription,
-                                                 customerCardIdDataType,
-                                                 customerCardIdLength,
-                                                 2,
-                                                 null);
+        archiveHelper.saveGUIDs();
 
-        super.addAttributeForSchemaType(responseGUID, parameterGUID);
-
-        return super.getOpenMetadataArchive();
+        return archiveBuilder.getOpenMetadataArchive();
     }
 }

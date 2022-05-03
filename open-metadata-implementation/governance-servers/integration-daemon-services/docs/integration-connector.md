@@ -6,7 +6,7 @@
 An integration connector is a pluggable component that
 manages the metadata exchange to a third party technology.
 It is hosted in an [integration service](../../../integration-services)
-which is, in turn, running in an [Integration Daemon](../../../admin-services/docs/concepts/integration-daemon.md).
+which is, in turn, running in an [Integration Daemon](https://egeria-project.org/concepts/integration-daemon).
  
 The integration connectors can:
  * Listen on a blocking call for the third party technology to send a notification.
@@ -19,7 +19,7 @@ Figure 1 shows the method calls for the integration connector.
 > **Figure 1:** Methods implemented by an integration connector.
 
 * **initialize** - standard method for all connectors that is called by the
-[OCF Connector Broker](../../../frameworks/open-connector-framework/docs/concepts/connector-broker.md)
+[OCF Connector Broker](https://egeria-project.org/concepts/connector-broker)
 when the connector is created.  The connector is passed the Connection object from the
 configuration and a unique identifier for this instance of the connector.
 
@@ -72,16 +72,9 @@ integration service configuration
 
 ![Figure 3](integration-connector-configuration.png)
 
-## Further reading
-
-* [Open Connector Framework (OCF)](../../../frameworks/open-connector-framework) that defines the behavior of
-all connectors.
-* [Configuring the integration services](../../../admin-services/docs/user/configuring-the-integration-services.md) to
-understand how to set up an integration connector.
-* [Developer guide](../../../../open-metadata-publication/website/developer-guide) for more information on writing connectors.
 
 ----
-* Link to the [Integration Daemon](../../../admin-services/docs/concepts/integration-daemon.md).
+* Link to the [Integration Daemon](.https://egeria-project.org/concepts/integration-daemon).
 * Link to the [Integration Services](../../../integration-services).
 
 ----

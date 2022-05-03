@@ -34,7 +34,7 @@ $ mvn clean install
 ```
 More details on Maven itself is on the [Apache Maven site](https://maven.apache.org/).
 More details on Egeria's use of Maven is located in [Dependency Management](../Dependency-Management.md).
-The [Building Egeria](../../open-metadata-resources/open-metadata-tutorials/building-egeria-tutorial) tutorial
+The [Building Egeria](https://egeria-project.org/education/tutorials/building-egeria-tutorial/overview/) tutorial
 covers more details on the build process.
 
 ## Installing Maven
@@ -55,8 +55,8 @@ Ensure you are using version 3.5.0 or higher in order to build Egeria.
 * Return to [Developer Tools](.)
 
 
-* Link to [Egeria's Community Guide](../../Community-Guide.md)
-* Link to the [Egeria Dojo Education](../../open-metadata-resources/open-metadata-tutorials/egeria-dojo)
+* Link to [Egeria's Community Guide](https://egeria-project.org/guides/community/)
+* Link to the [Egeria Dojo Education](https://egeria-project.org/education/egeria-dojo/)
 
 
 ----

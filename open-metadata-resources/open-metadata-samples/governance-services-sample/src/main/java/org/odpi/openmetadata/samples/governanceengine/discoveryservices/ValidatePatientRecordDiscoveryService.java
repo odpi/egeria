@@ -16,7 +16,7 @@ import java.util.Map;
 
 
 /**
- * CSVDiscoveryService is a discovery service implementation for analysing CSF Files.
+ * ValidatePatientRecordDiscoveryService is a discovery service implementation for analysing patient records.
  */
 public class ValidatePatientRecordDiscoveryService extends DiscoveryService
 {

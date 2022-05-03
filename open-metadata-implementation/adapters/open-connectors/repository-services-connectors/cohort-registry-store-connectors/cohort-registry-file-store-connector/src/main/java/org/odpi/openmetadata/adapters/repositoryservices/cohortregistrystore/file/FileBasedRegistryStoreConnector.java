@@ -376,7 +376,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
         {
             super.disconnect();
         }
-        catch (Throwable  exec)
+        catch (Exception  exec)
         {
             log.debug("Ignoring unexpected exception " + exec.getClass().getSimpleName() + " with message " + exec.getMessage());
         }

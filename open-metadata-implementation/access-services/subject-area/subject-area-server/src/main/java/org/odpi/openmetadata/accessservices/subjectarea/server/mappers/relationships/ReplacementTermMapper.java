@@ -43,9 +43,7 @@ public class ReplacementTermMapper extends RelationshipMapper<ReplacementTerm> {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(properties, replacementTerm.getSource(), OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME);
         }
         if (replacementTerm.getStatus() != null) {
-            EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
-            enumPropertyValue.setOrdinal(replacementTerm.getStatus().getOrdinal());
-            properties.setProperty(OpenMetadataAPIMapper.STATUS_PROPERTY_NAME, enumPropertyValue);
+            SubjectAreaUtils.setStatusPropertyInInstanceProperties(properties, replacementTerm.getStatus(), OpenMetadataAPIMapper.STATUS_PROPERTY_NAME);
         }
     }
 

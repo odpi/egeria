@@ -4,13 +4,13 @@
 # Open Metadata Security Samples
 
 The open metadata security samples provide sample implementations of the
-[open metadata security connectors](../../../open-metadata-implementation/common-services/metadata-security)
+[open metadata security connectors](https://egeria-project.org/services/metadata-security-services)
 that can be added to the OMAG Server Platform and to any OMAG server
 running on the platform.  With these samples it is possible to experiment with
 how security authorization works with the
-[governance zones](../../../open-metadata-implementation/access-services/docs/concepts/governance-zones)
+[governance zones](https://egeria-project.org/concepts/governance-zone)
 that control the visibility of assets
-through the [Open Metadata Access Services (OMASs)](../../../open-metadata-implementation/access-services).
+through the [Open Metadata Access Services (OMASs)](https://egeria-project.org/services/omas).
 
 The open metadata platform security connector provides authorization
 services for the platform services and the admin service to create a new server.
@@ -20,7 +20,7 @@ is defined in the configuration document for a server.
 The samples show how a security connector extends the appropriate base class and uses their methods to provide
 a security service.
 
-The samples are based on the [Coco Pharmaceuticals persona](https://opengovernance.odpi.org/coco-pharmaceuticals/personas/).
+The samples are based on the [Coco Pharmaceuticals persona](https://egeria-project.org/practices/coco-pharmaceuticals).
 
 Gary Geeke (`garygeeke`) is the IT Infrastructure Administrator and the IT Infrastructure Governance Officer.
 He is the only person able to issue platform services requests, and work with assets in the **infrastructure** zone.
@@ -28,7 +28,7 @@ He is the only person able to issue platform services requests, and work with as
 Peter Profile (`peterprofile`), Information Analyst, and Erin Overview (`erinoverview`),
 their Information Architect and Deputy Chief Data Officer,
 are the only people permitted to onboard new assets through the **quarantine** zone using the
-[Asset Owner OMAS](../../../open-metadata-implementation/access-services/asset-owner).  Specifically
+[Asset Owner OMAS](https://egeria-project.org/services/omas/asset-owner/overview).  Specifically
 only Erin can remove the quarantine zone from an Asset.
 
 The other zones defined in the sample are:

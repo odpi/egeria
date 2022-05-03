@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-![InDev](../../../open-metadata-publication/website/images/egeria-content-status-in-development.png#pagewidth)
+![InDev](../../../images/egeria-content-status-in-development.png#pagewidth)
 
 # Digital Service Open Metadata Access Service (OMAS)
 
@@ -25,6 +25,8 @@ capabilities involved in the business transformation.
 * Supporting the owner of a digital service throughout the digital service's lifecycle.
 * Supporting the business capability owners with the ability to review the status of the digital services within
 their business capability.
+
+* [Documentation](https://egeria-project.org/services/omas/digital-service/overview)
 
 ## Design
 

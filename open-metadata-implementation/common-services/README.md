@@ -10,8 +10,8 @@ run in the OMAG Server.
 and error handling.  It can but used by clients and server-side services.
 
 * **[Multi-Tenant Services](multi-tenant)** - supports the management of
-[Open Metadata and Governance (OMAG) Server](../admin-services/docs/concepts/omag-server.md) instances
-running in an [OMAG Server Platform](../admin-services/docs/concepts/omag-server-platform.md).
+[Open Metadata and Governance (OMAG) Server](https://egeria-project.org/concepts/omag-server) instances
+running in an [OMAG Server Platform](https://egeria-project.org/concepts/omag-server-platform).
 
 * **[Metadata Security](metadata-security)** - supports authorization of access to OMAG Services and specific
 metadata instances.
@@ -29,7 +29,7 @@ used extensively across the [access services (OMASs)](../access-services).
 In addition, there is a shared metadata management module for
 server-side services that make use of the beans defined in the [frameworks](../frameworks) that underpin Egeria.
 
-* **[OCF Metadata Management](ocf-metadata-management)** - managing metadata about assets, connections and all of the
+* **[OCF Metadata Management](ocf-metadata-management)** - managing metadata about assets, connections and all the
 different types of metadata defined in the asset properties in the [Open Connector Framework (OCF)](../frameworks/open-connector-framework).
 
 ----

@@ -4,7 +4,7 @@
 # Asset Consumer's Feedback Interface (AssetConsumerFeedbackInterface)
 
 AssetConsumerFeedbackInterface provides the ability to attach reviews, likes and
-comments to an [asset](../../../../docs/concepts/assets).
+comments to an [asset](https://egeria-project.org/concepts/asset).
 These elements can only be attached to one asset so the methods to
 add one of these types of feedback elements includes a create of the element
 as well as the attachment of it to the identified asset.
