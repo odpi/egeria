@@ -31,6 +31,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
     /**
      * Typical constructor passes parameters used to build the open metadata archive's property header.
      *
+     * @param archiveBuilder builder where content is cached
      * @param archiveGUID unique identifier for this open metadata archive.
      * @param archiveRootName non-spaced root name of the open metadata archive elements.
      * @param originatorName name of the originator (person or organization) of the archive.
@@ -146,7 +147,12 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
      * @param qualifiedName unique name for the capability
      * @param displayName display name for the capability
      * @param description description about the capability
-     * @param additionalProperties any other properties.
+     * @param capabilityType type
+     * @param capabilityVersion version
+     * @param patchLevel patch level
+     * @param source source
+     * @param additionalProperties any other properties
+     * @param extendedProperties properties for subtype
      *
      * @return id for the capability
      */

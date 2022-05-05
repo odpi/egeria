@@ -630,6 +630,7 @@ public class DatabaseManagerResource
      * @param databaseManagerName name of the software server capability entity that represented the external source - null for local
      * @param databaseAssetGUID unique identifier of the asset to connect the schema to
      * @param schemaTypeGUID identifier for schema Type object
+     * @param requestBody null request body
      * @return void or
      *  InvalidParameterException the bean properties are invalid
      *  UserNotAuthorizedException user not authorized to issue this request

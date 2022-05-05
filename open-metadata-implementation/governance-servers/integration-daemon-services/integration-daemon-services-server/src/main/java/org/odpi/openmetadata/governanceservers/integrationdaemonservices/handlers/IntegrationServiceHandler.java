@@ -256,6 +256,7 @@ public class IntegrationServiceHandler
     /**
      * Update the configuration properties of the connectors, or specific connector if a connector name is supplied.
      *
+     * @param userId calling user
      * @param connectorName name of a specific connector or null for all connectors
      * @param isMergeUpdate should the properties be merged into the existing properties or replace them
      * @param configurationProperties new configuration properties

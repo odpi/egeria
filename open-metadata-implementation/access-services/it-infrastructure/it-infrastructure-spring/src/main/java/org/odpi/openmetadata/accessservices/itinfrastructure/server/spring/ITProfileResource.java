@@ -79,6 +79,7 @@ public class ITProfileResource
      *
      * @param serverName called server
      * @param userId calling user
+     * @param itProfileGUID unique identifier of IT profile
      * @param isMergeUpdate are unspecified properties unchanged (true) or replaced with null?
      * @param requestBody properties to change
      *
@@ -90,10 +91,10 @@ public class ITProfileResource
      */
     @PostMapping(path = "/profiles/{itProfileGUID}")
 
-    public VoidResponse updateITProfile(@PathVariable String                  serverName,
-                                        @PathVariable String                  userId,
-                                        @PathVariable String                  itProfileGUID,
-                                        @RequestParam boolean                 isMergeUpdate,
+    public VoidResponse updateITProfile(@PathVariable String               serverName,
+                                        @PathVariable String               userId,
+                                        @PathVariable String               itProfileGUID,
+                                        @RequestParam boolean              isMergeUpdate,
                                         @RequestBody  ITProfileRequestBody requestBody)
     {
         return restAPI.updateITProfile(serverName, userId, itProfileGUID, isMergeUpdate, requestBody);
