@@ -145,7 +145,6 @@ public class DataEngineCommonHandler {
      * Fetch the entity using the identifier and the type name. It uses the unique identifier to retrieve the entity
      *
      * @param userId           the user identifier
-     * @param entityTypeGUID   the entity type GUID
      * @param entityDetailGUID the entity unique identifier
      * @param entityTypeName   the entity type name
      *
@@ -155,10 +154,8 @@ public class DataEngineCommonHandler {
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException    problem retrieving the entity.
      */
-    public Optional<EntityDetail> getEntityDetails(String userId, String entityDetailGUID, String entityTypeGUID,
-                                                   String entityTypeName) throws InvalidParameterException,
-                                                                                 PropertyServerException,
-                                                                                 UserNotAuthorizedException {
+    public Optional<EntityDetail> getEntityDetails(String userId, String entityDetailGUID, String entityTypeName)
+            throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         String methodName = "getEntityDetails";
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(entityDetailGUID, CommonMapper.GUID_PROPERTY_NAME, methodName);
@@ -207,7 +204,7 @@ public class DataEngineCommonHandler {
 
             TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId, relationshipTypeName);
 
-            String relationshipGUID = genericHandler.linkElementToElement(userId, externalSourceGUID, externalSourceName, firstGUID,
+            genericHandler.linkElementToElement(userId, externalSourceGUID, externalSourceName, firstGUID,
                     CommonMapper.GUID_PROPERTY_NAME, firstEntityTypeName, secondGUID, CommonMapper.GUID_PROPERTY_NAME,
                     secondEntityTypeName, false, false, null,
                     relationshipTypeDef.getGUID(), relationshipTypeName, relationshipProperties, methodName);

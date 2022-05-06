@@ -241,7 +241,7 @@ class DataEngineCommonHandlerTest {
                 null, null, false, false,
                 null, null, methodName)).thenReturn(mockedEntity);
 
-        Optional<EntityDetail> result = dataEngineCommonHandler.getEntityDetails(USER, GUID, ENTITY_TYPE_GUID, ENTITY_TYPE_NAME);
+        Optional<EntityDetail> result = dataEngineCommonHandler.getEntityDetails(USER, GUID, ENTITY_TYPE_NAME);
         assertTrue(result.isPresent());
         assertEquals(mockedEntity, result.get());
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
@@ -255,7 +255,7 @@ class DataEngineCommonHandlerTest {
                 Collections.singletonList(CommonMapper.GUID_PROPERTY_NAME), false, false,
                 null, methodName)).thenReturn(null);
 
-        Optional<EntityDetail> result = dataEngineCommonHandler.getEntityDetails(USER, GUID, ENTITY_TYPE_GUID, ENTITY_TYPE_NAME);
+        Optional<EntityDetail> result = dataEngineCommonHandler.getEntityDetails(USER, GUID, ENTITY_TYPE_NAME);
         assertFalse(result.isPresent());
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
         verify(invalidParameterHandler, times(1)).validateGUID(GUID, CommonMapper.GUID_PROPERTY_NAME, methodName);

@@ -41,9 +41,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATABASE_TYPE_GUID;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATABASE_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_GUID;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.INCOMPLETE_CLASSIFICATION_TYPE_GUID;
@@ -378,7 +376,7 @@ class DataEngineRelationalDataHandlerTest {
         final String methodName = "removeDatabase";
 
         EntityDetail mockedEntity = mockEntityDetail(GUID);
-        when(dataEngineCommonHandler.getEntityDetails(USER, GUID, DATABASE_TYPE_GUID, DATABASE_TYPE_NAME))
+        when(dataEngineCommonHandler.getEntityDetails(USER, GUID, DATABASE_TYPE_NAME))
                 .thenReturn(Optional.of(mockedEntity));
 
         when(registrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
@@ -406,8 +404,8 @@ class DataEngineRelationalDataHandlerTest {
         final String methodName = "removeDatabaseSchema";
 
         EntityDetail mockedEntity = mockEntityDetail(SCHEMA_GUID);
-        when(dataEngineCommonHandler.getEntityDetails(USER, SCHEMA_GUID, DEPLOYED_DATABASE_SCHEMA_TYPE_GUID,
-                DEPLOYED_DATABASE_SCHEMA_TYPE_NAME)).thenReturn(Optional.of(mockedEntity));
+        when(dataEngineCommonHandler.getEntityDetails(USER, SCHEMA_GUID, DEPLOYED_DATABASE_SCHEMA_TYPE_NAME))
+                .thenReturn(Optional.of(mockedEntity));
 
         when(registrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
@@ -425,7 +423,7 @@ class DataEngineRelationalDataHandlerTest {
         final String methodName = "removeRelationalTable";
 
         EntityDetail mockedEntity = mockEntityDetail(GUID);
-        when(dataEngineCommonHandler.getEntityDetails(USER, GUID, RELATIONAL_TABLE_TYPE_GUID, RELATIONAL_TABLE_TYPE_NAME))
+        when(dataEngineCommonHandler.getEntityDetails(USER, GUID, RELATIONAL_TABLE_TYPE_NAME))
                 .thenReturn(Optional.of(mockedEntity));
 
         when(registrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);

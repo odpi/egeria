@@ -24,9 +24,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSuppor
 import java.util.List;
 import java.util.Optional;
 
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATABASE_TYPE_GUID;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATABASE_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_GUID;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.GUID_PROPERTY_NAME;
@@ -388,8 +386,7 @@ public class DataEngineRelationalDataHandler {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(databaseGUID, GUID_PROPERTY_NAME, methodName);
 
-        Optional<EntityDetail> databaseOptional = dataEngineCommonHandler.getEntityDetails(userId, databaseGUID,
-                DATABASE_TYPE_GUID, DATABASE_TYPE_NAME);
+        Optional<EntityDetail> databaseOptional = dataEngineCommonHandler.getEntityDetails(userId, databaseGUID, DATABASE_TYPE_NAME);
         if (databaseOptional.isPresent()) {
             EntityDetail databaseEntity = databaseOptional.get();
             String databaseQualifiedName = databaseEntity.getProperties().getPropertyValue(QUALIFIED_NAME_PROPERTY_NAME).valueAsString();
@@ -426,7 +423,7 @@ public class DataEngineRelationalDataHandler {
         invalidParameterHandler.validateGUID(relationalTableGUID, QUALIFIED_NAME_PROPERTY_NAME, methodName);
 
         Optional<EntityDetail> tableEntity = dataEngineCommonHandler.getEntityDetails(userId, relationalTableGUID,
-                RELATIONAL_TABLE_TYPE_GUID, RELATIONAL_TABLE_TYPE_NAME);
+                RELATIONAL_TABLE_TYPE_NAME);
         if (tableEntity.isEmpty()) {
             dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.ENTITY_NOT_DELETED, methodName, relationalTableGUID);
         }
@@ -446,7 +443,7 @@ public class DataEngineRelationalDataHandler {
         invalidParameterHandler.validateGUID(databaseSchemaGUID, GUID_PROPERTY_NAME, methodName);
 
         Optional<EntityDetail> databaseSchemaOptional = dataEngineCommonHandler.getEntityDetails(userId, databaseSchemaGUID,
-                DEPLOYED_DATABASE_SCHEMA_TYPE_GUID, DEPLOYED_DATABASE_SCHEMA_TYPE_NAME);
+                DEPLOYED_DATABASE_SCHEMA_TYPE_NAME);
         if (databaseSchemaOptional.isPresent()) {
             EntityDetail databaseSchemaEntity = databaseSchemaOptional.get();
             String databaseSchemaQualifiedName = databaseSchemaEntity.getProperties().getPropertyValue(QUALIFIED_NAME_PROPERTY_NAME).valueAsString();
