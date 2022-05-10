@@ -115,7 +115,7 @@ public interface OMRSMetadataCollectionManager
 
 
     /**
-     * Return the maximum PageSize
+     * Return the maximum page size
      *
      * @return maximum number of elements that can be retrieved on a request.
      */
@@ -131,9 +131,9 @@ public interface OMRSMetadataCollectionManager
 
 
     /**
-     * Return the unique Id for this metadata collection.
+     * Return the unique id for this metadata collection.
      *
-     * @return String unique Id
+     * @return String unique id
      */
     String getMetadataCollectionId();
 
@@ -141,7 +141,7 @@ public interface OMRSMetadataCollectionManager
     /**
      * Set up the unique Id for this metadata collection.
      *
-     * @param metadataCollectionId String unique Id
+     * @param metadataCollectionId String unique id
      */
     void setMetadataCollectionId(String metadataCollectionId);
 

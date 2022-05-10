@@ -1,17 +1,14 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project 2020. -->
 
-![InDev](../../../open-metadata-publication/website/images/egeria-content-status-in-development.png#pagewidth)
+![InDev](../../../images/egeria-content-status-in-development.png#pagewidth)
 
 # Catalog Integrator Open Metadata Integration Service (OMIS)
 
 The Catalog Integrator OMIS supports the exchange of asset information between a
 third party asset management system and the open metadata ecosystem.
 
-This involves:
-* the transformation of metadata structures and names from the third party's APIs
-to the open metadata APIs and types.
-* the mapping of identifiers from the third party technology.
+* [Documentation](https://egeria-project.org/services/omis/catalog-integrator/overview)
 
 ## Module Implementation
 

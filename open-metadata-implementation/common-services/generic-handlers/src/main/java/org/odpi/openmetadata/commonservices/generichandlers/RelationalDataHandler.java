@@ -1973,8 +1973,97 @@ public class RelationalDataHandler<DATABASE,
 
 
     /* ==========================================================================
-     * A database schema may contain multiple database tables and database views.
+     * A database or database schema may contain multiple database tables and database views.
+     * These are linked to the database asset using a RelationalDBSchemaType. It is possible to
+     * to create the schema type, attach the tables and views to it and then attach the schema type to
+     * the asset.  Alternatively it is possible to attach the tables/views directly to the database asset
+     * and let this handler manage the creation of the RelationalDBSchemaType.  The first approach is
+     * recommended for large databases because it reduces the number of LatestChange classification that
+     * are generated for the asset.
      */
+
+
+    /**
+     * Create a database top-level schema type used to attach tables and views to the database/database schema.
+     *
+     * @param userId calling user
+     * @param databaseManagerGUID guid of the software server capability entity that represented the external source - null for local
+     * @param databaseManagerName name of the software server capability entity that represented the external source - null for local
+     * @param qualifiedName qualified name ofr the schema type - suggest "SchemaOf:" + asset's qualified name
+     * @param methodName calling method
+     * @return unique identifier of the database schema type
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public String createDatabaseSchemaType(String               userId,
+                                           String               databaseManagerGUID,
+                                           String               databaseManagerName,
+                                           String               qualifiedName,
+                                           String               methodName) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        final String qualifiedNameParameterName = "qualifiedName";
+
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+        SchemaTypeBuilder builder = new SchemaTypeBuilder(qualifiedName,
+                                                          OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID,
+                                                          OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
+                                                          repositoryHelper,
+                                                          serviceName,
+                                                          serverName);
+
+        return databaseTableHandler.createBeanInRepository(userId,
+                                                           databaseManagerGUID,
+                                                           databaseManagerName,
+                                                           OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID,
+                                                           OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
+                                                           qualifiedName,
+                                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                           builder,
+                                                           methodName);
+    }
+
+
+
+    /**
+     * Link the schema type and asset.  This is called from outside of AssetHandler.  The databaseAssetGUID is checked to ensure the
+     * asset exists and updates are allowed.  If there is already a schema attached, it is deleted.
+     *
+     * @param userId calling user
+     * @param databaseManagerGUID guid of the software server capability entity that represented the external source - null for local
+     * @param databaseManagerName name of the software server capability entity that represented the external source - null for local
+     * @param databaseAssetGUID unique identifier of the asset to connect the schema to
+     * @param schemaTypeGUID identifier for schema Type object
+     * @param methodName calling method
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public  void attachSchemaTypeToDatabaseAsset(String  userId,
+                                                 String  databaseManagerGUID,
+                                                 String  databaseManagerName,
+                                                 String  databaseAssetGUID,
+                                                 String  schemaTypeGUID,
+                                                 String  methodName) throws InvalidParameterException,
+                                                                            PropertyServerException,
+                                                                            UserNotAuthorizedException
+    {
+        final String databaseAssetGUIDParameterName = "databaseAssetGUID";
+        final String schemaTypeGUIDParameterName = "schemaTypeGUID";
+
+        databaseHandler.attachSchemaTypeToAsset(userId,
+                                                databaseManagerGUID,
+                                                databaseManagerName,
+                                                databaseAssetGUID,
+                                                databaseAssetGUIDParameterName,
+                                                schemaTypeGUID,
+                                                schemaTypeGUIDParameterName,
+                                                methodName);
+    }
+
 
 
     /**
@@ -2081,8 +2170,6 @@ public class RelationalDataHandler<DATABASE,
                                                                               PropertyServerException
     {
         final String parentElementGUIDParameterName = "databaseAssetGUID";
-        final String schemaTypeGUIDParameterName = "databaseSchemaTypeGUID";
-        final String qualifiedNameParameterName     = "qualifiedName";
 
         String databaseSchemaTypeGUID = databaseTableHandler.getAssetSchemaTypeGUID(userId,
                                                                                     databaseManagerGUID,
@@ -2095,101 +2182,159 @@ public class RelationalDataHandler<DATABASE,
                                                                                     effectiveTime,
                                                                                     methodName);
 
-        if (databaseSchemaTypeGUID != null)
+        return createDatabaseTableForSchemaType(userId,
+                                                databaseManagerGUID,
+                                                databaseManagerName,
+                                                databaseSchemaTypeGUID,
+                                                qualifiedName,
+                                                displayName,
+                                                description,
+                                                isDeprecated,
+                                                aliases,
+                                                additionalProperties,
+                                                typeName,
+                                                extendedProperties,
+                                                vendorProperties,
+                                                effectiveTime,
+                                                methodName);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a database table.
+     *
+     * @param userId calling user
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseSchemaTypeGUID unique identifier of the database or database schema where the database table is located
+     * @param qualifiedName unique name for the database table
+     * @param displayName the stored display name property for the database table
+     * @param description the stored description property associated with the database table
+     * @param isDeprecated is this table deprecated?
+     * @param aliases a list of alternative names for the attribute
+     * @param additionalProperties any arbitrary properties not part of the type system
+     * @param typeName name of the type that is a subtype of RelationalTable - or null to create standard type
+     * @param extendedProperties properties from any subtype
+     * @param vendorProperties additional properties relating to the source of the database technology
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return unique identifier of the new metadata element for the database table
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createDatabaseTableForSchemaType(String               userId,
+                                                   String               databaseManagerGUID,
+                                                   String               databaseManagerName,
+                                                   String               databaseSchemaTypeGUID,
+                                                   String               qualifiedName,
+                                                   String               displayName,
+                                                   String               description,
+                                                   boolean              isDeprecated,
+                                                   List<String>         aliases,
+                                                   Map<String, String>  additionalProperties,
+                                                   String               typeName,
+                                                   Map<String, Object>  extendedProperties,
+                                                   Map<String, String>  vendorProperties,
+                                                   Date                 effectiveTime,
+                                                   String               methodName) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        final String schemaTypeGUIDParameterName    = "databaseSchemaTypeGUID";
+        final String qualifiedNameParameterName     = "qualifiedName";
+
+        invalidParameterHandler.validateGUID(databaseSchemaTypeGUID, schemaTypeGUIDParameterName, methodName);
+
+        /*
+         * A database table is represented as a schemaAttribute of type RelationalTable (or a subtype).
+         * Check that the type name requested is valid.
+         */
+        String attributeTypeName = OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME;
+        String attributeTypeId   = OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_GUID;
+
+        if (typeName != null)
         {
-            /*
-             * A database table is represented as a schemaAttribute of type RelationalTable (or a subtype).
-             * Check that the type name requested is valid.
-             */
-            String attributeTypeName = OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME;
-            String attributeTypeId   = OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_GUID;
-
-            if (typeName != null)
-            {
-                attributeTypeName = typeName;
-                attributeTypeId   = invalidParameterHandler.validateTypeName(typeName,
-                                                                             OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME,
-                                                                             serviceName,
-                                                                             methodName,
-                                                                             repositoryHelper);
-            }
-
-            /*
-             * The schema type that connects the database schema asset to the tables has been created/retrieved.
-             * Now work out the position of the new table in the database schema type.  This is used to set the element position.
-             * Since this value begins with 0 as the first element, the table count is this table's position.
-             */
-            int tableCount = databaseTableHandler.countSchemaAttributes(userId,
-                                                                        databaseSchemaTypeGUID,
-                                                                        parentElementGUIDParameterName,
-                                                                        effectiveTime,
-                                                                        methodName);
-
-            /*
-             * Load up the builder objects for processing by the databaseTableHandler.  The builders manage the properties
-             * of the metadata elements that make up the database table, and the schemaTypeHandler manages the elements themselves.
-             */
-            SchemaAttributeBuilder schemaAttributeBuilder = new SchemaAttributeBuilder(qualifiedName,
-                                                                                       displayName,
-                                                                                       description,
-                                                                                       tableCount,
-                                                                                       1,
-                                                                                       1,
-                                                                                       isDeprecated,
-                                                                                       null,
-                                                                                       true,
-                                                                                       false,
-                                                                                       0,
-                                                                                       0,
-                                                                                       0,
-                                                                                       0,
-                                                                                       false,
-                                                                                       null,
-                                                                                       aliases,
-                                                                                       additionalProperties,
-                                                                                       attributeTypeId,
-                                                                                       attributeTypeName,
-                                                                                       extendedProperties,
-                                                                                       repositoryHelper,
-                                                                                       serviceName,
-                                                                                       serverName);
-
-            schemaAttributeBuilder.setAnchors(userId, databaseAssetGUID, methodName);
-
-            SchemaTypeBuilder schemaTypeBuilder = new SchemaTypeBuilder(qualifiedName + ":tableType",
-                                                                        OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_TYPE_GUID,
-                                                                        OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_TYPE_NAME,
-                                                                        repositoryHelper,
-                                                                        serviceName,
-                                                                        serverName);
-
-            schemaAttributeBuilder.setSchemaType(userId, schemaTypeBuilder, methodName);
-
-            String databaseTableGUID = databaseTableHandler.createNestedSchemaAttribute(userId,
-                                                                                        databaseManagerGUID,
-                                                                                        databaseManagerName,
-                                                                                        databaseSchemaTypeGUID,
-                                                                                        schemaTypeGUIDParameterName,
-                                                                                        OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
-                                                                                        OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
-                                                                                        OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
-                                                                                        qualifiedName,
-                                                                                        qualifiedNameParameterName,
-                                                                                        schemaAttributeBuilder,
-                                                                                        methodName);
-
-            if (databaseTableGUID != null)
-            {
-                databaseHandler.setVendorProperties(userId, databaseTableGUID, vendorProperties, methodName);
-            }
-
-            return databaseTableGUID;
+            attributeTypeName = typeName;
+            attributeTypeId   = invalidParameterHandler.validateTypeName(typeName,
+                                                                         OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME,
+                                                                         serviceName,
+                                                                         methodName,
+                                                                         repositoryHelper);
         }
 
         /*
-         * Not reachable because any failures result in exceptions.
+         * The schema type that connects the database schema asset to the tables has been created/retrieved.
+         * Now work out the position of the new table in the database schema type.  This is used to set the element position.
+         * Since this value begins with 0 as the first element, the table count is this table's position.
          */
-        return null;
+        int tableCount = databaseTableHandler.countSchemaAttributes(userId,
+                                                                    databaseSchemaTypeGUID,
+                                                                    schemaTypeGUIDParameterName,
+                                                                    effectiveTime,
+                                                                    methodName);
+
+        /*
+         * Load up the builder objects for processing by the databaseTableHandler.  The builders manage the properties
+         * of the metadata elements that make up the database table, and the schemaTypeHandler manages the elements themselves.
+         */
+        SchemaAttributeBuilder schemaAttributeBuilder = new SchemaAttributeBuilder(qualifiedName,
+                                                                                   displayName,
+                                                                                   description,
+                                                                                   tableCount,
+                                                                                   1,
+                                                                                   1,
+                                                                                   isDeprecated,
+                                                                                   null,
+                                                                                   true,
+                                                                                   false,
+                                                                                   0,
+                                                                                   0,
+                                                                                   0,
+                                                                                   0,
+                                                                                   false,
+                                                                                   null,
+                                                                                   aliases,
+                                                                                   additionalProperties,
+                                                                                   attributeTypeId,
+                                                                                   attributeTypeName,
+                                                                                   extendedProperties,
+                                                                                   repositoryHelper,
+                                                                                   serviceName,
+                                                                                   serverName);
+
+        schemaAttributeBuilder.setAnchors(userId, databaseSchemaTypeGUID, methodName);
+
+        SchemaTypeBuilder schemaTypeBuilder = new SchemaTypeBuilder(qualifiedName + ":tableType",
+                                                                    OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_TYPE_GUID,
+                                                                    OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_TYPE_NAME,
+                                                                    repositoryHelper,
+                                                                    serviceName,
+                                                                    serverName);
+
+        schemaAttributeBuilder.setSchemaType(userId, schemaTypeBuilder, methodName);
+
+        String databaseTableGUID = databaseTableHandler.createNestedSchemaAttribute(userId,
+                                                                                    databaseManagerGUID,
+                                                                                    databaseManagerName,
+                                                                                    databaseSchemaTypeGUID,
+                                                                                    schemaTypeGUIDParameterName,
+                                                                                    OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
+                                                                                    OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
+                                                                                    OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                                    qualifiedName,
+                                                                                    qualifiedNameParameterName,
+                                                                                    schemaAttributeBuilder,
+                                                                                    methodName);
+
+        if (databaseTableGUID != null)
+        {
+            databaseHandler.setVendorProperties(userId, databaseTableGUID, vendorProperties, methodName);
+        }
+
+        return databaseTableGUID;
     }
 
 
@@ -2713,7 +2858,6 @@ public class RelationalDataHandler<DATABASE,
                                                                              PropertyServerException
     {
         final String parentElementGUIDParameterName = "databaseAssetGUID";
-        final String qualifiedNameParameterName     = "qualifiedName";
 
         String databaseSchemaTypeGUID = databaseViewHandler.getAssetSchemaTypeGUID(userId,
                                                                                    databaseManagerGUID,
@@ -2725,6 +2869,75 @@ public class RelationalDataHandler<DATABASE,
                                                                                    OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
                                                                                    effectiveTime,
                                                                                    methodName);
+
+        return createDatabaseViewForSchemaType(userId,
+                                               databaseManagerGUID,
+                                               databaseManagerName,
+                                               databaseSchemaTypeGUID,
+                                               qualifiedName,
+                                               displayName,
+                                               description,
+                                               isDeprecated,
+                                               aliases,
+                                               expression,
+                                               additionalProperties,
+                                               typeName,
+                                               extendedProperties,
+                                               vendorProperties,
+                                               effectiveTime,
+                                               methodName);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a database view.
+     *
+     * @param userId calling user
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseSchemaTypeGUID unique identifier of the schema type where the database view is located.
+     * @param qualifiedName unique name for the database schema
+     * @param displayName the stored display name property for the database table
+     * @param description the stored description property associated with the database table
+     * @param isDeprecated is this table deprecated?
+     * @param aliases a list of alternative names for the attribute
+     * @param expression the code that generates the value for this view.
+     * @param additionalProperties any arbitrary properties not part of the type system
+     * @param typeName name of the type that is a subtype of DeployedDatabaseSchema - or null to create standard type
+     * @param extendedProperties properties from any subtype
+     * @param vendorProperties additional properties relating to the source of the database technology
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return unique identifier of the new metadata element for the database view
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createDatabaseViewForSchemaType(String               userId,
+                                                  String               databaseManagerGUID,
+                                                  String               databaseManagerName,
+                                                  String               databaseSchemaTypeGUID,
+                                                  String               qualifiedName,
+                                                  String               displayName,
+                                                  String               description,
+                                                  boolean              isDeprecated,
+                                                  List<String>         aliases,
+                                                  String               expression,
+                                                  Map<String, String>  additionalProperties,
+                                                  String               typeName,
+                                                  Map<String, Object>  extendedProperties,
+                                                  Map<String, String>  vendorProperties,
+                                                  Date                 effectiveTime,
+                                                  String               methodName) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
+    {
+        final String schemaTypeGUIDParameterName = "databaseSchemaTypeGUID";
+        final String qualifiedNameParameterName  = "qualifiedName";
+
+        invalidParameterHandler.validateGUID(databaseSchemaTypeGUID, schemaTypeGUIDParameterName, methodName);
 
         /*
          * A database view is represented as a schemaAttribute of type RelationalTable (or a subtype).
@@ -2743,90 +2956,83 @@ public class RelationalDataHandler<DATABASE,
                                                                          repositoryHelper);
         }
 
-        if (databaseSchemaTypeGUID != null)
-        {
-            /*
-             * The schema type that connects the database schema asset to the tables has been created/retrieved.
-             * Now work out the position of the new table in the database schema type.  This is used to set the element position.
-             * Since this value begins with 0 as the first element, the table count is this table's position.
-             */
-            int tableCount = databaseViewHandler.countSchemaAttributes(userId,
-                                                                       databaseSchemaTypeGUID,
-                                                                       parentElementGUIDParameterName,
-                                                                       effectiveTime,
-                                                                       methodName);
-
-            /*
-             * Load up the builder objects for processing by the databaseTableHandler.  The builders manage the properties
-             * of the metadata elements that make up the database table, and the schemaTypeHandler manages the elements themselves.
-             */
-            SchemaAttributeBuilder schemaAttributeBuilder = new SchemaAttributeBuilder(qualifiedName,
-                                                                                       displayName,
-                                                                                       description,
-                                                                                       tableCount,
-                                                                                       1,
-                                                                                       1,
-                                                                                       isDeprecated,
-                                                                                       null,
-                                                                                       true,
-                                                                                       false,
-                                                                                       0,
-                                                                                       0,
-                                                                                       0,
-                                                                                       0,
-                                                                                       false,
-                                                                                       null,
-                                                                                       aliases,
-                                                                                       additionalProperties,
-                                                                                       attributeTypeId,
-                                                                                       attributeTypeName,
-                                                                                       extendedProperties,
-                                                                                       repositoryHelper,
-                                                                                       serviceName,
-                                                                                       serverName);
-
-            schemaAttributeBuilder.setAnchors(userId, databaseAssetGUID, methodName);
-
-            SchemaTypeBuilder schemaTypeBuilder = new SchemaTypeBuilder(qualifiedName + ":viewType",
-                                                                        OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_TYPE_GUID,
-                                                                        OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_TYPE_NAME,
-                                                                        repositoryHelper,
-                                                                        serviceName,
-                                                                        serverName);
-
-            schemaAttributeBuilder.setSchemaType(userId, schemaTypeBuilder, methodName);
-
-            schemaAttributeBuilder.setCalculatedValue(userId, databaseManagerGUID, databaseManagerName, expression, methodName);
-
-            /*
-             * Now create the table itself along with its schema type.  It also links the resulting table to the database schema type.
-             * The returned value is the guid of the table.
-             */
-            String databaseViewGUID = databaseViewHandler.createNestedSchemaAttribute(userId,
-                                                                                      databaseManagerGUID,
-                                                                                      databaseManagerName,
-                                                                                      databaseSchemaTypeGUID,
-                                                                                      parentElementGUIDParameterName,
-                                                                                      OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
-                                                                                      OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
-                                                                                      OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
-                                                                                      qualifiedName,
-                                                                                      qualifiedNameParameterName,
-                                                                                      schemaAttributeBuilder,
-                                                                                      methodName);
-
-            if (databaseViewGUID != null)
-            {
-                databaseViewHandler.setVendorProperties(userId, databaseViewGUID, vendorProperties, methodName);
-
-                return databaseViewGUID;
-            }
-        }
+        /*
+         * The schema type that connects the database schema asset to the tables has been created/retrieved.
+         * Now work out the position of the new table in the database schema type.  This is used to set the element position.
+         * Since this value begins with 0 as the first element, the table count is this table's position.
+         */
+        int tableCount = databaseViewHandler.countSchemaAttributes(userId,
+                                                                   databaseSchemaTypeGUID,
+                                                                   schemaTypeGUIDParameterName,
+                                                                   effectiveTime,
+                                                                   methodName);
 
         /*
-         * Not reachable because any failures result in exceptions.
+         * Load up the builder objects for processing by the databaseTableHandler.  The builders manage the properties
+         * of the metadata elements that make up the database table, and the schemaTypeHandler manages the elements themselves.
          */
-        return null;
+        SchemaAttributeBuilder schemaAttributeBuilder = new SchemaAttributeBuilder(qualifiedName,
+                                                                                   displayName,
+                                                                                   description,
+                                                                                   tableCount,
+                                                                                   1,
+                                                                                   1,
+                                                                                   isDeprecated,
+                                                                                   null,
+                                                                                   true,
+                                                                                   false,
+                                                                                   0,
+                                                                                   0,
+                                                                                   0,
+                                                                                   0,
+                                                                                   false,
+                                                                                   null,
+                                                                                   aliases,
+                                                                                   additionalProperties,
+                                                                                   attributeTypeId,
+                                                                                   attributeTypeName,
+                                                                                   extendedProperties,
+                                                                                   repositoryHelper,
+                                                                                   serviceName,
+                                                                                   serverName);
+
+        schemaAttributeBuilder.setAnchors(userId, databaseSchemaTypeGUID, methodName);
+
+        SchemaTypeBuilder schemaTypeBuilder = new SchemaTypeBuilder(qualifiedName + ":viewType",
+                                                                    OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_TYPE_GUID,
+                                                                    OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_TYPE_NAME,
+                                                                    repositoryHelper,
+                                                                    serviceName,
+                                                                    serverName);
+
+        schemaAttributeBuilder.setSchemaType(userId, schemaTypeBuilder, methodName);
+
+        schemaAttributeBuilder.setCalculatedValue(userId, databaseManagerGUID, databaseManagerName, expression, methodName);
+
+        /*
+         * Now create the table itself along with its schema type.  It also links the resulting table to the database schema type.
+         * The returned value is the guid of the table.
+         */
+        String databaseViewGUID = databaseViewHandler.createNestedSchemaAttribute(userId,
+                                                                                  databaseManagerGUID,
+                                                                                  databaseManagerName,
+                                                                                  databaseSchemaTypeGUID,
+                                                                                  schemaTypeGUIDParameterName,
+                                                                                  OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
+                                                                                  OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
+                                                                                  OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                                  qualifiedName,
+                                                                                  qualifiedNameParameterName,
+                                                                                  schemaAttributeBuilder,
+                                                                                  methodName);
+
+        if (databaseViewGUID != null)
+        {
+            databaseViewHandler.setVendorProperties(userId, databaseViewGUID, vendorProperties, methodName);
+
+        }
+
+        return databaseViewGUID;
     }
 
 

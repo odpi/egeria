@@ -594,6 +594,63 @@ public class DatabaseManagerResource
      * A database schema may contain multiple database tables and database views.
      */
 
+
+    /**
+     * Create a database top-level schema type used to attach tables and views to the database/database schema.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param userId calling user
+     * @param databaseManagerGUID guid of the software server capability entity that represented the external source - null for local
+     * @param databaseManagerName name of the software server capability entity that represented the external source - null for local
+     * @param requestBody qualified name of the schema type - suggest "SchemaOf:" + asset's qualified name
+     * @return unique identifier of the database schema type or
+     *  InvalidParameterException the bean properties are invalid
+     *  UserNotAuthorizedException user not authorized to issue this request
+     *  PropertyServerException problem accessing the property server
+     */
+    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/assets/schema-type")
+
+    public GUIDResponse createDatabaseSchemaType(@PathVariable String          serverName,
+                                                 @PathVariable String          userId,
+                                                 @PathVariable String          databaseManagerGUID,
+                                                 @PathVariable String          databaseManagerName,
+                                                 @RequestBody  NameRequestBody requestBody)
+    {
+        return restAPI.createDatabaseSchemaType(serverName, userId, databaseManagerGUID, databaseManagerName, requestBody);
+    }
+
+
+    /**
+     * Link the schema type and asset.  This is called from outside of AssetHandler.  The databaseAssetGUID is checked to ensure the
+     * asset exists and updates are allowed.  If there is already a schema attached, it is deleted.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param userId calling user
+     * @param databaseManagerGUID guid of the software server capability entity that represented the external source - null for local
+     * @param databaseManagerName name of the software server capability entity that represented the external source - null for local
+     * @param databaseAssetGUID unique identifier of the asset to connect the schema to
+     * @param schemaTypeGUID identifier for schema Type object
+     * @param requestBody null request body
+     * @return void or
+     *  InvalidParameterException the bean properties are invalid
+     *  UserNotAuthorizedException user not authorized to issue this request
+     *  PropertyServerException problem accessing the property server
+     */
+    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/assets/{databaseAssetGUID}/schema-type/{schemaTypeGUID}")
+
+    public  VoidResponse attachSchemaTypeToDatabaseAsset(@PathVariable String          serverName,
+                                                         @PathVariable String          userId,
+                                                         @PathVariable String          databaseManagerGUID,
+                                                         @PathVariable String          databaseManagerName,
+                                                         @PathVariable String          databaseAssetGUID,
+                                                         @PathVariable String          schemaTypeGUID,
+                                                         @RequestBody(required = false)
+                                                                       NullRequestBody requestBody)
+    {
+        return restAPI.attachSchemaTypeToDatabaseAsset(serverName, userId, databaseManagerGUID, databaseManagerName, databaseAssetGUID, schemaTypeGUID, requestBody);
+    }
+
+
     /**
      * Create a new metadata element to represent a database table.
      *
@@ -649,6 +706,34 @@ public class DatabaseManagerResource
                                                         @RequestBody  TemplateProperties templateProperties)
     {
         return restAPI.createDatabaseTableFromTemplate(serverName, userId, databaseManagerGUID, databaseManagerName, templateGUID, databaseAssetGUID, templateProperties);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a database table.
+     *
+     * @param serverName name of the service to route the request to
+     * @param userId calling user
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseSchemaTypeGUID unique identifier of the database or database schema where the database table is located
+     * @param databaseTableProperties properties for the database table
+     *
+     * @return unique identifier of the new metadata element for the database table or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/assets/schema-type/{databaseSchemaTypeGUID}/tables")
+
+    public GUIDResponse createDatabaseTableForSchemaType(@PathVariable String                  serverName,
+                                                         @PathVariable String                  userId,
+                                                         @PathVariable String                  databaseManagerGUID,
+                                                         @PathVariable String                  databaseManagerName,
+                                                         @PathVariable String                  databaseSchemaTypeGUID,
+                                                         @RequestBody  DatabaseTableProperties databaseTableProperties)
+    {
+        return restAPI.createDatabaseTableForSchemaType(serverName, userId, databaseManagerGUID, databaseManagerName, databaseSchemaTypeGUID, databaseTableProperties);
     }
 
 
@@ -867,6 +952,34 @@ public class DatabaseManagerResource
                                                        @RequestBody  TemplateProperties templateProperties)
     {
         return restAPI.createDatabaseViewFromTemplate(serverName, userId, databaseManagerGUID, databaseManagerName, templateGUID, databaseAssetGUID, templateProperties);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a database view.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param userId calling user
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseSchemaTypeGUID unique identifier of the schema type where the database view is located.
+     * @param databaseViewProperties properties for the new view
+     *
+     * @return unique identifier of the new metadata element for the database view or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/assets/schema-type/{databaseSchemaTypeGUID}/tables/views")
+
+    public GUIDResponse createDatabaseViewForSchemaType(@PathVariable String                 serverName,
+                                                        @PathVariable String                 userId,
+                                                        @PathVariable String                 databaseManagerGUID,
+                                                        @PathVariable String                 databaseManagerName,
+                                                        @PathVariable String                 databaseSchemaTypeGUID,
+                                                        @RequestBody  DatabaseViewProperties databaseViewProperties)
+    {
+        return restAPI.createDatabaseViewForSchemaType(serverName, userId, databaseManagerGUID, databaseManagerName, databaseSchemaTypeGUID, databaseViewProperties);
     }
 
 

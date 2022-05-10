@@ -226,8 +226,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
     }
 
 
-
-
     /**
      * Link the schema type and asset.  This is called from outside of AssetHandler.  The assetGUID is checked to ensure the
      * asset exists and updates are allowed.  If there is already a schema attached, it is deleted.

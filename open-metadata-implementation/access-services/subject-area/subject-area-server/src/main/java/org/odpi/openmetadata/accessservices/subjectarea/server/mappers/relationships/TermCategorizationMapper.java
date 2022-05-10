@@ -34,9 +34,7 @@ public class TermCategorizationMapper extends RelationshipMapper<Categorization>
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, termCategorization.getDescription(), "description");
         }
         if (termCategorization.getStatus() != null) {
-            EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
-            enumPropertyValue.setOrdinal(termCategorization.getStatus().getOrdinal());
-            instanceProperties.setProperty(OpenMetadataAPIMapper.STATUS_PROPERTY_NAME, enumPropertyValue);
+            SubjectAreaUtils.setStatusPropertyInInstanceProperties(instanceProperties, termCategorization.getStatus(), OpenMetadataAPIMapper.STATUS_PROPERTY_NAME);
         }
     }
 

@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-![InDev](../../../open-metadata-publication/website/images/egeria-content-status-in-development.png#pagewidth)
+![InDev](../../../images/egeria-content-status-in-development.png#pagewidth)
 
 # Asset Lineage Open Metadata Access Service (OMAS)
 
@@ -12,6 +12,8 @@ These events are consumed by the external tools that build the lineage graph in 
 
 Also, the Asset Lineage OMAS provides an endpoint that publishes the [lineage events](asset-lineage-api/docs/events/lineage-event.md)
 associated with the entities involved in lineage.
+
+* [Documentation](https://egeria-project.org/services/omas/asset-lineage/overview)
 
 ## Digging Deeper
 

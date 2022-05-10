@@ -72,7 +72,7 @@ public class ServerAuthorViewAdmin extends ViewServiceAdmin {
         this.auditLog = auditLog;
 
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + actionDescription + ", userid=" + serverUserName);
+            log.debug("==> Method: " + actionDescription);
         }
 
         /*
@@ -127,7 +127,7 @@ public class ServerAuthorViewAdmin extends ViewServiceAdmin {
                                 viewServiceConfig.toString());
 
             if (log.isDebugEnabled()) {
-                log.debug("<== Method: " + actionDescription + ",userid=" + serverUserName);
+                log.debug("<== Method: " + actionDescription);
             }
 
         }
@@ -156,7 +156,7 @@ public class ServerAuthorViewAdmin extends ViewServiceAdmin {
     public void shutdown() {
         final String actionDescription = "shutdown";
 
-        log.debug("==> Method: " + actionDescription + ", userid=" + serverUserName);
+        log.debug("==> Method: " + actionDescription);
 
         auditLog.logMessage(actionDescription, ServerAuthorViewAuditCode.SERVICE_TERMINATING.getMessageDefinition(serverName));
 
@@ -167,7 +167,7 @@ public class ServerAuthorViewAdmin extends ViewServiceAdmin {
 
         auditLog.logMessage(actionDescription, ServerAuthorViewAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(serverName));
 
-        log.debug("<== Method: " + actionDescription + ", userid=" + serverUserName);
+        log.debug("<== Method: " + actionDescription);
 
     }
 

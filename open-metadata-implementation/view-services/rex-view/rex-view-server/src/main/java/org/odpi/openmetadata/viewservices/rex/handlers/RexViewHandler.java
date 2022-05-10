@@ -54,10 +54,7 @@ import org.odpi.openmetadata.viewservices.rex.api.properties.TypeExplorer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -360,6 +357,7 @@ public class RexViewHandler
      * @param platformName The name of the platform running the repository server to interrogate
      * @param enterpriseOption Whether the query is at cohort level or server specific
      * @param entityGUID the GUID of the entity to retrieve
+     * @param asOfTime   return the entity at this date, if null then now.
      * @param methodName The name of the method being invoked
      * @return response containing the RexExpandedEntityDetail object.
      *
@@ -371,6 +369,7 @@ public class RexViewHandler
                                              String    platformName,
                                              boolean   enterpriseOption,
                                              String    entityGUID,
+                                             Date      asOfTime,
                                              String    methodName)
     throws
     RexViewServiceException
@@ -405,13 +404,19 @@ public class RexViewHandler
             String metadataCollectionId = repositoryServicesClient.getMetadataCollectionId(userId);
 
 
-            EntityDetail entityDetail = repositoryServicesClient.getEntityDetail(userId, entityGUID);
 
             TypeExplorer typeExplorer = getTypeExplorer(userId,
                                                         repositoryServerName,
                                                         platformName,
                                                         enterpriseOption,
                                                         methodName);
+
+            EntityDetail entityDetail = null;
+            if (asOfTime == null) {
+                entityDetail = repositoryServicesClient.getEntityDetail(userId, entityGUID);
+            } else {
+                entityDetail = repositoryServicesClient.getEntityDetail(userId, entityGUID, asOfTime);
+            }
 
             String label = this.chooseLabelForEntity(entityDetail, typeExplorer);
 
@@ -456,7 +461,9 @@ public class RexViewHandler
         {
             throw RexExceptionHandler.mapOMRSEntityProxyOnlyException(this.getClass().getName(), methodName, e);
         }
-
+        catch (FunctionNotSupportedException e) {
+            throw RexExceptionHandler.mapOMRSEntityHistoricalNotSupportedException(this.getClass().getName(), methodName, e);
+        }
     }
 
 
@@ -467,6 +474,7 @@ public class RexViewHandler
      * @param platformName The name of the platform running the repository server to interrogate
      * @param enterpriseOption Whether the query is at cohort level or server specific
      * @param relationshipGUID the GUID of the relationship to retrieve
+     * @param asOfTime   return the relationship at this date, if null then now.
      * @param methodName The name of the method being invoked
      * @return response containing the RexExpandedEntityDetail object.
      *
@@ -478,6 +486,7 @@ public class RexViewHandler
                                                    String    platformName,
                                                    boolean   enterpriseOption,
                                                    String    relationshipGUID,
+                                                   Date      asOfTime,
                                                    String    methodName)
     throws
     RexViewServiceException
@@ -513,8 +522,12 @@ public class RexViewHandler
             String metadataCollectionId = repositoryServicesClient.getMetadataCollectionId(userId);
 
 
-            Relationship relationship = repositoryServicesClient.getRelationship(userId, relationshipGUID);
-
+            Relationship relationship = null;
+            if (asOfTime == null) {
+                relationship = repositoryServicesClient.getRelationship(userId, relationshipGUID);
+            } else {
+                relationship = repositoryServicesClient.getRelationship(userId, relationshipGUID, asOfTime);
+            }
             // Create digests for both ends
 
             TypeExplorer typeExplorer = getTypeExplorer(userId,
@@ -583,6 +596,9 @@ public class RexViewHandler
                                                                            enterpriseOption,
                                                                            e);
         }
+        catch (FunctionNotSupportedException e) {
+            throw RexExceptionHandler.mapOMRSEntityHistoricalNotSupportedException(this.getClass().getName(), methodName, e);
+        }
 
 
     }
@@ -596,6 +612,7 @@ public class RexViewHandler
      * @param searchText the search expression that entities must match
      * @param entityTypeName the name of a type used to filter the entity search
      * @param classificationNames classification names to limit find by
+     * @param asOfTime   return the entities at this date, if null then now.
      * @param methodName The name of the method being invoked
      * @return a map of entity digests for the entities that matched the search
      *
@@ -609,6 +626,7 @@ public class RexViewHandler
                                                      String       searchText,
                                                      String       entityTypeName,
                                                      List<String> classificationNames,
+                                                     Date         asOfTime,
                                                      String       methodName)
     throws
     RexViewServiceException
@@ -660,7 +678,7 @@ public class RexViewHandler
                     0,
                     null,
                     classificationNames,
-                    null,
+                    asOfTime,
                     null,
                     null,
                     0);
@@ -738,9 +756,7 @@ public class RexViewHandler
         }
         catch (FunctionNotSupportedException e)
         {
-            throw RexExceptionHandler.mapOMRSFunctionNotSupportedException(this.getClass().getName(),
-                                                                           methodName,
-                                                                           e);
+            throw RexExceptionHandler.mapOMRSEntityHistoricalNotSupportedException(this.getClass().getName(), methodName, e);
         }
 
     }
@@ -754,6 +770,7 @@ public class RexViewHandler
      * @param enterpriseOption Whether the query is at cohort level or server specific
      * @param searchText the search expression that relationships must match
      * @param relationshipTypeName the name of a type used to filter the relationship search
+     * @param asOfTime   return the relationships at this date, if null then now.
      * @param methodName The name of the method being invoked
      * @return a map of relationship digests for the relationships that matched the search
      *
@@ -766,6 +783,7 @@ public class RexViewHandler
                                                                            boolean   enterpriseOption,
                                                                            String    searchText,
                                                                            String    relationshipTypeName,
+                                                                           Date      asOfTime,
                                                                            String    methodName)
     throws
     RexViewServiceException
@@ -815,7 +833,7 @@ public class RexViewHandler
                     searchText,
                     0,
                     null,
-                    null,
+                     asOfTime,
                     null,
                     null,
                     0);
@@ -935,7 +953,6 @@ public class RexViewHandler
                                                                            methodName,
                                                                            e);
         }
-
     }
 
 
@@ -949,6 +966,7 @@ public class RexViewHandler
      * @param enterpriseOption Whether the query is at cohort level or server specific
      * @param entityGUID the identity of the entity from which to traverse
      * @param depth the depth to which the method should traverse
+     * @param asOfTime   return the entities and relationships at this date, if null then now.
      * @param methodName The name of the method being invoked
      * @return a RexTraversal object containing the neighborhood information
      *
@@ -961,6 +979,7 @@ public class RexViewHandler
                                         boolean         enterpriseOption,
                                         String          entityGUID,
                                         int             depth,
+                                        long            asOfTime,
                                         String          methodName)
     throws
     RexViewServiceException
@@ -972,7 +991,6 @@ public class RexViewHandler
         {
 
             String platformRootURL = resolvePlatformRootURL(platformName, methodName);
-
             /*
              *  Switch between local and enterprise services clients depending
              *  on enterprise option...
@@ -1002,14 +1020,17 @@ public class RexViewHandler
 
             if (depth > 0)
             {
-
+                Date asOfTimeDate = null;
+                if (asOfTime != 0) {
+                    asOfTimeDate = new Date(asOfTime);
+                }
                 instGraph = repositoryServicesClient.getEntityNeighborhood(userId,
                                                                            entityGUID,
                                                                            null,
                                                                            null,
                                                                            null,
                                                                            null,
-                                                                           null,
+                                                                           asOfTimeDate,
                                                                            depth);
             }
 
@@ -1201,6 +1222,7 @@ public class RexViewHandler
      * @param entityTypeGUIDs the GUIDs of entity types to filter the neighborhood
      * @param relationshipTypeGUIDs the GUIDs of relationship types to filter the neighborhood
      * @param classificationNames the names of classification types to filter the neighborhood
+     * @param asOfTime  return the entities and relationships at this date, if null then now.
      * @param methodName The name of the method being invoked
      * @return a RexTraversal object containing the neighborhood information
      *
@@ -1216,12 +1238,16 @@ public class RexViewHandler
                                   List<String>    entityTypeGUIDs,
                                   List<String>    relationshipTypeGUIDs,
                                   List<String>    classificationNames,
+                                  long            asOfTime,
                                   String          methodName)
     throws
     RexViewServiceException
 
     {
-
+        Date asOfTimeDate = null;
+        if (asOfTime != 0) {
+            asOfTimeDate = new Date(asOfTime);
+        }
 
         try
         {
@@ -1273,7 +1299,7 @@ public class RexViewHandler
                                                                            relationshipTypeGUIDs,
                                                                            null,
                                                                            classificationNames,
-                                                                           null,
+                                                                           asOfTimeDate,
                                                                            depth);
             }
 
@@ -1477,9 +1503,7 @@ public class RexViewHandler
         }
         catch (FunctionNotSupportedException e)
         {
-            throw RexExceptionHandler.mapOMRSFunctionNotSupportedException(this.getClass().getName(),
-                                                                           methodName,
-                                                                           e);
+            throw RexExceptionHandler.mapOMRSEntityHistoricalNotSupportedException(this.getClass().getName(), methodName, e);
         }
         catch (EntityNotKnownException e)
         {
@@ -1894,6 +1918,5 @@ public class RexViewHandler
         return provenance;
 
     }
-
 
 }

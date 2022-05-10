@@ -12,8 +12,8 @@ It has two constructors:
 * No authentication embedded in the HTTP request - for test systems.
 * Basic authentication using a userId and password embedded in the HTTP request.
 
-Both constructors take the [URL root for the server platform](../../../../../../access-services/docs/concepts/client-server/omas-server-url-root.md)
-where OLS is running and its [server name](../../../../../../access-services/docs/concepts/client-server/omas-server-name.md).
+Both constructors take the [URL root for the OMAG server platform](https://egeria-project.org/concepts/platform-url-root/)
+where OLS is running and its [server name](https://egeria-project.org/concepts/server-name/).
 
 Here is a code example with the user id and password specified:
 

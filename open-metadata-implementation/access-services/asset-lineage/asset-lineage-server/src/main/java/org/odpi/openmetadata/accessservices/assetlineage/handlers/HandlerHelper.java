@@ -28,6 +28,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -106,7 +107,7 @@ public class HandlerHelper {
 
         List<Relationship> relationships = genericHandler.getAttachmentLinks(userId, entityGUID, GUID_PARAMETER,
                 entityTypeName, relationshipTypeGUID, relationshipTypeName, null,
-                0, 1000, null, methodName);
+                0, 0, null, methodName);
 
         if (CollectionUtils.isEmpty(relationships)) {
             return Collections.emptyList();
@@ -234,12 +235,30 @@ public class HandlerHelper {
     public Optional<List<EntityDetail>> findEntitiesByType(String userId, String entityTypeName, SearchProperties searchProperties,
                                                            FindEntitiesParameters findEntitiesParameters)
             throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
-        final String methodName = "findEntitiesByType";
+        List<EntityDetail> allEntities = new ArrayList<>();
+        int startingFrom = 0;
+        int pageSize = invalidParameterHandler.getMaxPagingSize();
+        while (addPagedEntities(userId, entityTypeName, searchProperties, findEntitiesParameters, allEntities, startingFrom, pageSize)) {
+            startingFrom += pageSize;
+        }
+
+        return Optional.of(allEntities);
+    }
+
+    private boolean addPagedEntities(String userId, String entityTypeName, SearchProperties searchProperties,
+                                     FindEntitiesParameters findEntitiesParameters, List<EntityDetail> allEntities, int startingFrom, int pageSize)
+            throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        final String methodName = "addPagedEntities";
         String typeDefGUID = getTypeGUID(userId, entityTypeName);
-        return Optional.ofNullable(genericHandler.findEntities(userId, typeDefGUID, findEntitiesParameters.getEntitySubtypeGUIDs(),
+        List<EntityDetail> pagedEntities = genericHandler.findEntities(userId, typeDefGUID, findEntitiesParameters.getEntitySubtypeGUIDs(),
                 searchProperties, findEntitiesParameters.getLimitResultsByStatus(), findEntitiesParameters.getSearchClassifications(), null,
                 findEntitiesParameters.getSequencingProperty(), findEntitiesParameters.getSequencingOrder(),
-                true, false, 0, 0, methodName));
+                true, false, startingFrom, pageSize, methodName);
+        if (pagedEntities == null) {
+            return false;
+        }
+        allEntities.addAll(pagedEntities);
+        return pagedEntities.size() == pageSize;
     }
 
     /**
@@ -293,7 +312,7 @@ public class HandlerHelper {
     }
 
     /**
-     * Creat the search body for find entities searching entities updated after the given time
+     * Create the search body for find entities searching entities updated after the given time
      *
      * @param time date in milliseconds after which the entities were updated
      *

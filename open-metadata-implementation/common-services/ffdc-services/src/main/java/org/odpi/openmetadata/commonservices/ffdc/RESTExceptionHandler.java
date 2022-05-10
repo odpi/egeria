@@ -90,7 +90,9 @@ public class RESTExceptionHandler
     /**
      * Manage a bad type name
      *
-     * @param subTypeName name of null parameter - use to help locate where the problem is
+     * @param subTypeName subtype that does not match
+     * @param superTypeName expected uster type
+     * @param serviceName calling service
      * @param methodName method that caught the exception
      * @throws InvalidParameterException exception to report error
      */

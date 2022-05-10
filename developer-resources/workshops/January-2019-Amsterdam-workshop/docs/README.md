@@ -112,13 +112,13 @@ January 9th and 10th: Egeria Working Group meeting to discuss projects and archi
 - Community Profile OMAS `REVIEW DOC` see below.
 - MDM brings information in.
 
-### Dev process for building OMAS (Mandy) See: [github](https://egeria.odpi.org/open-metadata-implementation/access-services/community-profile/docs/scenarios/)
+### Dev process for building OMAS (Mandy) 
 
 - [A Rational Design Process: how and why to Fake it.](https://users.ece.utexas.edu/~perry/education/SE-Intro/fakeit.pdf)
 - Review doc from mandy.
-- [Design doc](https://egeria.odpi.org/open-metadata-implementation/access-services/docs/design/)
+- [Design doc](https://egeria-project.org/guides/developer/#adding-registered-services)
 - How to write a local connector? ask Graham
-- [Concepts](https://egeria.odpi.org/open-metadata-implementation/access-services/docs/concepts)
+- [Concepts](https://egeria-project.org/concepts)
 
 ### Subject Area (David)
 
@@ -178,7 +178,7 @@ January 9th and 10th: Egeria Working Group meeting to discuss projects and archi
 
 ### Role of Spine objects: (Maryna)
 
-- [Tag Propagation](../../../../open-metadata-implementation/access-services/governance-engine/docs/TagPropogation/TagPropogation.md).
+- Tag Propagation.
 - typedBy in the role of spine objects.
 - 9 Concepts/subjects (customer, sales, finance, operations, legal,... )
 - Semantic modeling vs. structural modeling w/spine objects.

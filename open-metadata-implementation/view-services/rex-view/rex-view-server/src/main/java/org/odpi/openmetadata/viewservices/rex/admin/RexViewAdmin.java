@@ -69,7 +69,7 @@ public class RexViewAdmin extends ViewServiceAdmin {
         this.auditLog = auditLog;
 
         if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + actionDescription + ", userid=" + serverUserName);
+            log.debug("==> Method: " + actionDescription);
         }
 
         /*
@@ -120,7 +120,7 @@ public class RexViewAdmin extends ViewServiceAdmin {
                                 viewServiceConfig.toString());
 
             if (log.isDebugEnabled()) {
-                log.debug("<== Method: " + actionDescription + ",userid=" + serverUserName);
+                log.debug("<== Method: " + actionDescription);
             }
 
         }
@@ -149,7 +149,7 @@ public class RexViewAdmin extends ViewServiceAdmin {
     public void shutdown() {
         final String actionDescription = "shutdown";
 
-        log.debug("==> Method: " + actionDescription + ", userid=" + serverUserName);
+        log.debug("==> Method: " + actionDescription);
 
         auditLog.logMessage(actionDescription, RexViewAuditCode.SERVICE_TERMINATING.getMessageDefinition(serverName));
 
@@ -160,7 +160,7 @@ public class RexViewAdmin extends ViewServiceAdmin {
 
         auditLog.logMessage(actionDescription, RexViewAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(serverName));
 
-        log.debug("<== Method: " + actionDescription + ", userid=" + serverUserName);
+        log.debug("<== Method: " + actionDescription);
 
     }
 

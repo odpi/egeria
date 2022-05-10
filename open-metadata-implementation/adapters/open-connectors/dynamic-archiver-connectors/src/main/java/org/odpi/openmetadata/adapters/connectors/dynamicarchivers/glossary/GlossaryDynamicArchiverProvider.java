@@ -4,17 +4,16 @@
 package org.odpi.openmetadata.adapters.connectors.dynamicarchivers.glossary;
 
 
+import org.odpi.openmetadata.adapters.connectors.dynamicarchivers.DynamicArchiveProvider;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.engineservices.archivemanager.connector.ArchiveServiceProvider;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * GlossaryDynamicArchiverProvider is the OCF connector provider for the Glossary Dynamic Archiving Service.
  * This is a Archive Service as defined by the Archive Manager OMES.
  */
-public class GlossaryDynamicArchiverProvider extends ArchiveServiceProvider
+public class GlossaryDynamicArchiverProvider extends DynamicArchiveProvider
 {
     private static final String  connectorTypeGUID          = "02cfb290-43cb-497c-928e-267bd3d69324";
     private static final String  connectorTypeQualifiedName = "Egeria:ArchiveService:Glossary";

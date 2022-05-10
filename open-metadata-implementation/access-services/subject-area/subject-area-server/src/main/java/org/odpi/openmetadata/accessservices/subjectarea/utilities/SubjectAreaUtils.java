@@ -6,6 +6,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.utilities;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.Status;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.TermRelationshipStatus;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SystemAttributes;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
@@ -18,6 +19,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodes
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.CategoryAnchor;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermAnchor;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
@@ -304,5 +306,19 @@ public class SubjectAreaUtils {
         Set<IconSummary> icons = new HashSet<>();
         response.addAllResults(icons);
         return response;
+    }
+
+    /**
+     * Set status values into instance properties.
+     *
+     * @param instanceProperties supplied instanceproperties
+     * @param status               Status value
+     * @param propertyName       property name
+     */
+    public static void setStatusPropertyInInstanceProperties(InstanceProperties instanceProperties, TermRelationshipStatus status, String propertyName) {
+        EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
+        enumPropertyValue.setOrdinal(status.getOrdinal());
+        enumPropertyValue.setSymbolicName(status.getName());
+        instanceProperties.setProperty(propertyName, enumPropertyValue);
     }
 }
