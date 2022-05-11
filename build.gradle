@@ -325,17 +325,37 @@ allprojects {
     // Whilst all modules have their own javadoc, we only build
     // an aggregate for the client and API modules
     javadoc {
-        include ( "**/*api/**/*.java" )
-        include ( "**/*client/**/*.java" )
-        include ( "**/*framework/**/*.java" )
-        // See 6148 - additional refinements
-        include ( "**/accessservices/dataengine/**/*.java" )
-        exclude ( "**/accessservices/dataengine/server/**/*.java" )
-        exclude ( "**/accessservices/**/connectors/**/*.java" )
-        exclude ( "**/fvt/client/**/*.java" )
-        exclude ( "**/userinterface/**/*.java" )
+        include ( "**/api/*.java" )
+        include ( "**/client/*.java" )
+        include ( "**/properties/*.java" )
+        include ( "**/metadataelements/*.java" )
+        include ( "**/metadataelement/*.java" )
+        include ( "**/events/*.java" )
+        include ( "**/ffdc/*.java" )
+        include ( "**/configuration/*.java" )
+        include ( "**/configuration/registration/*.java" )
+        include ( "**/store/*.java" )
+        include ( "**/connectors/*.java" )
+        include ( "**/adminservices/*.java" )
+        include ( "**/connector/*.java" )
+        include ( "**/frameworks/*.java" )
+        include ( "**/context/*.java" )
+        include ( "**/graph/*.java" )
+        include ( "**/model/*.java" )
+        include ( "**/auditlog/*.java" )
+        include ( "**/omrstopic/*.java" )
+        include ( "**/openmetadatatopic/*.java" )
+        include ( "**/archivestore/*.java" )
+        include ( "**/auditlogstore/*.java" )
+        include ( "**/cohortregistrystore/*.java" )
+        include ( "**/repositoryconnector/*.java" )
+        include ( "**/repositoryeventmapper/*.java" )
+        include ( "**/metadatacollectionstore/*.java" )
+        include ( "**/metadatacollectionstore/utilities/*.java" )
+        include ( "**/archiveutilities/*.java" )
+        include ( "**/clients/*.java" )
+        include ( "**/metadatasecurity/*.java" )
     }
-
 }
 
 /*
