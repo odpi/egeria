@@ -157,32 +157,47 @@ public class AssetCatalogOMASService {
     }
 
     /**
-     * Fetch asset's header by type name or GUID
+     * Fetch asset's header by type name
      *
      * @param user          userId of the user triggering the request
      * @param typeName      the assets type name to search for
+     * @return              list of assets by type name or GUID
+     * @throws PropertyServerException   there is a problem retrieving information from the property server
+     * @throws InvalidParameterException there is a problem with the parameters
+     */
+    public List<Elements> searchAssetsByTypeName(String user,
+                                       String typeName)
+            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException {
+        try {
+            return assetCatalog.searchByTypeName(user, typeName).getElementsList();
+        } catch (PropertyServerException e){
+            LOG.error(String.format("Error searching the assets by type name: %s", typeName));
+            throw e;
+        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
+            throw new BadRequestException(UserInterfaceErrorCodes.INVALID_SEARCH_REQUEST, e.getMessage());
+        }
+    }
+
+    /**
+     * Fetch asset's header by type GUID
+     *
+     * @param user          userId of the user triggering the request
      * @param typeGUID      the assets type GUID to search for
      * @return              list of assets by type name or GUID
      * @throws PropertyServerException   there is a problem retrieving information from the property server
      * @throws InvalidParameterException there is a problem with the parameters
      */
-    public List<Elements> searchAssetsByTypeNameOrGUID(String user,
-                                       String typeName,
-                                       String typeGUID)
+    public List<Elements> searchAssetsByTypeGUID(String user,
+                                                 String typeGUID)
             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException {
         try {
-            return assetCatalog.searchByTypeNameOrGUID(user, typeName, typeGUID).getElementsList();
+            return assetCatalog.searchByTypeGUID(user, typeGUID).getElementsList();
         } catch (PropertyServerException e){
-            if (typeName != null) {
-                LOG.error(String.format("Error searching the assets by criteria %s and type details", typeName));
-            } else if (typeGUID != null) {
-                LOG.error(String.format("Error searching the assets by criteria %s and type details", typeGUID));
-            }
+            LOG.error(String.format("Error searching the assets by type GUID: %s", typeGUID));
             throw e;
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
             throw new BadRequestException(UserInterfaceErrorCodes.INVALID_SEARCH_REQUEST, e.getMessage());
         }
-
     }
 
     /**

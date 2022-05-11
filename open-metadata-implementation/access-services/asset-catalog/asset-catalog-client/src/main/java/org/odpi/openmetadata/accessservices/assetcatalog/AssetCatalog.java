@@ -178,11 +178,10 @@ public class AssetCatalog extends OCFRESTClient implements AssetCatalogInterface
      * {@inheritDoc}
      */
     @Override
-    public AssetListResponse searchByTypeNameOrGUID(String userId,
-                                              String typeName,
-                                              String typeGUID)
+    public AssetListResponse searchByTypeName(String userId,
+                                              String typeName)
             throws InvalidParameterException, PropertyServerException {
-        String methodName = "searchByTypeNameOrGUID";
+        String methodName = "searchByTypeName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         AssetListResponse assetResponse = null;
@@ -191,7 +190,26 @@ public class AssetCatalog extends OCFRESTClient implements AssetCatalogInterface
             invalidParameterHandler.validateSearchString(typeName, "typeName", methodName);
             assetResponse = callGetRESTCall(methodName, AssetListResponse.class,
                     serverPlatformURLRoot + BASE_PATH + ASSETS_BY_TYPE_NAME, serverName, userId, typeName);
-        } else if (typeGUID != null) {
+        }
+
+        detectExceptions(assetResponse);
+
+        return assetResponse;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AssetListResponse searchByTypeGUID(String userId,
+                                              String typeGUID)
+            throws InvalidParameterException, PropertyServerException {
+        String methodName = "searchByTypeGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        AssetListResponse assetResponse = null;
+
+        if (typeGUID != null) {
             invalidParameterHandler.validateSearchString(typeGUID, "typeGUID", methodName);
             assetResponse = callGetRESTCall(methodName, AssetListResponse.class,
                     serverPlatformURLRoot + BASE_PATH + ASSETS_BY_TYPE_GUID, serverName, userId, typeGUID);
@@ -201,6 +219,7 @@ public class AssetCatalog extends OCFRESTClient implements AssetCatalogInterface
 
         return assetResponse;
     }
+
 
     /**
      * {@inheritDoc}

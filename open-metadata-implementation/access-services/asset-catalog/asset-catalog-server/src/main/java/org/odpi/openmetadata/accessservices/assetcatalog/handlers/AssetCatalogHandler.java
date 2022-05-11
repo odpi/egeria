@@ -397,25 +397,9 @@ public class AssetCatalogHandler {
             result = collectSearchedEntitiesByType(userId, searchCriteria, searchParameters, defaultSearchTypes, methodName);
         }
 
-        Set<Elements> searchResults = new HashSet<>();
-
-        for (EntityDetail entityDetail : result) {
-            try {
-                invalidParameterHandler.validateAssetInSupportedZone(entityDetail.getGUID(),
-                        GUID_PARAMETER,
-                        commonHandler.getAssetZoneMembership(entityDetail.getClassifications()),
-                        supportedZones,
-                        serverUserName,
-                        methodName);
-                    Elements elements = assetCatalogConverter.buildAssetElements(entityDetail);
-                searchResults.add(elements);
-            } catch (org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException e) {
-                log.debug(THIS_ASSET_IF_A_DIFFERENT_ZONE, entityDetail.getGUID());
-            }
-        }
         SequencingOrder sequencingOrder = searchParameters.getSequencingOrder();
         String sequencingProperty = searchParameters.getSequencingProperty();
-        List<Elements> results = new ArrayList<>(searchResults);
+        List<Elements> results = createSearchResultList(result, methodName);
         results.sort((firstAsset, secondAsset) ->
                 orderElements(firstAsset, secondAsset, sequencingProperty, sequencingOrder));
         return results;
@@ -425,8 +409,7 @@ public class AssetCatalogHandler {
      *
      * @param userId           user identifier that issues the call
      * @param typeName         the assets type name to search for
-     * @param typeGUID         the assets type GUID to search for
-     * @return                 list of assets by type name or GUID
+     * @return                 list of assets by type name
      * @throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException - is thrown by an OMRS Connector when the supplied UserId
      *                                                                                            is not permitted to perform a specific operation on the metadata collection.
      * @throws FunctionNotSupportedException                                                      - provides a checked exception for reporting that an
@@ -441,65 +424,84 @@ public class AssetCatalogHandler {
      * @throws PropertyServerException                                                            - reporting errors when connecting to a metadata repository to retrieve properties about the connection and/or connector
      * @throws UserNotAuthorizedException                                                         - is thrown by the OCF when a userId passed on a request is not authorized to perform the requested action.
      */
-    public List<Elements> searchByTypeNameOrGUID(String userId, String typeName, String typeGUID)
+    public List<Elements> searchByTypeName(String userId, String typeName)
             throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
             FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
             PropertyErrorException, TypeErrorException, PagingErrorException,
             InvalidParameterException, RepositoryErrorException, EntityNotKnownException, PropertyServerException, UserNotAuthorizedException {
 
-        String methodName = "searchByType";
+        String methodName = "searchByTypeName";
         invalidParameterHandler.validateUserId(userId, methodName);
 
         List<EntityDetail> result;
         if (typeName != null) {
-            typeGUID = commonHandler.getTypeDefGUID(userId, typeName);
+            String typeGUID = commonHandler.getTypeDefGUID(userId, typeName);
             if (typeGUID == null) {
                 ExceptionMessageDefinition messageDefinition = AssetCatalogErrorCode.TYPE_DEF_NOT_FOUND.getMessageDefinition(typeName);
                 throw new EntityNotKnownException(messageDefinition, this.getClass().getName(), messageDefinition.getUserAction());
             }
-            result = collectSearchedEntitiesByTypeNameOrGUID(userId, typeName, typeGUID, methodName);
-        } else if (typeGUID != null) {
-            typeName = repositoryHelper.getTypeDef(userId, "typeName", typeGUID, methodName).getName();
+            result = collectSearchedEntitiesByTypeIdentifiers(userId, typeName, typeGUID, methodName);
+        } else {
+            return Collections.emptyList();
+        }
+
+        return createSearchResultList(result, methodName);
+    }
+
+    /**\
+     *
+     * @param userId           user identifier that issues the call
+     * @param typeGUID         the assets type GUID to search for
+     * @return                 list of assets by type GUID
+     * @throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException - is thrown by an OMRS Connector when the supplied UserId
+     *                                                                                            is not permitted to perform a specific operation on the metadata collection.
+     * @throws FunctionNotSupportedException                                                      - provides a checked exception for reporting that an
+     *                                                                                            OMRS repository connector does not support the method called
+     * @throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException  - is thrown by an OMRS Connector when the parameters passed to a repository connector are not valid
+     * @throws PropertyErrorException                                                             - is thrown by an OMRS Connector when the properties defined for a specific entity
+     * @throws TypeErrorException                                                                 - is thrown by an OMRS Connector when the requested type for an instance is not represented by a known TypeDef.
+     * @throws PagingErrorException                                                               - is thrown by an OMRS Connector when the caller has passed invalid paging attributes on a search call.
+     * @throws InvalidParameterException                                                          - is thrown by the OMAG Service when a parameter is null or an invalid value.
+     * @throws RepositoryErrorException                                                           - there is a problem communicating with the metadata repository.
+     * @throws EntityNotKnownException
+     * @throws PropertyServerException                                                            - reporting errors when connecting to a metadata repository to retrieve properties about the connection and/or connector
+     * @throws UserNotAuthorizedException                                                         - is thrown by the OCF when a userId passed on a request is not authorized to perform the requested action.
+     */
+    public List<Elements> searchByTypeGUID(String userId, String typeGUID)
+            throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
+            FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
+            PropertyErrorException, TypeErrorException, PagingErrorException,
+            InvalidParameterException, RepositoryErrorException, EntityNotKnownException, PropertyServerException, UserNotAuthorizedException {
+
+        String methodName = "searchByTypeGUID";
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        List<EntityDetail> result;
+        if (typeGUID != null) {
+            String typeName = repositoryHelper.getTypeDef(userId, "typeName", typeGUID, methodName).getName();
             if (typeName == null) {
                 ExceptionMessageDefinition messageDefinition = AssetCatalogErrorCode.TYPE_DEF_NOT_FOUND.getMessageDefinition(typeName);
                 throw new EntityNotKnownException(messageDefinition, this.getClass().getName(), messageDefinition.getUserAction());
             }
-            result = collectSearchedEntitiesByTypeNameOrGUID(userId, typeName, typeGUID, methodName);
+            result = collectSearchedEntitiesByTypeIdentifiers(userId, typeName, typeGUID, methodName);
         } else {
-            result = Collections.emptyList();
+            return Collections.emptyList();
         }
 
-        Set<Elements> searchResults = new HashSet<>();
-
-        for (EntityDetail entityDetail : result) {
-            try {
-                invalidParameterHandler.validateAssetInSupportedZone(entityDetail.getGUID(),
-                        GUID_PARAMETER,
-                        commonHandler.getAssetZoneMembership(entityDetail.getClassifications()),
-                        supportedZones,
-                        serverUserName,
-                        methodName);
-                Elements elements = assetCatalogConverter.buildAssetElements(entityDetail);
-                searchResults.add(elements);
-            } catch (org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException e) {
-                log.debug(THIS_ASSET_IF_A_DIFFERENT_ZONE, entityDetail.getGUID());
-            }
-        }
-        List<Elements> results = new ArrayList<>(searchResults);
-        return results;
+        return createSearchResultList(result, methodName);
     }
 
     /**
-     * @param userId            user identifier that issues the call
-     * @param entityGUID        the identifier of the entity
-     * @param entityTypeDefName the type name of the entity
-     * @return the context of the given entity
-     * @throws UserNotAuthorizedException - is thrown by the OCF when a userId passed on a request is not
-     *                                    authorized to perform the requested action.
-     * @throws PropertyServerException    - provides a checked exception for reporting errors when connecting to a
-     *                                    metadata repository to retrieve properties about the connection and/or connector.
-     * @throws InvalidParameterException  -  is thrown by the OMAS when a parameter is null or an invalid value.
-     */
+         * @param userId            user identifier that issues the call
+         * @param entityGUID        the identifier of the entity
+         * @param entityTypeDefName the type name of the entity
+         * @return the context of the given entity
+         * @throws UserNotAuthorizedException - is thrown by the OCF when a userId passed on a request is not
+         *                                    authorized to perform the requested action.
+         * @throws PropertyServerException    - provides a checked exception for reporting errors when connecting to a
+         *                                    metadata repository to retrieve properties about the connection and/or connector.
+         * @throws InvalidParameterException  -  is thrown by the OMAS when a parameter is null or an invalid value.
+         */
     public Elements buildContextByType(String userId,
                                        String entityGUID,
                                        String entityTypeDefName)
@@ -565,6 +567,26 @@ public class AssetCatalogHandler {
         return getSupportedTypes(userId, supportedTypesForSearch.toArray(new String[0]));
     }
 
+    private ArrayList<Elements> createSearchResultList(List<EntityDetail> result, String methodName) {
+        Set<Elements> searchResults = new HashSet<>();
+
+        for (EntityDetail entityDetail : result) {
+            try {
+                invalidParameterHandler.validateAssetInSupportedZone(entityDetail.getGUID(),
+                        GUID_PARAMETER,
+                        commonHandler.getAssetZoneMembership(entityDetail.getClassifications()),
+                        supportedZones,
+                        serverUserName,
+                        methodName);
+                Elements elements = assetCatalogConverter.buildAssetElements(entityDetail);
+                searchResults.add(elements);
+            } catch (org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException e) {
+                log.debug(THIS_ASSET_IF_A_DIFFERENT_ZONE, entityDetail.getGUID());
+            }
+        }
+        return new ArrayList<>(searchResults);
+    }
+
     private List<AssetCatalogBean> getAssetCatalogBeansAfterValidation(String methodName,
                                                                        List<EntityDetail> entities)
             throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
@@ -627,7 +649,7 @@ public class AssetCatalogHandler {
         return result;
     }
 
-    private List<EntityDetail> collectSearchedEntitiesByTypeNameOrGUID(String userId,
+    private List<EntityDetail> collectSearchedEntitiesByTypeIdentifiers(String userId,
                                                              String typeName,
                                                              String typeGUID,
                                                              String methodName)

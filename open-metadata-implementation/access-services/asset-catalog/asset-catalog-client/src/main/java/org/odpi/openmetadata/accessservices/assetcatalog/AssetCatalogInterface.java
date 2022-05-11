@@ -89,15 +89,28 @@ public interface AssetCatalogInterface {
     AssetListResponse searchByType(String userId, String searchCriteria, SearchParameters searchParameters) throws InvalidParameterException, PropertyServerException;
 
     /**
+     * Return a list of assets matching the type name without the full context
+     * The list includes also subtypes
      *
      * @param userId                     the unique identifier for the user
      * @param typeName                   the assets type name to search for
+     * @return                           list of assets by type name or GUID
+     * @throws PropertyServerException   if a problem occurs while serving the request
+     * @throws InvalidParameterException if parameter validation fails
+     */
+    AssetListResponse searchByTypeName(String userId, String typeName) throws InvalidParameterException, PropertyServerException;
+
+    /**
+     * Return a list of assets matching the type GUID without the full context
+     * The list includes also subtypes
+     *
+     * @param userId                     the unique identifier for the user
      * @param typeGUID                   the assets type GUID to search for
      * @return                           list of assets by type name or GUID
      * @throws PropertyServerException   if a problem occurs while serving the request
      * @throws InvalidParameterException if parameter validation fails
      */
-    AssetListResponse searchByTypeNameOrGUID(String userId, String typeName, String typeGUID) throws InvalidParameterException, PropertyServerException;
+    AssetListResponse searchByTypeGUID(String userId, String typeGUID) throws InvalidParameterException, PropertyServerException;
 
     /**
      * Return the full context of an asset/glossary term based on its identifier.

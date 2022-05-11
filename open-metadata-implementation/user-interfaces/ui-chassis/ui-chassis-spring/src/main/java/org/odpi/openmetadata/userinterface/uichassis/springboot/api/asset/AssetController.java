@@ -79,7 +79,7 @@ public class AssetController {
     public List<Elements> searchAssetsByTypeName(@PathVariable("typeName") String typeName)
             throws PropertyServerException, InvalidParameterException {
         String user = SecurityContextHolder.getContext().getAuthentication().getName();
-        return assetCatalogOMASService.searchAssetsByTypeNameOrGUID(user, typeName, null);
+        return assetCatalogOMASService.searchAssetsByTypeName(user, typeName);
     }
 
     /**
@@ -94,7 +94,7 @@ public class AssetController {
             @PathVariable("typeGUID") String typeGUID)
             throws PropertyServerException, InvalidParameterException {
         String user = SecurityContextHolder.getContext().getAuthentication().getName();
-        return assetCatalogOMASService.searchAssetsByTypeNameOrGUID(user, null, typeGUID);
+        return assetCatalogOMASService.searchAssetsByTypeGUID(user, typeGUID);
     }
 
     /**

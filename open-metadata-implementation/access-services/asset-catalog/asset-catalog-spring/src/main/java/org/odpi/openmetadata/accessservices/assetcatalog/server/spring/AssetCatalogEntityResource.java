@@ -138,6 +138,7 @@ public class AssetCatalogEntityResource {
 
     /**
      * Return a list of assets by asset type name without any additional search criteria
+     * The list includes also subtypes
      *
      * @param serverName       unique identifier for requested server.
      * @param userId           the unique identifier for the user
@@ -149,12 +150,12 @@ public class AssetCatalogEntityResource {
     public AssetListResponse getAssetsByTypeName(@PathVariable("serverName") String serverName,
                                                  @PathVariable("userId") String userId,
                                                  @PathVariable("typeName") @NotBlank String typeName) {
-        return assetService.searchByTypeNameOrGUID(serverName, userId, typeName, null);
+        return assetService.searchByTypeName(serverName, userId, typeName);
     }
 
     /**
      * Return a list of assets by asset type GUID without any additional search criteria
-     *
+     * The list includes also subtypes
      * @param serverName       unique identifier for requested server.
      * @param userId           the unique identifier for the user
      * @param typeGUID         the assets type GUID to search for
@@ -166,7 +167,7 @@ public class AssetCatalogEntityResource {
     public AssetListResponse getAssetsByTypeGUID(@PathVariable("serverName") String serverName,
                                                  @PathVariable("userId") String userId,
                                                  @PathVariable("typeGUID") @NotBlank String typeGUID) {
-        return assetService.searchByTypeNameOrGUID(serverName, userId, null, typeGUID);
+        return assetService.searchByTypeGUID(serverName, userId, typeGUID);
     }
 
     /**
