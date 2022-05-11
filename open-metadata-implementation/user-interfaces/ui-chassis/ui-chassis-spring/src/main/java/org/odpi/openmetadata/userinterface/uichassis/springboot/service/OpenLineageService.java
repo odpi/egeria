@@ -214,7 +214,7 @@ public class OpenLineageService {
      * @return the edge in the format to be understand by the ui
      */
     private Edge createEdge(LineageEdge currentEdge) {
-        return new Edge(currentEdge.getSourceNodeID(),
+        return new Edge(currentEdge.getId().toString(), currentEdge.getSourceNodeID(),
                 currentEdge.getDestinationNodeID(), currentEdge.getEdgeType());
     }
 

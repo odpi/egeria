@@ -124,8 +124,8 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
 
                 GlossaryTermBuilder builder = new GlossaryTermBuilder(suppliedTerm.getQualifiedName(),
                                                                       suppliedTerm.getName(),
-                                                                      suppliedTerm.getDescription(),
                                                                       suppliedTerm.getSummary(),
+                                                                      suppliedTerm.getDescription(),
                                                                       suppliedTerm.getExamples(),
                                                                       suppliedTerm.getAbbreviation(),
                                                                       suppliedTerm.getUsage(),
