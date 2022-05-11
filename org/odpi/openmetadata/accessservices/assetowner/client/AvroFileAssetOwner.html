@@ -215,7 +215,7 @@ implements <a href="../api/AssetOnboardingAvroFileInterface.html" title="interfa
                   java.lang.String&nbsp;serverPlatformURLRoot,
                   java.lang.String&nbsp;userId,
                   java.lang.String&nbsp;password,
-                  org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)</code></th>
+                  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></th>
 <td class="colLast">
 <div class="block">Create a new client that passes userId and password in each HTTP request.</div>
 </td>
@@ -223,9 +223,9 @@ implements <a href="../api/AssetOnboardingAvroFileInterface.html" title="interfa
 <tr class="rowColor">
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">AvroFileAssetOwner</a></span>&#8203;(java.lang.String&nbsp;serverName,
                   java.lang.String&nbsp;serverPlatformURLRoot,
-                  <a href="rest/AssetOwnerRESTClient.html" title="class in org.odpi.openmetadata.accessservices.assetowner.client.rest">AssetOwnerRESTClient</a>&nbsp;restClient,
+                  org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient&nbsp;restClient,
                   int&nbsp;maxPageSize,
-                  org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)</code></th>
+                  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></th>
 <td class="colLast">
 <div class="block">Create a new client that is going to be used in an OMAG Server (view service or integration service typically).</div>
 </td>
@@ -233,7 +233,7 @@ implements <a href="../api/AssetOnboardingAvroFileInterface.html" title="interfa
 <tr class="altColor">
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">AvroFileAssetOwner</a></span>&#8203;(java.lang.String&nbsp;serverName,
                   java.lang.String&nbsp;serverPlatformURLRoot,
-                  org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)</code></th>
+                  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></th>
 <td class="colLast">
 <div class="block">Create a new client with no authentication embedded in the HTTP request and an audit log.</div>
 </td>
@@ -312,8 +312,8 @@ implements <a href="../api/AssetOnboardingAvroFileInterface.html" title="interfa
 <h4>AvroFileAssetOwner</h4>
 <pre>public&nbsp;AvroFileAssetOwner&#8203;(java.lang.String&nbsp;serverName,
                           java.lang.String&nbsp;serverPlatformURLRoot,
-                          org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)
-                   throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                          <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)
+                   throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client with no authentication embedded in the HTTP request and an audit log.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -321,7 +321,7 @@ implements <a href="../api/AssetOnboardingAvroFileInterface.html" title="interfa
 <dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST servers</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
  REST API calls.</dd>
 </dl>
 </li>
@@ -334,14 +334,14 @@ implements <a href="../api/AssetOnboardingAvroFileInterface.html" title="interfa
 <h4>AvroFileAssetOwner</h4>
 <pre>public&nbsp;AvroFileAssetOwner&#8203;(java.lang.String&nbsp;serverName,
                           java.lang.String&nbsp;serverPlatformURLRoot)
-                   throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                   throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server to connect to</dd>
 <dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST servers</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
  REST API calls.</dd>
 </dl>
 </li>
@@ -356,8 +356,8 @@ implements <a href="../api/AssetOnboardingAvroFileInterface.html" title="interfa
                           java.lang.String&nbsp;serverPlatformURLRoot,
                           java.lang.String&nbsp;userId,
                           java.lang.String&nbsp;password,
-                          org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)
-                   throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                          <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)
+                   throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client that passes userId and password in each HTTP request.  This is the
  userId/password of the calling server.  The end user's userId is sent on each request.
  There is also an audit log destination.</div>
@@ -369,7 +369,7 @@ implements <a href="../api/AssetOnboardingAvroFileInterface.html" title="interfa
 <dd><code>password</code> - caller's userId embedded in all HTTP requests</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
  REST API calls.</dd>
 </dl>
 </li>
@@ -384,7 +384,7 @@ implements <a href="../api/AssetOnboardingAvroFileInterface.html" title="interfa
                           java.lang.String&nbsp;serverPlatformURLRoot,
                           java.lang.String&nbsp;userId,
                           java.lang.String&nbsp;password)
-                   throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                   throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client that passes userId and password in each HTTP request.  This is the
  userId/password of the calling server.  The end user's userId is sent on each request.</div>
 <dl>
@@ -394,7 +394,7 @@ implements <a href="../api/AssetOnboardingAvroFileInterface.html" title="interfa
 <dd><code>userId</code> - caller's userId embedded in all HTTP requests</dd>
 <dd><code>password</code> - caller's userId embedded in all HTTP requests</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
  REST API calls.</dd>
 </dl>
 </li>
@@ -407,10 +407,10 @@ implements <a href="../api/AssetOnboardingAvroFileInterface.html" title="interfa
 <h4>AvroFileAssetOwner</h4>
 <pre>public&nbsp;AvroFileAssetOwner&#8203;(java.lang.String&nbsp;serverName,
                           java.lang.String&nbsp;serverPlatformURLRoot,
-                          <a href="rest/AssetOwnerRESTClient.html" title="class in org.odpi.openmetadata.accessservices.assetowner.client.rest">AssetOwnerRESTClient</a>&nbsp;restClient,
+                          org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient&nbsp;restClient,
                           int&nbsp;maxPageSize,
-                          org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)
-                   throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                          <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)
+                   throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client that is going to be used in an OMAG Server (view service or integration service typically).</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -420,7 +420,7 @@ implements <a href="../api/AssetOnboardingAvroFileInterface.html" title="interfa
 <dd><code>maxPageSize</code> - maximum number of results supported by this server</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
  REST API calls.</dd>
 </dl>
 </li>
@@ -445,9 +445,9 @@ implements <a href="../api/AssetOnboardingAvroFileInterface.html" title="interfa
                                                              java.lang.String&nbsp;displayName,
                                                              java.lang.String&nbsp;description,
                                                              java.lang.String&nbsp;fullPath)
-                                                      throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                             org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                             org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                             <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                             <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Add a simple asset description linked to a connection object for a Avro file.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -460,9 +460,9 @@ implements <a href="../api/AssetOnboardingAvroFileInterface.html" title="interfa
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of GUIDs from the top level to the root of the pathname</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - full path or userId is null</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing property server</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - security access problem</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - full path or userId is null</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>
 </li>
 </ul>

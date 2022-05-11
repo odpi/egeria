@@ -168,7 +168,7 @@ implements <a href="../api/SubjectAreasInterface.html" title="interface in org.o
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">SubjectAreaManager</a></span>&#8203;(java.lang.String&nbsp;serverName,
                   java.lang.String&nbsp;serverPlatformURLRoot,
                   int&nbsp;maxPageSize,
-                  org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)</code></th>
+                  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></th>
 <td class="colLast">
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 </td>
@@ -188,7 +188,7 @@ implements <a href="../api/SubjectAreasInterface.html" title="interface in org.o
                   java.lang.String&nbsp;userId,
                   java.lang.String&nbsp;password,
                   int&nbsp;maxPageSize,
-                  org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)</code></th>
+                  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></th>
 <td class="colLast">
 <div class="block">Create a new client that passes userId and password in each HTTP request.</div>
 </td>
@@ -196,7 +196,7 @@ implements <a href="../api/SubjectAreasInterface.html" title="interface in org.o
 <tr class="altColor">
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.client.rest.GovernanceProgramRESTClient,int)">SubjectAreaManager</a></span>&#8203;(java.lang.String&nbsp;serverName,
                   java.lang.String&nbsp;serverPlatformURLRoot,
-                  <a href="rest/GovernanceProgramRESTClient.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.client.rest">GovernanceProgramRESTClient</a>&nbsp;restClient,
+                  org.odpi.openmetadata.accessservices.governanceprogram.client.rest.GovernanceProgramRESTClient&nbsp;restClient,
                   int&nbsp;maxPageSize)</code></th>
 <td class="colLast">
 <div class="block">Create a new client that uses the supplied rest client.</div>
@@ -223,7 +223,7 @@ implements <a href="../api/SubjectAreasInterface.html" title="interface in org.o
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createSubjectArea(java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.SubjectAreaProperties)">createSubjectArea</a></span>&#8203;(java.lang.String&nbsp;userId,
-                 org.odpi.openmetadata.accessservices.governanceprogram.properties.SubjectAreaProperties&nbsp;properties)</code></th>
+                 <a href="../properties/SubjectAreaProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">SubjectAreaProperties</a>&nbsp;properties)</code></th>
 <td class="colLast">
 <div class="block">Create a definition of a subject area.</div>
 </td>
@@ -237,7 +237,7 @@ implements <a href="../api/SubjectAreasInterface.html" title="interface in org.o
 </td>
 </tr>
 <tr id="i2" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.SubjectAreaElement</code></td>
+<td class="colFirst"><code><a href="../metadataelements/SubjectAreaElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">SubjectAreaElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSubjectAreaByGUID(java.lang.String,java.lang.String)">getSubjectAreaByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;subjectAreaGUID)</code></th>
 <td class="colLast">
@@ -245,7 +245,7 @@ implements <a href="../api/SubjectAreasInterface.html" title="interface in org.o
 </td>
 </tr>
 <tr id="i3" class="rowColor">
-<td class="colFirst"><code>org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.SubjectAreaElement</code></td>
+<td class="colFirst"><code><a href="../metadataelements/SubjectAreaElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">SubjectAreaElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSubjectAreaByName(java.lang.String,java.lang.String)">getSubjectAreaByName</a></span>&#8203;(java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;qualifiedName)</code></th>
 <td class="colLast">
@@ -253,7 +253,7 @@ implements <a href="../api/SubjectAreasInterface.html" title="interface in org.o
 </td>
 </tr>
 <tr id="i4" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.SubjectAreaDefinition</code></td>
+<td class="colFirst"><code><a href="../metadataelements/SubjectAreaDefinition.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">SubjectAreaDefinition</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSubjectAreaDefinitionByGUID(java.lang.String,java.lang.String)">getSubjectAreaDefinitionByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
                               java.lang.String&nbsp;subjectAreaGUID)</code></th>
 <td class="colLast">
@@ -261,7 +261,7 @@ implements <a href="../api/SubjectAreasInterface.html" title="interface in org.o
 </td>
 </tr>
 <tr id="i5" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.SubjectAreaElement&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/SubjectAreaElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">SubjectAreaElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSubjectAreasForDomain(java.lang.String,int,int,int)">getSubjectAreasForDomain</a></span>&#8203;(java.lang.String&nbsp;userId,
                         int&nbsp;domainIdentifier,
                         int&nbsp;startFrom,
@@ -311,7 +311,7 @@ implements <a href="../api/SubjectAreasInterface.html" title="interface in org.o
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateSubjectArea(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.governanceprogram.properties.SubjectAreaProperties)">updateSubjectArea</a></span>&#8203;(java.lang.String&nbsp;userId,
                  java.lang.String&nbsp;subjectAreaGUID,
                  boolean&nbsp;isMergeUpdate,
-                 org.odpi.openmetadata.accessservices.governanceprogram.properties.SubjectAreaProperties&nbsp;properties)</code></th>
+                 <a href="../properties/SubjectAreaProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">SubjectAreaProperties</a>&nbsp;properties)</code></th>
 <td class="colLast">
 <div class="block">Update the definition of a subject area.</div>
 </td>
@@ -348,14 +348,14 @@ implements <a href="../api/SubjectAreasInterface.html" title="interface in org.o
 <h4>SubjectAreaManager</h4>
 <pre>public&nbsp;SubjectAreaManager&#8203;(java.lang.String&nbsp;serverName,
                           java.lang.String&nbsp;serverPlatformURLRoot)
-                   throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                   throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server to connect to</dd>
 <dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST servers</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
  REST API calls.</dd>
 </dl>
 </li>
@@ -370,7 +370,7 @@ implements <a href="../api/SubjectAreasInterface.html" title="interface in org.o
                           java.lang.String&nbsp;serverPlatformURLRoot,
                           java.lang.String&nbsp;userId,
                           java.lang.String&nbsp;password)
-                   throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                   throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client that passes userId and password in each HTTP request.  This is the
  userId/password of the calling server.  The end user's userId is sent on each request.</div>
 <dl>
@@ -380,7 +380,7 @@ implements <a href="../api/SubjectAreasInterface.html" title="interface in org.o
 <dd><code>userId</code> - caller's userId embedded in all HTTP requests</dd>
 <dd><code>password</code> - caller's userId embedded in all HTTP requests</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
  REST API calls.</dd>
 </dl>
 </li>
@@ -394,8 +394,8 @@ implements <a href="../api/SubjectAreasInterface.html" title="interface in org.o
 <pre>public&nbsp;SubjectAreaManager&#8203;(java.lang.String&nbsp;serverName,
                           java.lang.String&nbsp;serverPlatformURLRoot,
                           int&nbsp;maxPageSize,
-                          org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)
-                   throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                          <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)
+                   throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -404,7 +404,7 @@ implements <a href="../api/SubjectAreasInterface.html" title="interface in org.o
 <dd><code>maxPageSize</code> - pre-initialized parameter limit</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
  REST API calls.</dd>
 </dl>
 </li>
@@ -420,8 +420,8 @@ implements <a href="../api/SubjectAreasInterface.html" title="interface in org.o
                           java.lang.String&nbsp;userId,
                           java.lang.String&nbsp;password,
                           int&nbsp;maxPageSize,
-                          org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)
-                   throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                          <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)
+                   throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client that passes userId and password in each HTTP request.  This is the
  userId/password of the calling server.  The end user's userId is sent on each request.</div>
 <dl>
@@ -433,7 +433,7 @@ implements <a href="../api/SubjectAreasInterface.html" title="interface in org.o
 <dd><code>maxPageSize</code> - pre-initialized parameter limit</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
  REST API calls.</dd>
 </dl>
 </li>
@@ -446,9 +446,9 @@ implements <a href="../api/SubjectAreasInterface.html" title="interface in org.o
 <h4>SubjectAreaManager</h4>
 <pre>public&nbsp;SubjectAreaManager&#8203;(java.lang.String&nbsp;serverName,
                           java.lang.String&nbsp;serverPlatformURLRoot,
-                          <a href="rest/GovernanceProgramRESTClient.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.client.rest">GovernanceProgramRESTClient</a>&nbsp;restClient,
+                          org.odpi.openmetadata.accessservices.governanceprogram.client.rest.GovernanceProgramRESTClient&nbsp;restClient,
                           int&nbsp;maxPageSize)
-                   throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                   throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client that uses the supplied rest client.  This is typically used when called fro manother OMAG Server.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -457,7 +457,7 @@ implements <a href="../api/SubjectAreasInterface.html" title="interface in org.o
 <dd><code>restClient</code> - internal client for rest calls</dd>
 <dd><code>maxPageSize</code> - pre-initialized parameter limit</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - bad input parameters</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - bad input parameters</dd>
 </dl>
 </li>
 </ul>
@@ -478,10 +478,10 @@ implements <a href="../api/SubjectAreasInterface.html" title="interface in org.o
 <li class="blockList">
 <h4>createSubjectArea</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;createSubjectArea&#8203;(java.lang.String&nbsp;userId,
-                                          org.odpi.openmetadata.accessservices.governanceprogram.properties.SubjectAreaProperties&nbsp;properties)
-                                   throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                          org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                          org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                          <a href="../properties/SubjectAreaProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">SubjectAreaProperties</a>&nbsp;properties)
+                                   throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                          <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                          <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Create a definition of a subject area.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -492,9 +492,9 @@ implements <a href="../api/SubjectAreasInterface.html" title="interface in org.o
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of subject area</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - qualifiedName or userId is null; qualifiedName is not unique</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing property server</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - security access problem</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - qualifiedName or userId is null; qualifiedName is not unique</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>
 </li>
 </ul>
@@ -507,10 +507,10 @@ implements <a href="../api/SubjectAreasInterface.html" title="interface in org.o
 <pre class="methodSignature">public&nbsp;void&nbsp;updateSubjectArea&#8203;(java.lang.String&nbsp;userId,
                               java.lang.String&nbsp;subjectAreaGUID,
                               boolean&nbsp;isMergeUpdate,
-                              org.odpi.openmetadata.accessservices.governanceprogram.properties.SubjectAreaProperties&nbsp;properties)
-                       throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                              org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                              org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                              <a href="../properties/SubjectAreaProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">SubjectAreaProperties</a>&nbsp;properties)
+                       throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                              <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                              <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Update the definition of a subject area.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -521,9 +521,9 @@ implements <a href="../api/SubjectAreasInterface.html" title="interface in org.o
 <dd><code>isMergeUpdate</code> - are unspecified properties unchanged (true) or replaced with null?</dd>
 <dd><code>properties</code> - properties to change</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - guid, qualifiedName or userId is null; qualifiedName is not unique; guid is not known</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing property server</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - security access problem</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - guid, qualifiedName or userId is null; qualifiedName is not unique; guid is not known</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>
 </li>
 </ul>
@@ -535,9 +535,9 @@ implements <a href="../api/SubjectAreasInterface.html" title="interface in org.o
 <h4>deleteSubjectArea</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;deleteSubjectArea&#8203;(java.lang.String&nbsp;userId,
                               java.lang.String&nbsp;subjectAreaGUID)
-                       throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                              org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                              org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                       throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                              <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                              <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Remove the definition of a subject area.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -546,9 +546,9 @@ implements <a href="../api/SubjectAreasInterface.html" title="interface in org.o
 <dd><code>userId</code> - calling user</dd>
 <dd><code>subjectAreaGUID</code> - unique identifier of subject area</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - guid or userId is null; guid is not known</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing property server</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - security access problem</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - guid or userId is null; guid is not known</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>
 </li>
 </ul>
@@ -561,9 +561,9 @@ implements <a href="../api/SubjectAreasInterface.html" title="interface in org.o
 <pre class="methodSignature">public&nbsp;void&nbsp;linkSubjectAreasInHierarchy&#8203;(java.lang.String&nbsp;userId,
                                         java.lang.String&nbsp;parentSubjectAreaGUID,
                                         java.lang.String&nbsp;childSubjectAreaGUID)
-                                 throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                        org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                        org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                 throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                        <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                        <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Link two related subject areas together as part of a hierarchy.
  A subject area can only have one parent but many child subject areas.</div>
 <dl>
@@ -574,9 +574,9 @@ implements <a href="../api/SubjectAreasInterface.html" title="interface in org.o
 <dd><code>parentSubjectAreaGUID</code> - unique identifier of the parent subject area</dd>
 <dd><code>childSubjectAreaGUID</code> - unique identifier of the child subject area</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the guids is null or not known</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing property server</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - security access problem</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the guids is null or not known</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>
 </li>
 </ul>
@@ -589,9 +589,9 @@ implements <a href="../api/SubjectAreasInterface.html" title="interface in org.o
 <pre class="methodSignature">public&nbsp;void&nbsp;unlinkSubjectAreasInHierarchy&#8203;(java.lang.String&nbsp;userId,
                                           java.lang.String&nbsp;parentSubjectAreaGUID,
                                           java.lang.String&nbsp;childSubjectAreaGUID)
-                                   throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                          org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                          org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                   throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                          <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                          <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Remove the link between two subject areas in the subject area hierarchy.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -601,9 +601,9 @@ implements <a href="../api/SubjectAreasInterface.html" title="interface in org.o
 <dd><code>parentSubjectAreaGUID</code> - unique identifier of the parent subject area</dd>
 <dd><code>childSubjectAreaGUID</code> - unique identifier of the child subject area</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the guids is null or not known</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing property server</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - security access problem</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the guids is null or not known</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>
 </li>
 </ul>
@@ -616,9 +616,9 @@ implements <a href="../api/SubjectAreasInterface.html" title="interface in org.o
 <pre class="methodSignature">public&nbsp;void&nbsp;linkSubjectAreaToGovernanceDefinition&#8203;(java.lang.String&nbsp;userId,
                                                   java.lang.String&nbsp;subjectAreaGUID,
                                                   java.lang.String&nbsp;definitionGUID)
-                                           throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                  org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                  org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                           throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                  <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                  <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Link a subject area to a governance definition that controls how the definitions in the subject area should be governed.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -628,9 +628,9 @@ implements <a href="../api/SubjectAreasInterface.html" title="interface in org.o
 <dd><code>subjectAreaGUID</code> - unique identifier of the subject area</dd>
 <dd><code>definitionGUID</code> - unique identifier of the governance definition</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the guids is null or not known</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing property server</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - security access problem</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the guids is null or not known</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>
 </li>
 </ul>
@@ -643,9 +643,9 @@ implements <a href="../api/SubjectAreasInterface.html" title="interface in org.o
 <pre class="methodSignature">public&nbsp;void&nbsp;unlinkSubjectAreaFromGovernanceDefinition&#8203;(java.lang.String&nbsp;userId,
                                                       java.lang.String&nbsp;subjectAreaGUID,
                                                       java.lang.String&nbsp;definitionGUID)
-                                               throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                      org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                      org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                               throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                      <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                      <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Remove the link between a subject area and a governance definition.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -655,9 +655,9 @@ implements <a href="../api/SubjectAreasInterface.html" title="interface in org.o
 <dd><code>subjectAreaGUID</code> - unique identifier of the subject area</dd>
 <dd><code>definitionGUID</code> - unique identifier of the governance definition</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the guids is null or not known</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing property server</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - security access problem</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the guids is null or not known</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>
 </li>
 </ul>
@@ -667,11 +667,11 @@ implements <a href="../api/SubjectAreasInterface.html" title="interface in org.o
 <ul class="blockList">
 <li class="blockList">
 <h4>getSubjectAreaByGUID</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.SubjectAreaElement&nbsp;getSubjectAreaByGUID&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                       java.lang.String&nbsp;subjectAreaGUID)
-                                                                                                                throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                       org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                       org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">public&nbsp;<a href="../metadataelements/SubjectAreaElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">SubjectAreaElement</a>&nbsp;getSubjectAreaByGUID&#8203;(java.lang.String&nbsp;userId,
+                                               java.lang.String&nbsp;subjectAreaGUID)
+                                        throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                               <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                               <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Return information about a specific subject area.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -682,9 +682,9 @@ implements <a href="../api/SubjectAreasInterface.html" title="interface in org.o
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>properties of the subject area</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - subjectAreaGUID or userId is null</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing property server</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - security access problem</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - subjectAreaGUID or userId is null</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>
 </li>
 </ul>
@@ -694,11 +694,11 @@ implements <a href="../api/SubjectAreasInterface.html" title="interface in org.o
 <ul class="blockList">
 <li class="blockList">
 <h4>getSubjectAreaByName</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.SubjectAreaElement&nbsp;getSubjectAreaByName&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                       java.lang.String&nbsp;qualifiedName)
-                                                                                                                throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                       org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                       org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">public&nbsp;<a href="../metadataelements/SubjectAreaElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">SubjectAreaElement</a>&nbsp;getSubjectAreaByName&#8203;(java.lang.String&nbsp;userId,
+                                               java.lang.String&nbsp;qualifiedName)
+                                        throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                               <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                               <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Return information about a specific subject area.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -709,9 +709,9 @@ implements <a href="../api/SubjectAreasInterface.html" title="interface in org.o
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>properties of the subject area</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - qualifiedName or userId is null</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing property server</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - security access problem</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - qualifiedName or userId is null</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>
 </li>
 </ul>
@@ -721,13 +721,13 @@ implements <a href="../api/SubjectAreasInterface.html" title="interface in org.o
 <ul class="blockList">
 <li class="blockList">
 <h4>getSubjectAreasForDomain</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.SubjectAreaElement&gt;&nbsp;getSubjectAreasForDomain&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                                           int&nbsp;domainIdentifier,
-                                                                                                                                           int&nbsp;startFrom,
-                                                                                                                                           int&nbsp;pageSize)
-                                                                                                                                    throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                                           org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                                           org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../metadataelements/SubjectAreaElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">SubjectAreaElement</a>&gt;&nbsp;getSubjectAreasForDomain&#8203;(java.lang.String&nbsp;userId,
+                                                                   int&nbsp;domainIdentifier,
+                                                                   int&nbsp;startFrom,
+                                                                   int&nbsp;pageSize)
+                                                            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                                   <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                                   <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Return information about the defined subject areas.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -740,9 +740,9 @@ implements <a href="../api/SubjectAreasInterface.html" title="interface in org.o
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>properties of the subject area</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - qualifiedName or userId is null</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing property server</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - security access problem</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - qualifiedName or userId is null</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>
 </li>
 </ul>
@@ -752,11 +752,11 @@ implements <a href="../api/SubjectAreasInterface.html" title="interface in org.o
 <ul class="blockListLast">
 <li class="blockList">
 <h4>getSubjectAreaDefinitionByGUID</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.SubjectAreaDefinition&nbsp;getSubjectAreaDefinitionByGUID&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                                    java.lang.String&nbsp;subjectAreaGUID)
-                                                                                                                             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                                    org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                                    org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">public&nbsp;<a href="../metadataelements/SubjectAreaDefinition.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">SubjectAreaDefinition</a>&nbsp;getSubjectAreaDefinitionByGUID&#8203;(java.lang.String&nbsp;userId,
+                                                            java.lang.String&nbsp;subjectAreaGUID)
+                                                     throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                            <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                            <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Return information about a specific subject area and its linked governance definitions.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -767,9 +767,9 @@ implements <a href="../api/SubjectAreasInterface.html" title="interface in org.o
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>properties of the subject area</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - subjectAreaGUID or userId is null</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing property server</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - security access problem</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - subjectAreaGUID or userId is null</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>
 </li>
 </ul>

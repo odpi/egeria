@@ -187,7 +187,7 @@ implements <a href="../api/MetadataSourceInterface.html" title="interface in org
                     java.lang.String&nbsp;serverPlatformURLRoot,
                     java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;password,
-                    org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)</code></th>
+                    <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></th>
 <td class="colLast">
 <div class="block">Create a new client that passes userId and password in each HTTP request.</div>
 </td>
@@ -195,7 +195,7 @@ implements <a href="../api/MetadataSourceInterface.html" title="interface in org
 <tr class="rowColor">
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.client.rest.CommunityProfileRESTClient,int)">MetadataSourceClient</a></span>&#8203;(java.lang.String&nbsp;serverName,
                     java.lang.String&nbsp;serverPlatformURLRoot,
-                    <a href="rest/CommunityProfileRESTClient.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client.rest">CommunityProfileRESTClient</a>&nbsp;restClient,
+                    org.odpi.openmetadata.accessservices.communityprofile.client.rest.CommunityProfileRESTClient&nbsp;restClient,
                     int&nbsp;maxPageSize)</code></th>
 <td class="colLast">
 <div class="block">Create a new client that passes userId and password in each HTTP request.</div>
@@ -204,7 +204,7 @@ implements <a href="../api/MetadataSourceInterface.html" title="interface in org
 <tr class="altColor">
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">MetadataSourceClient</a></span>&#8203;(java.lang.String&nbsp;serverName,
                     java.lang.String&nbsp;serverPlatformURLRoot,
-                    org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)</code></th>
+                    <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></th>
 <td class="colLast">
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 </td>
@@ -255,13 +255,13 @@ implements <a href="../api/MetadataSourceInterface.html" title="interface in org
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createMetadataSource(java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.MetadataSourceProperties)">createMetadataSource</a></span>&#8203;(java.lang.String&nbsp;userId,
-                    org.odpi.openmetadata.accessservices.communityprofile.properties.MetadataSourceProperties&nbsp;properties)</code></th>
+                    <a href="../properties/MetadataSourceProperties.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.properties">MetadataSourceProperties</a>&nbsp;properties)</code></th>
 <td class="colLast">
 <div class="block">Create information about the metadata source that is providing user profile information.</div>
 </td>
 </tr>
 <tr id="i4" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.accessservices.communityprofile.metadataelements.MetadataSourceElement</code></td>
+<td class="colFirst"><code><a href="../metadataelements/MetadataSourceElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">MetadataSourceElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMetadataSource(java.lang.String,java.lang.String)">getMetadataSource</a></span>&#8203;(java.lang.String&nbsp;userId,
                  java.lang.String&nbsp;metadataSourceGUID)</code></th>
 <td class="colLast">
@@ -308,14 +308,14 @@ implements <a href="../api/MetadataSourceInterface.html" title="interface in org
 <h4>MetadataSourceClient</h4>
 <pre>public&nbsp;MetadataSourceClient&#8203;(java.lang.String&nbsp;serverName,
                             java.lang.String&nbsp;serverPlatformURLRoot)
-                     throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                     throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server to connect to</dd>
 <dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST servers</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - bad input parameters</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - bad input parameters</dd>
 </dl>
 </li>
 </ul>
@@ -327,8 +327,8 @@ implements <a href="../api/MetadataSourceInterface.html" title="interface in org
 <h4>MetadataSourceClient</h4>
 <pre>public&nbsp;MetadataSourceClient&#8203;(java.lang.String&nbsp;serverName,
                             java.lang.String&nbsp;serverPlatformURLRoot,
-                            org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)
-                     throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                            <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)
+                     throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -336,7 +336,7 @@ implements <a href="../api/MetadataSourceInterface.html" title="interface in org
 <dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST servers</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
  REST API calls.</dd>
 </dl>
 </li>
@@ -351,7 +351,7 @@ implements <a href="../api/MetadataSourceInterface.html" title="interface in org
                             java.lang.String&nbsp;serverPlatformURLRoot,
                             java.lang.String&nbsp;userId,
                             java.lang.String&nbsp;password)
-                     throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                     throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client that passes userId and password in each HTTP request.  This is the
  userId/password of the calling server.  The end user's userId is sent on each request.</div>
 <dl>
@@ -361,7 +361,7 @@ implements <a href="../api/MetadataSourceInterface.html" title="interface in org
 <dd><code>userId</code> - caller's userId embedded in all HTTP requests</dd>
 <dd><code>password</code> - caller's userId embedded in all HTTP requests</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - bad input parameters</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - bad input parameters</dd>
 </dl>
 </li>
 </ul>
@@ -375,8 +375,8 @@ implements <a href="../api/MetadataSourceInterface.html" title="interface in org
                             java.lang.String&nbsp;serverPlatformURLRoot,
                             java.lang.String&nbsp;userId,
                             java.lang.String&nbsp;password,
-                            org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)
-                     throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                            <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)
+                     throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client that passes userId and password in each HTTP request.  This is the
  userId/password of the calling server.  The end user's userId is sent on each request.</div>
 <dl>
@@ -387,7 +387,7 @@ implements <a href="../api/MetadataSourceInterface.html" title="interface in org
 <dd><code>password</code> - caller's userId embedded in all HTTP requests</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - bad input parameters</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - bad input parameters</dd>
 </dl>
 </li>
 </ul>
@@ -399,9 +399,9 @@ implements <a href="../api/MetadataSourceInterface.html" title="interface in org
 <h4>MetadataSourceClient</h4>
 <pre>public&nbsp;MetadataSourceClient&#8203;(java.lang.String&nbsp;serverName,
                             java.lang.String&nbsp;serverPlatformURLRoot,
-                            <a href="rest/CommunityProfileRESTClient.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client.rest">CommunityProfileRESTClient</a>&nbsp;restClient,
+                            org.odpi.openmetadata.accessservices.communityprofile.client.rest.CommunityProfileRESTClient&nbsp;restClient,
                             int&nbsp;maxPageSize)
-                     throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                     throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client that passes userId and password in each HTTP request.  This is the
  userId/password of the calling server.  The end user's userId is sent on each request.</div>
 <dl>
@@ -411,7 +411,7 @@ implements <a href="../api/MetadataSourceInterface.html" title="interface in org
 <dd><code>restClient</code> - pre-initialized REST client</dd>
 <dd><code>maxPageSize</code> - pre-initialized parameter limit</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem with the information about the remote OMAS</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem with the information about the remote OMAS</dd>
 </dl>
 </li>
 </ul>
@@ -432,10 +432,10 @@ implements <a href="../api/MetadataSourceInterface.html" title="interface in org
 <li class="blockList">
 <h4>createMetadataSource</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;createMetadataSource&#8203;(java.lang.String&nbsp;userId,
-                                             org.odpi.openmetadata.accessservices.communityprofile.properties.MetadataSourceProperties&nbsp;properties)
-                                      throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                             org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                             org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                             <a href="../properties/MetadataSourceProperties.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.properties">MetadataSourceProperties</a>&nbsp;properties)
+                                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                             <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                             <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Create information about the metadata source that is providing user profile information.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -446,9 +446,9 @@ implements <a href="../api/MetadataSourceInterface.html" title="interface in org
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the user profile manager's software server capability</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the bean properties are invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing the property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the bean properties are invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing the property server</dd>
 </dl>
 </li>
 </ul>
@@ -460,9 +460,9 @@ implements <a href="../api/MetadataSourceInterface.html" title="interface in org
 <h4>getMetadataSourceGUID</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getMetadataSourceGUID&#8203;(java.lang.String&nbsp;userId,
                                               java.lang.String&nbsp;qualifiedName)
-                                       throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                              org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                              org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                       throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                              <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                              <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Retrieve the unique identifier of the software server capability that describes a metadata source.  This could be
  a user profile manager, user access directory and/or a master data manager.</div>
 <dl>
@@ -474,9 +474,9 @@ implements <a href="../api/MetadataSourceInterface.html" title="interface in org
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the integration daemon's software server capability</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the bean properties are invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing the property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the bean properties are invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing the property server</dd>
 </dl>
 </li>
 </ul>
@@ -486,11 +486,11 @@ implements <a href="../api/MetadataSourceInterface.html" title="interface in org
 <ul class="blockList">
 <li class="blockList">
 <h4>getMetadataSource</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.accessservices.communityprofile.metadataelements.MetadataSourceElement&nbsp;getMetadataSource&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                      java.lang.String&nbsp;metadataSourceGUID)
-                                                                                                               throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                      org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                      org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">public&nbsp;<a href="../metadataelements/MetadataSourceElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">MetadataSourceElement</a>&nbsp;getMetadataSource&#8203;(java.lang.String&nbsp;userId,
+                                               java.lang.String&nbsp;metadataSourceGUID)
+                                        throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                               <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                               <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Retrieve the properties of the software server capability that describes a metadata source.  This could be
  a user profile manager, user access directory and/or a master data manager.</div>
 <dl>
@@ -502,9 +502,9 @@ implements <a href="../api/MetadataSourceInterface.html" title="interface in org
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the integration daemon's software server capability</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the bean properties are invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing the property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the bean properties are invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing the property server</dd>
 </dl>
 </li>
 </ul>
@@ -516,9 +516,9 @@ implements <a href="../api/MetadataSourceInterface.html" title="interface in org
 <h4>addUserProfileManagerClassification</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;addUserProfileManagerClassification&#8203;(java.lang.String&nbsp;userId,
                                                 java.lang.String&nbsp;metadataSourceGUID)
-                                         throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                         throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Update classification of the metadata source as being capable if managing user profiles.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -527,9 +527,9 @@ implements <a href="../api/MetadataSourceInterface.html" title="interface in org
 <dd><code>userId</code> - calling user</dd>
 <dd><code>metadataSourceGUID</code> - unique identifier of the metadata source</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the bean properties are invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing the property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the bean properties are invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing the property server</dd>
 </dl>
 </li>
 </ul>
@@ -541,9 +541,9 @@ implements <a href="../api/MetadataSourceInterface.html" title="interface in org
 <h4>addUserAccessDirectoryClassification</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;addUserAccessDirectoryClassification&#8203;(java.lang.String&nbsp;userId,
                                                  java.lang.String&nbsp;metadataSourceGUID)
-                                          throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                 org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                 org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Update classification of the metadata source that is providing a user access directory information
  such as the groups and access rights of a user Id.</div>
 <dl>
@@ -553,9 +553,9 @@ implements <a href="../api/MetadataSourceInterface.html" title="interface in org
 <dd><code>userId</code> - calling user</dd>
 <dd><code>metadataSourceGUID</code> - unique identifier of the metadata source</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the bean properties are invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing the property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the bean properties are invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing the property server</dd>
 </dl>
 </li>
 </ul>
@@ -567,9 +567,9 @@ implements <a href="../api/MetadataSourceInterface.html" title="interface in org
 <h4>addMasterDataManagerClassification</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;addMasterDataManagerClassification&#8203;(java.lang.String&nbsp;userId,
                                                java.lang.String&nbsp;metadataSourceGUID)
-                                        throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                               org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                               org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                        throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                               <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                               <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Update classification of the metadata source that is a master data manager for user profile information.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -578,9 +578,9 @@ implements <a href="../api/MetadataSourceInterface.html" title="interface in org
 <dd><code>userId</code> - calling user</dd>
 <dd><code>metadataSourceGUID</code> - unique identifier of the metadata source</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the bean properties are invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing the property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the bean properties are invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing the property server</dd>
 </dl>
 </li>
 </ul>

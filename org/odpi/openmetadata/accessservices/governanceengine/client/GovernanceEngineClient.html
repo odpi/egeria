@@ -178,7 +178,7 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <tr class="altColor">
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.client.rest.GovernanceEngineRESTClient,int)">GovernanceEngineClient</a></span>&#8203;(java.lang.String&nbsp;serverName,
                       java.lang.String&nbsp;serverPlatformURLRoot,
-                      <a href="rest/GovernanceEngineRESTClient.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.client.rest">GovernanceEngineRESTClient</a>&nbsp;restClient,
+                      org.odpi.openmetadata.accessservices.governanceengine.client.rest.GovernanceEngineRESTClient&nbsp;restClient,
                       int&nbsp;maxPageSize)</code></th>
 <td class="colLast">
 <div class="block">Create a new client that passes userId and password in each HTTP request.</div>
@@ -231,8 +231,8 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
                     java.lang.String&nbsp;qualifiedName,
                     int&nbsp;domainIdentifier,
                     java.lang.String&nbsp;background,
-                    java.util.List&lt;org.odpi.openmetadata.frameworks.governanceaction.properties.IncidentImpactedElement&gt;&nbsp;impactedResources,
-                    java.util.List&lt;org.odpi.openmetadata.frameworks.governanceaction.properties.IncidentDependency&gt;&nbsp;previousIncidents,
+                    java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/IncidentImpactedElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">IncidentImpactedElement</a>&gt;&nbsp;impactedResources,
+                    java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/IncidentDependency.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">IncidentDependency</a>&gt;&nbsp;previousIncidents,
                     java.util.Map&lt;java.lang.String,&#8203;java.lang.Integer&gt;&nbsp;incidentClassifiers,
                     java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;additionalProperties,
                     java.lang.String&nbsp;originatorGUID)</code></th>
@@ -244,7 +244,7 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createMetadataElementInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.ElementStatus,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String)">createMetadataElementInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
                             java.lang.String&nbsp;metadataElementTypeName,
-                            org.odpi.openmetadata.frameworks.governanceaction.properties.ElementStatus&nbsp;initialStatus,
+                            <a href="../../../frameworks/governanceaction/properties/ElementStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">ElementStatus</a>&nbsp;initialStatus,
                             java.util.Date&nbsp;effectiveFrom,
                             java.util.Date&nbsp;effectiveTo,
                             org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties&nbsp;properties,
@@ -289,12 +289,12 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 </td>
 </tr>
 <tr id="i7" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findMetadataElements(java.lang.String,java.lang.String,java.util.List,org.odpi.openmetadata.frameworks.governanceaction.search.SearchProperties,java.util.List,org.odpi.openmetadata.frameworks.governanceaction.search.SearchClassifications,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder,boolean,boolean,java.util.Date,int,int)">findMetadataElements</a></span>&#8203;(java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;metadataElementTypeName,
                     java.util.List&lt;java.lang.String&gt;&nbsp;metadataElementSubtypeName,
                     org.odpi.openmetadata.frameworks.governanceaction.search.SearchProperties&nbsp;searchProperties,
-                    java.util.List&lt;org.odpi.openmetadata.frameworks.governanceaction.properties.ElementStatus&gt;&nbsp;limitResultsByStatus,
+                    java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/ElementStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">ElementStatus</a>&gt;&nbsp;limitResultsByStatus,
                     org.odpi.openmetadata.frameworks.governanceaction.search.SearchClassifications&nbsp;matchClassifications,
                     java.lang.String&nbsp;sequencingProperty,
                     org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder&nbsp;sequencingOrder,
@@ -308,7 +308,7 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 </td>
 </tr>
 <tr id="i8" class="altColor">
-<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findMetadataElementsWithString(java.lang.String,java.lang.String,boolean,boolean,java.util.Date,int,int)">findMetadataElementsWithString</a></span>&#8203;(java.lang.String&nbsp;userId,
                               java.lang.String&nbsp;searchString,
                               boolean&nbsp;forLineage,
@@ -321,7 +321,7 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 </td>
 </tr>
 <tr id="i9" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/RelatedMetadataElements.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedMetadataElements</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findRelationshipsBetweenMetadataElements(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.SearchProperties,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder,boolean,boolean,java.util.Date,int,int)">findRelationshipsBetweenMetadataElements</a></span>&#8203;(java.lang.String&nbsp;userId,
                                         java.lang.String&nbsp;relationshipTypeName,
                                         org.odpi.openmetadata.frameworks.governanceaction.search.SearchProperties&nbsp;searchProperties,
@@ -337,7 +337,7 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 </td>
 </tr>
 <tr id="i10" class="altColor">
-<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionElement&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/GovernanceActionElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">GovernanceActionElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getActiveClaimedGovernanceActions(java.lang.String,java.lang.String,int,int)">getActiveClaimedGovernanceActions</a></span>&#8203;(java.lang.String&nbsp;userId,
                                  java.lang.String&nbsp;governanceEngineGUID,
                                  int&nbsp;startFrom,
@@ -347,7 +347,7 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 </td>
 </tr>
 <tr id="i11" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionElement&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/GovernanceActionElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">GovernanceActionElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getActiveGovernanceActions(java.lang.String,int,int)">getActiveGovernanceActions</a></span>&#8203;(java.lang.String&nbsp;userId,
                           int&nbsp;startFrom,
                           int&nbsp;pageSize)</code></th>
@@ -356,7 +356,7 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 </td>
 </tr>
 <tr id="i12" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionElement</code></td>
+<td class="colFirst"><code><a href="../metadataelements/GovernanceActionElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">GovernanceActionElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getGovernanceAction(java.lang.String,java.lang.String)">getGovernanceAction</a></span>&#8203;(java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;governanceActionGUID)</code></th>
 <td class="colLast">
@@ -364,7 +364,7 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 </td>
 </tr>
 <tr id="i13" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionElement&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/GovernanceActionElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">GovernanceActionElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getGovernanceActions(java.lang.String,int,int)">getGovernanceActions</a></span>&#8203;(java.lang.String&nbsp;userId,
                     int&nbsp;startFrom,
                     int&nbsp;pageSize)</code></th>
@@ -373,7 +373,7 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 </td>
 </tr>
 <tr id="i14" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement</code></td>
+<td class="colFirst"><code><a href="../../../frameworks/governanceaction/properties/OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMetadataElementByGUID(java.lang.String,java.lang.String,boolean,boolean,java.util.Date)">getMetadataElementByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
                         java.lang.String&nbsp;elementGUID,
                         boolean&nbsp;forLineage,
@@ -384,7 +384,7 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 </td>
 </tr>
 <tr id="i15" class="rowColor">
-<td class="colFirst"><code>org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement</code></td>
+<td class="colFirst"><code><a href="../../../frameworks/governanceaction/properties/OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMetadataElementByUniqueName(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date)">getMetadataElementByUniqueName</a></span>&#8203;(java.lang.String&nbsp;userId,
                               java.lang.String&nbsp;uniqueName,
                               java.lang.String&nbsp;uniquePropertyName,
@@ -408,7 +408,7 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 </td>
 </tr>
 <tr id="i17" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/RelatedMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedMetadataElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRelatedMetadataElements(java.lang.String,java.lang.String,int,java.lang.String,boolean,boolean,java.util.Date,int,int)">getRelatedMetadataElements</a></span>&#8203;(java.lang.String&nbsp;userId,
                           java.lang.String&nbsp;elementGUID,
                           int&nbsp;startingAtEnd,
@@ -430,7 +430,7 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
                         java.lang.String&nbsp;displayName,
                         java.lang.String&nbsp;description,
                         java.util.List&lt;java.lang.String&gt;&nbsp;requestSourceGUIDs,
-                        java.util.List&lt;org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget&gt;&nbsp;actionTargets,
+                        java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">NewActionTarget</a>&gt;&nbsp;actionTargets,
                         java.util.List&lt;java.lang.String&gt;&nbsp;receivedGuards,
                         java.util.Date&nbsp;startTime,
                         java.lang.String&nbsp;governanceEngineName,
@@ -448,7 +448,7 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#initiateGovernanceActionProcess(java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.Date,java.util.Map,java.lang.String,java.lang.String)">initiateGovernanceActionProcess</a></span>&#8203;(java.lang.String&nbsp;userId,
                                java.lang.String&nbsp;processQualifiedName,
                                java.util.List&lt;java.lang.String&gt;&nbsp;requestSourceGUIDs,
-                               java.util.List&lt;org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget&gt;&nbsp;actionTargets,
+                               java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">NewActionTarget</a>&gt;&nbsp;actionTargets,
                                java.util.Date&nbsp;startTime,
                                java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;requestParameters,
                                java.lang.String&nbsp;originatorServiceName,
@@ -491,9 +491,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#recordCompletionStatus(java.lang.String,java.lang.String,java.util.Map,org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus,java.util.List,java.util.List)">recordCompletionStatus</a></span>&#8203;(java.lang.String&nbsp;userId,
                       java.lang.String&nbsp;governanceActionGUID,
                       java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;requestParameters,
-                      org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus&nbsp;status,
+                      <a href="../../../frameworks/governanceaction/properties/CompletionStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">CompletionStatus</a>&nbsp;status,
                       java.util.List&lt;java.lang.String&gt;&nbsp;outputGuards,
-                      java.util.List&lt;org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget&gt;&nbsp;newActionTargets)</code></th>
+                      java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">NewActionTarget</a>&gt;&nbsp;newActionTargets)</code></th>
 <td class="colLast">
 <div class="block">Declare that all of the processing for the governance action service is finished and the status of the work.</div>
 </td>
@@ -514,7 +514,7 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateActionTargetStatus(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus,java.util.Date,java.util.Date)">updateActionTargetStatus</a></span>&#8203;(java.lang.String&nbsp;userId,
                         java.lang.String&nbsp;actionTargetGUID,
-                        org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus&nbsp;status,
+                        <a href="../../../frameworks/governanceaction/properties/GovernanceActionStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionStatus</a>&nbsp;status,
                         java.util.Date&nbsp;startDate,
                         java.util.Date&nbsp;completionDate)</code></th>
 <td class="colLast">
@@ -539,7 +539,7 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateGovernanceActionStatus(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus)">updateGovernanceActionStatus</a></span>&#8203;(java.lang.String&nbsp;userId,
                             java.lang.String&nbsp;governanceActionGUID,
-                            org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus&nbsp;governanceActionStatus)</code></th>
+                            <a href="../../../frameworks/governanceaction/properties/GovernanceActionStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionStatus</a>&nbsp;governanceActionStatus)</code></th>
 <td class="colLast">
 <div class="block">Update the status of the governance action - providing the caller is permitted.</div>
 </td>
@@ -563,7 +563,7 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
                                   java.lang.String&nbsp;metadataElementGUID,
                                   boolean&nbsp;forLineage,
                                   boolean&nbsp;forDuplicateProcessing,
-                                  org.odpi.openmetadata.frameworks.governanceaction.properties.ElementStatus&nbsp;newElementStatus,
+                                  <a href="../../../frameworks/governanceaction/properties/ElementStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">ElementStatus</a>&nbsp;newElementStatus,
                                   java.util.Date&nbsp;effectiveFrom,
                                   java.util.Date&nbsp;effectiveTo,
                                   java.util.Date&nbsp;effectiveTime)</code></th>
@@ -623,14 +623,14 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <h4>GovernanceEngineClient</h4>
 <pre>public&nbsp;GovernanceEngineClient&#8203;(java.lang.String&nbsp;serverName,
                               java.lang.String&nbsp;serverPlatformURLRoot)
-                       throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                       throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server to connect to</dd>
 <dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST servers</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
  REST API calls.</dd>
 </dl>
 </li>
@@ -645,7 +645,7 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
                               java.lang.String&nbsp;serverPlatformURLRoot,
                               java.lang.String&nbsp;serverUserId,
                               java.lang.String&nbsp;serverPassword)
-                       throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                       throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client that passes userId and password in each HTTP request.  This is the
  userId/password of the calling server.  The end user's userId is sent on each request.</div>
 <dl>
@@ -655,7 +655,7 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <dd><code>serverUserId</code> - caller's userId embedded in all HTTP requests</dd>
 <dd><code>serverPassword</code> - caller's userId embedded in all HTTP requests</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
  REST API calls.</dd>
 </dl>
 </li>
@@ -668,9 +668,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <h4>GovernanceEngineClient</h4>
 <pre>public&nbsp;GovernanceEngineClient&#8203;(java.lang.String&nbsp;serverName,
                               java.lang.String&nbsp;serverPlatformURLRoot,
-                              <a href="rest/GovernanceEngineRESTClient.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.client.rest">GovernanceEngineRESTClient</a>&nbsp;restClient,
+                              org.odpi.openmetadata.accessservices.governanceengine.client.rest.GovernanceEngineRESTClient&nbsp;restClient,
                               int&nbsp;maxPageSize)
-                       throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                       throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client that passes userId and password in each HTTP request.  This is the
  userId/password of the calling server.  The end user's userId is sent on each request.</div>
 <dl>
@@ -680,7 +680,7 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <dd><code>restClient</code> - pre-initialized REST client</dd>
 <dd><code>maxPageSize</code> - pre-initialized parameter limit</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem with the information about the remote OMAS</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem with the information about the remote OMAS</dd>
 </dl>
 </li>
 </ul>
@@ -700,14 +700,14 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <ul class="blockList">
 <li class="blockList">
 <h4>getMetadataElementByGUID</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement&nbsp;getMetadataElementByGUID&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                 java.lang.String&nbsp;elementGUID,
-                                                                                                                 boolean&nbsp;forLineage,
-                                                                                                                 boolean&nbsp;forDuplicateProcessing,
-                                                                                                                 java.util.Date&nbsp;effectiveTime)
-                                                                                                          throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                 org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                 org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">public&nbsp;<a href="../../../frameworks/governanceaction/properties/OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataElement</a>&nbsp;getMetadataElementByGUID&#8203;(java.lang.String&nbsp;userId,
+                                                    java.lang.String&nbsp;elementGUID,
+                                                    boolean&nbsp;forLineage,
+                                                    boolean&nbsp;forDuplicateProcessing,
+                                                    java.util.Date&nbsp;effectiveTime)
+                                             throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                    <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                    <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Retrieve the metadata element using its unique identifier.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -721,9 +721,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>metadata element properties</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the unique identifier is null or not known.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the governance action service is not able to access the element</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem accessing the metadata store</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the unique identifier is null or not known.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not able to access the element</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
 </dl>
 </li>
 </ul>
@@ -733,15 +733,15 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <ul class="blockList">
 <li class="blockList">
 <h4>getMetadataElementByUniqueName</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement&nbsp;getMetadataElementByUniqueName&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                       java.lang.String&nbsp;uniqueName,
-                                                                                                                       java.lang.String&nbsp;uniquePropertyName,
-                                                                                                                       boolean&nbsp;forLineage,
-                                                                                                                       boolean&nbsp;forDuplicateProcessing,
-                                                                                                                       java.util.Date&nbsp;effectiveTime)
-                                                                                                                throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                       org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                       org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">public&nbsp;<a href="../../../frameworks/governanceaction/properties/OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataElement</a>&nbsp;getMetadataElementByUniqueName&#8203;(java.lang.String&nbsp;userId,
+                                                          java.lang.String&nbsp;uniqueName,
+                                                          java.lang.String&nbsp;uniquePropertyName,
+                                                          boolean&nbsp;forLineage,
+                                                          boolean&nbsp;forDuplicateProcessing,
+                                                          java.util.Date&nbsp;effectiveTime)
+                                                   throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                          <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                          <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Retrieve the metadata element using its unique name (typically the qualified name).</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -756,9 +756,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>metadata element properties</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the unique identifier is null or not known.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the governance action service is not able to access the element</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem accessing the metadata store</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the unique identifier is null or not known.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not able to access the element</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
 </dl>
 </li>
 </ul>
@@ -774,9 +774,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
                                                            boolean&nbsp;forLineage,
                                                            boolean&nbsp;forDuplicateProcessing,
                                                            java.util.Date&nbsp;effectiveTime)
-                                                    throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                           org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                           org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                           <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                           <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Retrieve the unique identifier of a metadata element using its unique name (typically the qualified name).</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -791,9 +791,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>metadata element unique identifier (guid)</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the unique identifier is null or not known.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the governance action service is not able to access the element</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem accessing the metadata store</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the unique identifier is null or not known.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not able to access the element</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
 </dl>
 </li>
 </ul>
@@ -803,16 +803,16 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <ul class="blockList">
 <li class="blockList">
 <h4>findMetadataElementsWithString</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement&gt;&nbsp;findMetadataElementsWithString&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                                       java.lang.String&nbsp;searchString,
-                                                                                                                                       boolean&nbsp;forLineage,
-                                                                                                                                       boolean&nbsp;forDuplicateProcessing,
-                                                                                                                                       java.util.Date&nbsp;effectiveTime,
-                                                                                                                                       int&nbsp;startFrom,
-                                                                                                                                       int&nbsp;pageSize)
-                                                                                                                                throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                                       org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                                       org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataElement</a>&gt;&nbsp;findMetadataElementsWithString&#8203;(java.lang.String&nbsp;userId,
+                                                                          java.lang.String&nbsp;searchString,
+                                                                          boolean&nbsp;forLineage,
+                                                                          boolean&nbsp;forDuplicateProcessing,
+                                                                          java.util.Date&nbsp;effectiveTime,
+                                                                          int&nbsp;startFrom,
+                                                                          int&nbsp;pageSize)
+                                                                   throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                                          <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                                          <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Retrieve the metadata elements that contain the requested string.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -828,9 +828,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of matching metadata elements (or null if no elements match the name)</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the qualified name is null</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the governance action service is not able to access the element</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem accessing the metadata store</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the qualified name is null</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not able to access the element</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
 </dl>
 </li>
 </ul>
@@ -840,18 +840,18 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <ul class="blockList">
 <li class="blockList">
 <h4>getRelatedMetadataElements</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement&gt;&nbsp;getRelatedMetadataElements&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                                      java.lang.String&nbsp;elementGUID,
-                                                                                                                                      int&nbsp;startingAtEnd,
-                                                                                                                                      java.lang.String&nbsp;relationshipTypeName,
-                                                                                                                                      boolean&nbsp;forLineage,
-                                                                                                                                      boolean&nbsp;forDuplicateProcessing,
-                                                                                                                                      java.util.Date&nbsp;effectiveTime,
-                                                                                                                                      int&nbsp;startFrom,
-                                                                                                                                      int&nbsp;pageSize)
-                                                                                                                               throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                                      org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                                      org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/RelatedMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedMetadataElement</a>&gt;&nbsp;getRelatedMetadataElements&#8203;(java.lang.String&nbsp;userId,
+                                                                         java.lang.String&nbsp;elementGUID,
+                                                                         int&nbsp;startingAtEnd,
+                                                                         java.lang.String&nbsp;relationshipTypeName,
+                                                                         boolean&nbsp;forLineage,
+                                                                         boolean&nbsp;forDuplicateProcessing,
+                                                                         java.util.Date&nbsp;effectiveTime,
+                                                                         int&nbsp;startFrom,
+                                                                         int&nbsp;pageSize)
+                                                                  throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                                         <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                                         <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Retrieve the metadata elements connected to the supplied element.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -869,9 +869,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of related elements</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the unique identifier is null or not known; the relationship type is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the governance action service is not able to access the elements</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem accessing the metadata store</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the unique identifier is null or not known; the relationship type is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not able to access the elements</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
 </dl>
 </li>
 </ul>
@@ -881,22 +881,22 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <ul class="blockList">
 <li class="blockList">
 <h4>findMetadataElements</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement&gt;&nbsp;findMetadataElements&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                             java.lang.String&nbsp;metadataElementTypeName,
-                                                                                                                             java.util.List&lt;java.lang.String&gt;&nbsp;metadataElementSubtypeName,
-                                                                                                                             org.odpi.openmetadata.frameworks.governanceaction.search.SearchProperties&nbsp;searchProperties,
-                                                                                                                             java.util.List&lt;org.odpi.openmetadata.frameworks.governanceaction.properties.ElementStatus&gt;&nbsp;limitResultsByStatus,
-                                                                                                                             org.odpi.openmetadata.frameworks.governanceaction.search.SearchClassifications&nbsp;matchClassifications,
-                                                                                                                             java.lang.String&nbsp;sequencingProperty,
-                                                                                                                             org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder&nbsp;sequencingOrder,
-                                                                                                                             boolean&nbsp;forLineage,
-                                                                                                                             boolean&nbsp;forDuplicateProcessing,
-                                                                                                                             java.util.Date&nbsp;effectiveTime,
-                                                                                                                             int&nbsp;startFrom,
-                                                                                                                             int&nbsp;pageSize)
-                                                                                                                      throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                             org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                             org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataElement</a>&gt;&nbsp;findMetadataElements&#8203;(java.lang.String&nbsp;userId,
+                                                                java.lang.String&nbsp;metadataElementTypeName,
+                                                                java.util.List&lt;java.lang.String&gt;&nbsp;metadataElementSubtypeName,
+                                                                org.odpi.openmetadata.frameworks.governanceaction.search.SearchProperties&nbsp;searchProperties,
+                                                                java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/ElementStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">ElementStatus</a>&gt;&nbsp;limitResultsByStatus,
+                                                                org.odpi.openmetadata.frameworks.governanceaction.search.SearchClassifications&nbsp;matchClassifications,
+                                                                java.lang.String&nbsp;sequencingProperty,
+                                                                org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder&nbsp;sequencingOrder,
+                                                                boolean&nbsp;forLineage,
+                                                                boolean&nbsp;forDuplicateProcessing,
+                                                                java.util.Date&nbsp;effectiveTime,
+                                                                int&nbsp;startFrom,
+                                                                int&nbsp;pageSize)
+                                                         throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                                <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                                <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -921,9 +921,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>a list of elements matching the supplied criteria; null means no matching elements in the metadata store.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the search parameters are is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the governance action service is not able to access the elements</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem accessing the metadata store</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the search parameters are is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not able to access the elements</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
 </dl>
 </li>
 </ul>
@@ -933,19 +933,19 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <ul class="blockList">
 <li class="blockList">
 <h4>findRelationshipsBetweenMetadataElements</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements&gt;&nbsp;findRelationshipsBetweenMetadataElements&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                                                     java.lang.String&nbsp;relationshipTypeName,
-                                                                                                                                                     org.odpi.openmetadata.frameworks.governanceaction.search.SearchProperties&nbsp;searchProperties,
-                                                                                                                                                     java.lang.String&nbsp;sequencingProperty,
-                                                                                                                                                     org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder&nbsp;sequencingOrder,
-                                                                                                                                                     boolean&nbsp;forLineage,
-                                                                                                                                                     boolean&nbsp;forDuplicateProcessing,
-                                                                                                                                                     java.util.Date&nbsp;effectiveTime,
-                                                                                                                                                     int&nbsp;startFrom,
-                                                                                                                                                     int&nbsp;pageSize)
-                                                                                                                                              throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                                                     org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                                                     org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/RelatedMetadataElements.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedMetadataElements</a>&gt;&nbsp;findRelationshipsBetweenMetadataElements&#8203;(java.lang.String&nbsp;userId,
+                                                                                        java.lang.String&nbsp;relationshipTypeName,
+                                                                                        org.odpi.openmetadata.frameworks.governanceaction.search.SearchProperties&nbsp;searchProperties,
+                                                                                        java.lang.String&nbsp;sequencingProperty,
+                                                                                        org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder&nbsp;sequencingOrder,
+                                                                                        boolean&nbsp;forLineage,
+                                                                                        boolean&nbsp;forDuplicateProcessing,
+                                                                                        java.util.Date&nbsp;effectiveTime,
+                                                                                        int&nbsp;startFrom,
+                                                                                        int&nbsp;pageSize)
+                                                                                 throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                                                        <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                                                        <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Return a list of relationships that match the requested conditions.  The results can be received as a series of pages.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -966,9 +966,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>a list of relationships.  Null means no matching relationships.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the search parameters are is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the governance action service is not able to access the elements</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem accessing the metadata store</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the search parameters are is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not able to access the elements</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
 </dl>
 </li>
 </ul>
@@ -980,14 +980,14 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <h4>createMetadataElementInStore</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;createMetadataElementInStore&#8203;(java.lang.String&nbsp;userId,
                                                      java.lang.String&nbsp;metadataElementTypeName,
-                                                     org.odpi.openmetadata.frameworks.governanceaction.properties.ElementStatus&nbsp;initialStatus,
+                                                     <a href="../../../frameworks/governanceaction/properties/ElementStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">ElementStatus</a>&nbsp;initialStatus,
                                                      java.util.Date&nbsp;effectiveFrom,
                                                      java.util.Date&nbsp;effectiveTo,
                                                      org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties&nbsp;properties,
                                                      java.lang.String&nbsp;templateGUID)
-                                              throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                     org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                     org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                              throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                     <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                     <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Create a new metadata element in the metadata store.  The type name comes from the open metadata types.
  The selected type also controls the names and types of the properties that are allowed.
  This version of the method allows access to advanced features such as multiple states and
@@ -1007,9 +1007,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new metadata element</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the type name, status or one of the properties is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the governance action service is not authorized to create this type of element</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem with the metadata store</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the type name, status or one of the properties is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to create this type of element</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
 </dl>
 </li>
 </ul>
@@ -1026,9 +1026,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
                                          boolean&nbsp;forDuplicateProcessing,
                                          org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties&nbsp;properties,
                                          java.util.Date&nbsp;effectiveTime)
-                                  throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                         org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                         org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                  throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                         <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                         <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Update the properties of a specific metadata element.  The properties must match the type definition associated with the
  metadata element when it was created.  However, it is possible to update a few properties, or replace all of them by
  the value used in the replaceProperties flag.</div>
@@ -1045,9 +1045,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <dd><code>properties</code> - new properties for the metadata element</dd>
 <dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for (null for any time, new Date() for now)</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - either the unique identifier or the properties are invalid in some way</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the governance action service is not authorized to update this element</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem with the metadata store</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - either the unique identifier or the properties are invalid in some way</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to update this element</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
 </dl>
 </li>
 </ul>
@@ -1061,13 +1061,13 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
                                                java.lang.String&nbsp;metadataElementGUID,
                                                boolean&nbsp;forLineage,
                                                boolean&nbsp;forDuplicateProcessing,
-                                               org.odpi.openmetadata.frameworks.governanceaction.properties.ElementStatus&nbsp;newElementStatus,
+                                               <a href="../../../frameworks/governanceaction/properties/ElementStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">ElementStatus</a>&nbsp;newElementStatus,
                                                java.util.Date&nbsp;effectiveFrom,
                                                java.util.Date&nbsp;effectiveTo,
                                                java.util.Date&nbsp;effectiveTime)
-                                        throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                               org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                               org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                        throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                               <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                               <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Update the status of specific metadata element. The new status must match a status value that is defined for the element's type
  assigned when it was created.  The effectivity dates control the visibility of the element
  through specific APIs.</div>
@@ -1084,9 +1084,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <dd><code>effectiveTo</code> - the date when this element becomes inactive - null for active until deleted</dd>
 <dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for (null for any time, new Date() for now)</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - either the unique identifier or the status are invalid in some way</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the governance action service is not authorized to update this element</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem with the metadata store</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - either the unique identifier or the status are invalid in some way</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to update this element</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
 </dl>
 </li>
 </ul>
@@ -1101,9 +1101,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
                                          boolean&nbsp;forLineage,
                                          boolean&nbsp;forDuplicateProcessing,
                                          java.util.Date&nbsp;effectiveTime)
-                                  throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                         org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                         org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                  throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                         <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                         <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Delete a specific metadata element.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -1115,9 +1115,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <dd><code>forDuplicateProcessing</code> - the query is for duplicate processing and so must not deduplicate</dd>
 <dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for (null for any time, new Date() for now)</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the unique identifier is null or invalid in some way</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the governance action service is not authorized to delete this element</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem with the metadata store</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the unique identifier is null or invalid in some way</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to delete this element</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
 </dl>
 </li>
 </ul>
@@ -1136,9 +1136,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
                                            java.util.Date&nbsp;effectiveTo,
                                            org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties&nbsp;properties,
                                            java.util.Date&nbsp;effectiveTime)
-                                    throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                           org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                           org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                           <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                           <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Add a new classification to the metadata element.  Note that only one classification with the same name can be attached to
  a metadata element.</div>
 <dl>
@@ -1156,10 +1156,10 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
                    classification name</dd>
 <dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for (null for any time, new Date() for now)</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the unique identifier or classification name is null or invalid in some way; properties do not match the
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the unique identifier or classification name is null or invalid in some way; properties do not match the
                                    valid properties associated with the classification's type definition</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the governance action service is not authorized to update this element</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem with the metadata store</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to update this element</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
 </dl>
 </li>
 </ul>
@@ -1177,9 +1177,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
                                              boolean&nbsp;forDuplicateProcessing,
                                              org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties&nbsp;properties,
                                              java.util.Date&nbsp;effectiveTime)
-                                      throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                             org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                             org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                             <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                             <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Update the properties of a classification that is currently attached to a specific metadata element.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -1195,10 +1195,10 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <dd><code>properties</code> - new properties for the classification</dd>
 <dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for (null for any time, new Date() for now)</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the unique identifier or classification name is null or invalid in some way; properties do not match the
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the unique identifier or classification name is null or invalid in some way; properties do not match the
                                    valid properties associated with the classification's type definition</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the governance action service is not authorized to update this element/classification</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem with the metadata store</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to update this element/classification</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
 </dl>
 </li>
 </ul>
@@ -1216,9 +1216,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
                                               java.util.Date&nbsp;effectiveFrom,
                                               java.util.Date&nbsp;effectiveTo,
                                               java.util.Date&nbsp;effectiveTime)
-                                       throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                              org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                              org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                       throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                              <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                              <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Update the effectivity dates of a specific classification attached to a metadata element.
  The effectivity dates control the visibility of the classification through specific APIs.</div>
 <dl>
@@ -1234,9 +1234,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <dd><code>effectiveTo</code> - the date when this element becomes inactive - null for active until deleted</dd>
 <dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for (null for any time, new Date() for now)</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - either the unique identifier or the status are invalid in some way</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the governance action service is not authorized to update this element</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem with the metadata store</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - either the unique identifier or the status are invalid in some way</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to update this element</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
 </dl>
 </li>
 </ul>
@@ -1252,9 +1252,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
                                              boolean&nbsp;forLineage,
                                              boolean&nbsp;forDuplicateProcessing,
                                              java.util.Date&nbsp;effectiveTime)
-                                      throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                             org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                             org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                             <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                             <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Remove the named classification from a specific metadata element.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -1267,9 +1267,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <dd><code>forDuplicateProcessing</code> - the query is for duplicate processing and so must not deduplicate</dd>
 <dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for (null for any time, new Date() for now)</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the unique identifier or classification name is null or invalid in some way</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the governance action service is not authorized to remove this classification</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem with the metadata store</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the unique identifier or classification name is null or invalid in some way</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to remove this classification</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
 </dl>
 </li>
 </ul>
@@ -1289,9 +1289,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
                                                      java.util.Date&nbsp;effectiveTo,
                                                      org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties&nbsp;properties,
                                                      java.util.Date&nbsp;effectiveTime)
-                                              throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                     org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                     org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                              throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                     <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                     <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Create a relationship between two metadata elements.  It is important to put the right element at each end of the relationship
  according to the type definition since this will affect how the relationship is interpreted.</div>
 <dl>
@@ -1312,10 +1312,10 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new relationship</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the unique identifier's of the metadata elements are null or invalid in some way; the properties are
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the unique identifier's of the metadata elements are null or invalid in some way; the properties are
                                     not valid for this type of relationship</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the governance action service is not authorized to create this type of relationship</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem with the metadata store</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to create this type of relationship</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
 </dl>
 </li>
 </ul>
@@ -1334,9 +1334,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
                                          java.lang.String&nbsp;stewardPropertyName,
                                          java.lang.String&nbsp;source,
                                          java.lang.String&nbsp;notes)
-                                  throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                         org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                         org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                  throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                         <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                         <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Link elements as peer duplicates. Create a simple relationship between two elements.
  If the relationship already exists, the properties are updated.</div>
 <dl>
@@ -1353,10 +1353,10 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <dd><code>source</code> - source of the duplicate detection processing</dd>
 <dd><code>notes</code> - notes for the steward</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the unique identifier's of the metadata elements are null or invalid in some way; the properties are
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the unique identifier's of the metadata elements are null or invalid in some way; the properties are
                                     not valid for this type of relationship</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the governance action service is not authorized to create this type of relationship</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem with the metadata store</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to create this type of relationship</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
 </dl>
 </li>
 </ul>
@@ -1370,9 +1370,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
                                          java.lang.String&nbsp;relationshipGUID,
                                          boolean&nbsp;replaceProperties,
                                          org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties&nbsp;properties)
-                                  throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                         org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                         org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                  throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                         <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                         <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Update the properties associated with a relationship.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -1384,10 +1384,10 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
                           the individual properties specified on the request.</dd>
 <dd><code>properties</code> - new properties for the relationship</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the unique identifier of the relationship is null or invalid in some way; the properties are
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the unique identifier of the relationship is null or invalid in some way; the properties are
                                     not valid for this type of relationship</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the governance action service is not authorized to update this relationship</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem with the metadata store</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to update this relationship</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
 </dl>
 </li>
 </ul>
@@ -1401,9 +1401,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
                                                java.lang.String&nbsp;relationshipGUID,
                                                java.util.Date&nbsp;effectiveFrom,
                                                java.util.Date&nbsp;effectiveTo)
-                                        throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                               org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                               org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                        throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                               <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                               <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Update the effectivity dates of a specific relationship between metadata elements.
  The effectivity dates control the visibility of the classification through specific APIs.</div>
 <dl>
@@ -1415,9 +1415,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <dd><code>effectiveFrom</code> - the date when this element is active - null for active now</dd>
 <dd><code>effectiveTo</code> - the date when this element becomes inactive - null for active until deleted</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - either the unique identifier or the status are invalid in some way</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the governance action service is not authorized to update this element</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem with the metadata store</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - either the unique identifier or the status are invalid in some way</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to update this element</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
 </dl>
 </li>
 </ul>
@@ -1429,9 +1429,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <h4>deleteRelatedElementsInStore</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;deleteRelatedElementsInStore&#8203;(java.lang.String&nbsp;userId,
                                          java.lang.String&nbsp;relationshipGUID)
-                                  throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                         org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                         org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                  throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                         <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                         <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Delete a relationship between two metadata elements.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -1440,9 +1440,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <dd><code>userId</code> - caller's userId</dd>
 <dd><code>relationshipGUID</code> - unique identifier of the relationship to delete</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the unique identifier of the relationship is null or invalid in some way</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the governance action service is not authorized to delete this relationship</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem with the metadata store</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the unique identifier of the relationship is null or invalid in some way</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to delete this relationship</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
 </dl>
 </li>
 </ul>
@@ -1454,12 +1454,12 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <h4>updateActionTargetStatus</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;updateActionTargetStatus&#8203;(java.lang.String&nbsp;userId,
                                      java.lang.String&nbsp;actionTargetGUID,
-                                     org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus&nbsp;status,
+                                     <a href="../../../frameworks/governanceaction/properties/GovernanceActionStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionStatus</a>&nbsp;status,
                                      java.util.Date&nbsp;startDate,
                                      java.util.Date&nbsp;completionDate)
-                              throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                     org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                     org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                              throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                     <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                     <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Update the status of a specific action target. By default, these values are derived from
  the values for the governance action service.  However, if the governance action service has to process name
  target elements, then setting the status on each individual target will show the progress of the
@@ -1474,9 +1474,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <dd><code>startDate</code> - date/time that the governance action service started processing the target</dd>
 <dd><code>completionDate</code> - date/time that the governance process completed processing this target.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the action target GUID is not recognized</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the governance action service is not authorized to update the action target properties</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem connecting to the metadata store</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the action target GUID is not recognized</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to update the action target properties</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem connecting to the metadata store</dd>
 </dl>
 </li>
 </ul>
@@ -1488,10 +1488,10 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <h4>updateGovernanceActionStatus</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;updateGovernanceActionStatus&#8203;(java.lang.String&nbsp;userId,
                                          java.lang.String&nbsp;governanceActionGUID,
-                                         org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus&nbsp;governanceActionStatus)
-                                  throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                         org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                         org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                         <a href="../../../frameworks/governanceaction/properties/GovernanceActionStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionStatus</a>&nbsp;governanceActionStatus)
+                                  throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                         <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                         <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Update the status of the governance action - providing the caller is permitted.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -1501,9 +1501,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <dd><code>governanceActionGUID</code> - identifier of the governance action request</dd>
 <dd><code>governanceActionStatus</code> - new status enum</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there was a problem detected by the metadata store.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there was a problem detected by the metadata store.</dd>
 </dl>
 </li>
 </ul>
@@ -1516,12 +1516,12 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <pre class="methodSignature">public&nbsp;void&nbsp;recordCompletionStatus&#8203;(java.lang.String&nbsp;userId,
                                    java.lang.String&nbsp;governanceActionGUID,
                                    java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;requestParameters,
-                                   org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus&nbsp;status,
+                                   <a href="../../../frameworks/governanceaction/properties/CompletionStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">CompletionStatus</a>&nbsp;status,
                                    java.util.List&lt;java.lang.String&gt;&nbsp;outputGuards,
-                                   java.util.List&lt;org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget&gt;&nbsp;newActionTargets)
-                            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                   org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                   org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                   java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">NewActionTarget</a>&gt;&nbsp;newActionTargets)
+                            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                   <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                   <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Declare that all of the processing for the governance action service is finished and the status of the work.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -1534,9 +1534,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <dd><code>outputGuards</code> - optional guard strings for triggering subsequent action(s)</dd>
 <dd><code>newActionTargets</code> - list of action target names to GUIDs for the resulting governance action service</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the completion status is null</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the governance action service is not authorized to update the governance action service status</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem connecting to the metadata store</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the completion status is null</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to update the governance action service status</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem connecting to the metadata store</dd>
 </dl>
 </li>
 </ul>
@@ -1552,7 +1552,7 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
                                                  java.lang.String&nbsp;displayName,
                                                  java.lang.String&nbsp;description,
                                                  java.util.List&lt;java.lang.String&gt;&nbsp;requestSourceGUIDs,
-                                                 java.util.List&lt;org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget&gt;&nbsp;actionTargets,
+                                                 java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">NewActionTarget</a>&gt;&nbsp;actionTargets,
                                                  java.util.List&lt;java.lang.String&gt;&nbsp;receivedGuards,
                                                  java.util.Date&nbsp;startTime,
                                                  java.lang.String&nbsp;governanceEngineName,
@@ -1560,9 +1560,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
                                                  java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;requestParameters,
                                                  java.lang.String&nbsp;originatorServiceName,
                                                  java.lang.String&nbsp;originatorEngineName)
-                                          throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                 org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                 org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Create a governance action in the metadata store which will trigger the governance action service
  associated with the supplied request type.  The governance action remains to act as a record
  of the actions taken for auditing.</div>
@@ -1587,9 +1587,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the governance action</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - null qualified name</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - this governance action service is not authorized to create a governance action</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem with the metadata store</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - null qualified name</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - this governance action service is not authorized to create a governance action</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
 </dl>
 </li>
 </ul>
@@ -1602,14 +1602,14 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;initiateGovernanceActionProcess&#8203;(java.lang.String&nbsp;userId,
                                                         java.lang.String&nbsp;processQualifiedName,
                                                         java.util.List&lt;java.lang.String&gt;&nbsp;requestSourceGUIDs,
-                                                        java.util.List&lt;org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget&gt;&nbsp;actionTargets,
+                                                        java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">NewActionTarget</a>&gt;&nbsp;actionTargets,
                                                         java.util.Date&nbsp;startTime,
                                                         java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;requestParameters,
                                                         java.lang.String&nbsp;originatorServiceName,
                                                         java.lang.String&nbsp;originatorEngineName)
-                                                 throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                        org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                        org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                                 throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                        <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                        <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Using the named governance action process as a template, initiate a chain of governance actions.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -1626,9 +1626,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the first governance action of the process</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - null or unrecognized qualified name of the process</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - this governance action service is not authorized to create a governance action process</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem with the metadata store</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - null or unrecognized qualified name of the process</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - this governance action service is not authorized to create a governance action process</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
 </dl>
 </li>
 </ul>
@@ -1642,14 +1642,14 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
                                              java.lang.String&nbsp;qualifiedName,
                                              int&nbsp;domainIdentifier,
                                              java.lang.String&nbsp;background,
-                                             java.util.List&lt;org.odpi.openmetadata.frameworks.governanceaction.properties.IncidentImpactedElement&gt;&nbsp;impactedResources,
-                                             java.util.List&lt;org.odpi.openmetadata.frameworks.governanceaction.properties.IncidentDependency&gt;&nbsp;previousIncidents,
+                                             java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/IncidentImpactedElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">IncidentImpactedElement</a>&gt;&nbsp;impactedResources,
+                                             java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/IncidentDependency.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">IncidentDependency</a>&gt;&nbsp;previousIncidents,
                                              java.util.Map&lt;java.lang.String,&#8203;java.lang.Integer&gt;&nbsp;incidentClassifiers,
                                              java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;additionalProperties,
                                              java.lang.String&nbsp;originatorGUID)
-                                      throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                             org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                             org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                             <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                             <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Create an incident report to capture the situation detected by this governance action service.
  This incident report will be processed by other governance activities.</div>
 <dl>
@@ -1668,9 +1668,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the resulting incident report</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - null or non-unique qualified name for the incident report</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - this governance action service is not authorized to create a incident report</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem with the metadata store</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - null or non-unique qualified name for the incident report</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - this governance action service is not authorized to create a incident report</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
 </dl>
 </li>
 </ul>
@@ -1680,11 +1680,11 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <ul class="blockList">
 <li class="blockList">
 <h4>getGovernanceAction</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionElement&nbsp;getGovernanceAction&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                          java.lang.String&nbsp;governanceActionGUID)
-                                                                                                                   throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                          org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                          org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">public&nbsp;<a href="../metadataelements/GovernanceActionElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">GovernanceActionElement</a>&nbsp;getGovernanceAction&#8203;(java.lang.String&nbsp;userId,
+                                                   java.lang.String&nbsp;governanceActionGUID)
+                                            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                   <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                   <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Request the status of an executing governance action request.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -1695,9 +1695,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>status enum</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there was a problem detected by the metadata store.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there was a problem detected by the metadata store.</dd>
 </dl>
 </li>
 </ul>
@@ -1709,9 +1709,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <h4>claimGovernanceAction</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;claimGovernanceAction&#8203;(java.lang.String&nbsp;userId,
                                   java.lang.String&nbsp;governanceActionGUID)
-                           throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                  org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                  org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                           throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                  <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                  <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Request that execution of a governance action is allocated to the caller.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -1720,9 +1720,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <dd><code>userId</code> - identifier of calling user</dd>
 <dd><code>governanceActionGUID</code> - identifier of the governance action request.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there was a problem detected by the metadata store.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there was a problem detected by the metadata store.</dd>
 </dl>
 </li>
 </ul>
@@ -1732,12 +1732,12 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <ul class="blockList">
 <li class="blockList">
 <h4>getGovernanceActions</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionElement&gt;&nbsp;getGovernanceActions&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                                           int&nbsp;startFrom,
-                                                                                                                                           int&nbsp;pageSize)
-                                                                                                                                    throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                                           org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                                           org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../metadataelements/GovernanceActionElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">GovernanceActionElement</a>&gt;&nbsp;getGovernanceActions&#8203;(java.lang.String&nbsp;userId,
+                                                                    int&nbsp;startFrom,
+                                                                    int&nbsp;pageSize)
+                                                             throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                                    <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                                    <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Retrieve the governance actions known to the server.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -1749,9 +1749,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of governance action elements</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there was a problem detected by the metadata store.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there was a problem detected by the metadata store.</dd>
 </dl>
 </li>
 </ul>
@@ -1761,12 +1761,12 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <ul class="blockList">
 <li class="blockList">
 <h4>getActiveGovernanceActions</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionElement&gt;&nbsp;getActiveGovernanceActions&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                                                 int&nbsp;startFrom,
-                                                                                                                                                 int&nbsp;pageSize)
-                                                                                                                                          throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                                                 org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                                                 org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../metadataelements/GovernanceActionElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">GovernanceActionElement</a>&gt;&nbsp;getActiveGovernanceActions&#8203;(java.lang.String&nbsp;userId,
+                                                                          int&nbsp;startFrom,
+                                                                          int&nbsp;pageSize)
+                                                                   throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                                          <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                                          <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Retrieve the governance actions that are still in process.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -1778,9 +1778,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of governance action elements</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there was a problem detected by the metadata store.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there was a problem detected by the metadata store.</dd>
 </dl>
 </li>
 </ul>
@@ -1790,13 +1790,13 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <ul class="blockListLast">
 <li class="blockList">
 <h4>getActiveClaimedGovernanceActions</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionElement&gt;&nbsp;getActiveClaimedGovernanceActions&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                                                        java.lang.String&nbsp;governanceEngineGUID,
-                                                                                                                                                        int&nbsp;startFrom,
-                                                                                                                                                        int&nbsp;pageSize)
-                                                                                                                                                 throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                                                        org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                                                        org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../metadataelements/GovernanceActionElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">GovernanceActionElement</a>&gt;&nbsp;getActiveClaimedGovernanceActions&#8203;(java.lang.String&nbsp;userId,
+                                                                                 java.lang.String&nbsp;governanceEngineGUID,
+                                                                                 int&nbsp;startFrom,
+                                                                                 int&nbsp;pageSize)
+                                                                          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                                                 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                                                 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Retrieve the governance actions that are still in process and that have been claimed by this caller's userId.
  This call is used when the caller restarts.</div>
 <dl>
@@ -1810,9 +1810,9 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of governance action elements</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there was a problem detected by the metadata store.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there was a problem detected by the metadata store.</dd>
 </dl>
 </li>
 </ul>

@@ -236,14 +236,14 @@ extends <a href="GovernanceServerConfigurationClient.html" title="class in org.o
                            java.lang.String&nbsp;partnerOMASServerName,
                            java.lang.String&nbsp;serviceURLMarker,
                            java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;integrationServiceOptions,
-                           java.util.List&lt;org.odpi.openmetadata.adminservices.configuration.properties.IntegrationConnectorConfig&gt;&nbsp;integrationConnectorConfigs)</code></th>
+                           java.util.List&lt;<a href="../configuration/properties/IntegrationConnectorConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">IntegrationConnectorConfig</a>&gt;&nbsp;integrationConnectorConfigs)</code></th>
 <td class="colLast">
 <div class="block">Enable a single integration service.</div>
 </td>
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#configureIntegrationService(org.odpi.openmetadata.adminservices.configuration.properties.IntegrationServiceConfig)">configureIntegrationService</a></span>&#8203;(org.odpi.openmetadata.adminservices.configuration.properties.IntegrationServiceConfig&nbsp;serviceConfig)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#configureIntegrationService(org.odpi.openmetadata.adminservices.configuration.properties.IntegrationServiceConfig)">configureIntegrationService</a></span>&#8203;(<a href="../configuration/properties/IntegrationServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">IntegrationServiceConfig</a>&nbsp;serviceConfig)</code></th>
 <td class="colLast">
 <div class="block">Add configuration for a single integration service to the server's config document.</div>
 </td>
@@ -263,14 +263,14 @@ extends <a href="GovernanceServerConfigurationClient.html" title="class in org.o
 </td>
 </tr>
 <tr id="i6" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.adminservices.configuration.properties.IntegrationServiceConfig</code></td>
+<td class="colFirst"><code><a href="../configuration/properties/IntegrationServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">IntegrationServiceConfig</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getIntegrationServiceConfiguration(java.lang.String)">getIntegrationServiceConfiguration</a></span>&#8203;(java.lang.String&nbsp;serviceURLMarker)</code></th>
 <td class="colLast">
 <div class="block">Return the configuration for the named integration service for this server.</div>
 </td>
 </tr>
 <tr id="i7" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.adminservices.configuration.properties.IntegrationServiceConfig&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;<a href="../configuration/properties/IntegrationServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">IntegrationServiceConfig</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getIntegrationServicesConfiguration()">getIntegrationServicesConfiguration</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the configuration for the integration services in this server.</div>
@@ -285,7 +285,7 @@ extends <a href="GovernanceServerConfigurationClient.html" title="class in org.o
 </tr>
 <tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setIntegrationServicesConfig(java.util.List)">setIntegrationServicesConfig</a></span>&#8203;(java.util.List&lt;org.odpi.openmetadata.adminservices.configuration.properties.IntegrationServiceConfig&gt;&nbsp;integrationServicesConfig)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setIntegrationServicesConfig(java.util.List)">setIntegrationServicesConfig</a></span>&#8203;(java.util.List&lt;<a href="../configuration/properties/IntegrationServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">IntegrationServiceConfig</a>&gt;&nbsp;integrationServicesConfig)</code></th>
 <td class="colLast">
 <div class="block">Set up the configuration for all of the open metadata integration services (OMISs).</div>
 </td>
@@ -428,10 +428,10 @@ extends <a href="GovernanceServerConfigurationClient.html" title="class in org.o
 <ul class="blockList">
 <li class="blockList">
 <h4>getIntegrationServicesConfiguration</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;org.odpi.openmetadata.adminservices.configuration.properties.IntegrationServiceConfig&gt;&nbsp;getIntegrationServicesConfiguration()
-                                                                                                                                          throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException,
-                                                                                                                                                 org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException,
-                                                                                                                                                 org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</pre>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../configuration/properties/IntegrationServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">IntegrationServiceConfig</a>&gt;&nbsp;getIntegrationServicesConfiguration()
+                                                                             throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException,
+                                                                                    org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException,
+                                                                                    org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</pre>
 <div class="block">Return the configuration for the integration services in this server.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -449,10 +449,10 @@ extends <a href="GovernanceServerConfigurationClient.html" title="class in org.o
 <ul class="blockList">
 <li class="blockList">
 <h4>getIntegrationServiceConfiguration</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.adminservices.configuration.properties.IntegrationServiceConfig&nbsp;getIntegrationServiceConfiguration&#8203;(java.lang.String&nbsp;serviceURLMarker)
-                                                                                                                         throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException,
-                                                                                                                                org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException,
-                                                                                                                                org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</pre>
+<pre class="methodSignature">public&nbsp;<a href="../configuration/properties/IntegrationServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">IntegrationServiceConfig</a>&nbsp;getIntegrationServiceConfiguration&#8203;(java.lang.String&nbsp;serviceURLMarker)
+                                                            throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException,
+                                                                   org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException,
+                                                                   org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</pre>
 <div class="block">Return the configuration for the named integration service for this server.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -476,7 +476,7 @@ extends <a href="GovernanceServerConfigurationClient.html" title="class in org.o
                                         java.lang.String&nbsp;partnerOMASServerName,
                                         java.lang.String&nbsp;serviceURLMarker,
                                         java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;integrationServiceOptions,
-                                        java.util.List&lt;org.odpi.openmetadata.adminservices.configuration.properties.IntegrationConnectorConfig&gt;&nbsp;integrationConnectorConfigs)
+                                        java.util.List&lt;<a href="../configuration/properties/IntegrationConnectorConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">IntegrationConnectorConfig</a>&gt;&nbsp;integrationConnectorConfigs)
                                  throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException,
                                         org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException,
                                         org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</pre>
@@ -522,7 +522,7 @@ extends <a href="GovernanceServerConfigurationClient.html" title="class in org.o
 <ul class="blockList">
 <li class="blockList">
 <h4>configureIntegrationService</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;configureIntegrationService&#8203;(org.odpi.openmetadata.adminservices.configuration.properties.IntegrationServiceConfig&nbsp;serviceConfig)
+<pre class="methodSignature">public&nbsp;void&nbsp;configureIntegrationService&#8203;(<a href="../configuration/properties/IntegrationServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">IntegrationServiceConfig</a>&nbsp;serviceConfig)
                                  throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException,
                                         org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException,
                                         org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</pre>
@@ -543,7 +543,7 @@ extends <a href="GovernanceServerConfigurationClient.html" title="class in org.o
 <ul class="blockList">
 <li class="blockList">
 <h4>setIntegrationServicesConfig</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setIntegrationServicesConfig&#8203;(java.util.List&lt;org.odpi.openmetadata.adminservices.configuration.properties.IntegrationServiceConfig&gt;&nbsp;integrationServicesConfig)
+<pre class="methodSignature">public&nbsp;void&nbsp;setIntegrationServicesConfig&#8203;(java.util.List&lt;<a href="../configuration/properties/IntegrationServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">IntegrationServiceConfig</a>&gt;&nbsp;integrationServicesConfig)
                                   throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException,
                                          org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException,
                                          org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</pre>

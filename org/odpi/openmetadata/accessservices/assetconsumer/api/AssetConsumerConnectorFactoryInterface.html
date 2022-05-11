@@ -154,7 +154,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.frameworks.connectors.Connector</code></td>
+<td class="colFirst"><code><a href="../../../frameworks/connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getConnectorByConnection(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">getConnectorByConnection</a></span>&#8203;(java.lang.String&nbsp;userId,
                         org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection&nbsp;connection)</code></th>
 <td class="colLast">
@@ -162,7 +162,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code>org.odpi.openmetadata.frameworks.connectors.Connector</code></td>
+<td class="colFirst"><code><a href="../../../frameworks/connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getConnectorByGUID(java.lang.String,java.lang.String)">getConnectorByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
                   java.lang.String&nbsp;connectionGUID)</code></th>
 <td class="colLast">
@@ -170,7 +170,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </td>
 </tr>
 <tr id="i2" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.frameworks.connectors.Connector</code></td>
+<td class="colFirst"><code><a href="../../../frameworks/connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getConnectorByName(java.lang.String,java.lang.String)">getConnectorByName</a></span>&#8203;(java.lang.String&nbsp;userId,
                   java.lang.String&nbsp;connectionName)</code></th>
 <td class="colLast">
@@ -178,7 +178,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </td>
 </tr>
 <tr id="i3" class="rowColor">
-<td class="colFirst"><code>org.odpi.openmetadata.frameworks.connectors.Connector</code></td>
+<td class="colFirst"><code><a href="../../../frameworks/connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getConnectorForAsset(java.lang.String,java.lang.String)">getConnectorForAsset</a></span>&#8203;(java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;assetGUID)</code></th>
 <td class="colLast">
@@ -208,13 +208,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <h4>getConnectorByName</h4>
-<pre class="methodSignature">org.odpi.openmetadata.frameworks.connectors.Connector&nbsp;getConnectorByName&#8203;(java.lang.String&nbsp;userId,
-                                                                         java.lang.String&nbsp;connectionName)
-                                                                  throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                         org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException,
-                                                                         org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException,
-                                                                         org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                                                                         org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+<pre class="methodSignature"><a href="../../../frameworks/connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&nbsp;getConnectorByName&#8203;(java.lang.String&nbsp;userId,
+                             java.lang.String&nbsp;connectionName)
+                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                             <a href="../../../frameworks/connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a>,
+                             <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a>,
+                             <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                             <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Returns the connector corresponding to the supplied connection name.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -223,12 +223,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>Connector   connector instance.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException</code> - there are errors in the configuration of the connection which is preventing
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a></code> - there are errors in the configuration of the connection which is preventing
                                       the creation of a connector.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</code> - there are errors in the initialization of the connector.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem retrieving information from the property server(s).</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there are errors in the initialization of the connector.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </li>
 </ul>
@@ -238,13 +238,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <h4>getConnectorByGUID</h4>
-<pre class="methodSignature">org.odpi.openmetadata.frameworks.connectors.Connector&nbsp;getConnectorByGUID&#8203;(java.lang.String&nbsp;userId,
-                                                                         java.lang.String&nbsp;connectionGUID)
-                                                                  throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                         org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException,
-                                                                         org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException,
-                                                                         org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                                                                         org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+<pre class="methodSignature"><a href="../../../frameworks/connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&nbsp;getConnectorByGUID&#8203;(java.lang.String&nbsp;userId,
+                             java.lang.String&nbsp;connectionGUID)
+                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                             <a href="../../../frameworks/connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a>,
+                             <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a>,
+                             <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                             <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Returns the connector corresponding to the supplied connection GUID.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -253,12 +253,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>Connector   connector instance.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException</code> - there are errors in the configuration of the connection which is preventing
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a></code> - there are errors in the configuration of the connection which is preventing
                                       the creation of a connector.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</code> - there are errors in the initialization of the connector.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem retrieving information from the property server(s).</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there are errors in the initialization of the connector.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </li>
 </ul>
@@ -268,13 +268,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <h4>getConnectorForAsset</h4>
-<pre class="methodSignature">org.odpi.openmetadata.frameworks.connectors.Connector&nbsp;getConnectorForAsset&#8203;(java.lang.String&nbsp;userId,
-                                                                           java.lang.String&nbsp;assetGUID)
-                                                                    throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                           org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException,
-                                                                           org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException,
-                                                                           org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                                                                           org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+<pre class="methodSignature"><a href="../../../frameworks/connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&nbsp;getConnectorForAsset&#8203;(java.lang.String&nbsp;userId,
+                               java.lang.String&nbsp;assetGUID)
+                        throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                               <a href="../../../frameworks/connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a>,
+                               <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a>,
+                               <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                               <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Returns the connector corresponding to the supplied asset GUID.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -283,12 +283,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>Connector   connector instance.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException</code> - there are errors in the configuration of the connection which is preventing
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a></code> - there are errors in the configuration of the connection which is preventing
                                       the creation of a connector.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</code> - there are errors in the initialization of the connector.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem retrieving information from the property server(s).</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there are errors in the initialization of the connector.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </li>
 </ul>
@@ -298,12 +298,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockListLast">
 <li class="blockList">
 <h4>getConnectorByConnection</h4>
-<pre class="methodSignature">org.odpi.openmetadata.frameworks.connectors.Connector&nbsp;getConnectorByConnection&#8203;(java.lang.String&nbsp;userId,
-                                                                               org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection&nbsp;connection)
-                                                                        throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                               org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException,
-                                                                               org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException,
-                                                                               org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature"><a href="../../../frameworks/connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&nbsp;getConnectorByConnection&#8203;(java.lang.String&nbsp;userId,
+                                   org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection&nbsp;connection)
+                            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                   <a href="../../../frameworks/connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a>,
+                                   <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a>,
+                                   <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Returns the connector corresponding to the supplied connection.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -312,11 +312,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>Connector   connector instance</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException</code> - there are errors in the configuration of the connection which is preventing
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a></code> - there are errors in the configuration of the connection which is preventing
                                       the creation of a connector.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</code> - there are errors in the initialization of the connector.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there are errors in the initialization of the connector.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>
 </dl>
 </li>
 </ul>

@@ -148,7 +148,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerDatabase&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;<a href="../model/ResponseContainerDatabase.html" title="class in org.odpi.openmetadata.accessservices.analyticsmodeling.model">ResponseContainerDatabase</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDatabases(java.lang.String,int,int)">getDatabases</a></span>&#8203;(java.lang.String&nbsp;userId,
             int&nbsp;startFrom,
             int&nbsp;pageSize)</code></th>
@@ -157,18 +157,18 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code>org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerModule</code></td>
+<td class="colFirst"><code><a href="../model/ResponseContainerModule.html" title="class in org.odpi.openmetadata.accessservices.analyticsmodeling.model">ResponseContainerModule</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getModule(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.analyticsmodeling.model.ModuleTableFilter)">getModule</a></span>&#8203;(java.lang.String&nbsp;userId,
          java.lang.String&nbsp;databaseGuid,
          java.lang.String&nbsp;catalog,
          java.lang.String&nbsp;schema,
-         org.odpi.openmetadata.accessservices.analyticsmodeling.model.ModuleTableFilter&nbsp;request)</code></th>
+         <a href="../model/ModuleTableFilter.html" title="class in org.odpi.openmetadata.accessservices.analyticsmodeling.model">ModuleTableFilter</a>&nbsp;request)</code></th>
 <td class="colLast">
 <div class="block">Build module for the schema.</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
-<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerDatabaseSchema&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;<a href="../model/ResponseContainerDatabaseSchema.html" title="class in org.odpi.openmetadata.accessservices.analyticsmodeling.model">ResponseContainerDatabaseSchema</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemas(java.lang.String,java.lang.String,int,int)">getSchemas</a></span>&#8203;(java.lang.String&nbsp;userId,
           java.lang.String&nbsp;databaseGuid,
           int&nbsp;startFrom,
@@ -178,7 +178,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </td>
 </tr>
 <tr id="i3" class="rowColor">
-<td class="colFirst"><code>org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerSchemaTables</code></td>
+<td class="colFirst"><code><a href="../model/ResponseContainerSchemaTables.html" title="class in org.odpi.openmetadata.accessservices.analyticsmodeling.model">ResponseContainerSchemaTables</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTables(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getTables</a></span>&#8203;(java.lang.String&nbsp;userId,
          java.lang.String&nbsp;databaseGuid,
          java.lang.String&nbsp;catalog,
@@ -210,13 +210,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <h4>getDatabases</h4>
-<pre class="methodSignature">java.util.List&lt;org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerDatabase&gt;&nbsp;getDatabases&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                    int&nbsp;startFrom,
-                                                                                                                    int&nbsp;pageSize)
-                                                                                                             throws org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException,
-                                                                                                                    org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                                                                                                                    org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                    org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+<pre class="methodSignature">java.util.List&lt;<a href="../model/ResponseContainerDatabase.html" title="class in org.odpi.openmetadata.accessservices.analyticsmodeling.model">ResponseContainerDatabase</a>&gt;&nbsp;getDatabases&#8203;(java.lang.String&nbsp;userId,
+                                                       int&nbsp;startFrom,
+                                                       int&nbsp;pageSize)
+                                                throws org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException,
+                                                       <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                                                       <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                       <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Get databases available on the server for the user.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -227,9 +227,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>list of databases for the requested server/user.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException</code> - error executing request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - in case REST call failed.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - in case user unauthorized to perform operation.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - in case any passed parameter is invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - in case REST call failed.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - in case user unauthorized to perform operation.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - in case any passed parameter is invalid.</dd>
 </dl>
 </li>
 </ul>
@@ -239,14 +239,14 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <h4>getSchemas</h4>
-<pre class="methodSignature">java.util.List&lt;org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerDatabaseSchema&gt;&nbsp;getSchemas&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                        java.lang.String&nbsp;databaseGuid,
-                                                                                                                        int&nbsp;startFrom,
-                                                                                                                        int&nbsp;pageSize)
-                                                                                                                 throws org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException,
-                                                                                                                        org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                                                                                                                        org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                        org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+<pre class="methodSignature">java.util.List&lt;<a href="../model/ResponseContainerDatabaseSchema.html" title="class in org.odpi.openmetadata.accessservices.analyticsmodeling.model">ResponseContainerDatabaseSchema</a>&gt;&nbsp;getSchemas&#8203;(java.lang.String&nbsp;userId,
+                                                           java.lang.String&nbsp;databaseGuid,
+                                                           int&nbsp;startFrom,
+                                                           int&nbsp;pageSize)
+                                                    throws org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException,
+                                                           <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                                                           <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                           <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Get schema defined by database GUID.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -258,9 +258,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>list of schemas for the requested database.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException</code> - error executing request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - in case REST call failed.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - in case user unauthorized to perform operation.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - in case any passed parameter is invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - in case REST call failed.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - in case user unauthorized to perform operation.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - in case any passed parameter is invalid.</dd>
 </dl>
 </li>
 </ul>
@@ -270,14 +270,14 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <h4>getTables</h4>
-<pre class="methodSignature">org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerSchemaTables&nbsp;getTables&#8203;(java.lang.String&nbsp;userId,
-                                                                                                     java.lang.String&nbsp;databaseGuid,
-                                                                                                     java.lang.String&nbsp;catalog,
-                                                                                                     java.lang.String&nbsp;schema)
-                                                                                              throws org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException,
-                                                                                                     org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                                                                                                     org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                     org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+<pre class="methodSignature"><a href="../model/ResponseContainerSchemaTables.html" title="class in org.odpi.openmetadata.accessservices.analyticsmodeling.model">ResponseContainerSchemaTables</a>&nbsp;getTables&#8203;(java.lang.String&nbsp;userId,
+                                        java.lang.String&nbsp;databaseGuid,
+                                        java.lang.String&nbsp;catalog,
+                                        java.lang.String&nbsp;schema)
+                                 throws org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException,
+                                        <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                                        <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                        <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Get tables for the schema.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -289,9 +289,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>list of tables for the requested schema.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException</code> - error executing request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - in case REST call failed.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - in case user unauthorized to perform operation.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - in case any passed parameter is invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - in case REST call failed.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - in case user unauthorized to perform operation.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - in case any passed parameter is invalid.</dd>
 </dl>
 </li>
 </ul>
@@ -301,15 +301,15 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockListLast">
 <li class="blockList">
 <h4>getModule</h4>
-<pre class="methodSignature">org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerModule&nbsp;getModule&#8203;(java.lang.String&nbsp;userId,
-                                                                                               java.lang.String&nbsp;databaseGuid,
-                                                                                               java.lang.String&nbsp;catalog,
-                                                                                               java.lang.String&nbsp;schema,
-                                                                                               org.odpi.openmetadata.accessservices.analyticsmodeling.model.ModuleTableFilter&nbsp;request)
-                                                                                        throws org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException,
-                                                                                               org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                                                                                               org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                               org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+<pre class="methodSignature"><a href="../model/ResponseContainerModule.html" title="class in org.odpi.openmetadata.accessservices.analyticsmodeling.model">ResponseContainerModule</a>&nbsp;getModule&#8203;(java.lang.String&nbsp;userId,
+                                  java.lang.String&nbsp;databaseGuid,
+                                  java.lang.String&nbsp;catalog,
+                                  java.lang.String&nbsp;schema,
+                                  <a href="../model/ModuleTableFilter.html" title="class in org.odpi.openmetadata.accessservices.analyticsmodeling.model">ModuleTableFilter</a>&nbsp;request)
+                           throws org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException,
+                                  <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                                  <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                  <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Build module for the schema.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -322,9 +322,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>module for the requested schema.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException</code> - error executing request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - in case REST call failed.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - in case user unauthorized to perform operation.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - in case any passed parameter is invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - in case REST call failed.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - in case user unauthorized to perform operation.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - in case any passed parameter is invalid.</dd>
 </dl>
 </li>
 </ul>

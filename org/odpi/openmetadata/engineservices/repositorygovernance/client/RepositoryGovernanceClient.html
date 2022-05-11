@@ -194,7 +194,7 @@ implements <a href="../api/RepositoryGovernanceAPI.html" title="interface in org
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.commonservices.ffdc.properties.ConnectorReport</code></td>
+<td class="colFirst"><code><a href="../../../commonservices/ffdc/properties/ConnectorReport.html" title="class in org.odpi.openmetadata.commonservices.ffdc.properties">ConnectorReport</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateConnector(java.lang.String,java.lang.String)">validateConnector</a></span>&#8203;(java.lang.String&nbsp;userId,
                  java.lang.String&nbsp;connectorProviderClassName)</code></th>
 <td class="colLast">
@@ -234,7 +234,7 @@ implements <a href="../api/RepositoryGovernanceAPI.html" title="interface in org
 <pre>public&nbsp;RepositoryGovernanceClient&#8203;(java.lang.String&nbsp;serverPlatformRootURL,
                                   java.lang.String&nbsp;serverName,
                                   java.lang.String&nbsp;repositoryGovernanceEngineName)
-                           throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                           throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a client-side object for calling a archive engine.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -242,7 +242,7 @@ implements <a href="../api/RepositoryGovernanceAPI.html" title="interface in org
 <dd><code>serverName</code> - the name of the engine host server where the archive engine is running</dd>
 <dd><code>repositoryGovernanceEngineName</code> - the unique name of the archive engine.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
 </dl>
 </li>
 </ul>
@@ -257,7 +257,7 @@ implements <a href="../api/RepositoryGovernanceAPI.html" title="interface in org
                                   java.lang.String&nbsp;repositoryGovernanceEngineName,
                                   java.lang.String&nbsp;userId,
                                   java.lang.String&nbsp;password)
-                           throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                           throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a client-side object for calling a archive engine.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -267,7 +267,7 @@ implements <a href="../api/RepositoryGovernanceAPI.html" title="interface in org
 <dd><code>userId</code> - user id for the HTTP request</dd>
 <dd><code>password</code> - password for the HTTP request</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
 </dl>
 </li>
 </ul>
@@ -287,11 +287,11 @@ implements <a href="../api/RepositoryGovernanceAPI.html" title="interface in org
 <ul class="blockListLast">
 <li class="blockList">
 <h4>validateConnector</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.commonservices.ffdc.properties.ConnectorReport&nbsp;validateConnector&#8203;(java.lang.String&nbsp;userId,
-                                                                                              java.lang.String&nbsp;connectorProviderClassName)
-                                                                                       throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                              org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                              org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">public&nbsp;<a href="../../../commonservices/ffdc/properties/ConnectorReport.html" title="class in org.odpi.openmetadata.commonservices.ffdc.properties">ConnectorReport</a>&nbsp;validateConnector&#8203;(java.lang.String&nbsp;userId,
+                                         java.lang.String&nbsp;connectorProviderClassName)
+                                  throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                         <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                         <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Validate the connector and return its connector type.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -302,9 +302,9 @@ implements <a href="../api/RepositoryGovernanceAPI.html" title="interface in org
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>connector report for this connector</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the connector provider class name is not a valid connector fo this service</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there was a problem detected by the integration service</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the connector provider class name is not a valid connector fo this service</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there was a problem detected by the integration service</dd>
 </dl>
 </li>
 </ul>

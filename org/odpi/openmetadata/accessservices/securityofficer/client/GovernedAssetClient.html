@@ -220,7 +220,7 @@ implements <a href="GovernedAssetInterface.html" title="interface in org.odpi.op
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createSoftwareServerCapability(java.lang.String,org.odpi.openmetadata.accessservices.securityofficer.api.model.rest.SoftwareServerCapabilityRequestBody)">createSoftwareServerCapability</a></span>&#8203;(java.lang.String&nbsp;userId,
-                              <a href="../api/model/rest/SoftwareServerCapabilityRequestBody.html" title="class in org.odpi.openmetadata.accessservices.securityofficer.api.model.rest">SoftwareServerCapabilityRequestBody</a>&nbsp;softwareServerCapability)</code></th>
+                              org.odpi.openmetadata.accessservices.securityofficer.api.model.rest.SoftwareServerCapabilityRequestBody&nbsp;softwareServerCapability)</code></th>
 <td class="colLast">
 <div class="block">Create a Software Server Capability entity</div>
 </td>
@@ -295,14 +295,14 @@ implements <a href="GovernedAssetInterface.html" title="interface in org.odpi.op
 <h4>GovernedAssetClient</h4>
 <pre>public&nbsp;GovernedAssetClient&#8203;(java.lang.String&nbsp;serverName,
                            java.lang.String&nbsp;serverPlatformURLRoot)
-                    throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new Governance Engine client.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server to connect to</dd>
 <dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST servers</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - if parameter validation fails</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - if parameter validation fails</dd>
 </dl>
 </li>
 </ul>
@@ -316,10 +316,10 @@ implements <a href="GovernedAssetInterface.html" title="interface in org.odpi.op
                            java.lang.String&nbsp;serverPlatformURLRoot,
                            java.lang.String&nbsp;userId,
                            java.lang.String&nbsp;password)
-                    throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <dl>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code></dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code></dd>
 </dl>
 </li>
 </ul>
@@ -344,9 +344,9 @@ implements <a href="GovernedAssetInterface.html" title="interface in org.odpi.op
                                                           java.util.List&lt;java.lang.String&gt;&nbsp;entityTypes,
                                                           java.lang.Integer&nbsp;offset,
                                                           java.lang.Integer&nbsp;pageSize)
-                                                   throws org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                          org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                                                          org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                                                   throws <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                          <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                                                          <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Returns a list of the entities filtered by types that have the searched governed classification.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -360,9 +360,9 @@ implements <a href="GovernedAssetInterface.html" title="interface in org.odpi.op
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>a list of the governed entities that have the Governed Classification Searched.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - - the requesting user is not authorized to issue this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - - there is a problem retrieving information from the property server(s).</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - - there is a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - - one of the parameters is null or invalid.</dd>
 </dl>
 </li>
 </ul>
@@ -374,9 +374,9 @@ implements <a href="GovernedAssetInterface.html" title="interface in org.odpi.op
 <h4>getGovernedAsset</h4>
 <pre class="methodSignature">public&nbsp;<a href="../api/model/GovernedAsset.html" title="class in org.odpi.openmetadata.accessservices.securityofficer.api.model">GovernedAsset</a>&nbsp;getGovernedAsset&#8203;(java.lang.String&nbsp;userId,
                                       java.lang.String&nbsp;assetGuid)
-                               throws org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                      org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                                      org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                               throws <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                      <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                                      <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="GovernedAssetInterface.html#getGovernedAsset(java.lang.String,java.lang.String)">getGovernedAsset</a></code>&nbsp;in interface&nbsp;<code><a href="GovernedAssetInterface.html" title="interface in org.odpi.openmetadata.accessservices.securityofficer.client">GovernedAssetInterface</a></code></dd>
@@ -386,9 +386,9 @@ implements <a href="GovernedAssetInterface.html" title="interface in org.odpi.op
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>the the entity if this has a governed classification assigned</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - - the requesting user is not authorized to issue this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - - there is a problem retrieving information from the property server(s).</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - - there is a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - - one of the parameters is null or invalid.</dd>
 </dl>
 </li>
 </ul>
@@ -399,10 +399,10 @@ implements <a href="GovernedAssetInterface.html" title="interface in org.odpi.op
 <li class="blockList">
 <h4>createSoftwareServerCapability</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;createSoftwareServerCapability&#8203;(java.lang.String&nbsp;userId,
-                                                       <a href="../api/model/rest/SoftwareServerCapabilityRequestBody.html" title="class in org.odpi.openmetadata.accessservices.securityofficer.api.model.rest">SoftwareServerCapabilityRequestBody</a>&nbsp;softwareServerCapability)
-                                                throws org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                       org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                                                       org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                                                       org.odpi.openmetadata.accessservices.securityofficer.api.model.rest.SoftwareServerCapabilityRequestBody&nbsp;softwareServerCapability)
+                                                throws <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                       <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                                                       <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a Software Server Capability entity</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -413,9 +413,9 @@ implements <a href="GovernedAssetInterface.html" title="interface in org.odpi.op
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>the GUID of the Software Server entity created</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - - the requesting user is not authorized to issue this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - - there is a problem retrieving information from the property server(s).</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - - there is a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - - one of the parameters is null or invalid.</dd>
 </dl>
 </li>
 </ul>
@@ -427,9 +427,9 @@ implements <a href="GovernedAssetInterface.html" title="interface in org.odpi.op
 <h4>getSoftwareServerCapabilityByGUID</h4>
 <pre class="methodSignature">public&nbsp;<a href="../api/model/SoftwareServerCapability.html" title="class in org.odpi.openmetadata.accessservices.securityofficer.api.model">SoftwareServerCapability</a>&nbsp;getSoftwareServerCapabilityByGUID&#8203;(java.lang.String&nbsp;userId,
                                                                   java.lang.String&nbsp;guid)
-                                                           throws org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                  org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                                                                  org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                                                           throws <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                                  <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                                                                  <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Returns the Software Server Capability entity by global identifier</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -440,9 +440,9 @@ implements <a href="GovernedAssetInterface.html" title="interface in org.odpi.op
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>the Software Server Capability entity associated with the provided GUID</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - - the requesting user is not authorized to issue this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - - there is a problem retrieving information from the property server(s).</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - - there is a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - - one of the parameters is null or invalid.</dd>
 </dl>
 </li>
 </ul>

@@ -370,7 +370,7 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <tr id="i21" class="rowColor">
 <td class="colFirst"><code>org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#find(java.lang.String,org.odpi.openmetadata.accessservices.dataengine.rest.FindRequestBody)">find</a></span>&#8203;(java.lang.String&nbsp;userId,
-    <a href="../rest/FindRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">FindRequestBody</a>&nbsp;findRequestBody)</code></th>
+    org.odpi.openmetadata.accessservices.dataengine.rest.FindRequestBody&nbsp;findRequestBody)</code></th>
 <td class="colLast">
 <div class="block">Find an entity</div>
 </td>
@@ -528,8 +528,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <h4>createOrUpdateProcess</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;createOrUpdateProcess&#8203;(java.lang.String&nbsp;userId,
                                               <a href="../model/Process.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Process</a>&nbsp;process)
-                                       throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                              org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</pre>
+                                       throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                              <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></pre>
 <div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="DataEngineClient.html#createOrUpdateProcess(java.lang.String,org.odpi.openmetadata.accessservices.dataengine.model.Process)">DataEngineClient</a></code></span></div>
 <div class="block">Create or update the process, with all the ports, schema types and corresponding relationships including
  the process hierarchy relationship.</div>
@@ -542,8 +542,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the process in the repository</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the bean properties are invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</code> - problem with the underlying connector (if used)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the bean properties are invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - problem with the underlying connector (if used)</dd>
 </dl>
 </li>
 </ul>
@@ -556,8 +556,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <pre class="methodSignature">public&nbsp;void&nbsp;deleteProcess&#8203;(java.lang.String&nbsp;userId,
                           java.lang.String&nbsp;qualifiedName,
                           java.lang.String&nbsp;guid)
-                   throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                          org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</pre>
+                   throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                          <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></pre>
 <div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="DataEngineClient.html#deleteProcess(java.lang.String,java.lang.String,java.lang.String)">DataEngineClient</a></code></span></div>
 <div class="block">Delete a process</div>
 <dl>
@@ -568,8 +568,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <dd><code>qualifiedName</code> - the qualified name of the process to be deleted</dd>
 <dd><code>guid</code> - the unique identifier of the process to be deleted</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the bean properties are invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</code> - problem with the underlying connector (if used)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the bean properties are invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - problem with the underlying connector (if used)</dd>
 </dl>
 </li>
 </ul>
@@ -581,8 +581,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <h4>createExternalDataEngine</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;createExternalDataEngine&#8203;(java.lang.String&nbsp;userId,
                                                  <a href="../model/SoftwareServerCapability.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">SoftwareServerCapability</a>&nbsp;softwareServerCapability)
-                                          throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                 org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</pre>
+                                          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                 <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></pre>
 <div class="block">Create or update the software server capability entity</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -593,8 +593,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the server in the repository</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the bean properties are invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</code> - problem with the underlying connector (if used)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the bean properties are invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - problem with the underlying connector (if used)</dd>
 </dl>
 </li>
 </ul>
@@ -607,8 +607,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <pre class="methodSignature">public&nbsp;void&nbsp;deleteExternalDataEngine&#8203;(java.lang.String&nbsp;userId,
                                      java.lang.String&nbsp;qualifiedName,
                                      java.lang.String&nbsp;guid)
-                              throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                     org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</pre>
+                              throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                     <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></pre>
 <div class="block">Delete the external data engine</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -618,8 +618,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <dd><code>qualifiedName</code> - the qualified name of the external data engine</dd>
 <dd><code>guid</code> - the unique identifier of the external data engine</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the bean properties are invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</code> - problem with the underlying connector (if used)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the bean properties are invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - problem with the underlying connector (if used)</dd>
 </dl>
 </li>
 </ul>
@@ -631,8 +631,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <h4>createOrUpdateSchemaType</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;createOrUpdateSchemaType&#8203;(java.lang.String&nbsp;userId,
                                                  <a href="../model/SchemaType.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">SchemaType</a>&nbsp;schemaType)
-                                          throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                 org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</pre>
+                                          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                 <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></pre>
 <div class="block">Create or update the schema type entity, with the corresponding schema attributes and relationships</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -643,8 +643,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the schema type in the repository</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the bean properties are invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</code> - problem with the underlying connector (if used)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the bean properties are invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - problem with the underlying connector (if used)</dd>
 </dl>
 </li>
 </ul>
@@ -657,8 +657,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <pre class="methodSignature">public&nbsp;void&nbsp;deleteSchemaType&#8203;(java.lang.String&nbsp;userId,
                              java.lang.String&nbsp;qualifiedName,
                              java.lang.String&nbsp;guid)
-                      throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                             org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</pre>
+                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                             <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></pre>
 <div class="block">Delete the schema type</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -668,8 +668,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <dd><code>qualifiedName</code> - the qualified name of the schema type</dd>
 <dd><code>guid</code> - the unique identifier of the schema type</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the bean properties are invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</code> - problem with the underlying connector (if used)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the bean properties are invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - problem with the underlying connector (if used)</dd>
 </dl>
 </li>
 </ul>
@@ -682,8 +682,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;createOrUpdatePortImplementation&#8203;(java.lang.String&nbsp;userId,
                                                          <a href="../model/PortImplementation.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">PortImplementation</a>&nbsp;portImplementation,
                                                          java.lang.String&nbsp;processQualifiedName)
-                                                  throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                         org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</pre>
+                                                  throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                         <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></pre>
 <div class="block">Create or update the port implementation entity,with the corresponding schema type and port schema relationship. It attaches the port
  implementation to the provided process</div>
 <dl>
@@ -696,8 +696,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the port implementation in the repository</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the bean properties are invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</code> - problem with the underlying connector (if used)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the bean properties are invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - problem with the underlying connector (if used)</dd>
 </dl>
 </li>
 </ul>
@@ -710,8 +710,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <pre class="methodSignature">public&nbsp;void&nbsp;deletePortImplementation&#8203;(java.lang.String&nbsp;userId,
                                      java.lang.String&nbsp;qualifiedName,
                                      java.lang.String&nbsp;guid)
-                              throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                     org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</pre>
+                              throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                     <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></pre>
 <div class="block">Delete the port implementation</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -721,8 +721,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <dd><code>qualifiedName</code> - the qualified name of port implementation</dd>
 <dd><code>guid</code> - the unique identifier of the port implementation</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the bean properties are invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</code> - problem with the underlying connector (if used)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the bean properties are invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - problem with the underlying connector (if used)</dd>
 </dl>
 </li>
 </ul>
@@ -735,8 +735,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;createOrUpdatePortAlias&#8203;(java.lang.String&nbsp;userId,
                                                 <a href="../model/PortAlias.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">PortAlias</a>&nbsp;portAlias,
                                                 java.lang.String&nbsp;processQualifiedName)
-                                         throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</pre>
+                                         throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></pre>
 <div class="block">Create or update the port alias entity with a PortDelegation relationship. It attaches the port alias to the provided process</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -748,8 +748,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the port alias in the repository</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the bean properties are invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</code> - problem with the underlying connector (if used)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the bean properties are invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - problem with the underlying connector (if used)</dd>
 </dl>
 </li>
 </ul>
@@ -762,8 +762,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <pre class="methodSignature">public&nbsp;void&nbsp;deletePortAlias&#8203;(java.lang.String&nbsp;userId,
                             java.lang.String&nbsp;qualifiedName,
                             java.lang.String&nbsp;guid)
-                     throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                            org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</pre>
+                     throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                            <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></pre>
 <div class="block">Delete the port alias</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -773,8 +773,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <dd><code>qualifiedName</code> - the qualified name of the port alias</dd>
 <dd><code>guid</code> - the unique identifier of the port alias</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the bean properties are invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</code> - problem with the underlying connector (if used)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the bean properties are invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - problem with the underlying connector (if used)</dd>
 </dl>
 </li>
 </ul>
@@ -786,8 +786,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <h4>addProcessHierarchy</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;addProcessHierarchy&#8203;(java.lang.String&nbsp;userId,
                                             <a href="../model/ProcessHierarchy.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">ProcessHierarchy</a>&nbsp;processHierarchy)
-                                     throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                            org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</pre>
+                                     throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                            <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></pre>
 <div class="block">Add a ProcessHierarchy relationship to a process</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -798,8 +798,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>the unique identifier (guid) of the child of the process hierarchy that was updated</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the bean properties are invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</code> - problem with the underlying connector (if used)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the bean properties are invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - problem with the underlying connector (if used)</dd>
 </dl>
 </li>
 </ul>
@@ -811,8 +811,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <h4>addLineageMappings</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;addLineageMappings&#8203;(java.lang.String&nbsp;userId,
                                java.util.List&lt;<a href="../model/LineageMapping.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">LineageMapping</a>&gt;&nbsp;lineageMappings)
-                        throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                               org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</pre>
+                        throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                               <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></pre>
 <div class="block">Add lineage mapping relationships between schema types</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -821,8 +821,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <dd><code>userId</code> - the name of the calling user</dd>
 <dd><code>lineageMappings</code> - list of lineage mappings</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the bean properties are invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</code> - problem with the underlying connector (if used)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the bean properties are invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - problem with the underlying connector (if used)</dd>
 </dl>
 </li>
 </ul>
@@ -867,8 +867,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;upsertDatabase&#8203;(java.lang.String&nbsp;userId,
                                        <a href="../model/Database.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Database</a>&nbsp;database,
                                        boolean&nbsp;incomplete)
-                                throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                       org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</pre>
+                                throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                       <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></pre>
 <div class="block">Create or update the database entity</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -881,8 +881,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of database in the repository</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the bean properties are invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</code> - internal problem with the connector</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the bean properties are invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - internal problem with the connector</dd>
 </dl>
 </li>
 </ul>
@@ -896,8 +896,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
                                              <a href="../model/DatabaseSchema.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">DatabaseSchema</a>&nbsp;databaseSchema,
                                              java.lang.String&nbsp;databaseQualifiedName,
                                              boolean&nbsp;incomplete)
-                                      throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                             org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</pre>
+                                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                             <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></pre>
 <div class="block">Create or update the database schema entity</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -910,8 +910,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of database schema in the repository</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the bean properties are invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</code> - internal problem with the connector</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the bean properties are invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - internal problem with the connector</dd>
 </dl>
 </li>
 </ul>
@@ -925,8 +925,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
                                               <a href="../model/RelationalTable.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">RelationalTable</a>&nbsp;relationalTable,
                                               java.lang.String&nbsp;databaseSchemaQualifiedName,
                                               boolean&nbsp;incomplete)
-                                       throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                              org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</pre>
+                                       throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                              <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></pre>
 <div class="block">Create or update the relational table entity</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -939,8 +939,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the relational table in the repository</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the bean properties are invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</code> - internal problem with the connector</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the bean properties are invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - internal problem with the connector</dd>
 </dl>
 </li>
 </ul>
@@ -953,8 +953,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;upsertDataFile&#8203;(java.lang.String&nbsp;userId,
                                        <a href="../model/DataFile.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">DataFile</a>&nbsp;dataFile,
                                        boolean&nbsp;incomplete)
-                                throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                       org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</pre>
+                                throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                       <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></pre>
 <div class="block">Create or update the data file entity</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -966,8 +966,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the relational table in the repository</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the bean properties are invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</code> - internal problem with the connector</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the bean properties are invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - internal problem with the connector</dd>
 </dl>
 </li>
 </ul>
@@ -980,8 +980,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <pre class="methodSignature">public&nbsp;void&nbsp;deleteDatabase&#8203;(java.lang.String&nbsp;userId,
                            java.lang.String&nbsp;qualifiedName,
                            java.lang.String&nbsp;guid)
-                    throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                           org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</pre>
+                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                           <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></pre>
 <div class="block">Delete the database</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -991,8 +991,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <dd><code>qualifiedName</code> - the qualified name of the database</dd>
 <dd><code>guid</code> - the unique identifier of the database</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the bean properties are invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</code> - problem with the underlying connector (if used)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the bean properties are invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - problem with the underlying connector (if used)</dd>
 </dl>
 </li>
 </ul>
@@ -1005,8 +1005,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <pre class="methodSignature">public&nbsp;void&nbsp;deleteDatabaseSchema&#8203;(java.lang.String&nbsp;userId,
                                  java.lang.String&nbsp;qualifiedName,
                                  java.lang.String&nbsp;guid)
-                          throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                 org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</pre>
+                          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                 <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></pre>
 <div class="block">Delete the database schema</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -1016,8 +1016,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <dd><code>qualifiedName</code> - the qualified name of the database schema</dd>
 <dd><code>guid</code> - the unique identifier of the database schema</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the bean properties are invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</code> - problem with the underlying connector (if used)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the bean properties are invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - problem with the underlying connector (if used)</dd>
 </dl>
 </li>
 </ul>
@@ -1030,8 +1030,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <pre class="methodSignature">public&nbsp;void&nbsp;deleteRelationalTable&#8203;(java.lang.String&nbsp;userId,
                                   java.lang.String&nbsp;qualifiedName,
                                   java.lang.String&nbsp;guid)
-                           throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                  org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</pre>
+                           throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                  <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></pre>
 <div class="block">Delete the relational table</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -1041,8 +1041,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <dd><code>qualifiedName</code> - the qualified name of the relational table</dd>
 <dd><code>guid</code> - the unique identifier of the relational table</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the bean properties are invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</code> - problem with the underlying connector (if used)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the bean properties are invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - problem with the underlying connector (if used)</dd>
 </dl>
 </li>
 </ul>
@@ -1055,8 +1055,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <pre class="methodSignature">public&nbsp;void&nbsp;deleteDataFile&#8203;(java.lang.String&nbsp;userId,
                            java.lang.String&nbsp;qualifiedName,
                            java.lang.String&nbsp;guid)
-                    throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                           org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</pre>
+                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                           <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></pre>
 <div class="block">Delete the data file</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -1066,8 +1066,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <dd><code>qualifiedName</code> - the qualified name of the data file</dd>
 <dd><code>guid</code> - the unique identifier of the data file</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the bean properties are invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</code> - problem with the underlying connector (if used)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the bean properties are invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - problem with the underlying connector (if used)</dd>
 </dl>
 </li>
 </ul>
@@ -1080,8 +1080,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <pre class="methodSignature">public&nbsp;void&nbsp;deleteFolder&#8203;(java.lang.String&nbsp;userId,
                          java.lang.String&nbsp;qualifiedName,
                          java.lang.String&nbsp;guid)
-                  throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                         org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</pre>
+                  throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                         <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></pre>
 <div class="block">Delete the folder</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -1091,8 +1091,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <dd><code>qualifiedName</code> - the qualified name of the data file</dd>
 <dd><code>guid</code> - the unique identifier of the folder</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the bean properties are invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</code> - problem with the underlying connector (if used)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the bean properties are invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - problem with the underlying connector (if used)</dd>
 </dl>
 </li>
 </ul>
@@ -1105,8 +1105,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <pre class="methodSignature">public&nbsp;void&nbsp;deleteConnection&#8203;(java.lang.String&nbsp;userId,
                              java.lang.String&nbsp;qualifiedName,
                              java.lang.String&nbsp;guid)
-                      throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                             org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</pre>
+                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                             <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></pre>
 <div class="block">Delete the connection</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -1116,8 +1116,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <dd><code>qualifiedName</code> - the qualified name of the connection</dd>
 <dd><code>guid</code> - the unique identifier of the connection</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the bean properties are invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</code> - problem with the underlying connector (if used)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the bean properties are invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - problem with the underlying connector (if used)</dd>
 </dl>
 </li>
 </ul>
@@ -1130,8 +1130,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <pre class="methodSignature">public&nbsp;void&nbsp;deleteEndpoint&#8203;(java.lang.String&nbsp;userId,
                            java.lang.String&nbsp;qualifiedName,
                            java.lang.String&nbsp;guid)
-                    throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                           org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</pre>
+                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                           <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></pre>
 <div class="block">Delete the endpoint</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -1141,8 +1141,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <dd><code>qualifiedName</code> - the qualified name of the endpoint</dd>
 <dd><code>guid</code> - the unique identifier of the endpoint</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the bean properties are invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</code> - problem with the underlying connector (if used)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the bean properties are invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - problem with the underlying connector (if used)</dd>
 </dl>
 </li>
 </ul>
@@ -1153,7 +1153,7 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <li class="blockList">
 <h4>find</h4>
 <pre class="methodSignature">public&nbsp;org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse&nbsp;find&#8203;(java.lang.String&nbsp;userId,
-                                                                            <a href="../rest/FindRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">FindRequestBody</a>&nbsp;findRequestBody)
+                                                                            org.odpi.openmetadata.accessservices.dataengine.rest.FindRequestBody&nbsp;findRequestBody)
                                                                      throws org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException</pre>
 <div class="block">Find an entity</div>
 <dl>
@@ -1177,8 +1177,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <h4>upsertTopic</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;upsertTopic&#8203;(java.lang.String&nbsp;userId,
                                     <a href="../model/Topic.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Topic</a>&nbsp;topic)
-                             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                    org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</pre>
+                             throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                    <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></pre>
 <div class="block">Create or update the topic entity</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -1189,8 +1189,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of topic in the repository</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the bean properties are invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</code> - internal problem with the connector</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the bean properties are invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - internal problem with the connector</dd>
 </dl>
 </li>
 </ul>
@@ -1203,8 +1203,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;upsertEventType&#8203;(java.lang.String&nbsp;userId,
                                         <a href="../model/EventType.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">EventType</a>&nbsp;eventType,
                                         java.lang.String&nbsp;topicQualifiedName)
-                                 throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                        org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</pre>
+                                 throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                        <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></pre>
 <div class="block">Create or update the event type entity</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -1216,8 +1216,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of event type in the repository</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the bean properties are invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</code> - internal problem with the connector</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the bean properties are invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - internal problem with the connector</dd>
 </dl>
 </li>
 </ul>
@@ -1230,8 +1230,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <pre class="methodSignature">public&nbsp;void&nbsp;deleteTopic&#8203;(java.lang.String&nbsp;userId,
                         java.lang.String&nbsp;qualifiedName,
                         java.lang.String&nbsp;guid)
-                 throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                        org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</pre>
+                 throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                        <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></pre>
 <div class="block">Delete the topic</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -1241,8 +1241,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <dd><code>qualifiedName</code> - the qualified name of the topic</dd>
 <dd><code>guid</code> - the unique identifier of the topic</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the bean properties are invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</code> - problem with the underlying connector (if used)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the bean properties are invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - problem with the underlying connector (if used)</dd>
 </dl>
 </li>
 </ul>
@@ -1255,8 +1255,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <pre class="methodSignature">public&nbsp;void&nbsp;deleteEventType&#8203;(java.lang.String&nbsp;userId,
                             java.lang.String&nbsp;qualifiedName,
                             java.lang.String&nbsp;guid)
-                     throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                            org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</pre>
+                     throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                            <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></pre>
 <div class="block">Delete the event type</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -1266,8 +1266,8 @@ implements <a href="DataEngineClient.html" title="interface in org.odpi.openmeta
 <dd><code>qualifiedName</code> - the qualified name of the event type</dd>
 <dd><code>guid</code> - the unique identifier of the event type</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the bean properties are invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</code> - problem with the underlying connector (if used)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the bean properties are invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - problem with the underlying connector (if used)</dd>
 </dl>
 </li>
 </ul>

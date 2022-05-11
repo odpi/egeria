@@ -177,7 +177,7 @@ implements <a href="../api/AnalyticsModelingSynchronization.html" title="interfa
                      java.lang.String&nbsp;serverPlatformURLRoot,
                      java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;password,
-                     org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)</code></th>
+                     <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></th>
 <td class="colLast">
 <div class="block">Create a new client that passes userId and password in each HTTP request.</div>
 </td>
@@ -194,7 +194,7 @@ implements <a href="../api/AnalyticsModelingSynchronization.html" title="interfa
 <tr class="altColor">
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">SynchronizationClient</a></span>&#8203;(java.lang.String&nbsp;serverName,
                      java.lang.String&nbsp;serverPlatformURLRoot,
-                     org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)</code></th>
+                     <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></th>
 <td class="colLast">
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 </td>
@@ -218,17 +218,17 @@ implements <a href="../api/AnalyticsModelingSynchronization.html" title="interfa
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerAssets</code></td>
+<td class="colFirst"><code><a href="../model/ResponseContainerAssets.html" title="class in org.odpi.openmetadata.accessservices.analyticsmodeling.model">ResponseContainerAssets</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createArtifact(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsAsset)">createArtifact</a></span>&#8203;(java.lang.String&nbsp;userId,
               java.lang.String&nbsp;serverCapability,
               java.lang.String&nbsp;serverCapabilityGUID,
-              org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsAsset&nbsp;artifact)</code></th>
+              <a href="../synchronization/model/AnalyticsAsset.html" title="class in org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model">AnalyticsAsset</a>&nbsp;artifact)</code></th>
 <td class="colLast">
 <div class="block">Create analytics artifact defined as input.</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code>org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerAssets</code></td>
+<td class="colFirst"><code><a href="../model/ResponseContainerAssets.html" title="class in org.odpi.openmetadata.accessservices.analyticsmodeling.model">ResponseContainerAssets</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#deleteArtifact(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">deleteArtifact</a></span>&#8203;(java.lang.String&nbsp;userId,
               java.lang.String&nbsp;serverCapability,
               java.lang.String&nbsp;serverCapabilityGUID,
@@ -238,11 +238,11 @@ implements <a href="../api/AnalyticsModelingSynchronization.html" title="interfa
 </td>
 </tr>
 <tr id="i2" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerAssets</code></td>
+<td class="colFirst"><code><a href="../model/ResponseContainerAssets.html" title="class in org.odpi.openmetadata.accessservices.analyticsmodeling.model">ResponseContainerAssets</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateArtifact(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsAsset)">updateArtifact</a></span>&#8203;(java.lang.String&nbsp;userId,
               java.lang.String&nbsp;serverCapability,
               java.lang.String&nbsp;serverCapabilityGUID,
-              org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsAsset&nbsp;artifact)</code></th>
+              <a href="../synchronization/model/AnalyticsAsset.html" title="class in org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model">AnalyticsAsset</a>&nbsp;artifact)</code></th>
 <td class="colLast">
 <div class="block">Update analytics artifact defined as json input.</div>
 </td>
@@ -279,8 +279,8 @@ implements <a href="../api/AnalyticsModelingSynchronization.html" title="interfa
 <h4>SynchronizationClient</h4>
 <pre>public&nbsp;SynchronizationClient&#8203;(java.lang.String&nbsp;serverName,
                              java.lang.String&nbsp;serverPlatformURLRoot,
-                             org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)
-                      throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                             <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)
+                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -288,7 +288,7 @@ implements <a href="../api/AnalyticsModelingSynchronization.html" title="interfa
 <dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST servers</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
  REST API calls.</dd>
 </dl>
 </li>
@@ -301,14 +301,14 @@ implements <a href="../api/AnalyticsModelingSynchronization.html" title="interfa
 <h4>SynchronizationClient</h4>
 <pre>public&nbsp;SynchronizationClient&#8203;(java.lang.String&nbsp;serverName,
                              java.lang.String&nbsp;serverPlatformURLRoot)
-                      throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server to connect to</dd>
 <dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST servers</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
  REST API calls.</dd>
 </dl>
 </li>
@@ -323,8 +323,8 @@ implements <a href="../api/AnalyticsModelingSynchronization.html" title="interfa
                              java.lang.String&nbsp;serverPlatformURLRoot,
                              java.lang.String&nbsp;userId,
                              java.lang.String&nbsp;password,
-                             org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)
-                      throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                             <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)
+                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client that passes userId and password in each HTTP request.  This is the
  userId/password of the calling server.  The end user's userId is sent on each request.</div>
 <dl>
@@ -335,7 +335,7 @@ implements <a href="../api/AnalyticsModelingSynchronization.html" title="interfa
 <dd><code>password</code> - caller's userId embedded in all HTTP requests</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
  REST API calls.</dd>
 </dl>
 </li>
@@ -350,7 +350,7 @@ implements <a href="../api/AnalyticsModelingSynchronization.html" title="interfa
                              java.lang.String&nbsp;serverPlatformURLRoot,
                              java.lang.String&nbsp;userId,
                              java.lang.String&nbsp;password)
-                      throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client that passes userId and password in each HTTP request.  This is the
  userId/password of the calling server.  The end user's userId is sent on each request.</div>
 <dl>
@@ -360,7 +360,7 @@ implements <a href="../api/AnalyticsModelingSynchronization.html" title="interfa
 <dd><code>userId</code> - caller's userId embedded in all HTTP requests</dd>
 <dd><code>password</code> - caller's userId embedded in all HTTP requests</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
  REST API calls.</dd>
 </dl>
 </li>
@@ -375,7 +375,7 @@ implements <a href="../api/AnalyticsModelingSynchronization.html" title="interfa
                              java.lang.String&nbsp;serverPlatformURLRoot,
                              <a href="AnalyticsModelingRestClient.html" title="class in org.odpi.openmetadata.accessservices.analyticsmodeling.client">AnalyticsModelingRestClient</a>&nbsp;restClient,
                              int&nbsp;maxPageSize)
-                      throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client that is to be used within an OMAG Server.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -384,7 +384,7 @@ implements <a href="../api/AnalyticsModelingSynchronization.html" title="interfa
 <dd><code>restClient</code> - pre-initialized REST client</dd>
 <dd><code>maxPageSize</code> - pre-initialized parameter limit</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem with the information about the remote OMAS</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem with the information about the remote OMAS</dd>
 </dl>
 </li>
 </ul>
@@ -404,14 +404,14 @@ implements <a href="../api/AnalyticsModelingSynchronization.html" title="interfa
 <ul class="blockList">
 <li class="blockList">
 <h4>createArtifact</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerAssets&nbsp;createArtifact&#8203;(java.lang.String&nbsp;userId,
-                                                                                                           java.lang.String&nbsp;serverCapability,
-                                                                                                           java.lang.String&nbsp;serverCapabilityGUID,
-                                                                                                           org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsAsset&nbsp;artifact)
-                                                                                                    throws org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException,
-                                                                                                           org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                                                                                                           org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                           org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+<pre class="methodSignature">public&nbsp;<a href="../model/ResponseContainerAssets.html" title="class in org.odpi.openmetadata.accessservices.analyticsmodeling.model">ResponseContainerAssets</a>&nbsp;createArtifact&#8203;(java.lang.String&nbsp;userId,
+                                              java.lang.String&nbsp;serverCapability,
+                                              java.lang.String&nbsp;serverCapabilityGUID,
+                                              <a href="../synchronization/model/AnalyticsAsset.html" title="class in org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model">AnalyticsAsset</a>&nbsp;artifact)
+                                       throws org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException,
+                                              <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                                              <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                              <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Create analytics artifact defined as input.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -425,9 +425,9 @@ implements <a href="../api/AnalyticsModelingSynchronization.html" title="interfa
 <dd>response with artifact or error description.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException</code> - error executing request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - in case REST call failed.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - in case user unauthorized to perform operation.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - in case any passed parameter is invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - in case REST call failed.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - in case user unauthorized to perform operation.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - in case any passed parameter is invalid.</dd>
 </dl>
 </li>
 </ul>
@@ -437,14 +437,14 @@ implements <a href="../api/AnalyticsModelingSynchronization.html" title="interfa
 <ul class="blockList">
 <li class="blockList">
 <h4>updateArtifact</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerAssets&nbsp;updateArtifact&#8203;(java.lang.String&nbsp;userId,
-                                                                                                           java.lang.String&nbsp;serverCapability,
-                                                                                                           java.lang.String&nbsp;serverCapabilityGUID,
-                                                                                                           org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model.AnalyticsAsset&nbsp;artifact)
-                                                                                                    throws org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException,
-                                                                                                           org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                                                                                                           org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                           org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+<pre class="methodSignature">public&nbsp;<a href="../model/ResponseContainerAssets.html" title="class in org.odpi.openmetadata.accessservices.analyticsmodeling.model">ResponseContainerAssets</a>&nbsp;updateArtifact&#8203;(java.lang.String&nbsp;userId,
+                                              java.lang.String&nbsp;serverCapability,
+                                              java.lang.String&nbsp;serverCapabilityGUID,
+                                              <a href="../synchronization/model/AnalyticsAsset.html" title="class in org.odpi.openmetadata.accessservices.analyticsmodeling.synchronization.model">AnalyticsAsset</a>&nbsp;artifact)
+                                       throws org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException,
+                                              <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                                              <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                              <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Update analytics artifact defined as json input.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -458,9 +458,9 @@ implements <a href="../api/AnalyticsModelingSynchronization.html" title="interfa
 <dd>response with artifact or error description.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException</code> - error executing request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - in case REST call failed.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - in case user unauthorized to perform operation.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - in case any passed parameter is invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - in case REST call failed.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - in case user unauthorized to perform operation.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - in case any passed parameter is invalid.</dd>
 </dl>
 </li>
 </ul>
@@ -470,14 +470,14 @@ implements <a href="../api/AnalyticsModelingSynchronization.html" title="interfa
 <ul class="blockListLast">
 <li class="blockList">
 <h4>deleteArtifact</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerAssets&nbsp;deleteArtifact&#8203;(java.lang.String&nbsp;userId,
-                                                                                                           java.lang.String&nbsp;serverCapability,
-                                                                                                           java.lang.String&nbsp;serverCapabilityGUID,
-                                                                                                           java.lang.String&nbsp;identifier)
-                                                                                                    throws org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException,
-                                                                                                           org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                                                                                                           org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                           org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+<pre class="methodSignature">public&nbsp;<a href="../model/ResponseContainerAssets.html" title="class in org.odpi.openmetadata.accessservices.analyticsmodeling.model">ResponseContainerAssets</a>&nbsp;deleteArtifact&#8203;(java.lang.String&nbsp;userId,
+                                              java.lang.String&nbsp;serverCapability,
+                                              java.lang.String&nbsp;serverCapabilityGUID,
+                                              java.lang.String&nbsp;identifier)
+                                       throws org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException,
+                                              <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                                              <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                              <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Delete assets in repository defined by artifact unique identifier.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -491,9 +491,9 @@ implements <a href="../api/AnalyticsModelingSynchronization.html" title="interfa
 <dd>errors or list of created assets.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException</code> - error executing request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - in case REST call failed.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - in case user unauthorized to perform operation.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - in case any passed parameter is invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - in case REST call failed.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - in case user unauthorized to perform operation.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - in case any passed parameter is invalid.</dd>
 </dl>
 </li>
 </ul>

@@ -178,7 +178,7 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
                java.lang.String&nbsp;serverPlatformURLRoot,
                java.lang.String&nbsp;userId,
                java.lang.String&nbsp;password,
-               org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)</code></th>
+               <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></th>
 <td class="colLast">
 <div class="block">Create a new client that passes userId and password in each HTTP request.</div>
 </td>
@@ -186,9 +186,9 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <tr class="rowColor">
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.digitalarchitecture.client.rest.DigitalArchitectureRESTClient,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">LocationManager</a></span>&#8203;(java.lang.String&nbsp;serverName,
                java.lang.String&nbsp;serverPlatformURLRoot,
-               <a href="rest/DigitalArchitectureRESTClient.html" title="class in org.odpi.openmetadata.accessservices.digitalarchitecture.client.rest">DigitalArchitectureRESTClient</a>&nbsp;restClient,
+               org.odpi.openmetadata.accessservices.digitalarchitecture.client.rest.DigitalArchitectureRESTClient&nbsp;restClient,
                int&nbsp;maxPageSize,
-               org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)</code></th>
+               <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></th>
 <td class="colLast">
 <div class="block">Create a new client that is going to be used in an OMAG Server (view service or integration service typically).</div>
 </td>
@@ -196,7 +196,7 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <tr class="altColor">
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">LocationManager</a></span>&#8203;(java.lang.String&nbsp;serverName,
                java.lang.String&nbsp;serverPlatformURLRoot,
-               org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)</code></th>
+               <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></th>
 <td class="colLast">
 <div class="block">Create a new client with no authentication embedded in the HTTP request and an audit log.</div>
 </td>
@@ -264,7 +264,7 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createLocation(java.lang.String,org.odpi.openmetadata.accessservices.digitalarchitecture.properties.LocationProperties)">createLocation</a></span>&#8203;(java.lang.String&nbsp;userId,
-              org.odpi.openmetadata.accessservices.digitalarchitecture.properties.LocationProperties&nbsp;locationProperties)</code></th>
+              <a href="../properties/LocationProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalarchitecture.properties">LocationProperties</a>&nbsp;locationProperties)</code></th>
 <td class="colLast">
 <div class="block">Create a new metadata element to represent a location.</div>
 </td>
@@ -273,13 +273,13 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createLocationFromTemplate(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.digitalarchitecture.properties.TemplateProperties)">createLocationFromTemplate</a></span>&#8203;(java.lang.String&nbsp;userId,
                           java.lang.String&nbsp;templateGUID,
-                          org.odpi.openmetadata.accessservices.digitalarchitecture.properties.TemplateProperties&nbsp;templateProperties)</code></th>
+                          <a href="../properties/TemplateProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalarchitecture.properties">TemplateProperties</a>&nbsp;templateProperties)</code></th>
 <td class="colLast">
 <div class="block">Create a new metadata element to represent a location using an existing metadata element as a template.</div>
 </td>
 </tr>
 <tr id="i7" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.LocationElement&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/LocationElement.html" title="class in org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements">LocationElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findLocations(java.lang.String,java.lang.String,int,int)">findLocations</a></span>&#8203;(java.lang.String&nbsp;userId,
              java.lang.String&nbsp;searchString,
              int&nbsp;startFrom,
@@ -289,7 +289,7 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 </td>
 </tr>
 <tr id="i8" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.LocationElement</code></td>
+<td class="colFirst"><code><a href="../metadataelements/LocationElement.html" title="class in org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements">LocationElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getLocationByGUID(java.lang.String,java.lang.String)">getLocationByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
                  java.lang.String&nbsp;locationGUID)</code></th>
 <td class="colLast">
@@ -297,7 +297,7 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 </td>
 </tr>
 <tr id="i9" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.LocationElement&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/LocationElement.html" title="class in org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements">LocationElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getLocationsByName(java.lang.String,java.lang.String,int,int)">getLocationsByName</a></span>&#8203;(java.lang.String&nbsp;userId,
                   java.lang.String&nbsp;name,
                   int&nbsp;startFrom,
@@ -368,7 +368,7 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateLocation(java.lang.String,boolean,java.lang.String,org.odpi.openmetadata.accessservices.digitalarchitecture.properties.LocationProperties)">updateLocation</a></span>&#8203;(java.lang.String&nbsp;userId,
               boolean&nbsp;isMergeUpdate,
               java.lang.String&nbsp;locationGUID,
-              org.odpi.openmetadata.accessservices.digitalarchitecture.properties.LocationProperties&nbsp;locationProperties)</code></th>
+              <a href="../properties/LocationProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalarchitecture.properties">LocationProperties</a>&nbsp;locationProperties)</code></th>
 <td class="colLast">
 <div class="block">Update the metadata element representing a location.</div>
 </td>
@@ -405,8 +405,8 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <h4>LocationManager</h4>
 <pre>public&nbsp;LocationManager&#8203;(java.lang.String&nbsp;serverName,
                        java.lang.String&nbsp;serverPlatformURLRoot,
-                       org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)
-                throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                       <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)
+                throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client with no authentication embedded in the HTTP request and an audit log.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -414,7 +414,7 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST servers</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
                                    REST API calls.</dd>
 </dl>
 </li>
@@ -427,14 +427,14 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <h4>LocationManager</h4>
 <pre>public&nbsp;LocationManager&#8203;(java.lang.String&nbsp;serverName,
                        java.lang.String&nbsp;serverPlatformURLRoot)
-                throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server to connect to</dd>
 <dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST servers</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
                                    REST API calls.</dd>
 </dl>
 </li>
@@ -449,8 +449,8 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
                        java.lang.String&nbsp;serverPlatformURLRoot,
                        java.lang.String&nbsp;userId,
                        java.lang.String&nbsp;password,
-                       org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)
-                throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                       <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)
+                throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client that passes userId and password in each HTTP request.  This is the
  userId/password of the calling server.  The end user's userId is sent on each request.
  There is also an audit log destination.</div>
@@ -462,7 +462,7 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <dd><code>password</code> - caller's userId embedded in all HTTP requests</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
                                    REST API calls.</dd>
 </dl>
 </li>
@@ -477,7 +477,7 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
                        java.lang.String&nbsp;serverPlatformURLRoot,
                        java.lang.String&nbsp;userId,
                        java.lang.String&nbsp;password)
-                throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client that passes userId and password in each HTTP request.  This is the
  userId/password of the calling server.  The end user's userId is sent on each request.</div>
 <dl>
@@ -487,7 +487,7 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <dd><code>userId</code> - caller's userId embedded in all HTTP requests</dd>
 <dd><code>password</code> - caller's userId embedded in all HTTP requests</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
                                    REST API calls.</dd>
 </dl>
 </li>
@@ -500,10 +500,10 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <h4>LocationManager</h4>
 <pre>public&nbsp;LocationManager&#8203;(java.lang.String&nbsp;serverName,
                        java.lang.String&nbsp;serverPlatformURLRoot,
-                       <a href="rest/DigitalArchitectureRESTClient.html" title="class in org.odpi.openmetadata.accessservices.digitalarchitecture.client.rest">DigitalArchitectureRESTClient</a>&nbsp;restClient,
+                       org.odpi.openmetadata.accessservices.digitalarchitecture.client.rest.DigitalArchitectureRESTClient&nbsp;restClient,
                        int&nbsp;maxPageSize,
-                       org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)
-                throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                       <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)
+                throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client that is going to be used in an OMAG Server (view service or integration service typically).</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -513,7 +513,7 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <dd><code>maxPageSize</code> - maximum number of results supported by this server</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
                                    REST API calls.</dd>
 </dl>
 </li>
@@ -535,10 +535,10 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <li class="blockList">
 <h4>createLocation</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;createLocation&#8203;(java.lang.String&nbsp;userId,
-                                       org.odpi.openmetadata.accessservices.digitalarchitecture.properties.LocationProperties&nbsp;locationProperties)
-                                throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                       org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                       org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                       <a href="../properties/LocationProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalarchitecture.properties">LocationProperties</a>&nbsp;locationProperties)
+                                throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                       <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                       <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Create a new metadata element to represent a location. Classifications can be added later to define the
  type of location.</div>
 <dl>
@@ -550,9 +550,9 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new metadata element</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
 </dl>
 </li>
 </ul>
@@ -564,10 +564,10 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <h4>createLocationFromTemplate</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;createLocationFromTemplate&#8203;(java.lang.String&nbsp;userId,
                                                    java.lang.String&nbsp;templateGUID,
-                                                   org.odpi.openmetadata.accessservices.digitalarchitecture.properties.TemplateProperties&nbsp;templateProperties)
-                                            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                   org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                   org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                                   <a href="../properties/TemplateProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalarchitecture.properties">TemplateProperties</a>&nbsp;templateProperties)
+                                            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                   <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                   <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Create a new metadata element to represent a location using an existing metadata element as a template.
  The template defines additional classifications and relationships that should be added to the new location.</div>
 <dl>
@@ -580,9 +580,9 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new metadata element</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
 </dl>
 </li>
 </ul>
@@ -595,10 +595,10 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <pre class="methodSignature">public&nbsp;void&nbsp;updateLocation&#8203;(java.lang.String&nbsp;userId,
                            boolean&nbsp;isMergeUpdate,
                            java.lang.String&nbsp;locationGUID,
-                           org.odpi.openmetadata.accessservices.digitalarchitecture.properties.LocationProperties&nbsp;locationProperties)
-                    throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                           org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                           org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                           <a href="../properties/LocationProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalarchitecture.properties">LocationProperties</a>&nbsp;locationProperties)
+                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                           <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                           <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Update the metadata element representing a location.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -609,9 +609,9 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <dd><code>locationGUID</code> - unique identifier of the metadata element to update</dd>
 <dd><code>locationProperties</code> - new properties for this element</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
 </dl>
 </li>
 </ul>
@@ -627,9 +627,9 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
                                        java.lang.String&nbsp;mapProjection,
                                        java.lang.String&nbsp;postalAddress,
                                        java.lang.String&nbsp;timeZone)
-                                throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                       org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                       org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                       <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                       <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Classify the location to indicate that it represents a fixed physical location.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -642,9 +642,9 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <dd><code>postalAddress</code> - postal address of the location (if appropriate)</dd>
 <dd><code>timeZone</code> - time zone for the location</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
 </dl>
 </li>
 </ul>
@@ -656,9 +656,9 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <h4>clearLocationAsFixedPhysical</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;clearLocationAsFixedPhysical&#8203;(java.lang.String&nbsp;userId,
                                          java.lang.String&nbsp;locationGUID)
-                                  throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                         org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                         org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                  throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                         <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                         <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Remove the fixed physical location designation from the location.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -667,9 +667,9 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <dd><code>userId</code> - calling user</dd>
 <dd><code>locationGUID</code> - unique identifier of the metadata element to unclassify</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
 </dl>
 </li>
 </ul>
@@ -683,9 +683,9 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
                                 java.lang.String&nbsp;locationGUID,
                                 java.lang.String&nbsp;description,
                                 java.lang.String&nbsp;level)
-                         throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                         throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Classify the location to indicate that it represents a secure location.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -696,9 +696,9 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <dd><code>description</code> - description of security at the site</dd>
 <dd><code>level</code> - level of security</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
 </dl>
 </li>
 </ul>
@@ -710,9 +710,9 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <h4>clearLocationAsSecure</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;clearLocationAsSecure&#8203;(java.lang.String&nbsp;userId,
                                   java.lang.String&nbsp;locationGUID)
-                           throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                  org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                  org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                           throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                  <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                  <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Remove the secure location designation from the location.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -721,9 +721,9 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <dd><code>userId</code> - calling user</dd>
 <dd><code>locationGUID</code> - unique identifier of the metadata element to unclassify</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
 </dl>
 </li>
 </ul>
@@ -736,9 +736,9 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <pre class="methodSignature">public&nbsp;void&nbsp;setLocationAsDigital&#8203;(java.lang.String&nbsp;userId,
                                  java.lang.String&nbsp;locationGUID,
                                  java.lang.String&nbsp;networkAddress)
-                          throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                 org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                 org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Classify the location to indicate that it represents a digital/cyber location.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -748,9 +748,9 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <dd><code>locationGUID</code> - unique identifier of the metadata element to classify</dd>
 <dd><code>networkAddress</code> - position of the location</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
 </dl>
 </li>
 </ul>
@@ -762,9 +762,9 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <h4>clearLocationAsDigital</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;clearLocationAsDigital&#8203;(java.lang.String&nbsp;userId,
                                    java.lang.String&nbsp;locationGUID)
-                            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                   org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                   org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                   <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                   <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Remove the digital/cyber location designation from the location.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -773,9 +773,9 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <dd><code>userId</code> - calling user</dd>
 <dd><code>locationGUID</code> - unique identifier of the metadata element to unclassify</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
 </dl>
 </li>
 </ul>
@@ -787,9 +787,9 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <h4>removeLocation</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;removeLocation&#8203;(java.lang.String&nbsp;userId,
                            java.lang.String&nbsp;locationGUID)
-                    throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                           org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                           org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                           <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                           <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Remove the metadata element representing a location.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -798,9 +798,9 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <dd><code>userId</code> - calling user</dd>
 <dd><code>locationGUID</code> - unique identifier of the metadata element to remove</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
 </dl>
 </li>
 </ul>
@@ -813,9 +813,9 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <pre class="methodSignature">public&nbsp;void&nbsp;setupNestedLocation&#8203;(java.lang.String&nbsp;userId,
                                 java.lang.String&nbsp;parentLocationGUID,
                                 java.lang.String&nbsp;childLocationGUID)
-                         throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                         throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Create a parent-child relationship between two locations.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -825,9 +825,9 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <dd><code>parentLocationGUID</code> - unique identifier of the location that is the broader location</dd>
 <dd><code>childLocationGUID</code> - unique identifier of the location that is the smaller, nested location</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
 </dl>
 </li>
 </ul>
@@ -840,9 +840,9 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <pre class="methodSignature">public&nbsp;void&nbsp;clearNestedLocation&#8203;(java.lang.String&nbsp;userId,
                                 java.lang.String&nbsp;parentLocationGUID,
                                 java.lang.String&nbsp;childLocationGUID)
-                         throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                         throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Remove a parent-child relationship between two locations.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -852,9 +852,9 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <dd><code>parentLocationGUID</code> - unique identifier of the location that is the broader location</dd>
 <dd><code>childLocationGUID</code> - unique identifier of the location that is the smaller, nested location</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
 </dl>
 </li>
 </ul>
@@ -867,9 +867,9 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <pre class="methodSignature">public&nbsp;void&nbsp;setupAdjacentLocation&#8203;(java.lang.String&nbsp;userId,
                                   java.lang.String&nbsp;locationOneGUID,
                                   java.lang.String&nbsp;locationTwoGUID)
-                           throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                  org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                  org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                           throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                  <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                  <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Create a peer-to-peer relationship between two locations.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -879,9 +879,9 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <dd><code>locationOneGUID</code> - unique identifier of the first location</dd>
 <dd><code>locationTwoGUID</code> - unique identifier of the second location</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
 </dl>
 </li>
 </ul>
@@ -894,9 +894,9 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <pre class="methodSignature">public&nbsp;void&nbsp;clearAdjacentLocation&#8203;(java.lang.String&nbsp;userId,
                                   java.lang.String&nbsp;locationOneGUID,
                                   java.lang.String&nbsp;locationTwoGUID)
-                           throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                  org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                  org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                           throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                  <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                  <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Remove a peer-to-peer relationship between two locations.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -906,9 +906,9 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <dd><code>locationOneGUID</code> - unique identifier of the first location</dd>
 <dd><code>locationTwoGUID</code> - unique identifier of the second location</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
 </dl>
 </li>
 </ul>
@@ -918,13 +918,13 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <ul class="blockList">
 <li class="blockList">
 <h4>findLocations</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.LocationElement&gt;&nbsp;findLocations&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                               java.lang.String&nbsp;searchString,
-                                                                                                                               int&nbsp;startFrom,
-                                                                                                                               int&nbsp;pageSize)
-                                                                                                                        throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                               org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                               org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../metadataelements/LocationElement.html" title="class in org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements">LocationElement</a>&gt;&nbsp;findLocations&#8203;(java.lang.String&nbsp;userId,
+                                                     java.lang.String&nbsp;searchString,
+                                                     int&nbsp;startFrom,
+                                                     int&nbsp;pageSize)
+                                              throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                     <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                     <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Retrieve the list of location metadata elements that contain the search string.
  The search string is treated as a regular expression.</div>
 <dl>
@@ -938,9 +938,9 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of matching metadata elements</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
 </dl>
 </li>
 </ul>
@@ -950,13 +950,13 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <ul class="blockList">
 <li class="blockList">
 <h4>getLocationsByName</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.LocationElement&gt;&nbsp;getLocationsByName&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                                    java.lang.String&nbsp;name,
-                                                                                                                                    int&nbsp;startFrom,
-                                                                                                                                    int&nbsp;pageSize)
-                                                                                                                             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                                    org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                                    org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../metadataelements/LocationElement.html" title="class in org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements">LocationElement</a>&gt;&nbsp;getLocationsByName&#8203;(java.lang.String&nbsp;userId,
+                                                          java.lang.String&nbsp;name,
+                                                          int&nbsp;startFrom,
+                                                          int&nbsp;pageSize)
+                                                   throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                          <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                          <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Retrieve the list of location metadata elements with a matching qualified or display name.
  There are no wildcards supported on this request.</div>
 <dl>
@@ -970,9 +970,9 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of matching metadata elements</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
 </dl>
 </li>
 </ul>
@@ -982,11 +982,11 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <ul class="blockListLast">
 <li class="blockList">
 <h4>getLocationByGUID</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.LocationElement&nbsp;getLocationByGUID&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                   java.lang.String&nbsp;locationGUID)
-                                                                                                            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                   org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                   org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">public&nbsp;<a href="../metadataelements/LocationElement.html" title="class in org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements">LocationElement</a>&nbsp;getLocationByGUID&#8203;(java.lang.String&nbsp;userId,
+                                         java.lang.String&nbsp;locationGUID)
+                                  throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                         <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                         <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Retrieve the location metadata element with the supplied unique identifier.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -997,9 +997,9 @@ implements <a href="../api/ManageLocations.html" title="interface in org.odpi.op
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>matching metadata element</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
 </dl>
 </li>
 </ul>

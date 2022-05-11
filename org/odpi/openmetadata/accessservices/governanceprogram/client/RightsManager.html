@@ -168,7 +168,7 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">RightsManager</a></span>&#8203;(java.lang.String&nbsp;serverName,
              java.lang.String&nbsp;serverPlatformURLRoot,
              int&nbsp;maxPageSize,
-             org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)</code></th>
+             <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></th>
 <td class="colLast">
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 </td>
@@ -188,7 +188,7 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
              java.lang.String&nbsp;userId,
              java.lang.String&nbsp;password,
              int&nbsp;maxPageSize,
-             org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)</code></th>
+             <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></th>
 <td class="colLast">
 <div class="block">Create a new client that passes userId and password in each HTTP request.</div>
 </td>
@@ -196,7 +196,7 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 <tr class="altColor">
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.client.rest.GovernanceProgramRESTClient,int)">RightsManager</a></span>&#8203;(java.lang.String&nbsp;serverName,
              java.lang.String&nbsp;serverPlatformURLRoot,
-             <a href="rest/GovernanceProgramRESTClient.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.client.rest">GovernanceProgramRESTClient</a>&nbsp;restClient,
+             org.odpi.openmetadata.accessservices.governanceprogram.client.rest.GovernanceProgramRESTClient&nbsp;restClient,
              int&nbsp;maxPageSize)</code></th>
 <td class="colLast">
 <div class="block">Create a new client that uses the supplied rest client.</div>
@@ -223,8 +223,8 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createLicenseType(java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseTypeProperties,org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus)">createLicenseType</a></span>&#8203;(java.lang.String&nbsp;userId,
-                 org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseTypeProperties&nbsp;properties,
-                 org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus&nbsp;initialStatus)</code></th>
+                 <a href="../properties/LicenseTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">LicenseTypeProperties</a>&nbsp;properties,
+                 <a href="../properties/GovernanceDefinitionStatus.html" title="enum in org.odpi.openmetadata.accessservices.governanceprogram.properties">GovernanceDefinitionStatus</a>&nbsp;initialStatus)</code></th>
 <td class="colLast">
 <div class="block">Create a description of the license type.</div>
 </td>
@@ -238,7 +238,7 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 </td>
 </tr>
 <tr id="i2" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.LicenseTypeElement</code></td>
+<td class="colFirst"><code><a href="../metadataelements/LicenseTypeElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">LicenseTypeElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getLicenseTypeByDocId(java.lang.String,java.lang.String)">getLicenseTypeByDocId</a></span>&#8203;(java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;documentIdentifier)</code></th>
 <td class="colLast">
@@ -246,7 +246,7 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 </td>
 </tr>
 <tr id="i3" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.LicenseTypeElement&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/LicenseTypeElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">LicenseTypeElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getLicenseTypeByDomainId(java.lang.String,int,int,int)">getLicenseTypeByDomainId</a></span>&#8203;(java.lang.String&nbsp;userId,
                         int&nbsp;domainIdentifier,
                         int&nbsp;startFrom,
@@ -256,7 +256,7 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 </td>
 </tr>
 <tr id="i4" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.LicenseTypeElement</code></td>
+<td class="colFirst"><code><a href="../metadataelements/LicenseTypeElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">LicenseTypeElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getLicenseTypeByGUID(java.lang.String,java.lang.String)">getLicenseTypeByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;licenseTypeGUID)</code></th>
 <td class="colLast">
@@ -264,7 +264,7 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 </td>
 </tr>
 <tr id="i5" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.LicenseTypeElement&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/LicenseTypeElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">LicenseTypeElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getLicenseTypesByTitle(java.lang.String,java.lang.String,int,int)">getLicenseTypesByTitle</a></span>&#8203;(java.lang.String&nbsp;userId,
                       java.lang.String&nbsp;title,
                       int&nbsp;startFrom,
@@ -278,7 +278,7 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#licenseElement(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseProperties)">licenseElement</a></span>&#8203;(java.lang.String&nbsp;userId,
               java.lang.String&nbsp;elementGUID,
               java.lang.String&nbsp;licenseTypeGUID,
-              org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseProperties&nbsp;properties)</code></th>
+              <a href="../properties/LicenseProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">LicenseProperties</a>&nbsp;properties)</code></th>
 <td class="colLast">
 <div class="block">Link an element to a license type and include details of the license in the relationship properties.</div>
 </td>
@@ -299,7 +299,7 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
              java.lang.String&nbsp;elementGUID,
              java.lang.String&nbsp;licenseTypeGUID,
              boolean&nbsp;isMergeUpdate,
-             org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseProperties&nbsp;properties)</code></th>
+             <a href="../properties/LicenseProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">LicenseProperties</a>&nbsp;properties)</code></th>
 <td class="colLast">
 <div class="block">Update the properties of a license.</div>
 </td>
@@ -309,7 +309,7 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateLicenseType(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseTypeProperties)">updateLicenseType</a></span>&#8203;(java.lang.String&nbsp;userId,
                  java.lang.String&nbsp;licenseTypeGUID,
                  boolean&nbsp;isMergeUpdate,
-                 org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseTypeProperties&nbsp;properties)</code></th>
+                 <a href="../properties/LicenseTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">LicenseTypeProperties</a>&nbsp;properties)</code></th>
 <td class="colLast">
 <div class="block">Update the properties of the license type.</div>
 </td>
@@ -346,14 +346,14 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 <h4>RightsManager</h4>
 <pre>public&nbsp;RightsManager&#8203;(java.lang.String&nbsp;serverName,
                      java.lang.String&nbsp;serverPlatformURLRoot)
-              throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+              throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server to connect to</dd>
 <dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST servers</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - bad input parameters</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - bad input parameters</dd>
 </dl>
 </li>
 </ul>
@@ -367,7 +367,7 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
                      java.lang.String&nbsp;serverPlatformURLRoot,
                      java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;password)
-              throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+              throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client that passes userId and password in each HTTP request.  This is the
  userId/password of the calling server.  The end user's userId is sent on each request.</div>
 <dl>
@@ -377,7 +377,7 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 <dd><code>userId</code> - caller's userId embedded in all HTTP requests</dd>
 <dd><code>password</code> - caller's userId embedded in all HTTP requests</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - bad input parameters</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - bad input parameters</dd>
 </dl>
 </li>
 </ul>
@@ -390,8 +390,8 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 <pre>public&nbsp;RightsManager&#8203;(java.lang.String&nbsp;serverName,
                      java.lang.String&nbsp;serverPlatformURLRoot,
                      int&nbsp;maxPageSize,
-                     org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)
-              throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                     <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)
+              throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -400,7 +400,7 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 <dd><code>maxPageSize</code> - pre-initialized parameter limit</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - bad input parameters</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - bad input parameters</dd>
 </dl>
 </li>
 </ul>
@@ -415,8 +415,8 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
                      java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;password,
                      int&nbsp;maxPageSize,
-                     org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)
-              throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                     <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)
+              throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client that passes userId and password in each HTTP request.  This is the
  userId/password of the calling server.  The end user's userId is sent on each request.</div>
 <dl>
@@ -428,7 +428,7 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 <dd><code>maxPageSize</code> - pre-initialized parameter limit</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - bad input parameters</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - bad input parameters</dd>
 </dl>
 </li>
 </ul>
@@ -440,9 +440,9 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 <h4>RightsManager</h4>
 <pre>public&nbsp;RightsManager&#8203;(java.lang.String&nbsp;serverName,
                      java.lang.String&nbsp;serverPlatformURLRoot,
-                     <a href="rest/GovernanceProgramRESTClient.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.client.rest">GovernanceProgramRESTClient</a>&nbsp;restClient,
+                     org.odpi.openmetadata.accessservices.governanceprogram.client.rest.GovernanceProgramRESTClient&nbsp;restClient,
                      int&nbsp;maxPageSize)
-              throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+              throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client that uses the supplied rest client.  This is typically used when called fro manother OMAG Server.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -451,7 +451,7 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 <dd><code>restClient</code> - internal client for rest calls</dd>
 <dd><code>maxPageSize</code> - pre-initialized parameter limit</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - bad input parameters</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - bad input parameters</dd>
 </dl>
 </li>
 </ul>
@@ -472,11 +472,11 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 <li class="blockList">
 <h4>createLicenseType</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;createLicenseType&#8203;(java.lang.String&nbsp;userId,
-                                          org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseTypeProperties&nbsp;properties,
-                                          org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus&nbsp;initialStatus)
-                                   throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                          org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                          org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                          <a href="../properties/LicenseTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">LicenseTypeProperties</a>&nbsp;properties,
+                                          <a href="../properties/GovernanceDefinitionStatus.html" title="enum in org.odpi.openmetadata.accessservices.governanceprogram.properties">GovernanceDefinitionStatus</a>&nbsp;initialStatus)
+                                   throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                          <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                          <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Create a description of the license type.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -488,9 +488,9 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of new definition</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - documentIdentifier or userId is null; documentIdentifier is not unique</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing property server</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - security access problem</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - documentIdentifier or userId is null; documentIdentifier is not unique</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>
 </li>
 </ul>
@@ -503,10 +503,10 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 <pre class="methodSignature">public&nbsp;void&nbsp;updateLicenseType&#8203;(java.lang.String&nbsp;userId,
                               java.lang.String&nbsp;licenseTypeGUID,
                               boolean&nbsp;isMergeUpdate,
-                              org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseTypeProperties&nbsp;properties)
-                       throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                              org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                              org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                              <a href="../properties/LicenseTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">LicenseTypeProperties</a>&nbsp;properties)
+                       throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                              <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                              <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Update the properties of the license type.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -517,9 +517,9 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 <dd><code>isMergeUpdate</code> - are unspecified properties unchanged (true) or replaced with null?</dd>
 <dd><code>properties</code> - license properties</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - guid, documentIdentifier or userId is null; documentIdentifier is not unique</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing property server</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - security access problem</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - guid, documentIdentifier or userId is null; documentIdentifier is not unique</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>
 </li>
 </ul>
@@ -531,9 +531,9 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 <h4>deleteLicenseType</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;deleteLicenseType&#8203;(java.lang.String&nbsp;userId,
                               java.lang.String&nbsp;licenseTypeGUID)
-                       throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                              org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                              org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                       throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                              <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                              <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Delete the properties of the license type.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -542,9 +542,9 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 <dd><code>userId</code> - calling user</dd>
 <dd><code>licenseTypeGUID</code> - identifier of the governance definition to delete</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - guid or userId is null</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing property server</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - security access problem</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - guid or userId is null</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>
 </li>
 </ul>
@@ -554,11 +554,11 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 <ul class="blockList">
 <li class="blockList">
 <h4>getLicenseTypeByGUID</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.LicenseTypeElement&nbsp;getLicenseTypeByGUID&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                       java.lang.String&nbsp;licenseTypeGUID)
-                                                                                                                throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                       org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                       org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">public&nbsp;<a href="../metadataelements/LicenseTypeElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">LicenseTypeElement</a>&nbsp;getLicenseTypeByGUID&#8203;(java.lang.String&nbsp;userId,
+                                               java.lang.String&nbsp;licenseTypeGUID)
+                                        throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                               <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                               <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Retrieve the license type by the unique identifier assigned by this service when it was created.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -569,9 +569,9 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>properties of the license type</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - guid or userId is null; guid is not recognized</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing property server</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - security access problem</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - guid or userId is null; guid is not recognized</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>
 </li>
 </ul>
@@ -581,11 +581,11 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 <ul class="blockList">
 <li class="blockList">
 <h4>getLicenseTypeByDocId</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.LicenseTypeElement&nbsp;getLicenseTypeByDocId&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                        java.lang.String&nbsp;documentIdentifier)
-                                                                                                                 throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                        org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                        org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">public&nbsp;<a href="../metadataelements/LicenseTypeElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">LicenseTypeElement</a>&nbsp;getLicenseTypeByDocId&#8203;(java.lang.String&nbsp;userId,
+                                                java.lang.String&nbsp;documentIdentifier)
+                                         throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Retrieve the license type by its assigned unique document identifier.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -596,9 +596,9 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>properties of the matching license type</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - documentIdentifier or userId is null; documentIdentifier is not recognized</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing property server</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - security access problem</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - documentIdentifier or userId is null; documentIdentifier is not recognized</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>
 </li>
 </ul>
@@ -608,13 +608,13 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 <ul class="blockList">
 <li class="blockList">
 <h4>getLicenseTypesByTitle</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.LicenseTypeElement&gt;&nbsp;getLicenseTypesByTitle&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                                         java.lang.String&nbsp;title,
-                                                                                                                                         int&nbsp;startFrom,
-                                                                                                                                         int&nbsp;pageSize)
-                                                                                                                                  throws org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                                         org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                                         org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../metadataelements/LicenseTypeElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">LicenseTypeElement</a>&gt;&nbsp;getLicenseTypesByTitle&#8203;(java.lang.String&nbsp;userId,
+                                                                 java.lang.String&nbsp;title,
+                                                                 int&nbsp;startFrom,
+                                                                 int&nbsp;pageSize)
+                                                          throws <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                                 <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                                 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Retrieve all of the license types for a particular title.  The title can include regEx wildcards.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -627,9 +627,9 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of matching roles (null if no matching elements)</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - title or userId is null</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing property server</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - security access problem</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - title or userId is null</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>
 </li>
 </ul>
@@ -639,13 +639,13 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 <ul class="blockList">
 <li class="blockList">
 <h4>getLicenseTypeByDomainId</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.LicenseTypeElement&gt;&nbsp;getLicenseTypeByDomainId&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                                           int&nbsp;domainIdentifier,
-                                                                                                                                           int&nbsp;startFrom,
-                                                                                                                                           int&nbsp;pageSize)
-                                                                                                                                    throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                                           org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                                           org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../metadataelements/LicenseTypeElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">LicenseTypeElement</a>&gt;&nbsp;getLicenseTypeByDomainId&#8203;(java.lang.String&nbsp;userId,
+                                                                   int&nbsp;domainIdentifier,
+                                                                   int&nbsp;startFrom,
+                                                                   int&nbsp;pageSize)
+                                                            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                                   <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                                   <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Retrieve all of the license type definitions for a specific governance domain.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -658,9 +658,9 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>properties of the matching license type definitions</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - domainIdentifier or userId is null; domainIdentifier is not recognized</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing property server</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - security access problem</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - domainIdentifier or userId is null; domainIdentifier is not recognized</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>
 </li>
 </ul>
@@ -673,10 +673,10 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 <pre class="methodSignature">public&nbsp;void&nbsp;licenseElement&#8203;(java.lang.String&nbsp;userId,
                            java.lang.String&nbsp;elementGUID,
                            java.lang.String&nbsp;licenseTypeGUID,
-                           org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseProperties&nbsp;properties)
-                    throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                           org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                           org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                           <a href="../properties/LicenseProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">LicenseProperties</a>&nbsp;properties)
+                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                           <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                           <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Link an element to a license type and include details of the license in the relationship properties.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -687,9 +687,9 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 <dd><code>licenseTypeGUID</code> - unique identifier for the license type</dd>
 <dd><code>properties</code> - the properties of the license</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the properties is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing property server</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - security access problem</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the properties is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>
 </li>
 </ul>
@@ -703,10 +703,10 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
                           java.lang.String&nbsp;elementGUID,
                           java.lang.String&nbsp;licenseTypeGUID,
                           boolean&nbsp;isMergeUpdate,
-                          org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseProperties&nbsp;properties)
-                   throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                          org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                          org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                          <a href="../properties/LicenseProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">LicenseProperties</a>&nbsp;properties)
+                   throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                          <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                          <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Update the properties of a license.  Remember to include the licenseId in the properties if the element has multiple
  licenses for the same license type.</div>
 <dl>
@@ -719,9 +719,9 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 <dd><code>isMergeUpdate</code> - should the supplied properties overlay the existing properties or replace them</dd>
 <dd><code>properties</code> - the properties of the license</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the properties is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing property server</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - security access problem</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the properties is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>
 </li>
 </ul>
@@ -735,9 +735,9 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
                              java.lang.String&nbsp;elementGUID,
                              java.lang.String&nbsp;licenseTypeGUID,
                              java.lang.String&nbsp;certificateId)
-                      throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                             org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                             org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                             <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                             <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Remove the license for an element.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -748,9 +748,9 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 <dd><code>licenseTypeGUID</code> - unique identifier for the license type</dd>
 <dd><code>certificateId</code> - optional unique identifier from the license authority - it is used to disambiguate the licenses for the element.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the properties is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing property server</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - security access problem</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the properties is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>
 </li>
 </ul>

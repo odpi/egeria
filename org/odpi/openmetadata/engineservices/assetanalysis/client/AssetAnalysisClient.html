@@ -229,7 +229,7 @@ implements <a href="../api/AssetAnalysisAPI.html" title="interface in org.odpi.o
 </td>
 </tr>
 <tr id="i3" class="rowColor">
-<td class="colFirst"><code>org.odpi.openmetadata.frameworks.discovery.properties.Annotation</code></td>
+<td class="colFirst"><code><a href="../../../frameworks/discovery/properties/Annotation.html" title="class in org.odpi.openmetadata.frameworks.discovery.properties">Annotation</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAnnotation(java.lang.String,java.lang.String)">getAnnotation</a></span>&#8203;(java.lang.String&nbsp;userId,
              java.lang.String&nbsp;annotationGUID)</code></th>
 <td class="colLast">
@@ -237,7 +237,7 @@ implements <a href="../api/AssetAnalysisAPI.html" title="interface in org.odpi.o
 </td>
 </tr>
 <tr id="i4" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport</code></td>
+<td class="colFirst"><code><a href="../../../frameworks/discovery/properties/DiscoveryAnalysisReport.html" title="class in org.odpi.openmetadata.frameworks.discovery.properties">DiscoveryAnalysisReport</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDiscoveryReport(java.lang.String,java.lang.String)">getDiscoveryReport</a></span>&#8203;(java.lang.String&nbsp;userId,
                   java.lang.String&nbsp;discoveryRequestGUID)</code></th>
 <td class="colLast">
@@ -245,7 +245,7 @@ implements <a href="../api/AssetAnalysisAPI.html" title="interface in org.odpi.o
 </td>
 </tr>
 <tr id="i5" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.frameworks.discovery.properties.Annotation&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;<a href="../../../frameworks/discovery/properties/Annotation.html" title="class in org.odpi.openmetadata.frameworks.discovery.properties">Annotation</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDiscoveryReportAnnotations(java.lang.String,java.lang.String,int,int)">getDiscoveryReportAnnotations</a></span>&#8203;(java.lang.String&nbsp;userId,
                              java.lang.String&nbsp;discoveryRequestGUID,
                              int&nbsp;startingFrom,
@@ -255,7 +255,7 @@ implements <a href="../api/AssetAnalysisAPI.html" title="interface in org.odpi.o
 </td>
 </tr>
 <tr id="i6" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus</code></td>
+<td class="colFirst"><code><a href="../../../frameworks/discovery/properties/DiscoveryRequestStatus.html" title="enum in org.odpi.openmetadata.frameworks.discovery.properties">DiscoveryRequestStatus</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDiscoveryStatus(java.lang.String,java.lang.String)">getDiscoveryStatus</a></span>&#8203;(java.lang.String&nbsp;userId,
                   java.lang.String&nbsp;discoveryRequestGUID)</code></th>
 <td class="colLast">
@@ -263,7 +263,7 @@ implements <a href="../api/AssetAnalysisAPI.html" title="interface in org.odpi.o
 </td>
 </tr>
 <tr id="i7" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.frameworks.discovery.properties.Annotation&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;<a href="../../../frameworks/discovery/properties/Annotation.html" title="class in org.odpi.openmetadata.frameworks.discovery.properties">Annotation</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getExtendedAnnotations(java.lang.String,java.lang.String,int,int)">getExtendedAnnotations</a></span>&#8203;(java.lang.String&nbsp;userId,
                       java.lang.String&nbsp;annotationGUID,
                       int&nbsp;startingFrom,
@@ -283,7 +283,7 @@ implements <a href="../api/AssetAnalysisAPI.html" title="interface in org.odpi.o
 </td>
 </tr>
 <tr id="i9" class="rowColor">
-<td class="colFirst"><code>org.odpi.openmetadata.commonservices.ffdc.properties.ConnectorReport</code></td>
+<td class="colFirst"><code><a href="../../../commonservices/ffdc/properties/ConnectorReport.html" title="class in org.odpi.openmetadata.commonservices.ffdc.properties">ConnectorReport</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateConnector(java.lang.String,java.lang.String)">validateConnector</a></span>&#8203;(java.lang.String&nbsp;userId,
                  java.lang.String&nbsp;connectorProviderClassName)</code></th>
 <td class="colLast">
@@ -323,7 +323,7 @@ implements <a href="../api/AssetAnalysisAPI.html" title="interface in org.odpi.o
 <pre>public&nbsp;AssetAnalysisClient&#8203;(java.lang.String&nbsp;serverPlatformRootURL,
                            java.lang.String&nbsp;serverName,
                            java.lang.String&nbsp;discoveryEngineName)
-                    throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a client-side object for calling a discovery engine.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -331,7 +331,7 @@ implements <a href="../api/AssetAnalysisAPI.html" title="interface in org.odpi.o
 <dd><code>serverName</code> - the name of the engine host server where the discovery engine is running</dd>
 <dd><code>discoveryEngineName</code> - the unique name of the discovery engine.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
 </dl>
 </li>
 </ul>
@@ -346,7 +346,7 @@ implements <a href="../api/AssetAnalysisAPI.html" title="interface in org.odpi.o
                            java.lang.String&nbsp;discoveryEngineName,
                            java.lang.String&nbsp;userId,
                            java.lang.String&nbsp;password)
-                    throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a client-side object for calling a discovery engine.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -356,7 +356,7 @@ implements <a href="../api/AssetAnalysisAPI.html" title="interface in org.odpi.o
 <dd><code>userId</code> - user id for the HTTP request</dd>
 <dd><code>password</code> - password for the HTTP request</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
 </dl>
 </li>
 </ul>
@@ -376,11 +376,11 @@ implements <a href="../api/AssetAnalysisAPI.html" title="interface in org.odpi.o
 <ul class="blockList">
 <li class="blockList">
 <h4>validateConnector</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.commonservices.ffdc.properties.ConnectorReport&nbsp;validateConnector&#8203;(java.lang.String&nbsp;userId,
-                                                                                              java.lang.String&nbsp;connectorProviderClassName)
-                                                                                       throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                              org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                              org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">public&nbsp;<a href="../../../commonservices/ffdc/properties/ConnectorReport.html" title="class in org.odpi.openmetadata.commonservices.ffdc.properties">ConnectorReport</a>&nbsp;validateConnector&#8203;(java.lang.String&nbsp;userId,
+                                         java.lang.String&nbsp;connectorProviderClassName)
+                                  throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                         <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                         <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Validate the connector and return its connector type.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -391,9 +391,9 @@ implements <a href="../api/AssetAnalysisAPI.html" title="interface in org.odpi.o
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>connector report for this connector</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the connector provider class name is not a valid connector fo this service</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there was a problem detected by the integration service</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the connector provider class name is not a valid connector fo this service</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there was a problem detected by the integration service</dd>
 </dl>
 </li>
 </ul>
@@ -406,9 +406,9 @@ implements <a href="../api/AssetAnalysisAPI.html" title="interface in org.odpi.o
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;discoverAsset&#8203;(java.lang.String&nbsp;userId,
                                       java.lang.String&nbsp;assetGUID,
                                       java.lang.String&nbsp;discoveryRequestType)
-                               throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                      org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                      org.odpi.openmetadata.frameworks.discovery.ffdc.DiscoveryEngineException</pre>
+                               throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                      <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                      <a href="../../../frameworks/discovery/ffdc/DiscoveryEngineException.html" title="class in org.odpi.openmetadata.frameworks.discovery.ffdc">DiscoveryEngineException</a></pre>
 <div class="block">Request the execution of a discovery service to explore a specific asset.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -420,9 +420,9 @@ implements <a href="../api/AssetAnalysisAPI.html" title="interface in org.odpi.o
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique id for the discovery request.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.discovery.ffdc.DiscoveryEngineException</code> - there was a problem detected by the discovery engine.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/discovery/ffdc/DiscoveryEngineException.html" title="class in org.odpi.openmetadata.frameworks.discovery.ffdc">DiscoveryEngineException</a></code> - there was a problem detected by the discovery engine.</dd>
 </dl>
 </li>
 </ul>
@@ -436,9 +436,9 @@ implements <a href="../api/AssetAnalysisAPI.html" title="interface in org.odpi.o
                                       java.lang.String&nbsp;assetGUID,
                                       java.lang.String&nbsp;discoveryRequestType,
                                       java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;analysisParameters)
-                               throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                      org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                      org.odpi.openmetadata.frameworks.discovery.ffdc.DiscoveryEngineException</pre>
+                               throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                      <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                      <a href="../../../frameworks/discovery/ffdc/DiscoveryEngineException.html" title="class in org.odpi.openmetadata.frameworks.discovery.ffdc">DiscoveryEngineException</a></pre>
 <div class="block">Request the execution of a discovery service to explore a specific asset.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -451,9 +451,9 @@ implements <a href="../api/AssetAnalysisAPI.html" title="interface in org.odpi.o
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique id for the discovery request.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.discovery.ffdc.DiscoveryEngineException</code> - there was a problem detected by the discovery engine.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/discovery/ffdc/DiscoveryEngineException.html" title="class in org.odpi.openmetadata.frameworks.discovery.ffdc">DiscoveryEngineException</a></code> - there was a problem detected by the discovery engine.</dd>
 </dl>
 </li>
 </ul>
@@ -468,9 +468,9 @@ implements <a href="../api/AssetAnalysisAPI.html" title="interface in org.odpi.o
                                       java.lang.String&nbsp;discoveryRequestType,
                                       java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;analysisParameters,
                                       java.util.List&lt;java.lang.String&gt;&nbsp;annotationTypes)
-                               throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                      org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                      org.odpi.openmetadata.frameworks.discovery.ffdc.DiscoveryEngineException</pre>
+                               throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                      <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                      <a href="../../../frameworks/discovery/ffdc/DiscoveryEngineException.html" title="class in org.odpi.openmetadata.frameworks.discovery.ffdc">DiscoveryEngineException</a></pre>
 <div class="block">Request the execution of a discovery service to explore a specific asset.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -484,9 +484,9 @@ implements <a href="../api/AssetAnalysisAPI.html" title="interface in org.odpi.o
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique id for the discovery request.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.discovery.ffdc.DiscoveryEngineException</code> - there was a problem detected by the discovery engine.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/discovery/ffdc/DiscoveryEngineException.html" title="class in org.odpi.openmetadata.frameworks.discovery.ffdc">DiscoveryEngineException</a></code> - there was a problem detected by the discovery engine.</dd>
 </dl>
 </li>
 </ul>
@@ -500,9 +500,9 @@ implements <a href="../api/AssetAnalysisAPI.html" title="interface in org.odpi.o
                           java.lang.String&nbsp;discoveryRequestType,
                           java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;analysisParameters,
                           java.util.List&lt;java.lang.String&gt;&nbsp;annotationTypes)
-                   throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                          org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                          org.odpi.openmetadata.frameworks.discovery.ffdc.DiscoveryEngineException</pre>
+                   throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                          <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                          <a href="../../../frameworks/discovery/ffdc/DiscoveryEngineException.html" title="class in org.odpi.openmetadata.frameworks.discovery.ffdc">DiscoveryEngineException</a></pre>
 <div class="block">Explore each of the assets in the asset store.  A new instance of the discovery service is started for
  each retrieved asset.</div>
 <dl>
@@ -514,9 +514,9 @@ implements <a href="../api/AssetAnalysisAPI.html" title="interface in org.odpi.o
 <dd><code>analysisParameters</code> - name value properties to control the analysis</dd>
 <dd><code>annotationTypes</code> - list of the types of annotations to produce (and no others)</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.discovery.ffdc.DiscoveryEngineException</code> - there was a problem detected by the discovery engine.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/discovery/ffdc/DiscoveryEngineException.html" title="class in org.odpi.openmetadata.frameworks.discovery.ffdc">DiscoveryEngineException</a></code> - there was a problem detected by the discovery engine.</dd>
 </dl>
 </li>
 </ul>
@@ -526,11 +526,11 @@ implements <a href="../api/AssetAnalysisAPI.html" title="interface in org.odpi.o
 <ul class="blockList">
 <li class="blockList">
 <h4>getDiscoveryStatus</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus&nbsp;getDiscoveryStatus&#8203;(java.lang.String&nbsp;userId,
-                                                                                                       java.lang.String&nbsp;discoveryRequestGUID)
-                                                                                                throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                       org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                       org.odpi.openmetadata.frameworks.discovery.ffdc.DiscoveryEngineException</pre>
+<pre class="methodSignature">public&nbsp;<a href="../../../frameworks/discovery/properties/DiscoveryRequestStatus.html" title="enum in org.odpi.openmetadata.frameworks.discovery.properties">DiscoveryRequestStatus</a>&nbsp;getDiscoveryStatus&#8203;(java.lang.String&nbsp;userId,
+                                                 java.lang.String&nbsp;discoveryRequestGUID)
+                                          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                 <a href="../../../frameworks/discovery/ffdc/DiscoveryEngineException.html" title="class in org.odpi.openmetadata.frameworks.discovery.ffdc">DiscoveryEngineException</a></pre>
 <div class="block">Request the status of an executing discovery request.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -541,9 +541,9 @@ implements <a href="../api/AssetAnalysisAPI.html" title="interface in org.odpi.o
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>status enum</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.discovery.ffdc.DiscoveryEngineException</code> - there was a problem detected by the discovery engine.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/discovery/ffdc/DiscoveryEngineException.html" title="class in org.odpi.openmetadata.frameworks.discovery.ffdc">DiscoveryEngineException</a></code> - there was a problem detected by the discovery engine.</dd>
 </dl>
 </li>
 </ul>
@@ -553,11 +553,11 @@ implements <a href="../api/AssetAnalysisAPI.html" title="interface in org.odpi.o
 <ul class="blockList">
 <li class="blockList">
 <h4>getDiscoveryReport</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport&nbsp;getDiscoveryReport&#8203;(java.lang.String&nbsp;userId,
-                                                                                                        java.lang.String&nbsp;discoveryRequestGUID)
-                                                                                                 throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                        org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                        org.odpi.openmetadata.frameworks.discovery.ffdc.DiscoveryEngineException</pre>
+<pre class="methodSignature">public&nbsp;<a href="../../../frameworks/discovery/properties/DiscoveryAnalysisReport.html" title="class in org.odpi.openmetadata.frameworks.discovery.properties">DiscoveryAnalysisReport</a>&nbsp;getDiscoveryReport&#8203;(java.lang.String&nbsp;userId,
+                                                  java.lang.String&nbsp;discoveryRequestGUID)
+                                           throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                  <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                  <a href="../../../frameworks/discovery/ffdc/DiscoveryEngineException.html" title="class in org.odpi.openmetadata.frameworks.discovery.ffdc">DiscoveryEngineException</a></pre>
 <div class="block">Request the discovery report for a discovery request that has completed.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -568,9 +568,9 @@ implements <a href="../api/AssetAnalysisAPI.html" title="interface in org.odpi.o
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>discovery report</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.discovery.ffdc.DiscoveryEngineException</code> - there was a problem detected by the discovery engine.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/discovery/ffdc/DiscoveryEngineException.html" title="class in org.odpi.openmetadata.frameworks.discovery.ffdc">DiscoveryEngineException</a></code> - there was a problem detected by the discovery engine.</dd>
 </dl>
 </li>
 </ul>
@@ -580,13 +580,13 @@ implements <a href="../api/AssetAnalysisAPI.html" title="interface in org.odpi.o
 <ul class="blockList">
 <li class="blockList">
 <h4>getDiscoveryReportAnnotations</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;org.odpi.openmetadata.frameworks.discovery.properties.Annotation&gt;&nbsp;getDiscoveryReportAnnotations&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                      java.lang.String&nbsp;discoveryRequestGUID,
-                                                                                                                      int&nbsp;startingFrom,
-                                                                                                                      int&nbsp;maximumResults)
-                                                                                                               throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                      org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                      org.odpi.openmetadata.frameworks.discovery.ffdc.DiscoveryEngineException</pre>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../../../frameworks/discovery/properties/Annotation.html" title="class in org.odpi.openmetadata.frameworks.discovery.properties">Annotation</a>&gt;&nbsp;getDiscoveryReportAnnotations&#8203;(java.lang.String&nbsp;userId,
+                                                                java.lang.String&nbsp;discoveryRequestGUID,
+                                                                int&nbsp;startingFrom,
+                                                                int&nbsp;maximumResults)
+                                                         throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                                <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                                <a href="../../../frameworks/discovery/ffdc/DiscoveryEngineException.html" title="class in org.odpi.openmetadata.frameworks.discovery.ffdc">DiscoveryEngineException</a></pre>
 <div class="block">Return the annotations linked direction to the report.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -599,9 +599,9 @@ implements <a href="../api/AssetAnalysisAPI.html" title="interface in org.odpi.o
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of annotations</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.discovery.ffdc.DiscoveryEngineException</code> - there was a problem detected by the discovery engine.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/discovery/ffdc/DiscoveryEngineException.html" title="class in org.odpi.openmetadata.frameworks.discovery.ffdc">DiscoveryEngineException</a></code> - there was a problem detected by the discovery engine.</dd>
 </dl>
 </li>
 </ul>
@@ -611,13 +611,13 @@ implements <a href="../api/AssetAnalysisAPI.html" title="interface in org.odpi.o
 <ul class="blockList">
 <li class="blockList">
 <h4>getExtendedAnnotations</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;org.odpi.openmetadata.frameworks.discovery.properties.Annotation&gt;&nbsp;getExtendedAnnotations&#8203;(java.lang.String&nbsp;userId,
-                                                                                                               java.lang.String&nbsp;annotationGUID,
-                                                                                                               int&nbsp;startingFrom,
-                                                                                                               int&nbsp;maximumResults)
-                                                                                                        throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                               org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                               org.odpi.openmetadata.frameworks.discovery.ffdc.DiscoveryEngineException</pre>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../../../frameworks/discovery/properties/Annotation.html" title="class in org.odpi.openmetadata.frameworks.discovery.properties">Annotation</a>&gt;&nbsp;getExtendedAnnotations&#8203;(java.lang.String&nbsp;userId,
+                                                         java.lang.String&nbsp;annotationGUID,
+                                                         int&nbsp;startingFrom,
+                                                         int&nbsp;maximumResults)
+                                                  throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                         <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                         <a href="../../../frameworks/discovery/ffdc/DiscoveryEngineException.html" title="class in org.odpi.openmetadata.frameworks.discovery.ffdc">DiscoveryEngineException</a></pre>
 <div class="block">Return any annotations attached to this annotation.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -630,9 +630,9 @@ implements <a href="../api/AssetAnalysisAPI.html" title="interface in org.odpi.o
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of Annotation objects</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.discovery.ffdc.DiscoveryEngineException</code> - there was a problem detected by the discovery engine.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/discovery/ffdc/DiscoveryEngineException.html" title="class in org.odpi.openmetadata.frameworks.discovery.ffdc">DiscoveryEngineException</a></code> - there was a problem detected by the discovery engine.</dd>
 </dl>
 </li>
 </ul>
@@ -642,11 +642,11 @@ implements <a href="../api/AssetAnalysisAPI.html" title="interface in org.odpi.o
 <ul class="blockListLast">
 <li class="blockList">
 <h4>getAnnotation</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.frameworks.discovery.properties.Annotation&nbsp;getAnnotation&#8203;(java.lang.String&nbsp;userId,
-                                                                                      java.lang.String&nbsp;annotationGUID)
-                                                                               throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                      org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                      org.odpi.openmetadata.frameworks.discovery.ffdc.DiscoveryEngineException</pre>
+<pre class="methodSignature">public&nbsp;<a href="../../../frameworks/discovery/properties/Annotation.html" title="class in org.odpi.openmetadata.frameworks.discovery.properties">Annotation</a>&nbsp;getAnnotation&#8203;(java.lang.String&nbsp;userId,
+                                java.lang.String&nbsp;annotationGUID)
+                         throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                <a href="../../../frameworks/discovery/ffdc/DiscoveryEngineException.html" title="class in org.odpi.openmetadata.frameworks.discovery.ffdc">DiscoveryEngineException</a></pre>
 <div class="block">Retrieve a single annotation by unique identifier.  This call is typically used to retrieve the latest values
  for an annotation.</div>
 <dl>
@@ -658,9 +658,9 @@ implements <a href="../api/AssetAnalysisAPI.html" title="interface in org.odpi.o
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>Annotation object</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.discovery.ffdc.DiscoveryEngineException</code> - there was a problem detected by the discovery engine.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/discovery/ffdc/DiscoveryEngineException.html" title="class in org.odpi.openmetadata.frameworks.discovery.ffdc">DiscoveryEngineException</a></code> - there was a problem detected by the discovery engine.</dd>
 </dl>
 </li>
 </ul>

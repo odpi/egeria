@@ -157,7 +157,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code>org.odpi.openmetadata.commonservices.ffdc.properties.ConnectorReport</code></td>
+<td class="colFirst"><code><a href="../../../commonservices/ffdc/properties/ConnectorReport.html" title="class in org.odpi.openmetadata.commonservices.ffdc.properties">ConnectorReport</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateConnector(java.lang.String,java.lang.String)">validateConnector</a></span>&#8203;(java.lang.String&nbsp;userId,
                  java.lang.String&nbsp;connectorProviderClassName)</code></th>
 <td class="colLast">
@@ -187,11 +187,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <h4>validateConnector</h4>
-<pre class="methodSignature">org.odpi.openmetadata.commonservices.ffdc.properties.ConnectorReport&nbsp;validateConnector&#8203;(java.lang.String&nbsp;userId,
-                                                                                       java.lang.String&nbsp;connectorProviderClassName)
-                                                                                throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                       org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                       org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature"><a href="../../../commonservices/ffdc/properties/ConnectorReport.html" title="class in org.odpi.openmetadata.commonservices.ffdc.properties">ConnectorReport</a>&nbsp;validateConnector&#8203;(java.lang.String&nbsp;userId,
+                                  java.lang.String&nbsp;connectorProviderClassName)
+                           throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                  <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                  <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Validate that a connector is suitable to run in the Lineage Integrator OMIS.
  It validates that it implements the correct interfaces and returns the connector type for the connector.</div>
 <dl>
@@ -201,9 +201,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>connector report for this connector</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the connector provider class name is not a valid connector fo this service</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem processing the request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the connector provider class name is not a valid connector fo this service</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem processing the request</dd>
 </dl>
 </li>
 </ul>
@@ -215,9 +215,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h4>publishOpenLineageEvent</h4>
 <pre class="methodSignature">void&nbsp;publishOpenLineageEvent&#8203;(java.lang.String&nbsp;userId,
                              io.openlineage.client.OpenLineage.RunEvent&nbsp;event)
-                      throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                             org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                             org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                             <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                             <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Pass an open lineage event to the integration service.  It will pass it on to the integration connectors that have registered a
  listener for open lineage events.</div>
 <dl>
@@ -225,9 +225,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>userId</code> - calling user</dd>
 <dd><code>event</code> - open lineage event to publish.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the caller is not authorized to call the service</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem processing the request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the caller is not authorized to call the service</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem processing the request</dd>
 </dl>
 </li>
 </ul>

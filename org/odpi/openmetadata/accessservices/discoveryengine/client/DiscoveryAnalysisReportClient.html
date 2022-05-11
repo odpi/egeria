@@ -177,7 +177,7 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAnalysisReportStore<
 </tr>
 <tr class="altColor">
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus,java.lang.String,java.util.Map,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.discoveryengine.client.DiscoveryEngineClient)">DiscoveryAnalysisReportClient</a></span>&#8203;(java.lang.String&nbsp;userId,
-                             org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus&nbsp;discoveryRequestStatus,
+                             <a href="../../../frameworks/discovery/properties/DiscoveryRequestStatus.html" title="enum in org.odpi.openmetadata.frameworks.discovery.properties">DiscoveryRequestStatus</a>&nbsp;discoveryRequestStatus,
                              java.lang.String&nbsp;assetGUID,
                              java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;analysisParameters,
                              java.lang.String&nbsp;firstAnalysisStepName,
@@ -210,7 +210,7 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAnalysisReportStore<
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus</code></td>
+<td class="colFirst"><code><a href="../../../frameworks/discovery/properties/DiscoveryRequestStatus.html" title="enum in org.odpi.openmetadata.frameworks.discovery.properties">DiscoveryRequestStatus</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDiscoveryRequestStatus()">getDiscoveryRequestStatus</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the current status of the discovery request - this is stored in the report.</div>
@@ -218,7 +218,7 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAnalysisReportStore<
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setDiscoveryRequestStatus(org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus)">setDiscoveryRequestStatus</a></span>&#8203;(org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus&nbsp;discoveryRequestStatus)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setDiscoveryRequestStatus(org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus)">setDiscoveryRequestStatus</a></span>&#8203;(<a href="../../../frameworks/discovery/properties/DiscoveryRequestStatus.html" title="enum in org.odpi.openmetadata.frameworks.discovery.properties">DiscoveryRequestStatus</a>&nbsp;discoveryRequestStatus)</code></th>
 <td class="colLast">
 <div class="block">Set up the current status of the discovery request - this is stored in the report so it can be monitored by the originator of the request.</div>
 </td>
@@ -261,7 +261,7 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAnalysisReportStore<
 <li class="blockList">
 <h4>DiscoveryAnalysisReportClient</h4>
 <pre>public&nbsp;DiscoveryAnalysisReportClient&#8203;(java.lang.String&nbsp;userId,
-                                     org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus&nbsp;discoveryRequestStatus,
+                                     <a href="../../../frameworks/discovery/properties/DiscoveryRequestStatus.html" title="enum in org.odpi.openmetadata.frameworks.discovery.properties">DiscoveryRequestStatus</a>&nbsp;discoveryRequestStatus,
                                      java.lang.String&nbsp;assetGUID,
                                      java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;analysisParameters,
                                      java.lang.String&nbsp;firstAnalysisStepName,
@@ -271,9 +271,9 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAnalysisReportStore<
                                      java.lang.String&nbsp;discoveryEngineGUID,
                                      java.lang.String&nbsp;discoveryServiceGUID,
                                      <a href="DiscoveryEngineClient.html" title="class in org.odpi.openmetadata.accessservices.discoveryengine.client">DiscoveryEngineClient</a>&nbsp;discoveryEngineClient)
-                              throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                     org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                     org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                              throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                     <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                     <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Constructor for this client</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -289,9 +289,9 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAnalysisReportStore<
 <dd><code>discoveryServiceGUID</code> - executing discovery service</dd>
 <dd><code>discoveryEngineClient</code> - calling engine client</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user id not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there was a problem retrieving annotations from the annotation store.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user id not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there was a problem retrieving annotations from the annotation store.</dd>
 </dl>
 </li>
 </ul>
@@ -311,10 +311,10 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAnalysisReportStore<
 <ul class="blockList">
 <li class="blockList">
 <h4>getDiscoveryRequestStatus</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus&nbsp;getDiscoveryRequestStatus()
-                                                                                                       throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                              org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                              org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">public&nbsp;<a href="../../../frameworks/discovery/properties/DiscoveryRequestStatus.html" title="enum in org.odpi.openmetadata.frameworks.discovery.properties">DiscoveryRequestStatus</a>&nbsp;getDiscoveryRequestStatus()
+                                                 throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                        <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                        <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Return the current status of the discovery request - this is stored in the report.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
@@ -322,9 +322,9 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAnalysisReportStore<
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>current status of the discovery request/report</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user id not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there was a problem retrieving annotations from the annotation store.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user id not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there was a problem retrieving annotations from the annotation store.</dd>
 </dl>
 </li>
 </ul>
@@ -334,10 +334,10 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAnalysisReportStore<
 <ul class="blockListLast">
 <li class="blockList">
 <h4>setDiscoveryRequestStatus</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setDiscoveryRequestStatus&#8203;(org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus&nbsp;discoveryRequestStatus)
-                               throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                      org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                      org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;setDiscoveryRequestStatus&#8203;(<a href="../../../frameworks/discovery/properties/DiscoveryRequestStatus.html" title="enum in org.odpi.openmetadata.frameworks.discovery.properties">DiscoveryRequestStatus</a>&nbsp;discoveryRequestStatus)
+                               throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                      <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                      <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Set up the current status of the discovery request - this is stored in the report so it can be monitored by the originator of the request.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
@@ -345,9 +345,9 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAnalysisReportStore<
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>discoveryRequestStatus</code> - new status of the discovery request/report</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user id not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there was a problem retrieving annotations from the annotation store.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user id not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there was a problem retrieving annotations from the annotation store.</dd>
 </dl>
 </li>
 </ul>

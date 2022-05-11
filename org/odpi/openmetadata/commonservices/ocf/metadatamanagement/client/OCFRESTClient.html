@@ -141,7 +141,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <dl>
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="../../../../accessservices/assetconsumer/client/rest/AssetConsumerRESTClient.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.client.rest">AssetConsumerRESTClient</a></code>, <code><a href="../../../../accessservices/assetowner/client/rest/AssetOwnerRESTClient.html" title="class in org.odpi.openmetadata.accessservices.assetowner.client.rest">AssetOwnerRESTClient</a></code>, <code><a href="../../../../accessservices/dataengine/client/DataEngineRESTClient.html" title="class in org.odpi.openmetadata.accessservices.dataengine.client">DataEngineRESTClient</a></code>, <code><a href="../../../../accessservices/datamanager/client/rest/DataManagerRESTClient.html" title="class in org.odpi.openmetadata.accessservices.datamanager.client.rest">DataManagerRESTClient</a></code>, <code><a href="../../../../accessservices/governanceengine/client/rest/GovernanceEngineRESTClient.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.client.rest">GovernanceEngineRESTClient</a></code>, <code><a href="../../../../accessservices/itinfrastructure/client/rest/ITInfrastructureRESTClient.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.client.rest">ITInfrastructureRESTClient</a></code>, <code><a href="../../../../accessservices/discoveryengine/client/rest/ODFRESTClient.html" title="class in org.odpi.openmetadata.accessservices.discoveryengine.client.rest">ODFRESTClient</a></code>, <code><a href="../../../../accessservices/securitymanager/client/rest/SecurityManagerRESTClient.html" title="class in org.odpi.openmetadata.accessservices.securitymanager.client.rest">SecurityManagerRESTClient</a></code></dd>
+<dd><code><a href="../../../../accessservices/dataengine/client/DataEngineRESTClient.html" title="class in org.odpi.openmetadata.accessservices.dataengine.client">DataEngineRESTClient</a></code></dd>
 </dl>
 <hr>
 <pre>public class <span class="typeNameLabel">OCFRESTClient</span>
@@ -208,7 +208,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
              java.lang.String&nbsp;serverPlatformURLRoot,
              java.lang.String&nbsp;userId,
              java.lang.String&nbsp;password,
-             org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)</code></th>
+             <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></th>
 <td class="colLast">
 <div class="block">Constructor for simple userId and password authentication with audit log.</div>
 </td>
@@ -217,7 +217,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <td class="colFirst"><code>protected </code></td>
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">OCFRESTClient</a></span>&#8203;(java.lang.String&nbsp;serverName,
              java.lang.String&nbsp;serverPlatformURLRoot,
-             org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)</code></th>
+             <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></th>
 <td class="colLast">
 <div class="block">Constructor for no authentication with audit log.</div>
 </td>
@@ -351,8 +351,8 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <h4>OCFRESTClient</h4>
 <pre>protected&nbsp;OCFRESTClient&#8203;(java.lang.String&nbsp;serverName,
                         java.lang.String&nbsp;serverPlatformURLRoot,
-                        org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)
-                 throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                        <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)
+                 throws <a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Constructor for no authentication with audit log.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -360,7 +360,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <dd><code>serverPlatformURLRoot</code> - URL root of the server platform where the OMAG Server is running.</dd>
 <dd><code>auditLog</code> - destination for log messages.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
  REST API calls.</dd>
 </dl>
 </li>
@@ -373,14 +373,14 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <h4>OCFRESTClient</h4>
 <pre>public&nbsp;OCFRESTClient&#8203;(java.lang.String&nbsp;serverName,
                      java.lang.String&nbsp;serverPlatformURLRoot)
-              throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+              throws <a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Constructor for no authentication.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the OMAG Server to call</dd>
 <dd><code>serverPlatformURLRoot</code> - URL root of the server platform where the OMAG Server is running.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
  REST API calls.</dd>
 </dl>
 </li>
@@ -395,8 +395,8 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
                      java.lang.String&nbsp;serverPlatformURLRoot,
                      java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;password,
-                     org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)
-              throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                     <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)
+              throws <a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Constructor for simple userId and password authentication with audit log.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -406,7 +406,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <dd><code>password</code> - password for the HTTP request</dd>
 <dd><code>auditLog</code> - destination for log messages.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
  REST API calls.</dd>
 </dl>
 </li>
@@ -421,7 +421,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
                      java.lang.String&nbsp;serverPlatformURLRoot,
                      java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;password)
-              throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+              throws <a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Constructor for simple userId and password authentication.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -430,7 +430,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <dd><code>userId</code> - user id for the HTTP request</dd>
 <dd><code>password</code> - password for the HTTP request</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
  REST API calls.</dd>
 </dl>
 </li>
@@ -454,9 +454,9 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <pre class="methodSignature">public&nbsp;org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.AssetResponse&nbsp;callOCFAssetGetRESTCall&#8203;(java.lang.String&nbsp;methodName,
                                                                                                               java.lang.String&nbsp;urlTemplate,
                                                                                                               java.lang.Object...&nbsp;params)
-                                                                                                       throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                              org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                              org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                                                                                       throws <a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                                                                              <a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                                                                              <a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Issue a GET REST call that returns an AssetResponse object.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -466,9 +466,9 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>AssetResponse</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to make this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - something went wrong with the REST call stack.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to make this request.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - something went wrong with the REST call stack.</dd>
 </dl>
 </li>
 </ul>
@@ -481,9 +481,9 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <pre class="methodSignature">public&nbsp;org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.AssetsResponse&nbsp;callOCFAssetsGetRESTCall&#8203;(java.lang.String&nbsp;methodName,
                                                                                                                 java.lang.String&nbsp;urlTemplate,
                                                                                                                 java.lang.Object...&nbsp;params)
-                                                                                                         throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                                                                                         throws <a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                                                                                <a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                                                                                <a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Issue a GET REST call that returns a AssetsResponse object.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -493,9 +493,9 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>AssetsResponse</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to make this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - something went wrong with the REST call stack.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to make this request.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - something went wrong with the REST call stack.</dd>
 </dl>
 </li>
 </ul>
@@ -509,9 +509,9 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
                                                                                                                  java.lang.String&nbsp;urlTemplate,
                                                                                                                  java.lang.Object&nbsp;requestBody,
                                                                                                                  java.lang.Object...&nbsp;params)
-                                                                                                          throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                 org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                 org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                                                                                          throws <a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                                                                                 <a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                                                                                 <a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Issue a POST REST call that returns a AssetsResponse object.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -522,9 +522,9 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>AssetsResponse</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to make this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - something went wrong with the REST call stack.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to make this request.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - something went wrong with the REST call stack.</dd>
 </dl>
 </li>
 </ul>
@@ -537,9 +537,9 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <pre class="methodSignature">public&nbsp;org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ConnectionResponse&nbsp;callOCFConnectionGetRESTCall&#8203;(java.lang.String&nbsp;methodName,
                                                                                                                         java.lang.String&nbsp;urlTemplate,
                                                                                                                         java.lang.Object...&nbsp;params)
-                                                                                                                 throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                        org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                        org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                                                                                                 throws <a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                                                                                        <a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                                                                                        <a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Issue a GET REST call that returns a Connection object.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -549,9 +549,9 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>ConnectionResponse</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to make this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - something went wrong with the REST call stack.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to make this request.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - something went wrong with the REST call stack.</dd>
 </dl>
 </li>
 </ul>
@@ -564,9 +564,9 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <pre class="methodSignature">public&nbsp;org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.TagResponse&nbsp;callOCFTagGetRESTCall&#8203;(java.lang.String&nbsp;methodName,
                                                                                                           java.lang.String&nbsp;urlTemplate,
                                                                                                           java.lang.Object...&nbsp;params)
-                                                                                                   throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                          org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                          org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                                                                                   throws <a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                                                                          <a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                                                                          <a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Issue a GET REST call that returns a TagResponse object.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -576,9 +576,9 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>TagResponse</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to make this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - something went wrong with the REST call stack.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to make this request.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - something went wrong with the REST call stack.</dd>
 </dl>
 </li>
 </ul>
@@ -591,9 +591,9 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <pre class="methodSignature">public&nbsp;org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.TagsResponse&nbsp;callOCFTagListGetRESTCall&#8203;(java.lang.String&nbsp;methodName,
                                                                                                                java.lang.String&nbsp;urlTemplate,
                                                                                                                java.lang.Object...&nbsp;params)
-                                                                                                        throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                               org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                               org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                                                                                        throws <a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                                                                               <a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                                                                               <a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Issue a GET REST call that returns a TagsResponse object.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -603,9 +603,9 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>TagsResponse</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to make this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - something went wrong with the REST call stack.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to make this request.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - something went wrong with the REST call stack.</dd>
 </dl>
 </li>
 </ul>
@@ -619,9 +619,9 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
                                                                                                                 java.lang.String&nbsp;urlTemplate,
                                                                                                                 java.lang.Object&nbsp;requestBody,
                                                                                                                 java.lang.Object...&nbsp;params)
-                                                                                                         throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                                                                                         throws <a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                                                                                <a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                                                                                <a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Issue a GET REST call that returns a TagsResponse object.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -632,9 +632,9 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>TagsResponse</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to make this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - something went wrong with the REST call stack.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to make this request.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - something went wrong with the REST call stack.</dd>
 </dl>
 </li>
 </ul>

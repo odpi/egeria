@@ -149,7 +149,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.accessservices.stewardshipaction.metadataelements.ElementStub</code></td>
+<td class="colFirst"><code><a href="../metadataelements/ElementStub.html" title="class in org.odpi.openmetadata.accessservices.stewardshipaction.metadataelements">ElementStub</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getConsolidatedDuplicate(java.lang.String,java.lang.String)">getConsolidatedDuplicate</a></span>&#8203;(java.lang.String&nbsp;userId,
                         java.lang.String&nbsp;elementGUID)</code></th>
 <td class="colLast">
@@ -157,7 +157,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.stewardshipaction.metadataelements.ElementStub&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/ElementStub.html" title="class in org.odpi.openmetadata.accessservices.stewardshipaction.metadataelements">ElementStub</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getContributingDuplicates(java.lang.String,java.lang.String,int,int)">getContributingDuplicates</a></span>&#8203;(java.lang.String&nbsp;userId,
                          java.lang.String&nbsp;consolidatedDuplicateGUID,
                          int&nbsp;startFrom,
@@ -167,7 +167,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </td>
 </tr>
 <tr id="i2" class="altColor">
-<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.stewardshipaction.metadataelements.DuplicateElement&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/DuplicateElement.html" title="class in org.odpi.openmetadata.accessservices.stewardshipaction.metadataelements">DuplicateElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getPeerDuplicates(java.lang.String,java.lang.String,int,int)">getPeerDuplicates</a></span>&#8203;(java.lang.String&nbsp;userId,
                  java.lang.String&nbsp;elementGUID,
                  int&nbsp;startFrom,
@@ -288,9 +288,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                               java.lang.String&nbsp;stewardPropertyName,
                               java.lang.String&nbsp;source,
                               java.lang.String&nbsp;notes)
-                       throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                              org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                              org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                       throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                              <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                              <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Create a simple relationship between two elements.  These elements must be of the same type.  If the relationship already exists,
  the properties are updated.</div>
 <dl>
@@ -305,9 +305,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>source</code> - source of the duplicate detection processing</dd>
 <dd><code>notes</code> - notes for the steward</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid, or the elements are of different types</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing property server</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - security access problem</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid, or the elements are of different types</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>
 </li>
 </ul>
@@ -320,9 +320,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre class="methodSignature">void&nbsp;unlinkElementsAsDuplicates&#8203;(java.lang.String&nbsp;userId,
                                 java.lang.String&nbsp;element1GUID,
                                 java.lang.String&nbsp;element2GUID)
-                         throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                         throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Remove the relationship between two elements that marks them as duplicates.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -330,9 +330,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>element1GUID</code> - unique identifier of first element</dd>
 <dd><code>element2GUID</code> - unique identifier of second element</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid or the elements are not linked as duplicates</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing property server</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - security access problem</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid or the elements are not linked as duplicates</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>
 </li>
 </ul>
@@ -344,18 +344,18 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h4>markElementAsKnownDuplicate</h4>
 <pre class="methodSignature">void&nbsp;markElementAsKnownDuplicate&#8203;(java.lang.String&nbsp;userId,
                                  java.lang.String&nbsp;elementGUID)
-                          throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                 org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                 org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Classify an element as a known duplicate.  This will mean that it is included in duplicate processing during metadata retrieval requests.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>elementGUID</code> - unique identifier of the element</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid, or the elements are of different types</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing property server</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - security access problem</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid, or the elements are of different types</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>
 </li>
 </ul>
@@ -367,18 +367,18 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h4>unmarkElementAsKnownDuplicate</h4>
 <pre class="methodSignature">void&nbsp;unmarkElementAsKnownDuplicate&#8203;(java.lang.String&nbsp;userId,
                                    java.lang.String&nbsp;elementGUID)
-                            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                   org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                   org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                   <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                   <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Remove the classification that identifies this element as a known duplicate.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>elementGUID</code> - unique identifier of the element</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid or the elements are not linked as duplicates</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing property server</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - security access problem</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid or the elements are not linked as duplicates</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>
 </li>
 </ul>
@@ -388,13 +388,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <h4>getPeerDuplicates</h4>
-<pre class="methodSignature">java.util.List&lt;org.odpi.openmetadata.accessservices.stewardshipaction.metadataelements.DuplicateElement&gt;&nbsp;getPeerDuplicates&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                           java.lang.String&nbsp;elementGUID,
-                                                                                                                           int&nbsp;startFrom,
-                                                                                                                           int&nbsp;pageSize)
-                                                                                                                    throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                           org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                           org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">java.util.List&lt;<a href="../metadataelements/DuplicateElement.html" title="class in org.odpi.openmetadata.accessservices.stewardshipaction.metadataelements">DuplicateElement</a>&gt;&nbsp;getPeerDuplicates&#8203;(java.lang.String&nbsp;userId,
+                                                   java.lang.String&nbsp;elementGUID,
+                                                   int&nbsp;startFrom,
+                                                   int&nbsp;pageSize)
+                                            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                   <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                   <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">List the elements that are linked as peer duplicates to the requested element.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -405,9 +405,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of linked duplicates</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing property server</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - security access problem</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>
 </li>
 </ul>
@@ -425,9 +425,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                                  java.lang.String&nbsp;stewardPropertyName,
                                  java.lang.String&nbsp;source,
                                  java.lang.String&nbsp;notes)
-                          throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                 org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                 org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Mark an element as a consolidated duplicate (or update the properties if it is already marked as such).
  This method assumes that a standard create method has been used to create the element first using the values from contributing elements.
  It is just adding the ConsolidatedDuplicate classification to the element.</div>
@@ -443,9 +443,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>source</code> - source of the duplicate detection processing</dd>
 <dd><code>notes</code> - notes for the steward</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing property server</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - security access problem</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>
 </li>
 </ul>
@@ -458,9 +458,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre class="methodSignature">void&nbsp;linkElementToConsolidatedDuplicate&#8203;(java.lang.String&nbsp;userId,
                                         java.lang.String&nbsp;consolidatedDuplicateGUID,
                                         java.lang.String&nbsp;contributingElementGUID)
-                                 throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                        org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                        org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                 throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                        <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                        <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Create a ConsolidatedDuplicateLink relationship between the consolidated duplicate element and one of its contributing element.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -468,9 +468,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>consolidatedDuplicateGUID</code> - unique identifier of consolidated duplicate</dd>
 <dd><code>contributingElementGUID</code> - unique identifier of duplicate element</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid or the elements are not linked as duplicates</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing property server</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - security access problem</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid or the elements are not linked as duplicates</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>
 </li>
 </ul>
@@ -483,9 +483,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre class="methodSignature">void&nbsp;unlinkElementFromConsolidatedDuplicate&#8203;(java.lang.String&nbsp;userId,
                                             java.lang.String&nbsp;consolidatedDuplicateGUID,
                                             java.lang.String&nbsp;contributingElementGUID)
-                                     throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                            org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                            org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                     throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                            <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                            <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Remove the relationship between two elements that marks them as duplicates.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -493,9 +493,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>consolidatedDuplicateGUID</code> - unique identifier of consolidated duplicate</dd>
 <dd><code>contributingElementGUID</code> - unique identifier of duplicate element</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid or the elements are not linked as duplicates</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing property server</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - security access problem</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid or the elements are not linked as duplicates</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>
 </li>
 </ul>
@@ -505,13 +505,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <h4>getContributingDuplicates</h4>
-<pre class="methodSignature">java.util.List&lt;org.odpi.openmetadata.accessservices.stewardshipaction.metadataelements.ElementStub&gt;&nbsp;getContributingDuplicates&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                              java.lang.String&nbsp;consolidatedDuplicateGUID,
-                                                                                                                              int&nbsp;startFrom,
-                                                                                                                              int&nbsp;pageSize)
-                                                                                                                       throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                              org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                              org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">java.util.List&lt;<a href="../metadataelements/ElementStub.html" title="class in org.odpi.openmetadata.accessservices.stewardshipaction.metadataelements">ElementStub</a>&gt;&nbsp;getContributingDuplicates&#8203;(java.lang.String&nbsp;userId,
+                                                      java.lang.String&nbsp;consolidatedDuplicateGUID,
+                                                      int&nbsp;startFrom,
+                                                      int&nbsp;pageSize)
+                                               throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                      <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                      <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">List the elements that are contributing to a consolidating duplicate element.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -522,9 +522,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of contributing duplicates</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid or the elements are not linked as duplicates</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing property server</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - security access problem</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid or the elements are not linked as duplicates</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>
 </li>
 </ul>
@@ -534,11 +534,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <h4>getConsolidatedDuplicate</h4>
-<pre class="methodSignature">org.odpi.openmetadata.accessservices.stewardshipaction.metadataelements.ElementStub&nbsp;getConsolidatedDuplicate&#8203;(java.lang.String&nbsp;userId,
-                                                                                                             java.lang.String&nbsp;elementGUID)
-                                                                                                      throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                             org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                             org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature"><a href="../metadataelements/ElementStub.html" title="class in org.odpi.openmetadata.accessservices.stewardshipaction.metadataelements">ElementStub</a>&nbsp;getConsolidatedDuplicate&#8203;(java.lang.String&nbsp;userId,
+                                     java.lang.String&nbsp;elementGUID)
+                              throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                     <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                     <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Return details of the consolidated duplicate for a requested element.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -547,9 +547,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>header of consolidated duplicated or null if none</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid or the elements are not linked as duplicates</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing property server</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - security access problem</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid or the elements are not linked as duplicates</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>
 </li>
 </ul>
@@ -561,18 +561,18 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h4>removeConsolidatedDuplicate</h4>
 <pre class="methodSignature">void&nbsp;removeConsolidatedDuplicate&#8203;(java.lang.String&nbsp;userId,
                                  java.lang.String&nbsp;consolidatedDuplicateGUID)
-                          throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                 org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                 org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Remove the consolidated duplicate element and the links to the elements that contributed to its values.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>consolidatedDuplicateGUID</code> - unique identifier of element to remove</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid or the elements are not linked as duplicates</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem accessing property server</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - security access problem</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid or the elements are not linked as duplicates</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>
 </li>
 </ul>

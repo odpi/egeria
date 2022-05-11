@@ -557,7 +557,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <h4>GlossaryViewClient</h4>
 <pre>public&nbsp;GlossaryViewClient&#8203;(java.lang.String&nbsp;serverName,
                           java.lang.String&nbsp;serverPlatformRootURL)
-                   throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                   throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -565,7 +565,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <dd><code>serverPlatformRootURL</code> - the network address of the server running the OMAS REST servers</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - null URL or server name</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code></dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code></dd>
 </dl>
 </li>
 </ul>
@@ -579,7 +579,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
                           java.lang.String&nbsp;serverPlatformRootURL,
                           java.lang.String&nbsp;userId,
                           java.lang.String&nbsp;password)
-                   throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                   throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client that passes userId and password in each HTTP request.  This is the
  userId/password of the calling server.  The end user's userId is sent on each request.</div>
 <dl>
@@ -590,7 +590,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <dd><code>password</code> - caller's userId embedded in all HTTP requests</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - null URL or server name</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code></dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code></dd>
 </dl>
 </li>
 </ul>
@@ -613,7 +613,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <pre class="methodSignature">public&nbsp;java.util.List&lt;org.odpi.openmetadata.accessservices.glossaryview.rest.Glossary&gt;&nbsp;getAllGlossaries&#8203;(java.lang.String&nbsp;userId,
                                                                                                         java.lang.Integer&nbsp;from,
                                                                                                         java.lang.Integer&nbsp;size)
-                                                                                                 throws org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
+                                                                                                 throws <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                                                                         org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException,
                                                                                                         org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</pre>
 <div class="block">Extract all glossary definitions</div>
@@ -625,7 +625,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>EntityDetailResponse glossaries</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - if a problem occurs while serving the request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - if a problem occurs while serving the request</dd>
 <dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - if parameter validation fails</dd>
 <dd><code>org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</code> - if a problem occurs on the omas backend</dd>
 </dl>
@@ -640,7 +640,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <pre class="methodSignature">public&nbsp;java.util.List&lt;org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryTerm&gt;&nbsp;getAllGlossaryTerms&#8203;(java.lang.String&nbsp;userId,
                                                                                                                java.lang.Integer&nbsp;from,
                                                                                                                java.lang.Integer&nbsp;size)
-                                                                                                        throws org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
+                                                                                                        throws <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                                                                                org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException,
                                                                                                                org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</pre>
 <div class="block">Extract all glossaryTerms definitions</div>
@@ -652,7 +652,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>EntityDetailResponse glossaries</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - if a problem occurs while serving the request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - if a problem occurs while serving the request</dd>
 <dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - if parameter validation fails</dd>
 <dd><code>org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</code> - if a problem occurs on the omas backend</dd>
 </dl>
@@ -667,7 +667,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <pre class="methodSignature">public&nbsp;java.util.List&lt;org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryCategory&gt;&nbsp;getAllCategories&#8203;(java.lang.String&nbsp;userId,
                                                                                                                 java.lang.Integer&nbsp;from,
                                                                                                                 java.lang.Integer&nbsp;size)
-                                                                                                         throws org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
+                                                                                                         throws <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                                                                                 org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException,
                                                                                                                 org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</pre>
 <div class="block">Extract all categories definitions</div>
@@ -679,7 +679,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>EntityDetailResponse glossaries</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - if a problem occurs while serving the request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - if a problem occurs while serving the request</dd>
 <dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - if parameter validation fails</dd>
 <dd><code>org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</code> - if a problem occurs on the omas backend</dd>
 </dl>
@@ -693,7 +693,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <h4>getGlossary</h4>
 <pre class="methodSignature">public&nbsp;org.odpi.openmetadata.accessservices.glossaryview.rest.Glossary&nbsp;getGlossary&#8203;(java.lang.String&nbsp;userId,
                                                                                    java.lang.String&nbsp;glossaryGUID)
-                                                                            throws org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
+                                                                            throws <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                                                    org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException,
                                                                                    org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</pre>
 <div class="block">Extract a glossary definition</div>
@@ -704,7 +704,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>EntityDetailResponse glossary</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - if a problem occurs while serving the request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - if a problem occurs while serving the request</dd>
 <dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - if parameter validation fails</dd>
 <dd><code>org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</code> - if a problem occurs on the omas backend</dd>
 </dl>
@@ -718,7 +718,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <h4>getTermHomeGlossary</h4>
 <pre class="methodSignature">public&nbsp;org.odpi.openmetadata.accessservices.glossaryview.rest.Glossary&nbsp;getTermHomeGlossary&#8203;(java.lang.String&nbsp;userId,
                                                                                            java.lang.String&nbsp;termGUID)
-                                                                                    throws org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
+                                                                                    throws <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                                                            org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException,
                                                                                            org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</pre>
 <div class="block">Extract a term's home glossary</div>
@@ -729,7 +729,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>EntityDetailResponse glossary</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - if a problem occurs while serving the request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - if a problem occurs while serving the request</dd>
 <dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - if parameter validation fails</dd>
 <dd><code>org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</code> - if a problem occurs on the omas backend</dd>
 </dl>
@@ -743,7 +743,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <h4>getCategoryHomeGlossary</h4>
 <pre class="methodSignature">public&nbsp;org.odpi.openmetadata.accessservices.glossaryview.rest.Glossary&nbsp;getCategoryHomeGlossary&#8203;(java.lang.String&nbsp;userId,
                                                                                                java.lang.String&nbsp;categoryGUID)
-                                                                                        throws org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
+                                                                                        throws <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                                                                org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException,
                                                                                                org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</pre>
 <div class="block">Extract a category's home glossary</div>
@@ -754,7 +754,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>EntityDetailResponse glossary</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - if a problem occurs while serving the request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - if a problem occurs while serving the request</dd>
 <dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - if parameter validation fails</dd>
 <dd><code>org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</code> - if a problem occurs on the omas backend</dd>
 </dl>
@@ -770,7 +770,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
                                                                                                                                       java.lang.String&nbsp;glossaryGUID,
                                                                                                                                       java.lang.Integer&nbsp;from,
                                                                                                                                       java.lang.Integer&nbsp;size)
-                                                                                                                               throws org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
+                                                                                                                               throws <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                                                                                                       org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException,
                                                                                                                                       org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</pre>
 <div class="block">Extract a glossaries's external glossary links</div>
@@ -783,7 +783,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>EntityDetailResponse external glossary links</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - if a problem occurs while serving the request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - if a problem occurs while serving the request</dd>
 <dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - if parameter validation fails</dd>
 <dd><code>org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</code> - if a problem occurs on the omas backend</dd>
 </dl>
@@ -797,7 +797,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <h4>getCategory</h4>
 <pre class="methodSignature">public&nbsp;org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryCategory&nbsp;getCategory&#8203;(java.lang.String&nbsp;userId,
                                                                                            java.lang.String&nbsp;categoryGUID)
-                                                                                    throws org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
+                                                                                    throws <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                                                            org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException,
                                                                                            org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</pre>
 <div class="block">Extract a category definition</div>
@@ -808,7 +808,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>EntityDetailResponse category</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - if a problem occurs while serving the request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - if a problem occurs while serving the request</dd>
 <dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - if parameter validation fails</dd>
 <dd><code>org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</code> - if a problem occurs on the omas backend</dd>
 </dl>
@@ -824,7 +824,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
                                                                                                              java.lang.String&nbsp;glossaryGUID,
                                                                                                              java.lang.Integer&nbsp;from,
                                                                                                              java.lang.Integer&nbsp;size)
-                                                                                                      throws org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
+                                                                                                      throws <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                                                                              org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException,
                                                                                                              org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</pre>
 <div class="block">Extract categories within a glossary</div>
@@ -837,7 +837,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>EntityDetailResponse categories</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - if a problem occurs while serving the request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - if a problem occurs while serving the request</dd>
 <dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - if parameter validation fails</dd>
 <dd><code>org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</code> - if a problem occurs on the omas backend</dd>
 </dl>
@@ -853,7 +853,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
                                                                                                                 java.lang.String&nbsp;categoryGUID,
                                                                                                                 java.lang.Integer&nbsp;from,
                                                                                                                 java.lang.Integer&nbsp;size)
-                                                                                                         throws org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
+                                                                                                         throws <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                                                                                 org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException,
                                                                                                                 org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</pre>
 <div class="block">Extract subcategories of a category</div>
@@ -866,7 +866,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>EntityDetailResponse subcategories</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - if a problem occurs while serving the request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - if a problem occurs while serving the request</dd>
 <dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - if parameter validation fails</dd>
 <dd><code>org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</code> - if a problem occurs on the omas backend</dd>
 </dl>
@@ -882,7 +882,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
                                                                                                                                       java.lang.String&nbsp;categoryGUID,
                                                                                                                                       java.lang.Integer&nbsp;from,
                                                                                                                                       java.lang.Integer&nbsp;size)
-                                                                                                                               throws org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
+                                                                                                                               throws <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                                                                                                       org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException,
                                                                                                                                       org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</pre>
 <div class="block">Extract a category's external glossary links</div>
@@ -895,7 +895,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>EntityDetailResponse external glossary links</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - if a problem occurs while serving the request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - if a problem occurs while serving the request</dd>
 <dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - if parameter validation fails</dd>
 <dd><code>org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</code> - if a problem occurs on the omas backend</dd>
 </dl>
@@ -909,7 +909,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <h4>getTerm</h4>
 <pre class="methodSignature">public&nbsp;org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryTerm&nbsp;getTerm&#8203;(java.lang.String&nbsp;userId,
                                                                                    java.lang.String&nbsp;termGUID)
-                                                                            throws org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
+                                                                            throws <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                                                    org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException,
                                                                                    org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</pre>
 <div class="block">Extract a term definition</div>
@@ -920,7 +920,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>EntityDetailResponse term</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - if a problem occurs while serving the request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - if a problem occurs while serving the request</dd>
 <dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - if parameter validation fails</dd>
 <dd><code>org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</code> - if a problem occurs on the omas backend</dd>
 </dl>
@@ -936,7 +936,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
                                                                                                               java.lang.String&nbsp;glossaryGUID,
                                                                                                               java.lang.Integer&nbsp;from,
                                                                                                               java.lang.Integer&nbsp;size)
-                                                                                                       throws org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
+                                                                                                       throws <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                                                                               org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException,
                                                                                                               org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</pre>
 <div class="block">Extract terms within a glossary</div>
@@ -949,7 +949,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>EntityDetailResponse terms</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - if a problem occurs while serving the request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - if a problem occurs while serving the request</dd>
 <dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - if parameter validation fails</dd>
 <dd><code>org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</code> - if a problem occurs on the omas backend</dd>
 </dl>
@@ -965,7 +965,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
                                                                                                               java.lang.String&nbsp;categoryGUID,
                                                                                                               java.lang.Integer&nbsp;from,
                                                                                                               java.lang.Integer&nbsp;size)
-                                                                                                       throws org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
+                                                                                                       throws <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                                                                               org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException,
                                                                                                               org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</pre>
 <div class="block">Extract terms within a category</div>
@@ -978,7 +978,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>EntityDetailResponse terms</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - if a problem occurs while serving the request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - if a problem occurs while serving the request</dd>
 <dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - if parameter validation fails</dd>
 <dd><code>org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</code> - if a problem occurs on the omas backend</dd>
 </dl>
@@ -994,7 +994,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
                                                                                                                                   java.lang.String&nbsp;termGUID,
                                                                                                                                   java.lang.Integer&nbsp;from,
                                                                                                                                   java.lang.Integer&nbsp;size)
-                                                                                                                           throws org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
+                                                                                                                           throws <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                                                                                                   org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException,
                                                                                                                                   org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</pre>
 <div class="block">Extract a term's external glossary links</div>
@@ -1007,7 +1007,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>EntityDetailResponse external glossary links</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - if a problem occurs while serving the request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - if a problem occurs while serving the request</dd>
 <dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - if parameter validation fails</dd>
 <dd><code>org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</code> - if a problem occurs on the omas backend</dd>
 </dl>
@@ -1023,7 +1023,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
                                                                                                            java.lang.String&nbsp;termGUID,
                                                                                                            java.lang.Integer&nbsp;from,
                                                                                                            java.lang.Integer&nbsp;size)
-                                                                                                    throws org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
+                                                                                                    throws <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                                                                            org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException,
                                                                                                            org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</pre>
 <div class="block">Extract related terms</div>
@@ -1036,7 +1036,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>EntityDetailResponse terms</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - if a problem occurs while serving the request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - if a problem occurs while serving the request</dd>
 <dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - if parameter validation fails</dd>
 <dd><code>org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</code> - if a problem occurs on the omas backend</dd>
 </dl>
@@ -1052,7 +1052,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
                                                                                                        java.lang.String&nbsp;termGUID,
                                                                                                        java.lang.Integer&nbsp;from,
                                                                                                        java.lang.Integer&nbsp;size)
-                                                                                                throws org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
+                                                                                                throws <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                                                                        org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException,
                                                                                                        org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</pre>
 <div class="block">Extract synonyms</div>
@@ -1065,7 +1065,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>EntityDetailResponse terms</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - if a problem occurs while serving the request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - if a problem occurs while serving the request</dd>
 <dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - if parameter validation fails</dd>
 <dd><code>org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</code> - if a problem occurs on the omas backend</dd>
 </dl>
@@ -1081,7 +1081,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
                                                                                                        java.lang.String&nbsp;termGUID,
                                                                                                        java.lang.Integer&nbsp;from,
                                                                                                        java.lang.Integer&nbsp;size)
-                                                                                                throws org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
+                                                                                                throws <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                                                                        org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException,
                                                                                                        org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</pre>
 <div class="block">Extract antonyms</div>
@@ -1094,7 +1094,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>EntityDetailResponse terms</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - if a problem occurs while serving the request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - if a problem occurs while serving the request</dd>
 <dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - if parameter validation fails</dd>
 <dd><code>org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</code> - if a problem occurs on the omas backend</dd>
 </dl>
@@ -1110,7 +1110,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
                                                                                                              java.lang.String&nbsp;termGUID,
                                                                                                              java.lang.Integer&nbsp;from,
                                                                                                              java.lang.Integer&nbsp;size)
-                                                                                                      throws org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
+                                                                                                      throws <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                                                                              org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException,
                                                                                                              org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</pre>
 <div class="block">Extract preferred terms</div>
@@ -1123,7 +1123,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>EntityDetailResponse terms</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - if a problem occurs while serving the request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - if a problem occurs while serving the request</dd>
 <dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - if parameter validation fails</dd>
 <dd><code>org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</code> - if a problem occurs on the omas backend</dd>
 </dl>
@@ -1139,7 +1139,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
                                                                                                                java.lang.String&nbsp;termGUID,
                                                                                                                java.lang.Integer&nbsp;from,
                                                                                                                java.lang.Integer&nbsp;size)
-                                                                                                        throws org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
+                                                                                                        throws <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                                                                                org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException,
                                                                                                                org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</pre>
 <div class="block">Extract replacement terms</div>
@@ -1152,7 +1152,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>EntityDetailResponse terms</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - if a problem occurs while serving the request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - if a problem occurs while serving the request</dd>
 <dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - if parameter validation fails</dd>
 <dd><code>org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</code> - if a problem occurs on the omas backend</dd>
 </dl>
@@ -1168,7 +1168,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
                                                                                                            java.lang.String&nbsp;termGUID,
                                                                                                            java.lang.Integer&nbsp;from,
                                                                                                            java.lang.Integer&nbsp;size)
-                                                                                                    throws org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
+                                                                                                    throws <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                                                                            org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException,
                                                                                                            org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</pre>
 <div class="block">Extract translations</div>
@@ -1181,7 +1181,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>EntityDetailResponse terms</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - if a problem occurs while serving the request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - if a problem occurs while serving the request</dd>
 <dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - if parameter validation fails</dd>
 <dd><code>org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</code> - if a problem occurs on the omas backend</dd>
 </dl>
@@ -1197,7 +1197,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
                                                                                                   java.lang.String&nbsp;termGUID,
                                                                                                   java.lang.Integer&nbsp;from,
                                                                                                   java.lang.Integer&nbsp;size)
-                                                                                           throws org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
+                                                                                           throws <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                                                                   org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException,
                                                                                                   org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</pre>
 <div class="block">Extract "is-a" terms</div>
@@ -1210,7 +1210,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>EntityDetailResponse terms</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - if a problem occurs while serving the request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - if a problem occurs while serving the request</dd>
 <dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - if parameter validation fails</dd>
 <dd><code>org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</code> - if a problem occurs on the omas backend</dd>
 </dl>
@@ -1226,7 +1226,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
                                                                                                           java.lang.String&nbsp;termGUID,
                                                                                                           java.lang.Integer&nbsp;from,
                                                                                                           java.lang.Integer&nbsp;size)
-                                                                                                   throws org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
+                                                                                                   throws <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                                                                           org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException,
                                                                                                           org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</pre>
 <div class="block">Extract valid values</div>
@@ -1239,7 +1239,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>EntityDetailResponse terms</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - if a problem occurs while serving the request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - if a problem occurs while serving the request</dd>
 <dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - if parameter validation fails</dd>
 <dd><code>org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</code> - if a problem occurs on the omas backend</dd>
 </dl>
@@ -1255,7 +1255,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
                                                                                                              java.lang.String&nbsp;termGUID,
                                                                                                              java.lang.Integer&nbsp;from,
                                                                                                              java.lang.Integer&nbsp;size)
-                                                                                                      throws org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
+                                                                                                      throws <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                                                                              org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException,
                                                                                                              org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</pre>
 <div class="block">Extract "used-in-contexts" terms</div>
@@ -1268,7 +1268,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>EntityDetailResponse terms</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - if a problem occurs while serving the request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - if a problem occurs while serving the request</dd>
 <dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - if parameter validation fails</dd>
 <dd><code>org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</code> - if a problem occurs on the omas backend</dd>
 </dl>
@@ -1284,7 +1284,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
                                                                                                                java.lang.String&nbsp;termGUID,
                                                                                                                java.lang.Integer&nbsp;from,
                                                                                                                java.lang.Integer&nbsp;size)
-                                                                                                        throws org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
+                                                                                                        throws <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                                                                                org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException,
                                                                                                                org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</pre>
 <div class="block">Extract assigned elements</div>
@@ -1297,7 +1297,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>EntityDetailResponse terms</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - if a problem occurs while serving the request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - if a problem occurs while serving the request</dd>
 <dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - if parameter validation fails</dd>
 <dd><code>org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</code> - if a problem occurs on the omas backend</dd>
 </dl>
@@ -1313,7 +1313,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
                                                                                                          java.lang.String&nbsp;termGUID,
                                                                                                          java.lang.Integer&nbsp;from,
                                                                                                          java.lang.Integer&nbsp;size)
-                                                                                                  throws org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
+                                                                                                  throws <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                                                                          org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException,
                                                                                                          org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</pre>
 <div class="block">Extract attributes</div>
@@ -1326,7 +1326,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>EntityDetailResponse terms</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - if a problem occurs while serving the request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - if a problem occurs while serving the request</dd>
 <dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - if parameter validation fails</dd>
 <dd><code>org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</code> - if a problem occurs on the omas backend</dd>
 </dl>
@@ -1342,7 +1342,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
                                                                                                        java.lang.String&nbsp;termGUID,
                                                                                                        java.lang.Integer&nbsp;from,
                                                                                                        java.lang.Integer&nbsp;size)
-                                                                                                throws org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
+                                                                                                throws <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                                                                        org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException,
                                                                                                        org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</pre>
 <div class="block">Extract subtypes</div>
@@ -1355,7 +1355,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>EntityDetailResponse terms</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - if a problem occurs while serving the request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - if a problem occurs while serving the request</dd>
 <dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - if parameter validation fails</dd>
 <dd><code>org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</code> - if a problem occurs on the omas backend</dd>
 </dl>
@@ -1371,7 +1371,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
                                                                                                     java.lang.String&nbsp;termGUID,
                                                                                                     java.lang.Integer&nbsp;from,
                                                                                                     java.lang.Integer&nbsp;size)
-                                                                                             throws org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
+                                                                                             throws <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                                                                     org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException,
                                                                                                     org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</pre>
 <div class="block">Extract types</div>
@@ -1384,7 +1384,7 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>EntityDetailResponse terms</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - if a problem occurs while serving the request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - if a problem occurs while serving the request</dd>
 <dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - if parameter validation fails</dd>
 <dd><code>org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</code> - if a problem occurs on the omas backend</dd>
 </dl>
@@ -1401,12 +1401,12 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
                                                                                                                           java.lang.String&nbsp;serverName,
                                                                                                                           java.lang.String&nbsp;userId,
                                                                                                                           java.lang.String&nbsp;entityGUID)
-                                                                                                                   throws org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
+                                                                                                                   throws <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                                                                                           org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException,
                                                                                                                           org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</pre>
 <dl>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code></dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code></dd>
 <dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code></dd>
 <dd><code>org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</code></dd>
 </dl>
@@ -1425,12 +1425,12 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
                                                                                                                                           java.lang.String&nbsp;entityGUID,
                                                                                                                                           java.lang.Integer&nbsp;from,
                                                                                                                                           java.lang.Integer&nbsp;size)
-                                                                                                                                   throws org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
+                                                                                                                                   throws <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                                                                                                           org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException,
                                                                                                                                           org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</pre>
 <dl>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code></dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code></dd>
 <dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code></dd>
 <dd><code>org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</code></dd>
 </dl>
@@ -1448,12 +1448,12 @@ extends org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient</pre>
                                                                                                                                    java.lang.String&nbsp;userId,
                                                                                                                                    java.lang.Integer&nbsp;from,
                                                                                                                                    java.lang.Integer&nbsp;size)
-                                                                                                                            throws org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
+                                                                                                                            throws <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                                                                                                    org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException,
                                                                                                                                    org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</pre>
 <dl>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code></dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code></dd>
 <dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code></dd>
 <dd><code>org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException</code></dd>
 </dl>

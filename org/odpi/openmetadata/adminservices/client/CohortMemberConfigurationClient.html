@@ -225,7 +225,7 @@ extends <a href="OMAGServerConfigurationClient.html" title="class in org.odpi.op
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addCohortRegistration(java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.CohortTopicStructure,java.util.Map)">addCohortRegistration</a></span>&#8203;(java.lang.String&nbsp;cohortName,
-                     org.odpi.openmetadata.adminservices.configuration.properties.CohortTopicStructure&nbsp;cohortTopicStructure,
+                     <a href="../configuration/properties/CohortTopicStructure.html" title="enum in org.odpi.openmetadata.adminservices.configuration.properties">CohortTopicStructure</a>&nbsp;cohortTopicStructure,
                      java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;additionalProperties)</code></th>
 <td class="colLast">
 <div class="block">Enable registration of server to an open metadata repository cohort using the topic pattern specified by cohortTopicStructure.</div>
@@ -274,7 +274,7 @@ extends <a href="OMAGServerConfigurationClient.html" title="class in org.odpi.op
 </td>
 </tr>
 <tr id="i8" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.adminservices.properties.DedicatedTopicList</code></td>
+<td class="colFirst"><code><a href="../properties/DedicatedTopicList.html" title="class in org.odpi.openmetadata.adminservices.properties">DedicatedTopicList</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDedicatedCohortTopicNames(java.lang.String)">getDedicatedCohortTopicNames</a></span>&#8203;(java.lang.String&nbsp;cohortName)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the current topic names for the three dedicated topics of the cohort.</div>
@@ -322,7 +322,7 @@ extends <a href="OMAGServerConfigurationClient.html" title="class in org.odpi.op
 <tr id="i14" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setCohortConfig(java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.CohortConfig)">setCohortConfig</a></span>&#8203;(java.lang.String&nbsp;cohortName,
-               org.odpi.openmetadata.adminservices.configuration.properties.CohortConfig&nbsp;cohortConfig)</code></th>
+               <a href="../configuration/properties/CohortConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">CohortConfig</a>&nbsp;cohortConfig)</code></th>
 <td class="colLast">
 <div class="block">Set up the configuration properties for a cohort.</div>
 </td>
@@ -343,7 +343,7 @@ extends <a href="OMAGServerConfigurationClient.html" title="class in org.odpi.op
 </tr>
 <tr id="i17" class="rowColor">
 <td class="colFirst"><code>protected void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setLocalRepositoryConfig(org.odpi.openmetadata.adminservices.configuration.properties.LocalRepositoryConfig)">setLocalRepositoryConfig</a></span>&#8203;(org.odpi.openmetadata.adminservices.configuration.properties.LocalRepositoryConfig&nbsp;localRepositoryConfig)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setLocalRepositoryConfig(org.odpi.openmetadata.adminservices.configuration.properties.LocalRepositoryConfig)">setLocalRepositoryConfig</a></span>&#8203;(<a href="../configuration/properties/LocalRepositoryConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">LocalRepositoryConfig</a>&nbsp;localRepositoryConfig)</code></th>
 <td class="colLast">
 <div class="block">Set up the configuration for the local repository in one operation.</div>
 </td>
@@ -474,7 +474,7 @@ extends <a href="OMAGServerConfigurationClient.html" title="class in org.odpi.op
 <li class="blockList">
 <h4>addCohortRegistration</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;addCohortRegistration&#8203;(java.lang.String&nbsp;cohortName,
-                                  org.odpi.openmetadata.adminservices.configuration.properties.CohortTopicStructure&nbsp;cohortTopicStructure,
+                                  <a href="../configuration/properties/CohortTopicStructure.html" title="enum in org.odpi.openmetadata.adminservices.configuration.properties">CohortTopicStructure</a>&nbsp;cohortTopicStructure,
                                   java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;additionalProperties)
                            throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException,
                                   org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException,
@@ -528,10 +528,10 @@ extends <a href="OMAGServerConfigurationClient.html" title="class in org.odpi.op
 <ul class="blockList">
 <li class="blockList">
 <h4>getDedicatedCohortTopicNames</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.adminservices.properties.DedicatedTopicList&nbsp;getDedicatedCohortTopicNames&#8203;(java.lang.String&nbsp;cohortName)
-                                                                                               throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException,
-                                                                                                      org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException,
-                                                                                                      org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</pre>
+<pre class="methodSignature">public&nbsp;<a href="../properties/DedicatedTopicList.html" title="class in org.odpi.openmetadata.adminservices.properties">DedicatedTopicList</a>&nbsp;getDedicatedCohortTopicNames&#8203;(java.lang.String&nbsp;cohortName)
+                                                throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException,
+                                                       org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException,
+                                                       org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</pre>
 <div class="block">Retrieve the current topic names for the three dedicated topics of the cohort.  This call can only be made once the cohort
  is set up with addCohortRegistration().</div>
 <dl>
@@ -649,7 +649,7 @@ extends <a href="OMAGServerConfigurationClient.html" title="class in org.odpi.op
 <li class="blockList">
 <h4>setCohortConfig</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;setCohortConfig&#8203;(java.lang.String&nbsp;cohortName,
-                            org.odpi.openmetadata.adminservices.configuration.properties.CohortConfig&nbsp;cohortConfig)
+                            <a href="../configuration/properties/CohortConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">CohortConfig</a>&nbsp;cohortConfig)
                      throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException,
                             org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException,
                             org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</pre>
@@ -754,7 +754,7 @@ extends <a href="OMAGServerConfigurationClient.html" title="class in org.odpi.op
 <ul class="blockList">
 <li class="blockList">
 <h4>setLocalRepositoryConfig</h4>
-<pre class="methodSignature">protected&nbsp;void&nbsp;setLocalRepositoryConfig&#8203;(org.odpi.openmetadata.adminservices.configuration.properties.LocalRepositoryConfig&nbsp;localRepositoryConfig)
+<pre class="methodSignature">protected&nbsp;void&nbsp;setLocalRepositoryConfig&#8203;(<a href="../configuration/properties/LocalRepositoryConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">LocalRepositoryConfig</a>&nbsp;localRepositoryConfig)
                                  throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException,
                                         org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException,
                                         org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</pre>

@@ -169,13 +169,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
              boolean&nbsp;infrastructureManagerIsHome,
              java.lang.String&nbsp;itAssetGUID,
              java.lang.String&nbsp;destinationGUID,
-             org.odpi.openmetadata.accessservices.itinfrastructure.properties.DeploymentProperties&nbsp;deploymentProperties)</code></th>
+             <a href="../properties/DeploymentProperties.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.properties">DeploymentProperties</a>&nbsp;deploymentProperties)</code></th>
 <td class="colLast">
 <div class="block">Create a relationship that represents the deployment of an IT infrastructure asset to a specific deployment destination (another asset).</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
-<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.DeploymentElement&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/DeploymentElement.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements">DeploymentElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDeployedITAssets(java.lang.String,java.lang.String,java.util.Date,int,int)">getDeployedITAssets</a></span>&#8203;(java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;destinationGUID,
                    java.util.Date&nbsp;effectiveTime,
@@ -186,7 +186,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </td>
 </tr>
 <tr id="i3" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.DeploymentElement&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/DeploymentElement.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements">DeploymentElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDeploymentDestinations(java.lang.String,java.lang.String,java.util.Date,int,int)">getDeploymentDestinations</a></span>&#8203;(java.lang.String&nbsp;userId,
                          java.lang.String&nbsp;itAssetGUID,
                          java.util.Date&nbsp;effectiveTime,
@@ -203,7 +203,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                        java.lang.String&nbsp;infrastructureManagerName,
                        java.lang.String&nbsp;deploymentGUID,
                        boolean&nbsp;isMergeUpdate,
-                       org.odpi.openmetadata.accessservices.itinfrastructure.properties.DeploymentProperties&nbsp;deploymentProperties)</code></th>
+                       <a href="../properties/DeploymentProperties.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.properties">DeploymentProperties</a>&nbsp;deploymentProperties)</code></th>
 <td class="colLast">
 <div class="block">Update a deployment relationship.</div>
 </td>
@@ -237,10 +237,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                    boolean&nbsp;infrastructureManagerIsHome,
                    java.lang.String&nbsp;itAssetGUID,
                    java.lang.String&nbsp;destinationGUID,
-                   org.odpi.openmetadata.accessservices.itinfrastructure.properties.DeploymentProperties&nbsp;deploymentProperties)
-            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                   org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                   org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                   <a href="../properties/DeploymentProperties.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.properties">DeploymentProperties</a>&nbsp;deploymentProperties)
+            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                   <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                   <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Create a relationship that represents the deployment of an IT infrastructure asset to a specific deployment destination (another asset).</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -252,9 +252,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>destinationGUID</code> - unique identifier of the destination where the asset is being deployed to</dd>
 <dd><code>deploymentProperties</code> - relationship properties</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
 </dl>
 </li>
 </ul>
@@ -269,10 +269,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                              java.lang.String&nbsp;infrastructureManagerName,
                              java.lang.String&nbsp;deploymentGUID,
                              boolean&nbsp;isMergeUpdate,
-                             org.odpi.openmetadata.accessservices.itinfrastructure.properties.DeploymentProperties&nbsp;deploymentProperties)
-                      throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                             org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                             org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                             <a href="../properties/DeploymentProperties.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.properties">DeploymentProperties</a>&nbsp;deploymentProperties)
+                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                             <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                             <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Update a deployment relationship.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -284,9 +284,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                                   matching names, or should the entire properties of the instance be replaced?</dd>
 <dd><code>deploymentProperties</code> - properties for the relationship</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
 </dl>
 </li>
 </ul>
@@ -302,9 +302,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                      java.lang.String&nbsp;itAssetGUID,
                      java.lang.String&nbsp;destinationGUID,
                      java.util.Date&nbsp;effectiveTime)
-              throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                     org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                     org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+              throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                     <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                     <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Remove a deployment relationship.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -315,9 +315,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>destinationGUID</code> - unique identifier of the destination where the asset is being deployed to</dd>
 <dd><code>effectiveTime</code> - time when the deployment is effective</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
 </dl>
 </li>
 </ul>
@@ -327,14 +327,14 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <h4>getDeployedITAssets</h4>
-<pre class="methodSignature">java.util.List&lt;org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.DeploymentElement&gt;&nbsp;getDeployedITAssets&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                             java.lang.String&nbsp;destinationGUID,
-                                                                                                                             java.util.Date&nbsp;effectiveTime,
-                                                                                                                             int&nbsp;startFrom,
-                                                                                                                             int&nbsp;pageSize)
-                                                                                                                      throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                             org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                             org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">java.util.List&lt;<a href="../metadataelements/DeploymentElement.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements">DeploymentElement</a>&gt;&nbsp;getDeployedITAssets&#8203;(java.lang.String&nbsp;userId,
+                                                      java.lang.String&nbsp;destinationGUID,
+                                                      java.util.Date&nbsp;effectiveTime,
+                                                      int&nbsp;startFrom,
+                                                      int&nbsp;pageSize)
+                                               throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                      <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                      <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Return the list of assets deployed on a particular destination.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -346,9 +346,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of matching metadata elements</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
 </dl>
 </li>
 </ul>
@@ -358,14 +358,14 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockListLast">
 <li class="blockList">
 <h4>getDeploymentDestinations</h4>
-<pre class="methodSignature">java.util.List&lt;org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.DeploymentElement&gt;&nbsp;getDeploymentDestinations&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                                   java.lang.String&nbsp;itAssetGUID,
-                                                                                                                                   java.util.Date&nbsp;effectiveTime,
-                                                                                                                                   int&nbsp;startFrom,
-                                                                                                                                   int&nbsp;pageSize)
-                                                                                                                            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                                   org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                                   org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">java.util.List&lt;<a href="../metadataelements/DeploymentElement.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements">DeploymentElement</a>&gt;&nbsp;getDeploymentDestinations&#8203;(java.lang.String&nbsp;userId,
+                                                            java.lang.String&nbsp;itAssetGUID,
+                                                            java.util.Date&nbsp;effectiveTime,
+                                                            int&nbsp;startFrom,
+                                                            int&nbsp;pageSize)
+                                                     throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                            <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                            <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Return the list of destinations that a particular IT infrastructure asset is deployed to.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -377,9 +377,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of matching metadata elements</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
 </dl>
 </li>
 </ul>

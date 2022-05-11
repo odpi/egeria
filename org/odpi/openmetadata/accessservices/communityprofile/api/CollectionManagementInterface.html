@@ -177,7 +177,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
             java.lang.String&nbsp;displayName,
             java.lang.String&nbsp;description,
             java.lang.String&nbsp;collectionUse,
-            org.odpi.openmetadata.accessservices.communityprofile.properties.CollectionOrder&nbsp;collectionOrder,
+            <a href="../properties/CollectionOrder.html" title="enum in org.odpi.openmetadata.accessservices.communityprofile.properties">CollectionOrder</a>&nbsp;collectionOrder,
             java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;additionalProperties)</code></th>
 <td class="colLast">
 <div class="block">Create a collection that acts like a folder with an order.</div>
@@ -213,7 +213,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </td>
 </tr>
 <tr id="i6" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.accessservices.communityprofile.metadataelements.CollectionElement</code></td>
+<td class="colFirst"><code><a href="../metadataelements/CollectionElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">CollectionElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getCollection(java.lang.String,java.lang.String)">getCollection</a></span>&#8203;(java.lang.String&nbsp;userId,
              java.lang.String&nbsp;collectionGUID)</code></th>
 <td class="colLast">
@@ -221,7 +221,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </td>
 </tr>
 <tr id="i7" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.communityprofile.metadataelements.CollectionElement&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/CollectionElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">CollectionElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getCollections(java.lang.String,java.lang.String,int,int)">getCollections</a></span>&#8203;(java.lang.String&nbsp;userId,
               java.lang.String&nbsp;parentGUID,
               int&nbsp;startFrom,
@@ -253,13 +253,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <h4>getCollections</h4>
-<pre class="methodSignature">java.util.List&lt;org.odpi.openmetadata.accessservices.communityprofile.metadataelements.CollectionElement&gt;&nbsp;getCollections&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                        java.lang.String&nbsp;parentGUID,
-                                                                                                                        int&nbsp;startFrom,
-                                                                                                                        int&nbsp;pageSize)
-                                                                                                                 throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                        org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                                                                                                                        org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+<pre class="methodSignature">java.util.List&lt;<a href="../metadataelements/CollectionElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">CollectionElement</a>&gt;&nbsp;getCollections&#8203;(java.lang.String&nbsp;userId,
+                                                 java.lang.String&nbsp;parentGUID,
+                                                 int&nbsp;startFrom,
+                                                 int&nbsp;pageSize)
+                                          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                                                 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Returns the list of collections that are linked off of the supplied element.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -271,9 +271,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>a list of collections</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem retrieving information from the property server(s).</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </li>
 </ul>
@@ -283,11 +283,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <h4>getCollection</h4>
-<pre class="methodSignature">org.odpi.openmetadata.accessservices.communityprofile.metadataelements.CollectionElement&nbsp;getCollection&#8203;(java.lang.String&nbsp;userId,
-                                                                                                       java.lang.String&nbsp;collectionGUID)
-                                                                                                throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                       org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                                                                                                       org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+<pre class="methodSignature"><a href="../metadataelements/CollectionElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">CollectionElement</a>&nbsp;getCollection&#8203;(java.lang.String&nbsp;userId,
+                                java.lang.String&nbsp;collectionGUID)
+                         throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                                <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Return the properties of a specific collection.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -296,9 +296,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>collection properties</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem retrieving information from the property server(s).</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </li>
 </ul>
@@ -314,9 +314,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                                   java.lang.String&nbsp;description,
                                   java.lang.String&nbsp;collectionUse,
                                   java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;additionalProperties)
-                           throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                  org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                                  org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+                           throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                  <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                                  <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Create a new generic collection.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -329,9 +329,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the newly created Collection</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem retrieving information from the property server(s).</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </li>
 </ul>
@@ -346,11 +346,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                               java.lang.String&nbsp;displayName,
                               java.lang.String&nbsp;description,
                               java.lang.String&nbsp;collectionUse,
-                              org.odpi.openmetadata.accessservices.communityprofile.properties.CollectionOrder&nbsp;collectionOrder,
+                              <a href="../properties/CollectionOrder.html" title="enum in org.odpi.openmetadata.accessservices.communityprofile.properties">CollectionOrder</a>&nbsp;collectionOrder,
                               java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;additionalProperties)
-                       throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                              org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                              org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+                       throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                              <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                              <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Create a collection that acts like a folder with an order.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -364,9 +364,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the newly created Collection</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem retrieving information from the property server(s).</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </li>
 </ul>
@@ -382,9 +382,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                            java.lang.String&nbsp;description,
                            java.lang.String&nbsp;collectionUse,
                            java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;additionalProperties)
-                    throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                           org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                           org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                           <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                           <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Create a collection that acts like a set (this does not allow duplicate entries).</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -397,9 +397,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the newly created Collection</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem retrieving information from the property server(s).</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </li>
 </ul>
@@ -413,9 +413,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                       java.lang.String&nbsp;collectionGUID,
                       java.lang.String&nbsp;parentGUID,
                       boolean&nbsp;makeAnchor)
-               throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                      org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                      org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+               throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                      <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                      <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Connect an existing collection to an anchor point.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -424,9 +424,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>parentGUID</code> - unique identifier of referenceable object that the collection should be attached to</dd>
 <dd><code>makeAnchor</code> - like the lifecycle of the collection to that of the parent so that if the parent is deleted, so is the collection</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem retrieving information from the property server(s).</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </li>
 </ul>
@@ -439,9 +439,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre class="methodSignature">void&nbsp;detachCollection&#8203;(java.lang.String&nbsp;userId,
                       java.lang.String&nbsp;collectionGUID,
                       java.lang.String&nbsp;parentGUID)
-               throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                      org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                      org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+               throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                      <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                      <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Detach an existing collection from an element.  If the collection is anchored to the element, it is deleted.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -449,9 +449,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>collectionGUID</code> - unique identifier of the collection.</dd>
 <dd><code>parentGUID</code> - unique identifier of referenceable object that the collection should be attached to.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem retrieving information from the property server(s).</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </li>
 </ul>
@@ -463,9 +463,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h4>deleteCollection</h4>
 <pre class="methodSignature">void&nbsp;deleteCollection&#8203;(java.lang.String&nbsp;userId,
                       java.lang.String&nbsp;collectionGUID)
-               throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                      org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                      org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+               throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                      <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                      <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Delete a collection.  It is detected from all parent elements.  If members are anchored to the collection
  then they are also deleted.</div>
 <dl>
@@ -473,9 +473,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>userId</code> - userId of user making request.</dd>
 <dd><code>collectionGUID</code> - unique identifier of the collection.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem retrieving information from the property server(s).</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </li>
 </ul>

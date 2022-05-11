@@ -178,7 +178,7 @@ implements <a href="../api/MyPersonalProfileInterface.html" title="interface in 
                    java.lang.String&nbsp;serverPlatformURLRoot,
                    java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;password,
-                   org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)</code></th>
+                   <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></th>
 <td class="colLast">
 <div class="block">Create a new client that passes userId and password in each HTTP request.</div>
 </td>
@@ -186,7 +186,7 @@ implements <a href="../api/MyPersonalProfileInterface.html" title="interface in 
 <tr class="rowColor">
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.client.rest.CommunityProfileRESTClient,int)">MyProfileManagement</a></span>&#8203;(java.lang.String&nbsp;serverName,
                    java.lang.String&nbsp;serverPlatformURLRoot,
-                   <a href="rest/CommunityProfileRESTClient.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client.rest">CommunityProfileRESTClient</a>&nbsp;restClient,
+                   org.odpi.openmetadata.accessservices.communityprofile.client.rest.CommunityProfileRESTClient&nbsp;restClient,
                    int&nbsp;maxPageSize)</code></th>
 <td class="colLast">
 <div class="block">Create a new client that passes userId and password in each HTTP request.</div>
@@ -195,7 +195,7 @@ implements <a href="../api/MyPersonalProfileInterface.html" title="interface in 
 <tr class="altColor">
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">MyProfileManagement</a></span>&#8203;(java.lang.String&nbsp;serverName,
                    java.lang.String&nbsp;serverPlatformURLRoot,
-                   org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)</code></th>
+                   <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></th>
 <td class="colLast">
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 </td>
@@ -221,7 +221,7 @@ implements <a href="../api/MyPersonalProfileInterface.html" title="interface in 
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addMyContactMethod(java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethodType,java.lang.String,java.lang.String)">addMyContactMethod</a></span>&#8203;(java.lang.String&nbsp;userId,
-                  org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethodType&nbsp;type,
+                  <a href="../properties/ContactMethodType.html" title="enum in org.odpi.openmetadata.accessservices.communityprofile.properties">ContactMethodType</a>&nbsp;type,
                   java.lang.String&nbsp;service,
                   java.lang.String&nbsp;value)</code></th>
 <td class="colLast">
@@ -240,7 +240,7 @@ implements <a href="../api/MyPersonalProfileInterface.html" title="interface in 
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#deleteMyContactMethod(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethodType)">deleteMyContactMethod</a></span>&#8203;(java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;contactMethodGUID,
-                     org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethodType&nbsp;type)</code></th>
+                     <a href="../properties/ContactMethodType.html" title="enum in org.odpi.openmetadata.accessservices.communityprofile.properties">ContactMethodType</a>&nbsp;type)</code></th>
 <td class="colLast">
 <div class="block">Remove an obsolete contact method from the requesting user's profile.</div>
 </td>
@@ -254,7 +254,7 @@ implements <a href="../api/MyPersonalProfileInterface.html" title="interface in 
 </td>
 </tr>
 <tr id="i4" class="altColor">
-<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.communityprofile.metadataelements.AssetCollectionMember&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/AssetCollectionMember.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">AssetCollectionMember</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMyAssets(java.lang.String,int,int)">getMyAssets</a></span>&#8203;(java.lang.String&nbsp;userId,
            int&nbsp;startFrom,
            int&nbsp;pageSize)</code></th>
@@ -263,7 +263,7 @@ implements <a href="../api/MyPersonalProfileInterface.html" title="interface in 
 </td>
 </tr>
 <tr id="i5" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ContactMethodElement&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/ContactMethodElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ContactMethodElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMyContactDetails(java.lang.String)">getMyContactDetails</a></span>&#8203;(java.lang.String&nbsp;UserId)</code></th>
 <td class="colLast">
 <div class="block">Return the list of contact methods for this user.</div>
@@ -277,7 +277,7 @@ implements <a href="../api/MyPersonalProfileInterface.html" title="interface in 
 </td>
 </tr>
 <tr id="i7" class="rowColor">
-<td class="colFirst"><code>org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonalProfileUniverse</code></td>
+<td class="colFirst"><code><a href="../metadataelements/PersonalProfileUniverse.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">PersonalProfileUniverse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMyProfile(java.lang.String)">getMyProfile</a></span>&#8203;(java.lang.String&nbsp;userId)</code></th>
 <td class="colLast">
 <div class="block">Return the profile for this user.</div>
@@ -336,14 +336,14 @@ implements <a href="../api/MyPersonalProfileInterface.html" title="interface in 
 <h4>MyProfileManagement</h4>
 <pre>public&nbsp;MyProfileManagement&#8203;(java.lang.String&nbsp;serverName,
                            java.lang.String&nbsp;serverPlatformURLRoot)
-                    throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server to connect to</dd>
 <dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST servers</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - bad input parameters</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - bad input parameters</dd>
 </dl>
 </li>
 </ul>
@@ -355,8 +355,8 @@ implements <a href="../api/MyPersonalProfileInterface.html" title="interface in 
 <h4>MyProfileManagement</h4>
 <pre>public&nbsp;MyProfileManagement&#8203;(java.lang.String&nbsp;serverName,
                            java.lang.String&nbsp;serverPlatformURLRoot,
-                           org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)
-                    throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                           <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)
+                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -364,7 +364,7 @@ implements <a href="../api/MyPersonalProfileInterface.html" title="interface in 
 <dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST servers</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
  REST API calls.</dd>
 </dl>
 </li>
@@ -379,7 +379,7 @@ implements <a href="../api/MyPersonalProfileInterface.html" title="interface in 
                            java.lang.String&nbsp;serverPlatformURLRoot,
                            java.lang.String&nbsp;userId,
                            java.lang.String&nbsp;password)
-                    throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client that passes userId and password in each HTTP request.  This is the
  userId/password of the calling server.  The end user's userId is sent on each request.</div>
 <dl>
@@ -389,7 +389,7 @@ implements <a href="../api/MyPersonalProfileInterface.html" title="interface in 
 <dd><code>userId</code> - caller's userId embedded in all HTTP requests</dd>
 <dd><code>password</code> - caller's userId embedded in all HTTP requests</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - bad input parameters</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - bad input parameters</dd>
 </dl>
 </li>
 </ul>
@@ -403,8 +403,8 @@ implements <a href="../api/MyPersonalProfileInterface.html" title="interface in 
                            java.lang.String&nbsp;serverPlatformURLRoot,
                            java.lang.String&nbsp;userId,
                            java.lang.String&nbsp;password,
-                           org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)
-                    throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                           <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)
+                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client that passes userId and password in each HTTP request.  This is the
  userId/password of the calling server.  The end user's userId is sent on each request.</div>
 <dl>
@@ -415,7 +415,7 @@ implements <a href="../api/MyPersonalProfileInterface.html" title="interface in 
 <dd><code>password</code> - caller's userId embedded in all HTTP requests</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - bad input parameters</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - bad input parameters</dd>
 </dl>
 </li>
 </ul>
@@ -427,9 +427,9 @@ implements <a href="../api/MyPersonalProfileInterface.html" title="interface in 
 <h4>MyProfileManagement</h4>
 <pre>public&nbsp;MyProfileManagement&#8203;(java.lang.String&nbsp;serverName,
                            java.lang.String&nbsp;serverPlatformURLRoot,
-                           <a href="rest/CommunityProfileRESTClient.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client.rest">CommunityProfileRESTClient</a>&nbsp;restClient,
+                           org.odpi.openmetadata.accessservices.communityprofile.client.rest.CommunityProfileRESTClient&nbsp;restClient,
                            int&nbsp;maxPageSize)
-                    throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client that passes userId and password in each HTTP request.  This is the
  userId/password of the calling server.  The end user's userId is sent on each request.</div>
 <dl>
@@ -439,7 +439,7 @@ implements <a href="../api/MyPersonalProfileInterface.html" title="interface in 
 <dd><code>restClient</code> - pre-initialized REST client</dd>
 <dd><code>maxPageSize</code> - pre-initialized parameter limit</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem with the information about the remote OMAS</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem with the information about the remote OMAS</dd>
 </dl>
 </li>
 </ul>
@@ -459,10 +459,10 @@ implements <a href="../api/MyPersonalProfileInterface.html" title="interface in 
 <ul class="blockList">
 <li class="blockList">
 <h4>getMyProfile</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonalProfileUniverse&nbsp;getMyProfile&#8203;(java.lang.String&nbsp;userId)
-                                                                                                            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                   org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                                                                                                                   org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+<pre class="methodSignature">public&nbsp;<a href="../metadataelements/PersonalProfileUniverse.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">PersonalProfileUniverse</a>&nbsp;getMyProfile&#8203;(java.lang.String&nbsp;userId)
+                                     throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                            <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                                            <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Return the profile for this user.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -472,9 +472,9 @@ implements <a href="../api/MyPersonalProfileInterface.html" title="interface in 
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>profile object</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the userId is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem retrieving information from the property server(s).</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the userId is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </li>
 </ul>
@@ -485,9 +485,9 @@ implements <a href="../api/MyPersonalProfileInterface.html" title="interface in 
 <li class="blockList">
 <h4>getMyKarmaPoints</h4>
 <pre class="methodSignature">public&nbsp;long&nbsp;getMyKarmaPoints&#8203;(java.lang.String&nbsp;userId)
-                      throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                             org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                             org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                             <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                             <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Return the total karma points for this user.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -497,9 +497,9 @@ implements <a href="../api/MyPersonalProfileInterface.html" title="interface in 
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>int</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the userId is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem retrieving information from the property server(s).</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the userId is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </li>
 </ul>
@@ -516,9 +516,9 @@ implements <a href="../api/MyPersonalProfileInterface.html" title="interface in 
                            java.lang.String&nbsp;jobTitle,
                            java.lang.String&nbsp;jobRoleDescription,
                            java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;additionalProperties)
-                    throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                           org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                           org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                           <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                           <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Create or update the profile for the requesting user.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -532,9 +532,9 @@ implements <a href="../api/MyPersonalProfileInterface.html" title="interface in 
 <dd><code>jobRoleDescription</code> - job description of the individual.</dd>
 <dd><code>additionalProperties</code> - additional properties about the individual.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem retrieving information from the property server(s).</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </li>
 </ul>
@@ -546,9 +546,9 @@ implements <a href="../api/MyPersonalProfileInterface.html" title="interface in 
 <h4>deleteMyProfile</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;deleteMyProfile&#8203;(java.lang.String&nbsp;userId,
                             java.lang.String&nbsp;qualifiedName)
-                     throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                            org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                            org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+                     throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                            <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                            <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Delete the profile for the requesting user.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -557,9 +557,9 @@ implements <a href="../api/MyPersonalProfileInterface.html" title="interface in 
 <dd><code>userId</code> - the name of the calling user.</dd>
 <dd><code>qualifiedName</code> - personnel/serial/unique employee number of the individual.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem retrieving information from the property server(s).</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </li>
 </ul>
@@ -569,10 +569,10 @@ implements <a href="../api/MyPersonalProfileInterface.html" title="interface in 
 <ul class="blockList">
 <li class="blockList">
 <h4>getMyContactDetails</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ContactMethodElement&gt;&nbsp;getMyContactDetails&#8203;(java.lang.String&nbsp;UserId)
-                                                                                                                                throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                                       org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                                                                                                                                       org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../metadataelements/ContactMethodElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ContactMethodElement</a>&gt;&nbsp;getMyContactDetails&#8203;(java.lang.String&nbsp;UserId)
+                                                         throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                                <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                                                                <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Return the list of contact methods for this user.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -582,9 +582,9 @@ implements <a href="../api/MyPersonalProfileInterface.html" title="interface in 
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of contact methods</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the userId is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem retrieving information from the property server(s).</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the userId is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </li>
 </ul>
@@ -595,12 +595,12 @@ implements <a href="../api/MyPersonalProfileInterface.html" title="interface in 
 <li class="blockList">
 <h4>addMyContactMethod</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;addMyContactMethod&#8203;(java.lang.String&nbsp;userId,
-                                           org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethodType&nbsp;type,
+                                           <a href="../properties/ContactMethodType.html" title="enum in org.odpi.openmetadata.accessservices.communityprofile.properties">ContactMethodType</a>&nbsp;type,
                                            java.lang.String&nbsp;service,
                                            java.lang.String&nbsp;value)
-                                    throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                           org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                                           org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+                                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                           <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                                           <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Add a new contact method to the requesting user's profile.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -613,9 +613,9 @@ implements <a href="../api/MyPersonalProfileInterface.html" title="interface in 
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier (guid) for the new contact method.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the userId is null or invalid.  Another property is invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem retrieving information from the property server(s).</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the userId is null or invalid.  Another property is invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </li>
 </ul>
@@ -627,10 +627,10 @@ implements <a href="../api/MyPersonalProfileInterface.html" title="interface in 
 <h4>deleteMyContactMethod</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;deleteMyContactMethod&#8203;(java.lang.String&nbsp;userId,
                                   java.lang.String&nbsp;contactMethodGUID,
-                                  org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethodType&nbsp;type)
-                           throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                  org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                                  org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+                                  <a href="../properties/ContactMethodType.html" title="enum in org.odpi.openmetadata.accessservices.communityprofile.properties">ContactMethodType</a>&nbsp;type)
+                           throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                  <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                                  <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Remove an obsolete contact method from the requesting user's profile.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -640,9 +640,9 @@ implements <a href="../api/MyPersonalProfileInterface.html" title="interface in 
 <dd><code>contactMethodGUID</code> - unique identifier (guid) for the obsolete contact method.</dd>
 <dd><code>type</code> - type of contact method. This is used to confirm that the GUID is the right one.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the userId is null or invalid.  Another property is invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem retrieving information from the property server(s).</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the userId is null or invalid.  Another property is invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </li>
 </ul>
@@ -652,12 +652,12 @@ implements <a href="../api/MyPersonalProfileInterface.html" title="interface in 
 <ul class="blockList">
 <li class="blockList">
 <h4>getMyAssets</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;org.odpi.openmetadata.accessservices.communityprofile.metadataelements.AssetCollectionMember&gt;&nbsp;getMyAssets&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                                int&nbsp;startFrom,
-                                                                                                                                int&nbsp;pageSize)
-                                                                                                                         throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                                org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                                                                                                                                org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../metadataelements/AssetCollectionMember.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">AssetCollectionMember</a>&gt;&nbsp;getMyAssets&#8203;(java.lang.String&nbsp;userId,
+                                                         int&nbsp;startFrom,
+                                                         int&nbsp;pageSize)
+                                                  throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                         <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                                                         <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Return a list of assets that the specified user has added to their favorites list.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -667,9 +667,9 @@ implements <a href="../api/MyPersonalProfileInterface.html" title="interface in 
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of asset details</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem retrieving information from the property server(s).</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </li>
 </ul>
@@ -681,18 +681,18 @@ implements <a href="../api/MyPersonalProfileInterface.html" title="interface in 
 <h4>addToMyAssets</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;addToMyAssets&#8203;(java.lang.String&nbsp;userId,
                           java.lang.String&nbsp;assetGUID)
-                   throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                          org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                          org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+                   throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                          <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                          <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Add an asset to the identified user's list of favorite assets.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - userId of user making request.</dd>
 <dd><code>assetGUID</code> - unique identifier of the asset.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem updating information in the property server(s).</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem updating information in the property server(s).</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </li>
 </ul>
@@ -704,18 +704,18 @@ implements <a href="../api/MyPersonalProfileInterface.html" title="interface in 
 <h4>removeFromMyAssets</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;removeFromMyAssets&#8203;(java.lang.String&nbsp;userId,
                                java.lang.String&nbsp;assetGUID)
-                        throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                               org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                               org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+                        throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                               <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                               <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Remove an asset from identified user's list of favorite assets.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - userId of user making request.</dd>
 <dd><code>assetGUID</code> - unique identifier of the asset.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem updating information in the property server(s).</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem updating information in the property server(s).</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </li>
 </ul>

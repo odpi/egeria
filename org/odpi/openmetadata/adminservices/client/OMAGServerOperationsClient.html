@@ -159,7 +159,7 @@ extends java.lang.Object</pre>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<td class="colFirst"><code>protected org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler</code></td>
+<td class="colFirst"><code>protected <a href="../../commonservices/ffdc/InvalidParameterHandler.html" title="class in org.odpi.openmetadata.commonservices.ffdc">InvalidParameterHandler</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#invalidParameterHandler">invalidParameterHandler</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
@@ -245,7 +245,7 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#activateWithSuppliedConfig(org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig)">activateWithSuppliedConfig</a></span>&#8203;(org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig&nbsp;configuration)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#activateWithSuppliedConfig(org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig)">activateWithSuppliedConfig</a></span>&#8203;(<a href="../configuration/properties/OMAGServerConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">OMAGServerConfig</a>&nbsp;configuration)</code></th>
 <td class="colLast">
 <div class="block">Activate the open metadata and governance services using the supplied configuration
  document.</div>
@@ -281,14 +281,14 @@ extends java.lang.Object</pre>
 </td>
 </tr>
 <tr id="i6" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig</code></td>
+<td class="colFirst"><code><a href="../configuration/properties/OMAGServerConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">OMAGServerConfig</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getActiveConfiguration()">getActiveConfiguration</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the configuration used for the current active instance of the server.</div>
 </td>
 </tr>
 <tr id="i7" class="rowColor">
-<td class="colFirst"><code>org.odpi.openmetadata.adminservices.properties.ServerServicesStatus</code></td>
+<td class="colFirst"><code><a href="../properties/ServerServicesStatus.html" title="class in org.odpi.openmetadata.adminservices.properties">ServerServicesStatus</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getServerStatus()">getServerStatus</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the status of a running server (use platform services to find out if the server is running).</div>
@@ -351,7 +351,7 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>invalidParameterHandler</h4>
-<pre>protected&nbsp;org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler invalidParameterHandler</pre>
+<pre>protected&nbsp;<a href="../../commonservices/ffdc/InvalidParameterHandler.html" title="class in org.odpi.openmetadata.commonservices.ffdc">InvalidParameterHandler</a> invalidParameterHandler</pre>
 </li>
 </ul>
 <a id="restClient">
@@ -468,7 +468,7 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>activateWithSuppliedConfig</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;activateWithSuppliedConfig&#8203;(org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig&nbsp;configuration)
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;activateWithSuppliedConfig&#8203;(<a href="../configuration/properties/OMAGServerConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">OMAGServerConfig</a>&nbsp;configuration)
                                             throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException,
                                                    org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException,
                                                    org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</pre>
@@ -531,10 +531,10 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getActiveConfiguration</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig&nbsp;getActiveConfiguration()
-                                                                                                     throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException,
-                                                                                                            org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException,
-                                                                                                            org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</pre>
+<pre class="methodSignature">public&nbsp;<a href="../configuration/properties/OMAGServerConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">OMAGServerConfig</a>&nbsp;getActiveConfiguration()
+                                        throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException,
+                                               org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException,
+                                               org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</pre>
 <div class="block">Return the configuration used for the current active instance of the server.  Null is returned if
  the server instance is not running.</div>
 <dl>
@@ -553,10 +553,10 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getServerStatus</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.adminservices.properties.ServerServicesStatus&nbsp;getServerStatus()
-                                                                                    throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException,
-                                                                                           org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException,
-                                                                                           org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</pre>
+<pre class="methodSignature">public&nbsp;<a href="../properties/ServerServicesStatus.html" title="class in org.odpi.openmetadata.adminservices.properties">ServerServicesStatus</a>&nbsp;getServerStatus()
+                                     throws org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException,
+                                            org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException,
+                                            org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException</pre>
 <div class="block">Return the status of a running server (use platform services to find out if the server is running).</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>

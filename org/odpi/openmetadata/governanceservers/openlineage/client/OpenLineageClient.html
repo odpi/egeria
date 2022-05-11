@@ -216,15 +216,15 @@ implements <a href="OpenLineageInterface.html" title="interface in org.odpi.open
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex</code></td>
+<td class="colFirst"><code><a href="../model/LineageVertex.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.model">LineageVertex</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEntityDetails(java.lang.String,java.lang.String)">getEntityDetails</a></span>&#8203;(java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;guid)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code>org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges</code></td>
+<td class="colFirst"><code><a href="../model/LineageVerticesAndEdges.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.model">LineageVerticesAndEdges</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#lineage(java.lang.String,org.odpi.openmetadata.governanceservers.openlineage.model.Scope,java.lang.String,boolean)">lineage</a></span>&#8203;(java.lang.String&nbsp;userId,
-       org.odpi.openmetadata.governanceservers.openlineage.model.Scope&nbsp;scope,
+       <a href="../model/Scope.html" title="enum in org.odpi.openmetadata.governanceservers.openlineage.model">Scope</a>&nbsp;scope,
        java.lang.String&nbsp;guid,
        boolean&nbsp;includeProcesses)</code></th>
 <td class="colLast">
@@ -277,14 +277,14 @@ implements <a href="OpenLineageInterface.html" title="interface in org.odpi.open
 <h4>OpenLineageClient</h4>
 <pre>public&nbsp;OpenLineageClient&#8203;(java.lang.String&nbsp;serverName,
                          java.lang.String&nbsp;serverPlatformURLRoot)
-                  throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                  throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new OpenLineage client.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server to connect to</dd>
 <dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST servers</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - if parameter validation fails</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - if parameter validation fails</dd>
 </dl>
 </li>
 </ul>
@@ -298,10 +298,10 @@ implements <a href="OpenLineageInterface.html" title="interface in org.odpi.open
                          java.lang.String&nbsp;serverPlatformURLRoot,
                          java.lang.String&nbsp;userId,
                          java.lang.String&nbsp;password)
-                  throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                  throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <dl>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code></dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code></dd>
 </dl>
 </li>
 </ul>
@@ -321,13 +321,13 @@ implements <a href="OpenLineageInterface.html" title="interface in org.odpi.open
 <ul class="blockList">
 <li class="blockList">
 <h4>lineage</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges&nbsp;lineage&#8203;(java.lang.String&nbsp;userId,
-                                                                                                 org.odpi.openmetadata.governanceservers.openlineage.model.Scope&nbsp;scope,
-                                                                                                 java.lang.String&nbsp;guid,
-                                                                                                 boolean&nbsp;includeProcesses)
-                                                                                          throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                 org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                                                                                                 org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException</pre>
+<pre class="methodSignature">public&nbsp;<a href="../model/LineageVerticesAndEdges.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.model">LineageVerticesAndEdges</a>&nbsp;lineage&#8203;(java.lang.String&nbsp;userId,
+                                       <a href="../model/Scope.html" title="enum in org.odpi.openmetadata.governanceservers.openlineage.model">Scope</a>&nbsp;scope,
+                                       java.lang.String&nbsp;guid,
+                                       boolean&nbsp;includeProcesses)
+                                throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                       <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                                       <a href="../ffdc/OpenLineageException.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.ffdc">OpenLineageException</a></pre>
 <div class="block">Returns the graph that the user will initially see when querying lineage. In the future, this method will be
  extended to condense large paths to prevent cluttering of the users screen. The user will be able to extended
  the condensed path by querying a different method.</div>
@@ -343,9 +343,9 @@ implements <a href="OpenLineageInterface.html" title="interface in org.odpi.open
 <dd>A subgraph containing all relevant paths, in graphSON format.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>java.security.InvalidParameterException</code> - one of the parameters is null or invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem contacting the metadata server</dd>
-<dd><code>org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException</code> - open lineage exception</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code></dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem contacting the metadata server</dd>
+<dd><code><a href="../ffdc/OpenLineageException.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.ffdc">OpenLineageException</a></code> - open lineage exception</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code></dd>
 </dl>
 </li>
 </ul>
@@ -355,16 +355,16 @@ implements <a href="OpenLineageInterface.html" title="interface in org.odpi.open
 <ul class="blockListLast">
 <li class="blockList">
 <h4>getEntityDetails</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex&nbsp;getEntityDetails&#8203;(java.lang.String&nbsp;userId,
-                                                                                                java.lang.String&nbsp;guid)
-                                                                                         throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                                                                                                org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException</pre>
+<pre class="methodSignature">public&nbsp;<a href="../model/LineageVertex.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.model">LineageVertex</a>&nbsp;getEntityDetails&#8203;(java.lang.String&nbsp;userId,
+                                      java.lang.String&nbsp;guid)
+                               throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                      <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                                      <a href="../ffdc/OpenLineageException.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.ffdc">OpenLineageException</a></pre>
 <dl>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code></dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code></dd>
-<dd><code>org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException</code></dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code></dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code></dd>
+<dd><code><a href="../ffdc/OpenLineageException.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.ffdc">OpenLineageException</a></code></dd>
 </dl>
 </li>
 </ul>

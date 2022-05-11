@@ -178,7 +178,7 @@ implements <a href="../api/ConnectorTypeManagerInterface.html" title="interface 
                           java.lang.String&nbsp;serverPlatformURLRoot,
                           java.lang.String&nbsp;userId,
                           java.lang.String&nbsp;password,
-                          org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)</code></th>
+                          <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></th>
 <td class="colLast">
 <div class="block">Create a new client that passes userId and password in each HTTP request.</div>
 </td>
@@ -186,7 +186,7 @@ implements <a href="../api/ConnectorTypeManagerInterface.html" title="interface 
 <tr class="rowColor">
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.client.rest.ITInfrastructureRESTClient,int)">ConnectorTypeManagerClient</a></span>&#8203;(java.lang.String&nbsp;serverName,
                           java.lang.String&nbsp;serverPlatformURLRoot,
-                          <a href="rest/ITInfrastructureRESTClient.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.client.rest">ITInfrastructureRESTClient</a>&nbsp;restClient,
+                          org.odpi.openmetadata.accessservices.itinfrastructure.client.rest.ITInfrastructureRESTClient&nbsp;restClient,
                           int&nbsp;maxPageSize)</code></th>
 <td class="colLast">
 <div class="block">Create a new client that is going to be used in an OMAG Server.</div>
@@ -195,7 +195,7 @@ implements <a href="../api/ConnectorTypeManagerInterface.html" title="interface 
 <tr class="altColor">
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">ConnectorTypeManagerClient</a></span>&#8203;(java.lang.String&nbsp;serverName,
                           java.lang.String&nbsp;serverPlatformURLRoot,
-                          org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)</code></th>
+                          <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></th>
 <td class="colLast">
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 </td>
@@ -223,7 +223,7 @@ implements <a href="../api/ConnectorTypeManagerInterface.html" title="interface 
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createConnectorType(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.ConnectorTypeProperties)">createConnectorType</a></span>&#8203;(java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;infrastructureManagerGUID,
                    java.lang.String&nbsp;infrastructureManagerName,
-                   org.odpi.openmetadata.accessservices.itinfrastructure.properties.ConnectorTypeProperties&nbsp;connectorTypeProperties)</code></th>
+                   <a href="../properties/ConnectorTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.properties">ConnectorTypeProperties</a>&nbsp;connectorTypeProperties)</code></th>
 <td class="colLast">
 <div class="block">Create a new metadata element to represent an connectorType</div>
 </td>
@@ -234,13 +234,13 @@ implements <a href="../api/ConnectorTypeManagerInterface.html" title="interface 
                                java.lang.String&nbsp;infrastructureManagerGUID,
                                java.lang.String&nbsp;infrastructureManagerName,
                                java.lang.String&nbsp;templateGUID,
-                               org.odpi.openmetadata.accessservices.itinfrastructure.properties.TemplateProperties&nbsp;templateProperties)</code></th>
+                               <a href="../properties/TemplateProperties.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.properties">TemplateProperties</a>&nbsp;templateProperties)</code></th>
 <td class="colLast">
 <div class="block">Create a new metadata element to represent an connectorType using an existing metadata element as a template.</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
-<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ConnectorTypeElement&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/ConnectorTypeElement.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements">ConnectorTypeElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findConnectorTypes(java.lang.String,java.lang.String,int,int)">findConnectorTypes</a></span>&#8203;(java.lang.String&nbsp;userId,
                   java.lang.String&nbsp;searchString,
                   int&nbsp;startFrom,
@@ -250,7 +250,7 @@ implements <a href="../api/ConnectorTypeManagerInterface.html" title="interface 
 </td>
 </tr>
 <tr id="i3" class="rowColor">
-<td class="colFirst"><code>org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ConnectorTypeElement</code></td>
+<td class="colFirst"><code><a href="../metadataelements/ConnectorTypeElement.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements">ConnectorTypeElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getConnectorTypeByGUID(java.lang.String,java.lang.String)">getConnectorTypeByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
                       java.lang.String&nbsp;connectorTypeGUID)</code></th>
 <td class="colLast">
@@ -258,7 +258,7 @@ implements <a href="../api/ConnectorTypeManagerInterface.html" title="interface 
 </td>
 </tr>
 <tr id="i4" class="altColor">
-<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ConnectorTypeElement&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/ConnectorTypeElement.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements">ConnectorTypeElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getConnectorTypesByName(java.lang.String,java.lang.String,int,int)">getConnectorTypesByName</a></span>&#8203;(java.lang.String&nbsp;userId,
                        java.lang.String&nbsp;name,
                        int&nbsp;startFrom,
@@ -285,7 +285,7 @@ implements <a href="../api/ConnectorTypeManagerInterface.html" title="interface 
                    java.lang.String&nbsp;infrastructureManagerName,
                    boolean&nbsp;isMergeUpdate,
                    java.lang.String&nbsp;connectorTypeGUID,
-                   org.odpi.openmetadata.accessservices.itinfrastructure.properties.ConnectorTypeProperties&nbsp;connectorTypeProperties)</code></th>
+                   <a href="../properties/ConnectorTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.properties">ConnectorTypeProperties</a>&nbsp;connectorTypeProperties)</code></th>
 <td class="colLast">
 <div class="block">Update the metadata element representing an connectorType.</div>
 </td>
@@ -322,8 +322,8 @@ implements <a href="../api/ConnectorTypeManagerInterface.html" title="interface 
 <h4>ConnectorTypeManagerClient</h4>
 <pre>public&nbsp;ConnectorTypeManagerClient&#8203;(java.lang.String&nbsp;serverName,
                                   java.lang.String&nbsp;serverPlatformURLRoot,
-                                  org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)
-                           throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                                  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)
+                           throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -331,7 +331,7 @@ implements <a href="../api/ConnectorTypeManagerInterface.html" title="interface 
 <dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST servers</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
  REST API calls.</dd>
 </dl>
 </li>
@@ -344,14 +344,14 @@ implements <a href="../api/ConnectorTypeManagerInterface.html" title="interface 
 <h4>ConnectorTypeManagerClient</h4>
 <pre>public&nbsp;ConnectorTypeManagerClient&#8203;(java.lang.String&nbsp;serverName,
                                   java.lang.String&nbsp;serverPlatformURLRoot)
-                           throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                           throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server to connect to</dd>
 <dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST servers</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
  REST API calls.</dd>
 </dl>
 </li>
@@ -366,7 +366,7 @@ implements <a href="../api/ConnectorTypeManagerInterface.html" title="interface 
                                   java.lang.String&nbsp;serverPlatformURLRoot,
                                   java.lang.String&nbsp;userId,
                                   java.lang.String&nbsp;password)
-                           throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                           throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client that passes userId and password in each HTTP request.  This is the
  userId/password of the calling server.  The end user's userId is sent on each request.</div>
 <dl>
@@ -376,7 +376,7 @@ implements <a href="../api/ConnectorTypeManagerInterface.html" title="interface 
 <dd><code>userId</code> - caller's userId embedded in all HTTP requests</dd>
 <dd><code>password</code> - caller's userId embedded in all HTTP requests</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
  REST API calls.</dd>
 </dl>
 </li>
@@ -391,8 +391,8 @@ implements <a href="../api/ConnectorTypeManagerInterface.html" title="interface 
                                   java.lang.String&nbsp;serverPlatformURLRoot,
                                   java.lang.String&nbsp;userId,
                                   java.lang.String&nbsp;password,
-                                  org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)
-                           throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                                  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)
+                           throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client that passes userId and password in each HTTP request.  This is the
  userId/password of the calling server.  The end user's userId is sent on each request.</div>
 <dl>
@@ -403,7 +403,7 @@ implements <a href="../api/ConnectorTypeManagerInterface.html" title="interface 
 <dd><code>password</code> - caller's userId embedded in all HTTP requests</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
  REST API calls.</dd>
 </dl>
 </li>
@@ -416,9 +416,9 @@ implements <a href="../api/ConnectorTypeManagerInterface.html" title="interface 
 <h4>ConnectorTypeManagerClient</h4>
 <pre>public&nbsp;ConnectorTypeManagerClient&#8203;(java.lang.String&nbsp;serverName,
                                   java.lang.String&nbsp;serverPlatformURLRoot,
-                                  <a href="rest/ITInfrastructureRESTClient.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.client.rest">ITInfrastructureRESTClient</a>&nbsp;restClient,
+                                  org.odpi.openmetadata.accessservices.itinfrastructure.client.rest.ITInfrastructureRESTClient&nbsp;restClient,
                                   int&nbsp;maxPageSize)
-                           throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                           throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client that is going to be used in an OMAG Server.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -427,7 +427,7 @@ implements <a href="../api/ConnectorTypeManagerInterface.html" title="interface 
 <dd><code>restClient</code> - client that issues the REST API calls</dd>
 <dd><code>maxPageSize</code> - maximum number of results supported by this server</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
  REST API calls.</dd>
 </dl>
 </li>
@@ -451,10 +451,10 @@ implements <a href="../api/ConnectorTypeManagerInterface.html" title="interface 
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;createConnectorType&#8203;(java.lang.String&nbsp;userId,
                                             java.lang.String&nbsp;infrastructureManagerGUID,
                                             java.lang.String&nbsp;infrastructureManagerName,
-                                            org.odpi.openmetadata.accessservices.itinfrastructure.properties.ConnectorTypeProperties&nbsp;connectorTypeProperties)
-                                     throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                            org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                            org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                            <a href="../properties/ConnectorTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.properties">ConnectorTypeProperties</a>&nbsp;connectorTypeProperties)
+                                     throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                            <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                            <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Create a new metadata element to represent an connectorType</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -467,9 +467,9 @@ implements <a href="../api/ConnectorTypeManagerInterface.html" title="interface 
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new connectorType</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
 </dl>
 </li>
 </ul>
@@ -483,10 +483,10 @@ implements <a href="../api/ConnectorTypeManagerInterface.html" title="interface 
                                                         java.lang.String&nbsp;infrastructureManagerGUID,
                                                         java.lang.String&nbsp;infrastructureManagerName,
                                                         java.lang.String&nbsp;templateGUID,
-                                                        org.odpi.openmetadata.accessservices.itinfrastructure.properties.TemplateProperties&nbsp;templateProperties)
-                                                 throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                        org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                        org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                                        <a href="../properties/TemplateProperties.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.properties">TemplateProperties</a>&nbsp;templateProperties)
+                                                 throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                        <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                        <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Create a new metadata element to represent an connectorType using an existing metadata element as a template.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -500,9 +500,9 @@ implements <a href="../api/ConnectorTypeManagerInterface.html" title="interface 
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new connectorType</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
 </dl>
 </li>
 </ul>
@@ -517,10 +517,10 @@ implements <a href="../api/ConnectorTypeManagerInterface.html" title="interface 
                                 java.lang.String&nbsp;infrastructureManagerName,
                                 boolean&nbsp;isMergeUpdate,
                                 java.lang.String&nbsp;connectorTypeGUID,
-                                org.odpi.openmetadata.accessservices.itinfrastructure.properties.ConnectorTypeProperties&nbsp;connectorTypeProperties)
-                         throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                <a href="../properties/ConnectorTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.properties">ConnectorTypeProperties</a>&nbsp;connectorTypeProperties)
+                         throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Update the metadata element representing an connectorType.  It is possible to use the subtype property classes or
  set up specialized properties in extended properties.</div>
 <dl>
@@ -534,9 +534,9 @@ implements <a href="../api/ConnectorTypeManagerInterface.html" title="interface 
 <dd><code>isMergeUpdate</code> - should the new properties be merged with existing properties (true) or completely replace them (false)?</dd>
 <dd><code>connectorTypeProperties</code> - new properties for the metadata element</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
 </dl>
 </li>
 </ul>
@@ -550,9 +550,9 @@ implements <a href="../api/ConnectorTypeManagerInterface.html" title="interface 
                                 java.lang.String&nbsp;infrastructureManagerGUID,
                                 java.lang.String&nbsp;infrastructureManagerName,
                                 java.lang.String&nbsp;connectorTypeGUID)
-                         throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                         throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Remove the metadata element representing an connectorType.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -563,9 +563,9 @@ implements <a href="../api/ConnectorTypeManagerInterface.html" title="interface 
 <dd><code>infrastructureManagerName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>connectorTypeGUID</code> - unique identifier of the metadata element to remove</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
 </dl>
 </li>
 </ul>
@@ -575,13 +575,13 @@ implements <a href="../api/ConnectorTypeManagerInterface.html" title="interface 
 <ul class="blockList">
 <li class="blockList">
 <h4>findConnectorTypes</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ConnectorTypeElement&gt;&nbsp;findConnectorTypes&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                                      java.lang.String&nbsp;searchString,
-                                                                                                                                      int&nbsp;startFrom,
-                                                                                                                                      int&nbsp;pageSize)
-                                                                                                                               throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                                      org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                                      org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../metadataelements/ConnectorTypeElement.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements">ConnectorTypeElement</a>&gt;&nbsp;findConnectorTypes&#8203;(java.lang.String&nbsp;userId,
+                                                               java.lang.String&nbsp;searchString,
+                                                               int&nbsp;startFrom,
+                                                               int&nbsp;pageSize)
+                                                        throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                               <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                               <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Retrieve the list of connector type metadata elements that contain the search string.
  The search string is treated as a regular expression.</div>
 <dl>
@@ -595,9 +595,9 @@ implements <a href="../api/ConnectorTypeManagerInterface.html" title="interface 
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of matching metadata elements</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
 </dl>
 </li>
 </ul>
@@ -607,13 +607,13 @@ implements <a href="../api/ConnectorTypeManagerInterface.html" title="interface 
 <ul class="blockList">
 <li class="blockList">
 <h4>getConnectorTypesByName</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ConnectorTypeElement&gt;&nbsp;getConnectorTypesByName&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                                           java.lang.String&nbsp;name,
-                                                                                                                                           int&nbsp;startFrom,
-                                                                                                                                           int&nbsp;pageSize)
-                                                                                                                                    throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                                           org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                                           org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../metadataelements/ConnectorTypeElement.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements">ConnectorTypeElement</a>&gt;&nbsp;getConnectorTypesByName&#8203;(java.lang.String&nbsp;userId,
+                                                                    java.lang.String&nbsp;name,
+                                                                    int&nbsp;startFrom,
+                                                                    int&nbsp;pageSize)
+                                                             throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                                    <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                                    <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Retrieve the list of connector type metadata elements with a matching qualified name, display name or
  connector provider class name.
  There are no wildcards supported on this request.</div>
@@ -628,9 +628,9 @@ implements <a href="../api/ConnectorTypeManagerInterface.html" title="interface 
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of matching metadata elements</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
 </dl>
 </li>
 </ul>
@@ -640,11 +640,11 @@ implements <a href="../api/ConnectorTypeManagerInterface.html" title="interface 
 <ul class="blockListLast">
 <li class="blockList">
 <h4>getConnectorTypeByGUID</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ConnectorTypeElement&nbsp;getConnectorTypeByGUID&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                          java.lang.String&nbsp;connectorTypeGUID)
-                                                                                                                   throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                          org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                          org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">public&nbsp;<a href="../metadataelements/ConnectorTypeElement.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements">ConnectorTypeElement</a>&nbsp;getConnectorTypeByGUID&#8203;(java.lang.String&nbsp;userId,
+                                                   java.lang.String&nbsp;connectorTypeGUID)
+                                            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                   <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                   <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Retrieve the connector type metadata element with the supplied unique identifier.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -655,9 +655,9 @@ implements <a href="../api/ConnectorTypeManagerInterface.html" title="interface 
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>requested metadata element</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is invalid</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to issue this request</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem reported in the open metadata server(s)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
 </dl>
 </li>
 </ul>

@@ -133,10 +133,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt>All Implemented Interfaces:</dt>
 <dd><code><a href="SubjectAreaClient.html" title="interface in org.odpi.openmetadata.accessservices.subjectarea.client">SubjectAreaClient</a>&lt;T&gt;</code>, <code>org.odpi.openmetadata.commonservices.ffdc.rest.ResponseParameterization&lt;T&gt;</code></dd>
 </dl>
-<dl>
-<dt>Direct Known Subclasses:</dt>
-<dd><code><a href="nodes/AbstractSubjectAreaNode.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.client.nodes">AbstractSubjectAreaNode</a></code>, <code><a href="relationships/AbstractSubjectAreaRelationship.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.client.relationships">AbstractSubjectAreaRelationship</a></code></dd>
-</dl>
 <hr>
 <pre>public abstract class <span class="typeNameLabel">AbstractSubjectArea&lt;T&gt;</span>
 extends java.lang.Object
@@ -431,9 +427,9 @@ implements <a href="SubjectAreaClient.html" title="interface in org.odpi.openmet
 <h4>getByGUID</h4>
 <pre class="methodSignature">public&nbsp;<a href="AbstractSubjectArea.html" title="type parameter in AbstractSubjectArea">T</a>&nbsp;getByGUID&#8203;(java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;guid)
-            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                   org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                   org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                   <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                   <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="SubjectAreaClient.html#getByGUID(java.lang.String,java.lang.String)">SubjectAreaClient</a></code></span></div>
 <div class="block">Get Glossary Artifact by guid</div>
 <dl>
@@ -445,9 +441,9 @@ implements <a href="SubjectAreaClient.html" title="interface in org.odpi.openmet
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>found Glossary Artifact of the T type.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - something went wrong with the REST call stack.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - something went wrong with the REST call stack.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </li>
 </ul>
@@ -461,9 +457,9 @@ implements <a href="SubjectAreaClient.html" title="interface in org.odpi.openmet
 <h4>create</h4>
 <pre class="methodSignature">public&nbsp;<a href="AbstractSubjectArea.html" title="type parameter in AbstractSubjectArea">T</a>&nbsp;create&#8203;(java.lang.String&nbsp;userId,
                 <a href="AbstractSubjectArea.html" title="type parameter in AbstractSubjectArea">T</a>&nbsp;supplied)
-         throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+         throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="SubjectAreaClient.html#create(java.lang.String,T)">SubjectAreaClient</a></code></span></div>
 <div class="block">Create a Glossary Artifact. To create, you must pass the created object and specify a unique user identifier.</div>
 <dl>
@@ -475,9 +471,9 @@ implements <a href="SubjectAreaClient.html" title="interface in org.odpi.openmet
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>created Glossary Artifact.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - something went wrong with the REST call stack.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - something went wrong with the REST call stack.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </li>
 </ul>
@@ -489,9 +485,9 @@ implements <a href="SubjectAreaClient.html" title="interface in org.odpi.openmet
 <h4>find</h4>
 <pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="AbstractSubjectArea.html" title="type parameter in AbstractSubjectArea">T</a>&gt;&nbsp;find&#8203;(java.lang.String&nbsp;userId,
                               org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest&nbsp;findRequest)
-                       throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                              org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                              org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+                       throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                              <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                              <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="SubjectAreaClient.html#find(java.lang.String,org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest)">SubjectAreaClient</a></code></span></div>
 <div class="block">Request to find Glossary Artifacts of the type T.</div>
 <dl>
@@ -503,9 +499,9 @@ implements <a href="SubjectAreaClient.html" title="interface in org.odpi.openmet
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list Glossary Artifacts of the T type relevant in the findRequest information.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - something went wrong with the REST call stack.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - something went wrong with the REST call stack.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </li>
 </ul>
@@ -519,9 +515,9 @@ implements <a href="SubjectAreaClient.html" title="interface in org.odpi.openmet
                               org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest&nbsp;findRequest,
                               boolean&nbsp;exactValue,
                               boolean&nbsp;ignoreCase)
-                       throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                              org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                              org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+                       throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                              <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                              <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="SubjectAreaClient.html#find(java.lang.String,org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest,boolean,boolean)">SubjectAreaClient</a></code></span></div>
 <div class="block">Request to find Glossary Artifacts of the type T.</div>
 <dl>
@@ -535,9 +531,9 @@ implements <a href="SubjectAreaClient.html" title="interface in org.odpi.openmet
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list Glossary Artifacts of the T type relevant in the findRequest information.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - something went wrong with the REST call stack.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - something went wrong with the REST call stack.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </li>
 </ul>
@@ -552,9 +548,9 @@ implements <a href="SubjectAreaClient.html" title="interface in org.odpi.openmet
                               boolean&nbsp;exactValue,
                               boolean&nbsp;ignoreCase,
                               java.lang.Integer&nbsp;maximumPageSizeOnRestCall)
-                       throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                              org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                              org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+                       throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                              <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                              <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="SubjectAreaClient.html#find(java.lang.String,org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest,boolean,boolean,java.lang.Integer)">SubjectAreaClient</a></code></span></div>
 <div class="block">Request to find Glossary Artifacts of the type T.
 
@@ -573,9 +569,9 @@ implements <a href="SubjectAreaClient.html" title="interface in org.odpi.openmet
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list Glossary Artifacts of the T type relevant in the findRequest information.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - something went wrong with the REST call stack.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - something went wrong with the REST call stack.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </li>
 </ul>
@@ -591,9 +587,9 @@ implements <a href="SubjectAreaClient.html" title="interface in org.odpi.openmet
                 java.lang.String&nbsp;guid,
                 <a href="AbstractSubjectArea.html" title="type parameter in AbstractSubjectArea">T</a>&nbsp;supplied,
                 boolean&nbsp;isReplace)
-         throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+         throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="SubjectAreaClient.html#update(java.lang.String,java.lang.String,T,boolean)">SubjectAreaClient</a></code></span></div>
 <div class="block">Update or replace a Glossary Artifact.</div>
 <dl>
@@ -607,9 +603,9 @@ implements <a href="SubjectAreaClient.html" title="interface in org.odpi.openmet
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>updated Glossary Artifact.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - something went wrong with the REST call stack.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - something went wrong with the REST call stack.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </li>
 </ul>
@@ -621,9 +617,9 @@ implements <a href="SubjectAreaClient.html" title="interface in org.odpi.openmet
 <h4>delete</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;delete&#8203;(java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;guid)
-            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                   org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                   org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                   <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                   <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="SubjectAreaClient.html#delete(java.lang.String,java.lang.String)">SubjectAreaClient</a></code></span></div>
 <div class="block">Delete a Glossary Artifact.</div>
 <dl>
@@ -633,9 +629,9 @@ implements <a href="SubjectAreaClient.html" title="interface in org.odpi.openmet
 <dd><code>userId</code> - unique identifier for requesting user, under which the request is performed.</dd>
 <dd><code>guid</code> - unique identifier of the Glossary Artifact.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - something went wrong with the REST call stack.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - something went wrong with the REST call stack.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </li>
 </ul>
@@ -647,9 +643,9 @@ implements <a href="SubjectAreaClient.html" title="interface in org.odpi.openmet
 <h4>restore</h4>
 <pre class="methodSignature">public&nbsp;<a href="AbstractSubjectArea.html" title="type parameter in AbstractSubjectArea">T</a>&nbsp;restore&#8203;(java.lang.String&nbsp;userId,
                  java.lang.String&nbsp;guid)
-          throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                 org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                 org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="SubjectAreaClient.html#restore(java.lang.String,java.lang.String)">SubjectAreaClient</a></code></span></div>
 <div class="block">Restore of a soft deleted Glossary Artifact.</div>
 <dl>
@@ -661,9 +657,9 @@ implements <a href="SubjectAreaClient.html" title="interface in org.odpi.openmet
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>restored glossary Artifact</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - something went wrong with the REST call stack.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - something went wrong with the REST call stack.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </li>
 </ul>

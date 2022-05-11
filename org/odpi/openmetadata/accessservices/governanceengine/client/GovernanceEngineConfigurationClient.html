@@ -171,9 +171,9 @@ extends java.lang.Object</pre>
 <tr class="altColor">
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.client.rest.GovernanceEngineRESTClient,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">GovernanceEngineConfigurationClient</a></span>&#8203;(java.lang.String&nbsp;serverName,
                                    java.lang.String&nbsp;serverPlatformURLRoot,
-                                   <a href="rest/GovernanceEngineRESTClient.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.client.rest">GovernanceEngineRESTClient</a>&nbsp;restClient,
+                                   org.odpi.openmetadata.accessservices.governanceengine.client.rest.GovernanceEngineRESTClient&nbsp;restClient,
                                    int&nbsp;maxPageSize,
-                                   org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)</code></th>
+                                   <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></th>
 <td class="colLast">
 <div class="block">Create a new client that passes userId and password in each HTTP request.</div>
 </td>
@@ -238,7 +238,7 @@ extends java.lang.Object</pre>
 </td>
 </tr>
 <tr id="i4" class="altColor">
-<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceEngineElement&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/GovernanceEngineElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">GovernanceEngineElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAllGovernanceEngines(java.lang.String,java.lang.String,int,int)">getAllGovernanceEngines</a></span>&#8203;(java.lang.String&nbsp;userId,
                        java.lang.String&nbsp;governanceEngineType,
                        int&nbsp;startingFrom,
@@ -248,7 +248,7 @@ extends java.lang.Object</pre>
 </td>
 </tr>
 <tr id="i5" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceServiceElement&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/GovernanceServiceElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">GovernanceServiceElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAllGovernanceServices(java.lang.String,int,int)">getAllGovernanceServices</a></span>&#8203;(java.lang.String&nbsp;userId,
                         int&nbsp;startingFrom,
                         int&nbsp;maximumResults)</code></th>
@@ -264,7 +264,7 @@ extends java.lang.Object</pre>
 </td>
 </tr>
 <tr id="i7" class="rowColor">
-<td class="colFirst"><code>org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceEngineElement</code></td>
+<td class="colFirst"><code><a href="../metadataelements/GovernanceEngineElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">GovernanceEngineElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getGovernanceEngineByGUID(java.lang.String,java.lang.String)">getGovernanceEngineByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
                          java.lang.String&nbsp;guid)</code></th>
 <td class="colLast">
@@ -272,7 +272,7 @@ extends java.lang.Object</pre>
 </td>
 </tr>
 <tr id="i8" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceEngineElement</code></td>
+<td class="colFirst"><code><a href="../metadataelements/GovernanceEngineElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">GovernanceEngineElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getGovernanceEngineByName(java.lang.String,java.lang.String)">getGovernanceEngineByName</a></span>&#8203;(java.lang.String&nbsp;userId,
                          java.lang.String&nbsp;name)</code></th>
 <td class="colLast">
@@ -280,7 +280,7 @@ extends java.lang.Object</pre>
 </td>
 </tr>
 <tr id="i9" class="rowColor">
-<td class="colFirst"><code>org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceServiceElement</code></td>
+<td class="colFirst"><code><a href="../metadataelements/GovernanceServiceElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">GovernanceServiceElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getGovernanceServiceByGUID(java.lang.String,java.lang.String)">getGovernanceServiceByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
                           java.lang.String&nbsp;guid)</code></th>
 <td class="colLast">
@@ -288,7 +288,7 @@ extends java.lang.Object</pre>
 </td>
 </tr>
 <tr id="i10" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceServiceElement</code></td>
+<td class="colFirst"><code><a href="../metadataelements/GovernanceServiceElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">GovernanceServiceElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getGovernanceServiceByName(java.lang.String,java.lang.String)">getGovernanceServiceByName</a></span>&#8203;(java.lang.String&nbsp;userId,
                           java.lang.String&nbsp;name)</code></th>
 <td class="colLast">
@@ -304,7 +304,7 @@ extends java.lang.Object</pre>
 </td>
 </tr>
 <tr id="i12" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.accessservices.governanceengine.metadataelements.RegisteredGovernanceServiceElement</code></td>
+<td class="colFirst"><code><a href="../metadataelements/RegisteredGovernanceServiceElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">RegisteredGovernanceServiceElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRegisteredGovernanceService(java.lang.String,java.lang.String,java.lang.String)">getRegisteredGovernanceService</a></span>&#8203;(java.lang.String&nbsp;userId,
                               java.lang.String&nbsp;governanceEngineGUID,
                               java.lang.String&nbsp;governanceServiceGUID)</code></th>
@@ -405,14 +405,14 @@ extends java.lang.Object</pre>
 <h4>GovernanceEngineConfigurationClient</h4>
 <pre>public&nbsp;GovernanceEngineConfigurationClient&#8203;(java.lang.String&nbsp;serverName,
                                            java.lang.String&nbsp;serverPlatformURLRoot)
-                                    throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server to connect to</dd>
 <dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST servers</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
  REST API calls.</dd>
 </dl>
 </li>
@@ -427,7 +427,7 @@ extends java.lang.Object</pre>
                                            java.lang.String&nbsp;serverPlatformURLRoot,
                                            java.lang.String&nbsp;userId,
                                            java.lang.String&nbsp;password)
-                                    throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client that passes userId and password in each HTTP request.  This is the
  userId/password of the calling server.  The end user's userId is sent on each request.</div>
 <dl>
@@ -437,7 +437,7 @@ extends java.lang.Object</pre>
 <dd><code>userId</code> - caller's userId embedded in all HTTP requests</dd>
 <dd><code>password</code> - caller's userId embedded in all HTTP requests</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
  REST API calls.</dd>
 </dl>
 </li>
@@ -450,10 +450,10 @@ extends java.lang.Object</pre>
 <h4>GovernanceEngineConfigurationClient</h4>
 <pre>public&nbsp;GovernanceEngineConfigurationClient&#8203;(java.lang.String&nbsp;serverName,
                                            java.lang.String&nbsp;serverPlatformURLRoot,
-                                           <a href="rest/GovernanceEngineRESTClient.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.client.rest">GovernanceEngineRESTClient</a>&nbsp;restClient,
+                                           org.odpi.openmetadata.accessservices.governanceengine.client.rest.GovernanceEngineRESTClient&nbsp;restClient,
                                            int&nbsp;maxPageSize,
-                                           org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)
-                                    throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                                           <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)
+                                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client that passes userId and password in each HTTP request.  This is the
  userId/password of the calling server.  The end user's userId is sent on each request.</div>
 <dl>
@@ -464,7 +464,7 @@ extends java.lang.Object</pre>
 <dd><code>maxPageSize</code> - pre-initialized parameter limit</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem with the information about the remote OMAS</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem with the information about the remote OMAS</dd>
 </dl>
 </li>
 </ul>
@@ -503,9 +503,9 @@ extends java.lang.Object</pre>
                                                java.lang.String&nbsp;qualifiedName,
                                                java.lang.String&nbsp;displayName,
                                                java.lang.String&nbsp;description)
-                                        throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                               org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                               org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                        throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                               <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                               <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Create a new governance engine definition.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -518,9 +518,9 @@ extends java.lang.Object</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier (guid) of the governance engine definition.  This is for use on other requests.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem storing the governance engine definition.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem storing the governance engine definition.</dd>
 </dl>
 </li>
 </ul>
@@ -530,11 +530,11 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getGovernanceEngineByGUID</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceEngineElement&nbsp;getGovernanceEngineByGUID&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                                java.lang.String&nbsp;guid)
-                                                                                                                         throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                                org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                                org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">public&nbsp;<a href="../metadataelements/GovernanceEngineElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">GovernanceEngineElement</a>&nbsp;getGovernanceEngineByGUID&#8203;(java.lang.String&nbsp;userId,
+                                                         java.lang.String&nbsp;guid)
+                                                  throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                         <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                         <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Return the properties from a governance engine definition.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -543,9 +543,9 @@ extends java.lang.Object</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>properties from the governance engine definition.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem retrieving the governance engine definition.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem retrieving the governance engine definition.</dd>
 </dl>
 </li>
 </ul>
@@ -555,11 +555,11 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getGovernanceEngineByName</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceEngineElement&nbsp;getGovernanceEngineByName&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                                java.lang.String&nbsp;name)
-                                                                                                                         throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                                org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                                org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">public&nbsp;<a href="../metadataelements/GovernanceEngineElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">GovernanceEngineElement</a>&nbsp;getGovernanceEngineByName&#8203;(java.lang.String&nbsp;userId,
+                                                         java.lang.String&nbsp;name)
+                                                  throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                         <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                         <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Return the properties from a governance engine definition.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -568,9 +568,9 @@ extends java.lang.Object</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>properties from the governance engine definition.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem retrieving the governance engine definition.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem retrieving the governance engine definition.</dd>
 </dl>
 </li>
 </ul>
@@ -580,13 +580,13 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getAllGovernanceEngines</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceEngineElement&gt;&nbsp;getAllGovernanceEngines&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                                              java.lang.String&nbsp;governanceEngineType,
-                                                                                                                                              int&nbsp;startingFrom,
-                                                                                                                                              int&nbsp;maximumResults)
-                                                                                                                                       throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                                              org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                                              org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../metadataelements/GovernanceEngineElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">GovernanceEngineElement</a>&gt;&nbsp;getAllGovernanceEngines&#8203;(java.lang.String&nbsp;userId,
+                                                                       java.lang.String&nbsp;governanceEngineType,
+                                                                       int&nbsp;startingFrom,
+                                                                       int&nbsp;maximumResults)
+                                                                throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                                       <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                                       <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Return the list of governance engine definitions that are stored.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -597,9 +597,9 @@ extends java.lang.Object</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of governance engine definitions.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem retrieving the governance engine definitions.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem retrieving the governance engine definitions.</dd>
 </dl>
 </li>
 </ul>
@@ -620,9 +620,9 @@ extends java.lang.Object</pre>
                                    java.lang.String&nbsp;source,
                                    java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;additionalProperties,
                                    java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;extendedProperties)
-                            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                   org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                   org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                   <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                   <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Update the properties of an existing governance engine definition.  Use the current value to
  keep a property value the same, or use the new value.  Null means remove the property from
  the definition.</div>
@@ -640,9 +640,9 @@ extends java.lang.Object</pre>
 <dd><code>additionalProperties</code> - additional properties for the governance engine.</dd>
 <dd><code>extendedProperties</code> - properties to populate the subtype of the governance engine.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem storing the governance engine definition.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem storing the governance engine definition.</dd>
 </dl>
 </li>
 </ul>
@@ -655,9 +655,9 @@ extends java.lang.Object</pre>
 <pre class="methodSignature">public&nbsp;void&nbsp;deleteGovernanceEngine&#8203;(java.lang.String&nbsp;userId,
                                    java.lang.String&nbsp;guid,
                                    java.lang.String&nbsp;qualifiedName)
-                            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                   org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                   org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                   <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                   <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Remove the properties of the governance engine.  Both the guid and the qualified name is supplied
  to validate that the correct governance engine is being deleted.</div>
 <dl>
@@ -666,9 +666,9 @@ extends java.lang.Object</pre>
 <dd><code>guid</code> - unique identifier of the governance engine - used to locate the definition.</dd>
 <dd><code>qualifiedName</code> - unique name for the governance engine.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem retrieving the governance engine definition.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem retrieving the governance engine definition.</dd>
 </dl>
 </li>
 </ul>
@@ -684,9 +684,9 @@ extends java.lang.Object</pre>
                                                 java.lang.String&nbsp;displayName,
                                                 java.lang.String&nbsp;description,
                                                 org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection&nbsp;connection)
-                                         throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                         throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Create a governance service definition.  The same governance service can be associated with multiple
  governance engines.</div>
 <dl>
@@ -700,9 +700,9 @@ extends java.lang.Object</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the governance service.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem storing the governance service definition.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem storing the governance service definition.</dd>
 </dl>
 </li>
 </ul>
@@ -712,11 +712,11 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getGovernanceServiceByGUID</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceServiceElement&nbsp;getGovernanceServiceByGUID&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                                  java.lang.String&nbsp;guid)
-                                                                                                                           throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                                  org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                                  org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">public&nbsp;<a href="../metadataelements/GovernanceServiceElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">GovernanceServiceElement</a>&nbsp;getGovernanceServiceByGUID&#8203;(java.lang.String&nbsp;userId,
+                                                           java.lang.String&nbsp;guid)
+                                                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                           <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                           <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Return the properties from a governance service definition.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -725,9 +725,9 @@ extends java.lang.Object</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>properties of the governance service.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem retrieving the governance service definition.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem retrieving the governance service definition.</dd>
 </dl>
 </li>
 </ul>
@@ -737,11 +737,11 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getGovernanceServiceByName</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceServiceElement&nbsp;getGovernanceServiceByName&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                                  java.lang.String&nbsp;name)
-                                                                                                                           throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                                  org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                                  org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">public&nbsp;<a href="../metadataelements/GovernanceServiceElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">GovernanceServiceElement</a>&nbsp;getGovernanceServiceByName&#8203;(java.lang.String&nbsp;userId,
+                                                           java.lang.String&nbsp;name)
+                                                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                           <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                           <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Return the properties from a governance service definition.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -750,9 +750,9 @@ extends java.lang.Object</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>properties from the governance engine definition.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem retrieving the governance engine definition.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem retrieving the governance engine definition.</dd>
 </dl>
 </li>
 </ul>
@@ -762,12 +762,12 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getAllGovernanceServices</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceServiceElement&gt;&nbsp;getAllGovernanceServices&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                                                int&nbsp;startingFrom,
-                                                                                                                                                int&nbsp;maximumResults)
-                                                                                                                                         throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                                                org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                                                org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../metadataelements/GovernanceServiceElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">GovernanceServiceElement</a>&gt;&nbsp;getAllGovernanceServices&#8203;(java.lang.String&nbsp;userId,
+                                                                         int&nbsp;startingFrom,
+                                                                         int&nbsp;maximumResults)
+                                                                  throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                                         <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                                         <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Return the list of governance services definitions that are stored.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -777,9 +777,9 @@ extends java.lang.Object</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of governance service definitions.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem retrieving the governance service definitions.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem retrieving the governance service definitions.</dd>
 </dl>
 </li>
 </ul>
@@ -791,9 +791,9 @@ extends java.lang.Object</pre>
 <h4>getGovernanceServiceRegistrations</h4>
 <pre class="methodSignature">public&nbsp;java.util.List&lt;java.lang.String&gt;&nbsp;getGovernanceServiceRegistrations&#8203;(java.lang.String&nbsp;userId,
                                                                           java.lang.String&nbsp;governanceServiceGUID)
-                                                                   throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                          org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                          org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                                                   throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                                          <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                                          <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Return the list of governance engines that a specific governance service is registered with.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -802,9 +802,9 @@ extends java.lang.Object</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of governance engine unique identifiers (guids)</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem retrieving the governance service and/or governance engine definitions.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem retrieving the governance service and/or governance engine definitions.</dd>
 </dl>
 </li>
 </ul>
@@ -822,9 +822,9 @@ extends java.lang.Object</pre>
                                     org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection&nbsp;connection,
                                     java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;additionalProperties,
                                     java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;extendedProperties)
-                             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                    org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                    org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                             throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                    <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                    <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Update the properties of an existing governance service definition.  Use the current value to
  keep a property value the same, or use the new value.  Null means remove the property from
  the definition.</div>
@@ -839,9 +839,9 @@ extends java.lang.Object</pre>
 <dd><code>additionalProperties</code> - additional properties for the governance engine.</dd>
 <dd><code>extendedProperties</code> - properties to populate the subtype of the governance service.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem storing the governance service definition.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem storing the governance service definition.</dd>
 </dl>
 </li>
 </ul>
@@ -854,9 +854,9 @@ extends java.lang.Object</pre>
 <pre class="methodSignature">public&nbsp;void&nbsp;deleteGovernanceService&#8203;(java.lang.String&nbsp;userId,
                                     java.lang.String&nbsp;guid,
                                     java.lang.String&nbsp;qualifiedName)
-                             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                    org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                    org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                             throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                    <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                    <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Remove the properties of the governance service.  Both the guid and the qualified name is supplied
  to validate that the correct governance service is being deleted.  The governance service is also
  unregistered from its governance engines.</div>
@@ -866,9 +866,9 @@ extends java.lang.Object</pre>
 <dd><code>guid</code> - unique identifier of the governance service - used to locate the definition.</dd>
 <dd><code>qualifiedName</code> - unique name for the governance service.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem retrieving the governance service definition.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem retrieving the governance service definition.</dd>
 </dl>
 </li>
 </ul>
@@ -883,9 +883,9 @@ extends java.lang.Object</pre>
                                                 java.lang.String&nbsp;governanceServiceGUID,
                                                 java.lang.String&nbsp;governanceRequestType,
                                                 java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;requestParameters)
-                                         throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                         throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Register a governance service with a specific governance engine.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -896,9 +896,9 @@ extends java.lang.Object</pre>
 <dd><code>requestParameters</code> - list of parameters that are passed the the governance service (via
                                   the governance context).  These values can be overridden on the actual governance request.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem retrieving the governance service and/or governance engine definitions.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem retrieving the governance service and/or governance engine definitions.</dd>
 </dl>
 </li>
 </ul>
@@ -908,12 +908,12 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getRegisteredGovernanceService</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.accessservices.governanceengine.metadataelements.RegisteredGovernanceServiceElement&nbsp;getRegisteredGovernanceService&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                                                java.lang.String&nbsp;governanceEngineGUID,
-                                                                                                                                                java.lang.String&nbsp;governanceServiceGUID)
-                                                                                                                                         throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                                                                org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                                                                org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+<pre class="methodSignature">public&nbsp;<a href="../metadataelements/RegisteredGovernanceServiceElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">RegisteredGovernanceServiceElement</a>&nbsp;getRegisteredGovernanceService&#8203;(java.lang.String&nbsp;userId,
+                                                                         java.lang.String&nbsp;governanceEngineGUID,
+                                                                         java.lang.String&nbsp;governanceServiceGUID)
+                                                                  throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                                         <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                                         <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Retrieve a specific governance service registered with a governance engine.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -923,9 +923,9 @@ extends java.lang.Object</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>details of the governance service and the asset types it is registered for.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem retrieving the governance service and/or governance engine definitions.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem retrieving the governance service and/or governance engine definitions.</dd>
 </dl>
 </li>
 </ul>
@@ -939,9 +939,9 @@ extends java.lang.Object</pre>
                                                                         java.lang.String&nbsp;governanceEngineGUID,
                                                                         int&nbsp;startingFrom,
                                                                         int&nbsp;maximumResults)
-                                                                 throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                        org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                        org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                                                 throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                                        <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                                        <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Retrieve the identifiers of the governance services registered with a governance engine.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -952,9 +952,9 @@ extends java.lang.Object</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of unique identifiers</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem retrieving the governance service and/or governance engine definitions.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem retrieving the governance service and/or governance engine definitions.</dd>
 </dl>
 </li>
 </ul>
@@ -967,9 +967,9 @@ extends java.lang.Object</pre>
 <pre class="methodSignature">public&nbsp;void&nbsp;unregisterGovernanceServiceFromEngine&#8203;(java.lang.String&nbsp;userId,
                                                   java.lang.String&nbsp;governanceEngineGUID,
                                                   java.lang.String&nbsp;governanceServiceGUID)
-                                           throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                  org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                  org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                           throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                  <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                  <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Unregister a governance service from the governance engine.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -977,9 +977,9 @@ extends java.lang.Object</pre>
 <dd><code>governanceEngineGUID</code> - unique identifier of the governance engine.</dd>
 <dd><code>governanceServiceGUID</code> - unique identifier of the governance service.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - user not authorized to issue this request.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - problem retrieving the governance service and/or governance engine definitions.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem retrieving the governance service and/or governance engine definitions.</dd>
 </dl>
 </li>
 </ul>

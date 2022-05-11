@@ -154,7 +154,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addCommentReply(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetconsumer.properties.CommentType,java.lang.String,boolean)">addCommentReply</a></span>&#8203;(java.lang.String&nbsp;userId,
                java.lang.String&nbsp;assetGUID,
                java.lang.String&nbsp;commentGUID,
-               org.odpi.openmetadata.accessservices.assetconsumer.properties.CommentType&nbsp;commentType,
+               <a href="../properties/CommentType.html" title="enum in org.odpi.openmetadata.accessservices.assetconsumer.properties">CommentType</a>&nbsp;commentType,
                java.lang.String&nbsp;commentText,
                boolean&nbsp;isPublic)</code></th>
 <td class="colLast">
@@ -165,7 +165,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addCommentToAsset(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetconsumer.properties.CommentType,java.lang.String,boolean)">addCommentToAsset</a></span>&#8203;(java.lang.String&nbsp;userId,
                  java.lang.String&nbsp;assetGUID,
-                 org.odpi.openmetadata.accessservices.assetconsumer.properties.CommentType&nbsp;commentType,
+                 <a href="../properties/CommentType.html" title="enum in org.odpi.openmetadata.accessservices.assetconsumer.properties">CommentType</a>&nbsp;commentType,
                  java.lang.String&nbsp;commentText,
                  boolean&nbsp;isPublic)</code></th>
 <td class="colLast">
@@ -185,7 +185,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addRatingToAsset(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetconsumer.properties.StarRating,java.lang.String,boolean)">addRatingToAsset</a></span>&#8203;(java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;assetGUID,
-                org.odpi.openmetadata.accessservices.assetconsumer.properties.StarRating&nbsp;starRating,
+                <a href="../properties/StarRating.html" title="enum in org.odpi.openmetadata.accessservices.assetconsumer.properties">StarRating</a>&nbsp;starRating,
                 java.lang.String&nbsp;review,
                 boolean&nbsp;isPublic)</code></th>
 <td class="colLast">
@@ -222,7 +222,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateComment(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetconsumer.properties.CommentType,java.lang.String,boolean)">updateComment</a></span>&#8203;(java.lang.String&nbsp;userId,
              java.lang.String&nbsp;assetGUID,
              java.lang.String&nbsp;commentGUID,
-             org.odpi.openmetadata.accessservices.assetconsumer.properties.CommentType&nbsp;commentType,
+             <a href="../properties/CommentType.html" title="enum in org.odpi.openmetadata.accessservices.assetconsumer.properties">CommentType</a>&nbsp;commentType,
              java.lang.String&nbsp;commentText,
              boolean&nbsp;isPublic)</code></th>
 <td class="colLast">
@@ -254,12 +254,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h4>addRatingToAsset</h4>
 <pre class="methodSignature">void&nbsp;addRatingToAsset&#8203;(java.lang.String&nbsp;userId,
                       java.lang.String&nbsp;assetGUID,
-                      org.odpi.openmetadata.accessservices.assetconsumer.properties.StarRating&nbsp;starRating,
+                      <a href="../properties/StarRating.html" title="enum in org.odpi.openmetadata.accessservices.assetconsumer.properties">StarRating</a>&nbsp;starRating,
                       java.lang.String&nbsp;review,
                       boolean&nbsp;isPublic)
-               throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                      org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                      org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+               throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                      <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                      <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Adds a star rating and optional review text to the asset.  If the user has already attached
  a rating then the original one is over-ridden.</div>
 <dl>
@@ -270,9 +270,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>review</code> - user review of asset.  This can be null.</dd>
 <dd><code>isPublic</code> - indicates whether the feedback should be shared or only be visible to the originating user</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem adding the asset properties to the property server.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem adding the asset properties to the property server.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </li>
 </ul>
@@ -284,18 +284,18 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h4>removeRatingFromAsset</h4>
 <pre class="methodSignature">void&nbsp;removeRatingFromAsset&#8203;(java.lang.String&nbsp;userId,
                            java.lang.String&nbsp;assetGUID)
-                    throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                           org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                           org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                           <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                           <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Removes of a review that was added to the asset by this user.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - userId of user making request.</dd>
 <dd><code>assetGUID</code> - unique identifier for the asset where the rating is attached.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem updating the asset properties in the property server.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem updating the asset properties in the property server.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </li>
 </ul>
@@ -308,9 +308,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre class="methodSignature">void&nbsp;addLikeToAsset&#8203;(java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;assetGUID,
                     boolean&nbsp;isPublic)
-             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                    org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                    org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+             throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                    <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                    <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Adds a "LikeProperties" to the asset.  If the user has already attached a like then the original one
  is over-ridden.</div>
 <dl>
@@ -319,9 +319,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>assetGUID</code> - unique identifier for the asset where the like is to be attached.</dd>
 <dd><code>isPublic</code> - indicates whether the feedback should be shared or only be visible to the originating user</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem adding the asset properties to the property server.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem adding the asset properties to the property server.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </li>
 </ul>
@@ -333,18 +333,18 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h4>removeLikeFromAsset</h4>
 <pre class="methodSignature">void&nbsp;removeLikeFromAsset&#8203;(java.lang.String&nbsp;userId,
                          java.lang.String&nbsp;assetGUID)
-                  throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                         org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                         org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+                  throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                         <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                         <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Removes a "LikeProperties" added to the asset by this user.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - userId of user making request.</dd>
 <dd><code>assetGUID</code> - unique identifier for the asset where the like is attached.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem updating the asset properties in the property server.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem updating the asset properties in the property server.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </li>
 </ul>
@@ -356,12 +356,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h4>addCommentToAsset</h4>
 <pre class="methodSignature">java.lang.String&nbsp;addCommentToAsset&#8203;(java.lang.String&nbsp;userId,
                                    java.lang.String&nbsp;assetGUID,
-                                   org.odpi.openmetadata.accessservices.assetconsumer.properties.CommentType&nbsp;commentType,
+                                   <a href="../properties/CommentType.html" title="enum in org.odpi.openmetadata.accessservices.assetconsumer.properties">CommentType</a>&nbsp;commentType,
                                    java.lang.String&nbsp;commentText,
                                    boolean&nbsp;isPublic)
-                            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                   org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                                   org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+                            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                   <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                                   <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Adds a comment to the asset.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -373,9 +373,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>guid of new comment.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem adding the asset properties to the property server.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem adding the asset properties to the property server.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </li>
 </ul>
@@ -388,12 +388,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre class="methodSignature">java.lang.String&nbsp;addCommentReply&#8203;(java.lang.String&nbsp;userId,
                                  java.lang.String&nbsp;assetGUID,
                                  java.lang.String&nbsp;commentGUID,
-                                 org.odpi.openmetadata.accessservices.assetconsumer.properties.CommentType&nbsp;commentType,
+                                 <a href="../properties/CommentType.html" title="enum in org.odpi.openmetadata.accessservices.assetconsumer.properties">CommentType</a>&nbsp;commentType,
                                  java.lang.String&nbsp;commentText,
                                  boolean&nbsp;isPublic)
-                          throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                 org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                                 org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+                          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                                 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Adds a comment to another comment.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -406,9 +406,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>guid of new comment.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem adding the asset properties to the property server.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem adding the asset properties to the property server.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </li>
 </ul>
@@ -421,12 +421,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre class="methodSignature">void&nbsp;updateComment&#8203;(java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;assetGUID,
                    java.lang.String&nbsp;commentGUID,
-                   org.odpi.openmetadata.accessservices.assetconsumer.properties.CommentType&nbsp;commentType,
+                   <a href="../properties/CommentType.html" title="enum in org.odpi.openmetadata.accessservices.assetconsumer.properties">CommentType</a>&nbsp;commentType,
                    java.lang.String&nbsp;commentText,
                    boolean&nbsp;isPublic)
-            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                   org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                   org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                   <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                   <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Update an existing comment.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -437,9 +437,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>commentText</code> - the text of the comment.</dd>
 <dd><code>isPublic</code> - indicates whether the feedback should be shared or only be visible to the originating user</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem adding the asset properties to the property server.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem adding the asset properties to the property server.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </li>
 </ul>
@@ -452,9 +452,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre class="methodSignature">void&nbsp;removeComment&#8203;(java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;assetGUID,
                    java.lang.String&nbsp;commentGUID)
-            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                   org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                   org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                   <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                   <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Removes a comment added to the asset by this user.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -462,9 +462,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>assetGUID</code> - unique identifier for the asset at the head of this comment chain.</dd>
 <dd><code>commentGUID</code> - unique identifier for the comment object.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem updating the asset properties in the property server.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user does not have permission to perform this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem updating the asset properties in the property server.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user does not have permission to perform this request.</dd>
 </dl>
 </li>
 </ul>

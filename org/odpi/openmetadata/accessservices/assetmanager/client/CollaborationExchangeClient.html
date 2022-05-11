@@ -177,7 +177,7 @@ implements <a href="../api/CollaborationExchangeInterface.html" title="interface
                            java.lang.String&nbsp;serverPlatformURLRoot,
                            java.lang.String&nbsp;userId,
                            java.lang.String&nbsp;password,
-                           org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)</code></th>
+                           <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></th>
 <td class="colLast">
 <div class="block">Create a new client that passes userId and password in each HTTP request.</div>
 </td>
@@ -185,9 +185,9 @@ implements <a href="../api/CollaborationExchangeInterface.html" title="interface
 <tr class="rowColor">
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">CollaborationExchangeClient</a></span>&#8203;(java.lang.String&nbsp;serverName,
                            java.lang.String&nbsp;serverPlatformURLRoot,
-                           <a href="rest/AssetManagerRESTClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client.rest">AssetManagerRESTClient</a>&nbsp;restClient,
+                           org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient&nbsp;restClient,
                            int&nbsp;maxPageSize,
-                           org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)</code></th>
+                           <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></th>
 <td class="colLast">
 <div class="block">Create a new client that is going to be used in an OMAG Server.</div>
 </td>
@@ -195,7 +195,7 @@ implements <a href="../api/CollaborationExchangeInterface.html" title="interface
 <tr class="altColor">
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">CollaborationExchangeClient</a></span>&#8203;(java.lang.String&nbsp;serverName,
                            java.lang.String&nbsp;serverPlatformURLRoot,
-                           org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)</code></th>
+                           <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></th>
 <td class="colLast">
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 </td>
@@ -242,8 +242,8 @@ implements <a href="../api/CollaborationExchangeInterface.html" title="interface
 <h4>CollaborationExchangeClient</h4>
 <pre>public&nbsp;CollaborationExchangeClient&#8203;(java.lang.String&nbsp;serverName,
                                    java.lang.String&nbsp;serverPlatformURLRoot,
-                                   org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)
-                            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                                   <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)
+                            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -251,7 +251,7 @@ implements <a href="../api/CollaborationExchangeInterface.html" title="interface
 <dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST servers</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
  REST API calls.</dd>
 </dl>
 </li>
@@ -264,14 +264,14 @@ implements <a href="../api/CollaborationExchangeInterface.html" title="interface
 <h4>CollaborationExchangeClient</h4>
 <pre>public&nbsp;CollaborationExchangeClient&#8203;(java.lang.String&nbsp;serverName,
                                    java.lang.String&nbsp;serverPlatformURLRoot)
-                            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server to connect to</dd>
 <dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST servers</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
  REST API calls.</dd>
 </dl>
 </li>
@@ -286,8 +286,8 @@ implements <a href="../api/CollaborationExchangeInterface.html" title="interface
                                    java.lang.String&nbsp;serverPlatformURLRoot,
                                    java.lang.String&nbsp;userId,
                                    java.lang.String&nbsp;password,
-                                   org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)
-                            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                                   <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)
+                            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client that passes userId and password in each HTTP request.  This is the
  userId/password of the calling server.  The end user's userId is sent on each request.</div>
 <dl>
@@ -298,7 +298,7 @@ implements <a href="../api/CollaborationExchangeInterface.html" title="interface
 <dd><code>password</code> - caller's userId embedded in all HTTP requests</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
  REST API calls.</dd>
 </dl>
 </li>
@@ -311,10 +311,10 @@ implements <a href="../api/CollaborationExchangeInterface.html" title="interface
 <h4>CollaborationExchangeClient</h4>
 <pre>public&nbsp;CollaborationExchangeClient&#8203;(java.lang.String&nbsp;serverName,
                                    java.lang.String&nbsp;serverPlatformURLRoot,
-                                   <a href="rest/AssetManagerRESTClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client.rest">AssetManagerRESTClient</a>&nbsp;restClient,
+                                   org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient&nbsp;restClient,
                                    int&nbsp;maxPageSize,
-                                   org.odpi.openmetadata.frameworks.auditlog.AuditLog&nbsp;auditLog)
-                            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                                   <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)
+                            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client that is going to be used in an OMAG Server.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -324,7 +324,7 @@ implements <a href="../api/CollaborationExchangeInterface.html" title="interface
 <dd><code>maxPageSize</code> - maximum number of results supported by this server</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
  REST API calls.</dd>
 </dl>
 </li>
@@ -339,7 +339,7 @@ implements <a href="../api/CollaborationExchangeInterface.html" title="interface
                                    java.lang.String&nbsp;serverPlatformURLRoot,
                                    java.lang.String&nbsp;userId,
                                    java.lang.String&nbsp;password)
-                            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</pre>
+                            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client that passes userId and password in each HTTP request.  This is the
  userId/password of the calling server.  The end user's userId is sent on each request.</div>
 <dl>
@@ -349,7 +349,7 @@ implements <a href="../api/CollaborationExchangeInterface.html" title="interface
 <dd><code>userId</code> - caller's userId embedded in all HTTP requests</dd>
 <dd><code>password</code> - caller's userId embedded in all HTTP requests</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - there is a problem creating the client-side components to issue any
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
  REST API calls.</dd>
 </dl>
 </li>

@@ -208,7 +208,7 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAssetStore</pre>
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse</code></td>
+<td class="colFirst"><code><a href="../../../frameworks/connectors/properties/AssetUniverse.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetUniverse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAssetProperties()">getAssetProperties</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns a comprehensive collection of properties about the requested asset.</div>
@@ -222,7 +222,7 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAssetStore</pre>
 </td>
 </tr>
 <tr id="i2" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.frameworks.connectors.Connector</code></td>
+<td class="colFirst"><code><a href="../../../frameworks/connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getConnectorByConnection(org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">getConnectorByConnection</a></span>&#8203;(org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection&nbsp;connection)</code></th>
 <td class="colLast">
 <div class="block">Returns the connector corresponding to the supplied connection.</div>
@@ -302,9 +302,9 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAssetStore</pre>
 <li class="blockList">
 <h4>getConnectionForAsset</h4>
 <pre class="methodSignature">protected&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection&nbsp;getConnectionForAsset()
-                                                                                                 throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                        org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                        org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</pre>
+                                                                                                 throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                                                                        <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                                                                        <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Return the connection information for the asset.  This is used to create the connector.  The connector
  is an Open Connector Framework (OCF) connector that provides access to the asset's data and metadata properties.</div>
 <dl>
@@ -313,9 +313,9 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAssetStore</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>Connection bean</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - the asset guid is not recognized</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the user is not authorized to access the asset and/or connection</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there was a problem in the store whether the asset/connection properties are kept.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the asset guid is not recognized</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to access the asset and/or connection</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there was a problem in the store whether the asset/connection properties are kept.</dd>
 </dl>
 </li>
 </ul>
@@ -325,10 +325,10 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAssetStore</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getConnectorByConnection</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.frameworks.connectors.Connector&nbsp;getConnectorByConnection&#8203;(org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection&nbsp;connection)
-                                                                               throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                      org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException,
-                                                                                      org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</pre>
+<pre class="methodSignature">public&nbsp;<a href="../../../frameworks/connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&nbsp;getConnectorByConnection&#8203;(org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection&nbsp;connection)
+                                   throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                          <a href="../../../frameworks/connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a>,
+                                          <a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></pre>
 <div class="block">Returns the connector corresponding to the supplied connection.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -338,10 +338,10 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAssetStore</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>Connector   connector instance</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException</code> - there are errors in the configuration of the connection which is preventing
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a></code> - there are errors in the configuration of the connection which is preventing
                                       the creation of a connector.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException</code> - there are errors in the initialization of the connector.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there are errors in the initialization of the connector.</dd>
 </dl>
 </li>
 </ul>
@@ -351,10 +351,10 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAssetStore</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getAssetProperties</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse&nbsp;getAssetProperties()
-                                                                                        throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                               org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                                                                                               org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+<pre class="methodSignature">public&nbsp;<a href="../../../frameworks/connectors/properties/AssetUniverse.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetUniverse</a>&nbsp;getAssetProperties()
+                                 throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                        <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                                        <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Returns a comprehensive collection of properties about the requested asset.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -362,9 +362,9 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAssetStore</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>a comprehensive collection of properties about the asset.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem retrieving the asset properties from the property servers).</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving the asset properties from the property servers).</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </li>
 </ul>
@@ -376,9 +376,9 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAssetStore</pre>
 <h4>logAssetAuditMessage</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;logAssetAuditMessage&#8203;(java.lang.String&nbsp;discoveryService,
                                  java.lang.String&nbsp;message)
-                          throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                 org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-                                 org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</pre>
+                          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                                 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Log an audit message about this asset.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -387,9 +387,9 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAssetStore</pre>
 <dd><code>discoveryService</code> - name of discovery service</dd>
 <dd><code>message</code> - message to log</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException</code> - one of the parameters is null or invalid.</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException</code> - there is a problem retrieving the asset properties from the property servers).</dd>
-<dd><code>org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException</code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving the asset properties from the property servers).</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </li>
 </ul>
