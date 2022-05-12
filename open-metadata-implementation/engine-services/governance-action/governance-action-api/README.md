@@ -5,8 +5,8 @@
 
 The governance action engine services API provides the property structures and
 REST structures used to drive 
-[governance action engines](../../../frameworks/governance-action-framework/docs/governance-action-engine.md) running inside a
-[engine host server](../../../admin-services/docs/concepts/engine-host.md).
+[governance action engines](https://egeria-project.org/concepts/governance-action-engine) running inside an
+[engine host server](https://egeria-project.org/concepts/engine-host).
 
 
 

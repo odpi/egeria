@@ -40,9 +40,7 @@ public class IsATypeOfMapper extends RelationshipMapper<IsATypeOf> {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, isATypeOf.getSource(), OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME);
         }
         if (isATypeOf.getStatus() != null) {
-            EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
-            enumPropertyValue.setOrdinal(isATypeOf.getStatus().getOrdinal());
-            instanceProperties.setProperty(OpenMetadataAPIMapper.STATUS_PROPERTY_NAME, enumPropertyValue);
+            SubjectAreaUtils.setStatusPropertyInInstanceProperties(instanceProperties, isATypeOf.getStatus(), OpenMetadataAPIMapper.STATUS_PROPERTY_NAME);
         }
     }
 

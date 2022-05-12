@@ -43,9 +43,7 @@ public class ValidValueMapper extends RelationshipMapper<ValidValue> {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, validValue.getSource(), OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME);
         }
         if (validValue.getStatus() != null) {
-            EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
-            enumPropertyValue.setOrdinal(validValue.getStatus().getOrdinal());
-            instanceProperties.setProperty(OpenMetadataAPIMapper.STATUS_PROPERTY_NAME, enumPropertyValue);
+            SubjectAreaUtils.setStatusPropertyInInstanceProperties(instanceProperties, validValue.getStatus(), OpenMetadataAPIMapper.STATUS_PROPERTY_NAME);
         }
     }
 

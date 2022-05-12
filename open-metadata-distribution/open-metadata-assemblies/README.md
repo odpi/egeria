@@ -4,8 +4,8 @@
 # Open Metadata Distribution TAR file
 
 The **Open Metadata Assemblies** module creates a distribution **tar** file that can be copied
-and used to install ODPi Egeria.   For further information see
-[Installing ODPi Egeria Tutorial](../../open-metadata-resources/open-metadata-tutorials/building-egeria-tutorial/task-installing-egeria.md).
+and used to install Egeria.   For further information see
+[Installing Egeria Tutorial](https://egeria-project.org/education/tutorials/installing-egeria-tutorial/).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

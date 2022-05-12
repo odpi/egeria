@@ -95,7 +95,7 @@ Connections can be created in the open metadata repositories through the followi
 
 ## Configuring Egeria Connections
 
-The [Administration Guide](../../../../admin-services/docs/user) describes how to configure Egeria's
+The [Administration Guide](https://egeria-project.org/guides/admin/servers) describes how to configure Egeria's
 OMAG Server Platforms and Servers.  Both the platform and the servers used connectors for access to the
 external resources to support their basic operation and to coordinate metadata and governance with
 third party technologies.  This means that the configuration includes Connection definitions for these connectors.

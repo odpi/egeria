@@ -523,6 +523,7 @@ public class ITAssetRESTService
      * @param relatedAssetTypeName name of type for the asset
      * @param infrastructureManagerIsHome ensure that only the infrastructure manager can update this asset
      * @param relatedAssetGUID unique identifier of the related asset
+     * @param requestBody request body
      *
      * @return void or
      *

@@ -143,7 +143,7 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
      * results in a 1000ms (1s) timeout.
      *
      */
-    private Integer           pollCount   = 50;
+    private Integer           pollCount   = 100;
     private Integer           pollPeriod  = 100;   // milliseconds
 
 

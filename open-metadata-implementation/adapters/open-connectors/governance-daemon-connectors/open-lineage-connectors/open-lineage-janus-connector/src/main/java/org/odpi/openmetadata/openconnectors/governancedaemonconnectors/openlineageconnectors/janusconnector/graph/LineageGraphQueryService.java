@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.hasLabel;
@@ -425,16 +426,19 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
     private Set<LineageEdge> getCondensedLineageEdges(Set<LineageVertex> lineageVertices, LineageVertex queriedVertex,
                                                       LineageVertex condensedVertex, String condensationType) {
         Set<LineageEdge> lineageEdges = new HashSet<>();
+        AtomicInteger counter = new AtomicInteger(0);
 
         if (SOURCE_CONDENSATION.equalsIgnoreCase(condensationType)) {
-            lineageEdges.add(new LineageEdge(EDGE_LABEL_CONDENSED, condensedVertex.getNodeID(), queriedVertex.getNodeID()));
-            lineageVertices.forEach(ultimateVertex -> lineageEdges.add(new LineageEdge(EDGE_LABEL_CONDENSED, ultimateVertex.getNodeID(),
-                    condensedVertex.getNodeID())));
+            lineageEdges.add(new LineageEdge(EDGE_LABEL_CONDENSED + "--" + counter.getAndIncrement(), EDGE_LABEL_CONDENSED,
+                    condensedVertex.getNodeID(), queriedVertex.getNodeID()));
+            lineageVertices.forEach(ultimateVertex -> lineageEdges.add(new LineageEdge(EDGE_LABEL_CONDENSED + "--" + counter.getAndIncrement(),
+                    EDGE_LABEL_CONDENSED, ultimateVertex.getNodeID(), condensedVertex.getNodeID())));
         }
         if (DESTINATION_CONDENSATION.equalsIgnoreCase(condensationType)) {
-            lineageEdges.add(new LineageEdge(EDGE_LABEL_CONDENSED, queriedVertex.getNodeID(), condensedVertex.getNodeID()));
-            lineageVertices.forEach(ultimateVertex -> lineageEdges.add(new LineageEdge(EDGE_LABEL_CONDENSED, condensedVertex.getNodeID(),
-                    ultimateVertex.getNodeID())));
+            lineageEdges.add(new LineageEdge(EDGE_LABEL_CONDENSED + "--" + counter.getAndIncrement(), EDGE_LABEL_CONDENSED,
+                    queriedVertex.getNodeID(), condensedVertex.getNodeID()));
+            lineageVertices.forEach(ultimateVertex -> lineageEdges.add(new LineageEdge(EDGE_LABEL_CONDENSED + "--" + counter.getAndIncrement(),
+                    EDGE_LABEL_CONDENSED, condensedVertex.getNodeID(), ultimateVertex.getNodeID())));
         }
         return lineageEdges;
     }
