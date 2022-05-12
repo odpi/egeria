@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -94,7 +94,7 @@ loadScripts(document, 'script');</script>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>
@@ -160,6 +160,24 @@ implements <a href="OpenLineageInterface.html" title="interface in org.odpi.open
 <!--   -->
 </a>
 <h3>Field Summary</h3>
+<table class="memberSummary">
+<caption><span>Fields</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colSecond" scope="col">Field</th>
+<th class="colLast" scope="col">Description</th>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#NODES">NODES</a></span></code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#TYPES">TYPES</a></span></code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+</table>
 <ul class="blockList">
 <li class="blockList"><a id="fields.inherited.from.class.org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClientBase">
 <!--   -->
@@ -222,6 +240,19 @@ implements <a href="OpenLineageInterface.html" title="interface in org.odpi.open
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i1" class="rowColor">
+<td class="colFirst"><code>java.util.List&lt;java.lang.String&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNodes(java.lang.String,java.lang.String,java.lang.String,int)">getNodes</a></span>&#8203;(java.lang.String&nbsp;userId,
+        java.lang.String&nbsp;type,
+        java.lang.String&nbsp;searchValue,
+        int&nbsp;limit)</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i2" class="altColor">
+<td class="colFirst"><code>java.util.List&lt;java.lang.String&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTypes(java.lang.String)">getTypes</a></span>&#8203;(java.lang.String&nbsp;userId)</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code><a href="../model/LineageVerticesAndEdges.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.model">LineageVerticesAndEdges</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#lineage(java.lang.String,org.odpi.openmetadata.governanceservers.openlineage.model.Scope,java.lang.String,boolean)">lineage</a></span>&#8203;(java.lang.String&nbsp;userId,
        <a href="../model/Scope.html" title="enum in org.odpi.openmetadata.governanceservers.openlineage.model">Scope</a>&nbsp;scope,
@@ -262,6 +293,42 @@ implements <a href="OpenLineageInterface.html" title="interface in org.odpi.open
 <div class="details">
 <ul class="blockList">
 <li class="blockList">
+<!-- ============ FIELD DETAIL =========== -->
+<section role="region">
+<ul class="blockList">
+<li class="blockList"><a id="field.detail">
+<!--   -->
+</a>
+<h3>Field Detail</h3>
+<a id="TYPES">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>TYPES</h4>
+<pre>public static final&nbsp;java.lang.String TYPES</pre>
+<dl>
+<dt><span class="seeLabel">See Also:</span></dt>
+<dd><a href="../../../../../../constant-values.html#org.odpi.openmetadata.governanceservers.openlineage.client.OpenLineageClient.TYPES">Constant Field Values</a></dd>
+</dl>
+</li>
+</ul>
+<a id="NODES">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>NODES</h4>
+<pre>public static final&nbsp;java.lang.String NODES</pre>
+<dl>
+<dt><span class="seeLabel">See Also:</span></dt>
+<dd><a href="../../../../../../constant-values.html#org.odpi.openmetadata.governanceservers.openlineage.client.OpenLineageClient.NODES">Constant Field Values</a></dd>
+</dl>
+</li>
+</ul>
+</li>
+</ul>
+</section>
 <!-- ========= CONSTRUCTOR DETAIL ======== -->
 <section role="region">
 <ul class="blockList">
@@ -352,7 +419,7 @@ implements <a href="OpenLineageInterface.html" title="interface in org.odpi.open
 <a id="getEntityDetails(java.lang.String,java.lang.String)">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>getEntityDetails</h4>
 <pre class="methodSignature">public&nbsp;<a href="../model/LineageVertex.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.model">LineageVertex</a>&nbsp;getEntityDetails&#8203;(java.lang.String&nbsp;userId,
@@ -364,6 +431,45 @@ implements <a href="OpenLineageInterface.html" title="interface in org.odpi.open
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code></dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code></dd>
+<dd><code><a href="../ffdc/OpenLineageException.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.ffdc">OpenLineageException</a></code></dd>
+</dl>
+</li>
+</ul>
+<a id="getTypes(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getTypes</h4>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;java.lang.String&gt;&nbsp;getTypes&#8203;(java.lang.String&nbsp;userId)
+                                          throws <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                                                 <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                 <a href="../ffdc/OpenLineageException.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.ffdc">OpenLineageException</a></pre>
+<dl>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code></dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code></dd>
+<dd><code><a href="../ffdc/OpenLineageException.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.ffdc">OpenLineageException</a></code></dd>
+</dl>
+</li>
+</ul>
+<a id="getNodes(java.lang.String,java.lang.String,java.lang.String,int)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>getNodes</h4>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;java.lang.String&gt;&nbsp;getNodes&#8203;(java.lang.String&nbsp;userId,
+                                                 java.lang.String&nbsp;type,
+                                                 java.lang.String&nbsp;searchValue,
+                                                 int&nbsp;limit)
+                                          throws <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                                                 <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                 <a href="../ffdc/OpenLineageException.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.ffdc">OpenLineageException</a></pre>
+<dl>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code></dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code></dd>
 <dd><code><a href="../ffdc/OpenLineageException.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.ffdc">OpenLineageException</a></code></dd>
 </dl>
 </li>
@@ -426,7 +532,7 @@ implements <a href="OpenLineageInterface.html" title="interface in org.odpi.open
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>

@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -192,26 +192,34 @@ implements org.odpi.openmetadata.governanceservers.openlineage.OpenLineageQueryS
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEntityDetails(java.lang.String)">getEntityDetails</a></span>&#8203;(java.lang.String&nbsp;guid)</code></th>
 </tr>
 <tr id="i2" class="altColor">
+<td class="colFirst"><code>org.odpi.openmetadata.governanceservers.openlineage.responses.LineageNodeNamesResponse</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNodes(org.odpi.openmetadata.governanceservers.openlineage.model.NodeNamesSearchCriteria)">getNodes</a></span>&#8203;(<a href="../../../../../governanceservers/openlineage/model/NodeNamesSearchCriteria.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.model">NodeNamesSearchCriteria</a>&nbsp;searchCriteria)</code></th>
+</tr>
+<tr id="i3" class="rowColor">
+<td class="colFirst"><code>org.odpi.openmetadata.governanceservers.openlineage.responses.LineageTypesResponse</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTypes()">getTypes</a></span>()</code></th>
+</tr>
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#lineage(org.odpi.openmetadata.governanceservers.openlineage.model.Scope,java.lang.String,boolean)">lineage</a></span>&#8203;(<a href="../../../../../governanceservers/openlineage/model/Scope.html" title="enum in org.odpi.openmetadata.governanceservers.openlineage.model">Scope</a>&nbsp;scope,
        java.lang.String&nbsp;guid,
        boolean&nbsp;includeProcesses)</code></th>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>java.util.Optional&lt;<a href="../../../../../governanceservers/openlineage/model/LineageVerticesAndEdges.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.model">LineageVerticesAndEdges</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#ultimateDestination(java.lang.String)">ultimateDestination</a></span>&#8203;(java.lang.String&nbsp;guid)</code></th>
 <td class="colLast">
 <div class="block">Returns the ultimate destination graph of queried entity, which can be a column or a table.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>java.util.Optional&lt;<a href="../../../../../governanceservers/openlineage/model/LineageVerticesAndEdges.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.model">LineageVerticesAndEdges</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#ultimateSource(java.lang.String)">ultimateSource</a></span>&#8203;(java.lang.String&nbsp;guid)</code></th>
 <td class="colLast">
 <div class="block">Returns the ultimate source graph of queried entity, which can be a column or a table.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>java.util.Optional&lt;<a href="../../../../../governanceservers/openlineage/model/LineageVerticesAndEdges.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.model">LineageVerticesAndEdges</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#verticalLineage(java.lang.String)">verticalLineage</a></span>&#8203;(java.lang.String&nbsp;guid)</code></th>
 <td class="colLast">
@@ -356,13 +364,39 @@ implements org.odpi.openmetadata.governanceservers.openlineage.OpenLineageQueryS
 <a id="getEntityDetails(java.lang.String)">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>getEntityDetails</h4>
 <pre class="methodSignature">public&nbsp;org.odpi.openmetadata.governanceservers.openlineage.responses.LineageVertexResponse&nbsp;getEntityDetails&#8203;(java.lang.String&nbsp;guid)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>getEntityDetails</code>&nbsp;in interface&nbsp;<code>org.odpi.openmetadata.governanceservers.openlineage.OpenLineageQueryService</code></dd>
+</dl>
+</li>
+</ul>
+<a id="getTypes()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getTypes</h4>
+<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.governanceservers.openlineage.responses.LineageTypesResponse&nbsp;getTypes()</pre>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code>getTypes</code>&nbsp;in interface&nbsp;<code>org.odpi.openmetadata.governanceservers.openlineage.OpenLineageQueryService</code></dd>
+</dl>
+</li>
+</ul>
+<a id="getNodes(org.odpi.openmetadata.governanceservers.openlineage.model.NodeNamesSearchCriteria)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>getNodes</h4>
+<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.governanceservers.openlineage.responses.LineageNodeNamesResponse&nbsp;getNodes&#8203;(<a href="../../../../../governanceservers/openlineage/model/NodeNamesSearchCriteria.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.model">NodeNamesSearchCriteria</a>&nbsp;searchCriteria)</pre>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code>getNodes</code>&nbsp;in interface&nbsp;<code>org.odpi.openmetadata.governanceservers.openlineage.OpenLineageQueryService</code></dd>
 </dl>
 </li>
 </ul>
