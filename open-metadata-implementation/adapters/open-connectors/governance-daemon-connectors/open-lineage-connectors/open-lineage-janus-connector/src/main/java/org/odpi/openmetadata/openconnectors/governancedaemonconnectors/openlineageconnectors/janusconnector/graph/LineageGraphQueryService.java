@@ -13,12 +13,16 @@ import org.apache.tinkerpop.gremlin.structure.VertexProperty;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageQueryService;
+import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageEdge;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
+import org.odpi.openmetadata.governanceservers.openlineage.model.NodeNamesSearchCriteria;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
+import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageNodeNamesResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
+import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageTypesResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageVertexResponse;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.ffdc.JanusConnectorException;
 import org.slf4j.Logger;
@@ -36,15 +40,20 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.hasLabel;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.inE;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.outE;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.until;
 import static org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode.ERROR_ENTITY_NOT_FOUND;
 import static org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode.ERROR_LINEAGE_NOT_FOUND;
+import static org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageServerErrorCode.ERROR_TYPES_NOT_FOUND;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.CLASSIFICATION_NOT_FOUND;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.COULD_NOT_RETRIEVE_VERTEX;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.LINEAGE_NOT_FOUND;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.NODES_NOT_FOUND;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.TYPES_NOT_FOUND;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ASSETS;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ASSET_LINEAGE_VARIABLES;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ASSET_SCHEMA_TYPE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.AVRO_FILE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.CLASSIFICATION_GRAPH;
@@ -64,6 +73,7 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.LINEAGE_MAPPING;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.LOG_FILE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.MEDIA_FILE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.PROCESS;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.RELATIONAL_COLUMN;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.RELATIONAL_COLUMN_AND_CLASSIFICATION_EDGES;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.RELATIONAL_TABLE;
@@ -80,7 +90,10 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_CONDENSED;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_TABLE_DATA_FLOW;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.NODE_LABEL_CONDENSED;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.NODE_LABEL_SUB_PROCESS;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_GUID;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_LABEL;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PREFIX_ELEMENT;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PREFIX_VERTEX_INSTANCE_PROPERTY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION;
@@ -89,7 +102,7 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 
 public class LineageGraphQueryService implements OpenLineageQueryService {
 
-    private static final Logger log = LoggerFactory.getLogger(LineageGraphQueryService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LineageGraphQueryService.class);
 
     private final GraphHelper graphHelper;
     private final LineageGraphQueryHelper lineageGraphQueryHelper;
@@ -205,6 +218,15 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
 
     private void handleLineageNotFoundException(Exception e, String guid, List<String> edgeLabels) {
         auditLog.logException(LINEAGE_NOT_FOUND.getFormattedErrorMessage(guid, edgeLabels.toString()), LINEAGE_NOT_FOUND.getMessageDefinition(guid, edgeLabels.toString()), e);
+    }
+
+    private void handleTypesNotFoundException(Exception e) {
+        auditLog.logException(TYPES_NOT_FOUND.getErrorMessage(), TYPES_NOT_FOUND.getMessageDefinition(), e);
+    }
+
+    private void handleNodeNamesNotFoundException(Exception e, NodeNamesSearchCriteria searchCriteria) {
+        auditLog.logException(NODES_NOT_FOUND.getFormattedErrorMessage(searchCriteria.getType(), searchCriteria.getSearchValue()),
+                NODES_NOT_FOUND.getMessageDefinition(), e);
     }
 
     /**
@@ -495,6 +517,9 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
             case TOPIC:
                 edgeLabels.add(EDGE_LABEL_TABLE_DATA_FLOW);
                 break;
+            case PROCESS:
+                edgeLabels.add(EDGE_LABEL_COLUMN_DATA_FLOW);
+                break;
             default:
                 return Optional.empty();
         }
@@ -519,6 +544,51 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
             return lineageResponse;
         }
         return new LineageVertexResponse(lineageVertex);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LineageTypesResponse getTypes() {
+        List<String> types = this.graphHelper.getResult(this::getTypes, this::handleTypesNotFoundException);
+        LineageTypesResponse typesResponse = new LineageTypesResponse();
+
+        if(CollectionUtils.isEmpty(types)) {
+            typesResponse.setRelatedHTTPCode(ERROR_TYPES_NOT_FOUND.getHTTPErrorCode());
+            typesResponse.setExceptionErrorMessage(ERROR_TYPES_NOT_FOUND.getFormattedErrorMessage());
+            typesResponse.setActionDescription(ERROR_TYPES_NOT_FOUND.getUserAction());
+            typesResponse.setExceptionUserAction(ERROR_TYPES_NOT_FOUND.getUserAction());
+            typesResponse.setExceptionErrorMessageId(ERROR_TYPES_NOT_FOUND.getErrorMessageId());
+            typesResponse.setExceptionClassName(OpenLineageException.class.getName());
+            return typesResponse;
+        }
+
+        typesResponse.setTypes(types);
+        return typesResponse;
+    }
+
+    private List<String> getTypes(GraphTraversalSource g) {
+       return g.V().not(hasLabel(ASSET_LINEAGE_VARIABLES, NODE_LABEL_SUB_PROCESS)).label().dedup().toList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LineageNodeNamesResponse getNodes(NodeNamesSearchCriteria searchCriteria) {
+        List<String> nodeNames = this.graphHelper.getResult(this::getNodes, searchCriteria,
+                this::handleNodeNamesNotFoundException);
+        LineageNodeNamesResponse nodeNamesResponse = new LineageNodeNamesResponse();
+        nodeNamesResponse.setNames(nodeNames);
+        return nodeNamesResponse;
+    }
+
+    private List<String> getNodes(GraphTraversalSource g, NodeNamesSearchCriteria searchCriteria) {
+        return g.V().has(PROPERTY_KEY_LABEL, searchCriteria.getType()).values(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME)
+                .filter(x -> x.toString().toLowerCase().contains(searchCriteria.getSearchValue().toLowerCase()))
+                .limit(searchCriteria.getLimit()).map(Object::toString).toList();
+
     }
 
     /**
