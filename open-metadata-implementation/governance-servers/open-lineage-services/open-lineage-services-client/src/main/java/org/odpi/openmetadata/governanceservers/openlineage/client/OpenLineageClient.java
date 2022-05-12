@@ -11,8 +11,10 @@ import org.odpi.openmetadata.governanceservers.openlineage.model.LineageQueryPar
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
+import org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageNodeNamesResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
+import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageSearchResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageTypesResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageVertexResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.util.OpenLineageExceptionHandler;
@@ -28,7 +30,8 @@ public class OpenLineageClient extends FFDCRESTClient implements OpenLineageInte
     private static final String ENTITIES = "/entities/{2}";
     private static final String DETAILS = "/details";
     public static final String TYPES = "types";
-    public static final String NODES = "nodes";
+    public static final String NODES = "nodes?type={2}&name={3}&limit={4}";
+    private static final String SEARCH = "/search";
     private OpenLineageExceptionHandler openLineageExceptionHandler = new OpenLineageExceptionHandler();
 
     /**
@@ -95,7 +98,17 @@ public class OpenLineageClient extends FFDCRESTClient implements OpenLineageInte
         return nodeNamesResponse.getNames();
     }
 
-    private void detectExceptions(String methodName, FFDCResponseBase response)
+    public List<LineageVertex> search(String userId, LineageSearchRequest lineageSearchRequest) throws InvalidParameterException, PropertyServerException, OpenLineageException {
+        String methodName = "OpenLineageClient.getEntityDetails";
+        LineageSearchResponse lineageSearchResponse = callPostRESTCall(methodName, LineageSearchResponse.class,
+                serverPlatformURLRoot + BASE_PATH + LINEAGE + SEARCH, lineageSearchRequest, serverName, userId);
+
+        detectExceptions(methodName, lineageSearchResponse);
+        return lineageSearchResponse.getVertices();
+    }
+
+    private void detectExceptions(String methodName,
+                                  FFDCResponseBase response)
             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException, OpenLineageException {
         openLineageExceptionHandler.detectAndThrowInvalidParameterException(response);
         openLineageExceptionHandler.detectAndThrowPropertyServerException(response);

@@ -9,6 +9,7 @@ import org.odpi.openmetadata.governanceservers.openlineage.converters.ScopeEnumC
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
+import org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.beans.Graph;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.service.OpenLineageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -126,6 +129,16 @@ public class OpenLineageController {
                                  @RequestParam("limit") int limit) {
         String user = SecurityContextHolder.getContext().getAuthentication().getName();
         return openLineageService.getNodes(user, type, searchValue, limit);
+    }
+
+    /**
+     * @param searchRequest filtering details for the search
+     * @return the entity details
+     */
+    @PostMapping( value = "entities/search")
+    public List<LineageVertex> search(@RequestBody LineageSearchRequest searchRequest) throws InvalidParameterException, PropertyServerException, OpenLineageException {
+        String user = SecurityContextHolder.getContext().getAuthentication().getName();
+        return openLineageService.search(user, searchRequest);
     }
 
     /**
