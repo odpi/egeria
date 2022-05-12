@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -206,20 +206,27 @@ implements org.odpi.openmetadata.governanceservers.openlineage.OpenLineageQueryS
        boolean&nbsp;includeProcesses)</code></th>
 </tr>
 <tr id="i5" class="rowColor">
+<td class="colFirst"><code>org.odpi.openmetadata.governanceservers.openlineage.responses.LineageSearchResponse</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#search(org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest)">search</a></span>&#8203;(org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest&nbsp;lineageSearchRequest)</code></th>
+<td class="colLast">
+<div class="block">Search the database for entities matching the search request</div>
+</td>
+</tr>
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>java.util.Optional&lt;<a href="../../../../../governanceservers/openlineage/model/LineageVerticesAndEdges.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.model">LineageVerticesAndEdges</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#ultimateDestination(java.lang.String)">ultimateDestination</a></span>&#8203;(java.lang.String&nbsp;guid)</code></th>
 <td class="colLast">
 <div class="block">Returns the ultimate destination graph of queried entity, which can be a column or a table.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>java.util.Optional&lt;<a href="../../../../../governanceservers/openlineage/model/LineageVerticesAndEdges.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.model">LineageVerticesAndEdges</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#ultimateSource(java.lang.String)">ultimateSource</a></span>&#8203;(java.lang.String&nbsp;guid)</code></th>
 <td class="colLast">
 <div class="block">Returns the ultimate source graph of queried entity, which can be a column or a table.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>java.util.Optional&lt;<a href="../../../../../governanceservers/openlineage/model/LineageVerticesAndEdges.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.model">LineageVerticesAndEdges</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#verticalLineage(java.lang.String)">verticalLineage</a></span>&#8203;(java.lang.String&nbsp;guid)</code></th>
 <td class="colLast">
@@ -390,13 +397,31 @@ implements org.odpi.openmetadata.governanceservers.openlineage.OpenLineageQueryS
 <a id="getNodes(org.odpi.openmetadata.governanceservers.openlineage.model.NodeNamesSearchCriteria)">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>getNodes</h4>
 <pre class="methodSignature">public&nbsp;org.odpi.openmetadata.governanceservers.openlineage.responses.LineageNodeNamesResponse&nbsp;getNodes&#8203;(<a href="../../../../../governanceservers/openlineage/model/NodeNamesSearchCriteria.html" title="class in org.odpi.openmetadata.governanceservers.openlineage.model">NodeNamesSearchCriteria</a>&nbsp;searchCriteria)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>getNodes</code>&nbsp;in interface&nbsp;<code>org.odpi.openmetadata.governanceservers.openlineage.OpenLineageQueryService</code></dd>
+</dl>
+</li>
+</ul>
+<a id="search(org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>search</h4>
+<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.governanceservers.openlineage.responses.LineageSearchResponse&nbsp;search&#8203;(org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest&nbsp;lineageSearchRequest)</pre>
+<div class="block">Search the database for entities matching the search request</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code>search</code>&nbsp;in interface&nbsp;<code>org.odpi.openmetadata.governanceservers.openlineage.OpenLineageQueryService</code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>lineageSearchRequest</code> - the criteria for the search</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>all the entities in the graph that match the criteria</dd>
 </dl>
 </li>
 </ul>
