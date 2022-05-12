@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
@@ -175,34 +176,35 @@ public class OpenLineageServiceTest {
                     .add(new LineageVertex("n"+i , "node"));
         }
 
+        AtomicInteger counter = new AtomicInteger(0);
         Set<LineageEdge> edges = lineageVerticesAndEdges.getLineageEdges();
-        edges.add( new LineageEdge("edge","n1","n2"));
-        edges.add( new LineageEdge("edge","n2","n3"));
-        edges.add( new LineageEdge("edge","n3","n7"));
+        edges.add( new LineageEdge(counter.incrementAndGet(), "edge","n1","n2"));
+        edges.add( new LineageEdge(counter.incrementAndGet(), "edge","n2","n3"));
+        edges.add( new LineageEdge(counter.incrementAndGet(), "edge","n3","n7"));
 
-        edges.add( new LineageEdge("edge","n4","n5"));
-        edges.add( new LineageEdge("edge","n5","n6"));
-        edges.add( new LineageEdge("edge","n6","n7"));
+        edges.add( new LineageEdge(counter.incrementAndGet(), "edge","n4","n5"));
+        edges.add( new LineageEdge(counter.incrementAndGet(), "edge","n5","n6"));
+        edges.add( new LineageEdge(counter.incrementAndGet(), "edge","n6","n7"));
 
-        edges.add( new LineageEdge("edge","n8","n9"));
-        edges.add( new LineageEdge("edge","n9","n10"));
+        edges.add( new LineageEdge(counter.incrementAndGet(), "edge","n8","n9"));
+        edges.add( new LineageEdge(counter.incrementAndGet(), "edge","n9","n10"));
 
-        edges.add( new LineageEdge("edge","n10","n11"));
-        edges.add( new LineageEdge("edge","n7","n11"));
+        edges.add( new LineageEdge(counter.incrementAndGet(), "edge","n10","n11"));
+        edges.add( new LineageEdge(counter.incrementAndGet(), "edge","n7","n11"));
 
-        edges.add( new LineageEdge("edge","n11","n12"));
-        edges.add( new LineageEdge("edge","n11","n19"));
+        edges.add( new LineageEdge(counter.incrementAndGet(), "edge","n11","n12"));
+        edges.add( new LineageEdge(counter.incrementAndGet(), "edge","n11","n19"));
 
-        edges.add( new LineageEdge("edge","n12","n13"));
-        edges.add( new LineageEdge("edge","n13","n14"));
-        edges.add( new LineageEdge("edge","n14","n15"));
+        edges.add( new LineageEdge(counter.incrementAndGet(), "edge","n12","n13"));
+        edges.add( new LineageEdge(counter.incrementAndGet(), "edge","n13","n14"));
+        edges.add( new LineageEdge(counter.incrementAndGet(), "edge","n14","n15"));
 
-        edges.add( new LineageEdge("edge","n12","n16"));
-        edges.add( new LineageEdge("edge","n16","n17"));
-        edges.add( new LineageEdge("edge","n17","n18"));
+        edges.add( new LineageEdge(counter.incrementAndGet(), "edge","n12","n16"));
+        edges.add( new LineageEdge(counter.incrementAndGet(), "edge","n16","n17"));
+        edges.add( new LineageEdge(counter.incrementAndGet(), "edge","n17","n18"));
 
-        edges.add( new LineageEdge("edge","n19","n20"));
-        edges.add( new LineageEdge("edge","n20","n21"));
+        edges.add( new LineageEdge(counter.incrementAndGet(), "edge","n19","n20"));
+        edges.add( new LineageEdge(counter.incrementAndGet(), "edge","n20","n21"));
 
     }
 
