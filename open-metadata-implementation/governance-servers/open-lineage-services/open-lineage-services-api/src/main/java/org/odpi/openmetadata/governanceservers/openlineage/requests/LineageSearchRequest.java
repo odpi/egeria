@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.List;
@@ -21,15 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @EqualsAndHashCode
 @Getter
 @Setter
+@ToString
 public class LineageSearchRequest implements Serializable {
     private Node queriedNode;
     private List<Node> relatedNodes;
-    
-    @Override
-    public String toString() {
-        return "LineageSearchRequest{" +
-                "queriedNode=" + queriedNode +
-                ", relatedNodes=" + relatedNodes +
-                '}';
-    }
 }

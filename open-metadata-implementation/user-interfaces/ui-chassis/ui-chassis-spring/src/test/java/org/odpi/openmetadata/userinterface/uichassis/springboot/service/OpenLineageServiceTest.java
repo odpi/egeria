@@ -72,12 +72,8 @@ public class OpenLineageServiceTest {
     @Test
     @DisplayName("Ultimate Source")
     public void testUltimateSource() throws PropertyServerException, InvalidParameterException, OpenLineageException {
-        try {
-            when(openLineageClient.lineage(USER_ID, Scope.ULTIMATE_SOURCE, guid,true))
-                    .thenReturn(lineageVerticesAndEdges);
-        } catch (OpenLineageException e) {
-            e.printStackTrace();
-        }
+        when(openLineageClient.lineage(USER_ID, Scope.ULTIMATE_SOURCE, guid,true))
+                .thenReturn(lineageVerticesAndEdges);
         Graph ultimateSource = openLineageService.getUltimateSource(USER_ID, guid, true);
         checkResponse(ultimateSource);
     }
@@ -85,12 +81,8 @@ public class OpenLineageServiceTest {
     @Test
     @DisplayName("End To End")
     public void testEndToEnd() throws PropertyServerException, InvalidParameterException, OpenLineageException {
-        try {
-            when(openLineageClient.lineage(USER_ID, Scope.END_TO_END, guid,true))
-                    .thenReturn(lineageVerticesAndEdges);
-        } catch (OpenLineageException e) {
-            e.printStackTrace();
-        }
+        when(openLineageClient.lineage(USER_ID, Scope.END_TO_END, guid,true))
+                .thenReturn(lineageVerticesAndEdges);
         Graph response = openLineageService.getEndToEndLineage(USER_ID, guid, true);
         checkResponse(response);
     }
@@ -99,12 +91,8 @@ public class OpenLineageServiceTest {
     @Test
     @DisplayName("Ultimate Destination")
     public void testUltimateDestination() throws PropertyServerException, InvalidParameterException, OpenLineageException {
-        try {
-            when(openLineageClient.lineage(USER_ID, Scope.ULTIMATE_DESTINATION, guid, true))
-                    .thenReturn(lineageVerticesAndEdges);
-        } catch (OpenLineageException e) {
-            e.printStackTrace();
-        }
+        when(openLineageClient.lineage(USER_ID, Scope.ULTIMATE_DESTINATION, guid, true))
+                .thenReturn(lineageVerticesAndEdges);
         Graph response = openLineageService.getUltimateDestination(USER_ID, guid, true);
         checkResponse(response);
     }
@@ -112,12 +100,8 @@ public class OpenLineageServiceTest {
     @Test
     @DisplayName("GlossaryLineage")
     public void testGlossaryLineage() throws PropertyServerException, InvalidParameterException, OpenLineageException {
-        try {
-            when(openLineageClient.lineage(USER_ID, Scope.VERTICAL, guid, true))
-                    .thenReturn(lineageVerticesAndEdges);
-        } catch (OpenLineageException e) {
-            e.printStackTrace();
-        }
+        when(openLineageClient.lineage(USER_ID, Scope.VERTICAL, guid, true))
+                .thenReturn(lineageVerticesAndEdges);
         Graph response = openLineageService.getVerticalLineage(USER_ID, guid, true);
         checkResponse(response);
     }
@@ -126,18 +110,14 @@ public class OpenLineageServiceTest {
     @DisplayName("Search")
     public void search() throws PropertyServerException, InvalidParameterException, OpenLineageException {
         LineageSearchRequest searchRequest = new LineageSearchRequest();
-        try {
-            List<LineageVertex> lineageVertices = new ArrayList<>(lineageVerticesAndEdges.getLineageVertices());
-            when(openLineageClient.search(USER_ID, searchRequest))
-                    .thenReturn(lineageVertices);
-        } catch (OpenLineageException e) {
-            e.printStackTrace();
-        }
+        List<LineageVertex> lineageVertices = new ArrayList<>(lineageVerticesAndEdges.getLineageVertices());
+        when(openLineageClient.search(USER_ID, searchRequest))
+                .thenReturn(lineageVertices);
         List<LineageVertex> response = openLineageService.search(USER_ID, searchRequest);
-        checkSerchResponse(response);
+        checkSearchResponse(response);
     }
 
-    private void checkSerchResponse(List<LineageVertex> nodes) {
+    private void checkSearchResponse(List<LineageVertex> nodes) {
         assertNotNull("List of nodes is null", nodes);
         assertEquals("Response should contain 4 nodes", 4, nodes.size());
         List<String> nodesIds = nodes.stream().map(LineageVertex::getNodeID).collect(Collectors.toList());
