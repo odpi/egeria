@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.lineagegraph;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.junit.jupiter.api.BeforeAll;
@@ -9,12 +10,17 @@ import org.junit.jupiter.api.Test;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
+import org.odpi.openmetadata.governanceservers.openlineage.model.NodeNamesSearchCriteria;
+import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageNodeNamesResponse;
+import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageTypesResponse;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph.GraphHelper;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph.LineageGraphQueryService;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.ffdc.JanusConnectorException;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -32,6 +38,8 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.NODE_LABEL_SUB_PROCESS;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_GUID;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_LABEL;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PROCESS_GUID;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE;
@@ -227,6 +235,45 @@ public class LineageGraphQueryServiceTest {
         validateResponse(expectedNodeIDs, lineageVertices);
     }
 
+    @Test
+    public void testGetNodes_AGlossaryTerm() {
+        NodeNamesSearchCriteria searchCriteria = new NodeNamesSearchCriteria(GLOSSARY_TERM, "g1", 10);
+        List<String> expectedNodeNames = Collections.singletonList("g1");
+        LineageNodeNamesResponse response = lineageGraphQueryService.getNodes(searchCriteria);
+        assertTrue(CollectionUtils.isEqualCollection(response.getNames(), expectedNodeNames));
+    }
+
+    @Test
+    public void testGetNodes_MultipleGlossaryTerm() {
+        NodeNamesSearchCriteria searchCriteria = new NodeNamesSearchCriteria(GLOSSARY_TERM, "g", 10);
+        List<String> expectedNodeNames = Arrays.asList("g1", "g2", "g3");
+        List<String> resultNames = lineageGraphQueryService.getNodes(searchCriteria).getNames();
+        assertTrue(CollectionUtils.isEqualCollection(expectedNodeNames, resultNames));
+    }
+
+    @Test
+    public void testGetNodes_MultipleGlossaryTermLimited() {
+        NodeNamesSearchCriteria searchCriteria = new NodeNamesSearchCriteria(GLOSSARY_TERM, "g", 2);
+        List<String> possibleResults = Arrays.asList("g1", "g2", "g3");
+        List<String> resultNames = lineageGraphQueryService.getNodes(searchCriteria).getNames();
+        assertEquals(2, resultNames.size());
+        assertTrue(CollectionUtils.containsAll(possibleResults, resultNames));
+    }
+
+    @Test
+    public void testGetNodes_NoResult() {
+        NodeNamesSearchCriteria searchCriteria = new NodeNamesSearchCriteria(GLOSSARY_TERM, "gg", 2);
+        List<String> resultNames = lineageGraphQueryService.getNodes(searchCriteria).getNames();
+        assertEquals(0, resultNames.size());
+    }
+
+    @Test
+    public void testGetTypes() {
+        LineageTypesResponse response = lineageGraphQueryService.getTypes();
+        List<String> expectedTypes = Arrays.asList(TABULAR_COLUMN, GLOSSARY_TERM, RELATIONAL_TABLE, PROCESS, DATA_FILE);
+        assertTrue(CollectionUtils.isEqualCollection(response.getTypes(), expectedTypes));
+    }
+
     private void validateResponse(HashSet<String> expectedNodeIDs, Set<LineageVertex> lineageVertices) {
         assertEquals(expectedNodeIDs.size(), lineageVertices.size());
         for (LineageVertex returnedVertex : lineageVertices) {
@@ -325,14 +372,17 @@ public class LineageGraphQueryServiceTest {
     private static Vertex getVertex(GraphTraversalSource g, String nodeType, String guid, String nodeId) {
         Vertex vertex;
         if (NODE_LABEL_SUB_PROCESS.equals(nodeType)) {
-            vertex = g.addV(nodeType).property(PROPERTY_KEY_ENTITY_GUID, guid)
+            vertex = g.addV(nodeType).property(PROPERTY_KEY_LABEL, nodeType)
+                    .property(PROPERTY_KEY_ENTITY_GUID, guid)
                     .property(PROPERTY_KEY_PROCESS_GUID, guid)
                     .property(PROPERTY_KEY_ENTITY_NODE_ID, nodeId)
                     .next();
 
         } else {
-            vertex = g.addV(nodeType).property(PROPERTY_KEY_ENTITY_GUID, guid)
+            vertex = g.addV(nodeType).property(PROPERTY_KEY_LABEL, nodeType)
+                    .property(PROPERTY_KEY_ENTITY_GUID, guid)
                     .property(PROPERTY_KEY_ENTITY_NODE_ID, nodeId)
+                    .property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME, nodeId)
                     .next();
         }
         return vertex;
