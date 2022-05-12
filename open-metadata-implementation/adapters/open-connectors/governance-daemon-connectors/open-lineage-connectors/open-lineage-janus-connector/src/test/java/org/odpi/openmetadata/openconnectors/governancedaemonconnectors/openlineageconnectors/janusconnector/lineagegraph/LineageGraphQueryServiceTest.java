@@ -182,6 +182,22 @@ public class LineageGraphQueryServiceTest {
     }
 
     @Test
+    void endToEndTableLevelProcess() {
+        HashSet<String> expectedNodeIDs = new HashSet<>();
+        final String queriedNodeID = "p10";
+        expectedNodeIDs.add("d10");
+        expectedNodeIDs.add("p20");
+        expectedNodeIDs.add("t10");
+        expectedNodeIDs.add("t20");
+        expectedNodeIDs.add(queriedNodeID);
+
+        LineageVerticesAndEdges lineageVerticesAndEdges = lineageGraphQueryService.endToEnd(queriedNodeID, true).get();
+        Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
+
+        validateResponse(expectedNodeIDs, lineageVertices);
+    }
+
+    @Test
     void ultimateSourceTableLevelViaLineageMapping() {
         HashSet<String> expectedNodeIDs = new HashSet<>();
         final String queriedNodeID = "t10";
