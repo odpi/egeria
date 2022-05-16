@@ -3,9 +3,11 @@
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tinkerpop.gremlin.process.traversal.Traversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Property;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
@@ -20,15 +22,19 @@ import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
 import org.odpi.openmetadata.governanceservers.openlineage.model.NodeNamesSearchCriteria;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
+import org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest;
+import org.odpi.openmetadata.governanceservers.openlineage.requests.Node;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageNodeNamesResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageTypesResponse;
+import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageSearchResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageVertexResponse;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.ffdc.JanusConnectorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -52,6 +58,7 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.LINEAGE_NOT_FOUND;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.NODES_NOT_FOUND;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.TYPES_NOT_FOUND;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.SEARCH_ERROR;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ASSETS;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ASSET_LINEAGE_VARIABLES;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ASSET_SCHEMA_TYPE;
@@ -78,10 +85,12 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.RELATIONAL_COLUMN_AND_CLASSIFICATION_EDGES;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.RELATIONAL_TABLE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.S;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.SEMANTIC_ASSIGNMENT;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.SUB_GRAPH;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TABULAR_COLUMN;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TABULAR_COLUMN_AND_CLASSIFICATION_EDGES;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TABULAR_FILE_COLUMN;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TERM_CATEGORIZATION;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TOPIC;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.CONDENSED_NODE_DISPLAY_NAME;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.DESTINATION_CONDENSATION;
@@ -644,4 +653,64 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
         }
         return newNodeProperties;
     }
+
+    /**
+     * Search the database for entities matching the search request
+     *
+     * @param lineageSearchRequest the criteria for the search
+     * @return all the entities in the graph that match the criteria
+     */
+    public LineageSearchResponse search(LineageSearchRequest lineageSearchRequest) {
+        List<LineageVertex> result = this.graphHelper.getResult(this::getSearchResult, lineageSearchRequest, this::handleSearchError);
+        return new LineageSearchResponse(result);
+    }
+
+    private List<LineageVertex> getSearchResult(GraphTraversalSource g, LineageSearchRequest lineageSearchRequest) {
+        Node queriedNode = lineageSearchRequest.getQueriedNode();
+        List<Node> relatedNodes = lineageSearchRequest.getRelatedNodes();
+        GraphTraversal<Vertex, Vertex> searchTraversal = g.V().has(PROPERTY_KEY_LABEL, queriedNode.getType());
+
+        if (!StringUtils.isEmpty(queriedNode.getName())) {
+            searchTraversal = searchTraversal.and(__.has(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME, queriedNode.getName()));
+        }
+        List<String> edges;
+        if (GLOSSARY_TERM.equalsIgnoreCase(queriedNode.getType())) {
+            edges = Arrays.asList(SEMANTIC_ASSIGNMENT, TERM_CATEGORIZATION);
+        } else {
+            edges = List.of(LINEAGE_MAPPING);
+        }
+        searchTraversal = buildQueryWithRelatedNodes(searchTraversal, relatedNodes, edges);
+        List<Vertex> results = searchTraversal.toList();
+        return results.stream().map(lineageGraphQueryHelper::abstractVertex).collect(Collectors.toList());
+    }
+
+    /**
+     * Add to the query the related nodes to filter results from graph
+     *
+     * @param searchTraversal existing query
+     * @param relatedNodes    list of nodes that should be related to what is searched
+     * @param edges           list of labels to travers the graph
+     * @return the traversal with the added filtering needed
+     */
+    private GraphTraversal<Vertex, Vertex> buildQueryWithRelatedNodes(GraphTraversal<Vertex, Vertex> searchTraversal, List<Node> relatedNodes, List<String> edges) {
+        if (CollectionUtils.isEmpty(relatedNodes)) {
+            return searchTraversal;
+        }
+        String[] edgeLabels = edges.toArray(new String[0]);
+        for (Node node : relatedNodes) {
+            if (node.getName() != null) {
+                searchTraversal = searchTraversal.and(
+                        __.repeat(__.both(edgeLabels).dedup())
+                                .until(__.and(__.has(PROPERTY_KEY_LABEL, node.getType()), __.has(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME, node.getName()))));
+            } else {
+                searchTraversal = searchTraversal.and(__.repeat(__.both(edgeLabels).dedup()).until(__.has(PROPERTY_KEY_LABEL, node.getType())));
+            }
+        }
+        return searchTraversal;
+    }
+
+    private void handleSearchError(Exception e, LineageSearchRequest lineageSearchRequest) {
+        auditLog.logException(SEARCH_ERROR.getFormattedErrorMessage(), SEARCH_ERROR.getMessageDefinition(lineageSearchRequest.toString()), e);
+    }
+
 }

@@ -6,9 +6,11 @@ package org.odpi.openmetadata.governanceservers.openlineage.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageQueryParameters;
+import org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest;
 import org.odpi.openmetadata.governanceservers.openlineage.model.NodeNamesSearchCriteria;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageNodeNamesResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
+import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageSearchResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageTypesResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageVertexResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.server.OpenLineageRestServices;
@@ -101,5 +103,12 @@ public class OpenLineageResource {
             @RequestParam("name") String searchValue,
             @RequestParam("limit") int limit) {
         return restAPI.getNodes(serverName, userId, new NodeNamesSearchCriteria(type, searchValue, limit));
+    }
+
+    @PostMapping(path = "lineage/search", produces = MediaType.APPLICATION_JSON_VALUE)
+    public LineageSearchResponse getSearchResults(@PathVariable("serverName") String serverName,
+                                                  @PathVariable("userId") String userId,
+                                                  @RequestBody LineageSearchRequest lineageSearchRequest) {
+        return restAPI.search(serverName, userId, lineageSearchRequest);
     }
 }

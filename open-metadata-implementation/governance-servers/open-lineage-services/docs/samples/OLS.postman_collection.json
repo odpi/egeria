@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "7b16d7c4-5c55-4d6b-8162-1d803cbe9a39",
+		"_postman_id": "6f3888a2-91c6-4250-b867-2270d5600201",
 		"name": "OLS",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -579,6 +579,40 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "6. Search Database",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"queriedNode\": {\n        \"type\": \"Process\"\n    },\n    \"relatedNodes\": [\n        {\n            \"type\": \"RelationalTable\",\n            \"name\": \"table_name\"\n        }\n        \n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/open-lineage/users/{{user-id}}/lineage/search",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"open-lineage",
+						"users",
+						"{{user-id}}",
+						"lineage",
+						"search"
+					]
+				}
+			},
+			"response": []
 		}
-	]
+	],
+	"protocolProfileBehavior": {}
 }
