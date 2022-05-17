@@ -698,7 +698,7 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
         }
         String[] edgeLabels = edges.toArray(new String[0]);
         for (Node node : relatedNodes) {
-            if (node.getName() != null) {
+            if (!StringUtils.isEmpty(node.getName())) {
                 searchTraversal = searchTraversal.and(
                         __.repeat(__.both(edgeLabels).dedup())
                                 .until(__.and(__.has(PROPERTY_KEY_LABEL, node.getType()), __.has(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME, node.getName()))));
