@@ -290,7 +290,7 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
     		
     		List<EntityDetail> validEntities = new ArrayList<>();
     		List<Relationship> validRelationships = new ArrayList<>();
-    		if (eventEntities != null)
+            if (eventEntities != null)
             {
                 for (EntityDetail entity : eventEntities)
                 {
@@ -300,8 +300,8 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
                     }
                 }
             }
-    		
-    		if (eventRelationships != null )
+
+            if (eventRelationships != null)
             {
                 for (Relationship relationship : eventRelationships)
                 {
