@@ -290,23 +290,27 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
     		
     		List<EntityDetail> validEntities = new ArrayList<>();
     		List<Relationship> validRelationships = new ArrayList<>();
+    		if (eventEntities != null)
+            {
+                for (EntityDetail entity : eventEntities)
+                {
+                    if (exchangeRule.processInstanceEvent(entity))
+                    {
+                        validEntities.add(entity);
+                    }
+                }
+            }
     		
-    		for (EntityDetail entity: eventEntities)
-    		{
-    			if (exchangeRule.processInstanceEvent(entity))
-    			{
-    				validEntities.add(entity);
-    			}
-    		}
-    		
-    		
-    		for (Relationship relationship: eventRelationships)
-    		{
-    			if (exchangeRule.processInstanceEvent(relationship))
-    			{
-    				validRelationships.add(relationship);
-    			}
-    		}
+    		if (eventRelationships != null )
+            {
+                for (Relationship relationship : eventRelationships)
+                {
+                    if (exchangeRule.processInstanceEvent(relationship))
+                    {
+                        validRelationships.add(relationship);
+                    }
+                }
+            }
     		
     		if (validEntities.size() > 0 || validRelationships.size() > 0)
     		{
