@@ -43,3 +43,10 @@ jobs:
         with:
           branch: gh-pages
           folder: build/docs/javadoc
+      - name: Upload Log of any dependency failures
+        if: ${{ github.repository == 'odpi/egeria' && github.ref == 'refs/heads/master'}}
+        uses: actions/upload-artifact@v3
+        with:
+          name: Dependency Analysis Report (on failure)
+          path: build/reports/dependency-analysis/build-health-report.txt
+          if-no-files-found: ignore
