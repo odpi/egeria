@@ -72,4 +72,7 @@ body:
           - [ ] Create final github release
         - Egeria Dev Projects
           - [ ] Update project & dependency versions to new release
+
+        Get Ready for next release
+        - [ ] Open Release Issue for next release
 ---
