@@ -133,3 +133,8 @@ test {
     dependsOn configServer
     
 }
+
+// Resolves logging conflict with Jena
+loggingCapabilities {
+    enforceLogback()// Configuration goes here
+}

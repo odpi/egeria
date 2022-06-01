@@ -107,3 +107,8 @@ test {
 task cleanData(type: Delete) {
     delete files("${buildDir}/data")
 }
+
+// Resolves logging conflict with Jena
+loggingCapabilities {
+    enforceLogback()// Configuration goes here
+}
