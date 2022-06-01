@@ -45,7 +45,7 @@ java {
 // Local properties to use
 ext
         {
-            distdir="../../../../../open-metadata-distribution/open-metadata-assemblies/build/unpacked/egeria-${project.version}-distribution.tar.gz"
+            distdir="../../../../../../open-metadata-distribution/open-metadata-assemblies/build/unpacked/egeria-${project.version}-distribution.tar.gz"
         }
 
 
@@ -57,8 +57,9 @@ sourceSets.test.groovy.srcDirs = ["src/test/java", "src/test/script"]
 task startServer(dependsOn: ['cleanData',':open-metadata-distribution:open-metadata-assemblies:unzip'], type: com.github.psxpaul.task.ExecFork) {
     // Start some external service
     executable = System.properties.'java.home' + '/bin/java'
-    mkdir "${buildDir}/fvtserver"
-workingDir = "${buildDir}"
+    workingDir = layout.buildDirectory.dir('run')
+    mkdir "${workingDir}"
+
     args = [ "-Dserver.port=10441",
              "-Dloader.path=${distdir}/server/lib",
              "-Dspringdoc.api-docs.enabled=false",
