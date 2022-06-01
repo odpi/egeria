@@ -93,7 +93,7 @@ allprojects {
         junitjupiterVersion = '5.8.2'
         junitplatformVersion = '1.8.2'
         jwtVersion = '0.9.1'
-        kafkaVersion = '3.1.0'
+        kafkaVersion = '3.2.0'
         lang3Version='3.8.1'
         logbackVersion = '1.2.11'
         lettuceVersion = '6.1.8.RELEASE'
