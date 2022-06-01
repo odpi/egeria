@@ -124,7 +124,7 @@ allprojects {
         snappyVersion = '1.1.8.4'
         springdataVersion = '2.6.4'
         springbootVersion = '2.7.0'
-        spotbugsVersion = '4.6.0'
+        spotbugsVersion = '4.7.0'
         springdocVersion = '1.6.8'
         springldapVersion = '2.3.5.RELEASE'
         swaggerVersion = '2.2.0'
