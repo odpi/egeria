@@ -5,6 +5,15 @@
 
 // This HAS to be the first block of the file
 pluginManagement {
+    repositories {
+        // releases
+        mavenCentral()
+        // snapshots
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        // Once you start using pluginManagement, you should explicitly add this, unless
+        // you NEVER want to use this repository
+        gradlePluginPortal()
+    }
     plugins {
         //id 'io.spring.dependency-management' version '1.0.10.RELEASE'
         id 'org.springframework.boot' version '2.6.7'
@@ -12,6 +21,7 @@ pluginManagement {
         id 'org.siouan.frontend-jdk11' version '6.0.0'
         id 'com.github.johnrengelman.shadow' version '7.1.2'
         id 'com.github.psxpaul.execfork' version '0.2.0'
+        id 'de.jjohannes.java-ecosystem-capabilities' version '0.4'
 
 
         // For reference we use these, but they are internal so no version spec needed

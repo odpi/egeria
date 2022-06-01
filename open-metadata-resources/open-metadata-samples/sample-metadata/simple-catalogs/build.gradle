@@ -14,10 +14,7 @@ dependencies {
     implementation project(':open-metadata-resources:open-metadata-archives:open-metadata-types')
     implementation project(':open-metadata-resources:open-metadata-archives:content-pack-helpers')
     implementation project(':open-metadata-resources:open-metadata-archives:open-metadata-types')
-    implementation 'ch.qos.logback:logback-classic'
-    implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
-    testImplementation 'org.testng:testng'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    runtimeOnly 'ch.qos.logback:logback-classic'
 
 }
 

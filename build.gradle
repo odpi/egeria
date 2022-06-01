@@ -21,7 +21,15 @@ buildscript {
 plugins {
         id "io.freefair.aggregate-javadoc" version "6.4.3"
         id "io.freefair.lombok" version "6.4.3"
+        // Checks for unnecessary dependencies
+        id 'com.autonomousapps.dependency-analysis' version "1.4.0"
+        // helps resolve log implementation clashes
+        id 'dev.jacomet.logging-capabilities' version "0.10.0"
+        // This plugin helps resolve jakarta/javax dev.jacomet.logging-capabilities
+        id 'de.jjohannes.java-ecosystem-capabilities' version "0.4"
     }
+
+
 
 /*
  * Configuration for all projects - INCLUDING this one
@@ -36,6 +44,8 @@ allprojects {
     apply plugin: 'java'
     apply plugin: 'jacoco'
     //apply plugin: 'io.freefair.lombok'
+    apply plugin: 'de.jjohannes.java-ecosystem-capabilities'
+    apply plugin: 'dev.jacomet.logging-capabilities'
 
     // As we've migrated from maven - we'll assume all submodules publish directly to maven
     apply plugin: 'maven-publish'
@@ -317,6 +327,7 @@ allprojects {
     }
 
 
+
     // Tasks to help in finding dependency chains
     task printAllDependencies(type: DependencyReportTask) {}
     task printSubDependencies(type: DependencyReportTask) {}
@@ -394,3 +405,79 @@ task codeCoverageReport(type: JacocoReport) {
 codeCoverageReport.dependsOn {
     subprojects*.test
 }
+
+// Dependency checking - see https://github.com/autonomousapps/dependency-analysis-android-gradle-plugin
+dependencyAnalysis {
+    issues {
+        all {
+            onAny {
+                severity('fail')
+            }
+            onUnusedDependencies {
+                exclude("junit:junit", "org.junit.jupiter:junit-jupiter-api", "org.junit.jupiter:junit-jupiter-engine", "com.fasterxml.jackson.core:jackson-annotations")
+            }
+        }
+        // These are exceptions which have been investigated, and the currently reported unused
+        // dependencies are needed to prevent compilation failure
+        project(':open-metadata-conformance-suite:open-metadata-conformance-suite-client') {
+            onUnusedDependencies {
+                exclude(":open-metadata-implementation:frameworks:open-connector-framework")
+            }
+        }
+        project(':open-metadata-implementation:server-chassis:server-chassis-spring') {
+            onUnusedDependencies {
+                exclude(":open-metadata-implementation:common-services:ffdc-services")
+            }
+        }
+        project(':open-metadata-resources:open-metadata-archives:open-connector-archives') {
+            onUnusedDependencies {
+                exclude(":open-metadata-implementation:frameworks:audit-log-framework")
+            }
+        }
+        project(':open-metadata-resources:open-metadata-archives:open-metadata-types-utility') {
+            onUnusedDependencies {
+                exclude(":open-metadata-implementation:repository-services:repository-services-archive-utilities")
+            }
+        }
+        project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-create-avro-sample') {
+            onUnusedDependencies {
+                exclude(":open-metadata-implementation:access-services:asset-owner:asset-owner-api",
+                        ":open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-client",
+                        ":open-metadata-implementation:frameworks:open-connector-framework")
+            }
+        }
+        project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-create-csv-sample') {
+            onUnusedDependencies {
+                exclude(":open-metadata-implementation:access-services:asset-owner:asset-owner-api",
+                        ":open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-client",
+                        ":open-metadata-implementation:frameworks:open-connector-framework")
+            }
+        }
+        project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-reader-avro-sample') {
+            onUnusedDependencies {
+                exclude(":open-metadata-implementation:access-services:asset-consumer:asset-consumer-api",
+                        ":open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-client")
+            }
+        }
+        project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-reader-csv-sample') {
+            onUnusedDependencies {
+                exclude(":open-metadata-implementation:access-services:asset-consumer:asset-consumer-api",
+                        ":open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-client",
+                        ":open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector")
+            }
+        }
+        project(':open-metadata-resources:open-metadata-samples:access-services-samples:subject-area-client-samples:subject-area-definition-sample') {
+            onUnusedDependencies {
+                exclude(":open-metadata-implementation:common-services:ffdc-services")
+            }
+        }
+        project(':open-metadata-resources:open-metadata-samples:admin-services-samples:admin-services-config-metadata-server-sample') {
+            onUnusedDependencies {
+                exclude(":open-metadata-implementation:common-services:ffdc-services")
+            }
+        }
+    }
+}
+
+// Always run dependency check
+build.dependsOn("buildHealth")

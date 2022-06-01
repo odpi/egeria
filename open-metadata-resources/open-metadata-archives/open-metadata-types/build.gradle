@@ -12,7 +12,6 @@ dependencies {
     implementation project(':open-metadata-implementation:repository-services:repository-services-archive-utilities')
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     testImplementation 'org.testng:testng'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
 
 }
 
