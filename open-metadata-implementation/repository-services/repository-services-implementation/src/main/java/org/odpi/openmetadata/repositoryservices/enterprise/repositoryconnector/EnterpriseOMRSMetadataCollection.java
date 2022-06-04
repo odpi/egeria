@@ -58,9 +58,9 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
     /*
      * Private variables for a metadata collection instance
      */
-    private EnterpriseOMRSRepositoryConnector enterpriseParentConnector;
-    private String                            localMetadataCollectionId;
-    private AuditLog                          auditLog;
+    private final EnterpriseOMRSRepositoryConnector enterpriseParentConnector;
+    private final String                            localMetadataCollectionId;
+    private final AuditLog                          auditLog;
 
 
     /**
@@ -1046,10 +1046,32 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         GetEntityDetailExecutor executor          = new GetEntityDetailExecutor(userId, guid, asOfTime, auditLog, methodName);
 
         /*
-         * Ready to process the request.  Create requests occur in the first repository that accepts the call.
-         * Some repositories may produce exceptions.  These exceptions are saved and will be returned if
-         * there are no positive results from any repository.
+         * Ready to process the request.  Callers to the enterprise repository are typically well-defined and only request entities that
+         * are known.  The loop below assumes that the entity is not returned because a repository is not currently registered.
+         * Therefore, the enterprise connector will retry the request five times to give the owning repository time to register.
          */
+        int retryCount = 0;
+
+        while (retryCount < 4)
+        {
+            try
+            {
+                federationControl.executeCommand(executor);
+
+                return executor.getEntityDetail();
+            }
+            catch (EntityProxyOnlyException | EntityNotKnownException proxyException)
+            {
+                cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
+
+                federationControl = new ParallelFederationControl(userId, cohortConnectors, auditLog, methodName);
+                executor          = new GetEntityDetailExecutor(userId, guid, asOfTime, auditLog, methodName);
+
+                retryCount ++;
+                auditLog.logMessage(methodName, OMRSAuditCode.RETRY_FOR_PROXY.getMessageDefinition(guid, userId, Integer.toString(retryCount)));
+            }
+        }
+
         federationControl.executeCommand(executor);
 
         return executor.getEntityDetailHistory();
