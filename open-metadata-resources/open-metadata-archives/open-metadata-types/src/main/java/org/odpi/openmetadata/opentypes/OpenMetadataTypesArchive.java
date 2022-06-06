@@ -266,6 +266,8 @@ public class OpenMetadataTypesArchive
         this.archiveBuilder.addTypeDefPatch(deprecateInformationSupplyChainImplementationRelationship());
         this.archiveBuilder.addTypeDefPatch(deprecateSolutionComponentImplementationRelationship());
         this.archiveBuilder.addRelationshipDef(getImplementedByRelationship());
+        this.archiveBuilder.addTypeDefPatch(updateDigitalServiceManagementRelationship());
+
     }
 
     private TypeDefPatch deprecateDigitalServiceImplementationRelationship()
@@ -410,7 +412,38 @@ public class OpenMetadataTypesArchive
     }
 
 
+    private TypeDefPatch updateDigitalServiceManagementRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "DigitalServiceManagement";
 
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "PersonRole";
+        final String                     end2AttributeName            = "digitalServiceManagers";
+        final String                     end2AttributeDescription     = "The roles for managing this digital service.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                                    end2AttributeName,
+                                                                                    end2AttributeDescription,
+                                                                                    end2AttributeDescriptionGUID,
+                                                                                    end2Cardinality);
+
+
+        typeDefPatch.setEndDef2(relationshipEndDef);
+
+        return typeDefPatch;
+    }
 
     /*
      * -------------------------------------------------------------------------------------------------------
