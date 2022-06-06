@@ -25,7 +25,7 @@ public enum CommonServicesDescription implements Serializable
                                       "OMAG Server Operational Services",
                                       "admin-services",
                                       "Management of services active in an Open Metadata and governance server (OMAG Server)",
-                                      "https://egeria-project.org/services/admin-services"),
+                                      "https://egeria-project.org/services/admin-services/overview"),
 
     OCF_METADATA_MANAGEMENT          (182,
                                       ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
