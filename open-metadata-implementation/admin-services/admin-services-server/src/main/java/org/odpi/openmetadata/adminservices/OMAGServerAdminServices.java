@@ -1738,11 +1738,11 @@ public class OMAGServerAdminServices
      * OMAGInvalidParameterException invalid serverName or localRepositoryEventMapper parameter or
      * OMAGConfigurationErrorException the local repository mode has not been set
      */
-    public VoidResponse setRepositoryProxyEventMapper(String     userId,
-                                                      String     serverName,
-                                                      Connection connection)
+    public VoidResponse setRepositoryEventMapper(String     userId,
+                                                 String     serverName,
+                                                 Connection connection)
     {
-        final String methodName = "setRepositoryProxyEventMapper";
+        final String methodName = "setRepositoryEventMapper";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1776,7 +1776,10 @@ public class OMAGServerAdminServices
                                                           this.getClass().getName(),
                                                           methodName);
             }
-            else if (localRepositoryConfig.getLocalRepositoryMode() != LocalRepositoryMode.REPOSITORY_PROXY)
+            else if (localRepositoryConfig.getLocalRepositoryMode() != LocalRepositoryMode.REPOSITORY_PROXY
+            &&
+                    localRepositoryConfig.getLocalRepositoryMode() != LocalRepositoryMode.OPEN_METADATA_NATIVE
+            )
             {
                 throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.LOCAL_REPOSITORY_MODE_NOT_PROXY.getMessageDefinition(serverName,
                                                                                                                                   localRepositoryConfig.getLocalRepositoryMode().getName()),
@@ -1829,13 +1832,13 @@ public class OMAGServerAdminServices
      * OMAGInvalidParameterException invalid serverName or localRepositoryEventMapper parameter or
      * OMAGConfigurationErrorException the event bus is not set.
      */
-    public VoidResponse setRepositoryProxyEventMapper(String              userId,
-                                                      String              serverName,
-                                                      String              connectorProvider,
-                                                      String              eventSource,
-                                                      Map<String, Object> additionalProperties)
+    public VoidResponse setRepositoryEventMapper(String              userId,
+                                                 String              serverName,
+                                                 String              connectorProvider,
+                                                 String              eventSource,
+                                                 Map<String, Object> additionalProperties)
     {
-        final String methodName = "setRepositoryProxyEventMapper";
+        final String methodName = "setRepositoryEventMapper";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1848,9 +1851,9 @@ public class OMAGServerAdminServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            this.setRepositoryProxyEventMapper(userId,
-                                               serverName,
-                                               connectorConfigurationFactory.getRepositoryEventMapperConnection(connectorProvider,
+            this.setRepositoryEventMapper(userId,
+                                          serverName,
+                                          connectorConfigurationFactory.getRepositoryEventMapperConnection(connectorProvider,
                                                                                                                 additionalProperties,
                                                                                                                 eventSource));
         }

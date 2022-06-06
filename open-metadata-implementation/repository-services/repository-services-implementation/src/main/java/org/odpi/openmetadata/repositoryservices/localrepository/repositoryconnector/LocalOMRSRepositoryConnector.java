@@ -93,9 +93,9 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
 
         /*
          * The local repository is not allowed to produce events for a repository proxy.
-         * The event mapper is optional and only ever activated in a repository proxy.
+         * The event mapper is optional and only ever activated in a repository proxy or a native repository.
          */
-        if (localRepositoryMode == LocalRepositoryMode.REPOSITORY_PROXY)
+        if (localRepositoryMode == LocalRepositoryMode.REPOSITORY_PROXY || localRepositoryMode == LocalRepositoryMode.OPEN_METADATA_NATIVE)
         {
             produceEventsForRealConnector = false;
 
