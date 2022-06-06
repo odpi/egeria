@@ -43,3 +43,8 @@ task fatJar(type: Jar) {
 }
 
 build.dependsOn fatJar
+
+// Resolves logging conflict with Jena
+loggingCapabilities {
+    enforceLogback()// Configuration goes here
+}

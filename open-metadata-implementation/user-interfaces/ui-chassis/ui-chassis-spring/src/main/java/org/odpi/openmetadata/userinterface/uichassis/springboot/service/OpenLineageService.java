@@ -11,6 +11,7 @@ import org.odpi.openmetadata.governanceservers.openlineage.model.LineageEdge;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
+import org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.LineageNotFoundException;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.OpenLineageServiceException;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.beans.Edge;
@@ -168,6 +169,56 @@ public class OpenLineageService {
         } catch (OpenLineageException e) {
             LOG.error("Error while calling open lineage services {}", guid);
             throw new OpenLineageServiceException("entity details error", e);
+        }
+    }
+
+    /**
+     * Gets node details.
+     *
+     * @param userId the user id
+     * @param lineageSearchRequest the body for search
+     * @return the node details
+     */
+    public List<LineageVertex> search(String userId, LineageSearchRequest lineageSearchRequest) throws InvalidParameterException, PropertyServerException, OpenLineageException {
+        try {
+            return openLineageClient.search(userId, lineageSearchRequest);
+        } catch (InvalidParameterException | PropertyServerException e) {
+            LOG.error("Error during search with request {}", lineageSearchRequest);
+            throw e;
+        } catch (OpenLineageException e) {
+            LOG.error("Error while calling open lineage services {}", lineageSearchRequest);
+            throw new OpenLineageServiceException("entity details error", e);
+        }
+    }
+
+    /**
+     * Gets available entities types from lineage repository.
+     * @param userId user ID
+     * @return the available entities types
+     */
+    public List<String> getTypes(String userId) {
+        try {
+            return openLineageClient.getTypes(userId);
+        } catch (PropertyServerException | InvalidParameterException | OpenLineageException e) {
+            LOG.error("Cannot get entities types in the lineage graph");
+            throw new OpenLineageServiceException("entities types retrieval error", e);
+        }
+    }
+
+    /**
+     * Gets nodes names of certain type with display name containing a certain value.
+     * @param userId      user ID
+     * @param type        the type of the nodes name to search for
+     * @param searchValue the string to be contained in the qualified name of the node - case insensitive
+     * @param limit       the maximum number of node names to retrieve
+     * @return the list of node names
+     */
+    public List<String> getNodes(String userId, String type, String searchValue, int limit) {
+        try {
+            return openLineageClient.getNodes(userId, type, searchValue, limit);
+        } catch (PropertyServerException | InvalidParameterException | OpenLineageException e) {
+            LOG.error("Cannot get node names from the lineage graph");
+            throw new OpenLineageServiceException("node names retrieval error", e);
         }
     }
 

@@ -48,3 +48,8 @@ test {
         excludeTestsMatching "*.OpenLineageGraphValidationTests"
     }
 }
+
+// Resolves logging conflict with Jena
+loggingCapabilities {
+    enforceLogback()// Configuration goes here
+}
